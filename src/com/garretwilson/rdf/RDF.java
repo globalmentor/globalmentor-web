@@ -67,7 +67,7 @@ public class RDF implements RDFConstants
 		@param factory The resource factory that will be used to create resources
 			of types from this this namespace.
 		*/
-		public void registerResourceFactory(final URI typeNamespaceURI, final ResourceFactory factory)
+		public void registerResourceFactory(final URI typeNamespaceURI, final RDFResourceFactory factory)
 		{
 			resourceFactoryMap.put(typeNamespaceURI, factory);
 		}
@@ -79,9 +79,9 @@ public class RDF implements RDFConstants
 		@return The factory registered for this type namespace, or <code>null</code>
 			if there is no factory registered for this type namespace.
 		*/
-		protected ResourceFactory getResourceFactory(final URI typeNamespaceURI)
+		protected RDFResourceFactory getResourceFactory(final URI typeNamespaceURI)
 		{
-			return (ResourceFactory)resourceFactoryMap.get(typeNamespaceURI);  //return any factory registered for this namespace
+			return (RDFResourceFactory)resourceFactoryMap.get(typeNamespaceURI);  //return any factory registered for this namespace
 		}
 
 	/**The map of all resources.*/
@@ -252,7 +252,7 @@ public class RDF implements RDFConstants
 //G***del Debug.trace("Type namespace URI: ", typeNamespaceURI); //G***del
 //G***del Debug.trace("Type local name: ", typeLocalName); //G***del
 		RDFResource resource=null; //start by assuming that no factory is registered for this type namespace, or the registered factory can't create a resource
-		final ResourceFactory resourceFactory=getResourceFactory(typeNamespaceURI); //get a resource factory for this namespace
+		final RDFResourceFactory resourceFactory=getResourceFactory(typeNamespaceURI); //get a resource factory for this namespace
 //G***del		if(resourceFactory!=null && resourceFactory!=this) //if we have a factory (and it isn't this class; otherwise, this would cause recursion if one were to register the RDF data model as a factory)
 		if(resourceFactory!=null) //if we have a factory
 		{
