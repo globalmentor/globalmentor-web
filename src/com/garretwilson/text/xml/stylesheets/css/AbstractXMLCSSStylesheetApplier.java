@@ -9,6 +9,11 @@ import java.util.*;
 import javax.mail.internet.ContentType;
 import com.garretwilson.io.*;
 import com.garretwilson.net.URIUtilities;
+import com.garretwilson.rdf.RDFObject;
+import com.garretwilson.rdf.RDFResource;
+import static com.garretwilson.rdf.RDFUtilities.*;
+import static com.garretwilson.rdf.xpackage.XMLOntologyUtilities.*;
+import static com.garretwilson.rdf.xpackage.XPackageUtilities.*;
 import com.garretwilson.text.xml.XMLNamespaceProcessor;
 import com.garretwilson.text.xml.XMLUtilities;
 import static com.garretwilson.text.xml.stylesheets.XMLStyleSheetConstants.*;
@@ -140,9 +145,10 @@ public abstract class AbstractXMLCSSStylesheetApplier<D, E> implements URIInputS
 		URI is not known.
 	@param mediaType The media type of the document, or <code>null</code>. if the
 		media type is unknown.
+	@param description An XPackage-compliant description of the document, or <code>null</code> if no description is available.
 	@return An array of stylesheets.
 	*/
-	public CSSStyleSheet[] getStylesheets(final D document, final URI baseURI, final ContentType mediaType)
+	public CSSStyleSheet[] getStylesheets(final D document, final URI baseURI, final ContentType mediaType, final RDFResource description)
 	{
 		final List<CSSStyleSheet> styleSheetList=new ArrayList<CSSStyleSheet>(); //create a new list to hold the stylesheets
 			//get all default stylesheets
@@ -159,10 +165,10 @@ Debug.trace("Found default stylesheet for namespace: ", namespaceURI);  //G***de
 				styleSheetList.add(cssStyleSheet);  //add the default stylesheet to the list
 			}
 		}
-			//create a new CSS processor for parsing all the stylesheets, showing that we'll worry about getting the needed input streams
-		final XMLCSSProcessor cssProcessor=new XMLCSSProcessor(this);
+			//gather all stylesheet links
+		final XMLCSSProcessor cssProcessor=new XMLCSSProcessor(this);	//create a new CSS processor for parsing all the stylesheets, showing that we'll worry about getting the needed input streams
 			//gather all the references to external stylesheets
-		final XMLStyleSheetDescriptor[] styleSheetDescriptorArray=getStylesheetDescriptors(document);
+		final XMLStyleSheetDescriptor[] styleSheetDescriptorArray=getStylesheetDescriptors(document, description);
 		if(styleSheetDescriptorArray.length>0)  //if there are stylesheet descriptors
 		{
 			for(int i=0; i<styleSheetDescriptorArray.length; ++i) //look at each stylesheet descriptor
@@ -175,7 +181,7 @@ Debug.trace("Found default stylesheet for namespace: ", namespaceURI);  //G***de
 				{
 						//create a URI from the original URI of the XML document and the stylesheet href
 					final URI styleSheetURI=URIUtilities.createURI(baseURI, styleSheetDescriptor.getHRef());
-					final Reader styleSheetReader=new InputStreamReader(getInputStream(styleSheetURI));	//get an input stream to the stylesheet G***use the document's encoding here
+					final Reader styleSheetReader=new BOMInputStreamReader(getInputStream(styleSheetURI));	//get an input stream to the stylesheet TODO do a preread check for the @charset "" CSS keyword 
 					try
 					{
 						final CSSStyleSheet cssStyleSheet=cssProcessor.parseStyleSheet(styleSheetReader, styleSheetURI); //parse the stylesheet
@@ -296,13 +302,33 @@ Debug.trace("Found default stylesheet for namespace: ", namespaceURI);  //G***de
 			<li>External stylesheets referenced from HTML/OEB link elements.</li>
 		</ul>
 	@param document The document in which the descriptors exist.
+	@param description An XPackage-compliant description of the document, or <code>null</code> if no description is available.
 	@return An array of style sheet descriptors, each referencing a stylesheet.
 	*/
-	protected XMLStyleSheetDescriptor[] getStylesheetDescriptors(final D document)
+	protected XMLStyleSheetDescriptor[] getStylesheetDescriptors(final D document, final RDFResource description)
 	{
 		final List<XMLStyleSheetDescriptor> styleSheetDescriptorList=new ArrayList<XMLStyleSheetDescriptor>();  //create a list to hold stylesheet descriptors
-		final NameValuePair[] processingInstructions=getDocumentProcessingInstructions(document);  //get the processing instructions, if any (this will never return null)
+			//gather all XML processing instructions stylesheet links
+		if(description!=null)	//if a description is provided
+		{
+			final Iterator<RDFObject> styleIterator=getStyles(description);	//get all listed styles
+			while(styleIterator.hasNext())	//while there are more styles
+			{
+				final RDFResource style=asResource(styleIterator.next());	//get the next style, only using it if it is a resouce
+				if(style!=null)	//if this style is a resource
+				{
+					//TODO check the media type, etc. here
+					final String href=getLocationHRef(style);	//get the style location TODO fix; this incorrectly will resolve the location href against the document base URI rather than the publication base URI
+					if(href!=null)	//if there is an href
+					{
+						final XMLStyleSheetDescriptor styleSheetDescriptor=new XMLStyleSheetDescriptor(href); //create a new descriptor for this stylesheet G***fix for media type, title, etc.
+						styleSheetDescriptorList.add(styleSheetDescriptor); //add the stylesheet descriptor to our list
+					}
+				}
+			}
+		}
 			//find stylesheet references from processing instructions
+		final NameValuePair[] processingInstructions=getDocumentProcessingInstructions(document);  //get the processing instructions, if any (this will never return null)
 		for(int processingInstructionIndex=0; processingInstructionIndex<processingInstructions.length; ++processingInstructionIndex) //look at each processing instruction
 		{
 			final NameValuePair processingInstruction=processingInstructions[processingInstructionIndex];  //get this processing instruction's values
