@@ -472,23 +472,23 @@ public class RDF implements RDFConstants	//TODO special-case rdf:nil list resour
 		{
 			if(NIL_RESOURCE_URI.equals(referenceURI))	//if we are creating the nil resource
 			{
-				resource=new RDFListResource(this, RDF_NAMESPACE_URI, NIL_RESOURCE_LOCAL_NAME);	//create the nil resource with the special RDF nil URI
+				resource=new RDFListResource(this, RDF_NAMESPACE_URI, NIL_RESOURCE_NAME);	//create the nil resource with the special RDF nil URI
 			}
 			else if(RDF_NAMESPACE_URI.equals(typeNamespaceURI)) //if this resource is an RDF resource
 			{
-				if(ALT_TYPE_NAME.equals(typeLocalName)) //<rdf:Alt>
+				if(ALT_CLASS_NAME.equals(typeLocalName)) //<rdf:Alt>
 				{
 					//G***fix for alt
 				}
-				else if(BAG_TYPE_NAME.equals(typeLocalName))  //<rdf:Bag>
+				else if(BAG_CLASS_NAME.equals(typeLocalName))  //<rdf:Bag>
 				{
 					resource=new RDFBagResource(this, referenceURI, namespaceURI, localName);  //create a bag resource
 				}
-				else if(SEQ_TYPE_NAME.equals(typeLocalName))  //<rdf:Seq>
+				else if(SEQ_CLASS_NAME.equals(typeLocalName))  //<rdf:Seq>
 				{
 					resource=new RDFSequenceResource(this, referenceURI, namespaceURI, localName);  //create a sequence resource
 				}
-				else if(LIST_TYPE_NAME.equals(typeLocalName))  //<rdf:Seq>
+				else if(LIST_CLASS_NAME.equals(typeLocalName))  //<rdf:Seq>
 				{
 					resource=new RDFListResource(this, referenceURI, namespaceURI, localName);  //create a list resource
 				}
@@ -498,6 +498,10 @@ public class RDF implements RDFConstants	//TODO special-case rdf:nil list resour
 		if(resource==null)  //if we still haven't created a resource
 		{
 		  resource=new DefaultRDFResource(this, referenceURI, namespaceURI, localName);  //create a new resource from the given reference URI, showing which data model created the resource
+		}
+		if(resource!=null && resource.getRDF()!=this)	//if a resource was created that isn't associated with this data model
+		{
+			resource.setRDF(this);	//associate the resource with this data model TODO create an import() method that will recursively set the data models of the resource and all properties and property values
 		}
 		if(typeNamespaceURI!=null && typeLocalName!=null)	//if we were given a type
 		{
