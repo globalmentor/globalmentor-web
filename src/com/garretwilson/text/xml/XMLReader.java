@@ -274,8 +274,9 @@ System.out.println("Before processBufferedData: "+tempString);	//G***del
 		final char[] buffer=getBuffer();	//get a reference to our buffer
 		final int bufferEndIndex=getFetchBufferIndex();	//find out the effective end of our new data
 		int sourceIndex, destIndex;	//we'll start looking at the beginning of the new data
+			//start at the beginning of the data and go to the end, copying data backwards to erase characters if needed
+			//ignore the last character for the moment, giving us enough guaranteed room to look for CRLF at the end of the line
 		for(sourceIndex=newDataBeginIndex, destIndex=newDataBeginIndex; sourceIndex<bufferEndIndex-1; ++sourceIndex, ++destIndex)	//G***check, comment
-//G***del		while()	//while we haven't reached the end of our data (ignoring the last character, which we'll look at later)
 		{
 			final char c=buffer[sourceIndex];	//see what character this is
 			if(c==CR_CHAR)	//if this is a CR
@@ -306,9 +307,11 @@ System.out.println("Before processBufferedData: "+tempString);	//G***del
 		}
 		final int moveDistance=bufferEndIndex-destIndex;	//find out how far to move the buffer pointers back
 		setBufferEndIndex(bufferEndIndex-moveDistance);	//show where the new end of the buffer is
-		setFetchBufferIndex(getFetchBufferIndex()-moveDistance);	//move the fetch buffer index back as well (this may get readujsted even more, below)
+		setFetchBufferIndex(getFetchBufferIndex()-moveDistance);	//move the fetch buffer index back as well (this may get readjusted even more, below)
+			//G***wouldn't this entire section be better replaced with a simple if(destIndex<getFetchBufferIndex())?
 		if(buffer[destIndex-1]==CR_CHAR)	//if there's a CR at the end of the buffer, this means that we were not out of data but unsure of whether this was a CR/LF
 		{
+				//G***shouldn't this be if(destIndex<getFetchBufferIndex())?
 			if(destIndex>getFetchBufferIndex())	//if currently the fetch buffer is past that CR that we're not sure about
 				setFetchBufferIndex(destIndex);	//show that we should fetch another buffer before processing the CR
 		}
