@@ -24,7 +24,7 @@ public class XMLSchemaDocumenter implements com.garretwilson.text.xml.xhtml.XHTM
 	public static Document generateDocumentation(final XMLSchema schema)
 	{
 		final XMLDOMImplementation domImplementation=new XMLDOMImplementation();	//create a new DOM implementation
-		final DocumentType documentType=domImplementation.createDocumentType(ELEMENT_HTML, XHTML1_STRICT_PUBLIC_ID, XHTML1_STRICT_SYSTEM_ID);	//create an XHTML document type G***perhaps put this in an OEB class
+		final DocumentType documentType=domImplementation.createDocumentType(ELEMENT_HTML, XHTML_1_0_STRICT_PUBLIC_ID, XHTML_1_0_STRICT_SYSTEM_ID);	//create an XHTML document type G***perhaps put this in an OEB class
 		final Document document=domImplementation.createDocument(XHTML_NAMESPACE_URI.toString(), ELEMENT_HTML, documentType);	//create an XHTML document G***perhaps put this in an OEB class
 			//G***check about whether we need to add a <head> and <title>
 		final Element htmlElement=document.getDocumentElement();	//get the html element

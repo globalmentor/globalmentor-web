@@ -5,9 +5,13 @@ import com.garretwilson.io.MediaType;
 
 /**Constants for XHTML.
 @author Garret Wilson
+@see http://www.w3.org/QA/2002/04/valid-dtd-list.html
 */
 public interface XHTMLConstants
 {
+
+	/**The content type for HTML: <code>text/html</code>.*/ 
+	public static final MediaType HTML_CONTENT_TYPE=new MediaType(MediaType.TEXT, MediaType.HTML);
 
 	/**The content type for XHTML: <code>application/xhtml+xml</code>.*/ 
 	public static final MediaType XHTML_CONTENT_TYPE=new MediaType(MediaType.APPLICATION, MediaType.XHTML_XML);
@@ -21,17 +25,51 @@ public interface XHTMLConstants
 //G***del	/**The package name of the OEB XML classes.*/
 //G***del if not needed	public final static String PACKAGE_NAME="com.garretwilson.text.xml.oeb";
 
-	/**The public ID for XHTML 1.0.*/
-	public final static String XHTML1_STRICT_PUBLIC_ID="-//W3C//DTD XHTML 1.0 Strict//EN";
+	/**The public ID for the HTML 2.0 DTD.*/
+	public final static String HTML_2_0_PUBLIC_ID="-//IETF//DTD HTML 2.0//EN";
+	
+	/**The public ID for the HTML 3.2 DTD.*/
+	public final static String HTML_3_2_PUBLIC_ID="-//W3C//DTD HTML 3.2 Final//EN";
 
-	/**The base system ID for XHTML 1.0 strict.*/
-	public final static String XHTML1_STRICT_SYSTEM_ID="xhtml1-strict.dtd";
+	/**The public ID for the HTML 4.01 Strict DTD.*/
+	public final static String HTML_4_01_STRICT_PUBLIC_ID="-//W3C//DTD HTML 4.01//EN";
+	/**The system ID for the HTML 4.01 Strict DTD.*/
+	public final static String HTML_4_01_STRICT_SYSTEM_ID="http://www.w3.org/TR/html4/strict.dtd";
 
-	/**The public ID for XHTML 1.1.*/
-	public final static String XHTML1_1_PUBLIC_ID="-//W3C//DTD XHTML 1.1//EN";
+	/**The public ID for the HTML 4.01 Traditional DTD.*/
+	public final static String HTML_4_01_TRANSITIONAL_PUBLIC_ID="-//W3C//DTD HTML 4.01 Transitional//EN";
+	/**The system ID for the HTML 4.01 Traditional DTD.*/
+	public final static String HTML_4_01_TRANSITIONAL_SYSTEM_ID="http://www.w3.org/TR/html4/loose.dtd";
 
-	/**The base system ID for XHTML 1.1.*/
-	public final static String XHTML1_1_SYSTEM_ID="xhtml1.dtd";
+	/**The public ID for the HTML 4.01 Frameset DTD.*/
+	public final static String HTML_4_01_FRAMESET_PUBLIC_ID="-//W3C//DTD HTML 4.01 Frameset//EN";
+	/**The system ID for the HTML 4.01 Frameset DTD.*/
+	public final static String HTML_4_01_FRAMESET_SYSTEM_ID="http://www.w3.org/TR/html4/frameset.dtd";
+
+	/**The public ID for the XHTML 1.0 Strict DTD.*/
+	public final static String XHTML_1_0_STRICT_PUBLIC_ID="-//W3C//DTD XHTML 1.0 Strict//EN";
+	/**The system ID for the XHTML 1.0 Strict DTD.*/
+	public final static String XHTML_1_0_STRICT_SYSTEM_ID="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd";
+
+	/**The public ID for the XHTML 1.0 Traditional DTD.*/
+	public final static String XHTML_1_0_TRANSITIONAL_PUBLIC_ID="-//W3C//DTD XHTML 1.0 Transitional//EN";
+	/**The system ID for the XHTML 1.0 Traditional DTD.*/
+	public final static String XHTML_1_0_TRANSITIONAL_SYSTEM_ID="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd";
+
+	/**The public ID for the XHTML 1.0 Frameset DTD.*/
+	public final static String XHTML_1_0_FRAMESET_PUBLIC_ID="-//W3C//DTD XHTML 1.0 Frameset//EN";
+	/**The system ID for the XHTML 1.0 Frameset DTD.*/
+	public final static String XHTML_1_0_FRAMESET_SYSTEM_ID="http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd";
+
+	/**The public ID for the XHTML 1.1 DTD.*/
+	public final static String XHTML_1_1_PUBLIC_ID="-//W3C//DTD XHTML 1.1//EN";
+	/**The system ID for the XHTML 1.1 DTD.*/
+	public final static String XHTML_1_1_SYSTEM_ID="http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd";
+
+	/**The public ID for the XHTML+MathML+SVG DTD.*/
+	public final static String XHTML_MATHML_SVG_PUBLIC_ID="-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN";
+	/**The system ID for the XHTML+MathML+SVG DTD.*/
+	public final static String XHTML_MATHML_SVG_SYSTEM_ID="http://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd";
 
 	//The XHTML 1.0 document element names.
 //G***fix; some are missing since these were copied from the OEB 1.0

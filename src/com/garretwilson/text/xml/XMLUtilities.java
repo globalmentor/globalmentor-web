@@ -1,9 +1,8 @@
 package com.garretwilson.text.xml;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.lang.ref.*;
+import java.util.*;
 import com.garretwilson.io.MediaType;
 import com.garretwilson.lang.*;
 import com.garretwilson.text.*;
@@ -12,12 +11,124 @@ import com.garretwilson.util.Debug;
 import org.w3c.dom.*;
 import org.w3c.dom.traversal.*;
 
+import static com.garretwilson.text.xml.mathml.MathMLConstants.*;
+import static com.garretwilson.text.xml.svg.SVGConstants.*;
+import static com.garretwilson.text.xml.xhtml.XHTMLConstants.*;
+
 /**Various XML manipuliating functions. The methods here are meant to be generic
 in that they only access XML through the W3C DOM.
 @author Garret Wilson
 */
 public class XMLUtilities implements XMLConstants, XMLStyleSheetConstants
 {
+
+	/**A lazily-created cache of system IDs keyed to public IDs.*/
+	private static Reference<Map<String, String>> systemIDMapReference=null;
+
+		/**A lazily-created cache of system IDs keyed to public IDs.*/
+		protected static Map<String, String> getSystemIDMap()
+		{
+				//get the cache if we have one
+			Map<String, String> systemIDMap=systemIDMapReference!=null ? systemIDMapReference.get() : null;
+			if(systemIDMap==null)	//if the garbage collector has reclaimed the cache
+			{
+				systemIDMap=new HashMap<String, String>();	//create a new map of system IDs, and fill it with the default mappings
+				systemIDMap.put(HTML_4_01_STRICT_PUBLIC_ID, HTML_4_01_STRICT_SYSTEM_ID);
+				systemIDMap.put(HTML_4_01_TRANSITIONAL_PUBLIC_ID, HTML_4_01_TRANSITIONAL_SYSTEM_ID);
+				systemIDMap.put(HTML_4_01_FRAMESET_PUBLIC_ID, HTML_4_01_FRAMESET_SYSTEM_ID);
+				systemIDMap.put(XHTML_1_0_STRICT_PUBLIC_ID, XHTML_1_0_STRICT_SYSTEM_ID);
+				systemIDMap.put(XHTML_1_0_TRANSITIONAL_PUBLIC_ID, XHTML_1_0_TRANSITIONAL_SYSTEM_ID);
+				systemIDMap.put(XHTML_1_0_FRAMESET_PUBLIC_ID, XHTML_1_0_FRAMESET_SYSTEM_ID);
+				systemIDMap.put(XHTML_1_1_PUBLIC_ID, XHTML_1_1_SYSTEM_ID);
+				systemIDMap.put(XHTML_MATHML_SVG_PUBLIC_ID, XHTML_MATHML_SVG_SYSTEM_ID);
+				systemIDMap.put(MATHML_2_0_PUBLIC_ID, MATHML_2_0_SYSTEM_ID);
+				systemIDMap.put(SVG_1_0_PUBLIC_ID, SVG_1_0_SYSTEM_ID);
+				systemIDMap.put(SVG_1_1_FULL_PUBLIC_ID, SVG_1_1_FULL_SYSTEM_ID);
+				systemIDMap.put(SVG_1_1_BASIC_PUBLIC_ID, SVG_1_1_BASIC_SYSTEM_ID);
+				systemIDMap.put(SVG_1_1_TINY_PUBLIC_ID, SVG_1_1_TINY_SYSTEM_ID);
+				systemIDMapReference=new SoftReference<Map<String, String>>(systemIDMap);	//create a soft reference to the map
+			}
+			return systemIDMap;	//return the map
+		}
+
+		/**Determines the default system ID for the given public ID.
+		@param publicID The public ID for which a doctype system ID should be retrieved.
+		@return The default doctype system ID corresponding to the given public ID,
+			or <code>null</code> if the given public ID is not recognized.
+		*/
+		public static String getDefaultSystemID(final String publicID)
+		{
+			return getSystemIDMap().get(publicID);	//return the system ID corresponding to the given public ID, if we have one
+		}
+
+	/**A lazily-created cache of content types keyed to public IDs.*/
+	private static Reference<Map<String, MediaType>> contentTypeMapReference=null;
+
+		/**A lazily-created cache of content types keyed to public IDs.*/
+		protected static Map<String, MediaType> getContentTypeMap()
+		{
+				//get the cache if we have one
+			Map<String, MediaType> contentTypeMap=contentTypeMapReference!=null ? contentTypeMapReference.get() : null;
+			if(contentTypeMap==null)	//if the garbage collector has reclaimed the cache
+			{
+				contentTypeMap=new HashMap<String, MediaType>();	//create a new map of content types, and fill it with the default mappings
+				contentTypeMap.put(HTML_4_01_STRICT_PUBLIC_ID, HTML_CONTENT_TYPE);
+				contentTypeMap.put(HTML_4_01_TRANSITIONAL_PUBLIC_ID, HTML_CONTENT_TYPE);
+				contentTypeMap.put(HTML_4_01_FRAMESET_PUBLIC_ID, HTML_CONTENT_TYPE);
+				contentTypeMap.put(XHTML_1_0_STRICT_PUBLIC_ID, XHTML_CONTENT_TYPE);
+				contentTypeMap.put(XHTML_1_0_TRANSITIONAL_PUBLIC_ID, XHTML_CONTENT_TYPE);
+				contentTypeMap.put(XHTML_1_0_FRAMESET_PUBLIC_ID, XHTML_CONTENT_TYPE);
+				contentTypeMap.put(XHTML_1_1_PUBLIC_ID, XHTML_CONTENT_TYPE);
+				contentTypeMap.put(XHTML_MATHML_SVG_PUBLIC_ID, XHTML_CONTENT_TYPE);
+				contentTypeMap.put(MATHML_2_0_PUBLIC_ID, MATHML_CONTENT_TYPE);
+				contentTypeMap.put(SVG_1_0_PUBLIC_ID, SVG_CONTENT_TYPE);
+				contentTypeMap.put(SVG_1_1_FULL_PUBLIC_ID, SVG_CONTENT_TYPE);
+				contentTypeMap.put(SVG_1_1_BASIC_PUBLIC_ID, SVG_CONTENT_TYPE);
+				contentTypeMap.put(SVG_1_1_TINY_PUBLIC_ID, SVG_CONTENT_TYPE);
+				contentTypeMapReference=new SoftReference<Map<String, MediaType>>(contentTypeMap);	//create a soft reference to the map
+			}
+			return contentTypeMap;	//return the map
+		}
+
+		/**Determines the content type for the given public ID.
+		@param publicID The public ID for which a content type should be retrieved.
+		@return The content type corresponding to the given public ID,
+			or <code>null</code> if the given public ID is not recognized.
+		*/
+		public static MediaType getContentType(final String publicID)
+		{
+			return getContentTypeMap().get(publicID);	//return the content type corresponding to the given public ID, if we have one
+		}
+
+	/**A lazily-created cache of root element local names keyed to content types.*/
+	private static Reference<Map<MediaType, String>> rootElementLocalNameMapReference=null;
+
+		/**A lazily-created cache of root element local names keyed to content types.*/
+		protected static Map<MediaType, String> getRootElementLocalNameMap()
+		{
+				//get the cache if we have one
+			Map<MediaType, String> rootElementLocalNameMap=rootElementLocalNameMapReference!=null ? rootElementLocalNameMapReference.get() : null;
+			if(rootElementLocalNameMap==null)	//if the garbage collector has reclaimed the cache
+			{
+				rootElementLocalNameMap=new HashMap<MediaType, String>();	//create a new map of root element local names, and fill it with the default mappings
+				rootElementLocalNameMap.put(HTML_CONTENT_TYPE, ELEMENT_HTML);
+				rootElementLocalNameMap.put(XHTML_CONTENT_TYPE, ELEMENT_HTML);
+				rootElementLocalNameMap.put(MATHML_CONTENT_TYPE, ELEMENT_MATHML);
+				rootElementLocalNameMap.put(SVG_CONTENT_TYPE, ELEMENT_SVG);
+				rootElementLocalNameMapReference=new SoftReference<Map<MediaType, String>>(rootElementLocalNameMap);	//create a soft reference to the map
+			}
+			return rootElementLocalNameMap;	//return the map
+		}
+
+		/**Determines the default root element local name for the given content type
+		@param contentType The content type for which a root element should be retrieved.
+		@return The default root element local name corresponding to the given
+			media type, or <code>null</code> if the given content type is not recognized.
+		*/
+		public static String getDefaultRootElementLocalName(final MediaType contentType)
+		{
+			return getRootElementLocalNameMap().get(contentType);	//return the root element corresponding to the given content type, if we have one
+		}
 
 	/**Encodes text for use in XML by converting the five hard-coded XML entity
 		characters into their corresponding entities. The encoded entities are the
