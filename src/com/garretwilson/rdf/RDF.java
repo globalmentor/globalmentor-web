@@ -166,7 +166,7 @@ public class RDF implements RDFConstants
 		return resource;  //return the resource we either found or created
 	}
 
-	/**Retreives a resource from the data model based upon the reference URI of
+	/**Retrieves a resource from the data model based upon the reference URI of
 		the resource. If no such resource exists, one will be created and added to
 		the data model. The given type serialization XML namespace URI and local
 		name will be used to locate a resource factory to create the resource, and
