@@ -1,7 +1,7 @@
 package com.garretwilson.text.xml;
 
 import org.w3c.dom.DOMException;
-import com.garretwilson.text.CharacterEncoding;
+import static com.garretwilson.text.CharacterEncodingConstants.*;
 
 /**XML declaration in an XML document.
 @see XMLNode
@@ -20,7 +20,7 @@ public class XMLDeclaration extends XMLNode
 		public void setVersion(String newVersion) {Version=newVersion;}
 
 	/**The encoding of this document, which defaults to UTF-8.*/
-	private String Encoding=CharacterEncoding.UTF_8;
+	private String Encoding=UTF_8;
 
 		/**@return The encoding.*/
 		public String getEncoding() {return Encoding;}

@@ -4,7 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
-import com.garretwilson.text.CharacterEncoding;
+import static com.garretwilson.text.CharacterEncodingConstants.*;
 import com.garretwilson.text.xml.XMLSerializer;
 import com.garretwilson.util.Debug;
 import com.garretwilson.util.IteratorUtilities;
@@ -306,9 +306,7 @@ public class XMLSchemaProcessor implements XMLSchemaConstants
 				  {
 						try
 						{
-							final ByteArrayOutputStream byteArrayOutputStream=new ByteArrayOutputStream();  //create a new byte array output stream
-							xmlSerializer.serializeContent(childElement, byteArrayOutputStream, CharacterEncoding.UTF_8); //serialize the content of the information element to a byte array using UTF-8
-							final String informationString=byteArrayOutputStream.toString(CharacterEncoding.UTF_8); //convert the byte array input stream to a string
+							final String informationString=xmlSerializer.serializeContent(childElement); //serialize the content of the information element to a string
 //G***del Debug.trace("information: "+informationString); //G***fix
 							if(childLocalName.equals(ELEMENT_APPINFO))  //if this is application information
 							  annotation.addApplicationInformation(informationString);  //add the application information

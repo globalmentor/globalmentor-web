@@ -3,7 +3,6 @@ package com.garretwilson.text.xml;
 import java.io.*;
 import java.util.*;
 import org.w3c.dom.*;
-import com.garretwilson.text.CharacterEncodingConstants;
 import com.garretwilson.lang.CharacterUtilities;
 import com.garretwilson.lang.StringBufferUtilities;
 import com.garretwilson.net.URIConstants;
@@ -11,6 +10,8 @@ import com.garretwilson.net.http.webdav.WebDAVConstants;
 import com.garretwilson.rdf.dicto.DictoConstants;
 import com.garretwilson.rdf.dublincore.DCConstants;
 import com.garretwilson.rdf.version.VersionConstants;
+import com.garretwilson.text.CharacterEncoding;
+import static com.garretwilson.text.CharacterEncodingConstants.*;
 import com.garretwilson.text.xml.oeb.OEBConstants;
 import com.garretwilson.assess.qti.QTIConstants;
 import com.garretwilson.rdf.RDFConstants;
@@ -323,7 +324,10 @@ public class XMLSerializer
 		setFormatted(formatted);	//set whether the output should be formatted
 	}
 
-	/**Serializes the specified document to a string using the UTF-8 encoding.
+	/**A UTF-8 encoding with no byte order mark.*/
+	protected final static CharacterEncoding UTF_8_ENCODING_NO_BOM=new CharacterEncoding(UTF_8, null, NO_BOM);
+
+	/**Serializes the specified document to a string using the UTF-8 encoding with no byte order mark.
 	@param document The XML document to serialize.
 	@return A string containing the serialized XML data.
 	@exception IOException Thrown if an I/O error occurred.
@@ -332,11 +336,11 @@ public class XMLSerializer
 	public String serialize(final Document document) throws UnsupportedEncodingException, IOException
 	{
 		final ByteArrayOutputStream byteArrayOutputStream=new ByteArrayOutputStream();  //create an output stream for receiving the XML data
-		serialize(document, byteArrayOutputStream, CharacterEncodingConstants.UTF_8);  //serialize the package description document to the output stream using UTF-8
-		return byteArrayOutputStream.toString(CharacterEncodingConstants.UTF_8);  //convert the byte array to a string, using the UTF-8 encoding, and return it
+		serialize(document, byteArrayOutputStream, UTF_8_ENCODING_NO_BOM);  //serialize the document to the output stream using UTF-8 with no byte order mark
+		return byteArrayOutputStream.toString(UTF_8_ENCODING_NO_BOM.getEncoding());  //convert the byte array to a string, using the UTF-8 encoding, and return it
 	}
 
-	/**Serializes the specified document fragment to a string using the UTF-8 encoding.
+	/**Serializes the specified document fragment to a string using the UTF-8 encoding with no byte order mark.
 	@param documentFragment The XML document fragment to serialize.
 	@return A string containing the serialized XML data.
 	@exception IOException Thrown if an I/O error occurred.
@@ -345,12 +349,39 @@ public class XMLSerializer
 	public String serialize(final DocumentFragment documentFragment) throws UnsupportedEncodingException, IOException
 	{
 		final ByteArrayOutputStream byteArrayOutputStream=new ByteArrayOutputStream();  //create an output stream for receiving the XML data
-		serialize(documentFragment, byteArrayOutputStream, CharacterEncodingConstants.UTF_8);  //serialize the package description document to the output stream using UTF-8
-		return byteArrayOutputStream.toString(CharacterEncodingConstants.UTF_8);  //convert the byte array to a string, using the UTF-8 encoding, and return it
+		serialize(documentFragment, byteArrayOutputStream, UTF_8_ENCODING_NO_BOM);  //serialize the document fragment to the output stream using UTF-8 with no byte order mark
+		return byteArrayOutputStream.toString(UTF_8_ENCODING_NO_BOM.getEncoding());  //convert the byte array to a string, using the UTF-8 encoding, and return it
 	}
 
-	/**Serializes the specified document to the given output stream using the
-		UTF-8 encoding.
+	/**Serializes the specified element to a string using the UTF-8 encoding with no byte order mark.
+	@param element The XML element to serialize.
+	@return A string containing the serialized XML data.
+	@exception IOException Thrown if an I/O error occurred.
+	@exception UnsupportedEncodingException Thrown if the UTF-8 encoding not recognized.
+	*/
+	public String serialize(final Element element) throws UnsupportedEncodingException, IOException
+	{
+		final ByteArrayOutputStream byteArrayOutputStream=new ByteArrayOutputStream();  //create an output stream for receiving the XML data
+		serialize(element, byteArrayOutputStream, UTF_8_ENCODING_NO_BOM);  //serialize the element to the output stream using UTF-8 with no byte order mark
+		return byteArrayOutputStream.toString(UTF_8_ENCODING_NO_BOM.getEncoding());  //convert the byte array to a string, using the UTF-8 encoding, and return it
+	}
+
+	/**Serializes the content (all child nodes and their descendants) of a specified node
+	 	to a string using the UTF-8 encoding with no byte order mark.
+	@param node The XML node the content of which to serialize&mdash;usually an
+		element or document fragment.
+	@return A string containing the serialized XML data.
+	@exception IOException Thrown if an I/O error occurred.
+	@exception UnsupportedEncodingException Thrown if the UTF-8 encoding not recognized.
+	*/
+	public String serializeContent(final Node node) throws UnsupportedEncodingException, IOException
+	{
+		final ByteArrayOutputStream byteArrayOutputStream=new ByteArrayOutputStream();  //create an output stream for receiving the XML data
+		serializeContent(node, byteArrayOutputStream, UTF_8_ENCODING_NO_BOM);  //serialize the node content to the output stream using UTF-8 with no byte order mark
+		return byteArrayOutputStream.toString(UTF_8_ENCODING_NO_BOM.getEncoding());  //convert the byte array to a string, using the UTF-8 encoding, and return it
+	}
+	
+	/**Serializes the specified document to the given output stream using the UTF-8 encoding with the UTF-8 byte order mark.
 	@param document The XML document to serialize.
 	@param outputStream The stream into which the document should be serialized.
 	@exception IOException Thrown if an I/O error occurred.
@@ -358,22 +389,23 @@ public class XMLSerializer
 	*/
 	public void serialize(final Document document, final OutputStream outputStream) throws UnsupportedEncodingException, IOException
 	{
-		serialize(document, outputStream, CharacterEncodingConstants.UTF_8);	//serialize the document, defaulting to UTF-8
+		serialize(document, outputStream, UTF_8_ENCODING);	//serialize the document, defaulting to UTF-8
 	}
 
-	/**Serializes the specified document to the given output stream using the
-		specified encoding.
+	/**Serializes the specified document to the given output stream using the specified encoding.
+	Any byte order mark specified in the character encoding will be written to the stream.
 	@param document The XML document to serialize.
 	@param outputStream The stream into which the document should be serialized.
-	@param encoding The encoding format to use when serializing.
+	@param encoding The character encoding format to use when serializing.
 	@exception IOException Thrown if an I/O error occurred.
 	@exception UnsupportedEncodingException Thrown if the specified encoding is not recognized.
 	*/
-	public void serialize(final Document document, final OutputStream outputStream, final String encoding) throws IOException, UnsupportedEncodingException
+	public void serialize(final Document document, final OutputStream outputStream, final CharacterEncoding encoding) throws IOException, UnsupportedEncodingException
 	{
 		nestLevel=0;	//show that we haven't started nesting yet
-		final BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(outputStream, encoding));	//create a new writer based on our encoding
-		writeProlog(document, writer, encoding);	//write the prolog
+		outputStream.write(encoding.getByteOrderMark());	//write the byte order mark, which may be an empty array
+		final BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(outputStream, encoding.getEncoding()));	//create a new writer based on our encoding
+		writeProlog(document, writer, encoding.getEncoding());	//write the prolog
 		final DocumentType documentType=document.getDoctype();	//get the document type, if there is one
 		if(documentType!=null)	//if there is a document type
 		{
@@ -388,8 +420,7 @@ public class XMLSerializer
 		writer.flush();	//flush any data we've buffered
 	}
 
-	/**Serializes the specified document fragment to the given output stream
-		using the UTF-8 encoding.
+	/**Serializes the specified document fragment to the given output stream using the UTF-8 encoding with the UTF-8 byte order mark.
 	@param documentFragment The XML document fragment to serialize.
 	@param outputStream The stream into which the document fragment should be serialized.
 	@exception IOException Thrown if an I/O error occurred.
@@ -397,24 +428,23 @@ public class XMLSerializer
 	*/
 	public void serialize(final DocumentFragment documentFragment, final OutputStream outputStream) throws UnsupportedEncodingException, IOException
 	{
-		serialize(documentFragment, outputStream, CharacterEncodingConstants.UTF_8);	//serialize the document, defaulting to UTF-8
+		serialize(documentFragment, outputStream, UTF_8_ENCODING);	//serialize the document, defaulting to UTF-8
 	}
 
-	/**Serializes the specified document fragment to the given output stream
-		using the specified encoding.
+	/**Serializes the specified document fragment to the given output stream using the specified encoding.
+	Any byte order mark specified in the character encoding will be written to the stream.
 	@param documentFragment The XML document fragment to serialize.
 	@param outputStream The stream into which the document fragment should be serialized.
 	@param encoding The encoding format to use when serializing.
 	@exception IOException Thrown if an I/O error occurred.
 	@exception UnsupportedEncodingException Thrown if the specified encoding is not recognized.
 	*/
-	public void serialize(final DocumentFragment documentFragment, final OutputStream outputStream, final String encoding) throws IOException, UnsupportedEncodingException
+	public void serialize(final DocumentFragment documentFragment, final OutputStream outputStream, final CharacterEncoding encoding) throws IOException, UnsupportedEncodingException
 	{
 		serializeContent(documentFragment, outputStream, encoding);	//serialize the content of the document fragment		
 	}
 
-	/**Serializes the specified element and its children to the given output
-		stream using the UTF-8 encoding.
+	/**Serializes the specified element and its children to the given output stream using the UTF-8 encoding with the UTF-8 byte order mark.
 	@param element The XML element to serialize.
 	@param outputStream The stream into which the element should be serialized.
 	@exception IOException Thrown if an I/O error occurred.
@@ -422,41 +452,43 @@ public class XMLSerializer
 	*/
 	public void serialize(final Element element, final OutputStream outputStream) throws IOException, UnsupportedEncodingException
 	{
-		serialize(element, outputStream, CharacterEncodingConstants.UTF_8);  //serialize the element using the UTF-8 encoding
+		serialize(element, outputStream, UTF_8_ENCODING);  //serialize the element using the UTF-8 encoding
 	}
 
-	/**Serializes the specified element and its children to the given output
-		stream using the specified encoding.
+	/**Serializes the specified element and its children to the given output stream using the specified encoding.
+	Any byte order mark specified in the character encoding will be written to the stream.
 	@param element The XML element to serialize.
 	@param outputStream The stream into which the element should be serialized.
 	@param encoding The encoding format to use when serializing.
 	@exception IOException Thrown if an I/O error occurred.
 	@exception UnsupportedEncodingException Thrown if the specified encoding is not recognized.
 	*/
-	public void serialize(final Element element, final OutputStream outputStream, final String encoding) throws IOException, UnsupportedEncodingException
+	public void serialize(final Element element, final OutputStream outputStream, final CharacterEncoding encoding) throws IOException, UnsupportedEncodingException
 	{
 		nestLevel=0;	//show that we haven't started nesting yet
-		final BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(outputStream, encoding));	//create a new writer based on our encoding
+		outputStream.write(encoding.getByteOrderMark());	//write the byte order mark, which may be an empty array
+		final BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(outputStream, encoding.getEncoding()));	//create a new writer based on our encoding
 		write(element, writer);	//write the element and all elements below it
 		writer.newLine();	//add a newline in the default format
 		writer.flush();	//flush any data we've buffered
 	}
 
 	/**Serializes the content (all child nodes and their descendants) of a
-		specified node to the given output stream using the UTF-8 encoding.
+		specified node to the given output stream using the UTF-8 encoding with the UTF-8 byte order mark.
 	@param node The XML node the content of which to serialize&mdash;usually an
 		element or document fragment.
 	@param outputStream The stream into which the element content should be serialized.
 	@exception IOException Thrown if an I/O error occurred.
 	@exception UnsupportedEncodingException Thrown if the UTF-8 encoding is not recognized.
 	*/
-	public void serializeContent(final Node node, final OutputStream outputStream) throws IOException, UnsupportedEncodingException
+	protected void serializeContent(final Node node, final OutputStream outputStream) throws IOException, UnsupportedEncodingException
 	{
-		serializeContent(node, outputStream, CharacterEncodingConstants.UTF_8); //serialize the content using UTF-8 as the encoding
+		serializeContent(node, outputStream, UTF_8_ENCODING); //serialize the content using UTF-8 as the encoding
 	}
 
 	/**Serializes the content (all child nodes and their descendants) of a
 		specified node to the given output stream using the specified encoding.
+	Any byte order mark specified in the character encoding will be written to the stream.
 	@param node The XML node the content of which to serialize&mdash;usually an
 		element or document fragment.
 	@param outputStream The stream into which the element content should be serialized.
@@ -464,10 +496,11 @@ public class XMLSerializer
 	@exception IOException Thrown if an I/O error occurred.
 	@exception UnsupportedEncodingException Thrown if the specified encoding is not recognized.
 	*/
-	public void serializeContent(final Node node, final OutputStream outputStream, final String encoding) throws IOException, UnsupportedEncodingException
+	protected void serializeContent(final Node node, final OutputStream outputStream, final CharacterEncoding encoding) throws IOException, UnsupportedEncodingException
 	{
 		nestLevel=0;	//show that we haven't started nesting yet
-		final BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(outputStream, encoding));	//create a new writer based on our encoding
+		outputStream.write(encoding.getByteOrderMark());	//write the byte order mark, which may be an empty array
+		final BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(outputStream, encoding.getEncoding()));	//create a new writer based on our encoding
 		writeContent(node, writer);	//write all children of the node
 		writer.newLine();	//add a newline in the default format
 		writer.flush();	//flush any data we've buffered

@@ -5,8 +5,7 @@ import java.util.*;
 //G***del if not needed import org.w3c.dom.*;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.css.*;
-import com.garretwilson.text.CharacterEncoding;
-//G***del import com.garretwilson.util.StringUtilities;
+import static com.garretwilson.text.CharacterEncodingConstants.*;
 import com.garretwilson.lang.CharacterUtilities;
 import com.garretwilson.lang.IntegerUtilities;
 import com.garretwilson.lang.StringBufferUtilities;
@@ -101,7 +100,7 @@ public class CSSSerializer
 	*/
 	public void serialize(final CSSStyleSheet stylesheet, final OutputStream outputStream) throws UnsupportedEncodingException, IOException
 	{
-		serialize(stylesheet, outputStream, CharacterEncoding.UTF_8);	//serialize the document, defaulting to UTF-8
+		serialize(stylesheet, outputStream, UTF_8);	//serialize the document, defaulting to UTF-8
 	}
 
 	/**Serializes the specified stylesheet to the given output stream using the

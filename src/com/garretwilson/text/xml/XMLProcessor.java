@@ -11,6 +11,7 @@ import com.garretwilson.io.URIInputStreamable;
 import com.garretwilson.lang.CharSequenceUtilities;
 import com.garretwilson.net.URIUtilities;
 import com.garretwilson.text.CharacterEncoding;
+import static com.garretwilson.text.CharacterEncodingConstants.*;
 import static com.garretwilson.text.xml.XMLUtilities.*;
 import com.garretwilson.text.xml.schema.*;
 
@@ -222,108 +223,107 @@ public class XMLProcessor implements URIInputStreamable
 		autodetectPrereadCharacters.delete(0, autodetectPrereadCharacters.length());	//clear the autodetect preread characters string buffer
 		encodingAttributeValue.delete(0, encodingAttributeValue.length());	//clear the encoding attribute value
 //G***del		String characterEncodingName=null;		//we'll store here the name of the character encoding, when we determine it
-		CharacterEncoding characterEncoding=new CharacterEncoding(CharacterEncoding.UTF_8);	//start out assuming UTF-8 encoding
+		CharacterEncoding characterEncoding=new CharacterEncoding(UTF_8, null, NO_BOM);	//start out assuming UTF-8 encoding with no byte order mark
 		final byte[] byteOrderMarkArray=new byte[4];	//create an array to hold the byte order mark
 		if(inputStream.read(byteOrderMarkArray)==byteOrderMarkArray.length)	//read the byte order mark; if we didn't reach the end of the data
 		{
-			characterEncoding=CharacterEncoding.create(byteOrderMarkArray, XML_DECL_START);	//see if we can recognize the encoding by the beginning characters
-			if(characterEncoding==null)	//if we couldn't find the encoding
+			final CharacterEncoding detectedCharacterEncoding=CharacterEncoding.create(byteOrderMarkArray, XML_DECL_START);	//see if we can recognize the encoding by the beginning characters
+			if(detectedCharacterEncoding!=null)	//if we detected an encoding, we can continue
 			{
-				//construct a default UTF-8 character encoding for searching for the encoding attribute				
-				characterEncoding=new CharacterEncoding(CharacterEncoding.UTF_8);
-			} 
-			final int bytesPerCharacter=characterEncoding.getBytesPerCharacter();	//find out how many bytes are used for each character
-				//convert the preread bytes after the byte order mark into characters
-			if(bytesPerCharacter==1)	//if there is only one byte for each character
-			{
-					//convert the remaining bytes to characters normally, skipping the byte order mark, if any
-				for(int i=characterEncoding.getByteOrderMark().length; i<byteOrderMarkArray.length; autodetectPrereadCharacters.append((char)byteOrderMarkArray[i++]));
-			}
-			else if(bytesPerCharacter==2)	//if there are two bytes for each character, the first two make up the true Byte Order Mark, so ignore them
-			{
-				if(characterEncoding.isLittleEndian())	//if the least-sigificant byte (the one we're interested in) comes first
-					autodetectPrereadCharacters.append((char)byteOrderMarkArray[2]);	//take the first byte (ignoring the Byte Order Mark)
-				else	//if the least-sigificant byte (the one we're interested in) comes second
-					autodetectPrereadCharacters.append((char)byteOrderMarkArray[3]);	//take the second byte (ignoring the Byte Order Mark)
-			}
-			else if(bytesPerCharacter==4)	//if there are four bytes for each character
-			{
-				if(characterEncoding.isLittleEndian())	//if the least-sigificant byte (the one we're interested in) comes first
-					autodetectPrereadCharacters.append((char)byteOrderMarkArray[0]);	//take the first byte
-				else	//if the least-sigificant byte (the one we're interested in) comes last
-					autodetectPrereadCharacters.append((char)byteOrderMarkArray[3]);	//take the last byte
-				//future: here, support unusual UCS-4 octet orders may be added
-			}
-			while(true)	//we now know the encoding family and have a string with the bytes read so far; now, try to find any specified character encoding
-			{
-				int nextCharInt;	//this will accept the next character read
+				characterEncoding=detectedCharacterEncoding;	//use the detected encoding, which will contain the correct byte order mark, if any
+				final int bytesPerCharacter=characterEncoding.getBytesPerCharacter();	//find out how many bytes are used for each character
+					//convert the preread bytes after the byte order mark into characters
 				if(bytesPerCharacter==1)	//if there is only one byte for each character
-					nextCharInt=inputStream.read();	//read the next character normally
-				else if(bytesPerCharacter==2)	//if there are two bytes for each character
 				{
-					if(characterEncoding.isLittleEndian())	//if the least-sigificant byte (the one we're interested in) comes first
-					{
-						nextCharInt=inputStream.read();	//read the next character normally
-						inputStream.skip(1);	//skip the next byte
-					}
-					else	//if the least-sigificant byte (the one we're interested in) comes second
-					{
-						inputStream.skip(1);	//skip the first byte
-						nextCharInt=inputStream.read();	//read the next character normally
-					}
+						//convert the remaining bytes to characters normally, skipping the byte order mark, if any
+					for(int i=characterEncoding.getByteOrderMark().length; i<byteOrderMarkArray.length; autodetectPrereadCharacters.append((char)byteOrderMarkArray[i++]));
+				}
+				else if(bytesPerCharacter==2)	//if there are two bytes for each character, the first two make up the true Byte Order Mark, so ignore them
+				{
+					if(characterEncoding.getEndian()==CharacterEncoding.Endian.BE)	//if the least-sigificant byte (the one we're interested in) comes second
+						autodetectPrereadCharacters.append((char)byteOrderMarkArray[3]);	//take the second byte (ignoring the Byte Order Mark)
+					else	//if the least-sigificant byte (the one we're interested in) comes first
+						autodetectPrereadCharacters.append((char)byteOrderMarkArray[2]);	//take the first byte (ignoring the Byte Order Mark)
 				}
 				else if(bytesPerCharacter==4)	//if there are four bytes for each character
 				{
-					if(characterEncoding.isLittleEndian())	//if the least-sigificant byte (the one we're interested in) comes first
-					{
-						nextCharInt=inputStream.read();	//read the next character normally
-						inputStream.skip(3);	//skip the next three byte
-					}
-					else	//if the least-sigificant byte (the one we're interested in) comes last
-					{
-						inputStream.skip(3);	//skip the first three byte
-						nextCharInt=inputStream.read();	//read the next character normally
-					}
-					//future: here, support unusual UCS-4 octet orders may be added
+					if(characterEncoding.getEndian()==CharacterEncoding.Endian.BE)	//if the least-sigificant byte (the one we're interested in) comes last
+						autodetectPrereadCharacters.append((char)byteOrderMarkArray[3]);	//take the last byte
+					else	//if the least-sigificant byte (the one we're interested in) comes first
+						autodetectPrereadCharacters.append((char)byteOrderMarkArray[0]);	//take the first byte
+					//TODO here, support unusual UCS-4 octet orders may be added
 				}
-				else	//if bytesPerCharacter has an unrecognized value
-					nextCharInt=inputStream.read();	//assume one byte per character and read the next character normally
-				if(nextCharInt==-1)	//if we reach the end of the stream
-					break;	//stop trying to autodetect the encoding and process what we have
-				autodetectPrereadCharacters.append((char)nextCharInt);	//add the character read to the end of our string
-					//if we've read enough characters to see if this stream starts with the XML declaration "<?xml...", and it doesn't
-				if(autodetectPrereadCharacters.length()==XML_DECL_START.length() && !XML_DECL_START.contentEquals(autodetectPrereadCharacters))
-					break;	//stop looking for an encoding attribute, since there isn't even an XML declaration
-				if(CharSequenceUtilities.endsWith(autodetectPrereadCharacters, XML_DECL_END))	//if we've read all of the XML declaration
-					break;	//stop trying to autodetect the encoding and process what we have
-				final int encodingDeclarationStartIndex=autodetectPrereadCharacters.indexOf(ENCODINGDECL_NAME);	//see where the "encoding" declaration starts (assuming we've read it yet)
-				if(encodingDeclarationStartIndex>=0)	//if we've at least found the "encoding" declaration (but perhaps not the actual value)
+				while(true)	//we now know the encoding family and have a string with the bytes read so far; now, try to find any specified character encoding
 				{
-						//G***mabye make this more efficient by createing a CharSequenceUtilities.indexOf() method that takes a character argument
-					int quote1Index=autodetectPrereadCharacters.indexOf(String.valueOf(DOUBLE_QUOTE_CHAR), encodingDeclarationStartIndex+ENCODINGDECL_NAME.length());	//see if we can find a double quote character
-					if(quote1Index<0)	//if we couldn't find a double quote
-						quote1Index=autodetectPrereadCharacters.indexOf(String.valueOf(SINGLE_QUOTE_CHAR), encodingDeclarationStartIndex+ENCODINGDECL_NAME.length());	//see if we can find a single quote character
-					if(quote1Index>=0)	//if we found either a single or double quote character
+					int nextCharInt;	//this will accept the next character read
+					if(bytesPerCharacter==1)	//if there is only one byte for each character
+						nextCharInt=inputStream.read();	//read the next character normally
+					else if(bytesPerCharacter==2)	//if there are two bytes for each character
 					{
-						final char quoteChar=autodetectPrereadCharacters.charAt(quote1Index);	//see which type of quote we found
-						final int quote2Index=autodetectPrereadCharacters.indexOf(String.valueOf(quoteChar), quote1Index+1);	//see if we can find the matching quote
-						if(quote2Index!=-1)	//if we found the second quote character
+						if(characterEncoding.getEndian()==CharacterEncoding.Endian.BE)	//if the least-sigificant byte (the one we're interested in) comes second
 						{
-							encodingAttributeValue.append(autodetectPrereadCharacters.substring(quote1Index+1, quote2Index));	//get the character encoding name specified
-							break;	//stop looking for the encoding
+							inputStream.skip(1);	//skip the first byte
+							nextCharInt=inputStream.read();	//read the next character normally
+						}
+						else	//if the least-sigificant byte (the one we're interested in) comes first
+						{
+							nextCharInt=inputStream.read();	//read the next character normally
+							inputStream.skip(1);	//skip the next byte
+						}
+					}
+					else if(bytesPerCharacter==4)	//if there are four bytes for each character
+					{
+						if(characterEncoding.getEndian()==CharacterEncoding.Endian.BE)	//if the least-sigificant byte (the one we're interested in) comes last
+						{
+							inputStream.skip(3);	//skip the first three byte
+							nextCharInt=inputStream.read();	//read the next character normally
+						}
+						else	//if the least-sigificant byte (the one we're interested in) comes first
+						{
+							nextCharInt=inputStream.read();	//read the next character normally
+							inputStream.skip(3);	//skip the next three byte
+						}
+						//TODO here, support unusual UCS-4 octet orders may be added
+					}
+					else	//if bytesPerCharacter has an unrecognized value
+						nextCharInt=inputStream.read();	//assume one byte per character and read the next character normally
+					if(nextCharInt==-1)	//if we reach the end of the stream
+						break;	//stop trying to autodetect the encoding and process what we have
+					autodetectPrereadCharacters.append((char)nextCharInt);	//add the character read to the end of our string
+						//if we've read enough characters to see if this stream starts with the XML declaration "<?xml...", and if it doesn't
+					if(autodetectPrereadCharacters.length()==XML_DECL_START.length() && !XML_DECL_START.contentEquals(autodetectPrereadCharacters))
+						break;	//stop looking for an encoding attribute, since there isn't even an XML declaration
+					if(CharSequenceUtilities.endsWith(autodetectPrereadCharacters, XML_DECL_END))	//if we've read all of the XML declaration
+						break;	//stop trying to autodetect the encoding and process what we have
+					final int encodingDeclarationStartIndex=autodetectPrereadCharacters.indexOf(ENCODINGDECL_NAME);	//see where the "encoding" declaration starts (assuming we've read it yet)
+					if(encodingDeclarationStartIndex>=0)	//if we've at least found the "encoding" declaration (but perhaps not the actual value)
+					{
+							//G***mabye make this more efficient by createing a CharSequenceUtilities.indexOf() method that takes a character argument
+						int quote1Index=autodetectPrereadCharacters.indexOf(String.valueOf(DOUBLE_QUOTE_CHAR), encodingDeclarationStartIndex+ENCODINGDECL_NAME.length());	//see if we can find a double quote character
+						if(quote1Index<0)	//if we couldn't find a double quote
+							quote1Index=autodetectPrereadCharacters.indexOf(String.valueOf(SINGLE_QUOTE_CHAR), encodingDeclarationStartIndex+ENCODINGDECL_NAME.length());	//see if we can find a single quote character
+						if(quote1Index>=0)	//if we found either a single or double quote character
+						{
+							final char quoteChar=autodetectPrereadCharacters.charAt(quote1Index);	//see which type of quote we found
+							final int quote2Index=autodetectPrereadCharacters.indexOf(String.valueOf(quoteChar), quote1Index+1);	//see if we can find the matching quote
+							if(quote2Index!=-1)	//if we found the second quote character
+							{
+								encodingAttributeValue.append(autodetectPrereadCharacters.substring(quote1Index+1, quote2Index));	//get the character encoding name specified
+								break;	//stop looking for the encoding
+							}
 						}
 					}
 				}
 			}
 		}
+			//override the default encoding by the XML-specified encoding if needed
 		if(encodingAttributeValue.length()>0)	//if the character encoding attribute was given
 		{
-			final CharacterEncoding specifiedCharacterEncoding=new CharacterEncoding(encodingAttributeValue.toString());	//use the character encoding given in the attribute
-				//if a different character encoding was specified than we autodetected,
-				//	or if we didn't detect any character encoding
+			final CharacterEncoding specifiedCharacterEncoding=new CharacterEncoding(encodingAttributeValue.toString(), NO_BOM);	//use the character encoding given in the attribute, noting that we found no byte order mark
+				//if a different character encoding was specified than we autodetected, or if we didn't detect any character encoding
 			if(!specifiedCharacterEncoding.equals(characterEncoding))
 			{
-				characterEncoding=specifiedCharacterEncoding;	//use the encoding specified (if it's the same as the one we autodetected, keep the one we found because it stores our byte order mark G***maybe throw an error if the BOM indicates something else
+				characterEncoding=specifiedCharacterEncoding;	//use the encoding specified (if it's the same as the one we autodetected, keep the one we found because it stores our byte order mark)
 			}
 		}
 		return characterEncoding;	//return the character encoding
@@ -384,7 +384,7 @@ public class XMLProcessor implements URIInputStreamable
 		if(characterEncoding!=null)	//if we found an encoding
 		{
 				//if this was UTF-16, but there was no Byte Order Mark (don't do this check if we're tidying)
-			if(!isTidy() && CharacterEncoding.UTF_16.equalsIgnoreCase(characterEncoding.getFamily()) && characterEncoding.getByteOrderMark().length==0) 
+			if(!isTidy() && UTF_16.equalsIgnoreCase(characterEncoding.getFamily()) && characterEncoding.getByteOrderMark().length==0) 
 				throw new XMLWellFormednessException(XMLWellFormednessException.INVALID_FORMAT, new Object[]{}, 0, 0, sourceObject!=null ? sourceObject.toString() : "");	//show that the UTF-16 had no Byte Order Mark
 /*G***see how this should really be interpreted; probably don't do this in the parser itself
 			if(!encoding.equalsIgnoreCase(CharacterEncoding.UTF8))	//if the encoding was something besides UTF-8, yet there was no "encoding" attribute, this is an error

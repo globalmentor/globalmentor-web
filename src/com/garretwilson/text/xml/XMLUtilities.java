@@ -1312,14 +1312,11 @@ G***should we return data from CDATA sections as well?
 	{
 		try
 		{
-			final ByteArrayOutputStream outputStream=new ByteArrayOutputStream(); //create an output stream of bytes
-		  new XMLSerializer(true).serialize(document, outputStream, CharacterEncoding.UTF_8); //serialize the content to a byte array using UTF-8
-//G***bring back, maybe		  new XMLSerializer().serialize(document, outputStream, CharacterEncoding.UTF_8); //serialize the content to a byte array using UTF-8
-			return new String(outputStream.toByteArray(), CharacterEncoding.UTF_8);  //convert the stream to a string, using UTF-8, and return it
+		  return new XMLSerializer(true).serialize(document); //serialize the document to a string, formatting the XML output
 		}
-		catch(IOException ioException)  //if an IO exception occurs
+		catch(final IOException ioException)  //if an IO exception occurs
 		{
-			return document.toString();  //ask the document to convert itself to a string
+			return ioException.getMessage()+' '+document.toString();  //ask the document to convert itself to a string
 		}
 	}
 
@@ -1332,14 +1329,11 @@ G***should we return data from CDATA sections as well?
 	{
 		try
 		{
-			final ByteArrayOutputStream outputStream=new ByteArrayOutputStream(); //create an output stream of bytes
-		  new XMLSerializer(true).serialize(element, outputStream, CharacterEncoding.UTF_8); //serialize the content to a byte array using UTF-8
-//G***bring back, maybe		  new XMLSerializer().serialize(element, outputStream, CharacterEncoding.UTF_8); //serialize the content to a byte array using UTF-8
-			return new String(outputStream.toByteArray(), CharacterEncoding.UTF_8);  //convert the stream to a string, using UTF-8, and return it
+		  return new XMLSerializer(true).serialize(element); //serialize the element to a string, formatting the XML output
 		}
-		catch(IOException ioException)  //if an IO exception occurs
+		catch(final IOException ioException)  //if an IO exception occurs
 		{
-			return element.toString();  //ask the document to convert itself to a string
+			return ioException.getMessage()+' '+element.toString();  //ask the document to convert itself to a string
 		}
 	}
 
