@@ -1,5 +1,5 @@
 /**Default CSS stylesheet for the XHTML.
-Copyright (c) 1999-2002 Garret Wilson. All Rights Reserved.
+Copyright (c) 1999-2003 Garret Wilson. All Rights Reserved.
 */
 
 a
@@ -43,7 +43,11 @@ center
 }
 
 /*G***<cite>*/
-/*G***<code>*/
+
+code
+{
+	font-family: monospace;
+}
 
 dd
 {
@@ -242,7 +246,10 @@ tr
 	display: table-row;
 }
 
-/*G***<tt>*/
+tt
+{
+	font-family: monospace;
+}
 
 u
 {
@@ -256,4 +263,8 @@ ul
 	margin-left: 2em;
 }
 
-/*G***<var>*/
+var
+{
+	font-family: monospace;
+	font-style: italic;
+}

@@ -488,6 +488,18 @@ G***should we return data from CDATA sections as well?
 		}
 	}
 
+	/**Creates a text node with the specified character and appends it to the specified element.
+	@param element The element to which text should be added. This element must
+		have a valid owner document.
+	@param textCharacter The character to add to the element.
+	@return The new text node that was created.
+	*/
+//G***list exceptions
+	public static Text appendText(final Element element, final char textCharacter)
+	{
+		return appendText(element, String.valueOf(textCharacter));	//convert the character to a string and append it to the element
+	}
+
 	/**Creates a text node with the specified text and appends it to the specified element.
 	@param element The element to which text should be added. This element must
 		have a valid owner document.
