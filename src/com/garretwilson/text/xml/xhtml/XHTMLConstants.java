@@ -56,6 +56,7 @@ public interface XHTMLConstants
 	public final static String ELEMENT_DT="dt";
 	public final static String ELEMENT_EM="em";
 	public final static String ELEMENT_FONT="font";
+	public final static String ELEMENT_FORM="form";
 	public final static String ELEMENT_H1="h1";
 	public final static String ELEMENT_H2="h2";
 	public final static String ELEMENT_H3="h3";
@@ -122,6 +123,12 @@ public interface XHTMLConstants
 	public final static String ELEMENT_APPLET_ATTRIBUTE_HEIGHT="height";
 	public final static String ELEMENT_APPLET_ATTRIBUTE_WIDTH="width";
 
+		//attributes for <form>
+	public final static String ELEMENT_FORM_ATTRIBUTE_ACTION="action";
+	public final static String ELEMENT_FORM_ATTRIBUTE_ENCTYPE="enctype";
+	public final static String ELEMENT_FORM_ATTRIBUTE_METHOD="method";
+		public final static String FORM_METHOD_GET="get";
+		public final static String FORM_METHOD_POST="post";
 
 		//attributes for <img>
 	public final static String ELEMENT_IMG_ATTRIBUTE_ALT="alt";

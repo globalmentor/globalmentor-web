@@ -327,7 +327,7 @@ G***should we return data from CDATA sections as well?
 	@param string The string to be manipulated.
 	@return An XML-friendly string.
 	*/
-	static public String createValidContent(final String string)
+	public static String createValidContent(final String string)
 	{
 		return StringUtilities.replace(string, XML_ENTITY_CHARS, XML_ENTITY_REPLACMENTS); //do the replacments for the special XML symbols and return the results
 	}
