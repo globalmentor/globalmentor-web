@@ -269,15 +269,16 @@ System.out.println("Getting ready to process buffered data.");
 System.out.println("Before processBufferedData: "+tempString);	//G***del
 */
 		final char[] buffer=getBuffer();	//get a reference to our buffer
-		final int bufferEndIndex=getFetchBufferIndex();	//find out the effective end of our new data
-		int sourceIndex, destIndex;	//we'll start looking at the beginning of the new data
-			//start at the beginning of the data and go to the end, copying data backwards to erase characters if needed
-			//ignore the last character for the moment, giving us enough guaranteed room to look for CRLF at the end of the line
-		for(sourceIndex=newDataBeginIndex, destIndex=newDataBeginIndex; sourceIndex<bufferEndIndex-1; ++sourceIndex, ++destIndex)	//G***check, comment
-		{
-			final char c=buffer[sourceIndex];	//see what character this is
-			if(c==CR_CHAR)	//if this is a CR
+		{	//collapse CR+LF into LF
+			final int bufferEndIndex=getFetchBufferIndex();	//find out the effective end of our new data
+			int sourceIndex, destIndex;	//we'll start looking at the beginning of the new data
+				//start at the beginning of the data and go to the end, copying data backwards to erase characters if needed
+				//ignore the last character for the moment, giving us enough guaranteed room to look for CRLF at the end of the line
+			for(sourceIndex=newDataBeginIndex, destIndex=newDataBeginIndex; sourceIndex<bufferEndIndex-1; ++sourceIndex, ++destIndex)	//G***check, comment
 			{
+				final char c=buffer[sourceIndex];	//see what character this is
+				if(c==CR_CHAR)	//if this is a CR
+				{
 					if(buffer[sourceIndex+1]==LF_CHAR)	//if the next character is the second part of a CR/LF pair
 						++sourceIndex;	//don't copy the CR part of the CR/LF (skip it)
 					else	//if this is just a lone CR
@@ -285,36 +286,38 @@ System.out.println("Before processBufferedData: "+tempString);	//G***del
 						buffer[destIndex]=LF_CHAR;	//convert the lone CR to an LF in the destination
 						continue;	//skip ahead since we're already done our copy
 					}
+				}
+				if(sourceIndex!=destIndex)	//if we've collapsed at least one CR/LF to an LF, we'll be copying information
+					buffer[destIndex]=buffer[sourceIndex];	//copy this byte
 			}
-			if(sourceIndex!=destIndex)	//if we've collapsed at least one CR/LF to an LF, we'll be copying information
-				buffer[destIndex]=buffer[sourceIndex];	//copy this byte
-		}
-		if(sourceIndex<bufferEndIndex)	//if we haven't reached the end of the buffer (if the last two characters are "\r\n", we will have already finished all the characters)
-		{
-			final char c=buffer[sourceIndex];	//see what character the last character is
-			if(c==CR_CHAR)	//if this is a CR
+			if(sourceIndex<bufferEndIndex)	//if we haven't reached the end of the buffer (if the last two characters are "\r\n", we will have already finished all the characters)
 			{
-				if(isLastBuffer())	//if we're out of data altogether
-					buffer[sourceIndex]=LF_CHAR;	//change the CR to an LF, because it can't be part of a CR/LF pair since there's no more data
+				final char c=buffer[sourceIndex];	//see what character the last character is
+				if(c==CR_CHAR)	//if this is a CR
+				{
+					if(isLastBuffer())	//if we're out of data altogether
+					{
+						buffer[sourceIndex]=LF_CHAR;	//change the CR to an LF, because it can't be part of a CR/LF pair since there's no more data
+					}
+				}
+				if(sourceIndex!=destIndex)	//if we've collapsed at least one CR/LF to an LF, we'll be copying information
+					buffer[destIndex]=buffer[sourceIndex];	//copy this byte
+				++sourceIndex;	//advance the source index
+				++destIndex;	//advance the destination index
 			}
-			if(sourceIndex!=destIndex)	//if we've collapsed at least one CR/LF to an LF, we'll be copying information
-				buffer[destIndex]=buffer[sourceIndex];	//copy this byte
-			++sourceIndex;	//advance the source index
-			++destIndex;	//advance the destination index
+			final int moveDistance=bufferEndIndex-destIndex;	//find out how far to move the buffer pointers back
+			if(moveDistance!=0)	//if we have something to move
+			{
+				setBufferEndIndex(bufferEndIndex-moveDistance);	//show where the new end of the buffer is
+				setFetchBufferIndex(getFetchBufferIndex()-moveDistance);	//move the fetch buffer index back as well (this may get readjusted even more, below)
+			}
+			final int newBufferEndIndex=getFetchBufferIndex();	//find out the effective end of our new data after collapsing CR+LF
+			if(newBufferEndIndex>newDataBeginIndex && buffer[newBufferEndIndex-1]==CR_CHAR)	//if the buffer ends with CR, but there may be more data in another buffer
+			{
+				setBufferEndIndex(newBufferEndIndex-1);	//leave processing of the CR until the next buffer
+			}			
 		}
-		final int moveDistance=bufferEndIndex-destIndex;	//find out how far to move the buffer pointers back
-		setBufferEndIndex(bufferEndIndex-moveDistance);	//show where the new end of the buffer is
-		setFetchBufferIndex(getFetchBufferIndex()-moveDistance);	//move the fetch buffer index back as well (this may get readjusted even more, below)
-			//G***wouldn't this entire section be better replaced with a simple if(destIndex<getFetchBufferIndex())?
-		if(buffer[destIndex-1]==CR_CHAR)	//if there's a CR at the end of the buffer, this means that we were not out of data but unsure of whether this was a CR/LF
-		{
-			setFetchBufferIndex(destIndex-1);	//show that we should fetch another buffer before processing the CR
-/*G***del when works
-				//G***shouldn't this be if(destIndex<getFetchBufferIndex())?
-			if(destIndex>getFetchBufferIndex())	//if currently the fetch buffer is past that CR that we're not sure about
-				setFetchBufferIndex(destIndex);	//show that we should fetch another buffer before processing the CR
-*/
-		}
+		final int bufferEndIndex=getFetchBufferIndex();	//find out the effective end of our new data after dealing with CR+LF
 			//make sure each character is a valid XML character
 		for(int charIndex=newDataBeginIndex; charIndex<bufferEndIndex; ++charIndex)	//look at each character in the buffer
 		{

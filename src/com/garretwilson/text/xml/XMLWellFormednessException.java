@@ -162,6 +162,7 @@ G***fix	Arguments: name of beginning tag, name of ending tag.
 	{
 		//format a message for an unexpected end of file
 		super(ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+ERROR_NAME_RESOURCE_ID)+": "+MessageFormat.format(ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+EOF), new Object[]{objectType, objectName}), parseEOFException.getLineIndex(), parseEOFException.getCharIndex(), parseEOFException.getSourceName());
+		initCause(parseEOFException);	//show what caused this exception
 	}
 
 	/**Constructor for a well-formedness error from a <code>ParseUnexpectedDataException</code>.
@@ -171,8 +172,8 @@ G***fix	Arguments: name of beginning tag, name of ending tag.
 	{
 		//format a message for unexpected data
 		super(ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+ERROR_NAME_RESOURCE_ID)+": "+MessageFormat.format(ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+UNEXPECTED_DATA), new Object[]{parseUnexpectedDataException.getExpectedMessage(), parseUnexpectedDataException.getFoundMessage()}), parseUnexpectedDataException.getLineIndex(), parseUnexpectedDataException.getCharIndex(), parseUnexpectedDataException.getSourceName());
+		initCause(parseUnexpectedDataException);	//show what caused this exception
 	}
-
 
 }
 

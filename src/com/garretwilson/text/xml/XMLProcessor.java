@@ -212,8 +212,8 @@ public class XMLProcessor extends XMLUtilities implements URIInputStreamable
 		attribute string.
 	@param autodetectPrereadCharacters Receives a copy of any characters preread during
 		autodetection of character encoding.
-	@return The character encoding specified in the "encoding" attribute,
-		or <code>null</code> if there was no encoding attribute specified.
+	@return The character encoding specified in a byte order mark or the "encoding" attribute,
+		or UTF-8 if there was no encoding attribute specified.
 	@exception IOException Thrown if an I/O error occurred.
 	*/
 	public static CharacterEncoding getXMLEncoding(final InputStream inputStream, final StringBuffer encodingAttributeValue, final StringBuffer autodetectPrereadCharacters) throws IOException
@@ -221,7 +221,7 @@ public class XMLProcessor extends XMLUtilities implements URIInputStreamable
 		autodetectPrereadCharacters.delete(0, autodetectPrereadCharacters.length());	//clear the autodetect preread characters string buffer
 		encodingAttributeValue.delete(0, encodingAttributeValue.length());	//clear the encoding attribute value
 //G***del		String characterEncodingName=null;		//we'll store here the name of the character encoding, when we determine it
-		CharacterEncoding characterEncoding=null;	//start out assuming that we can't find a character encoding
+		CharacterEncoding characterEncoding=new CharacterEncoding(CharacterEncoding.UTF_8);	//start out assuming UTF-8 encoding
 		final byte[] byteOrderMarkArray=new byte[4];	//create an array to hold the byte order mark
 		if(inputStream.read(byteOrderMarkArray)==byteOrderMarkArray.length)	//read the byte order mark; if we didn't reach the end of the data
 		{
@@ -229,7 +229,7 @@ public class XMLProcessor extends XMLUtilities implements URIInputStreamable
 			if(characterEncoding==null)	//if we couldn't find the encoding
 			{
 				//construct a default UTF-8 character encoding for searching for the encoding attribute				
-				characterEncoding=characterEncoding=new CharacterEncoding(CharacterEncoding.UTF_8);
+				characterEncoding=new CharacterEncoding(CharacterEncoding.UTF_8);
 			} 
 			final int bytesPerCharacter=characterEncoding.getBytesPerCharacter();	//find out how many bytes are used for each character
 				//convert the preread bytes after the byte order mark into characters
@@ -325,13 +325,7 @@ public class XMLProcessor extends XMLUtilities implements URIInputStreamable
 				characterEncoding=specifiedCharacterEncoding;	//use the encoding specified (if it's the same as the one we autodetected, keep the one we found because it stores our byte order mark G***maybe throw an error if the BOM indicates something else
 			}
 		}
-/*G***del
-		else	//if no character encoding was given
-		{
-//G***fix			characterEncoding=characterEncoding;	//use the default encoding
-		}
-*/
-		return characterEncoding;	//return the character encoding, or null if we didn't find an encoding
+		return characterEncoding;	//return the character encoding
 	}
 
 //G***fix	public reportError(final XMLException xmlException);
@@ -396,9 +390,9 @@ public class XMLProcessor extends XMLUtilities implements URIInputStreamable
 				throw new XMLWellFormednessException(XMLWellFormednessException.INVALID_ENCODING, new Object[]{encoding}, 0, 0, sourceObject!=null ? sourceObject.toString() : "");	//show that something besides UTF-8 was used with no "encoding" attribute
 */
 		}
+		/*TODO; right now there is never "no decoding found"; the code below probably wanted to say, "if we're defaulting to UTF-8 but we didn't start with XML_DECL_START, use ISO-8859-1," but it's not clear how that would help anything 
 		else	//if there was no encoding found
 		{
-/*TODO; right now there is never "no decoding found"; the code below probably wanted to say, "if we're defaulting to UTF-8 but we didn't start with XML_DECL_START, use ISO-8859-1," but it's not clear how that would help anything 
 //TODO this code doesn't seem quite right---if we're not tidying and the stream doesn't start with with <?xml..., we probably shouldn't assume UTF-8---this is an error
 //G***even worse, we're checking the characters sent to us---won't that always be the XML declarations? and why 
 					//if we couldn't find an encoding, if we should tidy this document and the document started with "<?xml..."
@@ -406,8 +400,8 @@ public class XMLProcessor extends XMLUtilities implements URIInputStreamable
 					characterEncoding=new CharacterEncoding(CharacterEncoding.ISO_8859_1, false);	//construct a default ISO-LATIN-1 character encoding for tidied documents TODO maybe use the default encoding
 				else  //if we couldn't find the encoding, but we're either not tidying or there was a "<?xml..." (which means we have to assume UTF-8)
 					characterEncoding=new CharacterEncoding(CharacterEncoding.UTF_8, false);	//construct a default UTF-8 character encoding, since we don't recognize the Byte Order Mark (the big-endian/little-endian byte order flag is meaningless here)
-*/			
 		}
+*/			
 		final InputStreamReader xmlInputStreamReader=new InputStreamReader(xmlInputStream, characterEncoding.toString());	//create a new input stream reader with the correct encoding
 //G***catch any unsupported encoding exception here and throw our own
 		final XMLReader xmlReader=new XMLReader(xmlInputStreamReader, autodetectPrereadCharacters, sourceObject);	//create a new XML reader with our correctly encoded reader and the characters we've preread so far in autodetecting the encoding
@@ -1994,7 +1988,7 @@ Debug.trace("XMLParse parseMarkup() XML_DECL.");	//G***del
 	//G***del System.out.println("Getting ready to read string until expected character.");	//G***del
 				final String tagName=reader.readStringUntilChar(WHITESPACE_CHARS+">");	//read the name of the tag, which will end with whitespace or the end-of-tag marker G*** use a constant here
 
-//G***del Debug.trace("ready to check name: ", tagName);  //G***del
+//G***del Debug.trace("ready to check name:", tagName);  //G***del
 
 				if(!isName(tagName) && !isTidy())	//if this isn't a valid name, and we're not tidying
 					throw new XMLWellFormednessException(XMLWellFormednessException.INVALID_NAME, new Object[]{tagName}, reader.getLineIndex(), reader.getCharIndex(), reader.getName());	//show that this isn't a valid XML name
@@ -2052,7 +2046,7 @@ Debug.trace("XMLParse parseMarkup() XML_DECL.");	//G***del
 		catch(final ParseEOFException parseEOFException)	//if we run out of data
 		{
 				//show that we couldn't find the end of the tag
-			throw (XMLWellFormednessException)new XMLWellFormednessException(parseEOFException, ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+TAG_RESOURCE), tag.getNodeName()!=null ? tag.getNodeName() : ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+UNKNOWN_RESOURCE)).initCause(parseEOFException);	
+			throw new XMLWellFormednessException(parseEOFException, ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+TAG_RESOURCE), tag.getNodeName()!=null ? tag.getNodeName() : ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+UNKNOWN_RESOURCE));	
 		}
 	}
 
