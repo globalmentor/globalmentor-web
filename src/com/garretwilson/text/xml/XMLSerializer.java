@@ -12,7 +12,6 @@ import com.garretwilson.rdf.dicto.DictoConstants;
 import com.garretwilson.rdf.dublincore.DCConstants;
 import com.garretwilson.rdf.version.VersionConstants;
 import com.garretwilson.text.xml.oeb.OEBConstants;
-import com.garretwilson.text.xml.oeb.OEB2Constants;
 import com.garretwilson.assess.qti.QTIConstants;
 import com.garretwilson.rdf.RDFConstants;
 import com.garretwilson.rdf.maqro.MAQROConstants;
@@ -21,6 +20,7 @@ import com.garretwilson.text.xml.schema.XMLSchemaConstants;
 import com.garretwilson.text.xml.xhtml.XHTMLConstants;
 import com.garretwilson.text.xml.xlink.XLinkConstants;
 //G***fix import com.garretwilson.text.xml.soap.SOAPConstants;
+import com.garretwilson.rdf.xeb.XEBConstants;
 import com.garretwilson.rdf.xpackage.FileOntologyConstants;
 import com.garretwilson.rdf.xpackage.MIMEOntologyConstants;
 import com.garretwilson.rdf.xpackage.XPackageConstants;
@@ -203,7 +203,6 @@ public class XMLSerializer
 		map.put(DCConstants.DCMI11_ELEMENTS_NAMESPACE_URI.toString(), DCConstants.DCMI_ELEMENTS_NAMESPACE_PREFIX); //Dublin Core
 		map.put(MAQROConstants.MAQRO_NAMESPACE_URI.toString(), MAQROConstants.MAQRO_NAMESPACE_PREFIX); //MAQRO
 		map.put(OEBConstants.OEB1_DOCUMENT_NAMESPACE_URI.toString(), OEBConstants.OEB1_DOCUMENT_NAMESPACE_PREFIX); //OEB 1
-		map.put(OEB2Constants.OEB2_PACKAGE_NAMESPACE_URI.toString(), OEB2Constants.OEB2_PACKAGE_NAMESPACE_PREFIX); //OEB 2
 		map.put(QTIConstants.QTI_1_1_NAMESPACE_URI.toString(), QTIConstants.QTI_NAMESPACE_PREFIX); //QTI
 		map.put(RDFConstants.RDF_NAMESPACE_URI.toString(), RDFConstants.RDF_NAMESPACE_PREFIX); //RDF
 		map.put(RDFSConstants.RDFS_NAMESPACE_URI.toString(), RDFSConstants.RDFS_NAMESPACE_PREFIX); //RDFS
@@ -215,6 +214,7 @@ public class XMLSerializer
 		map.put(XLinkConstants.XLINK_NAMESPACE_URI.toString(), XLinkConstants.XLINK_NAMESPACE_PREFIX); //XLink
 		map.put(XMLConstants.XML_NAMESPACE_URI.toString(), XMLConstants.XML_NAMESPACE_PREFIX); //XML
 		map.put(XMLConstants.XML_NAMESPACE_URI.toString(), XMLConstants.XML_NAMESPACE_PREFIX); //XML namespaces
+		map.put(XEBConstants.XEB_NAMESPACE_URI.toString(), XEBConstants.XEB_NAMESPACE_PREFIX); //XEbook
 		map.put(XPackageConstants.XPACKAGE_NAMESPACE_URI.toString(), XPackageConstants.XPACKAGE_NAMESPACE_PREFIX); //XPackage
 		map.put(XPackageConstants.XML_ONTOLOGY_NAMESPACE_URI.toString(), XPackageConstants.XML_ONTOLOGY_NAMESPACE_PREFIX); //XPackage XML ontology
 		map.put(FileOntologyConstants.FILE_ONTOLOGY_NAMESPACE_URI.toString(), FileOntologyConstants.FILE_ONTOLOGY_NAMESPACE_PREFIX); //XPackage file ontology
