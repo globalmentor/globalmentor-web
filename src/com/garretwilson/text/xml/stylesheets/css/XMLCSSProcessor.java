@@ -6,17 +6,14 @@ import java.io.*;
 import java.util.Vector;
 import java.util.Map;
 import java.util.HashMap;
-import java.net.MalformedURLException;
-import java.net.URL;
 import org.w3c.dom.DOMException;
 */
-import java.net.URL;
-import com.garretwilson.io.InputStreamLocator;
+import java.net.URI;
 import com.garretwilson.io.ParseReader;
 import com.garretwilson.io.ParseEOFException;	//G***go through and catch all these and throw CSS exceptions
 import com.garretwilson.io.ParseUnexpectedDataException;
+import com.garretwilson.io.URIInputStreamable;
 //G***del import com.garretwilson.lang.StringManipulator;
-import com.garretwilson.net.URLUtilities;
 import com.garretwilson.text.xml.*;
 import com.garretwilson.text.xml.stylesheets.XMLStyleSheetConstants;
 import com.garretwilson.util.Debug;
@@ -29,43 +26,43 @@ import org.w3c.dom.traversal.*;
 @author Garret Wilson
 @see com.garretwilson.text.xml.XMLProcessor
 */
-public class XMLCSSProcessor implements XMLStyleSheetConstants, XMLCSSConstants, InputStreamLocator
+public class XMLCSSProcessor implements XMLStyleSheetConstants, XMLCSSConstants, URIInputStreamable
 {
 
 	/**The interface to use to locate external files. This can be this class or another
 		class, depending on which constructor is used.
 	@see XMLCSSProcessor#XMLCSSProcessor
 	*/
-	private InputStreamLocator inputStreamLocator=null;
+	private URIInputStreamable uriInputStreamable=null;
 
 		/**@return The interface to use to locate external files. This can be this class
 			or another class, depending on which constructor has been used.
 		@see XMLCSSProcessor#XMLCSSProcessor
 		*/
-		public InputStreamLocator getInputStreamLocator() {return inputStreamLocator;}
+		public URIInputStreamable getURIInputStreamable() {return uriInputStreamable;}
 
 		/**Sets the interface to use to locate external files. This can be this class
 			or another class, depending on which constructor has been used.
-		@param newInputStreamLocator A class implementing the interface that can find files
+		@param newURIInputStreamable A class implementing the interface that can find files
 			and return an <code>InputStream</code> to them.
 		@see XMLCSSProcessor#XMLCSSProcessor
 		*/
-		protected void setInputStreamLocator(final InputStreamLocator newInputStreamLocator) {inputStreamLocator=newInputStreamLocator;}
+		protected void setURIInputStreamable(final URIInputStreamable newURIInputStreamable) {uriInputStreamable=newURIInputStreamable;}
 
 	/**Default constructor. Sets the input stream locator to this class so that we can find
 		our own files.*/
 	public XMLCSSProcessor()	//G***probably make a separate XMLStyleSheetProcessor or something
 	{
-		setInputStreamLocator(this);	//show that we'll locate our own files
+		setURIInputStreamable(this);	//show that we'll locate our own files
 	}
 
 	/**Constructor that sets the interface to use to locate external files.
-	@param newInputStreamLocator A class implementing the interface that can find files and
+	@param newURIInputStreamable A class implementing the interface that can find files and
 		return an <code>InputStream</code> to them.
 	*/
-	public XMLCSSProcessor(final InputStreamLocator newInputStreamLocator)
+	public XMLCSSProcessor(final URIInputStreamable newURIInputStreamable)
 	{
-		setInputStreamLocator(newInputStreamLocator);	//show which file locator we'll use
+		setURIInputStreamable(newURIInputStreamable);	//show which file locator we'll use
 	}
 
 	/**Constroctor that uses an existing <code>XMLProcessor</code> to find out
@@ -74,7 +71,7 @@ public class XMLCSSProcessor implements XMLStyleSheetConstants, XMLCSSConstants,
 	*/
 	public XMLCSSProcessor(final XMLProcessor xmlProcessor)
 	{
-		this(xmlProcessor.getInputStreamLocator());	//use the XML processor's input stream locator for locating files
+		this(xmlProcessor.getURIInputStreamable());	//use the XML processor's input stream locator for locating files
 	}
 
 	/**Skips all CSS whitespace characters, and returns the number of characters skipped.
@@ -131,16 +128,16 @@ public class XMLCSSProcessor implements XMLStyleSheetConstants, XMLCSSConstants,
 	}
 */
 
-	/**Returns an input stream from given URL. This function is used when we're
-		acting as our own <code>InputStreamLocator</code>.
-	@param url A complete URL to a file.
-	@return An input stream to the contents of the file represented by the given URL.
+	/**Returns an input stream from given URI. This function is used when we're
+		acting as our own <code>URIInputStreamable</code>.
+	@param uri A complete URI to a file.
+	@return An input stream to the contents of the file represented by the given URI.
 	@exception IOException Thrown if an I/O error occurred.
 	@see #getFileLocator
 	*/
-	public InputStream getInputStream(final URL url) throws IOException
+	public InputStream getInputStream(final URI uri) throws IOException
 	{
-		return url.openConnection().getInputStream();	//since we don't know any better (they didn't specify their own file locator), try to open a connection to the URL directly and return an input stream to that connection
+		return uri.toURL().openConnection().getInputStream();	//since we don't know any better (they didn't specify their own file locator), try to open a connection to the URI (converted to a URL) directly and return an input stream to that connection
 	}
 
 	/**Parses an input stream that supposedly begins with a CSS value. The entire
@@ -560,7 +557,6 @@ Debug.trace("parsed internal stylesheets"); //G***del
 	@param styleSheet The stylesheet already constructed, ready for information.
 	@param reader The source of the stylesheet information.
 	@param sourceObject The source of the data (e.g. a String, File, or URL).
-	@param contextURL The source of the
 	@except IOException Thrown when an i/o error occurs.
 	@except ParseUnexpectedDataException Thrown when an unexpected character is found.
 	@except ParseEOFException Thrown when the end of the input stream is reached unexpectedly.

@@ -2,16 +2,16 @@ package com.garretwilson.text.xml;
 
 import java.io.*;
 import java.util.*;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
+//G***del import java.net.URL;
 //G***del if we don't need import java.text.MessageFormat;
 import org.w3c.dom.DOMException;
 import com.garretwilson.io.FileUtilities;
-import com.garretwilson.io.ParseReader;
 import com.garretwilson.io.ParseEOFException;	//G***go through and catch all these and throw XML exceptions
 import com.garretwilson.io.ParseUnexpectedDataException;
-import com.garretwilson.io.InputStreamLocator;
-import com.garretwilson.net.URLUtilities;
+import com.garretwilson.io.URIInputStreamable;
+import com.garretwilson.net.URIUtilities;
 import com.garretwilson.text.CharacterEncoding;
 import com.garretwilson.text.xml.schema.*;
 //G***del import com.garretwilson.util.StringManipulator;
@@ -52,7 +52,7 @@ G***make tidy fix things like <li>All rights reserved.</p></li>; right now it tr
 @author Garret Wilson
 //G***del if we don't need @see XMLStatusReportable
 */
-public class XMLProcessor extends XMLUtilities implements XMLConstants, InputStreamLocator//G***del if we don't need, XMLStatusReportable
+public class XMLProcessor extends XMLUtilities implements XMLConstants, URIInputStreamable
 {
 
 //G***del package com.garretwilson.text.xml;
@@ -117,13 +117,13 @@ public class XMLProcessor extends XMLUtilities implements XMLConstants, InputStr
 		class, depending on which constructor is used.
 	@see XMLProcessor#XMLProcessor
 	*/
-	private InputStreamLocator inputStreamLocator=null;
+//G***del	private InputStreamLocator inputStreamLocator=null;
 
 		/**@return The interface to use to locate external files. This can be this class
 			or another class, depending on which constructor has been used.
 		@see XMLProcessor#XMLProcessor
 		*/
-		public InputStreamLocator getInputStreamLocator() {return inputStreamLocator;}
+//G***del		public InputStreamLocator getInputStreamLocator() {return inputStreamLocator;}
 
 		/**Sets the interface to use to locate external files. This can be this class
 			or another class, depending on which constructor has been used.
@@ -131,7 +131,27 @@ public class XMLProcessor extends XMLUtilities implements XMLConstants, InputStr
 			and return an <code>InputStream</code> to them.
 		@see XMLProcessor#XMLProcessor
 		*/
-		protected void setInputStreamLocator(final InputStreamLocator newInputStreamLocator) {inputStreamLocator=newInputStreamLocator;}
+//G***del		protected void setInputStreamLocator(final InputStreamLocator newInputStreamLocator) {inputStreamLocator=newInputStreamLocator;}
+
+	/**The interface to use to locate external files. This can be this class or another
+		class, depending on which constructor is used.
+	@see XMLProcessor#XMLProcessor
+	*/
+	private URIInputStreamable uriInputStreamable=null;
+
+		/**@return The interface to use to locate external files. This can be this class
+			or another class, depending on which constructor has been used.
+		@see XMLProcessor#XMLProcessor
+		*/
+		public URIInputStreamable getURIInputStreamable() {return uriInputStreamable;}
+
+		/**Sets the interface to use to locate external files. This can be this class
+			or another class, depending on which constructor has been used.
+		@param newURIInputStreamable A class implementing the interface that can find files
+			and return an <code>InputStream</code> to them.
+		@see XMLProcessor#XMLProcessor
+		*/
+		protected void setURIInputStreamable(final URIInputStreamable newURIInputStreamable) {uriInputStreamable=newURIInputStreamable;}
 
 	/**The object used to process schemas.*/
 	private XMLSchemaProcessor schemaProcessor=null;
@@ -173,16 +193,16 @@ public class XMLProcessor extends XMLUtilities implements XMLConstants, InputStr
 		our own files.*/
 	public XMLProcessor()
 	{
-		setInputStreamLocator(this);	//show that we'll locate our own files
+		setURIInputStreamable(this);	//show that we'll locate our own files
 	}
 
 	/**Constructor that sets the interface to use to locate external files.
-	@param newInputStreamLocator A class implementing the interface that can find files and
+	@param newURIInputSTreamable A class implementing the interface that can find files and
 		return an <code>InputStream</code> to them.
 	*/
-	public XMLProcessor(final InputStreamLocator newInputStreamLocator)
+	public XMLProcessor(final URIInputStreamable newURIInputStreamable)
 	{
-		setInputStreamLocator(newInputStreamLocator);	//show which input stream locator we'll use
+		setURIInputStreamable(newURIInputStreamable);	//show which input stream locator we'll use
 		schemaProcessor=new XMLSchemaProcessor();  //create a new schema processor to use
 	}
 
@@ -353,15 +373,16 @@ public class XMLProcessor extends XMLUtilities implements XMLConstants, InputStr
 	}
 
 	/**Returns an input stream from given URL. This function is used when we're
-		acting as our own <code>InputStreamLocator</code>.
-	@param url A complete URL to a file.
+		acting as our own <code>URIInputStreamabler</code>.
+		This implementation only works with URLs.
+	@param uri A complete URI to a file.
 	@return An input stream to the contents of the file represented by the given URL.
 	@exception IOException Thrown if an I/O error occurred.
-	@see #getInputStreamLocator
+	@see #getURIInputStreamable
 	*/
-	public InputStream getInputStream(final URL url) throws IOException
+	public InputStream getInputStream(final URI uri) throws IOException
 	{
-		return url.openConnection().getInputStream();	//since we don't know any better (they didn't specify their own file locator), try to open a connection to the URL directly and return an input stream to that connection
+		return uri.toURL().openConnection().getInputStream();	//since we don't know any better (they didn't specify their own file locator), try to open a connection to the URL directly and return an input stream to that connection
 	}
 
 	/**Creates a reader to read the specified input stream. Encoding is preread and
@@ -433,65 +454,23 @@ public class XMLProcessor extends XMLUtilities implements XMLConstants, InputStr
 	*/
 	protected XMLReader createReader(final XMLReader reader, final String publicID, final String systemID) throws IOException //G***comment exceptions
 	{
-//G***del Debug.trace("public ID: ", publicID); //G***del
-//G***del Debug.trace("system ID: ", systemID);
-//G***del Debug.trace("looking for resource filename: ", publicID!=null ? FileUtilities.createFilename(publicID): publicID);
-//G***del		final String publicResourceFilename=FileUtilities.createFilename(publicID);  //create a filename from the public ID
-//G***del		URL url=null; //we'll keep track of which URL we use for finding the entity
-		InputStream inputStream=null; //we'll find an input stream to the entity and assign it here
-			//convert the public ID to a valid filaname and see if we can load this
-			//  resource locally rather than from the literal file position; if no
-			//  public ID was given, set the resource URL to null
-		URL url=publicID!=null ? getClass().getResource(FileUtilities.createFilename(publicID)) : null;
-//G***del Debug.trace("couldn't find the public ID: ", publicID); //G***del
-		if(url!=null) //if we found a URL to our own version of the entity
+		try
 		{
-			//G***there's the possibility that a hard-coded DTD could reference another file that has only a system ID -- would it get loaded?
-			//G***the file locater may have to be changed to recognize that, if the first object was loaded locally, other dependent files should be as well
-			inputStream=url.openConnection().getInputStream();  //open a connection to the URL and get an input stream from that
+				//create a URI for the system ID (there should always be one) in relation to our reader's context, if any
+			final URI uri=systemID!=null ? URIUtilities.createURI(reader.getSourceObject(), systemID) : null;
+				//convert the public ID (if there is one) to a valid filaname and see if we can load this
+				//  resource locally rather than from the literal file location
+			final InputStream localResourceInputStream=publicID!=null ? getClass().getResourceAsStream(FileUtilities.createFilename(publicID)) : null;
+				//if we couldn't find the resource locally, create an input stream to the system ID URI we already created, using our input stream locator
+			final InputStream inputStream=localResourceInputStream!=null ? localResourceInputStream : getURIInputStreamable().getInputStream(uri);
+			return createReader(inputStream, uri);	//create a reader from the input stream, specifying the URI from whence it came (at least where it would have came had we not found it locally)
+			//G***when will all these readers/connections/streams get closed?
+				//G***check for FileNotFoundException and throw something appropriate for our XML processor
 		}
-		if(inputStream==null) //if we weren't able to load the entity directly, we'll use its literal specified location -- the system ID
+		catch(URISyntaxException uriSyntaxException)
 		{
-			//create a URL from the original URL of the reader and the filename, in
-			//  case the filename is a relative filename
-			url=URLUtilities.createURL(reader.getSourceObject(), systemID);
-			inputStream=getInputStreamLocator().getInputStream(url);  //get an input stream from the wherever the real file can be found
+			throw new IOException(uriSyntaxException.toString());	//G***fix with a better XML-related error
 		}
-/*G***del when works
-		if(publicID!=null)  //if a public ID was given, see if we know about this particular one
-		{
-		  //convert the public ID to a valid filaname and see if we can load this
-			//  resource locally rather than from the literal file position; if not
-			//  the input stream will be set to null
-			inputStream=getClass().getResourceAsStream(FileUtilities.createFilename(publicID));
-		}
-		if(inputStream==null) //if we weren't able to load the entity directly, we'll use its literal specified location -- the system ID
-		{
-			//create a URL from the original URL of the reader and the filename, in
-			//  case the filename is a relative filename
-			final URL url=URLUtilities.createURL(reader.getSourceObject(), systemID);
-			inputStream=
-			return createReader(getInputStreamLocator().getInputStream(url), url);	//connect to the URL and create a reader from the input stream
-
-
-		}
-		  //convert the public ID to a valid filaname and see if we can load this
-			//  resource locally rather than from the literal file position; if no
-			//  public ID was given, set the resource URL to null
-		final URL resourceURL=publicID!=null ? getClass().getResource(FileUtilities.createFilename(publicID)) : null;
-Debug.trace("found resource URL: ", resourceURL);
-//G***check for an empty filename here, which would incorrectly load the same file
-		  //if we were able to load the resource, use the URL to that resource;
-			//  otherwise, create a URL from the original URL of the reader and the
-			//  filename, in case the filename is a relative filename
-		final URL url=resourceURL!=null ? resourceURL : URLUtilities.createURL(reader.getSourceObject(), systemID);
-Debug.trace("settled on URL: ", url);
-		return createReader(getInputStreamLocator().getInputStream(url), url);	//connect to the URL and create a reader from the input stream
-*/
-//G***del Debug.trace("settled on URL: ", url);
-		return createReader(inputStream, url);	//create a reader from the input stream, specifying the URL from whence it came
-		//G***when will all these readers/connections/streams get closed?
-			//G***check for FileNotFoundException and throw something appropriate for our XML processor
 	}
 
 	/**Creates a reader to read from the specified entity, regardless of whether
