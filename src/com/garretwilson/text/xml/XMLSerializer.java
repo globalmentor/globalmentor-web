@@ -23,7 +23,6 @@ import com.garretwilson.text.xml.xlink.XLinkConstants;
 import com.garretwilson.rdf.xpackage.FileOntologyConstants;
 import com.garretwilson.rdf.xpackage.MIMEOntologyConstants;
 import com.garretwilson.rdf.xpackage.XPackageConstants;
-import com.garretwilson.util.NameValuePair;
 import com.garretwilson.util.PropertyUtilities;
 
 //G***del all the XMLUndefinedEntityReferenceException throws when we don't need them anymore, in favor of XMLWellFormednessException
@@ -319,19 +318,7 @@ public class XMLSerializer implements XMLConstants
 		setFormatted(formatted);	//set whether the output should be formatted
 	}
 
-	/**Serializes the specified document to the given output stream using the
-		UTF-8 encoding.
-	@param document The XML document to serialize.
-	@param outputStream The stream into which the document should be serialized.
-	@exception IOException Thrown if an I/O error occurred.
-	@exception UnsupportedEncodingException Thrown if the UTF-8 encoding not recognized.
-	*/
-	public void serialize(final Document document, final OutputStream outputStream) throws UnsupportedEncodingException, IOException
-	{
-		serialize(document, outputStream, CharacterEncodingConstants.UTF_8);	//serialize the document, defaulting to UTF-8
-	}
-
-	/**Serializes the specified document a string using the UTF-8 encoding.
+	/**Serializes the specified document to a string using the UTF-8 encoding.
 	@param document The XML document to serialize.
 	@return A string containing the serialized XML data.
 	@exception IOException Thrown if an I/O error occurred.
@@ -344,87 +331,29 @@ public class XMLSerializer implements XMLConstants
 		return byteArrayOutputStream.toString(CharacterEncodingConstants.UTF_8);  //convert the byte array to a string, using the UTF-8 encoding, and return it
 	}
 
-	/**Initializes the internal entity lookup with the entities defined in the
-		specified map. The given entities will only be placed in the lookup table
-		if the "useEntities" option is turned on, and then only entities which
-		represent one-character entities will be used.
-		If "useEntities" is turned on, the five entities guaranteed to be available
-		in XML (<code>&lt;&amp;amp;&gt;</code>, <code>&lt;&amp;lt;&gt;</code>,
-		<code>&lt;&amp;gt;&gt;</code>, <code>&lt;&amp;apos;&gt;</code>,
-		<code>&lt;&amp;quot;&gt;</code>) will	be included in the internal
-		lookup table if these entities do not exist in the specified entity map,
-		using their default XML values.
-	@param entityMap The entity map which contains the entities to be placed in
-		the internal lookup table, or <code>null</code> if entities are not
-		available, in which case only the default XML entities will be used.
-	@see #isUseEntities
-	@see #setUseEntities
-	 */
-	protected void initializeEntityLookup(final NamedNodeMap entityMap)
+	/**Serializes the specified document fragment to a string using the UTF-8 encoding.
+	@param documentFragment The XML document fragment to serialize.
+	@return A string containing the serialized XML data.
+	@exception IOException Thrown if an I/O error occurred.
+	@exception UnsupportedEncodingException Thrown if the UTF-8 encoding not recognized.
+	*/
+	public String serialize(final DocumentFragment documentFragment) throws UnsupportedEncodingException, IOException
 	{
-//G***del Debug.trace("looking at entity map with entries: ", entityMap.getLength()); //G***del
-		final List entityNameList=new ArrayList();  //create an array to hold the entity names we use
-		final StringBuffer entityCharacterValueStringBuffer=new StringBuffer(); //create a buffer to hold all the character values
-		if(isUseEntities()) //if we were asked to use their entities
-		{
-			if(entityMap!=null) //if we were provided a valid entity map
-			{
-				final int entityCount=entityMap.getLength();  //find out how many entities there are
-				for(int i=0; i<entityCount; ++i)  //look at each of the entities
-				{
-	//G***del Debug.trace("looking at entity: ", i);
-					final Entity entity=(Entity)entityMap.item(i);  //get a reference to this entity
-	//G***del Debug.trace("entity: ", entity);
-					final int entityChildCount=entity.getChildNodes().getLength();  //see how many children this entity has (entities store text content in child text nodes not in the entity value)
-					if(entityChildCount==1) //if there is only one child node
-					{
-						final Node entityChildNode=entity.getFirstChild();  //get a reference to the first child of the entity
-						if(entityChildNode.getNodeType()==Node.TEXT_NODE)  //if this is a text node
-						{
-							final String entityValue=((Text)entityChildNode).getData(); //get the data of the node, which represents the replacement value of the entity
-							if(entityValue.length()==1) //if this entity represents exactly one character
-							{
-								entityNameList.add(entity.getNodeName()); //add the entity's name to the list
-								entityCharacterValueStringBuffer.append(entityValue.charAt(0)); //add the one-character value to the value buffer
-							}
-						}
-					}
-				}
-			}
-				//add the "amp" entity if needed
-			if(StringBufferUtilities.indexOf(entityCharacterValueStringBuffer, ENTITY_AMP_VALUE)<0) //if this entity value isn't defined
-			{
-				entityNameList.add(ENTITY_AMP_NAME);  //add the default entity name
-				entityCharacterValueStringBuffer.append(ENTITY_AMP_VALUE);  //add the default entity value
-			}
-				//add the "lt" entity if needed
-			if(StringBufferUtilities.indexOf(entityCharacterValueStringBuffer, ENTITY_LT_VALUE)<0) //if this entity value isn't defined
-			{
-				entityNameList.add(ENTITY_LT_NAME);  //add the default entity name
-				entityCharacterValueStringBuffer.append(ENTITY_LT_VALUE);  //add the default entity value
-			}
-				//add the "gt" entity if needed
-			if(StringBufferUtilities.indexOf(entityCharacterValueStringBuffer, ENTITY_GT_VALUE)<0) //if this entity value isn't defined
-			{
-				entityNameList.add(ENTITY_GT_NAME);  //add the default entity name
-				entityCharacterValueStringBuffer.append(ENTITY_GT_VALUE);  //add the default entity value
-			}
-				//add the "apos" entity if needed
-			if(StringBufferUtilities.indexOf(entityCharacterValueStringBuffer, ENTITY_APOS_VALUE)<0) //if this entity value isn't defined
-			{
-				entityNameList.add(ENTITY_APOS_NAME);  //add the default entity name
-				entityCharacterValueStringBuffer.append(ENTITY_APOS_VALUE);  //add the default entity value
-			}
-				//add the "quot" entity if needed
-			if(StringBufferUtilities.indexOf(entityCharacterValueStringBuffer, ENTITY_QUOT_VALUE)<0) //if this entity value isn't defined
-			{
-				entityNameList.add(ENTITY_QUOT_NAME);  //add the default entity name
-				entityCharacterValueStringBuffer.append(ENTITY_QUOT_VALUE);  //add the default entity value
-			}
-		}
-//G***del Debug.trace("Found entities to serialize: ", entityCharacterValueStringBuffer.length());  //G***del
-		entityNames=(String[])entityNameList.toArray(new String[entityNameList.size()]);  //convert the entities in the list to an array
-		entityCharacterValues=entityCharacterValueStringBuffer.toString();  //convert the values into one searchable string
+		final ByteArrayOutputStream byteArrayOutputStream=new ByteArrayOutputStream();  //create an output stream for receiving the XML data
+		serialize(documentFragment, byteArrayOutputStream, CharacterEncodingConstants.UTF_8);  //serialize the package description document to the output stream using UTF-8
+		return byteArrayOutputStream.toString(CharacterEncodingConstants.UTF_8);  //convert the byte array to a string, using the UTF-8 encoding, and return it
+	}
+
+	/**Serializes the specified document to the given output stream using the
+		UTF-8 encoding.
+	@param document The XML document to serialize.
+	@param outputStream The stream into which the document should be serialized.
+	@exception IOException Thrown if an I/O error occurred.
+	@exception UnsupportedEncodingException Thrown if the UTF-8 encoding not recognized.
+	*/
+	public void serialize(final Document document, final OutputStream outputStream) throws UnsupportedEncodingException, IOException
+	{
+		serialize(document, outputStream, CharacterEncodingConstants.UTF_8);	//serialize the document, defaulting to UTF-8
 	}
 
 	/**Serializes the specified document to the given output stream using the
@@ -452,6 +381,31 @@ public class XMLSerializer implements XMLConstants
 		write(document.getDocumentElement(), writer);	//write the root element and all elements below it
 		writer.newLine();	//add a newline in the default format
 		writer.flush();	//flush any data we've buffered
+	}
+
+	/**Serializes the specified document fragment to the given output stream
+		using the UTF-8 encoding.
+	@param documentFragment The XML document fragment to serialize.
+	@param outputStream The stream into which the document fragment should be serialized.
+	@exception IOException Thrown if an I/O error occurred.
+	@exception UnsupportedEncodingException Thrown if the UTF-8 encoding not recognized.
+	*/
+	public void serialize(final DocumentFragment documentFragment, final OutputStream outputStream) throws UnsupportedEncodingException, IOException
+	{
+		serialize(documentFragment, outputStream, CharacterEncodingConstants.UTF_8);	//serialize the document, defaulting to UTF-8
+	}
+
+	/**Serializes the specified document fragment to the given output stream
+		using the specified encoding.
+	@param documentFragment The XML document fragment to serialize.
+	@param outputStream The stream into which the document fragment should be serialized.
+	@param encoding The encoding format to use when serializing.
+	@exception IOException Thrown if an I/O error occurred.
+	@exception UnsupportedEncodingException Thrown if the specified encoding is not recognized.
+	*/
+	public void serialize(final DocumentFragment documentFragment, final OutputStream outputStream, final String encoding) throws IOException, UnsupportedEncodingException
+	{
+		serializeContent(documentFragment, outputStream, encoding);	//serialize the content of the document fragment		
 	}
 
 	/**Serializes the specified element and its children to the given output
@@ -525,6 +479,89 @@ public class XMLSerializer implements XMLConstants
 
 	}
 */
+
+	/**Initializes the internal entity lookup with the entities defined in the
+		specified map. The given entities will only be placed in the lookup table
+		if the "useEntities" option is turned on, and then only entities which
+		represent one-character entities will be used.
+		If "useEntities" is turned on, the five entities guaranteed to be available
+		in XML (<code>&lt;&amp;amp;&gt;</code>, <code>&lt;&amp;lt;&gt;</code>,
+		<code>&lt;&amp;gt;&gt;</code>, <code>&lt;&amp;apos;&gt;</code>,
+		<code>&lt;&amp;quot;&gt;</code>) will	be included in the internal
+		lookup table if these entities do not exist in the specified entity map,
+		using their default XML values.
+	@param entityMap The entity map which contains the entities to be placed in
+		the internal lookup table, or <code>null</code> if entities are not
+		available, in which case only the default XML entities will be used.
+	@see #isUseEntities
+	@see #setUseEntities
+	 */
+	protected void initializeEntityLookup(final NamedNodeMap entityMap)
+	{
+	//G***del Debug.trace("looking at entity map with entries: ", entityMap.getLength()); //G***del
+		final List entityNameList=new ArrayList();  //create an array to hold the entity names we use
+		final StringBuffer entityCharacterValueStringBuffer=new StringBuffer(); //create a buffer to hold all the character values
+		if(isUseEntities()) //if we were asked to use their entities
+		{
+			if(entityMap!=null) //if we were provided a valid entity map
+			{
+				final int entityCount=entityMap.getLength();  //find out how many entities there are
+				for(int i=0; i<entityCount; ++i)  //look at each of the entities
+				{
+	//G***del Debug.trace("looking at entity: ", i);
+					final Entity entity=(Entity)entityMap.item(i);  //get a reference to this entity
+	//G***del Debug.trace("entity: ", entity);
+					final int entityChildCount=entity.getChildNodes().getLength();  //see how many children this entity has (entities store text content in child text nodes not in the entity value)
+					if(entityChildCount==1) //if there is only one child node
+					{
+						final Node entityChildNode=entity.getFirstChild();  //get a reference to the first child of the entity
+						if(entityChildNode.getNodeType()==Node.TEXT_NODE)  //if this is a text node
+						{
+							final String entityValue=((Text)entityChildNode).getData(); //get the data of the node, which represents the replacement value of the entity
+							if(entityValue.length()==1) //if this entity represents exactly one character
+							{
+								entityNameList.add(entity.getNodeName()); //add the entity's name to the list
+								entityCharacterValueStringBuffer.append(entityValue.charAt(0)); //add the one-character value to the value buffer
+							}
+						}
+					}
+				}
+			}
+				//add the "amp" entity if needed
+			if(StringBufferUtilities.indexOf(entityCharacterValueStringBuffer, ENTITY_AMP_VALUE)<0) //if this entity value isn't defined
+			{
+				entityNameList.add(ENTITY_AMP_NAME);  //add the default entity name
+				entityCharacterValueStringBuffer.append(ENTITY_AMP_VALUE);  //add the default entity value
+			}
+				//add the "lt" entity if needed
+			if(StringBufferUtilities.indexOf(entityCharacterValueStringBuffer, ENTITY_LT_VALUE)<0) //if this entity value isn't defined
+			{
+				entityNameList.add(ENTITY_LT_NAME);  //add the default entity name
+				entityCharacterValueStringBuffer.append(ENTITY_LT_VALUE);  //add the default entity value
+			}
+				//add the "gt" entity if needed
+			if(StringBufferUtilities.indexOf(entityCharacterValueStringBuffer, ENTITY_GT_VALUE)<0) //if this entity value isn't defined
+			{
+				entityNameList.add(ENTITY_GT_NAME);  //add the default entity name
+				entityCharacterValueStringBuffer.append(ENTITY_GT_VALUE);  //add the default entity value
+			}
+				//add the "apos" entity if needed
+			if(StringBufferUtilities.indexOf(entityCharacterValueStringBuffer, ENTITY_APOS_VALUE)<0) //if this entity value isn't defined
+			{
+				entityNameList.add(ENTITY_APOS_NAME);  //add the default entity name
+				entityCharacterValueStringBuffer.append(ENTITY_APOS_VALUE);  //add the default entity value
+			}
+				//add the "quot" entity if needed
+			if(StringBufferUtilities.indexOf(entityCharacterValueStringBuffer, ENTITY_QUOT_VALUE)<0) //if this entity value isn't defined
+			{
+				entityNameList.add(ENTITY_QUOT_NAME);  //add the default entity name
+				entityCharacterValueStringBuffer.append(ENTITY_QUOT_VALUE);  //add the default entity value
+			}
+		}
+	//G***del Debug.trace("Found entities to serialize: ", entityCharacterValueStringBuffer.length());  //G***del
+		entityNames=(String[])entityNameList.toArray(new String[entityNameList.size()]);  //convert the entities in the list to an array
+		entityCharacterValues=entityCharacterValueStringBuffer.toString();  //convert the values into one searchable string
+	}
 
 	/**Serializes the specified document's to the given writer.
 	@param document The XML document the prolog of which to serialize.

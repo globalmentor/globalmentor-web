@@ -8,6 +8,7 @@ import java.net.URISyntaxException;
 import java.util.*;
 import com.garretwilson.io.*;
 import com.garretwilson.net.URIUtilities;
+import com.garretwilson.text.xml.XMLNamespaceProcessor;
 import com.garretwilson.text.xml.XMLUtilities;
 import com.garretwilson.text.xml.stylesheets.XMLStyleSheetConstants;
 import com.garretwilson.text.xml.stylesheets.XMLStyleSheetDescriptor;
@@ -258,14 +259,10 @@ Debug.trace("Found default stylesheet for namespace: ", namespaceURI);  //G***de
 		String namespaceURI=getElementNamespaceURI(documentElement);  //get the document element namespace URI
 		if(namespaceURI==null)  //if there is no namespace defined
 		{
-			if(mediaType!=null) //if we have a media type
+			final URI mediaTypeNamespaceURI=XMLNamespaceProcessor.getDefaultNamespaceURI(mediaType);	//see if we can find a default namespace for the media type
+			if(mediaTypeNamespaceURI!=null)	//if we found a namespace for the media type
 			{
-Debug.trace("getting default namespace URI, found media type: ", mediaType);  //G***del
-				if(mediaType.equals(MediaType.TEXT_HTML)) //if the media type is text/html
-					namespaceURI=XHTMLConstants.XHTML_NAMESPACE_URI.toString();  //use the XHTML namespace
-				else if(mediaType.equals(MediaType.TEXT_X_OEB1_DOCUMENT)) //if the media type is for an OEB document
-					namespaceURI=OEBConstants.OEB1_DOCUMENT_NAMESPACE_URI.toString();  //use the OEB document namespace
-Debug.trace("namespace URI: ", namespaceURI);  //G***del
+				namespaceURI=mediaTypeNamespaceURI.toString();	//use the namespace for the media type
 			}
 		}
 		if(namespaceURI!=null)  //if we found a namespace

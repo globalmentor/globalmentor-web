@@ -1,40 +1,40 @@
 package com.garretwilson.text.xml;
 
 import java.net.URI;
-
 import com.garretwilson.io.URIInputStreamable;
 import com.garretwilson.lang.JavaConstants;
 import com.garretwilson.model.URIAccessibleModel;
 import org.w3c.dom.*;
 
-/**A model of an XML document.
+/**An abstract model of an XML node.
 <p>Bound properties:</p>
 <dl>
-	<dt><code>XML_PROPERTY</code> (<code>Resource</code>)</dt>
-	<dd>Indicates that the XML document property has been changed.</dd>
+	<dt><code>XML_PROPERTY</code> (<code>Node</code>)</dt>
+	<dd>Indicates that the XML node property has been changed.</dd>
 </dl>
 @author Garret Wilson
 @see #XML_PROPERTY
 */
-public class XMLModel extends URIAccessibleModel
+public abstract class XMLNodeModel extends URIAccessibleModel
 {
-	/**The XML document property.*/
-	public final String XML_PROPERTY=XMLModel.class.getName()+JavaConstants.PACKAGE_SEPARATOR+"xml";
 
-	/**The XML document being modeled, or <code>null</code> if there is no XML document.*/
-	private Document xml=null;
+	/**The XML node property.*/
+	public final String XML_PROPERTY=XMLNodeModel.class.getName()+JavaConstants.PACKAGE_SEPARATOR+"xml";
 
-		/**@return The XML document being modeled, or <code>null</code> if there is no XML document.*/
-		public Document getXML() {return xml;}
+	/**The XML information being modeled, or <code>null</code> if there is no XML information.*/
+	private Node xml=null;
 
-		/**Sets the XML document being modeled.
+		/**@return The XML information being modeled, or <code>null</code> if there is no XML information.*/
+		public Node getXML() {return xml;}
+
+		/**Sets the XML information being modeled.
 		This is a bound property.
-		@param newXML The XML document being modeled, or <code>null</code> if
-			there is no XML document.
+		@param newXML The XML information being modeled, or <code>null</code> if
+			there is no XML information.
 		*/
-		public void setXML(final Document newXML)
+		public void setXML(final Node newXML)
 		{
-			final Document oldXML=xml; //get the old value
+			final Node oldXML=xml; //get the old value
 			if(oldXML!=newXML)  //if the value is really changing
 			{
 				xml=newXML; //update the value
@@ -45,16 +45,16 @@ public class XMLModel extends URIAccessibleModel
 
 
 	/**Default constructor.*/
-	public XMLModel()
+	public XMLNodeModel()
 	{
-		this((Document)null);
+		this((Node)null);
 	}
 	
 	/**XML constructor.
-	@param xml The XML document being modeled, or <code>null</code> if there is
-		no XML document.
+	@param xml The XML informatoin being modeled, or <code>null</code> if there is
+		no XML information.
 	*/
-	public XMLModel(final Document xml)
+	public XMLNodeModel(final Node xml)
 	{
 		this(xml, (URI)null);
 	}
@@ -62,17 +62,17 @@ public class XMLModel extends URIAccessibleModel
 	/**Base URI constructor.
 	@param baseURI The base URI of the model, or <code>null</code> if unknown.
 	*/
-	public XMLModel(final URI baseURI)
+	public XMLNodeModel(final URI baseURI)
 	{
-		this((Document)null, baseURI);
+		this((Node)null, baseURI);
 	}
 	
 	/**XML and base URI constructor.
-	@param xml The XML document being modeled, or <code>null</code> if there is
-		no XML document.
+	@param xml The XML information being modeled, or <code>null</code> if there is
+		no XML information.
 	@param baseURI The base URI of the model, or <code>null</code> if unknown.
 	*/
-	public XMLModel(final Document xml, final URI baseURI)
+	public XMLNodeModel(final Node xml, final URI baseURI)
 	{
 		this(xml, baseURI, null);
 	}
@@ -81,42 +81,42 @@ public class XMLModel extends URIAccessibleModel
 	@param uriInputStreamable The implementation to use for accessing a URI for
 		input, or <code>null</code> if the default implementation should be used.
 	*/
-	public XMLModel(final URIInputStreamable uriInputStreamable)
+	public XMLNodeModel(final URIInputStreamable uriInputStreamable)
 	{
-		this((Document)null, uriInputStreamable);
+		this((Node)null, uriInputStreamable);
 	}
 	
 	/**XML and URI input stream locator constructor.
-	@param xml The XML document being modeled, or <code>null</code> if there is
-		no XML document.
+	@param xml The XML information being modeled, or <code>null</code> if there is
+		no XML information.
 	@param uriInputStreamable The implementation to use for accessing a URI for
 		input, or <code>null</code> if the default implementation should be used.
 	*/
-	public XMLModel(final Document xml, final URIInputStreamable uriInputStreamable)
+	public XMLNodeModel(final Node xml, final URIInputStreamable uriInputStreamable)
 	{
 		this(xml, null, uriInputStreamable);
 	}
 	
 	/**Base URI and input stream locator constructor.
-	@param xml The XML document being modeled, or <code>null</code> if there is
-		no XML document.
+	@param xml The XML information being modeled, or <code>null</code> if there is
+		no XML information.
 	@param baseURI The base URI of the model, or <code>null</code> if unknown.
 	@param uriInputStreamable The implementation to use for accessing a URI for
 		input, or <code>null</code> if the default implementation should be used.
 	*/
-	public XMLModel(final URI baseURI, final URIInputStreamable uriInputStreamable)
+	public XMLNodeModel(final URI baseURI, final URIInputStreamable uriInputStreamable)
 	{
 		this(null, baseURI, uriInputStreamable);
 	}
 	
 	/**Full constructor.
-	@param xml The XML document being modeled, or <code>null</code> if there is
-		no XML document.
+	@param xml The XML information being modeled, or <code>null</code> if there is
+		no XML information.
 	@param baseURI The base URI of the model, or <code>null</code> if unknown.
 	@param uriInputStreamable The implementation to use for accessing a URI for
 		input, or <code>null</code> if the default implementation should be used.
 	*/
-	public XMLModel(final Document xml, final URI baseURI, final URIInputStreamable uriInputStreamable)
+	public XMLNodeModel(final Node xml, final URI baseURI, final URIInputStreamable uriInputStreamable)
 	{
 		super(baseURI, uriInputStreamable);	//construct the parent class
 		this.xml=xml;	//save the XML
