@@ -7,6 +7,7 @@ import com.garretwilson.text.CharacterEncodingConstants;
 import com.garretwilson.lang.CharacterUtilities;
 import com.garretwilson.lang.StringBufferUtilities;
 import com.garretwilson.rdf.dublincore.DCConstants;
+import com.garretwilson.rdf.version.VersionConstants;
 import com.garretwilson.text.xml.oeb.OEBConstants;
 import com.garretwilson.text.xml.oeb.OEB2Constants;
 import com.garretwilson.assess.qti.QTIConstants;
@@ -198,6 +199,7 @@ public class XMLSerializer implements XMLConstants
 		map.put(RDFConstants.RDF_NAMESPACE_URI.toString(), RDFConstants.RDF_NAMESPACE_PREFIX); //RDF
 		map.put(RDFSConstants.RDFS_NAMESPACE_URI.toString(), RDFSConstants.RDFS_NAMESPACE_PREFIX); //RDFS
 //G***add SOAP
+		map.put(VersionConstants.VERSION_NAMESPACE_URI.toString(), VersionConstants.VERSION_NAMESPACE_PREFIX); //version
 		map.put(XMLSchemaConstants.XML_SCHEMA_NAMESPACE_URI.toString(), XMLSchemaConstants.XML_SCHEMA_NAMESPACE_PREFIX); //XML Schema
 		map.put(XHTMLConstants.XHTML_NAMESPACE_URI.toString(), XHTMLConstants.XHTML_NAMESPACE_PREFIX); //XHTML
 		map.put(XLinkConstants.XLINK_NAMESPACE_URI.toString(), XLinkConstants.XLINK_NAMESPACE_PREFIX); //XLink
