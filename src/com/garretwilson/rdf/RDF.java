@@ -1,5 +1,7 @@
 package com.garretwilson.rdf;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.*;
 import com.garretwilson.text.xml.XMLSerializer;
 import com.garretwilson.util.Debug;
@@ -18,11 +20,21 @@ public class RDF implements RDFConstants
 	/**The next ID to use in an anonymous resource reference URI.*/
 	private int nextAnonymousID=1;
 
-		/**@return A new reference URI for an anonymous resource.*/
-		String createAnonymousReferenceURI()
+		/**@return A new reference URI for an anonymous resource.
+		@exception URISyntaxException Thrown if an anonymous URI cannot be created.
+		*/
+		URI createAnonymousReferenceURI()
 		{
 			final int anonymousID=nextAnonymousID++;  //get the next anonymous ID and increment the counter
-			return "anonymous:"+anonymousID;  //return an anonymous reference URI using the ID G***use a constant here
+			try
+			{
+				return new URI("anonymous", Integer.toString(anonymousID), null);	//return an anonymous reference URI using the ID G***use a constant here
+			}
+			catch (URISyntaxException e)
+			{
+				Debug.error("could not create anonymous URI");	//G***fix better
+				return null;	//G***fix better
+			}	
 		}
 
 	/**The map of prefixes, keyed by namespace URIs, used for serialization,
@@ -55,7 +67,7 @@ public class RDF implements RDFConstants
 		@param factory The resource factory that will be used to create resources
 			of types from this this namespace.
 		*/
-		public void registerResourceFactory(final String typeNamespaceURI, final ResourceFactory factory)
+		public void registerResourceFactory(final URI typeNamespaceURI, final ResourceFactory factory)
 		{
 			resourceFactoryMap.put(typeNamespaceURI, factory);
 		}
@@ -67,7 +79,7 @@ public class RDF implements RDFConstants
 		@return The factory registered for this type namespace, or <code>null</code>
 			if there is no factory registered for this type namespace.
 		*/
-		protected ResourceFactory getResourceFactory(final String typeNamespaceURI)
+		protected ResourceFactory getResourceFactory(final URI typeNamespaceURI)
 		{
 			return (ResourceFactory)resourceFactoryMap.get(typeNamespaceURI);  //return any factory registered for this namespace
 		}
@@ -89,7 +101,7 @@ public class RDF implements RDFConstants
 	@param resourceURI The reference URI of the resource to retreive.
 	@return The resource, or <code>null</code> if no matching resource was found.
 	*/
-	public RDFResource getResource(final String resourceURI)
+	public RDFResource getResource(final URI resourceURI)
 	{
 //G***del Debug.trace("getting resource with URI: ", resourceURI);
 //G***del Debug.traceStack(); //G***del
@@ -113,7 +125,7 @@ public class RDF implements RDFConstants
 	@param referenceURI The reference URI of the resource to retrieve.
 	@return A resource with the given reference URI.
 	*/
-	public RDFResource locateResource(final String referenceURI)
+	public RDFResource locateResource(final URI referenceURI)
 	{
 		RDFResource resource=getResource(referenceURI);  //retrieve a resource from the data model
 		if(resource==null)  //if no such resource exists
@@ -132,9 +144,9 @@ public class RDF implements RDFConstants
 	@return A resource with a reference URI corresponding to the given namespace
 		URI and local name.
 	*/
-	public RDFResource locateResource(final String namespaceURI, final String localName)
+	public RDFResource locateResource(final URI namespaceURI, final String localName)
 	{
-		final String referenceURI=RDFUtilities.createReferenceURI(namespaceURI, localName);  //create a reference URI from the given information
+		final URI referenceURI=RDFUtilities.createReferenceURI(namespaceURI, localName);  //create a reference URI from the given information
 		RDFResource resource=getResource(referenceURI);  //retrieve a resource from the data model
 		if(resource==null)  //if no such resource exists
 		{
@@ -159,7 +171,7 @@ public class RDF implements RDFConstants
 		URI, or <code>null</code> if the type is not known.
 	@return A resource with the given reference URI.
 	*/
-	public RDFResource locateResource(final String referenceURI, final String typeNamespaceURI, final String typeLocalName)
+	public RDFResource locateResource(final URI referenceURI, final URI typeNamespaceURI, final String typeLocalName)
 	{
 //G***del Debug.trace("Trying to get resource with reference URI: ", referenceURI); //G***del
 		RDFResource resource=getResource(referenceURI);  //retrieve a resource from the data model
@@ -189,10 +201,10 @@ public class RDF implements RDFConstants
 		case an anonymous reference URI will be generated).
 	@return A resource with the given reference URI.
 	*/
-	public RDFResource createResource(final String referenceURI)
+	public RDFResource createResource(final URI referenceURI)
 	{
 			//create an anonymous reference URI if needed
-		final String resourceReferenceURI=referenceURI!=null ? referenceURI : createAnonymousReferenceURI();
+		final URI resourceReferenceURI=referenceURI!=null ? referenceURI : createAnonymousReferenceURI();
 		final RDFResource resource=new DefaultRDFResource(resourceReferenceURI);  //create a new resource from the given reference URI
 		putResource(resource);  //store the resource in the data model
 		return resource;  //return the resource we either created
@@ -206,7 +218,7 @@ public class RDF implements RDFConstants
 	@return A resource with a reference URI corresponding to the given namespace
 		URI and local name.
 	*/
-	public RDFResource createResource(final String referenceNamespaceURI, final String referenceLocalName)
+	public RDFResource createResource(final URI referenceNamespaceURI, final String referenceLocalName)
 	{
 		final RDFResource resource=new DefaultRDFResource(referenceNamespaceURI, referenceLocalName);  //create a new resource from the given reference URI
 		putResource(resource);  //store the resource in the data model
@@ -231,10 +243,11 @@ public class RDF implements RDFConstants
 	@exception IllegalArgumentException Thrown if the provided reference URI is
 		<code>null</code>.
 	*/
-	public RDFResource createResource(final String referenceURI, final String typeNamespaceURI, final String typeLocalName) throws IllegalArgumentException
+	public RDFResource createResource(final URI referenceURI, final URI typeNamespaceURI, final String typeLocalName) throws IllegalArgumentException
 	{
+		Debug.assert(typeNamespaceURI!=null, "type namespace is null");	//G***fix
 			//create an anonymous reference URI if needed
-		final String resourceReferenceURI=referenceURI!=null ? referenceURI : createAnonymousReferenceURI();
+		final URI resourceReferenceURI=referenceURI!=null ? referenceURI : createAnonymousReferenceURI();
 //G***del Debug.trace("Ready to create resource with reference URI: ", referenceURI); //G***del
 //G***del Debug.trace("Type namespace URI: ", typeNamespaceURI); //G***del
 //G***del Debug.trace("Type local name: ", typeLocalName); //G***del
