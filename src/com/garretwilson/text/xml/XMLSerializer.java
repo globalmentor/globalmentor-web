@@ -7,6 +7,7 @@ import com.garretwilson.text.CharacterEncodingConstants;
 import com.garretwilson.lang.CharacterUtilities;
 import com.garretwilson.lang.StringBufferUtilities;
 import com.garretwilson.net.URIConstants;
+import com.garretwilson.net.http.webdav.WebDAVConstants;
 import com.garretwilson.rdf.dicto.DictoConstants;
 import com.garretwilson.rdf.dublincore.DCConstants;
 import com.garretwilson.rdf.version.VersionConstants;
@@ -193,8 +194,9 @@ public class XMLSerializer
 
 	/**@return A map of default namespace prefixes for known namespaces, keyed to
 		namespace URIs, to be used for serializing namespace references.
+	<p>Note that this method cannot use true URIs, primarily because WebDAV does not use a true URI for its namespace.</p> 
 	*/
-	public static Map<String, String> createNamespacePrefixMap()	//G***maybe later use real URIs
+	public static Map<String, String> createNamespacePrefixMap()
 	{
 		final Map<String, String> map=new HashMap<String, String>();  //create a new hash map
 		map.put(DictoConstants.DICTO_NAMESPACE_URI.toString(), DictoConstants.DICTO_NAMESPACE_PREFIX); //Dicto
@@ -207,6 +209,7 @@ public class XMLSerializer
 		map.put(RDFSConstants.RDFS_NAMESPACE_URI.toString(), RDFSConstants.RDFS_NAMESPACE_PREFIX); //RDFS
 //G***add SOAP
 		map.put(VersionConstants.VERSION_NAMESPACE_URI.toString(), VersionConstants.VERSION_NAMESPACE_PREFIX); //version
+		map.put(WebDAVConstants.WEBDAV_NAMESPACE, WebDAVConstants.WEBDAV_NAMESPACE_PREFIX); //WebDAV
 		map.put(XMLSchemaConstants.XML_SCHEMA_NAMESPACE_URI.toString(), XMLSchemaConstants.XML_SCHEMA_NAMESPACE_PREFIX); //XML Schema
 		map.put(XHTMLConstants.XHTML_NAMESPACE_URI.toString(), XHTMLConstants.XHTML_NAMESPACE_PREFIX); //XHTML
 		map.put(XLinkConstants.XLINK_NAMESPACE_URI.toString(), XLinkConstants.XLINK_NAMESPACE_PREFIX); //XLink
