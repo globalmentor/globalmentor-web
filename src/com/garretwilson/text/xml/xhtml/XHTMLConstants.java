@@ -128,6 +128,8 @@ public interface XHTMLConstants
 
 		//attributes for <button>
 	public final static String ELEMENT_BUTTON_ATTRIBUTE_TYPE="type";
+		public final static String BUTTON_TYPE_BUTTON="button";
+		public final static String BUTTON_TYPE_RESET="reset";
 		public final static String BUTTON_TYPE_SUBMIT="submit";
 
 		//attributes for <form>
