@@ -274,12 +274,7 @@ public class RDF implements RDFConstants	//TODO special-case rdf:nil list resour
 	*/
 	public RDFResource locateResource(final URI referenceURI)
 	{
-		RDFResource resource=getResource(referenceURI);  //retrieve a resource from the data model
-		if(resource==null)  //if no such resource exists
-		{
-			resource=createResource(referenceURI);  //create a new resource from the given reference URI and store the resource in the data model
-		}
-		return resource;  //return the resource we either found or created
+		return locateResource(referenceURI, null, null);	//locate a resource without knowing its type
 	}
 
 	/**Retreives a resource from the data model based upon an XML namespace URI
@@ -292,13 +287,23 @@ public class RDF implements RDFConstants	//TODO special-case rdf:nil list resour
 	*/
 	public RDFResource locateResource(final URI namespaceURI, final String localName)
 	{
-		final URI referenceURI=RDFUtilities.createReferenceURI(namespaceURI, localName);  //create a reference URI from the given information
-		RDFResource resource=getResource(referenceURI);  //retrieve a resource from the data model
-		if(resource==null)  //if no such resource exists
-		{
-			resource=createResource(namespaceURI, localName);  //create a new resource from the given XML serialization information and store the resource in the data model
-		}
-		return resource;  //return the resource we either found or created
+		return locateResource(RDFUtilities.createReferenceURI(namespaceURI, localName), namespaceURI, localName);	//locate a resource, constructing a reference URI from the given namespace URI and local name
+	}
+
+	/**Retreives a resource from the data model based upon an XML namespace URI
+		and an XML local name. If no such resource exists, one will be created and
+		added to the data model.
+	@param referenceURI The reference URI of the resource to retrieve.
+	@param namespaceURI The XML namespace URI used in the serialization, or
+		<code>null</code> if the namespace URI is not known.
+	@param localName The XML local name used in the serialization, or
+		<code>null</code> if the local name is not known.
+	@return A resource with a reference URI corresponding to the given namespace
+		URI and local name.
+	*/
+	protected RDFResource locateResource(final URI referenceURI, final URI namespaceURI, final String localName)
+	{
+		return locateTypedResource(referenceURI, namespaceURI, localName, null, null);	//locate a resource, constructing a reference URI from the given namespace URI and local name
 	}
 
 	/**Retrieves a resource from the data model based upon the reference URI of
@@ -316,15 +321,36 @@ public class RDF implements RDFConstants	//TODO special-case rdf:nil list resour
 		URI, or <code>null</code> if the type is not known.
 	@return A resource with the given reference URI.
 	*/
-	public RDFResource locateResource(final URI referenceURI, final URI typeNamespaceURI, final String typeLocalName)
+	public RDFResource locateTypedResource(final URI referenceURI, final URI typeNamespaceURI, final String typeLocalName)
 	{
-//G***del Debug.trace("Trying to get resource with reference URI: ", referenceURI); //G***del
+		return locateTypedResource(referenceURI, null, null, typeNamespaceURI, typeLocalName);	//locate a resource with no namespace URI or local name
+	}
+
+	/**Retrieves a resource from the data model based upon the reference URI of
+		the resource. If no such resource exists, one will be created and added to
+		the data model. The given type serialization XML namespace URI and local
+		name will be used to locate a resource factory to create the resource, and
+		the type URI derived from the namespace URI and local name will be added
+		as a type property.
+		If the resource already exists, no checks are performed to ensure that the
+		existing resource is of the requested type.
+	@param referenceURI The reference URI of the resource to retrieve.
+	@param namespaceURI The XML namespace URI used in the serialization, or
+		<code>null</code> if the namespace URI is not known.
+	@param localName The XML local name used in the serialization, or
+		<code>null</code> if the local name is not known.
+	@param typeNamespaceURI The XML namespace used in the serialization of the
+		type URI, or <code>null</code> if the type is not known.
+	@param typeLocalName The XML local name used in the serialization of the type
+		URI, or <code>null</code> if the type is not known.
+	@return A resource with the given reference URI.
+	*/
+	RDFResource locateTypedResource(final URI referenceURI, final URI namespaceURI, final String localName, final URI typeNamespaceURI, final String typeLocalName)
+	{
 		RDFResource resource=getResource(referenceURI);  //retrieve a resource from the data model
 		if(resource==null)  //if no such resource exists
 		{
-//G***del Debug.trace("Resource not found; ready to create it."); //G***del
-			resource=createResource(referenceURI, typeNamespaceURI, typeLocalName);  //create a new resource from the given reference URI and store the resource in the data model
-//G***del; now duplicated by createResource()			putResource(resource);  //store the resource in the data model
+			resource=createTypedResource(referenceURI, namespaceURI, localName, typeNamespaceURI, typeLocalName);  //create a new resource from the given reference URI and store the resource in the data model
 		}
 		return resource;  //return the resource we either found or created
 	}
@@ -347,45 +373,37 @@ public class RDF implements RDFConstants	//TODO special-case rdf:nil list resour
 	*/
 	public RDFResource createResource(final URI referenceURI)
 	{
-//G***del		return createResource(referenceURI, null, null);	//create a resource without knowing its type
-			//create an anonymous reference URI if needed
-//G***del		final URI resourceReferenceURI=referenceURI!=null ? referenceURI : createAnonymousReferenceURI();
-		final RDFResource resource;
-			//TODO remove this check eventually when we stop storing namespaces and local names, and move this to a common routine
-		if(NIL_RESOURCE_URI.equals(referenceURI))	//if we are creating the nil resource
-		{
-			resource=new RDFListResource(NIL_RESOURCE_URI);	//create the nil resource with the special RDF nil URI
-		}
-		else	//if this isn't a special resource we know about
-		{
-			resource=new DefaultRDFResource(referenceURI);  //create a new resource from the given reference URI
-			addResource(resource);  //store the resource in the data model
-		}
-		return resource;  //return the resource we either created
+		return createResource(referenceURI, null, null);	//create and return a resource without a namespace URI or local name
 	}
 
 	/**Creates a general resource with the a reference URI based upon an XML
 		namespace URI and an XML local name, and stores the resource in this RDF
 		data model.
-	@param referenceNamespaceURI The XML namespace URI used in the reference URI serialization.
-	@param referenceLocalName The XML local name used in the reference URI serialization.
+	@param namespaceURI The XML namespace URI used in the reference URI serialization.
+	@param localName The XML local name used in the reference URI serialization.
 	@return A resource with a reference URI corresponding to the given namespace
 		URI and local name.
 	*/
-	public RDFResource createResource(final URI referenceNamespaceURI, final String referenceLocalName)
+	public RDFResource createResource(final URI namespaceURI, final String localName)
 	{
-		final RDFResource resource;
-			//TODO remove this check eventually when we stop storing namespaces and local names, and move this to a common routine
-		if(NIL_RESOURCE_URI.equals(RDFUtilities.createReferenceURI(referenceNamespaceURI, referenceLocalName)))	//if we are creating the nil resource
-		{
-			resource=new RDFListResource(NIL_RESOURCE_URI);	//create the nil resource with the special RDF nil URI
-		}
-		else	//if this isn't a special resource we know about
-		{
-			resource=new DefaultRDFResource(referenceNamespaceURI, referenceLocalName);  //create a new resource from the given reference URI
-		}
-		addResource(resource);  //store the resource in the data model
-		return resource;  //return the resource we either created
+		return createResource(RDFUtilities.createReferenceURI(namespaceURI, localName), namespaceURI, localName);	//create and return a resource with a reference URI constructed from the namespace URI and local name
+	}
+
+	/**Creates a general resource with the a reference URI based upon an XML
+		namespace URI and an XML local name, and stores the resource in this RDF
+		data model.
+	@param referenceURI The reference URI of the resource to create, or
+		<code>null</code> if the resource created should be represented by a blank node.
+	@param namespaceURI The XML namespace URI used in the serialization, or
+		<code>null</code> if the namespace URI is not known.
+	@param localName The XML local name used in the serialization, or
+		<code>null</code> if the local name is not known.
+	@return A resource with a reference URI corresponding to the given namespace
+		URI and local name.
+	*/
+	public RDFResource createResource(final URI referenceURI, final URI namespaceURI, final String localName)
+	{
+		return createTypedResource(referenceURI, namespaceURI, localName, null, null);	//create a resource without knowing its type
 	}
 
 	/**Creates a resource with the provided reference URI.
@@ -404,70 +422,87 @@ public class RDF implements RDFConstants	//TODO special-case rdf:nil list resour
 	@param referenceURI The reference URI of the resource to create, or
 		<code>null</code> if the resource created should be represented by a blank node.
 	@param typeNamespaceURI The XML namespace used in the serialization of the
-		type URI. //G***del , or <code>null</code> if the type is not known.
+		type URI, or <code>null</code> if the type is not known.
 	@param typeLocalName The XML local name used in the serialization of the type
-		URI.  //G***del, or <code>null</code> if the type is not known.
+		URI, or <code>null</code> if the type is not known.
 	@return The resource created with this reference URI, with the given type
 		added if a type was given.
 	*/
-	public RDFResource createResource(final URI referenceURI, final URI typeNamespaceURI, final String typeLocalName)
+	public RDFResource createTypedResource(final URI referenceURI, final URI typeNamespaceURI, final String typeLocalName)
 	{
-		Debug.assert(typeNamespaceURI!=null, "type namespace is null");	//G***fix
-			//create an anonymous reference URI if needed
-//G***del when works		final URI resourceReferenceURI=referenceURI!=null ? referenceURI : createAnonymousReferenceURI();
-//G***del Debug.trace("Ready to create resource with reference URI: ", referenceURI); //G***del
-//G***del Debug.trace("Type namespace URI: ", typeNamespaceURI); //G***del
-//G***del Debug.trace("Type local name: ", typeLocalName); //G***del
+		return createTypedResource(referenceURI, null, null, typeNamespaceURI, typeLocalName);	//create a typed resource with no namespace URI or local name
+	}
+
+	/**Creates a resource with the provided reference URI.
+		The given type XML namespace URI and type XML local name will be used to
+		attempt to locate a resource factory to create the resource.
+		A type property derived from the specified type namespace URI and local name
+		will be added to the resource.
+	<p>This method knows how to create the following RDF-defined resources:</p>
+	<ul>
+		<li>Reference URI <code>rdf:nil</code> (<code>RDFListResource</code>)</li>
+		<li>Type <code>rdf:Alt</code>  (<code>RDFAltResource</code>)</li>
+		<li>Type <code>rdf:Bag</code>  (<code>RDFBagResource</code>)</li>
+		<li>Type <code>rdf:Seq</code>  (<code>RDFSequenceResource</code>)</li>
+	</ul>
+	<p>The created resource will be stored in this RDF data model.</p>
+	@param referenceURI The reference URI of the resource to create, or
+		<code>null</code> if the resource created should be represented by a blank node.
+	@param namespaceURI The XML namespace URI used in the serialization, or
+		<code>null</code> if the namespace URI is not known.
+	@param localName The XML local name used in the serialization, or
+		<code>null</code> if the local name is not known.
+	@param typeNamespaceURI The XML namespace used in the serialization of the
+		type URI, or <code>null</code> if the type is not known.
+	@param typeLocalName The XML local name used in the serialization of the type
+		URI, or <code>null</code> if the type is not known.
+	@return The resource created with this reference URI, with the given type
+		added if a type was given.
+	*/
+	protected RDFResource createTypedResource(final URI referenceURI, final URI namespaceURI, final String localName, final URI typeNamespaceURI, final String typeLocalName)
+	{
+//G***del when works		Debug.assert(typeNamespaceURI!=null, "type namespace is null");	//G***fix
 		RDFResource resource=null; //start by assuming that no factory is registered for this type namespace, or the registered factory can't create a resource
 		final RDFResourceFactory resourceFactory=getResourceFactory(typeNamespaceURI); //get a resource factory for this namespace
-//G***del		if(resourceFactory!=null && resourceFactory!=this) //if we have a factory (and it isn't this class; otherwise, this would cause recursion if one were to register the RDF data model as a factory)
 		if(resourceFactory!=null) //if we have a factory
 		{
-//G***del Debug.trace("Found resource factory.");  //G***del
 		  resource=resourceFactory.createResource(referenceURI, typeNamespaceURI, typeLocalName); //try to create a resource from this factory
 		}
 		if(resource==null)  //if we haven't created a resource, see if this is an RDF resource
 		{
-//G***del Debug.trace("Did not find resource factory.");  //G***del
 			if(NIL_RESOURCE_URI.equals(referenceURI))	//if we are creating the nil resource
 			{
-				resource=new RDFListResource(NIL_RESOURCE_URI);	//create the nil resource with the special RDF nil URI
+				resource=new RDFListResource(this, RDF_NAMESPACE_URI, NIL_RESOURCE_LOCAL_NAME);	//create the nil resource with the special RDF nil URI
 			}
 			else if(RDF_NAMESPACE_URI.equals(typeNamespaceURI)) //if this resource is an RDF resource
 			{
-//G***del Debug.trace("Is an RDF type.");  //G***del
 				if(ALT_TYPE_NAME.equals(typeLocalName)) //<rdf:Alt>
 				{
 					//G***fix for alt
 				}
 				else if(BAG_TYPE_NAME.equals(typeLocalName))  //<rdf:Bag>
 				{
-//G***del Debug.trace("creating an RDF bag"); //G***del
-					resource=new RDFBagResource(referenceURI);  //create a bag resource
+					resource=new RDFBagResource(this, referenceURI, namespaceURI, localName);  //create a bag resource
 				}
 				else if(SEQ_TYPE_NAME.equals(typeLocalName))  //<rdf:Seq>
 				{
-//G***del Debug.trace("creating an RDF sequence"); //G***del
-					resource=new RDFSequenceResource(referenceURI);  //create a sequence resource
+					resource=new RDFSequenceResource(this, referenceURI, namespaceURI, localName);  //create a sequence resource
 				}
 				else if(LIST_TYPE_NAME.equals(typeLocalName))  //<rdf:Seq>
 				{
-					resource=new RDFListResource(referenceURI);  //create a list resource
+					resource=new RDFListResource(this, referenceURI, namespaceURI, localName);  //create a list resource
 				}
 //G***should we check to see if this is the nil resource, and if so automatically set its type to rdf:List?
 			}
 		}
 		if(resource==null)  //if we still haven't created a resource
 		{
-		  resource=new DefaultRDFResource(referenceURI);  //create a new resource from the given reference URI
-//G***del when works			resource=createResource(resourceReferenceURI);  //create a new default resource from the given reference URI G***maybe use an RDF factory method for this, too
+		  resource=new DefaultRDFResource(this, referenceURI, namespaceURI, localName);  //create a new resource from the given reference URI, showing which data model created the resource
 		}
-		RDFUtilities.addType(this, resource, typeNamespaceURI, typeLocalName); //add the type property TODO make sure the type is added to the list of triples
-/*G***del
-		final RDFResource typeProperty=RDFUtilities.getTypeProperty(this); //get a rdf:type resource
-		final RDFResource typeValue=locateResource(typeNamespaceURI, typeLocalName);  //get a resource for the value of the property
-		resource.addProperty(typeProperty, typeValue);  //add the property to the resource
-*/
+		if(typeNamespaceURI!=null && typeLocalName!=null)	//if we were given a type
+		{
+			RDFUtilities.addType(resource, typeNamespaceURI, typeLocalName); //add the type property TODO make sure the type is added to the list of triples
+		}
 		addResource(resource);  //store the resource in the data model
 		return resource;  //return the resource we created
 	}
