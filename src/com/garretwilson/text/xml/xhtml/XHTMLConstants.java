@@ -136,6 +136,10 @@ public interface XHTMLConstants
 	public final static String ELEMENT_IMG_ATTRIBUTE_WIDTH="width";
 	public final static String ELEMENT_IMG_ATTRIBUTE_SRC="src";
 
+		//attributes for <input>
+	public final static String ELEMENT_INPUT_ATTRIBUTE_TYPE="type";
+		public final static String INPUT_TYPE_HIDDEN="hidden";
+
 		//attributes for <object>
 	public final static String ELEMENT_OBJECT_ATTRIBUTE_CLASSID="classid";
 	public final static String ELEMENT_OBJECT_ATTRIBUTE_CODETYPE="codetype";

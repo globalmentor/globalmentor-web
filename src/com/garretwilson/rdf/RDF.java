@@ -77,7 +77,7 @@ public class RDF implements RDFConstants	//TODO special-case rdf:nil list resour
 		public URI getBaseURI() {return baseURI;}
 
 	/**A map of resource factories, keyed to namespace URI.*/
-	private final Map resourceFactoryMap=new HashMap();
+	private final Map<URI, RDFResourceFactory> resourceFactoryMap=new HashMap<URI, RDFResourceFactory>();
 
 		/**Registers a resource factory to be used to create resources with a type
 		  from the specified namespace. If a resource factory is already registered
@@ -112,11 +112,11 @@ public class RDF implements RDFConstants	//TODO special-case rdf:nil list resour
 		*/
 		protected RDFResourceFactory getResourceFactory(final URI typeNamespaceURI)
 		{
-			return (RDFResourceFactory)resourceFactoryMap.get(typeNamespaceURI);  //return any factory registered for this namespace
+			return resourceFactoryMap.get(typeNamespaceURI);  //return any factory registered for this namespace
 		}
 
 	/**A map of typed literal factories, keyed to datatype namespace URI.*/
-	private final Map typedLiteralFactoryMap=new HashMap();
+	private final Map<URI, RDFTypedLiteralFactory> typedLiteralFactoryMap=new HashMap<URI, RDFTypedLiteralFactory>();
 
 		/**Registers a typed literal factory to be used to create literals with a
 			datatype from the specified namespace. If a type literal factory is
@@ -157,7 +157,7 @@ public class RDF implements RDFConstants	//TODO special-case rdf:nil list resour
 		*/
 		protected RDFTypedLiteralFactory getTypedLiteralFactory(final URI datatypeNamespaceURI)
 		{
-			RDFTypedLiteralFactory typedLiteralFactory=(RDFTypedLiteralFactory)typedLiteralFactoryMap.get(datatypeNamespaceURI);  //get any factory registered for this namespace
+			RDFTypedLiteralFactory typedLiteralFactory=typedLiteralFactoryMap.get(datatypeNamespaceURI);  //get any factory registered for this namespace
 			if(typedLiteralFactory==null && datatypeNamespaceURI!=null)	//if we didn't find a factory, try the namespaceURI without its ending # (RDF has different URI generation rules than, for example, XML Schema, resulting in different namespace representations)
 			{
 				final String datatypeNamespaceURIString=datatypeNamespaceURI.toString();	//get the string form of the datatype namespace URI 
@@ -166,7 +166,7 @@ public class RDF implements RDFConstants	//TODO special-case rdf:nil list resour
 				{
 					try	//see if we recognize the URI without the ending '#'
 					{
-						typedLiteralFactory=(RDFTypedLiteralFactory)typedLiteralFactoryMap.get(new URI(datatypeNamespaceURIString.substring(0, datatypeNamespaceURIString.length()-1)));
+						typedLiteralFactory=typedLiteralFactoryMap.get(new URI(datatypeNamespaceURIString.substring(0, datatypeNamespaceURIString.length()-1)));
 					}
 					catch(final URISyntaxException URISyntaxException)	//if we can't create a valid URI by remove the fragment separator character, don't do anything---there wouldn't be a factory mapped to that value, anyway 
 					{
@@ -177,10 +177,10 @@ public class RDF implements RDFConstants	//TODO special-case rdf:nil list resour
 		}
 
 	/**The set of all resources, named and unnamed, using identity rather than equality for equivalence.*/
-	private final Set resourceSet=new IdentityHashSet();
+	private final IdentityHashSet<RDFResource> resourceSet=new IdentityHashSet<RDFResource>();
 
 	/**The map of all named resources, keyed to resource reference URI.*/
-	private final Map resourceMap=new HashMap();
+	private final Map<URI, RDFResource> resourceMap=new HashMap<URI, RDFResource>();
 
 	/**Adds a resource to the data model.
 	If the resource is already in the model, no action occurs. 
@@ -204,7 +204,7 @@ public class RDF implements RDFConstants	//TODO special-case rdf:nil list resour
 	{
 //G***del Debug.trace("getting resource with URI: ", resourceURI);
 //G***del Debug.traceStack(); //G***del
-		return (RDFResource)resourceMap.get(resourceURI); //retrieve the resource
+		return resourceMap.get(resourceURI); //retrieve the resource
 	}
 
 	/**@return The number of resources in this data model.*/
@@ -214,7 +214,7 @@ public class RDF implements RDFConstants	//TODO special-case rdf:nil list resour
 	}
 
 	/**@return A read-only iterator of resources.*/
-	public Iterator getResourceIterator()
+	public Iterator<RDFResource> getResourceIterator()
 	{
 		return Collections.unmodifiableCollection(resourceSet).iterator(); //return an unmodifiable iterator to the set of all resources
 	}
@@ -222,7 +222,7 @@ public class RDF implements RDFConstants	//TODO special-case rdf:nil list resour
 	/**@return A read-only iterator of resources appropriate for appearing at the
 		root of a hierarchy, such as an RDF tree or an RDF+XML serialization.
 	*/
-	public Iterator getRootResourceIterator()
+	public Iterator<RDFResource> getRootResourceIterator()
 	{
 		return getRootResourceIterator(null);	//return an unsorted iterator to the root resources 
 	}
@@ -235,14 +235,15 @@ public class RDF implements RDFConstants	//TODO special-case rdf:nil list resour
 	@return A read-only iterator of root resources sorted by the optional
 		comparator.
 	*/
-	public Iterator getRootResourceIterator(final Comparator comparator)
+	public Iterator<RDFResource> getRootResourceIterator(final Comparator comparator)
 	{
 			//create a set in which to place the root resources, making the set sorted if we have a comparator
-		final Set rootResourceSet=comparator!=null ? (Set)new TreeSet(comparator) : (Set)new HashSet();	 		
-		final Iterator resourceIterator=getResourceIterator();  //get an iterator to all the RDF resources
+///TODO fix		final Set<RDFResource> rootResourceSet=comparator!=null ? (Set<RDFResource>)new TreeSet<RDFResource>(comparator) : (Set<RDFResource>)new HashSet<RDFResource>();	 		
+		final Set<RDFResource> rootResourceSet=new HashSet<RDFResource>();	//TODO fix comparing once we decide what type of comparator to use---shoudl it include just resources, or all RDF objects?	 		
+		final Iterator<RDFResource> resourceIterator=getResourceIterator();  //get an iterator to all the RDF resources
 		while(resourceIterator.hasNext()) //while there are resources remaining
 		{
-			final RDFResource resource=(RDFResource)resourceIterator.next();  //get the next resource
+			final RDFResource resource=resourceIterator.next();  //get the next resource
 			if(isRootResource(resource))	//if this is a root resource
 			{
 				rootResourceSet.add(resource);	//add the resource to the set of root resources
@@ -623,9 +624,9 @@ public class RDF implements RDFConstants	//TODO special-case rdf:nil list resour
 		identity rather than equality to store resources, as some resources may
 		be anonymous.
 	*/
-	public Map getReferences()
+	public Map<RDFResource, Set<RDFResource>> getReferences()
 	{
-		final Map referenceMap=new IdentityHashMap();	//create a new map in which to store reference sets
+		final Map<RDFResource, Set<RDFResource>> referenceMap=new IdentityHashMap<RDFResource, Set<RDFResource>>();	//create a new map in which to store reference sets
 		return getReferences(referenceMap);	//gather all reference sets, place them in the reference map, and return the map
 		
 	}
@@ -639,13 +640,13 @@ public class RDF implements RDFConstants	//TODO special-case rdf:nil list resour
 		associated set will use identity rather than equality to store resources,
 		as some resources may be anonymous.
 	*/
-	public Map getReferences(final Map referenceMap)
+	public Map<RDFResource, Set<RDFResource>> getReferences(final Map<RDFResource, Set<RDFResource>> referenceMap)
 	{
-		final Set referringResourceSet=new IdentityHashSet();	//create a set of referring resources to prevent endless following of circular references
-		final Iterator resourceIterator=getResourceIterator();	//get an iterator to all resources in this data model
+		final Set<RDFResource> referringResourceSet=new IdentityHashSet<RDFResource>();	//create a set of referring resources to prevent endless following of circular references
+		final Iterator<RDFResource> resourceIterator=getResourceIterator();	//get an iterator to all resources in this data model
 		while(resourceIterator.hasNext())	//while there are more resources in the data model
 		{
-			getReferences((RDFResource)resourceIterator.next(), referenceMap, referringResourceSet);	//gather all references to this resource
+			getReferences(resourceIterator.next(), referenceMap, referringResourceSet);	//gather all references to this resource
 		}
 		return referenceMap;	//return the map we populated
 	}
@@ -661,9 +662,9 @@ public class RDF implements RDFConstants	//TODO special-case rdf:nil list resour
 		identity rather than equality to store resources, as some resources may
 		be anonymous.
 	*/
-	public static Map getReferences(final RDFResource resource)
+	public static Map<RDFResource, Set<RDFResource>> getReferences(final RDFResource resource)
 	{
-		return getReferences(resource, new IdentityHashMap());	//create a new identity hash map and use it to retrieve references to the given resources
+		return getReferences(resource, new IdentityHashMap<RDFResource, Set<RDFResource>>());	//create a new identity hash map and use it to retrieve references to the given resources
 	}
 
 	/**Looks at the resources and all its properties and recursively gathers
@@ -678,9 +679,9 @@ public class RDF implements RDFConstants	//TODO special-case rdf:nil list resour
 		associated set will use identity rather than equality to store resources,
 		as some resources may be anonymous.
 	*/
-	public static Map getReferences(final RDFResource resource, final Map referenceMap)
+	public static Map<RDFResource, Set<RDFResource>> getReferences(final RDFResource resource, final Map<RDFResource, Set<RDFResource>> referenceMap)
 	{
-		return getReferences(resource, referenceMap, new IdentityHashSet());	//gather references, showing that we haven't looked at any referring resources, yet
+		return getReferences(resource, referenceMap, new IdentityHashSet<RDFResource>());	//gather references, showing that we haven't looked at any referring resources, yet
 	}
 
 	/**Looks at the resources and all its properties and recursively gathers
@@ -697,7 +698,7 @@ public class RDF implements RDFConstants	//TODO special-case rdf:nil list resour
 		associated set will use identity rather than equality to store resources,
 		as some resources may be anonymous.
 	*/
-	protected static Map getReferences(final RDFResource resource, final Map referenceMap, final Set referrerResourceSet)
+	protected static Map<RDFResource, Set<RDFResource>> getReferences(final RDFResource resource, final Map<RDFResource, Set<RDFResource>> referenceMap, final Set<RDFResource> referrerResourceSet)
 	{
 		if(!referrerResourceSet.contains(resource))	//if we haven't checked this resource before
 		{
@@ -710,10 +711,10 @@ public class RDF implements RDFConstants	//TODO special-case rdf:nil list resour
 				if(valueObject instanceof RDFResource)	//if the value is a resource
 				{
 					final RDFResource valueResource=(RDFResource)valueObject;	//cast the object value to a resource
-					Set referenceSet=(Set)referenceMap.get(valueResource);	//get the set of references to the object resource
+					Set<RDFResource> referenceSet=referenceMap.get(valueResource);	//get the set of references to the object resource
 					if(referenceSet==null)	//if this is the first reference we've gathered for the object resource
 					{
-						referenceSet=new IdentityHashSet();	//create a new set to keep track of references to the object resource
+						referenceSet=new IdentityHashSet<RDFResource>();	//create a new set to keep track of references to the object resource
 						referenceMap.put(valueResource, referenceSet);	//store the set in the map, keyed to the object resource
 					}
 					referenceSet.add(resource);	//show that this resource is another referrer to the object resource of this property
