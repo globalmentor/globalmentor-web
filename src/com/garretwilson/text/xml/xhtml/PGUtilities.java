@@ -539,7 +539,7 @@ Debug.trace("we think the title is: "+title);  //G***del
 													  //if the first line has "of" appearing before the almost-end
 												&& (
 													  (StringUtilities.indexOfIgnoreCase(line, " of ")<0 || StringUtilities.indexOfIgnoreCase(line, " of ")>(line.length()*3/4)) //it's risky going to the next line---make sure we want to go there (e.g. berne10.txt)
-														|| StringUtilities.endsWithIgnoreCase(remainingText, " folio")  //if the title ends in "folio" (e.g. 0ws??10.txt), the actual title is probably on the next line
+														|| CharSequenceUtilities.endsWithIgnoreCase(remainingText, " folio")  //if the title ends in "folio" (e.g. 0ws??10.txt), the actual title is probably on the next line
 														)
 												)
 											{
@@ -568,7 +568,7 @@ Debug.trace("we think the title is: "+title);  //G***del
 							nextLineTitleAfterElement=null;
 							break;  //stop looking for the title
 						}
-						else if(StringUtilities.endsWithIgnoreCase(line.trim(), "Etext of:"))  //e.g. email025.txt G***use a constant
+						else if(CharSequenceUtilities.endsWithIgnoreCase(line.trim(), "Etext of:"))  //e.g. email025.txt G***use a constant
 						{
 							nextLineTitleAfterElement=childElement; //G***testing
 						}
@@ -749,7 +749,7 @@ Debug.trace("found non-PG 'by' author: ", remainingText); //G***del
 Debug.trace("current author: ", author); //G***del
 Debug.trace("already found 'by' author: "+foundByAuthor); //G***del
 											//if we've already found an author, we'll only use the new author if it's a more complete version of the author already given (e.g. only the last name was given on the first line)
-										if(author==null || StringUtilities.endsWithIgnoreCase(remainingText, author))
+										if(author==null || CharSequenceUtilities.endsWithIgnoreCase(remainingText, author))
 										{
 											if(!foundByAuthor  //if this is the first author we've found using this method
 											  && !StringUtilities.startsWithIgnoreCase(remainingText, "AUTHOR")  //G***use a constant G***this code is duplicated
@@ -1280,13 +1280,13 @@ Debug.trace("found small print end");
 			//if the string starts with "in" (but only in lowercase), remove it (e.g. "in French of...", 8plno07.txt)
 		if(StringBufferUtilities.startsWith(stringBuffer, "in"))  //G***use a constant
 		{
-			if(StringBufferUtilities.indexOf(stringBuffer, "French")>=0 //G***use a constant; do stricter order checking
-				  || StringBufferUtilities.indexOf(stringBuffer, "Spanish")>=0
-				  || StringBufferUtilities.indexOf(stringBuffer, "German")>=0
-				  || StringBufferUtilities.indexOf(stringBuffer, "Italian")>=0
-				  || StringBufferUtilities.indexOf(stringBuffer, "Latin")>=0)
+			if(stringBuffer.indexOf("French")>=0 //G***use a constant; do stricter order checking
+				  || stringBuffer.indexOf("Spanish")>=0
+				  || stringBuffer.indexOf("German")>=0
+				  || stringBuffer.indexOf("Italian")>=0
+				  || stringBuffer.indexOf("Latin")>=0)
 			{
-				final int ofIndex=StringBufferUtilities.indexOf(stringBuffer, OF);  //find out where "of" appears
+				final int ofIndex=stringBuffer.indexOf(OF);  //find out where "of" appears
 				if(ofIndex>=0)  //if "of" is present, we think the string begins with something line "in French of"
 				{
 						//remove everything up to and including "OF" and retidy
@@ -1310,7 +1310,7 @@ Debug.trace("found small print end");
 			tidyProperty(stringBuffer.delete(0, THE.length())); //remove the beginning "the" and tidy the string
 		}
 			//if the string ends with ", or" (e.g. 03tcb10.txt)
-		if(StringBufferUtilities.endsWithIgnoreCase(stringBuffer, ", or")) //if the string ends with ", or" G***use a constnat
+		if(CharSequenceUtilities.endsWithIgnoreCase(stringBuffer, ", or")) //if the string ends with ", or" G***use a constnat
 		{
 			tidyProperty(stringBuffer.delete(stringBuffer.length()-", or".length(), stringBuffer.length())); //remove the beginning ", or" and tidy the string G***use a constant
 		}
@@ -1350,9 +1350,9 @@ Debug.trace("found small print end");
 		if(copyrightIndex>=0) //if "copyright" appears in the title
 		{
 				//if "copyright" is followed by a copyright character
-			if(StringBufferUtilities.charIndexOf(stringBuffer, "@"+COPYRIGHT_SIGN, copyrightIndex+1)>=0
-				  || StringBufferUtilities.indexOf(stringBuffer, "(c)", copyrightIndex+1)>=0
-					|| StringBufferUtilities.indexOf(stringBuffer, "(C)", copyrightIndex+1)>=0)
+			if(CharSequenceUtilities.charIndexOf(stringBuffer, "@"+COPYRIGHT_SIGN, copyrightIndex+1)>=0
+				  || stringBuffer.indexOf("(c)", copyrightIndex+1)>=0
+					|| stringBuffer.indexOf("(C)", copyrightIndex+1)>=0)
 			{
 			  tidyProperty(stringBuffer.delete(copyrightIndex, stringBuffer.length()));  //remove "copyright" and everything after it G***add a convenience routine like the one for strings
 			}
@@ -1427,7 +1427,7 @@ Debug.trace("tidying author: ", string); //G***del
 			tidyProperty(stringBuffer.delete(authorPropertyIndex, stringBuffer.length())); //remove that text and tidy the string G***use a constant
 		}
 			//if the string ends with "all rights reserved" in any case G***use a constant
-		if(StringBufferUtilities.endsWithIgnoreCase(stringBuffer, "all rights reserved"))
+		if(CharSequenceUtilities.endsWithIgnoreCase(stringBuffer, "all rights reserved"))
 		{
 			tidyProperty(stringBuffer.delete(stringBuffer.length()-"all rights reserved".length(), stringBuffer.length())); //remove that text and tidy the string G***use a constant
 		}
@@ -1436,16 +1436,16 @@ Debug.trace("checking for copyright: ", stringBuffer);  //G***de
 		int copyrightIndex=StringUtilities.indexOfIgnoreCase(stringBuffer.toString(), COPYRIGHT); //see if "copyright" appears in the string G***change to StringBufferUtilities
 		if(copyrightIndex>=0 &&
 			(
-			  StringBufferUtilities.charIndexOf(stringBuffer, "@"+COPYRIGHT_SIGN)>=0 //if "copyright" is followed by a copyright sign
-			  || StringBufferUtilities.indexOf(stringBuffer, "(c)")>=0 //if "copyright" is followed by (c) G***use a constant
-			  || StringBufferUtilities.indexOf(stringBuffer, "19")>=0 //if "copyright" is followed by 19 G***use a constant
-			  || StringBufferUtilities.indexOf(stringBuffer, "20")>=0 //if "copyright" is followed by 19 G***use a constant
+		CharSequenceUtilities.charIndexOf(stringBuffer, "@"+COPYRIGHT_SIGN)>=0 //if "copyright" is followed by a copyright sign
+			  || stringBuffer.indexOf("(c)")>=0 //if "copyright" is followed by (c) G***use a constant
+			  || stringBuffer.indexOf("19")>=0 //if "copyright" is followed by 19 G***use a constant
+			  || stringBuffer.indexOf("20")>=0 //if "copyright" is followed by 19 G***use a constant
 			))
 		{
 			tidyProperty(stringBuffer.delete(copyrightIndex, stringBuffer.length())); //remove that text and tidy the string
 		}
 			//if the author contains ", this is..." (e.g. email025.txt) G***use a constant
-		final int thisIsIndex=StringBufferUtilities.indexOf(stringBuffer, ", this is");
+		final int thisIsIndex=stringBuffer.indexOf(", this is");
 		if(thisIsIndex>=0)
 		{
 			tidyProperty(stringBuffer.delete(thisIsIndex, stringBuffer.length())); //remove that text and tidy the string G***use a constant
@@ -1454,7 +1454,7 @@ Debug.trace("checking for copyright: ", stringBuffer);  //G***de
 		if(byIndex>=0 && Character.isLowerCase(stringBuffer.charAt(byIndex)))  //if we found "by" (only in lowercase)
 		{
 				//see if we can find punctuation before "by"
-			final int punctuationIndex=StringBufferUtilities.charLastIndexOf(stringBuffer, PUNCTUATION_CHARS, byIndex-1);
+			final int punctuationIndex=CharSequenceUtilities.charLastIndexOf(stringBuffer, PUNCTUATION_CHARS, byIndex-1);
 				//if by is not at the first of the string and has punctuation before it
 //G***del			if(byIndex>0 && StringBufferUtilities.notCharIndexOf(stringBuffer, WHITESPACE_CHARS)<byIndex
 			if(punctuationIndex>=0) //if we can find punctuation before "by" (e.g. efpap10.txt)
@@ -1509,7 +1509,7 @@ Debug.trace("checking for punctuation: ", stringBuffer);  //G***de
 		  //trim the string of whitespace, dashes, and asterisks
 		StringBufferUtilities.trim(stringBuffer, TRIM_CHARS);
 			//see if there is any group punctuation at the end (e.g. "XXX (XXX)")
-		final int rightGroupIndex=StringBufferUtilities.charLastIndexOf(stringBuffer, RIGHT_GROUP_PUNCTUATION_CHARS);
+		final int rightGroupIndex=CharSequenceUtilities.charLastIndexOf(stringBuffer, RIGHT_GROUP_PUNCTUATION_CHARS);
 		if(rightGroupIndex>=0)  //if the string ends with a right group characters
 		{
 //G***del System.out.println("found right group: "+rightGroupIndex); //G***del
@@ -1519,7 +1519,7 @@ Debug.trace("checking for punctuation: ", stringBuffer);  //G***de
 //G***del System.out.println("nothing but whitespace after"); //G***del
 					//remove evertying from the start of the group onward
 					//see if there is any left punctuation at the end (e.g. "XXX (XXX)") (don't just grab the first left group punctuation, because there could be several sets of them)
-				final int leftGroupIndex=StringBufferUtilities.charLastIndexOf(stringBuffer, LEFT_GROUP_PUNCTUATION_CHARS, rightGroupIndex-1);
+				final int leftGroupIndex=CharSequenceUtilities.charLastIndexOf(stringBuffer, LEFT_GROUP_PUNCTUATION_CHARS, rightGroupIndex-1);
 				if(leftGroupIndex>=0) //if we found a matching left group punctuation character
 				{
 					stringBuffer.delete(leftGroupIndex, stringBuffer.length()); //remove the left punctuation and everything after it
