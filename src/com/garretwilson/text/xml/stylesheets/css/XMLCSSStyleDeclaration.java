@@ -4,6 +4,7 @@ package com.garretwilson.text.xml.stylesheets.css;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 import com.garretwilson.text.xml.XMLDOMException;
+import static com.garretwilson.text.xml.stylesheets.css.XMLCSSConstants.*;
 import com.garretwilson.util.Debug;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.css.*;
@@ -12,7 +13,7 @@ import org.w3c.dom.css.*;
 @see org.w3c.dom.css.CSSStyleDeclaration
 @see org.w3c.dom.css.CSS2Properties
 */
-public class XMLCSSStyleDeclaration extends HashMap implements CSSStyleDeclaration, XMLCSSConstants//G***fix, org.w3c.dom.css.CSS2Properties
+public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements CSSStyleDeclaration	//G***fix, org.w3c.dom.css.CSS2Properties
 {
 
 	/**Creates and returns a duplicate copy of this node list with no values.
@@ -191,7 +192,7 @@ public class XMLCSSStyleDeclaration extends HashMap implements CSSStyleDeclarati
 	*/
 	public CSSValue getPropertyCSSValue(String propertyName)
 	{
-		return (CSSValue)get(propertyName);	//get the item with the specified property name
+		return get(propertyName);	//get the item with the specified property name
 	}
 
 	/**Removes a CSS property if it has been explicitly set within this

@@ -2,7 +2,6 @@ package com.garretwilson.text.xml.xhtml;
 
 import java.io.*;
 import java.util.*;
-import javax.mail.internet.ContentType;
 import com.garretwilson.io.ContentTypeUtilities;
 import com.garretwilson.io.FileUtilities;
 import com.garretwilson.lang.*;
@@ -12,7 +11,9 @@ import com.garretwilson.text.xml.XPath;
 import com.garretwilson.text.xml.XMLUtilities;
 import com.garretwilson.text.xml.oeb.OEBConstants;
 import com.garretwilson.text.xml.stylesheets.css.*;
-import com.garretwilson.text.unicode.SymbolEncodingConstants;
+import static com.garretwilson.text.xml.stylesheets.css.XMLCSSConstants.*;
+import static com.garretwilson.text.xml.xhtml.XHTMLConstants.*;
+import static com.garretwilson.text.unicode.SymbolEncodingConstants.*;
 import com.garretwilson.util.*;
 import org.w3c.dom.*;
 import org.w3c.dom.traversal.NodeFilter;
@@ -139,7 +140,7 @@ G***added stuff not commented:
 * removed <html> attributes
 * added OEB DOCTYPe
 */
-public class XHTMLTidier extends TextUtilities implements XHTMLConstants, XMLCSSConstants, SymbolEncodingConstants
+public class XHTMLTidier extends TextUtilities
 {
 
 	/**Whether underline tags (<code>&lt;u&gt;</code>) should be converted to

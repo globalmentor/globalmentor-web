@@ -7,6 +7,7 @@ import com.garretwilson.lang.StringBufferUtilities;
 import com.garretwilson.lang.StringUtilities;
 import com.garretwilson.text.CharacterConstants;
 import com.garretwilson.text.xml.oeb.css.OEBCSSUtilities; //G***move to OEBCSSTidier
+import static com.garretwilson.text.xml.stylesheets.css.XMLCSSConstants.*;
 import com.garretwilson.util.Debug;
 import com.garretwilson.util.PropertyUtilities;
 import org.w3c.dom.css.*;
@@ -25,7 +26,7 @@ import org.w3c.dom.css.*;
 @author Garret Wilson
 */
 //G***add a feature to remove empty style declarations
-public class CSSTidier implements XMLCSSConstants
+public class CSSTidier
 {
 
 	/**Whether font sizes should be made relative to a base font size.*/

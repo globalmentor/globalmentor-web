@@ -11,6 +11,7 @@ import com.garretwilson.io.URIInputStreamable;
 import com.garretwilson.lang.CharSequenceUtilities;
 import com.garretwilson.net.URIUtilities;
 import com.garretwilson.text.CharacterEncoding;
+import static com.garretwilson.text.xml.XMLUtilities.*;
 import com.garretwilson.text.xml.schema.*;
 
 import static com.garretwilson.text.xml.XMLConstants.*;
@@ -51,7 +52,7 @@ G***make tidy fix things like <li>All rights reserved.</p></li>; right now it tr
 @author Garret Wilson
 //G***del if we don't need @see XMLStatusReportable
 */
-public class XMLProcessor extends XMLUtilities implements URIInputStreamable
+public class XMLProcessor implements URIInputStreamable
 {
 
 //G***del package com.garretwilson.text.xml;

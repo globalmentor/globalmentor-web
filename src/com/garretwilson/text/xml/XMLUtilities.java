@@ -7,7 +7,7 @@ import javax.mail.internet.ContentType;
 
 import com.garretwilson.lang.*;
 import com.garretwilson.text.*;
-import com.garretwilson.text.xml.stylesheets.XMLStyleSheetConstants;
+import static com.garretwilson.text.xml.stylesheets.XMLStyleSheetConstants.*;
 import com.garretwilson.util.Debug;
 import org.w3c.dom.*;
 import org.w3c.dom.traversal.*;
@@ -24,7 +24,7 @@ import static com.garretwilson.text.xml.XMLConstants.*;
 in that they only access XML through the W3C DOM.
 @author Garret Wilson
 */
-public class XMLUtilities implements XMLStyleSheetConstants
+public class XMLUtilities
 {
 
 	/**A lazily-created cache of system IDs keyed to public IDs.*/

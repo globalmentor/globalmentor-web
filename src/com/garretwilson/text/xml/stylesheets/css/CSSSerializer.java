@@ -10,6 +10,7 @@ import com.garretwilson.text.CharacterEncoding;
 import com.garretwilson.lang.CharacterUtilities;
 import com.garretwilson.lang.IntegerUtilities;
 import com.garretwilson.lang.StringBufferUtilities;
+import static com.garretwilson.text.xml.stylesheets.css.XMLCSSConstants.*;
 import com.garretwilson.util.Debug;
 import com.garretwilson.util.PropertyUtilities;
 
@@ -21,7 +22,7 @@ import com.garretwilson.util.PropertyUtilities;
 @see XMLCSSProcessor
 @author Garret Wilson
 */
-public class CSSSerializer implements XMLCSSConstants
+public class CSSSerializer
 {
 
 	/**Whether the output should be formatted.*/

@@ -5,13 +5,7 @@ import java.io.StreamTokenizer;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
-/*G***bring these back as needed
-import java.util.ArrayList;
-import org.w3c.dom.DOMException;
-import org.w3c.dom.stylesheets.StyleSheet;
-import com.garretwilson.text.xml.XMLDOMException;
-*/
-import java.util.StringTokenizer;
+import static com.garretwilson.text.xml.stylesheets.css.XMLCSSConstants.*;
 import org.w3c.dom.css.CSSValue;
 import org.w3c.dom.css.CSSValueList;
 import com.garretwilson.util.Debug;
@@ -22,7 +16,7 @@ contains the medium <code>"all"</code>.
 @seince DOM Level 2
 @author Garret Wilson
 */
-public class XMLCSSValueList extends XMLCSSValue implements CSSValueList, XMLCSSConstants
+public class XMLCSSValueList extends XMLCSSValue implements CSSValueList
 {
 
 	/**The list of CSS values.*/

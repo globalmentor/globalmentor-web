@@ -4,7 +4,7 @@ package com.garretwilson.text.xml.stylesheets;
  <a href="http://www.w3.org/TR/xml-stylesheet">http://www.w3.org/TR/xml-stylesheet</a> .
 @author Garret Wilson
 */
-public interface XMLStyleSheetConstants
+public class XMLStyleSheetConstants
 {
 		//stylesheet processing instruction
 	/**The processing instruction for linking an XML document to a stylesheet according to

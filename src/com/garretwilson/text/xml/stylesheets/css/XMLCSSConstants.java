@@ -3,7 +3,7 @@ package com.garretwilson.text.xml.stylesheets.css;
 import java.awt.Color;
 
 /**Several constants for CSS.*/
-public interface XMLCSSConstants
+public class XMLCSSConstants
 {
 	/**The package name of the XML classes.*/
 	public final String PACKAGE_NAME="com.garretwilson.text.xml.sylesheets.css";

@@ -2,9 +2,7 @@ package com.garretwilson.text.xml.stylesheets.css;
 
 //G***del if we don't need import java.io.*;
 import com.garretwilson.text.xml.XMLDOMException;
-import com.garretwilson.text.xml.XMLNode;
 import com.garretwilson.text.xml.stylesheets.*;
-import com.garretwilson.text.xml.stylesheets.css.*;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
 import org.w3c.dom.css.*;
@@ -15,7 +13,7 @@ import org.w3c.dom.stylesheets.StyleSheet;
 @see org.w3c.dom.css.CSSStyleSheet
 @see XMLCSSConstants
 */
-public class XMLCSSStyleSheet extends XMLStyleSheet implements CSSStyleSheet, XMLCSSConstants
+public class XMLCSSStyleSheet extends XMLStyleSheet implements CSSStyleSheet
 {
 
 	/**Constructor for a CSS stylesheet specifying an owner node.

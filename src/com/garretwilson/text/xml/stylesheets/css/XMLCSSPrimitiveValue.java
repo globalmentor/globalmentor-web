@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.text.NumberFormat;
 import com.garretwilson.lang.CharSequenceUtilities;
 import com.garretwilson.lang.StringUtilities;
+import static com.garretwilson.text.xml.stylesheets.css.XMLCSSConstants.*;
 import com.garretwilson.util.Debug;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.css.*;
@@ -16,7 +17,7 @@ getPropertyCSSValue() of the XMLCSSStyleDeclaration class.
 @see XMLCSSStyleDeclaration#getPropertyCSSValue()
 @see org.w3c.dom.css.CSSValue
 */
-public class XMLCSSPrimitiveValue extends XMLCSSValue implements org.w3c.dom.css.CSSPrimitiveValue, XMLCSSConstants//G***fix, Cloneable
+public class XMLCSSPrimitiveValue extends XMLCSSValue implements org.w3c.dom.css.CSSPrimitiveValue//G***fix, Cloneable
 {
 	//Strings that specify the various accepted unit types. G***perhaps later give these more appropriate names
 		//G***put these in a constants file

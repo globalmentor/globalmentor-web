@@ -7,13 +7,14 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
 import org.w3c.dom.css.*;
 import com.garretwilson.text.xml.XMLDOMException;
+import static com.garretwilson.text.xml.stylesheets.css.XMLCSSConstants.*;
 //G***del if we don't need import com.garretwilson.util.StringManipulator;
 import com.garretwilson.util.Debug;
 
 /**The class which represents a signle rule set in a CSS stylesheet.
 @see org.w3c.dom.css.CSSRule
 */
-public class XMLCSSStyleRule extends XMLCSSRule implements CSSStyleRule, XMLCSSConstants//G***fix, Cloneable
+public class XMLCSSStyleRule extends XMLCSSRule implements CSSStyleRule	//G***fix, Cloneable
 {
 	/*Constructor which requires a parent stylesheet to be specified.
 	@param type The type of this CSS rule.

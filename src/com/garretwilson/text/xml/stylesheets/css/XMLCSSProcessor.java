@@ -15,7 +15,8 @@ import com.garretwilson.io.ParseUnexpectedDataException;
 import com.garretwilson.io.URIInputStreamable;
 //G***del import com.garretwilson.lang.StringManipulator;
 import com.garretwilson.text.xml.*;
-import com.garretwilson.text.xml.stylesheets.XMLStyleSheetConstants;
+import static com.garretwilson.text.xml.stylesheets.XMLStyleSheetConstants.*;
+import static com.garretwilson.text.xml.stylesheets.css.XMLCSSConstants.*;
 import com.garretwilson.util.Debug;
 import org.w3c.dom.*;
 import org.w3c.dom.stylesheets.StyleSheet;
@@ -26,7 +27,7 @@ import org.w3c.dom.traversal.*;
 @author Garret Wilson
 @see com.garretwilson.text.xml.XMLProcessor
 */
-public class XMLCSSProcessor implements XMLStyleSheetConstants, XMLCSSConstants, URIInputStreamable
+public class XMLCSSProcessor implements URIInputStreamable
 {
 
 	/**The interface to use to locate external files. This can be this class or another
@@ -299,6 +300,26 @@ return value;	//G***throw the correct error here
 		}
 	}
 
+	/**Parses a CSS style from a string.
+	@param styleValue The set of rules to parse.
+	//G***fix all the exception stuff
+	@except IOException Thrown when an i/o error occurs.
+	//G***fix	@except XMLSyntaxException Thrown when there is a syntax error in the XML file.
+	//G***fix	@except XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
+	@except ParseUnexpectedDataException Thrown when an unexpected character is found.
+	@except ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
+	//G***fix	@except XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
+	@return <code>true</code> if the end-of-rule-group character was found,
+		<code>false</code> if the end of the stream was reached.
+	*/
+	public static CSSStyleDeclaration parseRuleSet(final String styleValue) throws IOException,/*G***fix, XMLSyntaxException, XMLWellFormednessException, */ParseUnexpectedDataException, ParseEOFException//G***fix, XMLUndefinedEntityReferenceException
+	{
+		final XMLCSSStyleDeclaration style=new XMLCSSStyleDeclaration(); //create a new style declaration
+		final ParseReader styleReader=new ParseReader(styleValue);	//create a string reader from the value of this style information
+		parseRuleSet(styleReader, style); //read the style into our style declaration
+		return style;	//return the parsed style			
+	}	
+	
 	/**Parses an input stream that supposedly begins with a CSS style,
 		a group of rules with attribute names and values.
 	@param reader The reader from which to retrieve characters.
