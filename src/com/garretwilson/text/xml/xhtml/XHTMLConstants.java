@@ -92,6 +92,9 @@ public interface XHTMLConstants
 	public final static String ELEMENT_TABLE="table";
 	public final static String ELEMENT_TD="td";
 	public final static String ELEMENT_TH="th";
+	public final static String ELEMENT_TBODY="tbody";
+	public final static String ELEMENT_THEAD="thead";
+	public final static String ELEMENT_TFOOT="tfoot";
 	public final static String ELEMENT_TITLE="title";
 	public final static String ELEMENT_TR="tr";
 	public final static String ELEMENT_TT="tt";
