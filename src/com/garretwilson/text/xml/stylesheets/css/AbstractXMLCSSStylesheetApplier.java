@@ -11,6 +11,8 @@ import com.garretwilson.io.*;
 import com.garretwilson.net.URIUtilities;
 import com.garretwilson.rdf.RDFObject;
 import com.garretwilson.rdf.RDFResource;
+import static com.garretwilson.rdf.xpackage.XMLOntologyUtilities.*;
+
 import static com.garretwilson.rdf.RDFUtilities.*;
 import static com.garretwilson.rdf.xpackage.XMLOntologyUtilities.*;
 import static com.garretwilson.rdf.xpackage.XPackageUtilities.*;
@@ -152,7 +154,7 @@ public abstract class AbstractXMLCSSStylesheetApplier<D, E> implements URIInputS
 	{
 		final List<CSSStyleSheet> styleSheetList=new ArrayList<CSSStyleSheet>(); //create a new list to hold the stylesheets
 			//get all default stylesheets
-		final String[] namespaceURIArray=getNamespaceURIs(document, mediaType);  //get all namespaces used in this document
+		final String[] namespaceURIArray=getNamespaceURIs(document, mediaType, description);  //get all namespaces used in this document
 		for(int i=0; i<namespaceURIArray.length; ++i) //look at each namespace
 		{
 			final String namespaceURI=namespaceURIArray[i]; //get this namespace
@@ -264,36 +266,47 @@ Debug.trace("Found default stylesheet for namespace: ", namespaceURI);  //G***de
 	}
 
 	/**Finds the namespaces used by the document.
-	<p>If no namespace is indicated, a default namespace is derived from the
-		document media type. For example, a document with no namespace indicated
-		but with a media type of <code>text/html</code> will include the namespace
-		<code>http://www.w3.org/1999/xhtml</code>.</p>
-	<p>Currently this method only examines the root XML element, so other
-		vocabularies within the document will be ignored.</p>
+	<p>This implementation gathers namespaces from the following locations:</p>
+	<ul>
+		<li>The namespace used by the document element, if any.</li>
+		<li>The default namespace for the given content type, if any. For example,
+		a document with a content type of <code>text/html</code> will include the namespace
+		<code>http://www.w3.org/1999/xhtml</code>.</li>
+		<li>The XPackage <code>x:namespace</code> namespaces listed in the description, if any.</li>
+	</ul>
 	@param document The document that contains the namespaces.
-	@param mediaType The media type of the document, or <code>null</code> if the
-		media type is unknown.
+	@param mediaType The media type of the document, or <code>null</code> if the media type is unknown.
+	@param description An XPackage-compliant description of the document, or <code>null</code> if no description is available.
 	@return A non-<code>null</code> array of namespace URIs.
 	*/
-	protected String[] getNamespaceURIs(final D document, final ContentType mediaType)  //G***fix to actually look through all the namespaces, maybe, but that could be intensive -- on the other hand, a subclass could get that information from the OEB package, overriding the intensive part
+	protected String[] getNamespaceURIs(final D document, final ContentType mediaType, final RDFResource description)  //G***fix to actually look through all the namespaces, maybe, but that could be intensive -- on the other hand, a subclass could get that information from the OEB package, overriding the intensive part
 	{
-//G***fix when we support multiple namespaces		final List namespaceList=new ArrayList(); //create a list to store the namespaces
+		final Set<String> namespaceURISet=new HashSet<String>();	//create a set of namespaces
 		final E documentElement=getDocumentElement(document);	//get the root element of the document
-		String namespaceURI=getElementNamespaceURI(documentElement);  //get the document element namespace URI
-		if(namespaceURI==null)  //if there is no namespace defined
+		final String documentElementNamespaceURI=getElementNamespaceURI(documentElement);  //get the document element namespace URI
+		if(documentElementNamespaceURI!=null)	//if the document element has a namespace
 		{
-			final URI mediaTypeNamespaceURI=XMLNamespaceProcessor.getDefaultNamespaceURI(mediaType);	//see if we can find a default namespace for the media type
-			if(mediaTypeNamespaceURI!=null)	//if we found a namespace for the media type
+			namespaceURISet.add(documentElementNamespaceURI);	//add the document element namespace to the namespace set
+		}
+		final URI mediaTypeNamespaceURI=XMLNamespaceProcessor.getDefaultNamespaceURI(mediaType);	//see if we can find a default namespace for the media type
+		if(mediaTypeNamespaceURI!=null)	//if we found a namespace for the media type
+		{
+			namespaceURISet.add(mediaTypeNamespaceURI.toString());	//add the content type namespace to the namespace set
+		}
+		if(description!=null)	//if a description of the resource is provided
+		{
+			final Iterator<RDFResource> namespaceResourceIterator=getNamespaces(description);	//get an iterator to all namespaces
+			while(namespaceResourceIterator.hasNext())	//while there are more namespaces
 			{
-				namespaceURI=mediaTypeNamespaceURI.toString();	//use the namespace for the media type
+				final URI namespaceURI=namespaceResourceIterator.next().getReferenceURI();	//get the next namespace resource URI
+				if(namespaceURI!=null)	//if this namespace resource has a URI
+				{
+					namespaceURISet.add(namespaceURI.toString());	//add the namespace URI to the set
+				}
 			}
 		}
-		if(namespaceURI!=null)  //if we found a namespace
-			return new String[]{namespaceURI};  //return the namespace we found
-		else  //if we didn't find a namespace
-			return new String[]{};  //G***fix; make efficient
+		return namespaceURISet.toArray(new String[namespaceURISet.size()]);	//return an array of the namespace URIs in the set we filled
 	}
-
 
 	/**Retrieves an array of all referenced stylesheets in the document by href.
 		The stylesheet descriptors gathered reference:
