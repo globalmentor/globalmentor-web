@@ -224,7 +224,7 @@ G***should we return data from CDATA sections as well?
 	{
 		if(qualifiedName!=null)	//if there is a qualified name given
 		{
-			final int prefixDividerIndex=qualifiedName.indexOf(XMLConstants.NAMESPACE_DIVIDER);  //see if there is a prefix
+			final int prefixDividerIndex=qualifiedName.indexOf(NAMESPACE_DIVIDER);  //see if there is a prefix
 			if(prefixDividerIndex>=0)  //if there is a prefix
 				return qualifiedName.substring(0, prefixDividerIndex);  //return the prefix
 			else  //if there is no prefix
