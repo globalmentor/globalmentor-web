@@ -51,9 +51,9 @@ public class XMLBase implements XMLBaseConstants
 	*/
 	public static URI getBaseURI(final Element element, final URI documentBaseURI) throws URISyntaxException
 	{
-Debug.trace("Getting base URI for element: ", element.getNodeName()); //G***del
+//G***del Debug.trace("Getting base URI for element: ", element.getNodeName()); //G***del
 		final String xmlBaseValue=getXMLBaseAttributeValue(element);  //get the element's xml:base attribute value
-Debug.trace("xml:base: ", xmlBaseValue); //G***del
+//G***del Debug.trace("xml:base: ", xmlBaseValue); //G***del
 
 		final URI parentBaseURI; //determine the base URI of the parent, so that we can resolve relative URIs, if we need to
 		final Node parentNode=element.getParentNode();  //get the element's parent node
@@ -65,7 +65,7 @@ Debug.trace("xml:base: ", xmlBaseValue); //G***del
 			parentBaseURI=documentBaseURI;  //use the provided document base URI
 		if(xmlBaseValue!=null)  //if the element has an xml:base attribute value
 		{
-Debug.trace("found xml base value, creating URL with parent: ", parentBaseURI); //G***del
+//G***del Debug.trace("found xml base value, creating URL with parent: ", parentBaseURI); //G***del
 			return parentBaseURI!=null ? parentBaseURI.resolve(xmlBaseValue) : new URI(xmlBaseValue);	//create a URI relative to the parent's base URI	
 //G**del when new URI stuff works			return URLUtilities.createURL(parentBaseURI!=null ? new URL(parentBaseURI) : null, xmlBaseValue).toString(); //create a URI relative to the base URI G***fix to use URIs instead of URLs
 		}

@@ -3,7 +3,6 @@ package com.garretwilson.rdf;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
-import com.garretwilson.text.xml.XMLSerializer;
 import com.garretwilson.util.*;
 
 /**An RDF data model.
@@ -70,6 +69,17 @@ public class RDF implements RDFConstants
 		public void registerResourceFactory(final URI typeNamespaceURI, final RDFResourceFactory factory)
 		{
 			resourceFactoryMap.put(typeNamespaceURI, factory);
+		}
+
+		/**Removes the resource factory being used to create resources with a type
+			from the specified namespace. If there is no resource factory registered
+			for this namespace, no action will be taken.
+		@param typeNamespaceURI The namespace of the resource type for which this
+			factory should be used to create objects.
+		*/
+		public void unregisterResourceFactory(final URI typeNamespaceURI)
+		{
+			resourceFactoryMap.remove(typeNamespaceURI);
 		}
 
 		/**Retrieves a resource factory to be used for creating resources with a
