@@ -52,7 +52,7 @@ public class XMLUtilities implements XMLConstants, XMLStyleSheetConstants
 	*/
 	public static Document getDocument(final Node node)
 	{
-		return node.getNodeType()==node.DOCUMENT_NODE ? (Document)node : node.getOwnerDocument(); //return the node if it is a document, otherwise return the node's owner document
+		return node.getNodeType()==Node.DOCUMENT_NODE ? (Document)node : node.getOwnerDocument(); //return the node if it is a document, otherwise return the node's owner document
 	}
 
 	/**Returns the first node in the hierarchy, beginning with the specified
@@ -657,7 +657,8 @@ G***should we return data from CDATA sections as well?
 	@return A new document fragment containing the extracted children.
 	@exception ArrayIndexOutOfBoundsException Thrown if either index is negative,
 		if the start index is greater than or equal to the number of children,
-		or if the ending index is greater than the number of children.
+		or if the ending index is greater than the number of children (unless
+		the ending index is not greater than the starting index).
 	G***should we throw an exception is startChildIndex>endChildIndex, like String.substring()?
 	@exception DOMException
 	<ul>
@@ -669,9 +670,9 @@ G***should we return data from CDATA sections as well?
 	{
 		final NodeList childNodeList=node.getChildNodes();  //get a reference to the child nodes
 		final int childNodeCount=childNodeList.getLength(); //find out how many child nodes there are
-		if(startChildIndex<0 || startChildIndex>=childNodeCount)  //if the start child index is out of range
+		if(startChildIndex<0 || (endChildIndex>startChildIndex && startChildIndex>=childNodeCount))  //if the start child index is out of range
 			throw new ArrayIndexOutOfBoundsException(startChildIndex); //throw an exception indicating the illegal index
-		if(endChildIndex<0 || endChildIndex>childNodeCount)  //if the ending child index is out of range
+		if(endChildIndex<0 || (endChildIndex>startChildIndex && endChildIndex>childNodeCount))  //if the ending child index is out of range
 			throw new ArrayIndexOutOfBoundsException(endChildIndex); //throw an exception indicating the illegal index
 		final DocumentFragment documentFragment=node.getOwnerDocument().createDocumentFragment(); //create a document fragment to hold the nodes
 		Node lastAddedNode=null; //show that we haven't added any nodes, yet
