@@ -3,6 +3,7 @@ package com.garretwilson.text.xml;
 import java.net.URI;
 
 import com.garretwilson.model.DefaultResource;
+import com.garretwilson.util.IDable;
 
 /**Represents a qualified name (QName) of an XML element, including the
  	namespace URI, the prefix, and the local name.
@@ -10,7 +11,7 @@ The reference URI indicates the concatenation of the namespace URI and the local
 <p>This class does not currently use true URIs for namespaces, primarily because WebDAV uses a namespace ("DAV:") which is not a true URI.</p>
 @author Garret Wilson
 */
-public class QualifiedName extends DefaultResource
+public class QualifiedName extends DefaultResource implements IDable<URI>
 {
 
 	/**The namespace URI.*/
@@ -18,6 +19,9 @@ public class QualifiedName extends DefaultResource
 
 		/**@return The namespace URI.*/
 		public String getNamespaceURI() {return namespaceURI;}
+
+		/**@return The unique identifier of the object.*/
+		public URI getID() {return getReferenceURI();}
 
 	/**The namespace URI.*/
 //TODO del or fix	private final URI namespaceURI;
