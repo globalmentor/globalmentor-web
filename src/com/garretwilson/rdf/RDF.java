@@ -176,8 +176,8 @@ public class RDF implements RDFConstants	//TODO special-case rdf:nil list resour
 			return typedLiteralFactory;	//return whatever typed literal we found, if any
 		}
 
-	/**The set of all resources, named and unnamed.*/
-	private final Set resourceSet=new HashSet();
+	/**The set of all resources, named and unnamed, using identity rather than equality for equivalence.*/
+	private final Set resourceSet=new IdentityHashSet();
 
 	/**The map of all named resources, keyed to resource reference URI.*/
 	private final Map resourceMap=new HashMap();
@@ -583,4 +583,114 @@ public class RDF implements RDFConstants	//TODO special-case rdf:nil list resour
 				//register typed literal factories for certain default namespaces
 		registerTypedLiteralFactory(XMLSchemaConstants.XML_SCHEMA_NAMESPACE_URI, new XMLSchemaTypedLiteralFactory());	//XML Schema
 	}
+
+	/**Looks at all the resources in the RDF data model and recursively gathers
+		which resources reference which other resources.
+	<p>Circular references are correctly handled.</p>
+	@return A map that associates, for each resource, a set of all resources that
+		reference the that resource. Both the map and the associated set use
+		identity rather than equality to store resources, as some resources may
+		be anonymous.
+	*/
+	public Map getReferences()
+	{
+		final Map referenceMap=new IdentityHashMap();	//create a new map in which to store reference sets
+		return getReferences(referenceMap);	//gather all reference sets, place them in the reference map, and return the map
+		
+	}
+
+	/**Looks at all the resources in the RDF data model and recursively gathers
+		which resources reference which other resources.
+	<p>Circular references are correctly handled.</p>
+	@param referenceMap A map that associates, for each resource, a set of all
+		resources that reference the that resource.
+	@return The map of resources and associated referring resources. The
+		associated set will use identity rather than equality to store resources,
+		as some resources may be anonymous.
+	*/
+	public Map getReferences(final Map referenceMap)
+	{
+		final Set referringResourceSet=new IdentityHashSet();	//create a set of referring resources to prevent endless following of circular references
+		final Iterator resourceIterator=getResourceIterator();	//get an iterator to all resources in this data model
+		while(resourceIterator.hasNext())	//while there are more resources in the data model
+		{
+			getReferences((RDFResource)resourceIterator, referenceMap, referringResourceSet);	//gather all references to this resource
+		}
+		return referenceMap;	//return the map we populated
+	}
+
+	/**Looks at the resources and all its properties and recursively gathers
+		which resources reference which other resources.
+	<p>Circular references are correctly handled.</p>
+	@param resource The resource for which references should be gathered for the
+		resource and all resources that are property values of this resource's
+		properties, and so on.
+	@return A map that associates, for each resource, a set of all resources that
+		reference the that resource. Both the map and the associated set use
+		identity rather than equality to store resources, as some resources may
+		be anonymous.
+	*/
+	public static Map getReferences(final RDFResource resource)
+	{
+		return getReferences(resource, new IdentityHashMap());	//create a new identity hash map and use it to retrieve references to the given resources
+	}
+
+	/**Looks at the resources and all its properties and recursively gathers
+		which resources reference which other resources.
+	<p>Circular references are correctly handled.</p>
+	@param resource The resource for which references should be gathered for the
+		resource and all resources that are property values of this resource's
+		properties, and so on.
+	@param referenceMap A map that associates, for each resource, a set of all
+		resources that reference the that resource.
+	@return The map of resources and associated referring resources. The
+		associated set will use identity rather than equality to store resources,
+		as some resources may be anonymous.
+	*/
+	public static Map getReferences(final RDFResource resource, final Map referenceMap)
+	{
+		return getReferences(resource, referenceMap, new IdentityHashSet());	//gather references, showing that we haven't looked at any referring resources, yet
+	}
+
+	/**Looks at the resources and all its properties and recursively gathers
+		which resources reference which other resources.
+	<p>Circular references are correctly handled.</p>
+	@param resource The resource for which references should be gathered for the
+		resource and all resources that are property values of this resource's
+		properties, and so on.
+	@param referenceMap A map that associates, for each resource, a set of all
+		resources that reference the that resource.
+	@param referrerResourceSet The set of referrers the properties of which have
+		been traversed, the checking of which prevents circular reference problems.
+	@return The map of resources and associated referring resources. The
+		associated set will use identity rather than equality to store resources,
+		as some resources may be anonymous.
+	*/
+	protected static Map getReferences(final RDFResource resource, final Map referenceMap, final Set referrerResourceSet)
+	{
+		if(!referrerResourceSet.contains(resource))	//if we haven't checked this resource before
+		{
+			referrerResourceSet.add(resource);	//show that we've now checked this resource (in case one of the resource's own properties or subproperties reference this resource)
+			final Iterator propertyIterator=resource.getPropertyIterator();	//get an iterator to this resource's properties
+			while(propertyIterator.hasNext())	//while there are more properties
+			{
+				final RDFPropertyValuePair property=(RDFPropertyValuePair)propertyIterator.next();	//get the next property
+				final RDFObject valueObject=property.getPropertyValue();	//get the value of the property
+				if(valueObject instanceof RDFResource)	//if the value is a resource
+				{
+					final RDFResource valueResource=(RDFResource)valueObject;	//cast the object value to a resource
+					Set referenceSet=(Set)referenceMap.get(valueResource);	//get the set of references to the object resource
+					if(referenceSet==null)	//if this is the first reference we've gathered for the object resource
+					{
+						referenceSet=new IdentityHashSet();	//create a new set to keep track of references to the object resource
+						referenceMap.put(valueResource, referenceSet);	//store the set in the map, keyed to the object resource
+					}
+					referenceSet.add(resource);	//show that this resource is another referrer to the object resource of this property
+					getReferences(valueResource, referenceMap, referrerResourceSet);	//gather resources to the object resource
+				}
+			}
+		}
+		return referenceMap;	//return the map that was provided, which now holds sets of references to resources
+	}
+
 }
