@@ -644,7 +644,7 @@ public class RDF implements RDFConstants	//TODO special-case rdf:nil list resour
 		final Iterator resourceIterator=getResourceIterator();	//get an iterator to all resources in this data model
 		while(resourceIterator.hasNext())	//while there are more resources in the data model
 		{
-			getReferences((RDFResource)resourceIterator, referenceMap, referringResourceSet);	//gather all references to this resource
+			getReferences((RDFResource)resourceIterator.next(), referenceMap, referringResourceSet);	//gather all references to this resource
 		}
 		return referenceMap;	//return the map we populated
 	}
