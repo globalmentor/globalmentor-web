@@ -42,7 +42,10 @@ center
 	display: block;
 }
 
-/*G***<cite>*/
+cite
+{
+	font-style: italic;
+}
 
 code
 {
