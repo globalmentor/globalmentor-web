@@ -14,6 +14,7 @@ import com.garretwilson.text.CharacterEncoding;
 import com.garretwilson.text.xml.schema.*;
 
 import static com.garretwilson.text.xml.XMLConstants.*;
+import com.garretwilson.util.Debug;
 
 //G***del all the XMLUndefinedEntityReferenceException throws when we don't need them anymore, in favor of XMLWellFormednessException
 
@@ -452,7 +453,7 @@ public class XMLProcessor extends XMLUtilities implements URIInputStreamable
 			final URI uri=systemID!=null ? URIUtilities.createURI(context, systemID) : null;
 				//convert the public ID (if there is one) to a valid filaname and see if we can load this
 				//  resource locally rather than from the literal file location
-			final String localFilename=FileUtilities.encodeCrossPlatformFilename(publicID);	//get the name of the file if it were to be stored locally
+			final String localFilename=publicID!=null ? FileUtilities.encodeCrossPlatformFilename(publicID) : null;	//get the name of the file if it were to be stored locally
 /*G***del
 			if(publicID!=null)	//G***del
 			{
@@ -502,7 +503,7 @@ public class XMLProcessor extends XMLUtilities implements URIInputStreamable
 		XMLReader entityReader=null;	//the reader which we will construct and return; we don't know what it will be, yet
 		if(entity.getSystemID()!=null)	//if there is a system identifier for this entity, it's an external entity
 		{
-//G***del Debug.trace("Before creating reader for: "+entity.getSystemID());
+Debug.trace("Before creating reader for entity public ID", entity.getPublicId(), "system ID", entity.getSystemId());			
 			return createReader(context, entity.getPublicID(), entity.getSystemID());	//G***testing; comment
 /*G***del if we don't need
 							entity.setSourceName(externalEntityReader.getName());	//store where we found the entity
