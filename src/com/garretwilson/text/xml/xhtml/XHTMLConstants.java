@@ -1,5 +1,7 @@
 package com.garretwilson.text.xml.xhtml;
 
+import java.net.URI;
+
 /**Constants for XHTML.
 @author Garret Wilson
 */
@@ -10,7 +12,7 @@ public interface XHTMLConstants
 	public static final String XHTML_NAMESPACE_PREFIX="xhtml";
 
 	/**The URI to the XHTML namespace.*/
-	public static final String XHTML_NAMESPACE_URI="http://www.w3.org/1999/xhtml";
+	public static final URI XHTML_NAMESPACE_URI=URI.create("http://www.w3.org/1999/xhtml");
 
 //G***del	/**The package name of the OEB XML classes.*/
 //G***del if not needed	public final static String PACKAGE_NAME="com.garretwilson.text.xml.oeb";

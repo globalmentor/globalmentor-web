@@ -25,12 +25,12 @@ public class XMLSchemaDocumenter implements com.garretwilson.text.xml.xhtml.XHTM
 	{
 		final XMLDOMImplementation domImplementation=new XMLDOMImplementation();	//create a new DOM implementation
 		final DocumentType documentType=domImplementation.createDocumentType(ELEMENT_HTML, XHTML1_STRICT_PUBLIC_ID, XHTML1_STRICT_SYSTEM_ID);	//create an XHTML document type G***perhaps put this in an OEB class
-		final Document document=domImplementation.createDocument(XHTML_NAMESPACE_URI, ELEMENT_HTML, documentType);	//create an XHTML document G***perhaps put this in an OEB class
+		final Document document=domImplementation.createDocument(XHTML_NAMESPACE_URI.toString(), ELEMENT_HTML, documentType);	//create an XHTML document G***perhaps put this in an OEB class
 			//G***check about whether we need to add a <head> and <title>
 		final Element htmlElement=document.getDocumentElement();	//get the html element
 		XMLUtilities.appendText(/*G***del when works document, */htmlElement, "\n");	//append a newline to start the content of the html element
 		document.appendChild(htmlElement);	//add the html element to the document
-		final Element bodyElement=document.createElementNS(XHTML_NAMESPACE_URI, ELEMENT_BODY);	//create the body element
+		final Element bodyElement=document.createElementNS(XHTML_NAMESPACE_URI.toString(), ELEMENT_BODY);	//create the body element
 		XMLUtilities.appendText(bodyElement, "\n");	//append a newline to separate the information in the body
 		generateAttributeGroupDocumentation(schema, bodyElement); //generate the attribute group documentation
 /*G***fix
@@ -69,7 +69,7 @@ Debug.trace("found annotation");
 					//get the next user information
 				final XMLSchemaAnnotation.UserInformation userInfo=(XMLSchemaAnnotation.UserInformation)userInfoIterator.next();
 Debug.trace("found user info: ", userInfo.toString());
-				final Element userInfoParagraphElement=XMLUtilities.appendElement(bodyElement, XHTML_NAMESPACE_URI,
+				final Element userInfoParagraphElement=XMLUtilities.appendElement(bodyElement, XHTML_NAMESPACE_URI.toString(),
 						ELEMENT_P, null); //create the annotation documentation paragraph, but do not add any content
 				  //G***do something besides creating a new XML parser from scratch
 					//G***see if we can do something besides casting the document to an XMLDocument
@@ -108,7 +108,7 @@ Debug.trace("attribute groups: ", attributeGroupCollection.size());
 		if(attributeGroupCollection.size()>0) //if there are global attribute groups
 		{
 			//<h2>Global Attribute Groups</h2>
-		  final Element headingElement=XMLUtilities.appendElement(bodyElement, XHTML_NAMESPACE_URI,
+		  final Element headingElement=XMLUtilities.appendElement(bodyElement, XHTML_NAMESPACE_URI.toString(),
 				  ELEMENT_H2, "Global Attribute Groups"); //create the heading G***i18n
 			XMLUtilities.appendText(bodyElement, "\n");	//append a newline to separate the information in the body
 			final Iterator attributeGroupIterator=attributeGroupCollection.iterator();  //get an iterator to look through the attribute groups
@@ -128,7 +128,7 @@ Debug.trace("attribute groups: ", attributeGroupCollection.size());
 	public static void generateDocumentation(final XMLSchema schema, final Element bodyElement, final XMLSchemaAttributeGroup attributeGroup)
 	{
 		//<h3>Attribute Group Name</h3>
-		final Element attributeGroupHeadingElement=XMLUtilities.appendElement(bodyElement, XHTML_NAMESPACE_URI,
+		final Element attributeGroupHeadingElement=XMLUtilities.appendElement(bodyElement, XHTML_NAMESPACE_URI.toString(),
 				ELEMENT_H3, attributeGroup.getName()); //create the heading for the attribute group
 			//set the "id" attribute to identify this attribute
 		attributeGroupHeadingElement.setAttributeNS(null, ATTRIBUTE_ID, "attributeGroup_"+attributeGroup.getName());
