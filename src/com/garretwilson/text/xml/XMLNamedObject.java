@@ -8,7 +8,7 @@ import com.garretwilson.lang.ObjectUtilities;
 <p>This class can be used indepedently of the rest of the W3C DOM
 	implementations in this package.</p>
 */
-public class XMLNamedObject	//TODO implement NamedObject or extend DefaultNamedObject when Java gets generics
+public class XMLNamedObject	//TODO implement NamedObject or extend DefaultNamedObject when Java gets generics; also investigate leveraging the new QualifiedName
 {
 
 	/**The qualified name of the object.*/
