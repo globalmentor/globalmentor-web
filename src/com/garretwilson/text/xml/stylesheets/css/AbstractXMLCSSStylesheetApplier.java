@@ -11,9 +11,8 @@ import com.garretwilson.io.*;
 import com.garretwilson.net.URIUtilities;
 import com.garretwilson.text.xml.XMLNamespaceProcessor;
 import com.garretwilson.text.xml.XMLUtilities;
-import com.garretwilson.text.xml.stylesheets.XMLStyleSheetConstants;
+import static com.garretwilson.text.xml.stylesheets.XMLStyleSheetConstants.*;
 import com.garretwilson.text.xml.stylesheets.XMLStyleSheetDescriptor;
-import com.garretwilson.text.xml.oeb.OEBConstants;
 import com.garretwilson.text.xml.xhtml.XHTMLConstants;
 //G***del import com.garretwilson.text.xml.xhtml.XHTMLUtilities;  //G***del
 import com.garretwilson.util.Debug;
@@ -21,9 +20,11 @@ import com.garretwilson.util.NameValuePair;
 import org.w3c.dom.css.*;
 
 /**Applies styles to XML elements.
+@param <D> The document type.
+@param <E> The element type.
 @author Garret Wilson
 */
-public abstract class AbstractXMLCSSStylesheetApplier implements XMLStyleSheetConstants, URIInputStreamable
+public abstract class AbstractXMLCSSStylesheetApplier<D, E> implements URIInputStreamable
 {
 
 	/**Determeins the base URI of the given document.
@@ -34,29 +35,29 @@ public abstract class AbstractXMLCSSStylesheetApplier implements XMLStyleSheetCo
 //G***del if not needed	protected abstract URI getDocumentBaseURI(final Object document);
 
 	/**Returns the object that represents the root element of the given document.
-	@param The object representing the XML document.
+	@param document The object representing the XML document.
 	@return The object representing the root element of the XML document.
 	*/
-	protected abstract Object getDocumentElement(final Object document);
+	protected abstract E getDocumentElement(final D document);
 
 	/**Retrieves processing instructions from the given document.
 	@param document The document that might contain XML processing instructions.
 	@return A non-<code>null</code> array of name-value pairs representing
 		processing instructions.
 	*/
-	protected abstract NameValuePair[] getDocumentProcessingInstructions(final Object document);
+	protected abstract NameValuePair[] getDocumentProcessingInstructions(final D document);
 
 	/**Retrieves the namespace URI of the given element.
 	@param element The element for which the namespace URI should be returned.
 	@return The namespace URI of the given element.
 	*/
-	protected abstract String getElementNamespaceURI(final Object element);
+	protected abstract String getElementNamespaceURI(final E element);
 
 	/**Retrieves the local name of the given element.
 	@param element The element for which the local name should be returned.
 	@return The local name of the given element.
 	*/
-	protected abstract String getElementLocalName(final Object element);
+	protected abstract String getElementLocalName(final E element);
 
 	/**Retrieves the value of one of the element's attributes.
 	@param element The element owner of the attributes.
@@ -65,38 +66,45 @@ public abstract class AbstractXMLCSSStylesheetApplier implements XMLStyleSheetCo
 	@return The value of the specified attribute, or <code>null</code> if there
 		is no such attribute.
 	*/
-	protected abstract String getElementAttributeValue(final Object element, final String attributeNamespaceURI, final String attributeLocalName);
+	protected abstract String getElementAttributeValue(final E element, final String attributeNamespaceURI, final String attributeLocalName);
 
 	/**Retrieves the parent element for the given element.
 	@param element The element for which a parent should be found.
 	@return The element's parent, or <code>null</code> if no parent could be found.
 	 */
-	protected abstract Object getParentElement(final Object element);
+	protected abstract E getParentElement(final E element);
 
-	/**Determines the number of child elements the given element has.
+	/**Determines the number of child nodes the given element has.
 	@param element The parent element.
-	@return The number of child elements this element has.
+	@return The number of child nodes this element has.
 	*/
-	protected abstract int getChildElementCount(final Object element);
-	
+	protected abstract int getChildCount(final E element);
+
+	/**Determines if the given indexed child of an element is an element.
+	@param element The parent element.
+	@param index The zero-based index of the child.
+	@return <code>true</code> if the the child of the element at the given index is an element.
+	*/
+	protected abstract boolean isChildElement(final E element, final int index);
+
 	/**Retrieves the given indexed child of an element.
 	@param element The parent element.
 	@param index The zero-based index of the child.
 	@return The child of the element at the given index.
 	*/
-	protected abstract Object getChildElement(final Object element, final int index);
+	protected abstract E getChildElement(final E element, final int index);
 
 	/**Retrieves all child text of the given element.
 	@param element The element for which text should be returned.
 	@return The text content of the element.
 	*/
-	protected abstract String getElementText(final Object element);
+	protected abstract String getElementText(final E element);
 
 	/**Imports style information into that already gathered for the given element.
 	@param element The element for which style information should be imported
 	@param cssStyle The style information to import.	
 	*/
-	protected abstract void importCSSStyle(final Object element, final CSSStyleDeclaration cssStyle);
+	protected abstract void importCSSStyle(final E element, final CSSStyleDeclaration cssStyle);
 
 	/**Makes copies of the properties in the second style declaration and adds
 		them to the first style, replacing any properties with the same name that
@@ -132,9 +140,9 @@ public abstract class AbstractXMLCSSStylesheetApplier implements XMLStyleSheetCo
 		media type is unknown.
 	@return An array of stylesheets.
 	*/
-	public CSSStyleSheet[] getStylesheets(final Object document, final URI baseURI, final ContentType mediaType)
+	public CSSStyleSheet[] getStylesheets(final D document, final URI baseURI, final ContentType mediaType)
 	{
-		final List styleSheetList=new ArrayList(); //create a new list to hold the stylesheets
+		final List<CSSStyleSheet> styleSheetList=new ArrayList<CSSStyleSheet>(); //create a new list to hold the stylesheets
 			//get all default stylesheets
 		final String[] namespaceURIArray=getNamespaceURIs(document, mediaType);  //get all namespaces used in this document
 		for(int i=0; i<namespaceURIArray.length; ++i) //look at each namespace
@@ -188,17 +196,20 @@ Debug.trace("Found default stylesheet for namespace: ", namespaceURI);  //G***de
 			}
 		}
 			//process and gather any internal stylesheets G***right now, this is very HTML/OEB specific; fix to check the namespace or something
-		final Object documentElement=getDocumentElement(document);	//get the document element
-		final int childElementCount=getChildElementCount(documentElement);  //find out how many direct children are in the document
-		for(int childIndex=0; childIndex<childElementCount; ++childIndex)  //look at the direct children of the document element
+		final E documentElement=getDocumentElement(document);	//get the document element
+		final int childCount=getChildCount(documentElement);  //find out how many direct children are in the document
+		for(int childIndex=0; childIndex<childCount; ++childIndex)  //look at the direct children of the document element
 		{
-			final Object childElement=getChildElement(documentElement, childIndex); //get a reference to the child element
-			final String childElementLocalName=getElementLocalName(childElement);  //get the child element local name
-					//if this element is <head> and it's an HTML <head>
-			if(XHTMLConstants.ELEMENT_HEAD.equals(childElementLocalName))
-//TODO fix checking to see if this is HTML					&& XHTMLSwingTextUtilities.isHTMLElement(childAttributeSet, documentAttributeSet))
+			if(isChildElement(documentElement, childIndex))	//if this child is an element
 			{
-				getInternalStylesheets(childElement, cssProcessor, styleSheetList); //get the internal stylesheets from the HTML <head> element
+				final E childElement=getChildElement(documentElement, childIndex); //get a reference to the child element
+				final String childElementLocalName=getElementLocalName(childElement);  //get the child element local name
+						//if this element is <head> and it's an HTML <head>
+				if(XHTMLConstants.ELEMENT_HEAD.equals(childElementLocalName))
+	//TODO fix checking to see if this is HTML					&& XHTMLSwingTextUtilities.isHTMLElement(childAttributeSet, documentAttributeSet))
+				{
+					getInternalStylesheets(childElement, cssProcessor, styleSheetList); //get the internal stylesheets from the HTML <head> element
+				}
 			}
 		}
 		return (CSSStyleSheet[])styleSheetList.toArray(new CSSStyleSheet[styleSheetList.size()]);  //return an array of stylesheets we collected
@@ -211,7 +222,7 @@ Debug.trace("Found default stylesheet for namespace: ", namespaceURI);  //G***de
 	@param cssProcessor The processor that processes CSS stylesheets.
 	@param styleSheetList The list to which stylesheets should be added.
 	*/
-	protected void getInternalStylesheets(final Object element, final XMLCSSProcessor cssProcessor, final List styleSheetList)
+	protected void getInternalStylesheets(final E element, final XMLCSSProcessor cssProcessor, final List<CSSStyleSheet> styleSheetList)
 	{
 		final String elementLocalName=getElementLocalName(element);  //get the element's local name
 			//if this is an HTML <style>
@@ -232,11 +243,14 @@ Debug.trace("Found default stylesheet for namespace: ", namespaceURI);  //G***de
 		}
 		else  //if this is not a style element
 		{
-			final int childElementCount=getChildElementCount(element); //find out how many child elements there are
-			for(int childElementIndex=0; childElementIndex<childElementCount; ++childElementIndex) //look at each child element
+			final int childCount=getChildCount(element); //find out how many child elements there are
+			for(int childIndex=0; childIndex<childCount; ++childIndex) //look at each child element
 			{
-				final Object childElement=getChildElement(element, childElementIndex);  //get this child element
-				getInternalStylesheets(childElement, cssProcessor, styleSheetList);  //get internal stylesheets contained in this element
+				if(isChildElement(element, childIndex))	//if this child is an element
+				{
+					final E childElement=getChildElement(element, childIndex);  //get this child element
+					getInternalStylesheets(childElement, cssProcessor, styleSheetList);  //get internal stylesheets contained in this element
+				}
 			}
 		}
 	}
@@ -253,10 +267,10 @@ Debug.trace("Found default stylesheet for namespace: ", namespaceURI);  //G***de
 		media type is unknown.
 	@return A non-<code>null</code> array of namespace URIs.
 	*/
-	protected String[] getNamespaceURIs(final Object document, final ContentType mediaType)  //G***fix to actually look through all the namespaces, maybe, but that could be intensive -- on the other hand, a subclass could get that information from the OEB package, overriding the intensive part
+	protected String[] getNamespaceURIs(final D document, final ContentType mediaType)  //G***fix to actually look through all the namespaces, maybe, but that could be intensive -- on the other hand, a subclass could get that information from the OEB package, overriding the intensive part
 	{
 //G***fix when we support multiple namespaces		final List namespaceList=new ArrayList(); //create a list to store the namespaces
-		final Object documentElement=getDocumentElement(document);	//get the root element of the document
+		final E documentElement=getDocumentElement(document);	//get the root element of the document
 		String namespaceURI=getElementNamespaceURI(documentElement);  //get the document element namespace URI
 		if(namespaceURI==null)  //if there is no namespace defined
 		{
@@ -282,9 +296,9 @@ Debug.trace("Found default stylesheet for namespace: ", namespaceURI);  //G***de
 	@param document The document in which the descriptors exist.
 	@return An array of style sheet descriptors, each referencing a stylesheet.
 	*/
-	protected XMLStyleSheetDescriptor[] getStylesheetDescriptors(final Object document)
+	protected XMLStyleSheetDescriptor[] getStylesheetDescriptors(final D document)
 	{
-		final List styleSheetDescriptorList=new ArrayList();  //create a list to hold stylesheet descriptors
+		final List<XMLStyleSheetDescriptor> styleSheetDescriptorList=new ArrayList<XMLStyleSheetDescriptor>();  //create a list to hold stylesheet descriptors
 		final NameValuePair[] processingInstructions=getDocumentProcessingInstructions(document);  //get the processing instructions, if any (this will never return null)
 			//find stylesheet references from processing instructions
 		for(int processingInstructionIndex=0; processingInstructionIndex<processingInstructions.length; ++processingInstructionIndex) //look at each processing instruction
@@ -296,7 +310,7 @@ Debug.trace("Found default stylesheet for namespace: ", namespaceURI);  //G***de
 				final String processingInstructionData=(String)processingInstruction.getValue();  //get the processing instruction's data, assuming it's a string
 				//G***check the media type, etc. here
 					//get the href pseudo-attribute, if it is defined
-				final String href=XMLUtilities.getProcessingInstructionPseudoAttributeValue(processingInstructionData, XMLStyleSheetConstants.HREF_ATTRIBUTE);
+				final String href=XMLUtilities.getProcessingInstructionPseudoAttributeValue(processingInstructionData, HREF_ATTRIBUTE);
 				final XMLStyleSheetDescriptor styleSheetDescriptor=new XMLStyleSheetDescriptor(href); //create a new descriptor for this stylesheet G***fix for media type, title, etc.
 				styleSheetDescriptorList.add(styleSheetDescriptor); //add the stylesheet descriptor to our list
 			}
@@ -311,7 +325,7 @@ Debug.trace("Found default stylesheet for namespace: ", namespaceURI);  //G***de
 	@param element The element to which styles should be applied, along
 		with its children.
 	*/
-	public void applyStyleSheet(final CSSStyleSheet styleSheet, final Object element)
+	public void applyStyleSheet(final CSSStyleSheet styleSheet, final E element)
 	{
 		final String elementLocalName=getElementLocalName(element);  //get the element's local name for quick lookup
 //G***del Debug.trace("applying stylesheet to element: ", elementLocalName);  //G***del
@@ -328,16 +342,19 @@ Debug.trace("Found default stylesheet for namespace: ", namespaceURI);  //G***de
 			}
 		}
 			//apply the stylesheet to the child elements
-		for(int childIndex=getChildElementCount(element)-1; childIndex>=0; --childIndex) //look at each child element, starting from the last to the first because order doesn't matter
+		for(int childIndex=getChildCount(element)-1; childIndex>=0; --childIndex) //look at each child, starting from the last to the first because order doesn't matter
 		{
-			final Object childElement=getChildElement(element, childIndex);  //get this child
-			applyStyleSheet(styleSheet, childElement); //apply this stylesheet to the child element
-/*TODO fix for Swing stylesheet applier
-			if(!AbstractDocument.ContentElementName.equals(childSwingElement.getName())) //if this isn't content (content never gets styled)
+			if(isChildElement(element, childIndex))	//if this child is an element
 			{
-				applyStyleSheet(styleSheet, childSwingElement); //apply this stylesheet to the child element
+				final E childElement=getChildElement(element, childIndex);  //get this child
+				applyStyleSheet(styleSheet, childElement); //apply this stylesheet to the child element
+	/*TODO fix for Swing stylesheet applier
+				if(!AbstractDocument.ContentElementName.equals(childSwingElement.getName())) //if this isn't content (content never gets styled)
+				{
+					applyStyleSheet(styleSheet, childSwingElement); //apply this stylesheet to the child element
+				}
+	*/
 			}
-*/
 		}
 	}
 
@@ -360,7 +377,7 @@ Debug.trace("Found default stylesheet for namespace: ", namespaceURI);  //G***de
 	@param element The element this style might apply to.
 	@param elementLocalName The element's local name for quick lookup.
 	*/
-	protected boolean isApplicable(final CSSStyleRule cssStyleRule, final Object element, final String elementLocalName)
+	protected boolean isApplicable(final CSSStyleRule cssStyleRule, final E element, final String elementLocalName)
 	{
 //G***del Debug.trace("Checking to see if: "+getSelectorText()+" applies to: "+element.getNodeName());
 		final XMLCSSStyleRule xmlCSSStyleRule=(XMLCSSStyleRule)cssStyleRule;  //G***fix; right now we use special features of our CSS DOM implementation -- fix to use just the normal CSS DOM
@@ -391,7 +408,7 @@ Debug.trace("Context "+contextIndex+": "+selectorContext.getTagName());	//G***de
 	@param element The element this context array might apply to.
 	@param elementLocalName The element's local name for quick lookup.
 	*/
-	protected boolean isApplicable(final XMLCSSSelector[] contextArray, Object element, final String elementLocalName) //G***this method may be modified or go away when we fully switch to the DOM
+	protected boolean isApplicable(final XMLCSSSelector[] contextArray, E element, final String elementLocalName) //G***this method may be modified or go away when we fully switch to the DOM
 	{
 		//first see if we can do a quick comparison on the most common type of selector: name-based selectors
 		if(contextArray.length==1)  //if there is only one context in the array
@@ -434,7 +451,7 @@ Debug.trace("Context "+contextIndex+": "+selectorContext.getTagName());	//G***de
 		contained in this selector.
 	@param elementLocalName The element's local name for quick lookup.
 	*/
-	protected boolean isApplicable(final XMLCSSSelector selectorContext, final Object element, final String elementLocalName)  //G***this method may be modified or go away when we fully switch to the DOM
+	protected boolean isApplicable(final XMLCSSSelector selectorContext, final E element, final String elementLocalName)  //G***this method may be modified or go away when we fully switch to the DOM
 	{
 //G***del Debug.trace("XMLCSSSelector checking to see if "+element.getNodeName()+" matches "+getCssText()); //G***del
 			//G***later, add the CSS ID checking

@@ -13,16 +13,16 @@ import org.w3c.dom.stylesheets.*;
 /**Applies styles to XML elements.
 @author Garret Wilson
 */
-public class XMLCSSStylesheetApplier extends AbstractXMLCSSStylesheetApplier implements CSSStyleManager //G***do we really need this style manager interaface 
+public class XMLCSSStylesheetApplier extends AbstractXMLCSSStylesheetApplier<Document, Element> implements CSSStyleManager //G***do we really need this style manager interaface 
 {
 
 	/**The map of styles, each keyed to an element. The weak map allows the styles
-		to be garbage-collected once the corresponding elent is no longer used.
+		to be garbage-collected once the corresponding element is no longer used.
 	*/
-	protected final Map cssStyleMap=new WeakHashMap();  //G***fix entire pattern to be much more general and robust
+	protected final Map<Element, CSSStyleDeclaration> cssStyleMap=new WeakHashMap<Element, CSSStyleDeclaration>();  //G***fix entire pattern to be much more general and robust
 
 		/**@return The map of styles, each keyed to an element.*/
-		protected Map getCSSStyleMap() {return cssStyleMap;}
+		protected Map<Element, CSSStyleDeclaration> getCSSStyleMap() {return cssStyleMap;}
 
 //G***maybe delete this comment
 		/**Retrieves the style of the given element.
@@ -40,7 +40,7 @@ public class XMLCSSStylesheetApplier extends AbstractXMLCSSStylesheetApplier imp
 		*/
 		public CSSStyleDeclaration getStyle(final Element element)
 		{
-			return (CSSStyleDeclaration)cssStyleMap.get(element);  //return the style, if any, stored keyed to the element
+			return cssStyleMap.get(element);  //return the style, if any, stored keyed to the element
 		}
 
 		/**Sets the style of an element, replacing any existing style stored for the
@@ -77,12 +77,12 @@ public class XMLCSSStylesheetApplier extends AbstractXMLCSSStylesheetApplier imp
 	}
 
 	/**Returns the object that represents the root element of the given document.
-	@param The object representing the XML document.
+	@param document The object representing the XML document.
 	@return The object representing the root element of the XML document.
 	*/
-	protected Object getDocumentElement(final Object document)
+	protected Element getDocumentElement(final Document document)
 	{
-		return(((Document)document).getDocumentElement());	//return the root element of the document
+		return(document.getDocumentElement());	//return the root element of the document
 	}
 
 	/**Retrieves processing instructions from the given document.
@@ -90,9 +90,9 @@ public class XMLCSSStylesheetApplier extends AbstractXMLCSSStylesheetApplier imp
 	@return A non-<code>null</code> array of name-value pairs representing
 		processing instructions.
 	*/
-	protected NameValuePair[] getDocumentProcessingInstructions(final Object document)
+	protected NameValuePair[] getDocumentProcessingInstructions(final Document document)
 	{
-		final List processingInstructionList=XMLUtilities.getNodesByName((Document)document, Node.PROCESSING_INSTRUCTION_NODE, "*", false);	//get a list of all the processing instructions in the document TODO use a constant for the wildcard
+		final List processingInstructionList=XMLUtilities.getNodesByName(document, Node.PROCESSING_INSTRUCTION_NODE, "*", false);	//get a list of all the processing instructions in the document TODO use a constant for the wildcard
 		final NameValuePair[] processingInstructions=new NameValuePair[processingInstructionList.size()];	//create an array large enough to hold all the processing instructions
 		for(int i=0; i<processingInstructionList.size(); ++i)	//look at each of the nodes representing a style sheet link
 		{
@@ -106,19 +106,19 @@ public class XMLCSSStylesheetApplier extends AbstractXMLCSSStylesheetApplier imp
 	@param element The element for which the namespace URI should be returned.
 	@return The namespace URI of the given element.
 	*/
-	protected String getElementNamespaceURI(final Object element)
+	protected String getElementNamespaceURI(final Element element)
 	{
-		return element instanceof Element ? ((Element)element).getNamespaceURI() : null;	//return the element's namespace URI
+		return element instanceof Element ? element.getNamespaceURI() : null;	//return the element's namespace URI
 	}
 
 	/**Retrieves the local name of the given element.
 	@param element The element for which the local name should be returned.
 	@return The local name of the given element.
 	*/
-	protected String getElementLocalName(final Object element)
+	protected String getElementLocalName(final Element element)
 	{
 			//TODO fix all this---we don't properly distinguish between elements and nodes
-		return element instanceof Element ? ((Element)element).getLocalName() : null;	//return the element's local name	//G***fix
+		return element instanceof Element ? element.getLocalName() : null;	//return the element's local name	//G***fix
 	}
 	
 	/**Retrieves the value of one of the element's attributes.
@@ -128,67 +128,77 @@ public class XMLCSSStylesheetApplier extends AbstractXMLCSSStylesheetApplier imp
 	@return The value of the specified attribute, or <code>null</code> if there
 		is no such attribute.
 	*/
-	protected String getElementAttributeValue(final Object element, final String attributeNamespaceURI, final String attributeLocalName)
+	protected String getElementAttributeValue(final Element element, final String attributeNamespaceURI, final String attributeLocalName)
 	{
-		return element instanceof Element ? XMLUtilities.getDefinedAttributeNS((Element)element, attributeNamespaceURI, attributeLocalName) : null;	//return the attribute value only if it is defined
+		return element instanceof Element ? XMLUtilities.getDefinedAttributeNS(element, attributeNamespaceURI, attributeLocalName) : null;	//return the attribute value only if it is defined
 	}
 	
 	/**Retrieves the parent element for the given element.
 	@param element The element for which a parent should be found.
 	@return The element's parent, or <code>null</code> if no parent could be found.
 	 */
-	protected Object getParentElement(final Object element)
+	protected Element getParentElement(final Element element)
 	{
-		final Node parentNode=((Node)element).getParentNode();	//get this element's parent node
+		final Node parentNode=element.getParentNode();	//get this element's parent node
 		if(parentNode!=null)	//if there is a parent element
 		{
 			if(parentNode.getNodeType()==Node.ELEMENT_NODE)	//if the parent is an element
 			{
-				return parentNode;	//return the parent element
+				return (Element)parentNode;	//return the parent element
 			}
 		}
 		return null;	//either we didn't find a parent node, or it wasn't an element
 	}
 
-	/**Determines the number of child elements the given element has.
+	/**Determines the number of child nodes the given element has.
 	@param element The parent element.
 	@return The number of child elements this element has.
 	*/
-	protected int getChildElementCount(final Object element)
+	protected int getChildCount(final Element element)
 	{
-		return element instanceof Element ? ((Element)element).getChildNodes().getLength() : 0;	//return the number of child elements
+		return element.getChildNodes().getLength();	//return the number of child nodes
 	}
-		
+
+	/**Determines if the given indexed child of an element is an element.
+	@param element The parent element.
+	@param index The zero-based index of the child.
+	@return <code>true</code> if the the child of the element at the given index is an element.
+	*/
+	protected boolean isChildElement(final Element element, final int index)
+	{
+		return element.getChildNodes().item(index).getNodeType()==Node.ELEMENT_NODE;	//see if this is an element node
+	}
+
 	/**Retrieves the given indexed child of an element.
 	@param element The parent element.
 	@param index The zero-based index of the child.
 	@return The child of the element at the given index.
 	*/
-	protected Object getChildElement(final Object element, final int index)
+	protected Element getChildElement(final Element element, final int index)
 	{
-		return ((Element)element).getChildNodes().item(index);	//return the child element at the given index
+		return (Element)element.getChildNodes().item(index);	//return the child element at the given index
 	}
 
 	/**Retrieves all child text of the given element.
 	@param element The element for which text should be returned.
 	@return The text content of the element.
 	*/
-	protected String getElementText(final Object element)
+	protected String getElementText(final Element element)
 	{
-		return XMLUtilities.getText((Element)element, true);	//return all the child text of the element
+		return XMLUtilities.getText(element, true);	//return all the child text of the element
 	}
 	
 	/**Imports style information into that already gathered for the given element.
 	@param element The element for which style information should be imported
 	@param cssStyle The style information to import.	
 	*/
-	protected void importCSSStyle(final Object element, final CSSStyleDeclaration cssStyle)
+	protected void importCSSStyle(final Element element, final CSSStyleDeclaration cssStyle)
 	{
-		CSSStyleDeclaration elementStyle=getStyle((Element)element);	//get this element's style
+		CSSStyleDeclaration elementStyle=getStyle(element);	//get this element's style
 		if(elementStyle==null) //if there is no existing style
 		{
 			elementStyle=new XMLCSSStyleDeclaration();  //create an empty default style TODO use standard DOM classes if we can
-			setStyle((Element)element, elementStyle); //set the element style to the new one we created
+			setStyle(element, elementStyle); //set the element style to the new one we created
 		}
 //G***del					Debug.trace("style rule is of type: ", cssStyleRule.getClass().getName());  //G***del
 		importStyle(elementStyle, cssStyle);	//import the style
