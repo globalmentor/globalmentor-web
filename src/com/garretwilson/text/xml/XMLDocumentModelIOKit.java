@@ -3,7 +3,6 @@ package com.garretwilson.text.xml;
 import java.io.*;
 import java.net.*;
 import com.garretwilson.io.*;
-import com.garretwilson.model.*;
 import com.garretwilson.text.CharacterEncodingConstants;
 import org.w3c.dom.Document;
 
@@ -11,7 +10,7 @@ import org.w3c.dom.Document;
 @author Garret Wilson
 @see XMLDocumentModel
 */
-public class XMLDocumentModelIOKit extends AbstractModelIOKit
+public class XMLDocumentModelIOKit extends AbstractIOKit<XMLNodeModel<Document>>
 {
 
 	/**Default constructor.*/
@@ -55,12 +54,12 @@ public class XMLDocumentModelIOKit extends AbstractModelIOKit
 		URI is available.
 	@throws IOException Thrown if there is an error reading the data.
 	*/ 
-	public Model load(final InputStream inputStream, final URI baseURI) throws IOException
+	public XMLNodeModel<Document> load(final InputStream inputStream, final URI baseURI) throws IOException
 	{
 		inputStream.mark(Integer.MAX_VALUE);	//G***testing
 		final XMLProcessor xmlProcessor=new XMLProcessor(this);	//create a new XML processor that knows how to access streams from URIs
 		final Document xml=xmlProcessor.parseDocument(inputStream, baseURI);	//parse the XML
-		return new XMLDocumentModel(xml, baseURI, this);	//return a new XML document model
+		return new XMLNodeModel<Document>(xml, baseURI, this);	//return a new XML document model
 			//TODO check for XML DOM exceptions---not just here, but throughout the code; update the XMLProcessor, too
 	}
 	
@@ -69,10 +68,10 @@ public class XMLDocumentModelIOKit extends AbstractModelIOKit
 	@param outputStream The output stream to which to write the model content.
 	@throws IOException Thrown if there is an error writing the model.
 	*/
-	public void save(final Model model, final OutputStream outputStream) throws IOException
+	public void save(final XMLNodeModel<Document> model, final OutputStream outputStream) throws IOException
 	{
 		final Writer writer=new OutputStreamWriter(outputStream, CharacterEncodingConstants.UTF_8);	//create a UTF-8 writer
-		new XMLSerializer(true).serialize(((XMLDocumentModel)model).getDocument(), outputStream);	//serialize the XML document
+		new XMLSerializer(true).serialize(model.getXML(), outputStream);	//serialize the XML document
 		writer.flush();	//flush the data to the output stream
 	}
 }
