@@ -225,19 +225,9 @@ public class XMLProcessor extends XMLUtilities implements XMLConstants, URIInput
 	{
 		String prereadCharacters="";	//we'll store here any characters we preread while looking for the character encoding
 		String characterEncodingName=null;		//we'll store here the name of the character encoding, when we determine it
-		final int[] byteOrderMarkArray=new int[4];	//create an array to hold the byte order mark
-		boolean eof=false;	//we'll set this to true if we reach the end of the file
-		for(int i=0; i<4 && !eof; ++i)	//read each character unless we reach the end of the file (we're using a loop instead of read(int[]) because the latter could read less than the number of bytes requested, even if there are more available)
+		final byte[] byteOrderMarkArray=new byte[4];	//create an array to hold the byte order mark
+		if(inputStream.read(byteOrderMarkArray)==byteOrderMarkArray.length)	//read the byte order mark; if we didn't reach the end of the data
 		{
-			byteOrderMarkArray[i]=inputStream.read();	//read the next byte
-			eof=byteOrderMarkArray[i]==-1;	//see if we reached the end of the file
-		}
-		if(!eof)	//if we didn't reach the end of the data
-		{
-/*G***del if not needed
-			try
-			{
-*/
 			CharacterEncoding characterEncoding=CharacterEncoding.create(byteOrderMarkArray, XML_DECL_START);	//see if we can recognize the encoding by the beginning characters
 		  if(characterEncoding==null) //if no character encoding was found
 			{
@@ -249,15 +239,16 @@ public class XMLProcessor extends XMLUtilities implements XMLConstants, URIInput
 //G***del Debug.trace("we're trying character encoding: "+characterEncoding); //G***del
 			}
 			autodetectEncoding.replace(0, autodetectEncoding.length(), characterEncoding.getEncoding());	//return the autodetected encoding method (the full encoding name, complete with byte order), replacing whatever contents the buffer already had
-			if(characterEncoding.getFamily().equalsIgnoreCase(characterEncoding.UTF_16)
-					&& byteOrderMarkArray[0]!=characterEncoding.BOM_UTF_16_BIG_ENDIAN[0]
-					&& byteOrderMarkArray[0]!=characterEncoding.BOM_UTF_16_LITTLE_ENDIAN[0])	//if this was UTF-16, but there was no Byte Order Mark
+				//if this was UTF-16, but there was no Byte Order Mark
+			if(CharacterEncoding.UTF_16.equalsIgnoreCase(characterEncoding.getFamily()) && characterEncoding.getByteOrderMark().length==0) 
 				throw new XMLWellFormednessException(XMLWellFormednessException.INVALID_FORMAT, new Object[]{}, 0, 0, sourceObject!=null ? sourceObject.toString() : "");	//show that the UTF-16 had no Byte Order Mark
 			final int bytesPerCharacter=characterEncoding.getBytesPerCharacter();	//find out how many bytes are used for each character
 				//convert the Byte Order Mark bytes into a string
 			if(bytesPerCharacter==1)	//if there is only one byte for each character
-				for(int i=0; i<byteOrderMarkArray.length; prereadCharacters+=(char)byteOrderMarkArray[i++]);	//convert the bytes to characters normally
-//G***del					prereadCharacters=new String(byteOrderMarkArray);	//convert the bytes to characters normally
+			{
+					//convert the remaining bytes to characters normally, skipping the byte order mark, if any
+				for(int i=characterEncoding.getByteOrderMark().length; i<byteOrderMarkArray.length; prereadCharacters+=(char)byteOrderMarkArray[i++]);
+			}
 			else if(bytesPerCharacter==2)	//if there are two bytes for each character, the first two make up the true Byte Order Mark, so ignore them
 			{
 				if(characterEncoding.isLittleEndian())	//if the least-sigificant byte (the one we're interested in) comes first
@@ -273,11 +264,6 @@ public class XMLProcessor extends XMLUtilities implements XMLConstants, URIInput
 					prereadCharacters+=(char)byteOrderMarkArray[3];	//take the last byte
 				//future: here, support unusual UCS-4 octet orders may be added
 			}
-//G***del			boolean confirmedXMLDeclStart=false;	//we don't know yet if this stream starts with an XML declaration "<?xml..."; if we find it doesn't, there's no need to look for an encoding attribute
-/*G***del
-			if(XML_DECL_START.startsWith(prereadCharacters))	//if there is an "<?xml" declaration in what we've preread so far, we'll see if an encoding was specified
-			{
-*/
 			while(true)	//we now know the encoding family and have a string with the bytes read so far; now, try to find any specified character encoding
 			{
 				int nextCharInt;	//this will accept the next character read
@@ -337,13 +323,6 @@ public class XMLProcessor extends XMLUtilities implements XMLConstants, URIInput
 					}
 				}
 			}
-/*G***del if not needed
-			}
-			catch(UnsupportedEncodingException e)	//if the encoding could not be determined
-			{
-				throw new XMLWellFormednessException(XMLWellFormednessException.INVALID_FORMAT, new Object[]{}, 0, 0, sourceObject!=null ? sourceObject.toString() : "");	//show that we don't recognize the data format
-			}
-*/
 		}
 		autodetectPrereadCharacters.replace(0, autodetectPrereadCharacters.length(), prereadCharacters);	//send back the characters we preread
 		return characterEncodingName;	//return the name of the encoding, or null if we didn't find an encoding

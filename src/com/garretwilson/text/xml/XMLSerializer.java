@@ -7,6 +7,7 @@ import com.garretwilson.text.CharacterEncodingConstants;
 import com.garretwilson.lang.CharacterUtilities;
 import com.garretwilson.lang.StringBufferUtilities;
 import com.garretwilson.net.URIConstants;
+import com.garretwilson.rdf.dicto.DictoConstants;
 import com.garretwilson.rdf.dublincore.DCConstants;
 import com.garretwilson.rdf.version.VersionConstants;
 import com.garretwilson.text.xml.oeb.OEBConstants;
@@ -195,6 +196,7 @@ public class XMLSerializer implements XMLConstants
 	public static Map createNamespacePrefixMap()	//G***maybe later use real URIs
 	{
 		final Map map=new HashMap();  //create a new hash map
+		map.put(DictoConstants.DICTO_NAMESPACE_URI.toString(), DictoConstants.DICTO_NAMESPACE_PREFIX); //Dicto
 		map.put(DCConstants.DCMI11_ELEMENTS_NAMESPACE_URI.toString(), DCConstants.DCMI_ELEMENTS_NAMESPACE_PREFIX); //Dublin Core
 		map.put(MAQROConstants.MAQRO_NAMESPACE_URI.toString(), MAQROConstants.MAQRO_NAMESPACE_PREFIX); //MAQRO
 		map.put(OEBConstants.OEB1_DOCUMENT_NAMESPACE_URI.toString(), OEBConstants.OEB1_DOCUMENT_NAMESPACE_PREFIX); //OEB 1

@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.util.*;
 
 import com.garretwilson.net.URIConstants;
+import com.garretwilson.rdf.rdfs.RDFSUtilities;
 import com.garretwilson.rdf.xmlschema.XMLSchemaTypedLiteralFactory;
 import com.garretwilson.text.xml.schema.XMLSchemaConstants;
 import com.garretwilson.util.*;
@@ -169,24 +170,27 @@ public class RDF implements RDFConstants
 			return typedLiteralFactory;	//return whatever typed literal we found, if any
 		}
 
-	/**The map of all resources, keyed to resource reference URI.*/
+	/**The set of all resources, named and unnamed.*/
+	private final Set resourceSet=new HashSet();
+
+	/**The map of all named resources, keyed to resource reference URI.*/
 	private final Map resourceMap=new HashMap();
 
 	/**Adds a resource to the data model.
+	If the resource is already in the model, no action occurs. 
 	@param resource The resource to add.
 	*/
-	public void putResource(final RDFResource resource)
+	public void addResource(final RDFResource resource)
 	{
 //G***del Debug.trace("putting resource with URI: ", resource.getReferenceURI());
 //G***del Debug.traceStack(); //G***del
 
-//TODO fix to correctly work with new null URI blank node resources; we'll probably want to store them somewhere
-
+		resourceSet.add(resource);	//add the resource to our set
 		if(resource.getReferenceURI()!=null)	//if this is not a blank node
-			resourceMap.put(resource.getReferenceURI(), resource);  //store the resource
+			resourceMap.put(resource.getReferenceURI(), resource);  //store the resource in the map
 	}
 
-	/**Retrieves a resource from the data model using its reference URI.
+	/**Retrieves a named resource from the data model using its reference URI.
 	@param resourceURI The reference URI of the resource to retreive.
 	@return The resource, or <code>null</code> if no matching resource was found.
 	*/
@@ -200,13 +204,67 @@ public class RDF implements RDFConstants
 	/**@return The number of resources in this data model.*/
 	public int getResourceCount()
 	{
-		return resourceMap.size();  //return the size of the resource map
+		return resourceSet.size();  //return the size of the resource set
 	}
 
 	/**@return A read-only iterator of resources.*/
 	public Iterator getResourceIterator()
 	{
-		return Collections.unmodifiableCollection(resourceMap.values()).iterator(); //return an unmodifiable iterator to the collection of values
+		return Collections.unmodifiableCollection(resourceSet).iterator(); //return an unmodifiable iterator to the set of all resources
+	}
+
+	/**@return A read-only iterator of resources appropriate for appearing at the
+		root of a hierarchy, such as an RDF tree or an RDF+XML serialization.
+	*/
+	public Iterator getRootResourceIterator()
+	{
+		return getRootResourceIterator(null);	//return an unsorted iterator to the root resources 
+	}
+
+	/**Returns a read-only iterator of resources appropriate for appearing at the
+		root of a hierarchy, such as an RDF tree or an RDF+XML serialization. The
+		resources are sorted using the optional comparator.
+	@param comparator The object that determines how the resources will be sorted,
+		or <code>null</code> if the resources should not be sorted.
+	@return A read-only iterator of root resources sorted by the optional
+		comparator.
+	*/
+	public Iterator getRootResourceIterator(final Comparator comparator)
+	{
+			//create a set in which to place the root resources, making the set sorted if we have a comparator
+		final Set rootResourceSet=comparator!=null ? (Set)new TreeSet(comparator) : (Set)new HashSet();	 		
+		final Iterator resourceIterator=getResourceIterator();  //get an iterator to all the RDF resources
+		while(resourceIterator.hasNext()) //while there are resources remaining
+		{
+			final RDFResource resource=(RDFResource)resourceIterator.next();  //get the next resource
+			if(isRootResource(resource))	//if this is a root resource
+			{
+				rootResourceSet.add(resource);	//add the resource to the set of root resources
+			}
+		}
+		return Collections.unmodifiableCollection(rootResourceSet).iterator(); //return an unmodifiable iterator to the set of root resources
+	}
+
+	/**Determines if the given resource is appropriate for appearing at the root
+		of a hierarchy, such as an RDF tree or an RDF+XML serialization.
+	<p>This should be determined, among other things, by whether the resource
+		 in question is a property and whether or not there are references to the
+		 resource. This implementation considers root resources to be those
+		 that have a URI and have at least one property, along with those that
+		 have labels.</p> 
+	@param resource The resource which might be a root resource.
+	@return <code>true</code> if this resource is one of the resources that
+		should be presented at the root of a hierarchy.
+	*/
+	public boolean isRootResource(final RDFResource resource)
+	{
+		final URI referenceURI=resource.getReferenceURI(); //get the resource reference URI
+		final RDFLiteral label=RDFSUtilities.getLabel(resource);	//see if this resource has a label
+//TODO eventually we'll probably have to determine if something is actually a property---i.e. this doesn't work: if(resource.getReferenceURI()!=null || resource.getPropertyCount()>0)	//only show resources that have reference URIs or have properties, thereby not showing property resources and literals at the root
+			//if this is not a blank node and this resource actually has properties (even properties such as type identifiers are resources, but they don't have properties)
+		return (referenceURI!=null && resource.getPropertyCount()>0)
+					|| label!=null;	//if a resource is labeled, it's probably important enough to show at the top of the hierarchy as well 
+		
 	}
 
 	/**Retreives a resource from the data model based upon a URI. If no such
@@ -301,7 +359,7 @@ public class RDF implements RDFConstants
 		else	//if this isn't a special resource we know about
 		{
 			resource=new DefaultRDFResource(referenceURI);  //create a new resource from the given reference URI
-			putResource(resource);  //store the resource in the data model
+			addResource(resource);  //store the resource in the data model
 		}
 		return resource;  //return the resource we either created
 	}
@@ -326,7 +384,7 @@ public class RDF implements RDFConstants
 		{
 			resource=new DefaultRDFResource(referenceNamespaceURI, referenceLocalName);  //create a new resource from the given reference URI
 		}
-		putResource(resource);  //store the resource in the data model
+		addResource(resource);  //store the resource in the data model
 		return resource;  //return the resource we either created
 	}
 
@@ -410,7 +468,7 @@ public class RDF implements RDFConstants
 		final RDFResource typeValue=locateResource(typeNamespaceURI, typeLocalName);  //get a resource for the value of the property
 		resource.addProperty(typeProperty, typeValue);  //add the property to the resource
 */
-		putResource(resource);  //store the resource in the data model
+		addResource(resource);  //store the resource in the data model
 		return resource;  //return the resource we created
 	}
 
