@@ -275,20 +275,25 @@ public class RDF implements RDFConstants
 			if(RDF_NAMESPACE_URI.equals(typeNamespaceURI)) //if this resource is an RDF resource
 			{
 //G***del Debug.trace("Is an RDF type.");  //G***del
-				if(ELEMENT_ALT.equals(typeLocalName)) //<rdf:Alt>
+				if(ALT_TYPE_NAME.equals(typeLocalName)) //<rdf:Alt>
 				{
 					//G***fix for alt
 				}
-				else if(ELEMENT_BAG.equals(typeLocalName))  //<rdf:Bag>
+				else if(BAG_TYPE_NAME.equals(typeLocalName))  //<rdf:Bag>
 				{
 //G***del Debug.trace("creating an RDF bag"); //G***del
 					resource=new RDFBagResource(resourceReferenceURI);  //create a bag resource
 				}
-				else if(ELEMENT_SEQ.equals(typeLocalName))  //<rdf:Seq>
+				else if(SEQ_TYPE_NAME.equals(typeLocalName))  //<rdf:Seq>
 				{
 //G***del Debug.trace("creating an RDF sequence"); //G***del
 					resource=new RDFSequenceResource(resourceReferenceURI);  //create a sequence resource
 				}
+				else if(LIST_TYPE_NAME.equals(typeLocalName))  //<rdf:Seq>
+				{
+					resource=new RDFListResource(resourceReferenceURI);  //create a list resource
+				}
+//G***should we check to see if this is the nil resource, and if so automatically set its type to rdf:List?
 			}
 		}
 		if(resource==null)  //if we still haven't created a resource
