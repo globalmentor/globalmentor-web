@@ -66,7 +66,7 @@ public class RDF implements RDFConstants
 		@param typeNamespaceURI The namespace of the resource type for which this
 			factory should be used to create objects.
 		@param factory The resource factory that will be used to create resources
-			of types from this this namespace.
+			of types from this namespace.
 		*/
 		public void registerResourceFactory(final URI typeNamespaceURI, final RDFResourceFactory factory)
 		{
@@ -94,6 +94,46 @@ public class RDF implements RDFConstants
 		protected RDFResourceFactory getResourceFactory(final URI typeNamespaceURI)
 		{
 			return (RDFResourceFactory)resourceFactoryMap.get(typeNamespaceURI);  //return any factory registered for this namespace
+		}
+
+	/**A map of typed literal factories, keyed to datatype namespace URI.*/
+	private final Map typedLiteralFactoryMap=new HashMap();
+
+		/**Registers a typed literal factory to be used to create literals with a
+			datatype from the specified namespace. If a type literal factory is
+			already registered for this namespace, it will be replaced.
+		@param datatypeNamespaceURI The namespace of the datatype for which this
+			factory should be used to create typed literals.
+		@param factory The typed literal factory that will be used to create literals
+			with datatypes from this namespace.
+		*/
+		public void registerTypedLiteralFactory(final URI datatypeNamespaceURI, final RDFTypedLiteralFactory factory)
+		{
+			typedLiteralFactoryMap.put(datatypeNamespaceURI, factory);
+		}
+
+		/**Removes the typed literal factory being used to create literals with a
+			datatype from the specified namespace. If there is no typed litreal
+			factory registered for this namespace, no action will be taken.
+		@param datatypeNamespaceURI The namespace of the datatype for which this
+			factory should be used to create typed literals.
+		*/
+		public void unregisterTypedLiteralFactory(final URI datatypeNamespaceURI)
+		{
+			typedLiteralFactoryMap.remove(datatypeNamespaceURI);
+		}
+
+		/**Retrieves a typed literal factory to be used for creating literals with
+			a datatype from the specified namespace URI.
+		@param datatypeNamespaceURI The namespace of the datatype for which a
+			typed literal factory should be returned.
+		@return The factory registered for this datatype namespace, or
+			<code>null</code> if there is no factory registered for this datatype
+			namespace.
+		*/
+		protected RDFTypedLiteralFactory getTypedLiteralFactory(final URI datatypeNamespaceURI)
+		{
+			return (RDFTypedLiteralFactory)typedLiteralFactoryMap.get(datatypeNamespaceURI);  //return any factory registered for this namespace
 		}
 
 	/**The map of all resources.*/
@@ -261,7 +301,14 @@ public class RDF implements RDFConstants
 		attempt to locate a resource factory to create the resource.
 		A type property derived from the specified type namespace URI and local name
 		will be added to the resource.
-		The resource will be stored in this RDF data model
+	<p>This method knows how to create the following RDF-defined resources:</p>
+	<ul>
+		<li>Reference URI <code>rdf:nil</code> (<code>RDFListResource</code>)</li>
+		<li>Type <code>rdf:Alt</code>  (<code>RDFAltResource</code>)</li>
+		<li>Type <code>rdf:Bag</code>  (<code>RDFBagResource</code>)</li>
+		<li>Type <code>rdf:Seq</code>  (<code>RDFSequenceResource</code>)</li>
+	</ul>
+	<p>The created resource will be stored in this RDF data model.</p>
 	@param referenceURI The reference URI of the resource to create, or
 		<code>null</code> if the resource created should be represented by a blank node.
 	@param typeNamespaceURI The XML namespace used in the serialization of the
@@ -270,10 +317,8 @@ public class RDF implements RDFConstants
 		URI.  //G***del, or <code>null</code> if the type is not known.
 	@return The resource created with this reference URI, with the given type
 		added if a type was given.
-	@exception IllegalArgumentException Thrown if the provided reference URI is
-		<code>null</code>.
 	*/
-	public RDFResource createResource(final URI referenceURI, final URI typeNamespaceURI, final String typeLocalName) throws IllegalArgumentException
+	public RDFResource createResource(final URI referenceURI, final URI typeNamespaceURI, final String typeLocalName)
 	{
 		Debug.assert(typeNamespaceURI!=null, "type namespace is null");	//G***fix
 			//create an anonymous reference URI if needed
@@ -325,7 +370,7 @@ public class RDF implements RDFConstants
 		  resource=new DefaultRDFResource(referenceURI);  //create a new resource from the given reference URI
 //G***del when works			resource=createResource(resourceReferenceURI);  //create a new default resource from the given reference URI G***maybe use an RDF factory method for this, too
 		}
-		RDFUtilities.addType(this, resource, typeNamespaceURI, typeLocalName); //add the type property
+		RDFUtilities.addType(this, resource, typeNamespaceURI, typeLocalName); //add the type property TODO make sure the type is added to the list of triples
 /*G***del
 		final RDFResource typeProperty=RDFUtilities.getTypeProperty(this); //get a rdf:type resource
 		final RDFResource typeValue=locateResource(typeNamespaceURI, typeLocalName);  //get a resource for the value of the property
@@ -333,6 +378,54 @@ public class RDF implements RDFConstants
 */
 		putResource(resource);  //store the resource in the data model
 		return resource;  //return the resource we created
+	}
+
+	/**Creates a typed literal from the provided lexical form and datatype.
+	The determined datatype namespace URI from the given datatype URI
+		will be used to attempt to locate a typed literal factory to create the
+		typed literal.
+	<p>If no typed literal resource factory can be found, a generic
+		<code>RDFTypedLiteral</code> will be created using the lexical form as the
+		object.</p>
+	<p>This method knows how to create the following RDF-defined typed literals:</p>
+	<ul>
+		<li>Datatype <code>rdf:XMLLiteral</code>  (<code>RDFXMLLiteral</code>)</li>
+	</ul>
+	@param lexicalForm The lexical form of the resource.
+	@param datatypeURI The datatype reference URI of the datatype.
+	@return The typed literal with the given datatype with a value created by
+		a lexical form to value mapping.
+	*/
+	public RDFTypedLiteral createTypedLiteral(final String lexicalForm, final URI datatypeURI)
+	{
+		Debug.assert(datatypeURI!=null, "datatype is null");	//G***fix
+			//create an anonymous reference URI if needed
+//G***del when works		final URI resourceReferenceURI=referenceURI!=null ? referenceURI : createAnonymousReferenceURI();
+//G***del Debug.trace("Ready to create resource with reference URI: ", referenceURI); //G***del
+//G***del Debug.trace("Type namespace URI: ", typeNamespaceURI); //G***del
+//G***del Debug.trace("Type local name: ", typeLocalName); //G***del
+
+
+			//try to get the namespace of the datatype
+		final URI datatypeNamespaceURI=RDFUtilities.getNamespaceURI(datatypeURI);
+		RDFTypedLiteral typedLiteral=null; //start by assuming that no factory is registered for this datatype namespace, or the registered factory can't create a typed literal
+		final RDFTypedLiteralFactory typedLiteralFactory=getTypedLiteralFactory(datatypeNamespaceURI); //get a typed literal factory for this namespace
+		if(typedLiteralFactory!=null) //if we have a factory
+		{
+			typedLiteral=typedLiteralFactory.createTypedLiteral(lexicalForm, datatypeURI); //try to create a typed literal from this factory
+		}
+		if(typedLiteral==null)  //if we haven't created a typed literal, see if this is an RDF datatype
+		{
+			if(XML_LITERAL_DATATYPE_URI.equals(datatypeURI))	//if we are creating an XML typed literal
+			{
+				typedLiteral=new RDFXMLLiteral(lexicalForm);	//create a new XML typed literal containing the lexical form
+			}
+		}
+		if(typedLiteral==null)  //if we still haven't created a typed literal
+		{
+			typedLiteral=new RDFTypedLiteral(lexicalForm, datatypeURI);  //create a new typed literal from the lexical form, specifying the correct datatype
+		}
+		return typedLiteral;  //return the resource we created
 	}
 
 	/**Default constructor.*/

@@ -22,6 +22,7 @@ import com.garretwilson.text.xml.xlink.XLinkConstants;
 import com.garretwilson.rdf.xpackage.FileOntologyConstants;
 import com.garretwilson.rdf.xpackage.MIMEOntologyConstants;
 import com.garretwilson.rdf.xpackage.XPackageConstants;
+import com.garretwilson.util.NameValuePair;
 import com.garretwilson.util.PropertyUtilities;
 
 //G***del all the XMLUndefinedEntityReferenceException throws when we don't need them anymore, in favor of XMLWellFormednessException
@@ -371,7 +372,7 @@ public class XMLSerializer implements XMLConstants
 					if(entityChildCount==1) //if there is only one child node
 					{
 						final Node entityChildNode=entity.getFirstChild();  //get a reference to the first child of the entity
-						if(entityChildNode.getNodeType()==entityChildNode.TEXT_NODE)  //if this is a text node
+						if(entityChildNode.getNodeType()==Node.TEXT_NODE)  //if this is a text node
 						{
 							final String entityValue=((Text)entityChildNode).getData(); //get the data of the node, which represents the replacement value of the entity
 							if(entityValue.length()==1) //if this entity represents exactly one character
@@ -476,32 +477,32 @@ public class XMLSerializer implements XMLConstants
 	}
 
 	/**Serializes the content (all child nodes and their descendants) of a
-		specified element and its children to the given output stream using the
-		UTF-8 encoding.
-	@param element The XML element the content of which to serialize.
+		specified node to the given output stream using the UTF-8 encoding.
+	@param node The XML node the content of which to serialize&mdash;usually an
+		element or document fragment.
 	@param outputStream The stream into which the element content should be serialized.
 	@exception IOException Thrown if an I/O error occurred.
 	@exception UnsupportedEncodingException Thrown if the UTF-8 encoding is not recognized.
 	*/
-	public void serializeContent(final Element element, final OutputStream outputStream) throws IOException, UnsupportedEncodingException
+	public void serializeContent(final Node node, final OutputStream outputStream) throws IOException, UnsupportedEncodingException
 	{
-		serializeContent(element, outputStream, CharacterEncodingConstants.UTF_8); //serialize the content using UTF-8 as the encoding
+		serializeContent(node, outputStream, CharacterEncodingConstants.UTF_8); //serialize the content using UTF-8 as the encoding
 	}
 
 	/**Serializes the content (all child nodes and their descendants) of a
-		specified element and its children to the given output stream using the
-		specified encoding.
-	@param element The XML element the content of which to serialize.
+		specified node to the given output stream using the specified encoding.
+	@param node The XML node the content of which to serialize&mdash;usually an
+		element or document fragment.
 	@param outputStream The stream into which the element content should be serialized.
 	@param encoding The encoding format to use when serializing.
 	@exception IOException Thrown if an I/O error occurred.
 	@exception UnsupportedEncodingException Thrown if the specified encoding is not recognized.
 	*/
-	public void serializeContent(final Element element, final OutputStream outputStream, final String encoding) throws IOException, UnsupportedEncodingException
+	public void serializeContent(final Node node, final OutputStream outputStream, final String encoding) throws IOException, UnsupportedEncodingException
 	{
 		nestLevel=0;	//show that we haven't started nesting yet
 		final BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(outputStream, encoding));	//create a new writer based on our encoding
-		writeContent(element, writer);	//write all children of the element
+		writeContent(node, writer);	//write all children of the node
 		writer.newLine();	//add a newline in the default format
 		writer.flush();	//flush any data we've buffered
 	}
@@ -606,19 +607,28 @@ public class XMLSerializer implements XMLConstants
 	{
 //G***del Debug.trace("starting element, nestLevel: "+nestLevel);
 //G***del		if(isFormatted())	//if we should write formatted output
-		XMLNamespaceProcessor.ensureNamespaceDeclarations(element); //make sure this element's namespaces are all declared
 		if(formatted)	//if we should write formatted output
 			writeHorizontalAlignment(writer, nestLevel);		//horizontally align the element
 		writer.write(TAG_START+element.getNodeName());	//write the beginning of the start tag
+		XMLNamespaceProcessor.ensureNamespaceDeclarations(element);	//make sure all namespaces are declared that this element needs
+/*TODO fix; this correctly doesn't add namespaces, to the tree itself, but not doing so means that the namespaces will just get added again lower down in the hierarchy
+			//get the undeclared namespaces for this element and write them before the normal attributes are written
+		final NameValuePair[] prefixNamespacePairs=XMLNamespaceProcessor.getUndeclaredNamespaces(element);
+		for(int i=0; i<prefixNamespacePairs.length; ++i)	//look at each name/value pair
+		{
+			final NameValuePair prefixNamespacePair=prefixNamespacePairs[i];	//get this name/value pair representing a prefix and a namespace
+			final String prefix=(String)prefixNamespacePair.getName();	//get the prefix to use
+					//get the namespace URI to use (using "" if no namespace is intended)
+			final String namespaceURI=prefixNamespacePair.getValue()!=null ? (String)prefixNamespacePair.getValue() : "";
+					//see if the attribute should be in the form xmlns:prefix="namespaceURI" or xmlns="namespaceURI" G***fix for attributes that may use the same prefix for different namespace URIs
+			final String attributeName=prefix!=null ? XMLUtilities.createQualifiedName(XMLNS_NAMESPACE_PREFIX, prefix) : XMLNS_NAMESPACE_URI.toString();
+			writeAttribute(attributeName, namespaceURI, writer);	//write this namespace attribute attribute
+		}
+*/
 		for(int attributeIndex=0; attributeIndex<element.getAttributes().getLength(); ++attributeIndex)	//look at each attribute
 		{
 			final Attr attribute=(Attr)element.getAttributes().item(attributeIndex);	//get a reference to this attribute
-		  final String attributeValue=attribute.getValue(); //get the attribute's value
-				//use a double quote character as a delimiter unless the value contains
-				//  a double quote; in that case, use a single quote
-			final char valueDelimiter=attributeValue.indexOf(DOUBLE_QUOTE_CHAR)<0 ? DOUBLE_QUOTE_CHAR : SINGLE_QUOTE_CHAR;
-				//write the attribute and its value after encoding it for XML; pass the delimiter in case this value has both a single and a double quote
-			writer.write(SPACE_CHAR+attribute.getName()+EQUAL_CHAR+valueDelimiter+encodeContent(attribute.getValue(), valueDelimiter)+valueDelimiter);
+			writeAttribute(attribute.getName(), attribute.getValue(), writer);	//write this attribute
 		}
 		if(element.getChildNodes().getLength()>0)	//if there are child elements
 		{
@@ -658,53 +668,70 @@ public class XMLSerializer implements XMLConstants
 //G***del if not needed		writer.newLine();	//add a newline in the default format
 	}
 
-	/**Serializes the content of the specified element to the given writer using
+	/**Serializes the specified attribute name and value to the given writer.
+	@param attributeName The name of the XML attribute to serialize.
+	@param attributeValue The name of the XML attribute to serialize.
+	@param writer The writer into which the attribute should be written.
+	@exception IOException Thrown if an I/O error occurred.
+	*/
+	protected void writeAttribute(final String attributeName, final String attributeValue, final BufferedWriter writer) throws IOException
+	{
+			//use a double quote character as a delimiter unless the value contains
+			//  a double quote; in that case, use a single quote TODO fix escaping---what if both double and single quotes are used?
+		final char valueDelimiter=attributeValue.indexOf(DOUBLE_QUOTE_CHAR)<0 ? DOUBLE_QUOTE_CHAR : SINGLE_QUOTE_CHAR;
+			//write the attribute and its value after encoding it for XML; pass the delimiter in case this value has both a single and a double quote
+		writer.write(SPACE_CHAR+attributeName+EQUAL_CHAR+valueDelimiter+encodeContent(attributeValue, valueDelimiter)+valueDelimiter);
+	}
+
+	/**Serializes the content of the specified node to the given writer using
 		the default formatting options.
-	@param element The XML element the content of which to serialize.
+	@param node The XML node the content of which to serialize&mdash;usually an
+		element or document fragment.
 	@param writer The writer into which the element content should be written.
 	@exception IOException Thrown if an I/O error occurred.
 	*/
-	protected void writeContent(final Element element, final BufferedWriter writer) throws IOException
+	protected void writeContent(final Node node, final BufferedWriter writer) throws IOException
 	{
-		writeContent(element, writer, isFormatted());  //write the content using the default formatting options
+		writeContent(node, writer, isFormatted());  //write the content using the default formatting options
 	}
 
 	/**Serializes the content of the specified element to the given writer.
-	@param element The XML element the content of which to serialize.
+	@param node The XML node the content of which to serialize&mdash;usually an
+		element or document fragment.
 	@param writer The writer into which the element content should be written.
 	@param formatted Whether the contents of this element, including any child
 		elements, should be formatted.
 	@exception IOException Thrown if an I/O error occurred.
 	*/
-	protected void writeContent(final Element element, final BufferedWriter writer, final boolean formatted) throws IOException
+	protected void writeContent(final Node node, final BufferedWriter writer, final boolean formatted) throws IOException
 	{
-		for(int childIndex=0; childIndex<element.getChildNodes().getLength(); childIndex++)	//look at each child node
+		for(int childIndex=0; childIndex<node.getChildNodes().getLength(); childIndex++)	//look at each child node
 		{
 //G***del Debug.trace("writing child: "+childIndex+", nestLevel: "+nestLevel);
-			final Node node=element.getChildNodes().item(childIndex);	//look at this node
-			switch(node.getNodeType())	//see which type of object this is
+			final Node childNode=node.getChildNodes().item(childIndex);	//look at this node
+			switch(childNode.getNodeType())	//see which type of object this is
 			{
 				case Node.ELEMENT_NODE:	//if this is an element
 //G***del Debug.trace("Found element node, nestLevel: "+nestLevel);
-					write((Element)node, writer, formatted);	//write this element
+					write((Element)childNode, writer, formatted);	//write this element
 					break;
 				case Node.TEXT_NODE:	//if this is a text node
 //G***del Debug.trace("Found text node, nestLevel: "+nestLevel);
-					writer.write(encodeContent(node.getNodeValue()));	//write the text value of the node after encoding the string for XML
+					writer.write(encodeContent(childNode.getNodeValue()));	//write the text value of the node after encoding the string for XML
 					break;
 				case Node.COMMENT_NODE:	//if this is a comment node
 //G***del Debug.trace("Found comment node, nestLevel: "+nestLevel);
 					if(formatted)	//if we should write formatted output
 						writeHorizontalAlignment(writer, nestLevel);		//horizontally align the element
 					writer.write(XMLConstants.COMMENT_START);	//write the start of the comment
-					writer.write(node.getNodeValue());	//write the text value of the node, but don't encode the string for XML since it's inside a comment
+					writer.write(childNode.getNodeValue());	//write the text value of the node, but don't encode the string for XML since it's inside a comment
 					writer.write(XMLConstants.COMMENT_END);	//write the end of the comment
 					if(formatted)	//if we should write formatted output
 						writer.newLine();	//add a newline after the element
 					break;
 				case Node.CDATA_SECTION_NODE:	//if this is a CDATA section node
 					writer.write(XMLConstants .CDATA_START);	//write the start of the CDATA section
-					writer.write(encodeContent(node.getNodeValue()));	//write the text value of the node after encoding the string for XML
+					writer.write(encodeContent(childNode.getNodeValue()));	//write the text value of the node after encoding the string for XML
 					writer.write(XMLConstants.CDATA_END);	//write the end of the CDATA section
 					break;
 				//G***see if there are any other types of nodes that need serialized

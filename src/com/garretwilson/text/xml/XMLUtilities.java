@@ -589,12 +589,11 @@ G***should we return data from CDATA sections as well?
 	public static Document createDocument(final Element element)
 	{
 		final DOMImplementation domImplementation=element.getOwnerDocument().getImplementation(); //get the DOM implementation used to create the document
-		  //create a new document corresponding to the element G***fix for the way DOM really creates documents
+		  //create a new document corresponding to the element
 //G***bring over the doctype, if needed
 		final Document document=domImplementation.createDocument(element.getNamespaceURI(), element.getNodeName(), null);
-		final Element clonedElement=(Element)element.cloneNode(true);  //create a copy of the element
-		document.importNode(clonedElement, true); //import the element into our new document
-		document.replaceChild(clonedElement, document.getDocumentElement());  //set the element clone as the document element of the new document
+		final Node importedNode=document.importNode(element, true); //import the element into our new document
+		document.replaceChild(importedNode, document.getDocumentElement());  //set the element clone as the document element of the new document
 		return document;  //return the document we created
 	}
 
@@ -618,6 +617,22 @@ G***should we return data from CDATA sections as well?
 		if(textContent!=null) //if we have text content to add
 		  appendText(childElement, textContent);	//append the text content to the newly created child element
 		return childElement;  //return the element we created
+	}
+
+	/**Extracts all the child nodes from the given node and places them in a
+		document fragment.
+	@param node The node from which child nodes should be extracted. This node
+		must have a valid owner document.
+	@return A new document fragment containing the extracted children.
+	@exception DOMException
+	<ul>
+		<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
+	</ul>
+	@see #removeChildren
+	*/
+	public static DocumentFragment extractChildren(final Node node) throws DOMException
+	{
+		return extractChildren(node, 0, node.getChildNodes().getLength());	//extract all the children and return the new document fragment 
 	}
 
 	/**Extracts the indexed nodes starting at <code>startChildIndex</code> up to

@@ -1458,11 +1458,11 @@ Debug.trace("Checking break element: ", element.getNodeName());
 		{
 			final String langValue=element.getAttributeNS(null, XHTMLConstants.ATTRIBUTE_LANG);  //get the lang attribute value
 //G***del 	Debug.trace("found name value: "+nameValue);
-			if(!element.hasAttributeNS(XML_NAMESPACE_URI, XMLConstants.ATTRIBUTE_LANG)) //if there is no xml:lang attribute G***use a constant, use namespaces
+			if(!element.hasAttributeNS(XML_NAMESPACE_URI.toString(), XMLConstants.ATTRIBUTE_LANG)) //if there is no xml:lang attribute G***use a constant, use namespaces
 			{
 //G***del 	Debug.trace("no name attribute, though; moving name to id");
 					//create an xml:lang attribute with the value of the lang attribute G***use a constant here, use namespaces
-				element.setAttributeNS(XML_NAMESPACE_URI, XMLUtilities.createQualifiedName(XMLConstants.XML_NAMESPACE_PREFIX, XMLConstants.ATTRIBUTE_LANG), langValue);  
+				element.setAttributeNS(XML_NAMESPACE_URI.toString(), XMLUtilities.createQualifiedName(XMLConstants.XML_NAMESPACE_PREFIX, XMLConstants.ATTRIBUTE_LANG), langValue);  
 				element.removeAttributeNS(null, XHTMLConstants.ATTRIBUTE_LANG);  //remove the lang attribute
 			}
 		}
@@ -2039,7 +2039,7 @@ Debug.trace("found enclosing start at index: ", startIndex);  //G***del
 				if(stylePromotionElement.getChildNodes().getLength()==1) //if we're removing the only child G***is this even useful?
 				{
 						//promote "xml:lang", "class", and "style" attributes
-					copyAttributeValue(stylePromotionElement, element, XML_NAMESPACE_URI, "lang");  //G***use a constant here
+					copyAttributeValue(stylePromotionElement, element, XML_NAMESPACE_URI.toString(), "lang");  //G***use a constant here
 					copyAttributeValue(stylePromotionElement, element, null, ATTRIBUTE_CLASS);
 //G***del; this is not useful, and can cause harm (by moving up the symbol font property, for example)					copyAttributeValue(stylePromotionElement, element, null, ATTRIBUTE_STYLE);
 				}

@@ -462,7 +462,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	{
 		//G***check the type of node being imported
 		final XMLNode xmlNodeClone=(XMLNode)importedNode.cloneNode(deep);  //clone the imported node
-		xmlNodeClone.setOwnerXMLDocument(getOwnerXMLDocument());  //change the owner of the cloned element to be the same as our owner
+		xmlNodeClone.setOwnerXMLDocument(this);  //show that we own the cloned element
 		return xmlNodeClone;  //return the imported node G***this all isn't quite correct; make sure it's complete
 /*G***del when works
 		switch(importedNode.getNodeType())  //see what type of node we're importing
@@ -548,7 +548,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	*/
 	public Node replaceChild(Node newChild, Node oldChild) throws DOMException
 	{
-			//if a non-element child is being replaced with an element or vice-versa
+			//if an element is replacing a node and/or if an element is being replaced
 		if((newChild.getNodeType()==Node.ELEMENT_NODE || oldChild.getNodeType()==Node.ELEMENT_NODE))
 		{
 			if(newChild.getNodeType()!=oldChild.getNodeType())	//if one is an element, both have to be an element
@@ -561,8 +561,12 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 			getChildXMLNodeList().set(index, xmlNewChild);	//replace the document element
 			//G***set the document, set the parent, etc.
 			xmlNewChild.setParentXMLNode(this);	//set the parent of the added child
+			return oldChild;	//return the old replaced node
 		}
-		return super.replaceChild(newChild, oldChild);	//do the default functionality
+		else	//if elements aren't involved
+		{
+			return super.replaceChild(newChild, oldChild);	//do the default functionality
+		}
 	}
 
 	/**Removes the child node indicated by <code>oldChild</code> from the list

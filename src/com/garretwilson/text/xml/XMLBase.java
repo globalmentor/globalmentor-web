@@ -22,7 +22,7 @@ public class XMLBase implements XMLBaseConstants
 	 */
 	public static String getXMLBaseAttributeValue(final Element element)
 	{
-		return XMLUtilities.getDefinedAttributeNS(element, XML_NAMESPACE_URI, ATTRIBUTE_BASE);  //return the xml:base attribute value, if it exists
+		return XMLUtilities.getDefinedAttributeNS(element, XML_NAMESPACE_URI.toString(), ATTRIBUTE_BASE);  //return the xml:base attribute value, if it exists
 	}
 
 	/**Retrieves the base URI of the given element by traversing up the element

@@ -2619,7 +2619,7 @@ entityReader.tidy=isTidy();  //G***fix
 		XMLNamespaceProcessor.processNamespaces(document);  //G***testing
 		//G***catch whatever DOMExceptions are thrown here
 
-
+//G***del XMLUtilities.printTree(document, Debug.getOutput());	//G***del
 
 		return document;	//return the parsed document
 	}
