@@ -1,7 +1,6 @@
 package com.garretwilson.text.xml.xlink;
 
 import java.net.URI;
-import com.garretwilson.net.URIUtilities;
 import com.garretwilson.text.xml.XMLConstants;
 
 /**Definitions for XLink defined by the W3C at
@@ -15,7 +14,7 @@ public interface XLinkConstants
 	public static final String XLINK_NAMESPACE_PREFIX="xlink";
 
 	/**The XLink namespace URI.*/
-	public static final URI XLINK_NAMESPACE_URI=URIUtilities.toURI("http://www.w3.org/1999/xlink");
+	public static final URI XLINK_NAMESPACE_URI=URI.create("http://www.w3.org/1999/xlink");
 
 //G***fix the constant names of all these
 
