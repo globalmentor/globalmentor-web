@@ -609,7 +609,7 @@ entityReader.tidy=isTidy();  //G***fix
 		}
 		catch(final ParseEOFException parseEOFException)	//if we run out of data
 		{
-			throw new XMLWellFormednessException(parseEOFException, ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+ENTITY_REFERENCE_RESOURCE), entityReferenceName.length()!=0 ? entityReferenceName : ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+UNKNOWN_RESOURCE));	//show that we couldn't find the end of the entity reference
+			throw new XMLWellFormednessException(parseEOFException, ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+ENTITY_REFERENCE_RESOURCE), entityReferenceName!=null ? entityReferenceName : ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+UNKNOWN_RESOURCE));	//show that we couldn't find the end of the entity reference
 		}
 	}
 
@@ -647,7 +647,7 @@ entityReader.tidy=isTidy();  //G***fix
 		}
 		catch(final ParseEOFException parseEOFException)	//if we run out of data
 		{
-			throw new XMLWellFormednessException(parseEOFException, ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+PARAMETER_ENTITY_REFERENCE_RESOURCE), entityReferenceName.length()!=0 ? entityReferenceName : ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+UNKNOWN_RESOURCE));	//show that we couldn't find the end of the parameter entity reference
+			throw new XMLWellFormednessException(parseEOFException, ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+PARAMETER_ENTITY_REFERENCE_RESOURCE), entityReferenceName!=null ? entityReferenceName : ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+UNKNOWN_RESOURCE));	//show that we couldn't find the end of the parameter entity reference
 		}
 	}
 
@@ -742,7 +742,7 @@ Debug.trace("Discarding character: "+characterAfterValue);  //G***del
 		}
 		catch(final ParseEOFException parseEOFException)	//if we run out of data
 		{
-			throw new XMLWellFormednessException(parseEOFException, ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+ATTRIBUTE_RESOURCE), attributeName.length()!=0 ? attributeName : ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+UNKNOWN_RESOURCE));	//show that we couldn't find the end of the attribute
+			throw new XMLWellFormednessException(parseEOFException, ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+ATTRIBUTE_RESOURCE), attributeName!=null ? attributeName : ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+UNKNOWN_RESOURCE));	//show that we couldn't find the end of the attribute
 		}
 
 //G***del when works		return new XMLAttribute(ownerDocument, attributeName, attributeValue, attributeLineIndex, attributeCharIndex);	//create a new attribute-value pair object and return it
@@ -1036,7 +1036,7 @@ entityReader.tidy=isTidy();  //G***fix
 		}
 		catch(final ParseEOFException parseEOFException)	//if we run out of data
 		{
-			throw new XMLWellFormednessException(parseEOFException, ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+DOCUMENT_TYPE_RESOURCE), documentType.getName().length()!=0 ? documentType.getName() : ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+UNKNOWN_RESOURCE));	//show that we couldn't find the end of the document type
+			throw new XMLWellFormednessException(parseEOFException, ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+DOCUMENT_TYPE_RESOURCE), documentType.getName()!=null ? documentType.getName() : ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+UNKNOWN_RESOURCE));	//show that we couldn't find the end of the document type
 		}
 	}
 
@@ -1360,7 +1360,7 @@ final XMLDocument ownerDocument, final XMLDocumentType documentType
 		}
 		catch(final ParseEOFException parseEOFException)	//if we run out of data
 		{
-			throw new XMLWellFormednessException(parseEOFException, ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+ENTITY_DECLARATION_RESOURCE), entity.getNodeName().length()!=0 ? entity.getNodeName() : ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+UNKNOWN_RESOURCE));	//show that we couldn't find the end of the entity declaration
+			throw new XMLWellFormednessException(parseEOFException, ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+ENTITY_DECLARATION_RESOURCE), entity.getNodeName()!=null ? entity.getNodeName() : ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+UNKNOWN_RESOURCE));	//show that we couldn't find the end of the entity declaration
 		}
 	}
 
@@ -2054,7 +2054,8 @@ Debug.trace("XMLParse parseMarkup() XML_DECL.");	//G***del
 		}
 		catch(final ParseEOFException parseEOFException)	//if we run out of data
 		{
-			throw new XMLWellFormednessException(parseEOFException, ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+TAG_RESOURCE), tag.getNodeName().length()!=0 ? tag.getNodeName() : ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+UNKNOWN_RESOURCE));	//show that we couldn't find the end of the tag
+				//show that we couldn't find the end of the tag
+			throw (XMLWellFormednessException)new XMLWellFormednessException(parseEOFException, ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+TAG_RESOURCE), tag.getNodeName()!=null ? tag.getNodeName() : ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+UNKNOWN_RESOURCE)).initCause(parseEOFException);	
 		}
 	}
 
@@ -2130,7 +2131,7 @@ Debug.trace("XMLParse parseMarkup() XML_DECL.");	//G***del
 		}
 		catch(final ParseEOFException parseEOFException)	//if we run out of data
 		{
-			throw new XMLWellFormednessException(parseEOFException, ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+XML_DECLARATION_RESOURCE), xmlDecl.getNodeName().length()!=0 ? xmlDecl.getNodeName() : ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+UNKNOWN_RESOURCE));	//show that we couldn't find the end of the XML declaration
+			throw new XMLWellFormednessException(parseEOFException, ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+XML_DECLARATION_RESOURCE), xmlDecl.getNodeName()!=null ? xmlDecl.getNodeName() : ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+UNKNOWN_RESOURCE));	//show that we couldn't find the end of the XML declaration
 		}
 	}
 
@@ -2161,7 +2162,7 @@ Debug.trace("XMLParse parseMarkup() XML_DECL.");	//G***del
 		}
 		catch(final ParseEOFException parseEOFException)	//if we run out of data
 		{
-			throw new XMLWellFormednessException(parseEOFException, ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+PROCESSING_INSTRUCTION_RESOURCE), processingInstruction.getTarget().length()!=0 ? processingInstruction.getNodeName() : ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+UNKNOWN_RESOURCE));	//show that we couldn't find the end of the XML processing instruction
+			throw new XMLWellFormednessException(parseEOFException, ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+PROCESSING_INSTRUCTION_RESOURCE), processingInstruction.getTarget()!=null ? processingInstruction.getNodeName() : ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+UNKNOWN_RESOURCE));	//show that we couldn't find the end of the XML processing instruction
 		}
 	}
 
@@ -2492,15 +2493,8 @@ entityReader.tidy=isTidy();  //G***fix
 	@exception XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
 	@return A new XML document.
 	*/
-	protected XMLDocument parseDocument(final XMLReader reader/*G***fix final boolean validate, final boolean processStyleSheets, final boolean applyStyleSheets*/) throws IOException, XMLSyntaxException, XMLWellFormednessException, XMLValidityException, XMLUndefinedEntityReferenceException
+	protected XMLDocument parseDocument(final XMLReader reader) throws IOException, XMLSyntaxException, XMLWellFormednessException, XMLValidityException, XMLUndefinedEntityReferenceException
 	{
-//G***del System.out.println("XMLParse Starting to parse document.");	//G***del
-/*G***fix
-		ShouldValidate=validate;	//set whether or not we should validate the document
-		ShouldProcessStyleSheets=processStyleSheets;	//set whether or not we should recognize and process any stylesheets we encounter
-		ShouldApplyStyleSheets=applyStyleSheets;	//set whether or not we should apply any stylesheets to the document
-*/
-
 		long nodeLineIndex=0, nodeCharIndex=0;	//make a note of where each node begins
 
 		XMLDocument document=new XMLDocument();	//create a new document	G***use the XMLDOMImplementation function here
@@ -2606,7 +2600,7 @@ entityReader.tidy=isTidy();  //G***fix
 		}
 		catch(final ParseEOFException parseEOFException)	//if we run out of data
 		{
-			throw new XMLWellFormednessException(parseEOFException, ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+DOCUMENT_RESOURCE), document.getNodeName().length()!=0 ? document.getNodeName() : ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+UNKNOWN_RESOURCE));	//show that we couldn't find the end of the document
+			throw new XMLWellFormednessException(parseEOFException, ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+DOCUMENT_RESOURCE), document.getNodeName()!=null ? document.getNodeName() : ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+UNKNOWN_RESOURCE));	//show that we couldn't find the end of the document
 		}
 		//G***decide if we should close the reader ourselves here
 
@@ -2627,7 +2621,7 @@ entityReader.tidy=isTidy();  //G***fix
 		return document;	//return the parsed document
 	}
 
-	/**Parses an XML document.
+	/**Parses an XML document from an input stream.
 	@param inputStream The input stream from which to get the XML data.
 	@param sourceObject The source of the data (e.g. a String, File, or URL).
 	@exception IOException Thrown when an i/o error occurs.
@@ -2640,6 +2634,22 @@ entityReader.tidy=isTidy();  //G***fix
 	public XMLDocument parseDocument(final InputStream xmlInputStream, final Object sourceObject) throws IOException, XMLSyntaxException, XMLWellFormednessException, XMLValidityException, XMLUndefinedEntityReferenceException
 	{
 		final XMLReader xmlReader=createReader(xmlInputStream, sourceObject); //create a reader from the input stream
+		return parseDocument(xmlReader);	//parse the document using the reader we constructed, and return the new document
+	}
+
+	/**Parses an XML document from a reader.
+	@param reader The input stream from which to get the XML data.
+	@param sourceObject The source of the data (e.g. a String, File, or URL).
+	@exception IOException Thrown when an i/o error occurs.
+	@exception XMLSyntaxException Thrown when there is a syntax error in the XML file.
+	@exception XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
+	@exception XMLValidityException Thrown when there is a validity error in the XML file.
+	@exception XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
+	@return A new XML document.
+	*/
+	public XMLDocument parseDocument(final Reader reader, final Object sourceObject) throws IOException, XMLSyntaxException, XMLWellFormednessException, XMLValidityException, XMLUndefinedEntityReferenceException
+	{
+		final XMLReader xmlReader=new XMLReader(reader, sourceObject);	//create an XML reader from the reader
 		return parseDocument(xmlReader);	//parse the document using the reader we constructed, and return the new document
 	}
 
@@ -2677,7 +2687,7 @@ reader.tidy=isTidy();  //G***fix
 		}
 		catch(final ParseEOFException parseEOFException)	//if we run out of data
 		{
-			throw new XMLWellFormednessException(parseEOFException, ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+DOCUMENT_RESOURCE), document.getNodeName().length()!=0 ? document.getNodeName() : ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+UNKNOWN_RESOURCE));	//show that we couldn't find the end of the document
+			throw new XMLWellFormednessException(parseEOFException, ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+DOCUMENT_RESOURCE), document.getNodeName()!=null ? document.getNodeName() : ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX+UNKNOWN_RESOURCE));	//show that we couldn't find the end of the document
 		}
 	}
 
