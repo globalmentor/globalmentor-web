@@ -599,7 +599,7 @@ G***should we return data from CDATA sections as well?
 		document.appendChild(processingInstruction);  //append the processing instruction to the document
 	}
 
-	/**Performs a clone the children of the source node and adds them to the
+	/**Performs a clone on the children of the source node and adds them to the
 		destination node.
 	@param destinationNode The node that will receive the cloned child nodes.
 	@param sourceNode The node from whence the nodes will be cloned.
@@ -618,7 +618,26 @@ G***should we return data from CDATA sections as well?
 		}
 	}
 
-	/**Performs a clone the attributes of the source node and adds them to the
+	/**Performs an import on the children of the source node and adds them to the destination node.
+	@param destinationNode The node that will receive the imported child nodes.
+	@param sourceNode The node from whence the nodes will be imported.
+	@param deep Whether each child should be deeply imported.
+	*/
+	//G***list exceptions
+	public static void appendImportedChildNodes(final Node destinationNode, final Node sourceNode, final boolean deep)
+	{
+		final Document destinationDocument=destinationNode.getOwnerDocument();	//get the owner document of the destination node
+		final NodeList sourceNodeList=sourceNode.getChildNodes(); //get the list of child nodes
+		final int sourceNodeCount=sourceNodeList.getLength(); //find out how many nodes there are
+		for(int i=0; i<sourceNodeCount; ++i)  //look at each of the source nodes
+		{
+			final Node sourceChildNode=sourceNodeList.item(i); //get a reference to this child node
+	//G***del Debug.trace("ready to clone child node: "+sourceChildNode.getNodeName()+" with parent: "+sourceChildNode.getParentNode().getNodeName());
+			destinationNode.appendChild(destinationDocument.importNode(sourceChildNode, deep));  //import the node and add it to the destination node
+		}
+	}
+
+	/**Performs a clone on the attributes of the source node and adds them to the
 		destination node. It is assumed that all attributes have been added using
 		namespace aware methods.
 	@param destinationElement The element that will receive the cloned child nodes.
@@ -708,8 +727,7 @@ G***should we return data from CDATA sections as well?
 	*/
 //G***list exceptions
 //G***change name to XXXNS
-	public static Element appendElement(final Element parentElement,
-	    final String elementNamespaceURI, final String elementName)
+	public static Element appendElement(final Element parentElement, final String elementNamespaceURI, final String elementName)
 	{
 		return appendElement(parentElement, elementNamespaceURI, elementName, null);  //append the element with no text
 	}
