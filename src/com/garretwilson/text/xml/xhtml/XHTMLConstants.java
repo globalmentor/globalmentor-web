@@ -186,7 +186,16 @@ public interface XHTMLConstants
 
 		//attributes for <input>
 	public final static String ELEMENT_INPUT_ATTRIBUTE_TYPE="type";
+		public final static String INPUT_TYPE_BUTTON="button";
+		public final static String INPUT_TYPE_CHECKBOX="checkbox";
+		public final static String INPUT_TYPE_FILE="file";
 		public final static String INPUT_TYPE_HIDDEN="hidden";
+		public final static String INPUT_TYPE_IMAGE="image";
+		public final static String INPUT_TYPE_PASSWORD="password";
+		public final static String INPUT_TYPE_RADIO="radio";
+		public final static String INPUT_TYPE_RESET="reset";
+		public final static String INPUT_TYPE_SUBMIT="submit";
+		public final static String INPUT_TYPE_TEXT="text";
 
 		//attributes for <object>
 	public final static String ELEMENT_OBJECT_ATTRIBUTE_CLASSID="classid";
