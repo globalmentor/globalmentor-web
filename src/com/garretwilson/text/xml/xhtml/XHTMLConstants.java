@@ -1,12 +1,16 @@
 package com.garretwilson.text.xml.xhtml;
 
 import java.net.URI;
+import com.garretwilson.io.MediaType;
 
 /**Constants for XHTML.
 @author Garret Wilson
 */
 public interface XHTMLConstants
 {
+
+	/**The content type for XHTML: <code>application/xhtml+xml</code>.*/ 
+	public static final MediaType XHTML_CONTENT_TYPE=new MediaType(MediaType.APPLICATION, MediaType.XHTML_XML);
 
 	/**The recommended prefix to the XHTML namespace.*/
 	public static final String XHTML_NAMESPACE_PREFIX="xhtml";
@@ -43,6 +47,7 @@ public interface XHTMLConstants
 	public final static String ELEMENT_CAPTION="caption";
 	public final static String ELEMENT_CENTER="center";
 	public final static String ELEMENT_CITE="cite";
+	public final static String ELEMENT_COL="col";
 	public final static String ELEMENT_CODE="code";
 	public final static String ELEMENT_DD="dd";
 	public final static String ELEMENT_DFN="dfn";
@@ -62,6 +67,7 @@ public interface XHTMLConstants
 	public final static String ELEMENT_HTML="html";
 	public final static String ELEMENT_I="i";
 	public final static String ELEMENT_IMG="img";
+	public final static String ELEMENT_INPUT="input";
 	public final static String ELEMENT_KBD="kbd";
 	public final static String ELEMENT_LI="li";
 	public final static String ELEMENT_LINK="link";
