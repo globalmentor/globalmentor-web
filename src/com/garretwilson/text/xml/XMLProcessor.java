@@ -7,6 +7,7 @@ import java.net.URISyntaxException;
 //G***del import java.net.URL;
 //G***del if we don't need import java.text.MessageFormat;
 import org.w3c.dom.DOMException;
+import org.w3c.dom.DocumentType;
 
 import com.garretwilson.io.FileConstants;
 import com.garretwilson.io.FileUtilities;
@@ -418,22 +419,15 @@ public class XMLProcessor extends XMLUtilities implements XMLConstants, URIInput
 	}
 
 	/**Creates a reader to read the specified external file.
-	@param reader The reader from which characters are currently being retrieved.
+	@param context The context object, usually a URI.
 	@param systemID The relative or absolute filename.
 	@exception IOException Thrown when an i/o error occurs.
 	@return A reader from which the file may be read.
 	@exception IOException Thrown if an I/O error occurred.
 	*/
-	protected XMLReader createReader(final XMLReader reader, final String systemID) throws IOException //G***comment exceptions
+	protected XMLReader createReader(final Object context, final String systemID) throws IOException //G***comment exceptions
 	{
-		return createReader(reader, null, systemID);  //create a reader without checking a public ID
-/*G***del when works
-//G***check for an empty filename here, which would incorrectly load the same file
-		final URL url=URLUtilities.createURL(reader.getSourceObject(), systemID);	//create a URL from the original URL of the reader and the filename, in case the filename is a relative filename
-		return createReader(getInputStreamLocator().getInputStream(url), url);	//connect to the URL and create a reader from the input stream
-		//G***when will all these readers/connections/streams get closed?
-			//G***check for FileNotFoundException and throw something appropriate for our XML processor
-*/
+		return createReader(context, null, systemID);  //create a reader without checking a public ID
 	}
 
 	/**Creates a reader to read the specified external file, specifying both a
@@ -444,7 +438,7 @@ public class XMLProcessor extends XMLUtilities implements XMLConstants, URIInput
 		Note that any resource must be saved with the same name as its public ID,
 		with all invalid filename characters replaced with underscores, and
 		no extension for it to be recognized.
-	@param reader The reader from which characters are currently being retrieved.
+	@param context The context object, usually a URI.
 	@param publicID The public identifier of the file to load, or <code>null</code>
 		if there is no public ID.
 	@param systemID The relative or absolute filename, which will only be used
@@ -454,12 +448,12 @@ public class XMLProcessor extends XMLUtilities implements XMLConstants, URIInput
 	@exception IOException Thrown if an I/O error occurred.
 	@see FileConstants#ILLEGAL_FILENAME_CHARACTERS
 	*/
-	protected XMLReader createReader(final XMLReader reader, final String publicID, final String systemID) throws IOException //G***comment exceptions
+	protected XMLReader createReader(final Object context, final String publicID, final String systemID) throws IOException //G***comment exceptions
 	{
 		try
 		{
 				//create a URI for the system ID (there should always be one) in relation to our reader's context, if any
-			final URI uri=systemID!=null ? URIUtilities.createURI(reader.getSourceObject(), systemID) : null;
+			final URI uri=systemID!=null ? URIUtilities.createURI(context, systemID) : null;
 				//convert the public ID (if there is one) to a valid filaname and see if we can load this
 				//  resource locally rather than from the literal file location
 			final String localFilename=FileUtilities.encodeCrossPlatformFilename(publicID);	//get the name of the file if it were to be stored locally
@@ -503,17 +497,17 @@ public class XMLProcessor extends XMLUtilities implements XMLConstants, URIInput
 
 	/**Creates a reader to read from the specified entity, regardless of whether
 		this entity is internal or external.
-	@param reader The reader from which characters are currently being retrieved.
+	@param context The context object, usually a URI.
 	@exception IOException Thrown when an i/o error occurs.
 	@return A reader from which the entity may be read.
 	*/
-	protected XMLReader createEntityReader(final XMLReader reader, final XMLEntity entity) throws IOException
+	protected XMLReader createEntityReader(final Object context, final XMLEntity entity) throws IOException
 	{
 		XMLReader entityReader=null;	//the reader which we will construct and return; we don't know what it will be, yet
 		if(entity.getSystemID()!=null)	//if there is a system identifier for this entity, it's an external entity
 		{
 //G***del Debug.trace("Before creating reader for: "+entity.getSystemID());
-			return createReader(reader, entity.getPublicID(), entity.getSystemID());	//G***testing; comment
+			return createReader(context, entity.getPublicID(), entity.getSystemID());	//G***testing; comment
 /*G***del if we don't need
 							entity.setSourceName(externalEntityReader.getName());	//store where we found the entity
 			entity.setLineIndex(externalEntityReader.getLineIndex());	//store which line the entity starts on
@@ -622,7 +616,8 @@ entityReader.tidy=isTidy();  //G***fix
 	/**Parses an input stream that supposedly contains a parameter entity reference.
 	@param reader The reader from which to retrieve characters.
 	@param ownerDocument The document which will own the constructed entity.
-	@param parameterEntityMap Any parameter entities we've collected along the way while parsing this DTD subset G***eventually use a DTD subset object
+	@param parameterEntityMap Any parameter entities we've collected along the
+		way while parsing this DTD subset. TODO eventually use a DTD subset object
 	@exception IOException Thrown when an i/o error occurs.
 	@exception XMLSyntaxException Thrown when there is a syntax error in the XML file.
 	@exception XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
@@ -1124,7 +1119,7 @@ final XMLDocument ownerDocument, final XMLDocumentType documentType
 //G***del Debug.trace("Did not find a cached document type subset for system ID: ", systemID);
 			generalEntityMap=new XMLNamedNodeMap(); //eventually replace these with an object specifically for DTD subsets
 			parameterEntityMap=new XMLNamedNodeMap();
-			final XMLReader externalDTDReader=createReader(reader, documentType.getPublicID(), documentType.getSystemID());	//G***testing; comment
+			final XMLReader externalDTDReader=createReader(reader.getSourceObject(), documentType.getPublicID(), documentType.getSystemID());	//G***testing; comment
 			try
 			{
 					//G***change the code to know whether it should look for an ending ']'
@@ -1148,7 +1143,7 @@ final XMLDocument ownerDocument, final XMLDocumentType documentType
 		//G***fix; right now, the parameter entities never get placed in the document type object
 	}
 
-	/**Parses an input stream that contains content of an element.
+	/**Parses an input stream that contains content of a document type.
 		If this function reaches the end of the stream of the reader without finding
 		an ending tag for the element, an exception is not thrown; rather, the return
 		code will indicate if the end tag was found.
@@ -1157,8 +1152,12 @@ final XMLDocument ownerDocument, final XMLDocumentType documentType
 //G***fix	@param documentType The document type being processed.
 	@param generalEntityMap The map of general entities which will be created and returned. G***eventually pass all these in one encapsulating object
 	@param parameterEntityMap The map of general entities which will be created and returned. G***eventually pass all these in one encapsulating object
-	@param elementDeclarationList The list of elements that will be created to represent element declarations.
-	@param attributeListDeclarationList The list of elements that will be created to represent attribute list declarations.
+	@param elementDeclarationList The list of elements that will be created to
+		represent element declarations, or <code>null</code> if these elements
+		need not be returned. TODO fix with new DOM storage of these elements
+	@param attributeListDeclarationList The list of elements that will be created
+		to represent attribute list declarations, or <code>null</code> if these
+		attributes need not be returned. TODO fix with new DOM storage of these attributes
 	@exception IOException Thrown when an i/o error occurs.
 	@exception XMLSyntaxException Thrown when there is a syntax error in the XML file.
 	@exception XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
@@ -1190,7 +1189,7 @@ final XMLDocument ownerDocument, final XMLDocumentType documentType
 						{
 //G***del Debug.trace("Found parameter entity ref.");
 							final XMLEntity entity=parseParameterEntityReference(reader, ownerDocument, parameterEntityMap);	//parse this entity reference and see which entity it refers to
-							final XMLReader entityReader=createEntityReader(reader, entity);	//we'll use this to read either from the internal value or an external file
+							final XMLReader entityReader=createEntityReader(reader.getSourceObject(), entity);	//we'll use this to read either from the internal value or an external file
 							try
 							{
 								if(parseDocumentTypeContent(entityReader, ownerDocument, /*G***fix documentType, */generalEntityMap, parameterEntityMap, elementDeclarationList, attributeListDeclarationList))	//parse the entity text just as if it were included in the file (except for markup across entity boundaries); if the ending markup for the DTD for the element was found G***fix; how can they find the ']' in a parameter entity?
@@ -1233,11 +1232,19 @@ final XMLDocument ownerDocument, final XMLDocumentType documentType
 						break;
 					case ELEMENT_TYPE_DECL:	//if this is an element type declaration
 //G***del Debug.trace("Found element type declaration.");
-						elementDeclarationList.add(parseElementTypeDeclaration(reader, ownerDocument, parameterEntityMap));	//parse this element type declaration and add the resulting element to our declaration list G***fix
+						{
+							final XMLElement elementTypeDeclaration=parseElementTypeDeclaration(reader, ownerDocument, parameterEntityMap);	//parse this element type declaration G***fix
+							if(elementDeclarationList!=null)	//TODO this check will go away when we store these inside the document type itself
+								elementDeclarationList.add(elementTypeDeclaration);	//add the resulting element to our declaration list G***fix
+						}
 						break;
 					case ATTLIST_DECL:	//if this is an attribute declaration
 //G***del Debug.trace("Found attribute list declaration.");
-						attributeListDeclarationList.add(parseAttributeListDeclaration(reader, ownerDocument, parameterEntityMap));	//parse this attribute list declaration and add the resulting element to our declaration list G***fix
+						{
+							final XMLElement attributeListDeclaration=parseAttributeListDeclaration(reader, ownerDocument, parameterEntityMap);	//parse this attribute list declaration G***fix
+							if(attributeListDeclarationList!=null)	//TODO this check will go away when we store these inside the document type itself
+								attributeListDeclarationList.add(attributeListDeclaration);	//add the resulting element to our declaration list G***fix
+						}
 						break;
 					case COMMENT:	//if this is a comment
 //G***del Debug.trace("Found comment.");
@@ -1815,7 +1822,7 @@ attributeListDeclarationReader.tidy=isTidy();  //G***fix
 //G***del			if(reader.peekChar()=='%')	//if we've found an entity reference
 			{
 				final XMLEntity entity=parseParameterEntityReference(reader, ownerDocument, parameterEntityMap);	//parse this entity reference and see which entity it refers to
-				final XMLReader entityReader=createEntityReader(reader, entity);	//we'll use this to read either from the internal value or an external file
+				final XMLReader entityReader=createEntityReader(reader.getSourceObject(), entity);	//we'll use this to read either from the internal value or an external file
 				//G***why aren't we using a string buffer here?
 				expandedText.append(' '); //append a space before the value
 					//continue collecting data by expanding this parameter entity reference
