@@ -4,7 +4,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
 import com.garretwilson.text.xml.XMLSerializer;
-import com.garretwilson.util.Debug;
+import com.garretwilson.util.*;
 
 /**An RDF data model.
 	The data model should be used to create resources, as it keeps a list of
