@@ -460,7 +460,34 @@ public class XMLProcessor extends XMLUtilities implements XMLConstants, URIInput
 			final URI uri=systemID!=null ? URIUtilities.createURI(reader.getSourceObject(), systemID) : null;
 				//convert the public ID (if there is one) to a valid filaname and see if we can load this
 				//  resource locally rather than from the literal file location
-			final InputStream localResourceInputStream=publicID!=null ? getClass().getResourceAsStream(FileUtilities.createFilename(publicID)) : null;
+			final String localFilename=FileUtilities.encode(publicID);	//get the name of the file if it were to be stored locally
+
+			if(publicID!=null)	//G***del
+			{
+				String name=localFilename;
+						Class c = getClass();
+						while (c.isArray()) {
+								c = c.getComponentType();
+						}
+						String baseName = c.getName();
+						int index = baseName.lastIndexOf('.');
+						if (index != -1) {
+								name = baseName.substring(0, index).replace('.', '/')
+										+"/"+name;
+						}
+				Debug.trace(name);
+
+				final java.net.URL url=getClass().getResource(localFilename);
+		try {
+			if(url!=null)
+				url.openStream();
+		} catch (IOException e) {
+				Debug.error(e);
+		}
+			}
+
+
+			final InputStream localResourceInputStream=publicID!=null ? getClass().getResourceAsStream(localFilename) : null;
 				//if we couldn't find the resource locally, create an input stream to the system ID URI we already created, using our input stream locator
 			final InputStream inputStream=localResourceInputStream!=null ? localResourceInputStream : getURIInputStreamable().getInputStream(uri);
 			return createReader(inputStream, uri);	//create a reader from the input stream, specifying the URI from whence it came (at least where it would have came had we not found it locally)
