@@ -156,7 +156,9 @@ public interface XHTMLConstants
 	public final static String ATTRIBUTE_STYLE="style";
 	/**The attribute for value.*/
 	public final static String ATTRIBUTE_VALUE="value";
-
+		//event attributes
+	public final static String ATTRIBUTE_ONCLICK="onclick";
+	
 		//attributes for <a>
 	public final static String ELEMENT_A_ATTRIBUTE_HREF="href";
 
@@ -208,5 +210,8 @@ public interface XHTMLConstants
 		//attributes for <param>
 	public final static String ELEMENT_PARAM_ATTRIBUTE_NAME="name";
 	public final static String ELEMENT_PARAM_ATTRIBUTE_VALUE="value";
+
+	//attributes for <script>
+	public final static String ELEMENT_SCRIPT_ATTRIBUTE_TYPE="type";
 
 }

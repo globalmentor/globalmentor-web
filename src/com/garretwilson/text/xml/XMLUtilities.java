@@ -507,7 +507,7 @@ G***should we return data from CDATA sections as well?
 	@param string The string to be changed to an XML name.
 	@return The string modified to be an XML name..
 	*/
-	static public String createName(final String string)
+	public static String createName(final String string)
 	{
 		if(isName(string))  //if the string is already a name (we'll check all the characters, assuming that most of the time the strings will already be valid names, making this more efficient)
 		  return string;  //return the string, because it doesn't need to be converted
