@@ -192,9 +192,9 @@ public class XMLSerializer implements XMLConstants
 	/**@return A map of default namespace prefixes for known namespaces, keyed to
 		namespace URIs, to be used for serializing namespace references.
 	*/
-	public static Map createNamespacePrefixMap()	//G***maybe later use real URIs
+	public static Map<String, String> createNamespacePrefixMap()	//G***maybe later use real URIs
 	{
-		final Map map=new HashMap();  //create a new hash map
+		final Map<String, String> map=new HashMap<String, String>();  //create a new hash map
 		map.put(DictoConstants.DICTO_NAMESPACE_URI.toString(), DictoConstants.DICTO_NAMESPACE_PREFIX); //Dicto
 		map.put(DCConstants.DCMI11_ELEMENTS_NAMESPACE_URI.toString(), DCConstants.DCMI_ELEMENTS_NAMESPACE_PREFIX); //Dublin Core
 		map.put(MAQROConstants.MAQRO_NAMESPACE_URI.toString(), MAQROConstants.MAQRO_NAMESPACE_PREFIX); //MAQRO
@@ -228,7 +228,7 @@ public class XMLSerializer implements XMLConstants
 	@return A prefix for use with the given namespace.
 	@see #createNamespacePrefixMap
 	*/
-	public static String getNamespacePrefix(final Map namespacePrefixMap, final String namespaceURI)
+	public static String getNamespacePrefix(final Map<String, String> namespacePrefixMap, final String namespaceURI)
 	{
 		return getNamespacePrefix(namespacePrefixMap, namespaceURI, true);	//get a namespace prefix, generating a new one if needed 
 	}
@@ -250,9 +250,9 @@ public class XMLSerializer implements XMLConstants
 		<code>generatePrefix</code> is <code>false</code>.
 	@see #createNamespacePrefixMap
 	*/
-	public static String getNamespacePrefix(final Map namespacePrefixMap, final String namespaceURI, boolean generatePrefix)
+	public static String getNamespacePrefix(final Map<String, String> namespacePrefixMap, final String namespaceURI, boolean generatePrefix)
 	{
-		String prefix=(String)namespacePrefixMap.get(namespaceURI);  //get the prefix keyed by the namespace
+		String prefix=namespacePrefixMap.get(namespaceURI);  //get the prefix keyed by the namespace
 		if(prefix==null)	//if we didn't find a prefix, try the namespaceURI without its ending # (RDF has different URI generation rules than, for example, XML Schema, resulting in different namespace representations)
 		{
 				//if this URI ends with '#' and has data before that character
@@ -499,7 +499,7 @@ public class XMLSerializer implements XMLConstants
 	protected void initializeEntityLookup(final NamedNodeMap entityMap)
 	{
 	//G***del Debug.trace("looking at entity map with entries: ", entityMap.getLength()); //G***del
-		final List entityNameList=new ArrayList();  //create an array to hold the entity names we use
+		final List<String> entityNameList=new ArrayList<String>();  //create an array to hold the entity names we use
 		final StringBuffer entityCharacterValueStringBuffer=new StringBuffer(); //create a buffer to hold all the character values
 		if(isUseEntities()) //if we were asked to use their entities
 		{
@@ -559,7 +559,7 @@ public class XMLSerializer implements XMLConstants
 			}
 		}
 	//G***del Debug.trace("Found entities to serialize: ", entityCharacterValueStringBuffer.length());  //G***del
-		entityNames=(String[])entityNameList.toArray(new String[entityNameList.size()]);  //convert the entities in the list to an array
+		entityNames=entityNameList.toArray(new String[entityNameList.size()]);  //convert the entities in the list to an array
 		entityCharacterValues=entityCharacterValueStringBuffer.toString();  //convert the values into one searchable string
 	}
 
