@@ -213,7 +213,12 @@ public interface XHTMLConstants
 	public final static String ELEMENT_PARAM_ATTRIBUTE_NAME="name";
 	public final static String ELEMENT_PARAM_ATTRIBUTE_VALUE="value";
 
-	//attributes for <script>
+		//attributes for <script>
 	public final static String ELEMENT_SCRIPT_ATTRIBUTE_TYPE="type";
+
+		//attributes for <td>
+	public final static String ELEMENT_TD_ATTRIBUTE_COLSPAN="colspan";
+	public final static String ELEMENT_TD_ATTRIBUTE_SCOPE="scope";
+		public final static String TD_SCOPE_COLGROUP="colgroup";
 
 }
