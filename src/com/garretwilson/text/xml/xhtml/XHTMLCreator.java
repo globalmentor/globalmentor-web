@@ -9,6 +9,8 @@ import com.garretwilson.text.xml.XMLUtilities;
 import com.garretwilson.util.Debug;
 import org.w3c.dom.*;
 
+import static com.garretwilson.text.CharacterConstants.*;
+
 /**Allows creation of an XHTML document from a text document. Each group of
 	lines is converted to an XHTML <code>&lt;p&gt;</code>.
 @author Garret Wilson

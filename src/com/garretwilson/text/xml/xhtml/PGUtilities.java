@@ -486,7 +486,7 @@ Debug.trace("removed of: ", remainingText); //G***del
 											//only override an old title if this line has "of"
 										if((title==null || hasOf==true)
 											&& !foundPGTitle  //if we haven't already found a title in another PG line
-											&& StringUtilities.hasLetterOrDigit(remainingText))
+											&& CharSequenceUtilities.containsLetterOrDigit(remainingText))
 										{
 										  title=tidyTitle(remainingText);  //whatever is left is the title
 Debug.trace("found PG title: ", title); //G***del
@@ -544,7 +544,7 @@ Debug.trace("we think the title is: "+title);  //G***del
 												)
 											{
 												remainingText=tidyTitle(nextLine); //tidy the remaining line
-												if(StringUtilities.hasLetterOrDigit(remainingText))  //if the trimmed string is a title
+												if(CharSequenceUtilities.containsLetterOrDigit(remainingText))  //if the trimmed string is a title
 													title=remainingText;  //use this for a title
 											}
 										}
@@ -695,7 +695,7 @@ Debug.trace("found PG in line for author: ", line);  //G***del
 										remainingText=tidyAuthor(remainingText.substring(byIndex+BY.length()));
 											//if we have anything remaining, and it's not "author", "himself", or "herself"
 										if(!foundPGByAuthor //if we haven't already found a Project Gutenberg "by" author (e.g. ionly10.txt)
-											  && StringUtilities.hasLetterOrDigit(remainingText)
+											  && CharSequenceUtilities.containsLetterOrDigit(remainingText)
 											  && !"AUTHOR".equalsIgnoreCase(remainingText)  //G***use a constant
 											  && !"himself".equalsIgnoreCase(remainingText)  //(e.g. advlr10.txt) G***use a constant
 											  && !"herself".equalsIgnoreCase(remainingText))  //(e.g. advlr10.txt) G***use a constant
@@ -742,7 +742,7 @@ Debug.trace("found by index: ", byIndex); //G***del
 										: line; //if we didn't find by but we know the author should be on this line, use the whole line
 //G***del System.out.println("remaining text: "+remainingText);
 //G***del System.out.println("already have author: "+author);
-									if(StringUtilities.hasLetterOrDigit(remainingText)  //if we have anything remaining
+									if(CharSequenceUtilities.containsLetterOrDigit(remainingText)  //if we have anything remaining
 											&& (isNextLineByAuthor || usedIndex<0 || usedIndex!=byIndex-"used ".length()))  //make sure this isn't "used by" (e.g. brnte10.txt)
 									{
 Debug.trace("found non-PG 'by' author: ", remainingText); //G***del
@@ -821,7 +821,7 @@ Debug.trace("we found a place to search for by");  //G***del
 									{
 											//remove the "by" and everything before it, and tidy the property
 										final String remainingText=tidyAuthor(line.substring(byIndex+BY.length()));
-										if(StringUtilities.hasLetterOrDigit(remainingText))  //if we have anything remaining
+										if(CharSequenceUtilities.containsLetterOrDigit(remainingText))  //if we have anything remaining
 										{
 Debug.trace("setting author to remaining text after by: ", remainingText);
 											author=remainingText;  //whatever is left is the author

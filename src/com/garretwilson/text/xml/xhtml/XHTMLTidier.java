@@ -19,6 +19,8 @@ import org.w3c.dom.*;
 import org.w3c.dom.traversal.NodeFilter;
 import org.w3c.dom.css.*;
 
+import static com.garretwilson.text.CharacterConstants.*;
+
 /**Contains several routines for tidying XHTML documents.
 <p><code>tidy()</code> performs the following operations:</p>
 <ul>
@@ -685,7 +687,7 @@ public class XHTMLTidier extends TextUtilities implements XHTMLConstants, XMLCSS
 										  //G***same the delimiter somewhere
 										//trim the "." or ")" or whatever from the string, giving us just the marker
 									markerString=StringUtilities.trim(markerString, LIST_ITEM_MARKER_DELIMITER_CHARS);
-									if(StringUtilities.isLatinDigits(markerString)) //if this string contains only latin digits (the digits '0'-'9')
+									if(CharSequenceUtilities.isLatinDigits(markerString)) //if this string contains only latin digits (the digits '0'-'9')
 									{
 /*G***del
 Debug.trace("Is latin digits"); //G***del
