@@ -61,6 +61,7 @@ public class XMLDocumentModelIOKit extends AbstractModelIOKit
 		final XMLProcessor xmlProcessor=new XMLProcessor(this);	//create a new XML processor that knows how to access streams from URIs
 		final Document xml=xmlProcessor.parseDocument(inputStream, baseURI);	//parse the XML
 		return new XMLDocumentModel(xml, baseURI, this);	//return a new XML document model
+			//TODO check for XML DOM exceptions---not just here, but throughout the code; update the XMLProcessor, too
 	}
 	
 	/**Saves a model to an output stream.
