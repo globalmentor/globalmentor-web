@@ -439,8 +439,11 @@ G***should we return data from CDATA sections as well?
 	}
 
 
-	protected final static char REPLACEMENT_FIRST_CHAR='x';  //the character to replace theh first character if needed G***maybe move these up and/or rename them
-	protected final static char REPLACEMENT_CHAR='_';  //the character to use to replace any other character
+	/**The character to replace the first character if needed.*/
+	protected final static char REPLACEMENT_FIRST_CHAR='x';
+
+	/**The character to use to replace any other character.*/
+	protected final static char REPLACEMENT_CHAR='_';
 
 
 	/**Characters to be replaced, along with their replacements.*/  //G***move these up after moving the match character references (above) elsewhere
@@ -505,7 +508,7 @@ G***should we return data from CDATA sections as well?
 		name, it will be replaced with an 'x'. An empty string will receive
 		an 'x' as well.
 	@param string The string to be changed to an XML name.
-	@return The string modified to be an XML name..
+	@return The string modified to be an XML name.
 	*/
 	public static String createName(final String string)
 	{
@@ -518,7 +521,7 @@ G***should we return data from CDATA sections as well?
 				stringBuffer.append(REPLACEMENT_FIRST_CHAR);  //put an 'x' in the first position
 			else if(!isNameFirstChar(stringBuffer.charAt(0))) //if the string does have at least one character, but it's not a valid first character for an XML name
 				stringBuffer.setCharAt(0, REPLACEMENT_FIRST_CHAR);  //replace the first character with an 'x'
-			for(int i=1; i<string.length(); ++i)  //look at each character in the string, except theh first (which we've already checked)
+			for(int i=1; i<string.length(); ++i)  //look at each character in the string, except the first (which we've already checked)
 			{
 				if(!isNameChar(stringBuffer.charAt(i)))  //if this character isn't a name character
 					stringBuffer.setCharAt(i, REPLACEMENT_CHAR);  //replace the character with an underscore
