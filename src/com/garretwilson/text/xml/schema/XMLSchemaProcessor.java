@@ -132,7 +132,7 @@ public class XMLSchemaProcessor implements XMLSchemaConstants
 				final Element childElement=(Element)node; //cast the node to an element
 				final String childNamespaceURI=childElement.getNamespaceURI();  //find out which namespace this element is in
 					//if this element is in the XML schema namespace
-				if(childNamespaceURI!=null && childNamespaceURI.equals(XML_SCHEMA_NAMESPACE_URI))
+				if(childNamespaceURI!=null && childNamespaceURI.equals(XML_SCHEMA_NAMESPACE_URI.toString()))
 				{
 						//process the element which contains the schema component
 //G***del Debug.trace("ready to process schema component: "+childElement.getNodeName());
@@ -298,7 +298,7 @@ public class XMLSchemaProcessor implements XMLSchemaConstants
 				final Element childElement=(Element)node; //cast the node to an element
 				final String childNamespaceURI=childElement.getNamespaceURI();  //find out which namespace this element is in
 					//if this element is in the XML schema namespace
-				if(childNamespaceURI!=null && childNamespaceURI.equals(XML_SCHEMA_NAMESPACE_URI))
+				if(childNamespaceURI!=null && childNamespaceURI.equals(XML_SCHEMA_NAMESPACE_URI.toString()))
 				{
 					final String childLocalName=childElement.getLocalName();  //get the element's local name
 						//if this is <appinfo> or <documentation>

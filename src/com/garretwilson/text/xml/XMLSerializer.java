@@ -6,6 +6,7 @@ import org.w3c.dom.*;
 import com.garretwilson.text.CharacterEncodingConstants;
 import com.garretwilson.lang.CharacterUtilities;
 import com.garretwilson.lang.StringBufferUtilities;
+import com.garretwilson.net.URIConstants;
 import com.garretwilson.rdf.dublincore.DCConstants;
 import com.garretwilson.rdf.version.VersionConstants;
 import com.garretwilson.text.xml.oeb.OEBConstants;
@@ -218,6 +219,51 @@ public class XMLSerializer implements XMLConstants
 	}
 
 	/**Retrieves the prefix to use for the given namespace, using the provided
+		namespace prefix map.
+	If a namespace is unrecognized, a new one will be created and stored in the
+		map for future use.
+	@param namespaceURI The namespace URI for which a prefix should be returned
+	@return A prefix for use with the given namespace.
+	@see #createNamespacePrefixMap
+	*/
+	public static String getNamespacePrefix(final Map namespacePrefixMap, final String namespaceURI)
+	{
+		return getNamespacePrefix(namespacePrefixMap, namespaceURI, true);	//get a namespace prefix, generating a new one if needed 
+	}
+
+	/**Retrieves the prefix to use for the given namespace, using the provided
+		namespace prefix map.
+	If a namespace is unrecognized, a new one will optionally be created and
+		stored in the map for future use.
+	@param namespaceURI The namespace URI for which a prefix should be returned
+	@param generatePrefix <code>true</code> if a prefix should be generated if
+		no prefix is assigned to the given namespace URI.
+	@return A prefix for use with the given namespace, or <code>null</code> if
+		no prefix is assigned to the given namespace URI and
+		<code>generatePrefix</code> is <code>false</code>.
+	@see #createNamespacePrefixMap
+	*/
+	public static String getNamespacePrefix(final Map namespacePrefixMap, final String namespaceURI, boolean generatePrefix)
+	{
+		String prefix=(String)namespacePrefixMap.get(namespaceURI);  //get the prefix keyed by the namespace
+		if(prefix==null)	//if we didn't find a prefix, try the namespaceURI without its ending # (RDF has different URI generation rules than, for example, XML Schema, resulting in different namespace representations)
+		{
+				//if this URI ends with '#'
+			if(namespaceURI!=null && namespaceURI.length()>0 && namespaceURI.charAt(namespaceURI.length()-1)==URIConstants.FRAGMENT_SEPARATOR)
+			{
+					//see if we recognize the URI without the ending '#'
+				prefix=(String)namespacePrefixMap.get(namespaceURI.substring(0, namespaceURI.length()-1));
+			}			
+		}
+		if(prefix==null && generatePrefix)  //if there is no prefix for this namespace, and we should generate a prefix
+		{
+			prefix="namespace"+namespacePrefixMap.size()+1; //create a unique namespace prefix
+			namespacePrefixMap.put(namespaceURI, prefix); //store the prefix in the map
+		}
+	  return prefix;  //return the prefix we found or created
+	}
+
+	/**Retrieves the prefix to use for the given namespace, using the provided
 		namespace prefix map. If a namespace is unrecognized, a new one will be
 		created and stored for future use.
 	@param namespacePrefixMap The map of prefix strings, each keyed to a namespace
@@ -226,6 +272,7 @@ public class XMLSerializer implements XMLConstants
 	@return A prefix for use with the given namespace.
 	@see #createNamespacePrefixMap
 	*/
+/*G***del when works
 	public static String getNamespacePrefix(final Map namespacePrefixMap, final String namespaceURI)
 	{
 		String prefix=(String)namespacePrefixMap.get(namespaceURI);  //get the prefix keyed by the namespace
@@ -236,6 +283,7 @@ public class XMLSerializer implements XMLConstants
 		}
 	  return prefix;  //return the prefix we found or created
 	}
+*/
 
 	/**Default constructor for unformatted output.*/
 	public XMLSerializer()
