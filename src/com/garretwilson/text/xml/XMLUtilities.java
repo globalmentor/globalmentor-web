@@ -543,6 +543,15 @@ G***should we return data from CDATA sections as well?
 			return localName; //return the local name without the prefix
 	}
 
+	/**Createa a qualified name object from an XML node.
+	@param node The XML node from which a qualified name is to be created.
+	@return A qualified name object representing the given XML node
+	*/
+	public static QualifiedName createQualifiedName(final Node node)
+	{
+		return new QualifiedName(node.getNamespaceURI(), node.getPrefix(), node.getLocalName());	//create a qualified name for this node
+	}
+
 	/**Checks to make sure the given identifier is a valid target for a processing instruction.
 	@param piTarget The identifier to check for validity.
 	@return <code>true</code> if the name is a valid processing instructin target,
