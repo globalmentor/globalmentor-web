@@ -311,9 +311,12 @@ System.out.println("Before processBufferedData: "+tempString);	//G***del
 			//G***wouldn't this entire section be better replaced with a simple if(destIndex<getFetchBufferIndex())?
 		if(buffer[destIndex-1]==CR_CHAR)	//if there's a CR at the end of the buffer, this means that we were not out of data but unsure of whether this was a CR/LF
 		{
+			setFetchBufferIndex(destIndex-1);	//show that we should fetch another buffer before processing the CR
+/*G***del when works
 				//G***shouldn't this be if(destIndex<getFetchBufferIndex())?
 			if(destIndex>getFetchBufferIndex())	//if currently the fetch buffer is past that CR that we're not sure about
 				setFetchBufferIndex(destIndex);	//show that we should fetch another buffer before processing the CR
+*/
 		}
 			//make sure each character is a valid XML character
 		for(int charIndex=newDataBeginIndex; charIndex<bufferEndIndex; ++charIndex)	//look at each character in the buffer
