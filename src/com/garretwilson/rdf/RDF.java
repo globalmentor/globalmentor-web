@@ -141,7 +141,6 @@ public class RDF implements RDFConstants
 		if(resource==null)  //if no such resource exists
 		{
 			resource=createResource(referenceURI);  //create a new resource from the given reference URI and store the resource in the data model
-//G***del; now duplicated by createResource()			putResource(resource);  //store the resource in the data model
 		}
 		return resource;  //return the resource we either found or created
 	}
@@ -161,7 +160,6 @@ public class RDF implements RDFConstants
 		if(resource==null)  //if no such resource exists
 		{
 			resource=createResource(namespaceURI, localName);  //create a new resource from the given XML serialization information and store the resource in the data model
-//G***dell; now duplicated by createResource()			putResource(resource);  //store the resource in the data model
 		}
 		return resource;  //return the resource we either found or created
 	}
@@ -213,10 +211,20 @@ public class RDF implements RDFConstants
 	*/
 	public RDFResource createResource(final URI referenceURI)
 	{
+//G***del		return createResource(referenceURI, null, null);	//create a resource without knowing its type
 			//create an anonymous reference URI if needed
 		final URI resourceReferenceURI=referenceURI!=null ? referenceURI : createAnonymousReferenceURI();
-		final RDFResource resource=new DefaultRDFResource(resourceReferenceURI);  //create a new resource from the given reference URI
-		putResource(resource);  //store the resource in the data model
+		final RDFResource resource;
+			//TODO remove this check eventually when we stop storing namespaces and local names, and move this to a common routine
+		if(NIL_RESOURCE_URI.equals(referenceURI))	//if we are creating the nil resource
+		{
+			resource=new RDFListResource(NIL_RESOURCE_URI);	//create the nil resource with the special RDF nil URI
+		}
+		else	//if this isn't a special resource we know about
+		{
+			resource=new DefaultRDFResource(resourceReferenceURI);  //create a new resource from the given reference URI
+			putResource(resource);  //store the resource in the data model
+		}
 		return resource;  //return the resource we either created
 	}
 
@@ -230,7 +238,16 @@ public class RDF implements RDFConstants
 	*/
 	public RDFResource createResource(final URI referenceNamespaceURI, final String referenceLocalName)
 	{
-		final RDFResource resource=new DefaultRDFResource(referenceNamespaceURI, referenceLocalName);  //create a new resource from the given reference URI
+		final RDFResource resource;
+			//TODO remove this check eventually when we stop storing namespaces and local names, and move this to a common routine
+		if(NIL_RESOURCE_URI.equals(RDFUtilities.createReferenceURI(referenceNamespaceURI, referenceLocalName)))	//if we are creating the nil resource
+		{
+			resource=new RDFListResource(NIL_RESOURCE_URI);	//create the nil resource with the special RDF nil URI
+		}
+		else	//if this isn't a special resource we know about
+		{
+			resource=new DefaultRDFResource(referenceNamespaceURI, referenceLocalName);  //create a new resource from the given reference URI
+		}
 		putResource(resource);  //store the resource in the data model
 		return resource;  //return the resource we either created
 	}
@@ -272,7 +289,11 @@ public class RDF implements RDFConstants
 		if(resource==null)  //if we haven't created a resource, see if this is an RDF resource
 		{
 //G***del Debug.trace("Did not find resource factory.");  //G***del
-			if(RDF_NAMESPACE_URI.equals(typeNamespaceURI)) //if this resource is an RDF resource
+			if(NIL_RESOURCE_URI.equals(referenceURI))	//if we are creating the nil resource
+			{
+				resource=new RDFListResource(NIL_RESOURCE_URI);	//create the nil resource with the special RDF nil URI
+			}
+			else if(RDF_NAMESPACE_URI.equals(typeNamespaceURI)) //if this resource is an RDF resource
 			{
 //G***del Debug.trace("Is an RDF type.");  //G***del
 				if(ALT_TYPE_NAME.equals(typeLocalName)) //<rdf:Alt>
