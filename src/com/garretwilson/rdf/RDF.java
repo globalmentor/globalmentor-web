@@ -147,9 +147,10 @@ public class RDF implements RDFConstants
 //G***del Debug.trace("putting resource with URI: ", resource.getReferenceURI());
 //G***del Debug.traceStack(); //G***del
 
-//TODO fix to correctly work with new null URI blank node resources
+//TODO fix to correctly work with new null URI blank node resources; we'll probably want to store them somewhere
 
-		resourceMap.put(resource.getReferenceURI(), resource);  //store the resource
+		if(resource.getReferenceURI()!=null)	//if this is not a blank node
+			resourceMap.put(resource.getReferenceURI(), resource);  //store the resource
 	}
 
 	/**Retrieves a resource from the data model using its reference URI.
