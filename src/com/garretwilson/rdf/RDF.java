@@ -17,11 +17,12 @@ public class RDF implements RDFConstants
 {
 
 	/**The next ID to use in an anonymous resource reference URI.*/
-	private int nextAnonymousID=1;
+//G***del when works	private int nextAnonymousID=1;
 
 		/**@return A new reference URI for an anonymous resource.
 		@exception URISyntaxException Thrown if an anonymous URI cannot be created.
 		*/
+/*G***del when works
 		URI createAnonymousReferenceURI()
 		{
 			final int anonymousID=nextAnonymousID++;  //get the next anonymous ID and increment the counter
@@ -35,6 +36,7 @@ public class RDF implements RDFConstants
 				return null;	//G***fix better
 			}	
 		}
+*/
 
 	/**The map of prefixes, keyed by namespace URIs, used for serialization,
 		lazily constructed.
@@ -104,6 +106,9 @@ public class RDF implements RDFConstants
 	{
 //G***del Debug.trace("putting resource with URI: ", resource.getReferenceURI());
 //G***del Debug.traceStack(); //G***del
+
+//TODO fix to correctly work with new null URI blank node resources
+
 		resourceMap.put(resource.getReferenceURI(), resource);  //store the resource
 	}
 
@@ -205,15 +210,14 @@ public class RDF implements RDFConstants
 	/**Creates a general resource with the specified reference URI and stores it in
 		this RDF data model.
 	@param referenceURI The reference URI of the resource to create, or
-		<code>null</code> if the resource created should be anonymous (in which
-		case an anonymous reference URI will be generated).
+		<code>null</code> if the resource created should be represented by a blank node.
 	@return A resource with the given reference URI.
 	*/
 	public RDFResource createResource(final URI referenceURI)
 	{
 //G***del		return createResource(referenceURI, null, null);	//create a resource without knowing its type
 			//create an anonymous reference URI if needed
-		final URI resourceReferenceURI=referenceURI!=null ? referenceURI : createAnonymousReferenceURI();
+//G***del		final URI resourceReferenceURI=referenceURI!=null ? referenceURI : createAnonymousReferenceURI();
 		final RDFResource resource;
 			//TODO remove this check eventually when we stop storing namespaces and local names, and move this to a common routine
 		if(NIL_RESOURCE_URI.equals(referenceURI))	//if we are creating the nil resource
@@ -222,7 +226,7 @@ public class RDF implements RDFConstants
 		}
 		else	//if this isn't a special resource we know about
 		{
-			resource=new DefaultRDFResource(resourceReferenceURI);  //create a new resource from the given reference URI
+			resource=new DefaultRDFResource(referenceURI);  //create a new resource from the given reference URI
 			putResource(resource);  //store the resource in the data model
 		}
 		return resource;  //return the resource we either created
@@ -259,8 +263,7 @@ public class RDF implements RDFConstants
 		will be added to the resource.
 		The resource will be stored in this RDF data model
 	@param referenceURI The reference URI of the resource to create, or
-		<code>null</code> if the resource created should be anonymous (in which
-		case an anonymous reference URI will be generated).
+		<code>null</code> if the resource created should be represented by a blank node.
 	@param typeNamespaceURI The XML namespace used in the serialization of the
 		type URI. //G***del , or <code>null</code> if the type is not known.
 	@param typeLocalName The XML local name used in the serialization of the type
@@ -274,7 +277,7 @@ public class RDF implements RDFConstants
 	{
 		Debug.assert(typeNamespaceURI!=null, "type namespace is null");	//G***fix
 			//create an anonymous reference URI if needed
-		final URI resourceReferenceURI=referenceURI!=null ? referenceURI : createAnonymousReferenceURI();
+//G***del when works		final URI resourceReferenceURI=referenceURI!=null ? referenceURI : createAnonymousReferenceURI();
 //G***del Debug.trace("Ready to create resource with reference URI: ", referenceURI); //G***del
 //G***del Debug.trace("Type namespace URI: ", typeNamespaceURI); //G***del
 //G***del Debug.trace("Type local name: ", typeLocalName); //G***del
@@ -284,7 +287,7 @@ public class RDF implements RDFConstants
 		if(resourceFactory!=null) //if we have a factory
 		{
 //G***del Debug.trace("Found resource factory.");  //G***del
-		  resource=resourceFactory.createResource(resourceReferenceURI, typeNamespaceURI, typeLocalName); //try to create a resource from this factory
+		  resource=resourceFactory.createResource(referenceURI, typeNamespaceURI, typeLocalName); //try to create a resource from this factory
 		}
 		if(resource==null)  //if we haven't created a resource, see if this is an RDF resource
 		{
@@ -303,23 +306,23 @@ public class RDF implements RDFConstants
 				else if(BAG_TYPE_NAME.equals(typeLocalName))  //<rdf:Bag>
 				{
 //G***del Debug.trace("creating an RDF bag"); //G***del
-					resource=new RDFBagResource(resourceReferenceURI);  //create a bag resource
+					resource=new RDFBagResource(referenceURI);  //create a bag resource
 				}
 				else if(SEQ_TYPE_NAME.equals(typeLocalName))  //<rdf:Seq>
 				{
 //G***del Debug.trace("creating an RDF sequence"); //G***del
-					resource=new RDFSequenceResource(resourceReferenceURI);  //create a sequence resource
+					resource=new RDFSequenceResource(referenceURI);  //create a sequence resource
 				}
 				else if(LIST_TYPE_NAME.equals(typeLocalName))  //<rdf:Seq>
 				{
-					resource=new RDFListResource(resourceReferenceURI);  //create a list resource
+					resource=new RDFListResource(referenceURI);  //create a list resource
 				}
 //G***should we check to see if this is the nil resource, and if so automatically set its type to rdf:List?
 			}
 		}
 		if(resource==null)  //if we still haven't created a resource
 		{
-		  resource=new DefaultRDFResource(resourceReferenceURI);  //create a new resource from the given reference URI
+		  resource=new DefaultRDFResource(referenceURI);  //create a new resource from the given reference URI
 //G***del when works			resource=createResource(resourceReferenceURI);  //create a new default resource from the given reference URI G***maybe use an RDF factory method for this, too
 		}
 		RDFUtilities.addType(this, resource, typeNamespaceURI, typeLocalName); //add the type property
