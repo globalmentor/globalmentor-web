@@ -16,16 +16,8 @@ import com.garretwilson.util.Debug;
 @see XMLNodeList
 @author Garret Wilson
 */
-public abstract class XMLNode extends XMLNamedObject implements Node, EventTarget, Cloneable
+public abstract class XMLNode extends XMLNamedObject implements Node, EventTarget, Cloneable, XMLConstants
 {
-	/**The name of a CDATA section node.*/
-	public static final String CDATASECTION_NODE_NAME="#cdata-section";
-	/**The name of a comment node.*/
-	public static final String COMMENT_NODE_NAME="#comment";
-	/**The name of a document fragment node.*/
-	public static final String DOCUMENT_FRAGMENT_NODE_NAME="#document-fragment";
-	/**The name of a textnode.*/
-	public static final String TEXT_NODE_NAME="#text";
 
 	/**The type of node before it is defined. This value is not defined in DOM.*/
 	public static final short UNDEFINED_NODE=0;

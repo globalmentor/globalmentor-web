@@ -436,7 +436,7 @@ Debug.trace("no etext, pretending it's at index: ", eTextStringIndex);  //G***de
 									}
 								}
 									//get the first non-whitespace character
-								final char firstChar=line.charAt(StringUtilities.notCharIndexOf(line, WHITESPACE_CHARS));
+								final char firstChar=line.charAt(CharSequenceUtilities.notCharIndexOf(line, WHITESPACE_CHARS));
 //G***del			Debug.trace("first char: "+firstChar);  //G***del
 									//if this is the correct line, and there's whitespace or dependent punctuation after the etext string
 								if(eTextStringIndex>=0 && eTextStringIndex+eTextString.length()<line.length()
@@ -711,7 +711,7 @@ Debug.trace("found PG in line for author: ", line);  //G***del
 									if(possessionIndex>0) //if there is possession in the title
 									{
 											//try to find the start of the word showing possession
-										final int wordBeginIndex=StringUtilities.charLastIndexOf(remainingText, WHITESPACE_CHARS, possessionIndex-1)+1;
+										final int wordBeginIndex=CharSequenceUtilities.charLastIndexOf(remainingText, WHITESPACE_CHARS, possessionIndex-1)+1;
 										if(wordBeginIndex<possessionIndex)  //if this is a valid index
 										{
 											remainingText=remainingText.substring(wordBeginIndex, possessionIndex); //get the word showing possession
@@ -987,7 +987,7 @@ Debug.trace("checking text for header element: ", text); //G***del
 //G***del if not needed						if(StringUtilities.startsWithIgnoreCase(line.substring(projectGutenbergIndex), "PROJECT GUTENBERG-tm"))
 						{
 								//get the first non-whitespace character
-							final char firstChar=line.charAt(StringUtilities.notCharIndexOf(line, WHITESPACE_CHARS));
+							final char firstChar=line.charAt(CharSequenceUtilities.notCharIndexOf(line, WHITESPACE_CHARS));
 		//G***del Debug.trace("first char: "+firstChar);  //G***del
 								//if the line doesn't start with '*', make sure there's whitespace or
 								//  dependent punctuation after "etext" (e.g. it's not "...the first

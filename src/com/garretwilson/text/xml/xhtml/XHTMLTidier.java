@@ -677,7 +677,7 @@ public class XHTMLTidier extends TextUtilities implements XHTMLConstants, XMLCSS
 							else  //if the marker is not the bullet character
 							{
 									//see if this "marker" contains at least one list item delimiter
-								final int delimiterIndex=StringUtilities.charIndexOf(markerString, LIST_ITEM_MARKER_DELIMITER_CHARS);
+								final int delimiterIndex=CharSequenceUtilities.charIndexOf(markerString, LIST_ITEM_MARKER_DELIMITER_CHARS);
 								if(delimiterIndex>=0) //if this marker contained a delimiter, it's starting to look like a real marker; we'll trim the delimeters and see for sure
 								{
 //G***delDebug.trace("Found delimiter: ", String.valueOf(markerString.charAt(delimiterIndex)));
@@ -792,7 +792,7 @@ Debug.trace("Current list style type: ", listStyleType);  //G***del
 							{
 								final String data=textNode.getData(); //get the text node data
 									//see where the first whitespace is
-								final int whitespaceIndex=StringUtilities.charIndexOf(data, CharacterConstants.WHITESPACE_CHARS);
+								final int whitespaceIndex=CharSequenceUtilities.charIndexOf(data, CharacterConstants.WHITESPACE_CHARS);
 								if(whitespaceIndex>=0)  //if there is whitespace (there always should be, or we could not have determined that this is a list item
 								{
 									textNode.setData(data.substring(whitespaceIndex+1)); //remove the marker and update the text node
