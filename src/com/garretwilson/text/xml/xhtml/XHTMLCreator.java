@@ -85,14 +85,14 @@ public class XHTMLCreator extends TextUtilities implements XHTMLConstants
 	public void createXHTMLFromText(final Document document, final InputStream inputStream, final String encoding) throws IOException
 	{
 			//see if we can detect an encoding from a byte order mark
-		final String detectedEncoding=InputStreamUtilities.getBOMEncoding(inputStream);
+		final CharacterEncoding detectedEncoding=InputStreamUtilities.getBOMEncoding(inputStream);
 //G***del		final String detectedEncoding=null;
 Debug.trace("detected encoding: ", detectedEncoding);  //G***del
 Debug.trace("constructing buffered reader to text input stream"); //G***del
 		getLineBuffer().clear();  //clear our list of lines
 		  //create a reader to read the information in using the correct input encoding G***change the encoding to what Java understands
 		final BufferedReader bufferedReader=new BufferedReader(
-			  new InputStreamReader(inputStream, detectedEncoding!=null ? detectedEncoding : encoding));
+			  new InputStreamReader(inputStream, detectedEncoding!=null ? detectedEncoding.toString() : encoding));
 		autodetectSettings(bufferedReader);  //calculate the line spacing used
 		parseText(document, bufferedReader);  //parse the text
 	}
