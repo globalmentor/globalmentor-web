@@ -805,8 +805,8 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 						if(nextData.length()!=0) //if the next text node is not empty, we'll need to combine them
 						{
 							currentTextNode.appendData(nextData);  //append the next text node's data to that of the first
-							nextNode=nextTextNode.getNextSibling();  //we'll next look at the node *after* the next node (after the second text node)
 						}
+						nextNode=nextTextNode.getNextSibling();  //we'll next look at the node *after* the next node (after the second text node)
 						node.removeChild(nextTextNode);  //the next text node will always be removed, whether or not it had data to add to this text node
 					}
 				}
