@@ -7,6 +7,8 @@ import java.net.URISyntaxException;
 //G***del import java.net.URL;
 //G***del if we don't need import java.text.MessageFormat;
 import org.w3c.dom.DOMException;
+
+import com.garretwilson.io.FileConstants;
 import com.garretwilson.io.FileUtilities;
 import com.garretwilson.io.ParseEOFException;	//G***go through and catch all these and throw XML exceptions
 import com.garretwilson.io.ParseUnexpectedDataException;
@@ -460,8 +462,8 @@ public class XMLProcessor extends XMLUtilities implements XMLConstants, URIInput
 			final URI uri=systemID!=null ? URIUtilities.createURI(reader.getSourceObject(), systemID) : null;
 				//convert the public ID (if there is one) to a valid filaname and see if we can load this
 				//  resource locally rather than from the literal file location
-			final String localFilename=FileUtilities.encode(publicID);	//get the name of the file if it were to be stored locally
-
+			final String localFilename=FileUtilities.encodeCrossPlatformFilename(publicID);	//get the name of the file if it were to be stored locally
+/*G***del
 			if(publicID!=null)	//G***del
 			{
 				String name=localFilename;
@@ -485,8 +487,7 @@ public class XMLProcessor extends XMLUtilities implements XMLConstants, URIInput
 				Debug.error(e);
 		}
 			}
-
-
+*/
 			final InputStream localResourceInputStream=publicID!=null ? getClass().getResourceAsStream(localFilename) : null;
 				//if we couldn't find the resource locally, create an input stream to the system ID URI we already created, using our input stream locator
 			final InputStream inputStream=localResourceInputStream!=null ? localResourceInputStream : getURIInputStreamable().getInputStream(uri);
