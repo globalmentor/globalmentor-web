@@ -535,7 +535,10 @@ public class RDF implements RDFConstants	//TODO special-case rdf:nil list resour
 	*/
 	public RDFTypedLiteral createTypedLiteral(final String lexicalForm, final URI datatypeURI)
 	{
-		Debug.assert(datatypeURI!=null, "datatype is null");	//G***fix
+		if(datatypeURI==null)	//if no datatype is given
+		{
+			throw new IllegalArgumentException("A datatype must be given to create a typed literal.");	//TODO fix
+		}
 			//create an anonymous reference URI if needed
 //G***del when works		final URI resourceReferenceURI=referenceURI!=null ? referenceURI : createAnonymousReferenceURI();
 //G***del Debug.trace("Ready to create resource with reference URI: ", referenceURI); //G***del

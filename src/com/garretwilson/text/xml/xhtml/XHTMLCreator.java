@@ -107,7 +107,7 @@ Debug.trace("constructing buffered reader to text input stream"); //G***del
 	{
 Debug.trace("parsing text");  //G***del
 		final Element bodyElement=XHTMLUtilities.getBodyElement(document);  //get a reference to the body element
-		Debug.assert(bodyElement!=null, "Missing body element");  //we should always have a body element starting out
+		assert bodyElement!=null : "Missing body element";  //we should always have a body element starting out
 Debug.trace("found body element");  //G***del
 		Element paragraphElement=parseParagraph(document, bodyElement.getNamespaceURI(), bufferedReader);	//parse the first paragraph
 		while(paragraphElement!=null)	//keep reading until we run out of paragraphs
