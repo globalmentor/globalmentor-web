@@ -512,7 +512,7 @@ Debug.trace("Context "+contextIndex+": "+selectorContext.getTagName());	//G***de
 	@param element The element this context array might apply to.
 	@param elementLocalName The element's local name for quick lookup.
 	*/
-	protected boolean isApplicable(final XMLCSSSelector[] contextArray, E element, final String elementLocalName) //G***this method may be modified or go away when we fully switch to the DOM
+	protected boolean isApplicable(final XMLCSSSelector[] contextArray, E element, String elementLocalName) //G***this method may be modified or go away when we fully switch to the DOM
 	{
 		//first see if we can do a quick comparison on the most common type of selector: name-based selectors
 		if(contextArray.length==1)  //if there is only one context in the array
@@ -537,7 +537,11 @@ Debug.trace("Context "+contextIndex+": "+selectorContext.getTagName());	//G***de
 			if(contextIndex>0)	//if we're still working our way up the chain
 			{
 				element=getParentElement(element); //get this element's parent
-				if(element==null)	//if this element does not have a parent
+				if(element!=null)	//if there is a parent
+				{
+					elementLocalName=getElementLocalName(element);	//update the local name of the element
+				}
+				else	//if this element does not have a parent
 				{
 					return false;	//since we're not at the top of the context chain, this element can't match since it has no parents to compare
 				}
