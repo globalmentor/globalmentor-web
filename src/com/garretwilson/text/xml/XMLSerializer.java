@@ -189,7 +189,7 @@ public class XMLSerializer implements XMLConstants
 	/**@return A map of default namespace prefixes for known namespaces, keyed to
 		namespace URIs, to be used for serializing namespace references.
 	*/
-	public static Map createNamespacePrefixMap()
+	public static Map createNamespacePrefixMap()	//G***maybe later use real URIs
 	{
 		final Map map=new HashMap();  //create a new hash map
 		map.put(DCConstants.DCMI11_ELEMENTS_NAMESPACE_URI, DCConstants.DCMI_ELEMENTS_NAMESPACE_PREFIX); //Dublin Core
