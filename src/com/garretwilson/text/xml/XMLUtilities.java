@@ -3,7 +3,7 @@ package com.garretwilson.text.xml;
 import java.io.*;
 import java.lang.ref.*;
 import java.util.*;
-import com.garretwilson.io.MediaType;
+import javax.mail.internet.ContentType;
 import com.garretwilson.lang.*;
 import com.garretwilson.text.*;
 import com.garretwilson.text.xml.stylesheets.XMLStyleSheetConstants;
@@ -62,16 +62,16 @@ public class XMLUtilities implements XMLConstants, XMLStyleSheetConstants
 		}
 
 	/**A lazily-created cache of content types keyed to public IDs.*/
-	private static Reference<Map<String, MediaType>> contentTypeMapReference=null;
+	private static Reference<Map<String, ContentType>> contentTypeMapReference=null;
 
 		/**A lazily-created cache of content types keyed to public IDs.*/
-		protected static Map<String, MediaType> getContentTypeMap()
+		protected static Map<String, ContentType> getContentTypeMap()
 		{
 				//get the cache if we have one
-			Map<String, MediaType> contentTypeMap=contentTypeMapReference!=null ? contentTypeMapReference.get() : null;
+			Map<String, ContentType> contentTypeMap=contentTypeMapReference!=null ? contentTypeMapReference.get() : null;
 			if(contentTypeMap==null)	//if the garbage collector has reclaimed the cache
 			{
-				contentTypeMap=new HashMap<String, MediaType>();	//create a new map of content types, and fill it with the default mappings
+				contentTypeMap=new HashMap<String, ContentType>();	//create a new map of content types, and fill it with the default mappings
 				contentTypeMap.put(HTML_4_01_STRICT_PUBLIC_ID, HTML_CONTENT_TYPE);
 				contentTypeMap.put(HTML_4_01_TRANSITIONAL_PUBLIC_ID, HTML_CONTENT_TYPE);
 				contentTypeMap.put(HTML_4_01_FRAMESET_PUBLIC_ID, HTML_CONTENT_TYPE);
@@ -85,7 +85,7 @@ public class XMLUtilities implements XMLConstants, XMLStyleSheetConstants
 				contentTypeMap.put(SVG_1_1_FULL_PUBLIC_ID, SVG_CONTENT_TYPE);
 				contentTypeMap.put(SVG_1_1_BASIC_PUBLIC_ID, SVG_CONTENT_TYPE);
 				contentTypeMap.put(SVG_1_1_TINY_PUBLIC_ID, SVG_CONTENT_TYPE);
-				contentTypeMapReference=new SoftReference<Map<String, MediaType>>(contentTypeMap);	//create a soft reference to the map
+				contentTypeMapReference=new SoftReference<Map<String, ContentType>>(contentTypeMap);	//create a soft reference to the map
 			}
 			return contentTypeMap;	//return the map
 		}
@@ -95,27 +95,27 @@ public class XMLUtilities implements XMLConstants, XMLStyleSheetConstants
 		@return The content type corresponding to the given public ID,
 			or <code>null</code> if the given public ID is not recognized.
 		*/
-		public static MediaType getContentType(final String publicID)
+		public static ContentType getContentType(final String publicID)
 		{
 			return getContentTypeMap().get(publicID);	//return the content type corresponding to the given public ID, if we have one
 		}
 
-	/**A lazily-created cache of root element local names keyed to content types.*/
-	private static Reference<Map<MediaType, String>> rootElementLocalNameMapReference=null;
+	/**A lazily-created cache of root element local names keyed to content types base type names.*/
+	private static Reference<Map<String, String>> rootElementLocalNameMapReference=null;
 
 		/**A lazily-created cache of root element local names keyed to content types.*/
-		protected static Map<MediaType, String> getRootElementLocalNameMap()
+		protected static Map<String, String> getRootElementLocalNameMap()
 		{
 				//get the cache if we have one
-			Map<MediaType, String> rootElementLocalNameMap=rootElementLocalNameMapReference!=null ? rootElementLocalNameMapReference.get() : null;
+			Map<String, String> rootElementLocalNameMap=rootElementLocalNameMapReference!=null ? rootElementLocalNameMapReference.get() : null;
 			if(rootElementLocalNameMap==null)	//if the garbage collector has reclaimed the cache
 			{
-				rootElementLocalNameMap=new HashMap<MediaType, String>();	//create a new map of root element local names, and fill it with the default mappings
-				rootElementLocalNameMap.put(HTML_CONTENT_TYPE, ELEMENT_HTML);
-				rootElementLocalNameMap.put(XHTML_CONTENT_TYPE, ELEMENT_HTML);
-				rootElementLocalNameMap.put(MATHML_CONTENT_TYPE, ELEMENT_MATHML);
-				rootElementLocalNameMap.put(SVG_CONTENT_TYPE, ELEMENT_SVG);
-				rootElementLocalNameMapReference=new SoftReference<Map<MediaType, String>>(rootElementLocalNameMap);	//create a soft reference to the map
+				rootElementLocalNameMap=new HashMap<String, String>();	//create a new map of root element local names, and fill it with the default mappings
+				rootElementLocalNameMap.put(HTML_CONTENT_TYPE.getBaseType(), ELEMENT_HTML);
+				rootElementLocalNameMap.put(XHTML_CONTENT_TYPE.getBaseType(), ELEMENT_HTML);
+				rootElementLocalNameMap.put(MATHML_CONTENT_TYPE.getBaseType(), ELEMENT_MATHML);
+				rootElementLocalNameMap.put(SVG_CONTENT_TYPE.getBaseType(), ELEMENT_SVG);
+				rootElementLocalNameMapReference=new SoftReference<Map<String, String>>(rootElementLocalNameMap);	//create a soft reference to the map
 			}
 			return rootElementLocalNameMap;	//return the map
 		}
@@ -125,9 +125,9 @@ public class XMLUtilities implements XMLConstants, XMLStyleSheetConstants
 		@return The default root element local name corresponding to the given
 			media type, or <code>null</code> if the given content type is not recognized.
 		*/
-		public static String getDefaultRootElementLocalName(final MediaType contentType)
+		public static String getDefaultRootElementLocalName(final ContentType contentType)
 		{
-			return getRootElementLocalNameMap().get(contentType);	//return the root element corresponding to the given content type, if we have one
+			return getRootElementLocalNameMap().get(contentType.getBaseType());	//return the root element corresponding to the given content type base type, if we have one
 		}
 
 	/**Encodes text for use in XML by converting the five hard-coded XML entity
@@ -547,7 +547,7 @@ G***should we return data from CDATA sections as well?
 	@param href The reference to the stylesheet.
 	@param mediaType The media type of the stylesheet.
 	*/
-	public static void addStyleSheetReference(final Document document, final String href, final MediaType mediaType)
+	public static void addStyleSheetReference(final Document document, final String href, final ContentType mediaType)
 	{
 		final String target=XML_STYLESHEET_PROCESSING_INSTRUCTION;  //the PI target will be the name of the stylesheet processing instruction
 		final StringBuffer dataStringBuffer=new StringBuffer(); //create a string buffer to construct the data parameter (with its pseudo attributes)

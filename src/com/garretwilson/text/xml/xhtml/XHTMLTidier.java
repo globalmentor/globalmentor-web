@@ -2,8 +2,9 @@ package com.garretwilson.text.xml.xhtml;
 
 import java.io.*;
 import java.util.*;
+import javax.mail.internet.ContentType;
+import com.garretwilson.io.ContentTypeConstants;
 import com.garretwilson.io.FileUtilities;
-import com.garretwilson.io.MediaType;
 import com.garretwilson.io.ParseReader;
 import com.garretwilson.lang.*;
 import com.garretwilson.text.*;
@@ -1945,7 +1946,7 @@ Debug.trace("found enclosing start at index: ", startIndex);  //G***del
 		final Element objectElement=element.getOwnerDocument().createElementNS(elementNamespace, ELEMENT_OBJECT); //create the element object in the same namespace as the applet object
 		if(code!=null)  //if there is a code attribute
 			objectElement.setAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_CLASSID, code); //set the object classid attribute G***correctly add needed "java:" and ".class"
-		objectElement.setAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_CODETYPE, MediaType.APPLICATION_JAVA); //set the object codetype attribute to "application/java"
+		objectElement.setAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_CODETYPE, ContentTypeConstants.APPLICATION_JAVA); //set the object codetype attribute to "application/java"
 		if(height!=null)  //if there is a height attribute
 			objectElement.setAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_HEIGHT, height); //set the object height attribute
 		if(width!=null)  //if there is a width attribute

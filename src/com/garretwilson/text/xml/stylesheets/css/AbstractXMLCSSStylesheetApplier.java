@@ -6,6 +6,7 @@ import java.io.Reader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
+import javax.mail.internet.ContentType;
 import com.garretwilson.io.*;
 import com.garretwilson.net.URIUtilities;
 import com.garretwilson.text.xml.XMLNamespaceProcessor;
@@ -131,7 +132,7 @@ public abstract class AbstractXMLCSSStylesheetApplier implements XMLStyleSheetCo
 		media type is unknown.
 	@return An array of stylesheets.
 	*/
-	public CSSStyleSheet[] getStylesheets(final Object document, final URI baseURI, final MediaType mediaType)
+	public CSSStyleSheet[] getStylesheets(final Object document, final URI baseURI, final ContentType mediaType)
 	{
 		final List styleSheetList=new ArrayList(); //create a new list to hold the stylesheets
 			//get all default stylesheets
@@ -252,7 +253,7 @@ Debug.trace("Found default stylesheet for namespace: ", namespaceURI);  //G***de
 		media type is unknown.
 	@return A non-<code>null</code> array of namespace URIs.
 	*/
-	protected String[] getNamespaceURIs(final Object document, final MediaType mediaType)  //G***fix to actually look through all the namespaces, maybe, but that could be intensive -- on the other hand, a subclass could get that information from the OEB package, overriding the intensive part
+	protected String[] getNamespaceURIs(final Object document, final ContentType mediaType)  //G***fix to actually look through all the namespaces, maybe, but that could be intensive -- on the other hand, a subclass could get that information from the OEB package, overriding the intensive part
 	{
 //G***fix when we support multiple namespaces		final List namespaceList=new ArrayList(); //create a list to store the namespaces
 		final Object documentElement=getDocumentElement(document);	//get the root element of the document

@@ -1,7 +1,8 @@
 package com.garretwilson.text.xml.xhtml;
 
 import java.net.URI;
-import com.garretwilson.io.MediaType;
+import javax.mail.internet.ContentType;
+import com.garretwilson.io.ContentTypeConstants;
 
 /**Constants for XHTML.
 @author Garret Wilson
@@ -11,10 +12,10 @@ public interface XHTMLConstants
 {
 
 	/**The content type for HTML: <code>text/html</code>.*/ 
-	public static final MediaType HTML_CONTENT_TYPE=new MediaType(MediaType.TEXT, MediaType.HTML);
+	public static final ContentType HTML_CONTENT_TYPE=new ContentType(ContentTypeConstants.TEXT, ContentTypeConstants.HTML, null);
 
 	/**The content type for XHTML: <code>application/xhtml+xml</code>.*/ 
-	public static final MediaType XHTML_CONTENT_TYPE=new MediaType(MediaType.APPLICATION, MediaType.XHTML_XML);
+	public static final ContentType XHTML_CONTENT_TYPE=new ContentType(ContentTypeConstants.APPLICATION, ContentTypeConstants.XHTML_XML, null);
 
 	/**The recommended prefix to the XHTML namespace.*/
 	public static final String XHTML_NAMESPACE_PREFIX="xhtml";
