@@ -106,11 +106,18 @@ G***should we return data from CDATA sections as well?
 	*/
 	public static String getPrefix(final String qualifiedName)
 	{
-		final int prefixDividerIndex=qualifiedName.indexOf(XMLConstants.NAMESPACE_DIVIDER);  //see if there is a prefix
-		if(prefixDividerIndex>=0)  //if there is a prefix
-			return qualifiedName.substring(0, prefixDividerIndex);  //return the prefix
-		else  //if there is no prefix
-			return null;  //show that there is no prefix
+		if(qualifiedName!=null)	//if there is a qualified name given
+		{
+			final int prefixDividerIndex=qualifiedName.indexOf(XMLConstants.NAMESPACE_DIVIDER);  //see if there is a prefix
+			if(prefixDividerIndex>=0)  //if there is a prefix
+				return qualifiedName.substring(0, prefixDividerIndex);  //return the prefix
+			else  //if there is no prefix
+				return null;  //show that there is no prefix
+		}
+		else	//if there is no qualified name
+		{
+			return null;	//there is no prefix
+		}
 	}
 
 	/**Retrieves the local name from a qualified name, removing the prefix, if any.
@@ -119,10 +126,17 @@ G***should we return data from CDATA sections as well?
 	*/
 	public static String getLocalName(final String qualifiedName)
 	{
-		final int namespaceDividerIndex=qualifiedName.indexOf(NAMESPACE_DIVIDER); //find where the namespace divider is in the name
-		return namespaceDividerIndex>=0 ? //if there is a namespace prefix
-			  qualifiedName.substring(namespaceDividerIndex+1) :  //remove the namespace prefix
-				qualifiedName;  //otherwise, just return the qualified name since it didn't have a prefix to begin with
+		if(qualifiedName!=null)	//if there is a qualified name given
+		{
+			final int namespaceDividerIndex=qualifiedName.indexOf(NAMESPACE_DIVIDER); //find where the namespace divider is in the name
+			return namespaceDividerIndex>=0 ? //if there is a namespace prefix
+				  qualifiedName.substring(namespaceDividerIndex+1) :  //remove the namespace prefix
+					qualifiedName;  //otherwise, just return the qualified name since it didn't have a prefix to begin with
+		}
+		else	//if there is no qualified name
+		{
+			return null;	//there is no local anme
+		}
 	}
 
 	/**Returns the local name from the qualified name.

@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import org.w3c.dom.*;
 import org.w3c.dom.events.*;
+
+import com.garretwilson.lang.ObjectUtilities;
 import com.garretwilson.text.xml.events.*;
 import com.garretwilson.util.Debug;
 
@@ -14,7 +16,7 @@ import com.garretwilson.util.Debug;
 @see XMLNodeList
 @author Garret Wilson
 */
-public abstract class XMLNode implements Node, EventTarget, Cloneable
+public abstract class XMLNode extends XMLNamedObject implements Node, EventTarget, Cloneable
 {
 	/**The name of a CDATA section node.*/
 	public static final String CDATASECTION_NODE_NAME="#cdata-section";
@@ -82,6 +84,7 @@ public abstract class XMLNode implements Node, EventTarget, Cloneable
 	*/
 	public XMLNode(final short nodeType, final XMLDocument ownerDocument)
 	{
+		super(null, null);	//construct an XML named object with no namespace or qualified name
 		NodeType=nodeType;	//set the type of node this is
 		OwnerDocument=ownerDocument;	//set the owner document
 	}
@@ -107,42 +110,15 @@ public abstract class XMLNode implements Node, EventTarget, Cloneable
 		*/
 		public short getNodeType() {return NodeType;}
 
-		/**Sets the node type of this object. This is not a DOM function, but a
-		protected function that allows derived objects to set the node type.
-		@param nodeType The new node type.
-		G***do we want to delete this, and make this have to be specified when the node is created?
-		*/
-//G***del probably		protected void setNodeType(final short nodeType) {NodeType=nodeType;}
-
-		/**@return The type of this XML object.*/
-//G***del		public int getObjectType() {return ObjectType;}
-
-		/**Sets the type of the XML object.
-		@param newObjectType The new type for the XML object.*/
-//G***del		public void setObjectType(int newObjectType) {ObjectType=newObjectType;}
-
-	/**@return The complete character data of this object without markup.*/
-//G***del	public abstract String getCharacterData();
-
-	/**The index of the entity into the character content of its parent, if it has one.*/
-//G***del	private int CharacterIndex=0;
-
-		/**@return Index of the entity into the character content of its parent, if it has one.*/
-//G***del		public int getCharacterIndex() {return CharacterIndex;}
-
-		/**Sets the index of the entity into the character content of its parent, if it has one..
-		@param newCharacterIndex The new index into the character content.*/
-//G***del		public void setCharacterIndex(int newCharacterIndex) {CharacterIndex=newCharacterIndex;}
-
 	/**The name of the XML node.*/
-	private String Name="";
+//G***del	private String Name="";
 
 		/**Returns the name of this node, depending on its type.
 		@return The name of this node.
 		@see getNodeType
 		@version DOM Level 1
 		*/
-		public String getNodeName() {return Name;}
+		public String getNodeName() {return getQName();}
 
 		/**Sets the name of this this node.
 			This is <em>not</em> a DOM function, but is provided as protected access
@@ -150,8 +126,8 @@ public abstract class XMLNode implements Node, EventTarget, Cloneable
 		@param newName The new name of the node.
 		@see #setNodeName
 		@see #getNodeType
-		*/
-		protected void setNodeName(final String newName) {Name=newName;}
+		*/	//G***we now set the qname, which has side effects of updating the prefix and local name---make sure this doesn't cause problems
+		protected void setNodeName(final String newName) {setQName(newName);}
 
 
 		/**Sets the prefix and local name of this this node, updating the node name
@@ -179,11 +155,8 @@ public abstract class XMLNode implements Node, EventTarget, Cloneable
 		*/
 		protected void setNodeName(final String newPrefix, final String newLocalName)
 		{
-			prefix=newPrefix;  //set the prefix
-			setLocalName(newLocalName);  //set the local name
-			//G***use a string buffer here to make this faster
-			final String prependString=prefix!=null ? prefix+XMLConstants.NAMESPACE_DIVIDER : ""; //find out what the node name should be prepended with
-		  Name=prependString+localName; //combine the prefix and the local name to set the node name
+				//TODO fix to throw DOM exceptions if we need to
+			setName(newPrefix, newLocalName);	//set the name and prefix
 		}
 
 		/**Sets the name of this this node, correctly extracting namespace information.
@@ -214,11 +187,8 @@ public abstract class XMLNode implements Node, EventTarget, Cloneable
 		*/
 		protected void setNodeNameNS(final String qualifiedName)
 		{
-		  final int namespaceDividerIndex=qualifiedName.indexOf(XMLConstants.NAMESPACE_DIVIDER); //find where the namespace divider is in the name
-			if(namespaceDividerIndex!=-1) //if there was a namespace prefix indicated
-				setNodeName(qualifiedName.substring(0, namespaceDividerIndex), qualifiedName.substring(namespaceDividerIndex+1)); //extract the prefix and local name from the qualified name and set them
-			else  //if there was no namespace prefix indicated
-				setNodeName(null, qualifiedName); //set just the qualified name, which will also update the local name
+				//TODO fix to throw DOM exceptions if we need to
+			setQName(qualifiedName);	//set the qualified name of the node
 		}
 
 	/**Returns the value of this node, based on its type. In nodes that do
@@ -870,7 +840,7 @@ public abstract class XMLNode implements Node, EventTarget, Cloneable
                                String version) {return false;}  //G***fix DOM
 
 	/**The namespace URI of this node, set at creation time by an element or attribute.*/
-	private String namespaceURI=null;
+//G***del when works	private String namespaceURI=null;
 
 		/**Returns the namespace URI of this node, or <code>null</code> if it is
 			unspecified.
@@ -888,7 +858,7 @@ public abstract class XMLNode implements Node, EventTarget, Cloneable
 			unspecified.
 		@since DOM Level 2
 		*/
-		public String getNamespaceURI() {return namespaceURI;}
+//G***del when works		public String getNamespaceURI() {return namespaceURI;}
 
 		/**Sets the namespace URI. Can only be called from derived classes, and should
 		  only be set by the creation of an element or attribute. This method is also
@@ -897,10 +867,10 @@ public abstract class XMLNode implements Node, EventTarget, Cloneable
 		@param newNamespaceURI The new namespace URI.
 		@see XMLNamespaceProcessor
 		*/
-		void setNamespaceURI(final String newNamespaceURI) {namespaceURI=newNamespaceURI;}
+//G***del when works		void setNamespaceURI(final String newNamespaceURI) {namespaceURI=newNamespaceURI;}
 
 	/**The namespace prefix of this node.*/
-	private String prefix=null;
+//G***del when works	private String prefix=null;
 
 		/**Returns the namespace prefix of this node, or <code>null</code> if it is
 			unspecified.
@@ -912,12 +882,7 @@ public abstract class XMLNode implements Node, EventTarget, Cloneable
 			unspecified.
 		@since DOM Level 2
 		*/
-		public String getPrefix() {return prefix;}
-/*G***del
-	{ //only return the prefix if this is an element or an attribute
-		return (getNodeType()==ELEMENT_NODE || getNodeType()==ATTRIBUTE_NODE) ? prefix : null;
-	}
-*/
+//G***del when works		public String getPrefix() {return prefix;}
 
 		/**Sets the namespace prefix of this node. The prefix is actually set in
 		  <code>setNodeName()</code>.
@@ -948,12 +913,9 @@ public abstract class XMLNode implements Node, EventTarget, Cloneable
 		@see #setNodeName(java.lang.String, java.lang.String)
 		@since DOM Level 2
 		*/
-		public void setPrefix(String prefix) throws DOMException
+		public void setPrefix(final String prefix) throws DOMException
 		{
-			final String oldPrefix=getPrefix(); //get the current prefix
-			if(oldPrefix==null && prefix==null) //if the prefixes are both null already
-				return; //there's no work to do
-			if(oldPrefix==null || !oldPrefix.equals(prefix)) //if the new prefix is really a different prefix
+			if(!ObjectUtilities.equals(getPrefix(), prefix))	//if the prefix is really changing
 			{
 				//G***check for an illegal character
 				//G***check for read-only status
@@ -1016,7 +978,7 @@ public abstract class XMLNode implements Node, EventTarget, Cloneable
 	}
 
 	/**The local name of the node.*/
-	private String localName=null;
+//G***del when works	private String localName=null;
 
 		/**Returns the local part of the qualified name of this node.
 			<p>For nodes of any type other than <code>ELEMENT_NODE</code> and
@@ -1026,12 +988,12 @@ public abstract class XMLNode implements Node, EventTarget, Cloneable
 		@return The local part of the qualified name of this node.
 		@since DOM Level 2
 		*/
-		public String getLocalName() {return localName;}
+//G***del when works		public String getLocalName() {return localName;}
 
 		/**Sets the node's local name.
 		@param newLocalName The new local name for the node.
 		*/
-		public void setLocalName(final String newLocalName) {localName=newLocalName;}
+//G***del when works		public void setLocalName(final String newLocalName) {localName=newLocalName;}
 
     /**
      * Returns whether this node (if it is an element) has any attributes.
