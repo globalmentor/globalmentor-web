@@ -160,10 +160,10 @@ public class XMLCSSProcessor implements XMLStyleSheetConstants, XMLCSSConstants,
 	//G***the EOF exception is now no longer returned; take away that exception declaration
 	protected static String parseValue(final ParseReader reader, final String propertyName) throws IOException,/*G***fix, XMLSyntaxException, XMLWellFormednessException, */ParseUnexpectedDataException, ParseEOFException//G***fix, XMLUndefinedEntityReferenceException
 	{
-Debug.trace("Starting to parse value.");	//G***del
+//G***del Debug.trace("Starting to parse value.");	//G***del
 //G***fix		String valueString=reader.readStringUntilCharEOF(WHITESPACE_CHARS+DECLARATION_SEPARATOR_CHAR+RULE_GROUP_END_CHAR);	//get the value of the property, which is followed by whitespace, a divider character, or the end of the group
 		String valueString=reader.readStringUntilCharEOF(""+DECLARATION_SEPARATOR_CHAR+RULE_GROUP_END_CHAR);	//get the value of the property, which is followed by a divider character or the end of the group
-Debug.trace("Value string: ", valueString);	//G***del
+//G***del Debug.trace("Value string: ", valueString);	//G***del
 		final int peekCharEOF=reader.peek();  //look at the next character
 		if(peekCharEOF!=-1 && (char)peekCharEOF==DECLARATION_SEPARATOR_CHAR)	//if the next character is the declaration separator
 			reader.readExpectedChar(DECLARATION_SEPARATOR_CHAR);	//read the character to get it out of the way
@@ -382,31 +382,31 @@ return value;	//G***throw the correct error here
 			reader.resetPeek();	//reset peeking so that the next character peeked will reflect the next character to be read
 
 			//G***add CSS comment parsing as well
-Debug.trace("looking for next stylesheet thing");
+//G***del Debug.trace("looking for next stylesheet thing");
 			switch(reader.peekExpectedStrings(EXPECTED_STYLESHEET_STRINGS))	//see what we have next in the stylesheet
 			{
 				case MEDIA_RULE:	//if this is a media rule
-Debug.trace("found media rule");
+//G***del Debug.trace("found media rule");
 				  reader.readStringUntilChar('}');  //G***fix parsing media rules
 					reader.readExpectedChar('}'); //G***fix parsing media rules
 					break;	//G***fix
 				case PAGE_RULE:	//if this is a page rule
-Debug.trace("Found page rule"); //G***del
+//G***del Debug.trace("Found page rule"); //G***del
 				  reader.readStringUntilChar('}');  //G***fix parsing page rules
 					reader.readExpectedChar('}'); //G***fix parsing page rules
 					break;	//G***fix
 				case FONT_FACE_RULE:	//if this is a font face rule
-Debug.trace("found font face");
+//G***del Debug.trace("found font face");
 				  reader.readStringUntilChar('}');  //G***fix parsing font-face rules
 					reader.readExpectedChar('}'); //G***fix parsing font-face rules
 					break;	//G***fix
 				case UNKNOWN_AT_RULE:	//if this is an at-rule we don't know about
-Debug.trace("found unknown at rule");
+//G***del Debug.trace("found unknown at rule");
 				  reader.readStringUntilChar('}');  //G***fix parsing at rules
 					reader.readExpectedChar('}'); //G***fix parsing at rules
 					break;	//G***fix
 				case COMMENT:	//if this is a CSS comment
-Debug.trace("comment");
+//G***del Debug.trace("comment");
 					while(!reader.isEOF())  //G***fix parsing comments; this is a hack
 					{
 						reader.readStringUntilChar('*');  //G***fix parsing comments; this is a hack

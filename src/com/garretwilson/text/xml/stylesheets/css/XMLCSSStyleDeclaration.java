@@ -268,9 +268,9 @@ public class XMLCSSStyleDeclaration extends HashMap implements CSSStyleDeclarati
 			//check for shorthand properties
 		if(propertyName.equals(CSS_PROP_BACKGROUND))  //if this is the background shorthand property G***fix for other types
 		{
-Debug.trace("Found background property; setting shorthand background");
+//G***del Debug.trace("Found background property; setting shorthand background");
 		  setBackgroundProperty(value, priority);  //set the background property
-Debug.trace("background property returning");
+//G***del Debug.trace("background property returning");
 			return;
 /*G***del when not needed
 			if(cssValue.getCssValueType()==cssValue.CSS_VALUE_LIST) //if this is the shorthand background, and not inherit
@@ -371,7 +371,7 @@ Debug.trace("background property returning");
 	*/
 	protected static XMLCSSValue parseValue(final String propertyName, final String valueString) throws DOMException
 	{
-Debug.trace("ready to parse value from value string: ", valueString); //G***del
+//G***del Debug.trace("ready to parse value from value string: ", valueString); //G***del
 		XMLCSSValue value=null;	//we'll assign a value to this variable based upon which type of CSS value should be created G***is this the right way to do this? make sure the identical code in XMLCSSSTyleDeclaration is in sync
 		if(propertyName.equals(CSS_PROP_TEXT_DECORATION)	//if this is the text decoration property G***fix for other types
 		   || propertyName.equals(CSS_PROP_FONT_FAMILY))    //if this is a font-family property

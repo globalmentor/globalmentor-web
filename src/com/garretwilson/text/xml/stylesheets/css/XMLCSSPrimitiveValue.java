@@ -521,7 +521,7 @@ return null;//G***throw an INVALID_ACCESS_ERR when we find out how to do so			th
 //G***after figuring out the difference between ident and string, do we really need the property name passed here?
 	public static XMLCSSPrimitiveValue createPrimitiveValue(/*G***del if not needed final String propertyName, */String valueString)
 	{
-Debug.trace("Creating primitive value from value string: ", valueString); //G***del
+//G***del Debug.trace("Creating primitive value from value string: ", valueString); //G***del
 		final XMLCSSPrimitiveValue value=new XMLCSSPrimitiveValue();	//create a new primitive value
 		short primitiveType=XMLCSSPrimitiveValue.CSS_UNKNOWN;	//show that we don't know what type of primitive value this is, yet (indeed, we don't even know if it is a primitive value)
 		valueString=valueString.trim();	//trim the value string of whitespace
@@ -626,12 +626,12 @@ Debug.trace("Creating primitive value from value string: ", valueString); //G***
 					}
 				  break;
 				default:	//if this is one of the float types
-Debug.trace("Value is float: ", valueString); //G***del
+//G***del Debug.trace("Value is float: ", valueString); //G***del
 //G***del System.out.println("XMLPrimitiveValue.createPrimitiveValue() setting float value: "+valueString);	//G***del
 					value.setFloatValue(primitiveType, Float.valueOf(valueString).floatValue());	//set the string value of this type
 					break;
 			}
-Debug.trace("XMLCSSPrimitiveValue.createPrimitiveValue() result value: ", valueString);
+//G***del Debug.trace("XMLCSSPrimitiveValue.createPrimitiveValue() result value: ", valueString);
 			return value;	//return the value we constructed
 		}
 		return null;	//if the value string was invalid in some way, we'll wind up here; we'll report our problems by returning null
