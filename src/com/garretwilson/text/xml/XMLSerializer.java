@@ -4,9 +4,7 @@ import java.io.*;
 import java.util.*;
 import org.w3c.dom.*;
 import com.garretwilson.text.CharacterEncodingConstants;
-//G***del import com.garretwilson.util.StringUtilities;
 import com.garretwilson.lang.CharacterUtilities;
-import com.garretwilson.lang.IntegerUtilities;
 import com.garretwilson.lang.StringBufferUtilities;
 import com.garretwilson.rdf.dublincore.DCConstants;
 import com.garretwilson.text.xml.oeb.OEBConstants;
@@ -19,7 +17,6 @@ import com.garretwilson.text.xml.xhtml.XHTMLConstants;
 import com.garretwilson.text.xml.xlink.XLinkConstants;
 //G***fix import com.garretwilson.text.xml.soap.SOAPConstants;
 import com.garretwilson.rdf.xpackage.XPackageConstants;
-import com.garretwilson.util.Debug;
 import com.garretwilson.util.PropertyUtilities;
 
 //G***del all the XMLUndefinedEntityReferenceException throws when we don't need them anymore, in favor of XMLWellFormednessException
@@ -192,18 +189,20 @@ public class XMLSerializer implements XMLConstants
 	public static Map createNamespacePrefixMap()	//G***maybe later use real URIs
 	{
 		final Map map=new HashMap();  //create a new hash map
-		map.put(DCConstants.DCMI11_ELEMENTS_NAMESPACE_URI, DCConstants.DCMI_ELEMENTS_NAMESPACE_PREFIX); //Dublin Core
-		map.put(OEBConstants.OEB1_DOCUMENT_NAMESPACE_URI, OEBConstants.OEB1_DOCUMENT_NAMESPACE_PREFIX); //OEB 1
-		map.put(OEB2Constants.OEB2_PACKAGE_NAMESPACE_URI, OEB2Constants.OEB2_PACKAGE_NAMESPACE_PREFIX); //OEB 2
-		map.put(QTIConstants.QTI_1_1_NAMESPACE_URI, QTIConstants.QTI_NAMESPACE_PREFIX); //QTI
-		map.put(RDFConstants.RDF_NAMESPACE_URI, RDFConstants.RDF_NAMESPACE_PREFIX); //RDF
-		map.put(RDFSConstants.RDFS_NAMESPACE_URI, RDFSConstants.RDFS_NAMESPACE_PREFIX); //RDFS
+		map.put(XMLConstants.XML_NAMESPACE_URI.toString(), XMLConstants.XML_NAMESPACE_PREFIX); //XML
+		map.put(XMLConstants.XML_NAMESPACE_URI.toString(), XMLConstants.XML_NAMESPACE_PREFIX); //XML namespaces
+		map.put(DCConstants.DCMI11_ELEMENTS_NAMESPACE_URI.toString(), DCConstants.DCMI_ELEMENTS_NAMESPACE_PREFIX); //Dublin Core
+		map.put(OEBConstants.OEB1_DOCUMENT_NAMESPACE_URI.toString(), OEBConstants.OEB1_DOCUMENT_NAMESPACE_PREFIX); //OEB 1
+		map.put(OEB2Constants.OEB2_PACKAGE_NAMESPACE_URI.toString(), OEB2Constants.OEB2_PACKAGE_NAMESPACE_PREFIX); //OEB 2
+		map.put(QTIConstants.QTI_1_1_NAMESPACE_URI.toString(), QTIConstants.QTI_NAMESPACE_PREFIX); //QTI
+		map.put(RDFConstants.RDF_NAMESPACE_URI.toString(), RDFConstants.RDF_NAMESPACE_PREFIX); //RDF
+		map.put(RDFSConstants.RDFS_NAMESPACE_URI.toString(), RDFSConstants.RDFS_NAMESPACE_PREFIX); //RDFS
 //G***add SOAP
-		map.put(XMLSchemaConstants.XML_SCHEMA_NAMESPACE_URI, XMLSchemaConstants.XML_SCHEMA_NAMESPACE_PREFIX); //XML Schema
-		map.put(XHTMLConstants.XHTML_NAMESPACE_URI, XHTMLConstants.XHTML_NAMESPACE_PREFIX); //XHTML
-		map.put(XLinkConstants.XLINK_NAMESPACE_URI, XLinkConstants.XLINK_NAMESPACE_PREFIX); //XLink
-		map.put(XPackageConstants.XPACKAGE_NAMESPACE_URI, XPackageConstants.XPACKAGE_NAMESPACE_PREFIX); //XPackage
-		map.put(XPackageConstants.XML_PROPERTIES_NAMESPACE_URI, XPackageConstants.XML_PROPERTIES_NAMESPACE_PREFIX); //XPackage XML properties
+		map.put(XMLSchemaConstants.XML_SCHEMA_NAMESPACE_URI.toString(), XMLSchemaConstants.XML_SCHEMA_NAMESPACE_PREFIX); //XML Schema
+		map.put(XHTMLConstants.XHTML_NAMESPACE_URI.toString(), XHTMLConstants.XHTML_NAMESPACE_PREFIX); //XHTML
+		map.put(XLinkConstants.XLINK_NAMESPACE_URI.toString(), XLinkConstants.XLINK_NAMESPACE_PREFIX); //XLink
+		map.put(XPackageConstants.XPACKAGE_NAMESPACE_URI.toString(), XPackageConstants.XPACKAGE_NAMESPACE_PREFIX); //XPackage
+		map.put(XPackageConstants.XML_PROPERTIES_NAMESPACE_URI.toString(), XPackageConstants.XML_PROPERTIES_NAMESPACE_PREFIX); //XPackage XML properties
 		return map; //return the map we constructed
 	}
 
