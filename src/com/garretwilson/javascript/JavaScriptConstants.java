@@ -15,6 +15,12 @@ public class JavaScriptConstants
 	/**The character ']' for ending an array index.*/
 	public final static char ARRAY_INDEX_END_CHAR=']';
 
+	/**The character '{' for starting a block.*/
+	public final static char BLOCK_BEGIN_CHAR='{';
+
+	/**The character '}' for ending a block.*/
+	public final static char BLOCK_END_CHAR='}';
+
 	/**The character '(' for starting a parameter list.*/
 	public final static char PARAMETER_BEGIN_CHAR='(';
 
@@ -30,12 +36,24 @@ public class JavaScriptConstants
 	/**The character ';' indicating the ending of a statement.*/
 	public final static char STATEMENT_END_CHAR=';';
 
+	/**The if keyword.*/
+	public final static String IF_KEYWORD="if";
+	/**The else keyword.*/
+	public final static String ELSE_KEYWORD="else";
+	/**The return keyword.*/
+	public final static String RETURN_KEYWORD="return";
+
+	/**The negation operator character.*/
+	public final static char NOT_OPERATOR='!';
+
 	/**The document identifier.*/
 	public final static String DOCUMENT="document";
 
 	/**The forms identifier.*/
 	public final static String FORMS="forms";
 
+	/**The confirm method.*/
+	public final static String CONFIRM_METHOD="confirm";
 	/**The form submission method.*/
 	public final static String SUBMIT_METHOD="submit";
 
