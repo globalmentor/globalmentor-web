@@ -201,6 +201,11 @@ public interface XHTMLConstants
 	public final static String ELEMENT_INPUT_ATTRIBUTE_CHECKED="checked";
 		public final static String INPUT_CHECKED_CHECKED="checked";
 
+		//attributes for <link>
+	public final static String ELEMENT_LINK_ATTRIBUTE_HREF="href";
+	public final static String ELEMENT_LINK_ATTRIBUTE_REL="rel";
+		public final static String LINK_REL_STYLESHEET="stylesheet";
+
 		//attributes for <object>
 	public final static String ELEMENT_OBJECT_ATTRIBUTE_CLASSID="classid";
 	public final static String ELEMENT_OBJECT_ATTRIBUTE_CODETYPE="codetype";

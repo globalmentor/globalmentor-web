@@ -12,6 +12,8 @@ import com.garretwilson.net.URIUtilities;
 import com.garretwilson.text.xml.XMLNamespaceProcessor;
 import com.garretwilson.text.xml.XMLUtilities;
 import static com.garretwilson.text.xml.stylesheets.XMLStyleSheetConstants.*;
+import static com.garretwilson.text.xml.xhtml.XHTMLConstants.*;
+
 import com.garretwilson.text.xml.stylesheets.XMLStyleSheetDescriptor;
 import com.garretwilson.text.xml.xhtml.XHTMLConstants;
 //G***del import com.garretwilson.text.xml.xhtml.XHTMLUtilities;  //G***del
@@ -308,22 +310,56 @@ Debug.trace("Found default stylesheet for namespace: ", namespaceURI);  //G***de
 			if(XML_STYLESHEET_PROCESSING_INSTRUCTION.equals(processingInstruction.getName()))
 			{
 				final String processingInstructionData=(String)processingInstruction.getValue();  //get the processing instruction's data, assuming it's a string
-				//G***check the media type, etc. here
+				//TODO check the media type, etc. here
 					//get the href pseudo-attribute, if it is defined
 				final String href=XMLUtilities.getProcessingInstructionPseudoAttributeValue(processingInstructionData, HREF_ATTRIBUTE);
-				final XMLStyleSheetDescriptor styleSheetDescriptor=new XMLStyleSheetDescriptor(href); //create a new descriptor for this stylesheet G***fix for media type, title, etc.
-				styleSheetDescriptorList.add(styleSheetDescriptor); //add the stylesheet descriptor to our list
+				if(href!=null)	//if there is an href
+				{
+					final XMLStyleSheetDescriptor styleSheetDescriptor=new XMLStyleSheetDescriptor(href); //create a new descriptor for this stylesheet G***fix for media type, title, etc.
+					styleSheetDescriptorList.add(styleSheetDescriptor); //add the stylesheet descriptor to our list
+				}
 			}
 		}
-//TODO fix for stylesheet instructions in HTML/OEB link elements
+			//get all linked stylesheets in an HTML document
+		final E documentElement=getDocumentElement(document);	//get the document element
+		for(int childIndex=getChildCount(documentElement)-1; childIndex>=0; --childIndex) //look at each child, starting from the last to the first because order doesn't matter
+		{
+			if(isChildElement(documentElement, childIndex))	//if this child is an element
+			{
+				final E childElement=getChildElement(documentElement, childIndex);  //get this child
+				if(ELEMENT_HEAD.equals(getElementLocalName(childElement)))	//if this is the HTML <head> element TODO ensure this is HTML
+				{
+					for(int headIndex=getChildCount(childElement)-1; headIndex>=0; --headIndex) //look at each child, starting from the last to the first because order doesn't matter
+					{
+						if(isChildElement(childElement, headIndex))	//if this head child is an element
+						{
+							final E headElement=getChildElement(childElement, headIndex);  //get this head child
+							if(ELEMENT_LINK.equals(getElementLocalName(headElement)))	//if this is the HTML <head><link> element TODO ensure this is HTML
+							{
+								if(LINK_REL_STYLESHEET.equals(getElementAttributeValue(headElement, null, ELEMENT_LINK_ATTRIBUTE_REL)))	//if this is link rel="stylesheet"
+								{
+										//TODO check the media type, etc. here
+										//get the href attribute, if it is defined
+									final String href=getElementAttributeValue(headElement, null, ELEMENT_LINK_ATTRIBUTE_HREF);
+									if(href!=null)	//if there is an href
+									{
+										final XMLStyleSheetDescriptor styleSheetDescriptor=new XMLStyleSheetDescriptor(href); //create a new descriptor for this stylesheet G***fix for media type, title, etc.
+										styleSheetDescriptorList.add(styleSheetDescriptor); //add the stylesheet descriptor to our list
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 		return (XMLStyleSheetDescriptor[])styleSheetDescriptorList.toArray(new XMLStyleSheetDescriptor[styleSheetDescriptorList.size()]);  //convert the stylesheet descriptors to an array and return them
 	}
 
 	/**Determines the style of each element in the given element and its children
 		based on the given stylesheet.
 	@param styleSheet The stylesheet to apply to the element.
-	@param element The element to which styles should be applied, along
-		with its children.
+	@param element The element to which styles should be applied, along with its children.
 	*/
 	public void applyStyleSheet(final CSSStyleSheet styleSheet, final E element)
 	{
@@ -358,6 +394,48 @@ Debug.trace("Found default stylesheet for namespace: ", namespaceURI);  //G***de
 		}
 	}
 
+	/**Checks the given element and all sub-elements and applies any locally-defined styles.
+	@param element The element to which styles should be applied, along with its children.
+	*/
+/*TODO del
+	public void applyLocalStyles(final E element)
+	{
+		//apply local styles using a new CSS processor for parsing all the stylesheets, showing that we'll worry about getting the needed input streams
+		applyLocalStyles(element, new XMLCSSProcessor(this));
+	}
+*/
+	
+	/**Checks the given element and all sub-elements and applies any locally-defined styles.
+	@param element The element to which styles should be applied, along with its children.
+	*/
+	public void applyLocalStyles(final E element)
+	{
+		final String styleValue=getElementAttributeValue(element, null, ATTRIBUTE_STYLE); //get the value of the style attribute TODO later check to make sure this element is in an XHTML namespace
+		if(styleValue!=null && styleValue.length()!=0)  //if there is a style value
+		{
+			final XMLCSSStyleDeclaration style=new XMLCSSStyleDeclaration(); //create a new style declaration
+			try
+			{
+				final ParseReader styleReader=new ParseReader(styleValue, "Element "+getElementLocalName(element)+" Local Style");	//create a string reader from the value of this local style attribute G***i18n
+				XMLCSSProcessor.parseRuleSet(styleReader, style); //read the style into our style declaration
+				importCSSStyle(element, style);	//import this style into whatever style we've collected so far for this element, if any
+			}
+			catch(final IOException ioException)  //if we have any errors reading the style
+			{
+			  Debug.warn(ioException);	//warn that we don't understand the style
+			}
+		}
+			//apply local stylesheets to the child elements
+		for(int childIndex=getChildCount(element)-1; childIndex>=0; --childIndex) //look at each child, starting from the last to the first because order doesn't matter
+		{
+			if(isChildElement(element, childIndex))	//if this child is an element
+			{
+				final E childElement=getChildElement(element, childIndex);  //get this child
+				applyLocalStyles(childElement); //apply local styles to the child element
+			}
+		}
+	}
+	
 	/**Determines whether, based upon this style rule's selectors, the given style
 		applies to the specified element.
 	@param cssStyleRule The style rule to check against.
