@@ -234,6 +234,11 @@ public class XMLSerializer implements XMLConstants
 
 	/**Retrieves the prefix to use for the given namespace, using the provided
 		namespace prefix map.
+	<p>To accommodate vocabularies with different namespace-prefix mapping rules
+		(such as RDF and and XML Schema) which result in different namespace
+		representations, if the namespace URI ends in a fragment separator ('#')
+		and no prefix is found, an attempt is made to look up a prefix using the
+		namespace URI without that trailing fragment separator character.</p>
 	If a namespace is unrecognized, a new one will optionally be created and
 		stored in the map for future use.
 	@param namespaceURI The namespace URI for which a prefix should be returned
@@ -249,8 +254,8 @@ public class XMLSerializer implements XMLConstants
 		String prefix=(String)namespacePrefixMap.get(namespaceURI);  //get the prefix keyed by the namespace
 		if(prefix==null)	//if we didn't find a prefix, try the namespaceURI without its ending # (RDF has different URI generation rules than, for example, XML Schema, resulting in different namespace representations)
 		{
-				//if this URI ends with '#'
-			if(namespaceURI!=null && namespaceURI.length()>0 && namespaceURI.charAt(namespaceURI.length()-1)==URIConstants.FRAGMENT_SEPARATOR)
+				//if this URI ends with '#' and has data before that character
+			if(namespaceURI!=null && namespaceURI.length()>1 && namespaceURI.charAt(namespaceURI.length()-1)==URIConstants.FRAGMENT_SEPARATOR)
 			{
 					//see if we recognize the URI without the ending '#'
 				prefix=(String)namespacePrefixMap.get(namespaceURI.substring(0, namespaceURI.length()-1));

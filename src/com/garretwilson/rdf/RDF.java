@@ -3,14 +3,26 @@ package com.garretwilson.rdf;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
+
+import com.garretwilson.net.URIConstants;
+import com.garretwilson.rdf.xmlschema.XMLSchemaTypedLiteralFactory;
+import com.garretwilson.text.xml.schema.XMLSchemaConstants;
 import com.garretwilson.util.*;
 
 /**An RDF data model.
-	The data model should be used to create resources, as it keeps a list of
-	registered resource factories based upon resource type namespaces.
-	The RDF data model itself is a resource factory for the default RDF resources
+<p>The data model should be used to create resources, as it keeps a list of
+	registered resource factories based upon resource type namespaces.</p>
+<p>The RDF data model itself is a resource factory for the default RDF resources
 	such as bags, but registering a resource factory for the RDF namespace will
-	override this default behavior.
+	override this default behavior.</p>
+<p>The RDF data model itself is a typed literal factory for the default RDF
+	datatypes (currently XMLLiteral), but registering a resource factory for the
+	RDF namespace will override this default behavior.</p>
+<p>The RDF data model by default registers a factories that handle the following
+	datatype namespaces:</p>
+<dl>
+	<dt>XML Schema</dt> <dd>http://www.w3.org/2001/XMLSchema</dd>
+</dl>
 @author Garret Wilson
 */
 public class RDF implements RDFConstants
@@ -125,6 +137,11 @@ public class RDF implements RDFConstants
 
 		/**Retrieves a typed literal factory to be used for creating literals with
 			a datatype from the specified namespace URI.
+		<p>To accommodate vocabularies with different namespace URI mapping rules
+			(such as RDF and and XML Schema) which result in different namespace
+			representations, if the namespace URI ends in a fragment separator ('#')
+			and no factory is found, an attempt is made to look up a factory using the
+			namespace URI without that trailing fragment separator character.</p>
 		@param datatypeNamespaceURI The namespace of the datatype for which a
 			typed literal factory should be returned.
 		@return The factory registered for this datatype namespace, or
@@ -133,10 +150,26 @@ public class RDF implements RDFConstants
 		*/
 		protected RDFTypedLiteralFactory getTypedLiteralFactory(final URI datatypeNamespaceURI)
 		{
-			return (RDFTypedLiteralFactory)typedLiteralFactoryMap.get(datatypeNamespaceURI);  //return any factory registered for this namespace
+			RDFTypedLiteralFactory typedLiteralFactory=(RDFTypedLiteralFactory)typedLiteralFactoryMap.get(datatypeNamespaceURI);  //get any factory registered for this namespace
+			if(typedLiteralFactory==null && datatypeNamespaceURI!=null)	//if we didn't find a factory, try the namespaceURI without its ending # (RDF has different URI generation rules than, for example, XML Schema, resulting in different namespace representations)
+			{
+				final String datatypeNamespaceURIString=datatypeNamespaceURI.toString();	//get the string form of the datatype namespace URI 
+					//if this URI ends with '#' and has data before that character
+				if(datatypeNamespaceURIString.length()>1 && datatypeNamespaceURIString.charAt(datatypeNamespaceURIString.length()-1)==URIConstants.FRAGMENT_SEPARATOR)
+				{
+					try	//see if we recognize the URI without the ending '#'
+					{
+						typedLiteralFactory=(RDFTypedLiteralFactory)typedLiteralFactoryMap.get(new URI(datatypeNamespaceURIString.substring(0, datatypeNamespaceURIString.length()-1)));
+					}
+					catch(final URISyntaxException URISyntaxException)	//if we can't create a valid URI by remove the fragment separator character, don't do anything---there wouldn't be a factory mapped to that value, anyway 
+					{
+					}
+				}			
+			}
+			return typedLiteralFactory;	//return whatever typed literal we found, if any
 		}
 
-	/**The map of all resources.*/
+	/**The map of all resources, keyed to resource reference URI.*/
 	private final Map resourceMap=new HashMap();
 
 	/**Adds a resource to the data model.
@@ -432,5 +465,7 @@ public class RDF implements RDFConstants
 	/**Default constructor.*/
 	public RDF()
 	{
+				//register typed literal factories for certain default namespaces
+		registerTypedLiteralFactory(XMLSchemaConstants.XML_SCHEMA_NAMESPACE_URI, new XMLSchemaTypedLiteralFactory());	//XML Schema
 	}
 }
