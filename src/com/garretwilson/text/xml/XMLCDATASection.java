@@ -1,6 +1,6 @@
 package com.garretwilson.text.xml;
 
-import org.w3c.dom.DOMException;
+import static com.garretwilson.text.xml.XMLConstants.*;
 
 /**A CDATA section in an XML document.
 @see XMLText

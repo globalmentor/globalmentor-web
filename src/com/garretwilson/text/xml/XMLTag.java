@@ -1,13 +1,13 @@
 package com.garretwilson.text.xml;
 
-import java.util.List;
-import java.util.ArrayList;
 import org.w3c.dom.*;
+
+import static com.garretwilson.text.xml.XMLConstants.*;
 
 /**A tag in an XML document. G***make comment clarifying whether this is part of the DOM
 @see XMLNode
 */
-class XMLTag extends XMLNode implements XMLConstants  //G***do we really want to implement XMLConstants?
+class XMLTag extends XMLNode
 {
 	/**An undefined tag.*/
 	private final static int UNDEFINED_TAG=-1;

@@ -13,6 +13,8 @@ import com.garretwilson.net.URIUtilities;
 import com.garretwilson.text.CharacterEncoding;
 import com.garretwilson.text.xml.schema.*;
 
+import static com.garretwilson.text.xml.XMLConstants.*;
+
 //G***del all the XMLUndefinedEntityReferenceException throws when we don't need them anymore, in favor of XMLWellFormednessException
 
 /**Class which parses an input stream containing XML data.
@@ -48,7 +50,7 @@ G***make tidy fix things like <li>All rights reserved.</p></li>; right now it tr
 @author Garret Wilson
 //G***del if we don't need @see XMLStatusReportable
 */
-public class XMLProcessor extends XMLUtilities implements XMLConstants, URIInputStreamable
+public class XMLProcessor extends XMLUtilities implements URIInputStreamable
 {
 
 //G***del package com.garretwilson.text.xml;

@@ -15,11 +15,13 @@ import com.garretwilson.lang.ObjectUtilities;
 import com.garretwilson.text.xml.events.*;
 import com.garretwilson.util.Debug;
 
+import static com.garretwilson.text.xml.XMLConstants.*;
+
 /**The class which forms a basis for all other XML document classes.
 @see XMLNodeList
 @author Garret Wilson
 */
-public abstract class XMLNode extends XMLNamedObject implements Node, EventTarget, Cloneable, XMLConstants
+public abstract class XMLNode extends XMLNamedObject implements Node, EventTarget, Cloneable
 {
 
 	/**The type of node before it is defined. This value is not defined in DOM.*/

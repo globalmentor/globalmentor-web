@@ -5,10 +5,12 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import org.w3c.dom.DOMException;
 
+import static com.garretwilson.text.xml.XMLConstants.*;
+
 /**A processing instruction in an XML document.
 @see org.w3c.dom.ProcessingInstruction
 */
-public class XMLProcessingInstruction extends XMLNode implements XMLConstants, org.w3c.dom.ProcessingInstruction
+public class XMLProcessingInstruction extends XMLNode implements org.w3c.dom.ProcessingInstruction
 {
 
 	/**A map of pseudo attributes and values. These are "pseudo" in the sense that

@@ -1,11 +1,11 @@
 package com.garretwilson.text.xml;
 
-import java.io.*;
-import java.util.*;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Text;
 //G***del if not needed import com.garretwilson.lang.StringUtilities;
 import com.garretwilson.util.Debug;
+
+import static com.garretwilson.text.xml.XMLConstants.*;
 
 /**Character data in an XML document residing in an element or attribute.
 XMLText contains no markup. Immediately after parsing, an element with no

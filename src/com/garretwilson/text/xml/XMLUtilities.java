@@ -4,6 +4,7 @@ import java.io.*;
 import java.lang.ref.*;
 import java.util.*;
 import javax.mail.internet.ContentType;
+
 import com.garretwilson.lang.*;
 import com.garretwilson.text.*;
 import com.garretwilson.text.xml.stylesheets.XMLStyleSheetConstants;
@@ -15,11 +16,15 @@ import static com.garretwilson.text.xml.mathml.MathMLConstants.*;
 import static com.garretwilson.text.xml.svg.SVGConstants.*;
 import static com.garretwilson.text.xml.xhtml.XHTMLConstants.*;
 
+import static com.garretwilson.io.ContentTypeConstants.*;
+import static com.garretwilson.io.ContentTypeUtilities.*;
+import static com.garretwilson.text.xml.XMLConstants.*;
+
 /**Various XML manipuliating functions. The methods here are meant to be generic
 in that they only access XML through the W3C DOM.
 @author Garret Wilson
 */
-public class XMLUtilities implements XMLConstants, XMLStyleSheetConstants
+public class XMLUtilities implements XMLStyleSheetConstants
 {
 
 	/**A lazily-created cache of system IDs keyed to public IDs.*/
@@ -403,6 +408,36 @@ G***should we return data from CDATA sections as well?
 		}
 		return true;	//since nothing was invalid, the name is valid
 	}
+
+	/**Determines if the given content type is one representing XML in some form.
+	<p>XML media types include:</p>
+	<ul>
+		<li><code>text/xml</code></li>
+		<li><code>application/xml</code></li>
+		<li><code>application/*+xml</code></li>
+	</ul>
+	@param contentType The content type of a resource, or <code>null</code> for no
+		content type.
+	@return <code>true</code> if the given content type is one of several XML
+		media types.
+	*/ 
+	public static boolean isXML(final ContentType contentType)
+	{
+		if(contentType!=null)	//if a content type is given
+		{
+			if(TEXT.equals(contentType.getPrimaryType()) && XML_SUBTYPE.equals(contentType.getSubType()))	//if this is "text/xml"
+			{
+				return true;	//text/xml is an XML content type
+			}
+			if(APPLICATION.equals(contentType.getPrimaryType()))	//if this is "application/*"
+			{
+				return XML_SUBTYPE.equals(contentType.getSubType())	//see if the subtype is "xml"
+						|| hasSubTypeSuffix(contentType, XML_SUBTYPE_SUFFIX);	//see if the subtype has an XML suffix
+			}
+		}
+		return false;	//this is not a media type we recognize as being HTML
+	}
+
 
 	protected final static char REPLACEMENT_FIRST_CHAR='x';  //the character to replace theh first character if needed G***maybe move these up and/or rename them
 	protected final static char REPLACEMENT_CHAR='_';  //the character to use to replace any other character

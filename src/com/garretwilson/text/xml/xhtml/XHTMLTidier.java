@@ -3,9 +3,8 @@ package com.garretwilson.text.xml.xhtml;
 import java.io.*;
 import java.util.*;
 import javax.mail.internet.ContentType;
-import com.garretwilson.io.ContentTypeConstants;
+import com.garretwilson.io.ContentTypeUtilities;
 import com.garretwilson.io.FileUtilities;
-import com.garretwilson.io.ParseReader;
 import com.garretwilson.lang.*;
 import com.garretwilson.text.*;
 import com.garretwilson.text.xml.XMLConstants;
@@ -19,7 +18,9 @@ import org.w3c.dom.*;
 import org.w3c.dom.traversal.NodeFilter;
 import org.w3c.dom.css.*;
 
+import static com.garretwilson.io.ContentTypeConstants.*;
 import static com.garretwilson.text.CharacterConstants.*;
+import static com.garretwilson.text.xml.XMLConstants.*;
 
 /**Contains several routines for tidying XHTML documents.
 <p><code>tidy()</code> performs the following operations:</p>
@@ -138,7 +139,7 @@ G***added stuff not commented:
 * removed <html> attributes
 * added OEB DOCTYPe
 */
-public class XHTMLTidier extends TextUtilities implements XHTMLConstants, XMLCSSConstants, XMLConstants, SymbolEncodingConstants
+public class XHTMLTidier extends TextUtilities implements XHTMLConstants, XMLCSSConstants, SymbolEncodingConstants
 {
 
 	/**Whether underline tags (<code>&lt;u&gt;</code>) should be converted to
@@ -1948,7 +1949,7 @@ Debug.trace("found enclosing start at index: ", startIndex);  //G***del
 		final Element objectElement=element.getOwnerDocument().createElementNS(elementNamespace, ELEMENT_OBJECT); //create the element object in the same namespace as the applet object
 		if(code!=null)  //if there is a code attribute
 			objectElement.setAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_CLASSID, code); //set the object classid attribute G***correctly add needed "java:" and ".class"
-		objectElement.setAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_CODETYPE, ContentTypeConstants.APPLICATION_JAVA); //set the object codetype attribute to "application/java"
+		objectElement.setAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_CODETYPE, ContentTypeUtilities.toString(APPLICATION, JAVA_SUBTYPE)); //set the object codetype attribute to "application/java"
 		if(height!=null)  //if there is a height attribute
 			objectElement.setAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_HEIGHT, height); //set the object height attribute
 		if(width!=null)  //if there is a width attribute

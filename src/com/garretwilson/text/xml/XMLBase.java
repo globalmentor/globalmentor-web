@@ -6,12 +6,15 @@ import java.net.URISyntaxException;
 import com.garretwilson.util.Debug;
 import org.w3c.dom.*;
 
+import static com.garretwilson.text.xml.XMLConstants.*;
+import static com.garretwilson.text.xml.XMLBaseConstants.*;
+
 /**Class that allows discovery of a base URI according to XML Base,
 <a href="http://www.w3.org/TR/xmlbase/">http://www.w3.org/TR/xmlbase/</a>.
 Currently this class processes all URIs as URLs.
 @author Garret Wilson
 */
-public class XMLBase implements XMLBaseConstants
+public class XMLBase
 {
 
 	/**Retrieves the value of the <code>xml:base</code> attribute, if present.

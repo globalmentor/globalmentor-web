@@ -25,6 +25,8 @@ import com.garretwilson.rdf.xpackage.MIMEOntologyConstants;
 import com.garretwilson.rdf.xpackage.XPackageConstants;
 import com.garretwilson.util.PropertyUtilities;
 
+import static com.garretwilson.text.xml.XMLConstants.*;
+
 //G***del all the XMLUndefinedEntityReferenceException throws when we don't need them anymore, in favor of XMLWellFormednessException
 
 /**Class which serializes an XML document to a byte-oriented output stream.
@@ -33,7 +35,7 @@ import com.garretwilson.util.PropertyUtilities;
 @see XMLProcessor
 @author Garret Wilson
 */
-public class XMLSerializer implements XMLConstants
+public class XMLSerializer
 {
 
 	/**Whether the output should be formatted.*/

@@ -12,10 +12,10 @@ public interface XHTMLConstants
 {
 
 	/**The content type for HTML: <code>text/html</code>.*/ 
-	public static final ContentType HTML_CONTENT_TYPE=new ContentType(ContentTypeConstants.TEXT, ContentTypeConstants.HTML, null);
+	public static final ContentType HTML_CONTENT_TYPE=new ContentType(ContentTypeConstants.TEXT, ContentTypeConstants.HTML_SUBTYPE, null);
 
 	/**The content type for XHTML: <code>application/xhtml+xml</code>.*/ 
-	public static final ContentType XHTML_CONTENT_TYPE=new ContentType(ContentTypeConstants.APPLICATION, ContentTypeConstants.XHTML_XML, null);
+	public static final ContentType XHTML_CONTENT_TYPE=new ContentType(ContentTypeConstants.APPLICATION, ContentTypeConstants.XHTML_XML_SUBTYPE, null);
 
 	/**The recommended prefix to the XHTML namespace.*/
 	public static final String XHTML_NAMESPACE_PREFIX="xhtml";

@@ -12,7 +12,7 @@ public class SVGConstants
 {
 
 	/**The content type for SVG: <code>application/svg+xml</code>.*/ 
-	public static final ContentType SVG_CONTENT_TYPE=new ContentType(ContentTypeConstants.APPLICATION, ContentTypeConstants.SVG_XML, null);
+	public static final ContentType SVG_CONTENT_TYPE=new ContentType(ContentTypeConstants.APPLICATION, ContentTypeConstants.SVG_XML_SUBTYPE, null);
 
 	/**The recommended prefix to the SVG namespace.*/
 	public static final String SVG_NAMESPACE_PREFIX="svg";

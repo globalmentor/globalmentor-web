@@ -1,15 +1,12 @@
 package com.garretwilson.text.xml;
 
-import java.io.InputStream;
 import java.io.Reader;
 import java.io.IOException;
-import java.io.File;
-import java.net.URL;	//G***see if we want a URL constructor or not
-import java.net.MalformedURLException;
 import com.garretwilson.io.ParseReader;
 //G***del import com.garretwilson.lang.StringManipulator;	//G***del when we don't need
-import com.garretwilson.net.URLUtilities;
 import com.garretwilson.util.Debug;
+
+import static com.garretwilson.text.xml.XMLConstants.*;
 
 /**Class for parsing XML data from a stream.
 This class lets <code>ParseReader</code> do most of the work, while overriding
@@ -17,7 +14,7 @@ This class lets <code>ParseReader</code> do most of the work, while overriding
 XML specifies.
 @see com.garretwilson.io.ParseReader
 */
-public class XMLReader extends ParseReader implements XMLConstants
+public class XMLReader extends ParseReader
 {
 
 	public boolean tidy=false;  //G***fix, probably by adding a listener to XMLProcessor or (maybe better) by an anonymous class in XMLProcessor

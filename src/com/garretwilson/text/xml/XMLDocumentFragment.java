@@ -1,9 +1,8 @@
 package com.garretwilson.text.xml;
 
-import java.util.List;
-import java.util.ArrayList;
 import org.w3c.dom.*;
-import org.w3c.dom.events.*;
+
+import static com.garretwilson.text.xml.XMLConstants.*;
 
 /**A lightweight portion of an XML document.
 @see XMLNode
