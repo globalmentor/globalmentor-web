@@ -70,6 +70,12 @@ public class RDF implements RDFConstants	//TODO special-case rdf:nil list resour
 		}
 */
 
+	/**The base URI of the RDF data model, or <code>null</code> if unknown.*/
+	private final URI baseURI;
+	
+		/**@return The base URI of the RDF data model, or <code>null</code> if unknown.*/
+		public URI getBaseURI() {return baseURI;}
+
 	/**A map of resource factories, keyed to namespace URI.*/
 	private final Map resourceFactoryMap=new HashMap();
 
@@ -562,6 +568,15 @@ public class RDF implements RDFConstants	//TODO special-case rdf:nil list resour
 	/**Default constructor.*/
 	public RDF()
 	{
+		this(null);	//construct the data model with no known base URI
+	}
+
+	/**Base URI constructor.
+	@param baseURI The base URI of the RDF data model, or <code>null</code> if unknown.
+	*/
+	public RDF(final URI baseURI)
+	{
+		this.baseURI=baseURI;	//save the base URI
 				//register typed literal factories for certain default namespaces
 		registerTypedLiteralFactory(XMLSchemaConstants.XML_SCHEMA_NAMESPACE_URI, new XMLSchemaTypedLiteralFactory());	//XML Schema
 	}

@@ -542,7 +542,7 @@ return null;//G***throw an INVALID_ACCESS_ERR when we find out how to do so			th
 						primitiveType=XMLCSSPrimitiveValue.CSS_EMS;	//record the type
 					else if(typeString.equals(XMLCSSPrimitiveValue.UNIT_EXS_STRING))	//if this specifies the x-height of the font
 						primitiveType=XMLCSSPrimitiveValue.CSS_EXS;	//record the type
-					else if(typeString.equals(XMLCSSPrimitiveValue.UNIT_EMS_STRING))	//if this specifies pixels
+					else if(typeString.equals(XMLCSSPrimitiveValue.UNIT_PX_STRING))	//if this specifies pixels
 						primitiveType=XMLCSSPrimitiveValue.CSS_PX;	//record the type
 					else if(typeString.equals(XMLCSSPrimitiveValue.UNIT_CM_STRING))	//if this specifies centimeters
 						primitiveType=XMLCSSPrimitiveValue.CSS_CM;	//record the type
