@@ -467,18 +467,53 @@ public class RDF implements RDFConstants	//TODO special-case rdf:nil list resour
 	*/
 	protected RDFResource createTypedResource(final URI referenceURI, final URI namespaceURI, final String localName, final URI typeNamespaceURI, final String typeLocalName)
 	{
-//G***del when works		Debug.assert(typeNamespaceURI!=null, "type namespace is null");	//G***fix
+		RDFResource resource=createTypedResourceFromFactory(referenceURI, typeNamespaceURI, typeLocalName);	//see if we can create the resource from a resource factory
+		if(resource==null)  //if we didn't created a resource from a factory
+		{
+		  resource=new DefaultRDFResource(this, referenceURI, namespaceURI, localName);  //create a new resource from the given reference URI, showing which data model created the resource
+		}
+		if(typeNamespaceURI!=null && typeLocalName!=null)	//if we were given a type
+		{
+			RDFUtilities.addType(resource, typeNamespaceURI, typeLocalName); //add the type property
+		}
+		return resource;  //return the resource we created
+	}
+
+	/**Attempts to create a resource with the provided reference URI
+		The given type namespace URI and type local name will be used to
+		attempt to locate a resource factory to create the resource.
+	<p>The created resource, if any, will be added to this RDF data model, but
+		no type will be added to the resource.</p>
+	<p>This method knows how to create the following RDF-defined resources:</p>
+	<ul>
+		<li>Reference URI <code>rdf:nil</code> (<code>RDFListResource</code>)</li>
+		<li>Type <code>rdf:Alt</code>  (<code>RDFAltResource</code>)</li>
+		<li>Type <code>rdf:Bag</code>  (<code>RDFBagResource</code>)</li>
+		<li>Type <code>rdf:Seq</code>  (<code>RDFSequenceResource</code>)</li>
+	</ul>
+	@param referenceURI The reference URI of the resource to create, or
+		<code>null</code> if the resource created should be represented by a blank node.
+	@param typeNamespaceURI The XML namespace used in the serialization of the
+		type URI, or <code>null</code> if the type is not known.
+	@param typeLocalName The XML local name used in the serialization of the type
+		URI, or <code>null</code> if the type is not known.
+	@return The resource created with this reference URI, or <code>null</code>
+		if the resource could not be created from a resource factory or a suitable
+		resource factory could not be found.
+	*/
+	public RDFResource createTypedResourceFromFactory(final URI referenceURI, final URI typeNamespaceURI, final String typeLocalName)
+	{
 		RDFResource resource=null; //start by assuming that no factory is registered for this type namespace, or the registered factory can't create a resource
 		final RDFResourceFactory resourceFactory=getResourceFactory(typeNamespaceURI); //get a resource factory for this namespace
 		if(resourceFactory!=null) //if we have a factory
 		{
-		  resource=resourceFactory.createResource(referenceURI, typeNamespaceURI, typeLocalName); //try to create a resource from this factory
+			resource=resourceFactory.createResource(referenceURI, typeNamespaceURI, typeLocalName); //try to create a resource from this factory
 		}
 		if(resource==null)  //if we haven't created a resource, see if this is an RDF resource
 		{
 			if(NIL_RESOURCE_URI.equals(referenceURI))	//if we are creating the nil resource
 			{
-				resource=new RDFListResource(this, RDF_NAMESPACE_URI, NIL_RESOURCE_NAME);	//create the nil resource with the special RDF nil URI
+				resource=new RDFListResource(this, NIL_RESOURCE_URI);	//create the nil resource with the special RDF nil URI
 			}
 			else if(RDF_NAMESPACE_URI.equals(typeNamespaceURI)) //if this resource is an RDF resource
 			{
@@ -488,34 +523,29 @@ public class RDF implements RDFConstants	//TODO special-case rdf:nil list resour
 				}
 				else if(BAG_CLASS_NAME.equals(typeLocalName))  //<rdf:Bag>
 				{
-					resource=new RDFBagResource(this, referenceURI, namespaceURI, localName);  //create a bag resource
+					resource=new RDFBagResource(this, referenceURI);  //create a bag resource
 				}
 				else if(SEQ_CLASS_NAME.equals(typeLocalName))  //<rdf:Seq>
 				{
-					resource=new RDFSequenceResource(this, referenceURI, namespaceURI, localName);  //create a sequence resource
+					resource=new RDFSequenceResource(this, referenceURI);  //create a sequence resource
 				}
 				else if(LIST_CLASS_NAME.equals(typeLocalName))  //<rdf:Seq>
 				{
-					resource=new RDFListResource(this, referenceURI, namespaceURI, localName);  //create a list resource
+					resource=new RDFListResource(this, referenceURI);  //create a list resource
 				}
-//G***should we check to see if this is the nil resource, and if so automatically set its type to rdf:List?
 			}
 		}
-		if(resource==null)  //if we still haven't created a resource
+		if(resource!=null)  //if we found a resource
 		{
-		  resource=new DefaultRDFResource(this, referenceURI, namespaceURI, localName);  //create a new resource from the given reference URI, showing which data model created the resource
+			if(resource.getRDF()!=this)	//if a resource was created that isn't associated with this data model
+			{
+				resource.setRDF(this);	//associate the resource with this data model TODO create an import() method that will recursively set the data models of the resource and all properties and property values
+			}
+			addResource(resource);  //store the resource in the data model
 		}
-		if(resource!=null && resource.getRDF()!=this)	//if a resource was created that isn't associated with this data model
-		{
-			resource.setRDF(this);	//associate the resource with this data model TODO create an import() method that will recursively set the data models of the resource and all properties and property values
-		}
-		if(typeNamespaceURI!=null && typeLocalName!=null)	//if we were given a type
-		{
-			RDFUtilities.addType(resource, typeNamespaceURI, typeLocalName); //add the type property TODO make sure the type is added to the list of triples
-		}
-		addResource(resource);  //store the resource in the data model
 		return resource;  //return the resource we created
 	}
+
 
 	/**Creates a typed literal from the provided lexical form and datatype.
 	The determined datatype namespace URI from the given datatype URI
