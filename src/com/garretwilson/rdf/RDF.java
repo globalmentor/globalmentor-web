@@ -471,6 +471,7 @@ public class RDF implements RDFConstants	//TODO special-case rdf:nil list resour
 		if(resource==null)  //if we didn't created a resource from a factory
 		{
 		  resource=new DefaultRDFResource(this, referenceURI, namespaceURI, localName);  //create a new resource from the given reference URI, showing which data model created the resource
+			addResource(resource);  //store the resource in the data model
 		}
 		if(typeNamespaceURI!=null && typeLocalName!=null)	//if we were given a type
 		{
