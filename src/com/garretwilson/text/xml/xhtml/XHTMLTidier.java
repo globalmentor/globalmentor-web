@@ -1454,15 +1454,16 @@ Debug.trace("Checking break element: ", element.getNodeName());
 //G***del Debug.trace("XHTMLTider.tidyAttributes() element: "+element.getNodeName());
 		tidyStyleAttribute(element);  //tidy the style attribute, if it's present
 			//change any "lang" attribute to "xml:lang"
-		if(element.hasAttributeNS(null, ATTRIBUTE_LANG))  //if there is a lang attribute defined
+		if(element.hasAttributeNS(null, XHTMLConstants.ATTRIBUTE_LANG))  //if there is a lang attribute defined
 		{
-			final String langValue=element.getAttributeNS(null, ATTRIBUTE_LANG);  //get the lang attribute value
+			final String langValue=element.getAttributeNS(null, XHTMLConstants.ATTRIBUTE_LANG);  //get the lang attribute value
 //G***del 	Debug.trace("found name value: "+nameValue);
-			if(!element.hasAttributeNS(XML_NAMESPACE_URI, "xml:lang")) //if there is no xml:lang attribute G***use a constant, use namespaces
+			if(!element.hasAttributeNS(XML_NAMESPACE_URI, XMLConstants.ATTRIBUTE_LANG)) //if there is no xml:lang attribute G***use a constant, use namespaces
 			{
 //G***del 	Debug.trace("no name attribute, though; moving name to id");
-				element.setAttributeNS(XML_NAMESPACE_URI, "xml:lang", langValue);  //create an xml:lang attribute with the value of the lang attribute G***use a constant here, use namespaces
-				element.removeAttributeNS(null, ATTRIBUTE_LANG);  //remove the lang attribute
+					//create an xml:lang attribute with the value of the lang attribute G***use a constant here, use namespaces
+				element.setAttributeNS(XML_NAMESPACE_URI, XMLUtilities.createQualifiedName(XMLConstants.XML_NAMESPACE_PREFIX, XMLConstants.ATTRIBUTE_LANG), langValue);  
+				element.removeAttributeNS(null, XHTMLConstants.ATTRIBUTE_LANG);  //remove the lang attribute
 			}
 		}
 		final String elementName=element.getNodeName(); //get the element's name G***make this namespace aware
