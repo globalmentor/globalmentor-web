@@ -198,6 +198,8 @@ public interface XHTMLConstants
 		public final static String INPUT_TYPE_RESET="reset";
 		public final static String INPUT_TYPE_SUBMIT="submit";
 		public final static String INPUT_TYPE_TEXT="text";
+	public final static String ELEMENT_INPUT_ATTRIBUTE_CHECKED="checked";
+		public final static String INPUT_CHECKED_CHECKED="checked";
 
 		//attributes for <object>
 	public final static String ELEMENT_OBJECT_ATTRIBUTE_CLASSID="classid";
