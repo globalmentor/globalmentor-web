@@ -15,6 +15,8 @@ import org.w3c.dom.stylesheets.*;
 */
 public class XMLCSSStylesheetApplier extends AbstractXMLCSSStylesheetApplier<Document, Element> implements CSSStyleManager //G***do we really need this style manager interaface 
 {
+	
+		//TODO maybe move all the map storage stuff to the abstract version
 
 	/**The map of styles, each keyed to an element. The weak map allows the styles
 		to be garbage-collected once the corresponding element is no longer used.
@@ -51,6 +53,12 @@ public class XMLCSSStylesheetApplier extends AbstractXMLCSSStylesheetApplier<Doc
 		public void setStyle(final Element element, final CSSStyleDeclaration style)
 		{
 			cssStyleMap.put(element, style);  //store the style in the map, keyed to the element
+		}
+	
+		/**Clears all the cached element styles.*/
+		public void clearStyles()
+		{
+			cssStyleMap.clear();	//clear the map of styles
 		}
 
 	/**The source of input streams.*/
