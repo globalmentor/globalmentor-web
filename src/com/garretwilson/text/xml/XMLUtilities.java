@@ -502,8 +502,8 @@ G***should we return data from CDATA sections as well?
 		return textNode;	//return the text node we created
 	}
 
-	/**Convenience function to create an element and add it as a child of the given
-		document.
+	/**Convenience function to create an element and use it to replace the
+		document element of the document.
 	@param document The document which will serve as parent of the newly
 		created element.
 	@param elementNamespaceURI The namespace URI of the element to be created.
@@ -511,16 +511,15 @@ G***should we return data from CDATA sections as well?
 	@return The newly created child element.
 	*/
 //G***list exceptions
-	public static Element appendElement(final Document document,
-	    final String elementNamespaceURI, final String elementName)
+	public static Element replaceDocumentElement(final Document document, final String elementNamespaceURI, final String elementName)
 	{
-		return appendElement(document, elementNamespaceURI, elementName, null);  //append an element with no text
+		return replaceDocumentElement(document, elementNamespaceURI, elementName, null);  //append an element with no text
 	}
 
-	/**Convenience function to create an element, add it as a child of the given
-		document, and add optional text as a child of the given element. A
-		heading, for instance, might be added using
-		<code>appendElement(document, XHTML_NAMESPACE_URI, ELEMENT_H2,
+	/**Convenience function to create an element, replace the document element 
+		of the given document, and add optional text as a child of the given
+		element. A heading, for instance, might be added using
+		<code>replaceDocumentElement(document, XHTML_NAMESPACE_URI, ELEMENT_H2,
 		"My Heading");</code>.
 	@param document The document which will serve as parent of the newly
 		created element.
@@ -531,11 +530,10 @@ G***should we return data from CDATA sections as well?
 	@return The newly created child element.
 	*/
 //G***list exceptions
-	public static Element appendElement(final Document document,
-	    final String elementNamespaceURI, final String elementName, final String textContent)
+	public static Element replaceDocumentElement(final Document document, final String elementNamespaceURI, final String elementName, final String textContent)
 	{
 		final Element childElement=createElement(document, elementNamespaceURI, elementName, textContent);  //create the new element
-		document.appendChild(childElement);	//add the child element to the document
+		document.replaceChild(childElement, document.getDocumentElement());	//replace the document element of the document
 		return childElement;  //return the element we created
 	}
 
@@ -596,7 +594,7 @@ G***should we return data from CDATA sections as well?
 		final Document document=domImplementation.createDocument(element.getNamespaceURI(), element.getNodeName(), null);
 		final Element clonedElement=(Element)element.cloneNode(true);  //create a copy of the element
 		document.importNode(clonedElement, true); //import the element into our new document
-		document.appendChild(clonedElement);  //set the element clone as the document element of the new document G***fix to the read DOM way
+		document.replaceChild(clonedElement, document.getDocumentElement());  //set the element clone as the document element of the new document
 		return document;  //return the document we created
 	}
 

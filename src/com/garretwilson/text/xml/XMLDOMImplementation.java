@@ -1,17 +1,12 @@
 package com.garretwilson.text.xml;
 
-//G***del if we don't need import java.io.*;
-import java.util.List;
-import java.util.ArrayList;
-import com.garretwilson.util.Debug;
 import org.w3c.dom.*;
-
 
 /**Methods for performing operations that are independent of any particular
 instance of the document object model.
 @see org.w3c.dom.DOMImplementation
 */
-public class XMLDOMImplementation implements org.w3c.dom.DOMImplementation
+public class XMLDOMImplementation implements DOMImplementation
 {
 
 	/**Tests to see if the DOM implementation implements a specific feature.
@@ -79,10 +74,24 @@ public class XMLDOMImplementation implements org.w3c.dom.DOMImplementation
 		final XMLDocument document=new XMLDocument();	//create a new document
 		document.setNodeName(qualifiedName);	//set the name of the document
 		//G***make sure that doctype is really an XMLDocumentType, or throw a WRONG_DOCUMENT_ERR if not
+				//TODO probably add the document type as a child, just like the document element
 		document.setXMLDocumentType((XMLDocumentType)doctype);	//set the document type
 		//G***check the namespace somewhere here; maybe use document.checkNamespace()
 		//G***do whatever we need to do with the namespace
-		//G***create the document element
+			//create the document element
+		final XMLElement documentElement=(XMLElement)document.createElementNS(namespaceURI, qualifiedName);
+		document.getChildXMLNodeList().add(documentElement);	//add this child the document
+		//G***set the document, set the parent, etc.
+		documentElement.setParentXMLNode(document);	//set the parent of the added child
+/*G***check to see if we need to fire events when the document element is added
+		if(isEventsEnabled()) //if events are enabled
+		{
+			//create a new event for the inserted node
+			final Event nodeInsertedEvent=XMLMutationEvent.createDOMNodeInsertedEvent(xmlNewChild, this);
+			xmlNewChild.dispatchEvent(nodeInsertedEvent); //dispatch the event
+			//G***dispatch the document events
+		}
+*/
 		return document;	//return the document we created
 	}
 

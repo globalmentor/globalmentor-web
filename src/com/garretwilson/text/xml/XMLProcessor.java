@@ -2581,7 +2581,10 @@ entityReader.tidy=isTidy();  //G***fix
 				else  //if we're not tidying, this consitutes a validity error
 					throw new XMLValidityException(XMLValidityException.ROOT_ELEMENT_TYPE, new Object[]{root.getNodeName(), docType.getName()}, reader.getLineIndex(), reader.getCharIndex(), reader.getName());	//show that this element type has already been declared G***give a better indication of the element type declaration's location
 			}
-			document.appendChild(root);	//add the root element to the document
+			//G***does this adequately check for multiple root nodes?
+			document.getChildXMLNodeList().add(root);	//add the root to the document (don't append it using a DOM method, because that will throw an exception)
+			//G***set the document, set the parent, etc.
+			root.setParentXMLNode(document);	//set the parent of the added child
 			//G***fix to allow items after the document element
 	//G***del		XMLElement root=parseElement(reader, document, (XMLTag)node);	//parse the child element
 	//G***del		document.setRoot(root);	//tell the document which root it has

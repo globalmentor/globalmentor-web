@@ -577,6 +577,9 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 		if(newChildIndex!=-1)	//if the new child is already in our list
 			getChildXMLNodeList().remove(newChildIndex);	//remove the new child from the list before we replace the old child with it
 //G***del Debug.trace(this, "before call to insertBefore()");
+
+			//TODO probably replace this code with a simple replacement operations, taking care to fire the right events
+
 		insertBefore(newChild, oldChild);	//insert the new child before the old child
 		removeChild(oldChild);	//remove the old child
 		return oldChild;	//return the child we replaced

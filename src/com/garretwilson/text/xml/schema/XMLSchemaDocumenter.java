@@ -27,15 +27,12 @@ public class XMLSchemaDocumenter implements com.garretwilson.text.xml.xhtml.XHTM
 		final DocumentType documentType=domImplementation.createDocumentType(ELEMENT_HTML, XHTML1_STRICT_PUBLIC_ID, XHTML1_STRICT_SYSTEM_ID);	//create an XHTML document type G***perhaps put this in an OEB class
 		final Document document=domImplementation.createDocument(XHTML_NAMESPACE_URI, ELEMENT_HTML, documentType);	//create an XHTML document G***perhaps put this in an OEB class
 			//G***check about whether we need to add a <head> and <title>
-		final Element htmlElement=document.createElementNS(XHTML_NAMESPACE_URI, ELEMENT_HTML);	//create the html element
+		final Element htmlElement=document.getDocumentElement();	//get the html element
 		XMLUtilities.appendText(/*G***del when works document, */htmlElement, "\n");	//append a newline to start the content of the html element
 		document.appendChild(htmlElement);	//add the html element to the document
 		final Element bodyElement=document.createElementNS(XHTML_NAMESPACE_URI, ELEMENT_BODY);	//create the body element
-		htmlElement.appendChild(bodyElement);	//add the body element to the html element
 		XMLUtilities.appendText(bodyElement, "\n");	//append a newline to separate the information in the body
-
 		generateAttributeGroupDocumentation(schema, bodyElement); //generate the attribute group documentation
-
 /*G***fix
 		Element paragraphElement=parseParagraph(document, bufferedReader);	//parse the first paragraph
 		while(paragraphElement!=null)	//keep reading until we run out of paragraphs

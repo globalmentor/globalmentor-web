@@ -139,7 +139,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	<code>null</code> if there is no associated DTD.
 	@see XMLDocument#getDoctype
 	*/
-	public XMLDocumentType getXMLDocumentType() {return DocumentType;}
+	public XMLDocumentType getXMLDocumentType() {return DocumentType;}	//TODO see if the document type should be a child, just like the document element
 
 	/**Sets the document type for this XML document.
 	@param documentType The new document type for this XML document, or
@@ -489,6 +489,129 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 				throw new XMLDOMException(DOMException.NOT_SUPPORTED_ERR, new Object[]{importedNode.getNodeName()});	//show that this node type isn't allowed to be imported G***should we instead show the type of node instead of its name?
 		}
 */
+	}
+
+	/**Inserts the node <code>newChild</code> before the existing child node
+		<code>refChild</code>. If <code>refChild</code> is <code>null</code>,
+		inserts <code>newChild</code> at the end of the list of children.
+	<p>This version throws a <code>HIERARCHY_REQUEST_ERR</code> if an attempt is
+		made to add an element as a child.</p> 
+	@param newChild The node to insert. If <code>newChild</code> is a
+		<code>DocumentFragment</code> object, all of its children are inserted,
+		in the same order, before <code>refChild</code>.
+		If the <code>newChild</code> is already in the tree, it is first removed.
+	@param refChild The reference node, i.e., the node before which the new
+		node must be inserted.
+	@return The node being inserted.
+	@exception DOMException
+	<ul>
+		<li>HIERARCHY_REQUEST_ERR: Raised if this node is of a type that does not
+			allow children of the type of the <code>newChild</code> node, or if
+			the node to insert is one of this node's ancestors.</li>
+		<li>WRONG_DOCUMENT_ERR: Raised if <code>newChild</code> was created
+			from a different document than the one that created this node.</li>
+		<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
+		<li>NOT_FOUND_ERR: Raised if <code>refChild</code> is not a child of
+			this node.</li>
+	</ul>
+	@version DOM Level 1
+	*/
+	public Node insertBefore(Node newChild, Node refChild) throws DOMException
+	{
+		if(newChild.getNodeType()==Node.ELEMENT_NODE)	//if they are trying to add an element
+			throw new XMLDOMException(DOMException.HIERARCHY_REQUEST_ERR, new Object[]{newChild.getNodeName()});	//show that there can only be one document element
+		return super.insertBefore(newChild, refChild);	//do the default functionality		
+	}
+
+	/**Replaces the child node <code>oldChild</code> with <code>newChild</code>
+		in the list of children, and returns the <code>oldChild</code> node. If
+		the <code>newChild</code> is already in the tree, it is first removed.
+	<p>This version throws a <code>HIERARCHY_REQUEST_ERR</code> if an attempt is
+		made to replace the document element with a non-element, or to replace a
+		non-element child with an element.</p> 
+	@param newChild The new node to put in the child list.
+	@param oldChild The node being replaced in the list.
+	@return The node replaced.
+	@exception DOMException
+	<ul>
+		<li>HIERARCHY_REQUEST_ERR: Raised if this node is of a type that does not
+			allow children of the type of the <code>newChild</code> node, or it
+			the node to put in is one of this node's ancestors.</li>
+		<li>WRONG_DOCUMENT_ERR: Raised if <code>newChild</code> was created
+			from a different document than the one that created this node.</li>
+		<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
+		<li>NOT_FOUND_ERR: Raised if <code>oldChild</code> is not a child of
+			this node.</li>
+	</ul>
+	@see XMLNode#removeChild
+	@version DOM Level 1
+	*/
+	public Node replaceChild(Node newChild, Node oldChild) throws DOMException
+	{
+			//if a non-element child is being replaced with an element or vice-versa
+		if((newChild.getNodeType()==Node.ELEMENT_NODE || oldChild.getNodeType()==Node.ELEMENT_NODE))
+		{
+			if(newChild.getNodeType()!=oldChild.getNodeType())	//if one is an element, both have to be an element
+				throw new XMLDOMException(DOMException.HIERARCHY_REQUEST_ERR, new Object[]{newChild.getNodeName()});	//show that there must be at least one and only one document element
+			final int index=getChildXMLNodeList().indexOf(oldChild);	//get the index of the old child
+			if(index<0)	//if the old child isn't in the list (do this first, even though this will be checked again in our call to removeChild(), so that errors will occur before modifications occur
+				throw new XMLDOMException(DOMException.NOT_FOUND_ERR, new Object[]{oldChild.getNodeName()});	//show that we couldn't find the node to remove
+			final XMLNode xmlNewChild=(XMLNode)newChild;  //cast the child to an XMLNode
+				//TODO make sure this replacement fires the correct events
+			getChildXMLNodeList().set(index, xmlNewChild);	//replace the document element
+			//G***set the document, set the parent, etc.
+			xmlNewChild.setParentXMLNode(this);	//set the parent of the added child
+		}
+		return super.replaceChild(newChild, oldChild);	//do the default functionality
+	}
+
+	/**Removes the child node indicated by <code>oldChild</code> from the list
+		of children, and returns it.
+	<p>This version throws a <code>HIERARCHY_REQUEST_ERR</code> if an attempt is
+		made to remove the document element.</p> 
+	@param oldChild The node being removed.
+	@return The node removed.
+	@exception DOMException
+	<ul>
+		<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
+		<li>NOT_FOUND_ERR: Raised if <code>oldChild</code> is not a child of
+			this node.</li>
+	</ul>
+	@version DOM Level 1
+	*/
+	public Node removeChild(Node oldChild) throws DOMException
+	{
+		if(oldChild.getNodeType()==Node.ELEMENT_NODE)	//if they are trying to remove the document element
+			throw new XMLDOMException(DOMException.HIERARCHY_REQUEST_ERR, new Object[]{oldChild.getNodeName()});	//show that there must be one document element
+		return super.removeChild(oldChild);	//do the default functionality
+	}
+
+	/**Adds the specified node to the end of the list of children. If the
+		node already exists, it is first removed.
+	<p>This version throws a <code>HIERARCHY_REQUEST_ERR</code> if an attempt is
+		made to append an element as a child.</p> 
+	@param newChild The node to add. If it is a <code>DocumentFragment</code>
+		object, the entire contents of the document fragment are moved into the
+		child list of this node
+	@return The node added.
+	@exception DOMException
+	<ul>
+		<li>HIERARCHY_REQUEST_ERR: Raised if this node is of a type that does not
+			allow children of the type of the <code>newChild</code> node, or if
+			the node to append is one of this node's ancestors.</li>
+		<li>WRONG_DOCUMENT_ERR: Raised if <code>newChild</code> was created
+			from a different document than the one that created this node.</li>
+		<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
+	</ul>
+	@see XMLNode#isNodeTypeAllowed
+	@see XMLNode#checkNodeBeforeAdding
+	@version DOM Level 1
+	*/
+	public Node appendChild(Node newChild) throws DOMException
+	{
+		if(newChild.getNodeType()==Node.ELEMENT_NODE)	//if they are trying to append an element
+			throw new XMLDOMException(DOMException.HIERARCHY_REQUEST_ERR, new Object[]{newChild.getNodeName()});	//show that there can only be one document element
+		return super.appendChild(newChild);	//do the default functionality
 	}
 
 	/**Creates an element of the given qualified name and namespace URI.
