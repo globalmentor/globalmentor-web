@@ -8,6 +8,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.DOMException;
+import org.w3c.dom.TypeInfo;
 //G***del import org.w3c.dom.css.CSSValue;
 //G***del import com.garretwilson.lang.StringUtilities;	//G***see if we really need this or not
 //G***del import com.garretwilson.text.xml.stylesheets.css.XMLCSSStyleDeclaration;
@@ -812,6 +813,83 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
 //G***del Debug.trace("--inside XMLElement.hasAttributeNS, looking for namespace URI: "+namespaceURI+" local name: "+localName);  //G***del
 		return ((XMLNamedNodeMap)getAttributes()).containsKeyNS(namespaceURI, localName);  //return whether there's a node in our attribute map with the given namespace URI and local name for a key
 	}
+
+	    /**
+     *  The type information associated with this element. 
+     * @since DOM Level 3
+     */
+    public TypeInfo getSchemaTypeInfo() {throw new UnsupportedOperationException();}	//TODO fix for DOM 3
+
+    /**
+     *  If the parameter <code>isId</code> is <code>true</code>, this method 
+     * declares the specified attribute to be a user-determined ID attribute
+     * . This affects the value of <code>Attr.isId</code> and the behavior 
+     * of <code>Document.getElementById</code>, but does not change any 
+     * schema that may be in use, in particular this does not affect the 
+     * <code>Attr.schemaTypeInfo</code> of the specified <code>Attr</code> 
+     * node. Use the value <code>false</code> for the parameter 
+     * <code>isId</code> to undeclare an attribute for being a 
+     * user-determined ID attribute. 
+     * <br> To specify an attribute by local name and namespace URI, use the 
+     * <code>setIdAttributeNS</code> method. 
+     * @param name The name of the attribute.
+     * @param isId Whether the attribute is a of type ID.
+     * @exception DOMException
+     *   NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.
+     *   <br>NOT_FOUND_ERR: Raised if the specified node is not an attribute 
+     *   of this element.
+     * @since DOM Level 3
+     */
+    public void setIdAttribute(String name, 
+                               boolean isId)
+                               throws DOMException {throw new UnsupportedOperationException();}	//TODO fix for DOM 3
+
+    /**
+     *  If the parameter <code>isId</code> is <code>true</code>, this method 
+     * declares the specified attribute to be a user-determined ID attribute
+     * . This affects the value of <code>Attr.isId</code> and the behavior 
+     * of <code>Document.getElementById</code>, but does not change any 
+     * schema that may be in use, in particular this does not affect the 
+     * <code>Attr.schemaTypeInfo</code> of the specified <code>Attr</code> 
+     * node. Use the value <code>false</code> for the parameter 
+     * <code>isId</code> to undeclare an attribute for being a 
+     * user-determined ID attribute. 
+     * @param namespaceURI The namespace URI of the attribute.
+     * @param localName The local name of the attribute.
+     * @param isId Whether the attribute is a of type ID.
+     * @exception DOMException
+     *   NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.
+     *   <br>NOT_FOUND_ERR: Raised if the specified node is not an attribute 
+     *   of this element.
+     * @since DOM Level 3
+     */
+    public void setIdAttributeNS(String namespaceURI, 
+                                 String localName, 
+                                 boolean isId)
+                                 throws DOMException {throw new UnsupportedOperationException();}	//TODO fix for DOM 3
+
+    /**
+     *  If the parameter <code>isId</code> is <code>true</code>, this method 
+     * declares the specified attribute to be a user-determined ID attribute
+     * . This affects the value of <code>Attr.isId</code> and the behavior 
+     * of <code>Document.getElementById</code>, but does not change any 
+     * schema that may be in use, in particular this does not affect the 
+     * <code>Attr.schemaTypeInfo</code> of the specified <code>Attr</code> 
+     * node. Use the value <code>false</code> for the parameter 
+     * <code>isId</code> to undeclare an attribute for being a 
+     * user-determined ID attribute. 
+     * @param idAttr The attribute node.
+     * @param isId Whether the attribute is a of type ID.
+     * @exception DOMException
+     *   NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.
+     *   <br>NOT_FOUND_ERR: Raised if the specified node is not an attribute 
+     *   of this element.
+     * @since DOM Level 3
+     */
+    public void setIdAttributeNode(Attr idAttr, 
+                                   boolean isId)
+                                   throws DOMException {throw new UnsupportedOperationException();}	//TODO fix for DOM 3
+
 
 }
 

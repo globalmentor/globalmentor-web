@@ -198,6 +198,31 @@ public class XMLEntity extends XMLNode implements org.w3c.dom.Entity
 	*/
 	public void setSourceName(final String sourceName) {SourceName=sourceName;}
 
+    /**
+     * An attribute specifying the encoding used for this entity at the time 
+     * of parsing, when it is an external parsed entity. This is 
+     * <code>null</code> if it an entity from the internal subset or if it 
+     * is not known.
+     * @since DOM Level 3
+     */
+    public String getInputEncoding() {throw new UnsupportedOperationException();}	//TODO fix for DOM 3
+
+    /**
+     * An attribute specifying, as part of the text declaration, the encoding 
+     * of this entity, when it is an external parsed entity. This is 
+     * <code>null</code> otherwise.
+     * @since DOM Level 3
+     */
+    public String getXmlEncoding() {throw new UnsupportedOperationException();}	//TODO fix for DOM 3
+
+    /**
+     * An attribute specifying, as part of the text declaration, the version 
+     * number of this entity, when it is an external parsed entity. This is 
+     * <code>null</code> otherwise.
+     * @since DOM Level 3
+     */
+    public String getXmlVersion() {throw new UnsupportedOperationException();}	//TODO fix for DOM 3
+
 
 	/**The index of the line on which this entity begins, or -1 if unknown.
 	@see CharIndex

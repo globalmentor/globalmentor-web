@@ -2,6 +2,7 @@ package com.garretwilson.text.xml;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.DOMException;
+import org.w3c.dom.TypeInfo;
 
 /**An attribute of a tag (and therefore of an element).
 @see XMLTag
@@ -312,6 +313,64 @@ public class XMLAttribute extends XMLNode implements org.w3c.dom.Attr
 	@version DOM Level 1
 	*/
 	public void setValue(String value) throws DOMException {setNodeValue(value);}
+
+    /**
+     *  The type information associated with this attribute. While the type 
+     * information contained in this attribute is guarantee to be correct 
+     * after loading the document or invoking 
+     * <code>Document.normalizeDocument()</code>, <code>schemaTypeInfo</code>
+     *  may not be reliable if the node was moved. 
+     * @since DOM Level 3
+     */
+    public TypeInfo getSchemaTypeInfo() {throw new UnsupportedOperationException();}	//TODO fix for DOM 3
+
+    /**
+     *  Returns whether this attribute is known to be of type ID (i.e. to 
+     * contain an identifier for its owner element) or not. When it is and 
+     * its value is unique, the <code>ownerElement</code> of this attribute 
+     * can be retrieved using the method <code>Document.getElementById</code>
+     * . The implementation could use several ways to determine if an 
+     * attribute node is known to contain an identifier: 
+     * <ul>
+     * <li> If validation 
+     * occurred using an XML Schema [<a href='http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/'>XML Schema Part 1</a>]
+     *  while loading the document or while invoking 
+     * <code>Document.normalizeDocument()</code>, the post-schema-validation 
+     * infoset contributions (PSVI contributions) values are used to 
+     * determine if this attribute is a schema-determined ID attribute using 
+     * the <a href='http://www.w3.org/TR/2003/REC-xptr-framework-20030325/#term-sdi'>
+     * schema-determined ID</a> definition in [<a href='http://www.w3.org/TR/2003/REC-xptr-framework-20030325/'>XPointer</a>]
+     * . 
+     * </li>
+     * <li> If validation occurred using a DTD while loading the document or 
+     * while invoking <code>Document.normalizeDocument()</code>, the infoset <b>[type definition]</b> value is used to determine if this attribute is a DTD-determined ID 
+     * attribute using the <a href='http://www.w3.org/TR/2003/REC-xptr-framework-20030325/#term-ddi'>
+     * DTD-determined ID</a> definition in [<a href='http://www.w3.org/TR/2003/REC-xptr-framework-20030325/'>XPointer</a>]
+     * . 
+     * </li>
+     * <li> from the use of the methods <code>Element.setIdAttribute()</code>, 
+     * <code>Element.setIdAttributeNS()</code>, or 
+     * <code>Element.setIdAttributeNode()</code>, i.e. it is an 
+     * user-determined ID attribute; 
+     * <p ><b>Note:</b>  XPointer framework (see section 3.2 in [<a href='http://www.w3.org/TR/2003/REC-xptr-framework-20030325/'>XPointer</a>]
+     * ) consider the DOM user-determined ID attribute as being part of the 
+     * XPointer externally-determined ID definition. 
+     * </li>
+     * <li> using mechanisms that 
+     * are outside the scope of this specification, it is then an 
+     * externally-determined ID attribute. This includes using schema 
+     * languages different from XML schema and DTD. 
+     * </li>
+     * </ul>
+     * <br> If validation occurred while invoking 
+     * <code>Document.normalizeDocument()</code>, all user-determined ID 
+     * attributes are reset and all attribute nodes ID information are then 
+     * reevaluated in accordance to the schema used. As a consequence, if 
+     * the <code>Attr.schemaTypeInfo</code> attribute contains an ID type, 
+     * <code>isId</code> will always return true. 
+     * @since DOM Level 3
+     */
+    public boolean isId() {throw new UnsupportedOperationException();}	//TODO fix for DOM 3
 
 
 }

@@ -103,9 +103,73 @@ public class XMLText extends XMLCharacterData implements org.w3c.dom.Text
 		return secondTextNode;	//return the second text node which contains the split data
 	}
 
+    /**
+     * Returns whether this text node contains <a href='http://www.w3.org/TR/2004/REC-xml-infoset-20040204#infoitem.character'>
+     * element content whitespace</a>, often abusively called "ignorable whitespace". The text node is 
+     * determined to contain whitespace in element content during the load 
+     * of the document or if validation occurs while using 
+     * <code>Document.normalizeDocument()</code>.
+     * @since DOM Level 3
+     */
+    public boolean isElementContentWhitespace() {throw new UnsupportedOperationException();}	//TODO fix for DOM 3
+
+    /**
+     * Returns all text of <code>Text</code> nodes logically-adjacent text 
+     * nodes to this node, concatenated in document order.
+     * <br>For instance, in the example below <code>wholeText</code> on the 
+     * <code>Text</code> node that contains "bar" returns "barfoo", while on 
+     * the <code>Text</code> node that contains "foo" it returns "barfoo". 
+     * @since DOM Level 3
+     */
+    public String getWholeText() {throw new UnsupportedOperationException();}	//TODO fix for DOM 3
+
+    /**
+     * Replaces the text of the current node and all logically-adjacent text 
+     * nodes with the specified text. All logically-adjacent text nodes are 
+     * removed including the current node unless it was the recipient of the 
+     * replacement text.
+     * <br>This method returns the node which received the replacement text. 
+     * The returned node is: 
+     * <ul>
+     * <li><code>null</code>, when the replacement text is 
+     * the empty string;
+     * </li>
+     * <li>the current node, except when the current node is 
+     * read-only;
+     * </li>
+     * <li> a new <code>Text</code> node of the same type (
+     * <code>Text</code> or <code>CDATASection</code>) as the current node 
+     * inserted at the location of the replacement.
+     * </li>
+     * </ul>
+     * <br>For instance, in the above example calling 
+     * <code>replaceWholeText</code> on the <code>Text</code> node that 
+     * contains "bar" with "yo" in argument results in the following: 
+     * <br>Where the nodes to be removed are read-only descendants of an 
+     * <code>EntityReference</code>, the <code>EntityReference</code> must 
+     * be removed instead of the read-only nodes. If any 
+     * <code>EntityReference</code> to be removed has descendants that are 
+     * not <code>EntityReference</code>, <code>Text</code>, or 
+     * <code>CDATASection</code> nodes, the <code>replaceWholeText</code> 
+     * method must fail before performing any modification of the document, 
+     * raising a <code>DOMException</code> with the code 
+     * <code>NO_MODIFICATION_ALLOWED_ERR</code>.
+     * <br>For instance, in the example below calling 
+     * <code>replaceWholeText</code> on the <code>Text</code> node that 
+     * contains "bar" fails, because the <code>EntityReference</code> node 
+     * "ent" contains an <code>Element</code> node which cannot be removed.
+     * @param content The content of the replacing <code>Text</code> node.
+     * @return The <code>Text</code> node created with the specified content.
+     * @exception DOMException
+     *   NO_MODIFICATION_ALLOWED_ERR: Raised if one of the <code>Text</code> 
+     *   nodes being replaced is readonly.
+     * @since DOM Level 3
+     */
+    public Text replaceWholeText(String content)
+                                 throws DOMException {throw new UnsupportedOperationException();}	//TODO fix for DOM 3
+
 
 	/**Creates and returns a duplicate copy of this node. The clone has no parent.
-
 	This function creates a "shallow" clone which does not contain clones of all
 	child nodes. For the DOM version, see cloneNode().
 	@return A duplicate copy of this node.

@@ -20,6 +20,32 @@ public class XMLDOMImplementation implements DOMImplementation
 	*/
 	public boolean hasFeature(String feature, String version) {return true;}	//G***fix
 
+    /**
+     *  This method returns a specialized object which implements the 
+     * specialized APIs of the specified feature and version, as specified 
+     * in . The specialized object may also be obtained by using 
+     * binding-specific casting methods but is not necessarily expected to, 
+     * as discussed in . This method also allow the implementation to 
+     * provide specialized objects which do not support the 
+     * <code>DOMImplementation</code> interface. 
+     * @param feature  The name of the feature requested. Note that any plus 
+     *   sign "+" prepended to the name of the feature will be ignored since 
+     *   it is not significant in the context of this method. 
+     * @param version  This is the version number of the feature to test. 
+     * @return  Returns an object which implements the specialized APIs of 
+     *   the specified feature and version, if any, or <code>null</code> if 
+     *   there is no object which implements interfaces associated with that 
+     *   feature. If the <code>DOMObject</code> returned by this method 
+     *   implements the <code>DOMImplementation</code> interface, it must 
+     *   delegate to the primary core <code>DOMImplementation</code> and not 
+     *   return results inconsistent with the primary core 
+     *   <code>DOMImplementation</code> such as <code>hasFeature</code>, 
+     *   <code>getFeature</code>, etc. 
+     * @since DOM Level 3
+     */
+    public Object getFeature(String feature, 
+                             String version) {throw new UnsupportedOperationException();}	//TODO fix for DOM 3
+
 	/**Creates an empty <code>DocumentType</code> node. Entity declarations
 		and notations are not made available. Entity reference expansions and
 		default attribute additions do not occur.

@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import javax.mail.MethodNotSupportedException;
+
 import org.w3c.dom.*;
 import org.w3c.dom.events.*;
 
@@ -1321,6 +1324,444 @@ Debug.trace("node matches");  //G***del
 		}
 		return nodeList;	//return the list we created and filled
 	}
+
+    /**
+     * Inserts the node <code>newChild</code> before the existing child node 
+     * <code>refChild</code>. If <code>refChild</code> is <code>null</code>, 
+     * insert <code>newChild</code> at the end of the list of children.
+     * <br>If <code>newChild</code> is a <code>DocumentFragment</code> object, 
+     * all of its children are inserted, in the same order, before 
+     * <code>refChild</code>. If the <code>newChild</code> is already in the 
+     * tree, it is first removed.
+     * <p ><b>Note:</b>  Inserting a node before itself is implementation 
+     * dependent. 
+     * @param newChild The node to insert.
+     * @param refChild The reference node, i.e., the node before which the 
+     *   new node must be inserted.
+     * @return The node being inserted.
+     * @exception DOMException
+     *   HIERARCHY_REQUEST_ERR: Raised if this node is of a type that does not 
+     *   allow children of the type of the <code>newChild</code> node, or if 
+     *   the node to insert is one of this node's ancestors or this node 
+     *   itself, or if this node is of type <code>Document</code> and the 
+     *   DOM application attempts to insert a second 
+     *   <code>DocumentType</code> or <code>Element</code> node.
+     *   <br>WRONG_DOCUMENT_ERR: Raised if <code>newChild</code> was created 
+     *   from a different document than the one that created this node.
+     *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly or 
+     *   if the parent of the node being inserted is readonly.
+     *   <br>NOT_FOUND_ERR: Raised if <code>refChild</code> is not a child of 
+     *   this node.
+     *   <br>NOT_SUPPORTED_ERR: if this node is of type <code>Document</code>, 
+     *   this exception might be raised if the DOM implementation doesn't 
+     *   support the insertion of a <code>DocumentType</code> or 
+     *   <code>Element</code> node.
+     * @version DOM Level 3
+     */
+//TODO fix for DOM 3    public Node insertBefore(Node newChild, Node refChild) throws DOMException {throw new UnsupportedOperationException();}	//TODO fix for DOM 3
+
+        /**
+     * Replaces the child node <code>oldChild</code> with <code>newChild</code>
+     *  in the list of children, and returns the <code>oldChild</code> node.
+     * <br>If <code>newChild</code> is a <code>DocumentFragment</code> object, 
+     * <code>oldChild</code> is replaced by all of the 
+     * <code>DocumentFragment</code> children, which are inserted in the 
+     * same order. If the <code>newChild</code> is already in the tree, it 
+     * is first removed.
+     * <p ><b>Note:</b>  Replacing a node with itself is implementation 
+     * dependent. 
+     * @param newChild The new node to put in the child list.
+     * @param oldChild The node being replaced in the list.
+     * @return The node replaced.
+     * @exception DOMException
+     *   HIERARCHY_REQUEST_ERR: Raised if this node is of a type that does not 
+     *   allow children of the type of the <code>newChild</code> node, or if 
+     *   the node to put in is one of this node's ancestors or this node 
+     *   itself, or if this node is of type <code>Document</code> and the 
+     *   result of the replacement operation would add a second 
+     *   <code>DocumentType</code> or <code>Element</code> on the 
+     *   <code>Document</code> node.
+     *   <br>WRONG_DOCUMENT_ERR: Raised if <code>newChild</code> was created 
+     *   from a different document than the one that created this node.
+     *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this node or the parent of 
+     *   the new node is readonly.
+     *   <br>NOT_FOUND_ERR: Raised if <code>oldChild</code> is not a child of 
+     *   this node.
+     *   <br>NOT_SUPPORTED_ERR: if this node is of type <code>Document</code>, 
+     *   this exception might be raised if the DOM implementation doesn't 
+     *   support the replacement of the <code>DocumentType</code> child or 
+     *   <code>Element</code> child.
+     * @version DOM Level 3
+     */
+//TODO fix for DOM 3    public Node replaceChild(Node newChild, Node oldChild) throws DOMException {throw new UnsupportedOperationException();}	//TODO fix for DOM 3
+
+    /**
+     * Removes the child node indicated by <code>oldChild</code> from the list 
+     * of children, and returns it.
+     * @param oldChild The node being removed.
+     * @return The node removed.
+     * @exception DOMException
+     *   NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.
+     *   <br>NOT_FOUND_ERR: Raised if <code>oldChild</code> is not a child of 
+     *   this node.
+     *   <br>NOT_SUPPORTED_ERR: if this node is of type <code>Document</code>, 
+     *   this exception might be raised if the DOM implementation doesn't 
+     *   support the removal of the <code>DocumentType</code> child or the 
+     *   <code>Element</code> child.
+     * @version DOM Level 3
+     */
+//TODO fix for DOM 3        public Node removeChild(Node oldChild) throws DOMException {throw new UnsupportedOperationException();}	//TODO fix for DOM 3
+
+    /**
+     * Adds the node <code>newChild</code> to the end of the list of children 
+     * of this node. If the <code>newChild</code> is already in the tree, it 
+     * is first removed.
+     * @param newChild The node to add.If it is a 
+     *   <code>DocumentFragment</code> object, the entire contents of the 
+     *   document fragment are moved into the child list of this node
+     * @return The node added.
+     * @exception DOMException
+     *   HIERARCHY_REQUEST_ERR: Raised if this node is of a type that does not 
+     *   allow children of the type of the <code>newChild</code> node, or if 
+     *   the node to append is one of this node's ancestors or this node 
+     *   itself, or if this node is of type <code>Document</code> and the 
+     *   DOM application attempts to append a second 
+     *   <code>DocumentType</code> or <code>Element</code> node.
+     *   <br>WRONG_DOCUMENT_ERR: Raised if <code>newChild</code> was created 
+     *   from a different document than the one that created this node.
+     *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly or 
+     *   if the previous parent of the node being inserted is readonly.
+     *   <br>NOT_SUPPORTED_ERR: if the <code>newChild</code> node is a child 
+     *   of the <code>Document</code> node, this exception might be raised 
+     *   if the DOM implementation doesn't support the removal of the 
+     *   <code>DocumentType</code> child or <code>Element</code> child.
+     * @version DOM Level 3
+     */
+//TODO fix for DOM 3        public Node appendChild(Node newChild) throws DOMException {throw new UnsupportedOperationException();}	//TODO fix for DOM 3
+
+     /**
+     *  Puts all <code>Text</code> nodes in the full depth of the sub-tree 
+     * underneath this <code>Node</code>, including attribute nodes, into a 
+     * "normal" form where only structure (e.g., elements, comments, 
+     * processing instructions, CDATA sections, and entity references) 
+     * separates <code>Text</code> nodes, i.e., there are neither adjacent 
+     * <code>Text</code> nodes nor empty <code>Text</code> nodes. This can 
+     * be used to ensure that the DOM view of a document is the same as if 
+     * it were saved and re-loaded, and is useful when operations (such as 
+     * XPointer [<a href='http://www.w3.org/TR/2003/REC-xptr-framework-20030325/'>XPointer</a>]
+     *  lookups) that depend on a particular document tree structure are to 
+     * be used. If the parameter "normalize-characters" of the 
+     * <code>DOMConfiguration</code> object attached to the 
+     * <code>Node.ownerDocument</code> is <code>true</code>, this method 
+     * will also fully normalize the characters of the <code>Text</code> 
+     * nodes. 
+     * <p ><b>Note:</b> In cases where the document contains 
+     * <code>CDATASections</code>, the normalize operation alone may not be 
+     * sufficient, since XPointers do not differentiate between 
+     * <code>Text</code> nodes and <code>CDATASection</code> nodes.
+     * @version DOM Level 3
+     */
+//TODO fix for DOM 3        public void normalize() {throw new UnsupportedOperationException();}	//TODO fix for DOM 3
+
+        /**
+     * The absolute base URI of this node or <code>null</code> if the 
+     * implementation wasn't able to obtain an absolute URI. This value is 
+     * computed as described in . However, when the <code>Document</code> 
+     * supports the feature "HTML" [<a href='http://www.w3.org/TR/2003/REC-DOM-Level-2-HTML-20030109'>DOM Level 2 HTML</a>]
+     * , the base URI is computed using first the value of the href 
+     * attribute of the HTML BASE element if any, and the value of the 
+     * <code>documentURI</code> attribute from the <code>Document</code> 
+     * interface otherwise.
+     * @since DOM Level 3
+     */
+    public String getBaseURI() {throw new UnsupportedOperationException();}	//TODO fix for DOM 3
+
+    /**
+     * Compares the reference node, i.e. the node on which this method is 
+     * being called, with a node, i.e. the one passed as a parameter, with 
+     * regard to their position in the document and according to the 
+     * document order.
+     * @param other The node to compare against the reference node.
+     * @return Returns how the node is positioned relatively to the reference 
+     *   node.
+     * @exception DOMException
+     *   NOT_SUPPORTED_ERR: when the compared nodes are from different DOM 
+     *   implementations that do not coordinate to return consistent 
+     *   implementation-specific results.
+     * @since DOM Level 3
+     */
+    public short compareDocumentPosition(Node other)
+                                         throws DOMException {throw new UnsupportedOperationException();}	//TODO fix for DOM 3
+
+    /**
+     * This attribute returns the text content of this node and its 
+     * descendants. When it is defined to be <code>null</code>, setting it 
+     * has no effect. On setting, any possible children this node may have 
+     * are removed and, if it the new string is not empty or 
+     * <code>null</code>, replaced by a single <code>Text</code> node 
+     * containing the string this attribute is set to. 
+     * <br> On getting, no serialization is performed, the returned string 
+     * does not contain any markup. No whitespace normalization is performed 
+     * and the returned string does not contain the white spaces in element 
+     * content (see the attribute 
+     * <code>Text.isElementContentWhitespace</code>). Similarly, on setting, 
+     * no parsing is performed either, the input string is taken as pure 
+     * textual content. 
+     * <br>The string returned is made of the text content of this node 
+     * depending on its type, as defined below: 
+     * <table border='1' cellpadding='3'>
+     * <tr>
+     * <th>Node type</th>
+     * <th>Content</th>
+     * </tr>
+     * <tr>
+     * <td valign='top' rowspan='1' colspan='1'>
+     * ELEMENT_NODE, ATTRIBUTE_NODE, ENTITY_NODE, ENTITY_REFERENCE_NODE, 
+     * DOCUMENT_FRAGMENT_NODE</td>
+     * <td valign='top' rowspan='1' colspan='1'>concatenation of the <code>textContent</code> 
+     * attribute value of every child node, excluding COMMENT_NODE and 
+     * PROCESSING_INSTRUCTION_NODE nodes. This is the empty string if the 
+     * node has no children.</td>
+     * </tr>
+     * <tr>
+     * <td valign='top' rowspan='1' colspan='1'>TEXT_NODE, CDATA_SECTION_NODE, COMMENT_NODE, 
+     * PROCESSING_INSTRUCTION_NODE</td>
+     * <td valign='top' rowspan='1' colspan='1'><code>nodeValue</code></td>
+     * </tr>
+     * <tr>
+     * <td valign='top' rowspan='1' colspan='1'>DOCUMENT_NODE, 
+     * DOCUMENT_TYPE_NODE, NOTATION_NODE</td>
+     * <td valign='top' rowspan='1' colspan='1'><em>null</em></td>
+     * </tr>
+     * </table>
+     * @exception DOMException
+     *   DOMSTRING_SIZE_ERR: Raised when it would return more characters than 
+     *   fit in a <code>DOMString</code> variable on the implementation 
+     *   platform.
+     * @since DOM Level 3
+     */
+    public String getTextContent()
+                                         throws DOMException {throw new UnsupportedOperationException();}	//TODO fix for DOM 3
+    /**
+     * This attribute returns the text content of this node and its 
+     * descendants. When it is defined to be <code>null</code>, setting it 
+     * has no effect. On setting, any possible children this node may have 
+     * are removed and, if it the new string is not empty or 
+     * <code>null</code>, replaced by a single <code>Text</code> node 
+     * containing the string this attribute is set to. 
+     * <br> On getting, no serialization is performed, the returned string 
+     * does not contain any markup. No whitespace normalization is performed 
+     * and the returned string does not contain the white spaces in element 
+     * content (see the attribute 
+     * <code>Text.isElementContentWhitespace</code>). Similarly, on setting, 
+     * no parsing is performed either, the input string is taken as pure 
+     * textual content. 
+     * <br>The string returned is made of the text content of this node 
+     * depending on its type, as defined below: 
+     * <table border='1' cellpadding='3'>
+     * <tr>
+     * <th>Node type</th>
+     * <th>Content</th>
+     * </tr>
+     * <tr>
+     * <td valign='top' rowspan='1' colspan='1'>
+     * ELEMENT_NODE, ATTRIBUTE_NODE, ENTITY_NODE, ENTITY_REFERENCE_NODE, 
+     * DOCUMENT_FRAGMENT_NODE</td>
+     * <td valign='top' rowspan='1' colspan='1'>concatenation of the <code>textContent</code> 
+     * attribute value of every child node, excluding COMMENT_NODE and 
+     * PROCESSING_INSTRUCTION_NODE nodes. This is the empty string if the 
+     * node has no children.</td>
+     * </tr>
+     * <tr>
+     * <td valign='top' rowspan='1' colspan='1'>TEXT_NODE, CDATA_SECTION_NODE, COMMENT_NODE, 
+     * PROCESSING_INSTRUCTION_NODE</td>
+     * <td valign='top' rowspan='1' colspan='1'><code>nodeValue</code></td>
+     * </tr>
+     * <tr>
+     * <td valign='top' rowspan='1' colspan='1'>DOCUMENT_NODE, 
+     * DOCUMENT_TYPE_NODE, NOTATION_NODE</td>
+     * <td valign='top' rowspan='1' colspan='1'><em>null</em></td>
+     * </tr>
+     * </table>
+     * @exception DOMException
+     *   NO_MODIFICATION_ALLOWED_ERR: Raised when the node is readonly.
+     * @since DOM Level 3
+     */
+    public void setTextContent(String textContent)
+                                         throws DOMException {throw new UnsupportedOperationException();}	//TODO fix for DOM 3
+
+    /**
+     * Returns whether this node is the same node as the given one.
+     * <br>This method provides a way to determine whether two 
+     * <code>Node</code> references returned by the implementation reference 
+     * the same object. When two <code>Node</code> references are references 
+     * to the same object, even if through a proxy, the references may be 
+     * used completely interchangeably, such that all attributes have the 
+     * same values and calling the same DOM method on either reference 
+     * always has exactly the same effect.
+     * @param other The node to test against.
+     * @return Returns <code>true</code> if the nodes are the same, 
+     *   <code>false</code> otherwise.
+     * @since DOM Level 3
+     */
+    public boolean isSameNode(Node other) {throw new UnsupportedOperationException();}	//TODO fix for DOM 3
+
+    /**
+     * Look up the prefix associated to the given namespace URI, starting from 
+     * this node. The default namespace declarations are ignored by this 
+     * method.
+     * <br>See  for details on the algorithm used by this method.
+     * @param namespaceURI The namespace URI to look for.
+     * @return Returns an associated namespace prefix if found or 
+     *   <code>null</code> if none is found. If more than one prefix are 
+     *   associated to the namespace prefix, the returned namespace prefix 
+     *   is implementation dependent.
+     * @since DOM Level 3
+     */
+    public String lookupPrefix(String namespaceURI) {throw new UnsupportedOperationException();}	//TODO fix for DOM 3
+
+    /**
+     *  This method checks if the specified <code>namespaceURI</code> is the 
+     * default namespace or not. 
+     * @param namespaceURI The namespace URI to look for.
+     * @return Returns <code>true</code> if the specified 
+     *   <code>namespaceURI</code> is the default namespace, 
+     *   <code>false</code> otherwise. 
+     * @since DOM Level 3
+     */
+    public boolean isDefaultNamespace(String namespaceURI) {throw new UnsupportedOperationException();}	//TODO fix for DOM 3
+
+    /**
+     * Look up the namespace URI associated to the given prefix, starting from 
+     * this node.
+     * <br>See  for details on the algorithm used by this method.
+     * @param prefix The prefix to look for. If this parameter is 
+     *   <code>null</code>, the method will return the default namespace URI 
+     *   if any.
+     * @return Returns the associated namespace URI or <code>null</code> if 
+     *   none is found.
+     * @since DOM Level 3
+     */
+    public String lookupNamespaceURI(String prefix) {throw new UnsupportedOperationException();}	//TODO fix for DOM 3
+
+    /**
+     * Tests whether two nodes are equal.
+     * <br>This method tests for equality of nodes, not sameness (i.e., 
+     * whether the two nodes are references to the same object) which can be 
+     * tested with <code>Node.isSameNode()</code>. All nodes that are the 
+     * same will also be equal, though the reverse may not be true.
+     * <br>Two nodes are equal if and only if the following conditions are 
+     * satisfied: 
+     * <ul>
+     * <li>The two nodes are of the same type.
+     * </li>
+     * <li>The following string 
+     * attributes are equal: <code>nodeName</code>, <code>localName</code>, 
+     * <code>namespaceURI</code>, <code>prefix</code>, <code>nodeValue</code>
+     * . This is: they are both <code>null</code>, or they have the same 
+     * length and are character for character identical.
+     * </li>
+     * <li>The 
+     * <code>attributes</code> <code>NamedNodeMaps</code> are equal. This 
+     * is: they are both <code>null</code>, or they have the same length and 
+     * for each node that exists in one map there is a node that exists in 
+     * the other map and is equal, although not necessarily at the same 
+     * index.
+     * </li>
+     * <li>The <code>childNodes</code> <code>NodeLists</code> are equal. 
+     * This is: they are both <code>null</code>, or they have the same 
+     * length and contain equal nodes at the same index. Note that 
+     * normalization can affect equality; to avoid this, nodes should be 
+     * normalized before being compared.
+     * </li>
+     * </ul> 
+     * <br>For two <code>DocumentType</code> nodes to be equal, the following 
+     * conditions must also be satisfied: 
+     * <ul>
+     * <li>The following string attributes 
+     * are equal: <code>publicId</code>, <code>systemId</code>, 
+     * <code>internalSubset</code>.
+     * </li>
+     * <li>The <code>entities</code> 
+     * <code>NamedNodeMaps</code> are equal.
+     * </li>
+     * <li>The <code>notations</code> 
+     * <code>NamedNodeMaps</code> are equal.
+     * </li>
+     * </ul> 
+     * <br>On the other hand, the following do not affect equality: the 
+     * <code>ownerDocument</code>, <code>baseURI</code>, and 
+     * <code>parentNode</code> attributes, the <code>specified</code> 
+     * attribute for <code>Attr</code> nodes, the <code>schemaTypeInfo</code>
+     *  attribute for <code>Attr</code> and <code>Element</code> nodes, the 
+     * <code>Text.isElementContentWhitespace</code> attribute for 
+     * <code>Text</code> nodes, as well as any user data or event listeners 
+     * registered on the nodes. 
+     * <p ><b>Note:</b>  As a general rule, anything not mentioned in the 
+     * description above is not significant in consideration of equality 
+     * checking. Note that future versions of this specification may take 
+     * into account more attributes and implementations conform to this 
+     * specification are expected to be updated accordingly. 
+     * @param arg The node to compare equality with.
+     * @return Returns <code>true</code> if the nodes are equal, 
+     *   <code>false</code> otherwise.
+     * @since DOM Level 3
+     */
+    public boolean isEqualNode(Node arg) {throw new UnsupportedOperationException();}	//TODO fix for DOM 3
+
+    /**
+     *  This method returns a specialized object which implements the 
+     * specialized APIs of the specified feature and version, as specified 
+     * in . The specialized object may also be obtained by using 
+     * binding-specific casting methods but is not necessarily expected to, 
+     * as discussed in . This method also allow the implementation to 
+     * provide specialized objects which do not support the <code>Node</code>
+     *  interface. 
+     * @param feature  The name of the feature requested. Note that any plus 
+     *   sign "+" prepended to the name of the feature will be ignored since 
+     *   it is not significant in the context of this method. 
+     * @param version  This is the version number of the feature to test. 
+     * @return  Returns an object which implements the specialized APIs of 
+     *   the specified feature and version, if any, or <code>null</code> if 
+     *   there is no object which implements interfaces associated with that 
+     *   feature. If the <code>DOMObject</code> returned by this method 
+     *   implements the <code>Node</code> interface, it must delegate to the 
+     *   primary core <code>Node</code> and not return results inconsistent 
+     *   with the primary core <code>Node</code> such as attributes, 
+     *   childNodes, etc. 
+     * @since DOM Level 3
+     */
+    public Object getFeature(String feature, 
+                             String version) {throw new UnsupportedOperationException();}	//TODO fix for DOM 3
+
+    /**
+     * Associate an object to a key on this node. The object can later be 
+     * retrieved from this node by calling <code>getUserData</code> with the 
+     * same key.
+     * @param key The key to associate the object to.
+     * @param data The object to associate to the given key, or 
+     *   <code>null</code> to remove any existing association to that key.
+     * @param handler The handler to associate to that key, or 
+     *   <code>null</code>.
+     * @return Returns the <code>DOMUserData</code> previously associated to 
+     *   the given key on this node, or <code>null</code> if there was none.
+     * @since DOM Level 3
+     */
+    public Object setUserData(String key, 
+                              Object data, 
+                              UserDataHandler handler) {throw new UnsupportedOperationException();}	//TODO fix for DOM 3
+
+    /**
+     * Retrieves the object associated to a key on a this node. The object 
+     * must first have been set to this node by calling 
+     * <code>setUserData</code> with the same key.
+     * @param key The key the object is associated to.
+     * @return Returns the <code>DOMUserData</code> associated to the given 
+     *   key on this node, or <code>null</code> if there was none.
+     * @since DOM Level 3
+     */
+    public Object getUserData(String key) {throw new UnsupportedOperationException();}	//TODO fix for DOM 3
+
 
 	/**@return A string representation of the node.*/
 	public String toString()
