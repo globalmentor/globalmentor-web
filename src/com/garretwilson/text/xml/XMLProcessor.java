@@ -227,8 +227,8 @@ public class XMLProcessor extends XMLUtilities implements XMLConstants, InputStr
 			}
 			autodetectEncoding.replace(0, autodetectEncoding.length(), characterEncoding.getEncoding());	//return the autodetected encoding method (the full encoding name, complete with byte order), replacing whatever contents the buffer already had
 			if(characterEncoding.getFamily().equalsIgnoreCase(characterEncoding.UTF_16)
-					&& byteOrderMarkArray[0]!=characterEncoding.BOM_UTF_16_BIGENDIAN[0]
-					&& byteOrderMarkArray[0]!=characterEncoding.BOM_UTF_16_LITTLEENDIAN[0])	//if this was UTF-16, but there was no Byte Order Mark
+					&& byteOrderMarkArray[0]!=characterEncoding.BOM_UTF_16_BIG_ENDIAN[0]
+					&& byteOrderMarkArray[0]!=characterEncoding.BOM_UTF_16_LITTLE_ENDIAN[0])	//if this was UTF-16, but there was no Byte Order Mark
 				throw new XMLWellFormednessException(XMLWellFormednessException.INVALID_FORMAT, new Object[]{}, 0, 0, sourceObject!=null ? sourceObject.toString() : "");	//show that the UTF-16 had no Byte Order Mark
 			final int bytesPerCharacter=characterEncoding.getBytesPerCharacter();	//find out how many bytes are used for each character
 				//convert the Byte Order Mark bytes into a string
