@@ -44,6 +44,7 @@ public interface XHTMLConstants
 	public final static String ELEMENT_BLOCKQUOTE="blockquote";
 	public final static String ELEMENT_BODY="body";
 	public final static String ELEMENT_BR="br";
+	public final static String ELEMENT_BUTTON="button";
 	public final static String ELEMENT_CAPTION="caption";
 	public final static String ELEMENT_CENTER="center";
 	public final static String ELEMENT_CITE="cite";
@@ -114,6 +115,8 @@ public interface XHTMLConstants
 	public final static String ATTRIBUTE_NAME="name";
 	/**The attribute for style.*/
 	public final static String ATTRIBUTE_STYLE="style";
+	/**The attribute for value.*/
+	public final static String ATTRIBUTE_VALUE="value";
 
 		//attributes for <a>
 	public final static String ELEMENT_A_ATTRIBUTE_HREF="href";
@@ -122,6 +125,10 @@ public interface XHTMLConstants
 	public final static String ELEMENT_APPLET_ATTRIBUTE_CODE="code";
 	public final static String ELEMENT_APPLET_ATTRIBUTE_HEIGHT="height";
 	public final static String ELEMENT_APPLET_ATTRIBUTE_WIDTH="width";
+
+		//attributes for <button>
+	public final static String ELEMENT_BUTTON_ATTRIBUTE_TYPE="type";
+		public final static String BUTTON_TYPE_SUBMIT="submit";
 
 		//attributes for <form>
 	public final static String ELEMENT_FORM_ATTRIBUTE_ACTION="action";
