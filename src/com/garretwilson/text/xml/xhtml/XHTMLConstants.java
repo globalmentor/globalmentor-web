@@ -205,6 +205,7 @@ public interface XHTMLConstants
 	public final static String ELEMENT_LINK_ATTRIBUTE_HREF="href";
 	public final static String ELEMENT_LINK_ATTRIBUTE_REL="rel";
 		public final static String LINK_REL_STYLESHEET="stylesheet";
+		public final static String ELEMENT_LINK_ATTRIBUTE_TYPE="type";
 
 		//attributes for <object>
 	public final static String ELEMENT_OBJECT_ATTRIBUTE_CLASSID="classid";

@@ -2,14 +2,21 @@ package com.garretwilson.text.xml.stylesheets.css;
 
 import java.awt.Color;
 
+import javax.mail.internet.ContentType;
+
+import com.garretwilson.io.ContentTypeConstants;
+
 /**Several constants for CSS.*/
 public class XMLCSSConstants
 {
 	/**The package name of the XML classes.*/
 	public final String PACKAGE_NAME="com.garretwilson.text.xml.sylesheets.css";
 
+	/**The content type for CSS: <code>text/css</code>.*/ 
+	public static final ContentType CSS_CONTENT_TYPE=new ContentType(ContentTypeConstants.TEXT, ContentTypeConstants.CSS_SUBTYPE, null);
+
 	/**The default extension for CSS stylesheets.*/
-	public final static String CSS_EXTENSION="css";
+	public final static String CSS_EXTENSION="css";	//TODO probably delete in favor of constant in com.garretwilson.io.FileConstants
 
 	/**A space character.*/
 	public final static char SPACE_CHAR=' ';
