@@ -158,6 +158,7 @@ public interface XHTMLConstants
 	public final static String ATTRIBUTE_VALUE="value";
 		//event attributes
 	public final static String ATTRIBUTE_ONCLICK="onclick";
+	public final static String ATTRIBUTE_ONLOAD="onload";
 	
 		//attributes for <a>
 	public final static String ELEMENT_A_ATTRIBUTE_HREF="href";

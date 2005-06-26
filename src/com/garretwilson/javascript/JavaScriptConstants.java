@@ -52,6 +52,8 @@ public class JavaScriptConstants
 	/**The forms identifier.*/
 	public final static String FORMS="forms";
 
+	/**The alert method.*/
+	public final static String ALERT_METHOD="alert";
 	/**The confirm method.*/
 	public final static String CONFIRM_METHOD="confirm";
 	/**The form submission method.*/
