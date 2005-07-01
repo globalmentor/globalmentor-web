@@ -6,7 +6,7 @@ import com.garretwilson.io.ContentTypeConstants;
 
 /**Constants for XHTML.
 @author Garret Wilson
-@see http://www.w3.org/QA/2002/04/valid-dtd-list.html
+@see <a href="http://www.w3.org/QA/2002/04/valid-dtd-list.html">http://www.w3.org/QA/2002/04/valid-dtd-list.html</a>
 */
 public interface XHTMLConstants
 {
@@ -201,6 +201,8 @@ public interface XHTMLConstants
 		public final static String INPUT_TYPE_TEXT="text";
 	public final static String ELEMENT_INPUT_ATTRIBUTE_CHECKED="checked";
 		public final static String INPUT_CHECKED_CHECKED="checked";
+	public final static String ELEMENT_INPUT_ATTRIBUTE_DISABLED="disabled";
+		public final static String INPUT_DISABLED_DISABLED="disabled";
 
 		//attributes for <link>
 	public final static String ELEMENT_LINK_ATTRIBUTE_HREF="href";
