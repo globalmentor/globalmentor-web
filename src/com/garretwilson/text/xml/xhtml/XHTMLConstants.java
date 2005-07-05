@@ -135,6 +135,7 @@ public interface XHTMLConstants
 	public final static String ELEMENT_SUP="sup";
 	public final static String ELEMENT_TABLE="table";
 	public final static String ELEMENT_TD="td";
+	public final static String ELEMENT_TEXTAREA="textarea";
 	public final static String ELEMENT_TH="th";
 	public final static String ELEMENT_TBODY="tbody";
 	public final static String ELEMENT_THEAD="thead";
@@ -243,5 +244,13 @@ public interface XHTMLConstants
 	public final static String ELEMENT_TD_ATTRIBUTE_COLSPAN="colspan";
 	public final static String ELEMENT_TD_ATTRIBUTE_SCOPE="scope";
 		public final static String TD_SCOPE_COLGROUP="colgroup";
+
+		//attributes for <textarea>
+	public final static String ELEMENT_TEXTAREA_ATTRIBUTE_COLS="cols";
+	public final static String ELEMENT_TEXTAREA_ATTRIBUTE_ROWS="rows";
+	public final static String ELEMENT_TEXTAREA_ATTRIBUTE_WRAP="wrap";
+		public final static String TEXTAREA_WRAP_OFF="off";
+		public final static String TEXTAREA_WRAP_PHYSICAL="physical";
+		public final static String TEXTAREA_WRAP_VIRTUAL="virtual";
 
 }
