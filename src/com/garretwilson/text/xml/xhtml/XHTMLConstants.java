@@ -111,11 +111,13 @@ public interface XHTMLConstants
 	public final static String ELEMENT_INPUT="input";
 	public final static String ELEMENT_KBD="kbd";
 	public final static String ELEMENT_LI="li";
+	public final static String ELEMENT_LABEL="label";
 	public final static String ELEMENT_LINK="link";
 	public final static String ELEMENT_MAP="map";
 	public final static String ELEMENT_META="meta";
 	public final static String ELEMENT_OBJECT="object";
 	public final static String ELEMENT_OL="ol";
+	public final static String ELEMENT_OPTION="option";
 	public final static String ELEMENT_P="p";
 	public final static String ELEMENT_PARAM="param";
 	public final static String ELEMENT_PRE="pre";
@@ -123,6 +125,7 @@ public interface XHTMLConstants
 	public final static String ELEMENT_S="s";
 	public final static String ELEMENT_SAMP="samp";
 	public final static String ELEMENT_SCRIPT="script";
+	public final static String ELEMENT_SELECT="select";
 	public final static String ELEMENT_SMALL="small";
 	public final static String ELEMENT_SPAN="span";
 	public final static String ELEMENT_STRIKE="strike";
@@ -204,6 +207,9 @@ public interface XHTMLConstants
 	public final static String ELEMENT_INPUT_ATTRIBUTE_DISABLED="disabled";
 		public final static String INPUT_DISABLED_DISABLED="disabled";
 
+		//attributes for <label>
+	public final static String ELEMENT_LABEL_ATTRIBUTE_FOR="for";
+
 		//attributes for <link>
 	public final static String ELEMENT_LINK_ATTRIBUTE_HREF="href";
 	public final static String ELEMENT_LINK_ATTRIBUTE_REL="rel";
@@ -218,12 +224,20 @@ public interface XHTMLConstants
 	public final static String ELEMENT_OBJECT_ATTRIBUTE_WIDTH="width";
 	public final static String ELEMENT_OBJECT_ATTRIBUTE_TYPE="type";
 
+		//attributes for <option>
+	public final static String ELEMENT_OPTION_ATTRIBUTE_SELECTED="selected";
+		public final static String OPTION_SELECTED_SELECTED="selected";
+
 		//attributes for <param>
 	public final static String ELEMENT_PARAM_ATTRIBUTE_NAME="name";
 	public final static String ELEMENT_PARAM_ATTRIBUTE_VALUE="value";
 
 		//attributes for <script>
 	public final static String ELEMENT_SCRIPT_ATTRIBUTE_TYPE="type";
+
+		//attributes for <select>
+	public final static String ELEMENT_SELECT_ATTRIBUTE_MULTIPLE="multiple";
+		public final static String SELECT_MULTIPLE_MULTIPLE="multiple";
 
 		//attributes for <td>
 	public final static String ELEMENT_TD_ATTRIBUTE_COLSPAN="colspan";
