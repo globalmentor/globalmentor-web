@@ -239,6 +239,7 @@ public interface XHTMLConstants
 		//attributes for <select>
 	public final static String ELEMENT_SELECT_ATTRIBUTE_MULTIPLE="multiple";
 		public final static String SELECT_MULTIPLE_MULTIPLE="multiple";
+	public final static String ELEMENT_SELECT_ATTRIBUTE_SIZE="size";
 
 		//attributes for <td>
 	public final static String ELEMENT_TD_ATTRIBUTE_COLSPAN="colspan";
