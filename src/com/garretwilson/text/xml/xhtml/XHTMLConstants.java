@@ -213,6 +213,8 @@ public interface XHTMLConstants
 		public final static String INPUT_CHECKED_CHECKED="checked";
 	public final static String ELEMENT_INPUT_ATTRIBUTE_DISABLED="disabled";
 		public final static String INPUT_DISABLED_DISABLED="disabled";
+	public final static String ELEMENT_INPUT_ATTRIBUTE_READONLY="readonly";
+		public final static String INPUT_READONLY_READONLY="readonly";
 
 		//attributes for <label>
 	public final static String ELEMENT_LABEL_ATTRIBUTE_FOR="for";
@@ -259,5 +261,9 @@ public interface XHTMLConstants
 		public final static String TEXTAREA_WRAP_OFF="off";
 		public final static String TEXTAREA_WRAP_PHYSICAL="physical";
 		public final static String TEXTAREA_WRAP_VIRTUAL="virtual";
+	public final static String ELEMENT_TEXTAREA_ATTRIBUTE_DISABLED="disabled";
+		public final static String TEXTAREA_DISABLED_DISABLED="disabled";
+	public final static String ELEMENT_TEXTAREA_ATTRIBUTE_READONLY="readonly";
+		public final static String TEXTAREA_READONLY_READONLY="readonly";
 
 }
