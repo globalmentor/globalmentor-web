@@ -2,7 +2,7 @@ package com.garretwilson.text.xml.xhtml;
 
 import java.net.URI;
 import javax.mail.internet.ContentType;
-import com.garretwilson.io.ContentTypeConstants;
+import static com.garretwilson.io.ContentTypeConstants.*;
 
 /**Constants for XHTML.
 @author Garret Wilson
@@ -12,10 +12,10 @@ public interface XHTMLConstants
 {
 
 	/**The content type for HTML: <code>text/html</code>.*/ 
-	public static final ContentType HTML_CONTENT_TYPE=new ContentType(ContentTypeConstants.TEXT, ContentTypeConstants.HTML_SUBTYPE, null);
+	public static final ContentType HTML_CONTENT_TYPE=new ContentType(TEXT, HTML_SUBTYPE, null);
 
 	/**The content type for XHTML: <code>application/xhtml+xml</code>.*/ 
-	public static final ContentType XHTML_CONTENT_TYPE=new ContentType(ContentTypeConstants.APPLICATION, ContentTypeConstants.XHTML_XML_SUBTYPE, null);
+	public static final ContentType XHTML_CONTENT_TYPE=new ContentType(APPLICATION, XHTML_XML_SUBTYPE, null);
 
 	/**The recommended prefix to the XHTML namespace.*/
 	public static final String XHTML_NAMESPACE_PREFIX="xhtml";
@@ -181,6 +181,11 @@ public interface XHTMLConstants
 		//attributes for <form>
 	public final static String ELEMENT_FORM_ATTRIBUTE_ACTION="action";
 	public final static String ELEMENT_FORM_ATTRIBUTE_ENCTYPE="enctype";
+		/**The "application/x-www-form-urlencoded" encoding type; see <a href="http://www.rfc-editor.org/rfc/rfc1867.txt">RFC 1867</a>.*/
+		public final static ContentType APPLICATION_X_WWW_FORM_URLENCODED_CONTENT_TYPE=new ContentType(APPLICATION, X_WWW_FORM_URLENCODED, null);
+		/**The "multipart/form-data" encoding type; see <a href="http://www.rfc-editor.org/rfc/rfc1867.txt">RFC 1867</a>.*/
+		public final static ContentType MULTIPART_FORM_DATA_CONTENT_TYPE=new ContentType(MULTIPART, FORM_DATA_SUBTYPE, null);
+		
 	public final static String ELEMENT_FORM_ATTRIBUTE_METHOD="method";
 		public final static String FORM_METHOD_GET="get";
 		public final static String FORM_METHOD_POST="post";
@@ -192,6 +197,7 @@ public interface XHTMLConstants
 	public final static String ELEMENT_IMG_ATTRIBUTE_SRC="src";
 
 		//attributes for <input>
+	public final static String ELEMENT_INPUT_ATTRIBUTE_ACCEPT="accept";
 	public final static String ELEMENT_INPUT_ATTRIBUTE_TYPE="type";
 		public final static String INPUT_TYPE_BUTTON="button";
 		public final static String INPUT_TYPE_CHECKBOX="checkbox";
