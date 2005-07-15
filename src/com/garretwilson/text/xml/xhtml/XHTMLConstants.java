@@ -223,7 +223,7 @@ public interface XHTMLConstants
 	public final static String ELEMENT_LINK_ATTRIBUTE_HREF="href";
 	public final static String ELEMENT_LINK_ATTRIBUTE_REL="rel";
 		public final static String LINK_REL_STYLESHEET="stylesheet";
-		public final static String ELEMENT_LINK_ATTRIBUTE_TYPE="type";
+	public final static String ELEMENT_LINK_ATTRIBUTE_TYPE="type";
 
 		//attributes for <object>
 	public final static String ELEMENT_OBJECT_ATTRIBUTE_CLASSID="classid";
@@ -242,6 +242,7 @@ public interface XHTMLConstants
 	public final static String ELEMENT_PARAM_ATTRIBUTE_VALUE="value";
 
 		//attributes for <script>
+	public final static String ELEMENT_SCRIPT_ATTRIBUTE_SRC="src";
 	public final static String ELEMENT_SCRIPT_ATTRIBUTE_TYPE="type";
 
 		//attributes for <select>
