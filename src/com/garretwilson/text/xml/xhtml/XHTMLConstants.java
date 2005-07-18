@@ -150,7 +150,13 @@ public interface XHTMLConstants
 		//attribute names
 	/**The attribute for class.*/
 	public final static String ATTRIBUTE_CLASS="class";
-	/**The attribute for type ID.*/
+	/**The attribute for direction.*/
+	public final static String ATTRIBUTE_DIR="dir";
+		/**The attribute for left-to-right direction.*/
+		public final static String DIR_LTR="ltr";
+		/**The attribute for right-to-left direction.*/
+		public final static String DIR_RTL="rtl";
+	/**The attribute for ID.*/
 	public final static String ATTRIBUTE_ID="id";
 	/**The attribute for language.*/
 	public final static String ATTRIBUTE_LANG="lang";

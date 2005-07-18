@@ -62,6 +62,12 @@ public class QualifiedName extends DefaultResource implements IDable<URI>
 		this.localName=localName;
 	}
 
+	/**@return The qualified name in <code><var>prefix</var>:<var>localName</var></code> form.*/
+	public String getQName()
+	{
+		return XMLUtilities.createQualifiedName(getPrefix(), getLocalName());	//create and return a qualified name
+	}
+
 	/**Creates a reference URI from an XML namespace URI and a local name.
 	@param namespaceURI The XML namespace URI used in the serialization, or <code>null</code> if there is no namespace URI.
 	@param localName The XML local name used in the serialization.

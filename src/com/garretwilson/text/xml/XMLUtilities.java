@@ -530,7 +530,7 @@ G***should we return data from CDATA sections as well?
 		}
 	}
 
-	/**Createa a qualified name from a namespace prefix and a local name.
+	/**Creates a qualified name from a namespace prefix and a local name.
 	@param prefix The namespace prefix, or <code>null</code> if there is no prefix.
 	@param localName The XML local name.
 	@return The XML qualified name.
@@ -543,7 +543,7 @@ G***should we return data from CDATA sections as well?
 			return localName; //return the local name without the prefix
 	}
 
-	/**Createa a qualified name object from an XML node.
+	/**Creates a qualified name object from an XML node.
 	@param node The XML node from which a qualified name is to be created.
 	@return A qualified name object representing the given XML node
 	*/
