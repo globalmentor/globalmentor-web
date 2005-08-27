@@ -95,6 +95,7 @@ public interface XHTMLConstants
 	public final static String ELEMENT_DL="dl";
 	public final static String ELEMENT_DT="dt";
 	public final static String ELEMENT_EM="em";
+	public final static String ELEMENT_FIELDSET="fieldset";
 	public final static String ELEMENT_FONT="font";
 	public final static String ELEMENT_FORM="form";
 	public final static String ELEMENT_H1="h1";
@@ -112,6 +113,7 @@ public interface XHTMLConstants
 	public final static String ELEMENT_KBD="kbd";
 	public final static String ELEMENT_LI="li";
 	public final static String ELEMENT_LABEL="label";
+	public final static String ELEMENT_LEGEND="legend";
 	public final static String ELEMENT_LINK="link";
 	public final static String ELEMENT_MAP="map";
 	public final static String ELEMENT_META="meta";
