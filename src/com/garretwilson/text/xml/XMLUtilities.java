@@ -18,6 +18,7 @@ import static com.garretwilson.text.xml.xhtml.XHTMLConstants.*;
 
 import static com.garretwilson.io.ContentTypeConstants.*;
 import static com.garretwilson.io.ContentTypeUtilities.*;
+import static com.garretwilson.lang.IntegerUtilities.*;
 import static com.garretwilson.text.xml.XMLConstants.*;
 
 /**Various XML manipuliating functions. The methods here are meant to be generic
@@ -159,6 +160,19 @@ public class XMLUtilities
 		return outString;	//return our resulting string
 	}
 */
+
+	/**Creates a character reference to represent the given characters.
+	@param character The character to encode.
+	@return A character reference in the form <code>&#xXX;</code>.
+	 */
+	public static String createCharacterReference(final char character)
+	{
+		final StringBuilder stringBuilder=new StringBuilder(CHARACTER_REF_START);	//create a string builder with the start of a character reference
+		stringBuilder.append(CHARACTER_REF_HEX_FLAG);	//indicate that the character reference is in hex
+		stringBuilder.append(toHexString(character, 4));	//write the hex value of the character
+		stringBuilder.append(CHARACTER_REF_END);	//end the character reference
+		return stringBuilder.toString();	//return the constructed character reference
+	}
 
 	/**Returns the owner document of the given node or, if the node is a
 		document, returns the node itself.
