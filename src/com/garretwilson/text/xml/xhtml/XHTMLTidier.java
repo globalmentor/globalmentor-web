@@ -7,10 +7,12 @@ import com.garretwilson.io.FileUtilities;
 import com.garretwilson.lang.*;
 import com.garretwilson.text.*;
 import com.garretwilson.text.xml.XMLConstants;
-import com.garretwilson.text.xml.XPath;
 import com.garretwilson.text.xml.XMLUtilities;
 import com.garretwilson.text.xml.oeb.OEBConstants;
 import com.garretwilson.text.xml.stylesheets.css.*;
+import com.garretwilson.text.xml.xpath.XPath;
+import com.garretwilson.text.xml.xpath.XPathConstants;
+
 import static com.garretwilson.text.xml.stylesheets.css.XMLCSSConstants.*;
 import static com.garretwilson.text.xml.xhtml.XHTMLConstants.*;
 import static com.garretwilson.text.unicode.SymbolEncodingConstants.*;
@@ -438,12 +440,12 @@ public class XHTMLTidier extends TextUtilities
 		collapseChildWhitespaceLF(document.getDocumentElement());  //change whitespace to LFs in the root element
 //G***del Debug.trace("Ready to collapse head whitespace");
 		//get a reference to the head element, if there is one
-		final Element headElement=(Element)XPath.getNode(document, XPath.LOCATION_STEP_SEPARATOR_CHAR+ELEMENT_HEAD);
+		final Element headElement=(Element)XPath.getNode(document, XPathConstants.LOCATION_STEP_SEPARATOR_CHAR+ELEMENT_HEAD);
 		if(headElement!=null) //if there is a head element
 			collapseChildWhitespaceLF(headElement);  //collapse whitespace to LFs in the head element
 //G***del Debug.trace("Ready to collapse body whitespace");
 		//get a reference to the body element
-		final Element bodyElement=(Element)XPath.getNode(document, XPath.LOCATION_STEP_SEPARATOR_CHAR+ELEMENT_BODY);
+		final Element bodyElement=(Element)XPath.getNode(document, XPathConstants.LOCATION_STEP_SEPARATOR_CHAR+ELEMENT_BODY);
 		if(bodyElement!=null) //if there is a body element (there always should be one)
 			collapseChildWhitespaceLF(bodyElement);  //collapse whitespace to LFs in the body element
 	}

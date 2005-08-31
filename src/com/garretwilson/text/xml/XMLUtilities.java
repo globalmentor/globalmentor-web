@@ -1022,14 +1022,14 @@ G***should we return data from CDATA sections as well?
 	@param element The element from which text will be retrieved.
 	@param deep Whether text of all descendents in documet order will be returned.
 	@return The data of all <code>Text</code> children nodes.
-	@see Node#Text
+	@see Node#TEXT_NODE
 	@see Text#getData
 	*/
 	public static String getText(final Element element, final boolean deep)
 	{
-		final StringBuffer stringBuffer=new StringBuffer(); //create a string buffer to collect the text data
-		getText(element, deep, stringBuffer); //collect the text in the string buffer
-		return stringBuffer.toString(); //convert the string buffer to a string and return it
+		final StringBuilder stringBuilder=new StringBuilder(); //create a string buffer to collect the text data
+		getText(element, deep, stringBuilder); //collect the text in the string buffer
+		return stringBuilder.toString(); //convert the string buffer to a string and return it
 	}
 
 	/**Retrieves the text of the element contained in child nodes of type
@@ -1039,11 +1039,11 @@ G***should we return data from CDATA sections as well?
 		children will be returned.
 	@param element The element from which text will be retrieved.
 	@param deep Whether text of all descendents in documet order will be returned.
-	@param stringBuffer The stringBuffer to which text will be added.
-	@see Node#Text
+	@param stringBuilder The buffer to which text will be added.
+	@see Node#TEXT_NODE
 	@see Text#getData
 	*/
-	public static void getText(final Element element, final boolean deep, final StringBuffer stringBuffer)
+	public static void getText(final Element element, final boolean deep, final StringBuilder stringBuilder)
 	{
 		final NodeList childNodeList=element.getChildNodes();  //get a reference to the child nodes
 		final int childCount=childNodeList.getLength(); //find out how many children there are
@@ -1053,11 +1053,11 @@ G***should we return data from CDATA sections as well?
 			switch(childNode.getNodeType()) //see which type of node this is
 			{
 				case Node.TEXT_NODE:  //if this is a text node
-					stringBuffer.append(((Text)childNode).getData()); //append this text node data to the string buffer
+					stringBuilder.append(((Text)childNode).getData()); //append this text node data to the string buffer
 					break;
 				case Node.ELEMENT_NODE: //if this is an element G***what about CDATA?
 					if(deep)  //if we should get deep text
-						getText((Element)childNode, deep, stringBuffer);  //append the text of this element
+						getText((Element)childNode, deep, stringBuilder);  //append the text of this element
 					break;
 			}
 		}
