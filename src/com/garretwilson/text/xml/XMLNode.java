@@ -706,7 +706,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	*/
 	public String getText()
 	{
-		String textString="";	//we start out with no text
+		String textString="";	//we start out with no text TODO use a string builder
 		for(int childIndex=0; childIndex<getChildXMLNodeList().size(); childIndex++)	//look at each child node
 			textString+=((XMLNode)getChildXMLNodeList().get(childIndex)).getText();	//append the text of this child to the text we've collected so far
 		return textString;	//return the text we collect
