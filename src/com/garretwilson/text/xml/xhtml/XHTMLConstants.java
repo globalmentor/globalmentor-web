@@ -166,6 +166,8 @@ public interface XHTMLConstants
 	public final static String ATTRIBUTE_NAME="name";
 	/**The attribute for style.*/
 	public final static String ATTRIBUTE_STYLE="style";
+	/**The attribute for title.*/
+	public final static String ATTRIBUTE_TITLE="title";
 	/**The attribute for value.*/
 	public final static String ATTRIBUTE_VALUE="value";
 		//event attributes
