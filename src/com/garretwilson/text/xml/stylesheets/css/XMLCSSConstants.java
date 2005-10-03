@@ -15,9 +15,6 @@ public class XMLCSSConstants
 	/**The content type for CSS: <code>text/css</code>.*/ 
 	public static final ContentType CSS_CONTENT_TYPE=new ContentType(ContentTypeConstants.TEXT, ContentTypeConstants.CSS_SUBTYPE, null);
 
-	/**The default extension for CSS stylesheets.*/
-	public final static String CSS_EXTENSION="css";	//TODO probably delete in favor of constant in com.garretwilson.io.FileConstants
-
 	/**A space character.*/
 	public final static char SPACE_CHAR=' ';
 	/**A tab character.*/
