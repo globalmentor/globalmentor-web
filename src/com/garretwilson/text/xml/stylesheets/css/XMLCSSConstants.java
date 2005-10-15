@@ -144,6 +144,7 @@ public class XMLCSSConstants
 	public final static String CSS_PROP_MAX_WIDTH="max-width";
 	public final static String CSS_PROP_MIN_HEIGHT="min-height";
 	public final static String CSS_PROP_MIN_WIDTH="min-width";
+	public final static String CSS_PROP_OPACITY="opacity";
 	public final static String CSS_PROP_ORPHANS="orphans";
 	public final static String CSS_PROP_OUTLINE="outline";
 	public final static String CSS_PROP_OUTLINE_COLOR="outline-color";
@@ -199,6 +200,10 @@ public class XMLCSSConstants
 
 //G***add other properties here
 
+	/**The IE filter property.*/
+	public final static String CSS_PROP_FILTER="filter";
+
+	
 	//properties <code>border-color</code> and <code>border-XXX-color</code>
 	public final static String CSS_BORDER_COLOR_TRANSPARENT="transparent";
 
