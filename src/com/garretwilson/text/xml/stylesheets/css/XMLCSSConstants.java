@@ -71,6 +71,26 @@ public class XMLCSSConstants
 	/**The character used to begin an RGB number in the form #RGB or #RRGGBB.*/
 	public final static char RGB_NUMBER_CHAR='#';
 
+		//CSS units
+			//relative units
+	/**The "font-size" of the relevant font.*/
+	public final static String EM_UNITS="em";
+	/**The "x-height" of the relevant font.*/
+	public final static String EX_UNITS="ex";
+	/**Pixels, relative to the viewing device.*/
+	public final static String PX_UNITS="px";
+		//absolute units
+	/**Inches---1 inch is equal to 2.54 centimeters.*/
+	public final static String IN_UNITS="in";
+	/**Centimeters.*/
+	public final static String CM_UNITS="cm";
+	/**Millimeters.*/
+	public final static String MM_UNITS="mm";
+	/**Points---the points used by CSS2 are equal to 1/72th of an inch.*/
+	public final static String PT_UNITS="pt";
+	/**Picas---1 pica is equal to 12 points.*/
+	public final static String PC_UNITS="pc";
+
 	//Property names for CSS2
 	public final static String CSS_PROP_AZIMUTH="azimuth";
 	public final static String CSS_PROP_BACKGROUND="background";
@@ -355,6 +375,12 @@ public class XMLCSSConstants
 	public final static String CSS_LIST_STYLE_TYPE_KATAKANA_IROHA="katakana-iroha";
 	public final static String CSS_LIST_STYLE_TYPE_NONE="none";
 
+	//property <code>overflow</code>
+	public final static String CSS_OVERFLOW_VISIBLE="visible";
+	public final static String CSS_OVERFLOW_HIDDEN="hidden";
+	public final static String CSS_OVERFLOW_SCROLL="scroll";
+	public final static String CSS_OVERFLOW_AUTO="auto";
+
 	//property <code>page-break-after</code>
 	public final static String CSS_PAGE_BREAK_AFTER_AUTO="auto";
 	public final static String CSS_PAGE_BREAK_AFTER_ALWAYS="always";
@@ -370,7 +396,7 @@ public class XMLCSSConstants
 	public final static String CSS_PAGE_BREAK_BEFORE_LEFT="left";
 	public final static String CSS_PAGE_BREAK_BEFORE_RIGHT="right";
 	public final static String CSS_PAGE_BREAK_BEFORE_INHERIT="inherit";
-
+	
 	//property <code>text-decoration</code>
 	public final static String CSS_TEXT_DECORATION_NONE="none";
 	public final static String CSS_TEXT_DECORATION_UNDERLINE="underline";
