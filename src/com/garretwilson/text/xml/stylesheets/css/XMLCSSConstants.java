@@ -318,6 +318,11 @@ public class XMLCSSConstants
 	public final static String CSS_DISPLAY_TABLE_CAPTION="table-caption";
 	public final static String CSS_DISPLAY_NONE="none";
 
+	//**Property <code>float</code>
+	public final static String CSS_FLOAT_LEFT="left";
+	public final static String CSS_FLOAT_NONE="none";
+	public final static String CSS_FLOAT_RIGHT="right";
+
 	//**Property "font-family"
 	public final static String CSS_FONT_FAMILY_SERIF="serif";
 	public final static String CSS_FONT_FAMILY_SANS_SERIF="sans-serif";
@@ -396,7 +401,12 @@ public class XMLCSSConstants
 	public final static String CSS_PAGE_BREAK_BEFORE_LEFT="left";
 	public final static String CSS_PAGE_BREAK_BEFORE_RIGHT="right";
 	public final static String CSS_PAGE_BREAK_BEFORE_INHERIT="inherit";
-	
+
+	//**Property <code>position</code>
+	public final static String CSS_POSITION_ABSOLUTE="absolute";
+	public final static String CSS_POSITION_FIXED="fixed";
+	public final static String CSS_POSITION_RELATIVE="relative";
+
 	//property <code>text-decoration</code>
 	public final static String CSS_TEXT_DECORATION_NONE="none";
 	public final static String CSS_TEXT_DECORATION_UNDERLINE="underline";
