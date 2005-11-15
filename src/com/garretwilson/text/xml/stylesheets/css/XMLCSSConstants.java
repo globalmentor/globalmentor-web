@@ -433,4 +433,10 @@ public class XMLCSSConstants
 	public final static String CSS_VERTICAL_ALIGN_TEXT_BOTTOM="text-bottom";
 	public final static String CSS_VERTICAL_ALIGN_INHERIT="inherit";
 
+	//property <code>visibility</code>
+	public final static String CSS_VISIBILITY_COLLAPSE="collapse";
+	public final static String CSS_VISIBILITY_HIDDEN="hidden";
+	public final static String CSS_VISIBILITY_INHERIT="inherit";
+	public final static String CSS_VISIBILITY_VISIBLE="visible";
+
 }
