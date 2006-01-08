@@ -223,6 +223,7 @@ public interface XHTMLConstants
 		public final static String INPUT_CHECKED_CHECKED="checked";
 	public final static String ELEMENT_INPUT_ATTRIBUTE_DISABLED="disabled";
 		public final static String INPUT_DISABLED_DISABLED="disabled";
+	public final static String ELEMENT_INPUT_ATTRIBUTE_MAXLENGTH="maxlength";
 	public final static String ELEMENT_INPUT_ATTRIBUTE_READONLY="readonly";
 		public final static String INPUT_READONLY_READONLY="readonly";
 
