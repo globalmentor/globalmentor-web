@@ -78,6 +78,7 @@ public class XMLUtilities
 			if(contentTypeMap==null)	//if the garbage collector has reclaimed the cache
 			{
 				contentTypeMap=new HashMap<String, ContentType>();	//create a new map of content types, and fill it with the default mappings
+				contentTypeMap.put("-//Guise//DTD XHTML Guise 1.0//EN", XHTML_CONTENT_TYPE);	//Guise XHTML DTD
 				contentTypeMap.put(HTML_4_01_STRICT_PUBLIC_ID, HTML_CONTENT_TYPE);
 				contentTypeMap.put(HTML_4_01_TRANSITIONAL_PUBLIC_ID, HTML_CONTENT_TYPE);
 				contentTypeMap.put(HTML_4_01_FRAMESET_PUBLIC_ID, HTML_CONTENT_TYPE);

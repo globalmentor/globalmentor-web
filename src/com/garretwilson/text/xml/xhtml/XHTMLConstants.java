@@ -176,6 +176,7 @@ public interface XHTMLConstants
 	
 		//attributes for <a>
 	public final static String ELEMENT_A_ATTRIBUTE_HREF="href";
+	public final static String ELEMENT_A_ATTRIBUTE_TARGET="target";
 
 		//attributes for <applet>
 	public final static String ELEMENT_APPLET_ATTRIBUTE_CODE="code";
