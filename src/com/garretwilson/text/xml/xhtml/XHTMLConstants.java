@@ -17,6 +17,9 @@ public interface XHTMLConstants
 	/**The content type for XHTML: <code>application/xhtml+xml</code>.*/ 
 	public static final ContentType XHTML_CONTENT_TYPE=new ContentType(APPLICATION, XHTML_XML_SUBTYPE, null);
 
+	/**The content type for an XHTML fragment: <code>application/xhtml+xml-external-parsed-entity</code>.*/ 
+	public static final ContentType XHTML_FRAGMENT_CONTENT_TYPE=new ContentType(APPLICATION, XHTML_XML_EXTERNAL_PARSED_ENTITY_SUBTYPE, null);
+
 	/**The recommended prefix to the XHTML namespace.*/
 	public static final String XHTML_NAMESPACE_PREFIX="xhtml";
 

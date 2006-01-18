@@ -450,9 +450,34 @@ G***should we return data from CDATA sections as well?
 						|| hasSubTypeSuffix(contentType, XML_SUBTYPE_SUFFIX);	//see if the subtype has an XML suffix
 			}
 		}
-		return false;	//this is not a media type we recognize as being HTML
+		return false;	//this is not a media type we recognize as being XML
 	}
 
+	/**Determines if the given content type is one representing an XML external parsed entity in some form.
+	<p>XML external parsed entities include:</p>
+	<ul>
+		<li><code>text/xml-external-parsed-entity</code></li>
+		<li><code>application/xml-external-parsed-entity</code></li>
+		<li><code>text/*+xml-external-parsed-entity</code> (not formally defined)</li>
+		<li><code>application/*+xml-external-parsed-entity</code> (not formally defined)</li>
+	</ul>
+	@param contentType The content type of a resource, or <code>null</code> for no content type.
+	@return <code>true</code> if the given content type is one of several XML external parsed entity media types.
+	*/ 
+	public static boolean isXMLExternalParsedEntity(final ContentType contentType)
+	{
+		if(contentType!=null)	//if a content type is given
+		{
+			final String primaryType=contentType.getPrimaryType();	//get the primary type
+			if(TEXT.equals(primaryType) || APPLICATION.equals(primaryType))	//if this is "text/*" or "application/*"
+			{
+				final String subType=contentType.getSubType();	//get the subtype
+				return XML_EXTERNAL_PARSED_ENTITY_SUBTYPE.equals(subType)	//if the subtype is /xml-external-parsed-entity
+						|| hasSubTypeSuffix(contentType, XML_EXTERNAL_PARSED_ENTITY_SUBTYPE_SUFFIX);	//or if the subtype has an XML external parsed entity suffix
+			}
+		}
+		return false;	//this is not a media type we recognize as being an XML external parsed entity
+	}
 
 	/**The character to replace the first character if needed.*/
 	protected final static char REPLACEMENT_FIRST_CHAR='x';
