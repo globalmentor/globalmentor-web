@@ -243,6 +243,7 @@ public interface XHTMLConstants
 
 		//attributes for <object>
 	public final static String ELEMENT_OBJECT_ATTRIBUTE_CLASSID="classid";
+	public final static String ELEMENT_OBJECT_ATTRIBUTE_CODEBASE="codebase";
 	public final static String ELEMENT_OBJECT_ATTRIBUTE_CODETYPE="codetype";
 	public final static String ELEMENT_OBJECT_ATTRIBUTE_DATA="data";
 	public final static String ELEMENT_OBJECT_ATTRIBUTE_HEIGHT="height";
