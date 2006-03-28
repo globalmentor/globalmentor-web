@@ -124,7 +124,7 @@ public class XMLAttribute extends XMLNode implements org.w3c.dom.Attr
 		public String getNodeValue() throws DOMException {return Value;}
 
 		/**Sets the value of the attribute, and makes a note that the attribute has
-		now been explicitely specified.
+		now been explicitly specified.
 		@param nodeValue The new value for the attribute.
 		@see XMLAttribute#getSpecified
 		@version DOM Level 1

@@ -114,8 +114,8 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 //G***fix		return CssText;	//return the text
 	}
 
-	/**Returns the number of properties that have been explicitely set in this declaration block.
-	@return The number of properties that have been explicitely set in this declaration block.
+	/**Returns the number of properties that have been explicitly set in this declaration block.
+	@return The number of properties that have been explicitly set in this declaration block.
 	@version DOM Level 2
 	@since DOM Level 2
 	*/
