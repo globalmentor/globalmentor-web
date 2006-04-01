@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.util.*;
 
 import com.garretwilson.net.URIConstants;
+import static com.garretwilson.rdf.RDFConstants.*;
 import com.garretwilson.rdf.rdfs.RDFSUtilities;
 import com.garretwilson.rdf.xmlschema.XMLSchemaTypedLiteralFactory;
 import com.garretwilson.text.xml.schema.XMLSchemaConstants;
@@ -26,7 +27,7 @@ import com.garretwilson.util.*;
 </dl>
 @author Garret Wilson
 */
-public class RDF implements RDFConstants	//TODO special-case rdf:nil list resources so that they are not located, but a different instance is created for each one, to make RDFListResource convenience methods work correctly 
+public class RDF	//TODO special-case rdf:nil list resources so that they are not located, but a different instance is created for each one, to make RDFListResource convenience methods work correctly 
 {
 
 	/**The next ID to use in an anonymous resource reference URI.*/

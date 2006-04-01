@@ -80,7 +80,7 @@ public class QualifiedName extends DefaultResource implements IDable<URI>
 
 	/**Creates a reference URI from an XML namespace and a local name.
 	<p>This method was created specifically for WebDAV, which uses a namespace ("DAV:") which is not a true URI.</p>
-	@param namespace The XML namespace used in the serialization, or <code>null</code> if there is no namespace URI..
+	@param namespace The XML namespace used in the serialization, or <code>null</code> if there is no namespace URI.
 	@param localName The XML local name used in the serialization.
 	@return A reference URI constructed from the given namespace and local name.
 	*/
@@ -92,7 +92,7 @@ public class QualifiedName extends DefaultResource implements IDable<URI>
 			referenceURIBuilder.append(namespace);	//append the namespace
 		}
 		referenceURIBuilder.append(localName);	//append the local name
-			//TODO beware local names that may be valid XML names but not valie URI characters---we should probably encode the local name
+			//TODO beware local names that may be valid XML names but not valiD URI characters---we should probably encode the local name
 		return URI.create(referenceURIBuilder.toString());	//concatenate the namespace and the local name to yield the reference URI
 	}
 
