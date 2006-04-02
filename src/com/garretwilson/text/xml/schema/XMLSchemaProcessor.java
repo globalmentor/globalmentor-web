@@ -6,6 +6,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.*;
 import static com.garretwilson.text.CharacterEncodingConstants.*;
 import com.garretwilson.text.xml.XMLSerializer;
+import static com.garretwilson.text.xml.schema.XMLSchemaConstants.*;
 import com.garretwilson.util.Debug;
 import com.garretwilson.util.IteratorUtilities;
 import org.w3c.dom.*;
@@ -19,7 +20,7 @@ Each schema processor instance keeps a map of other schemas keyed to their
 	cached retrieval.
 @author Garret Wilson
 */
-public class XMLSchemaProcessor implements XMLSchemaConstants
+public class XMLSchemaProcessor
 {
 
 	/**The serializer used to serialize annotations, shared across schema
