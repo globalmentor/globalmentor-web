@@ -34,12 +34,10 @@ public class XPath
 	@return The first node matching the XPath expression, or <code>null</code> if
 		there is no match.
 	*/
-/*TODO del if not needed
 	public static Node getNode(final Document document, final String expression)
 	{
 		return getNode(document.getDocumentElement(), expression);  //apply the expression to the document's root element
 	}
-*/
 
 	/**Convenience function to retrieve a node from the specified node, based on
 		the specified XPath expression. If multiple nodes match the expression, the
@@ -162,6 +160,11 @@ public class XPath
 //G***del Debug.trace("nodeTest: "+nodeTest);
 		if(axisStep.getAxis().equals(ROOT))	//if this node indicates we should start from the root
 		{
+Debug.setDebug(true);
+Debug.trace("ready to add root.");
+Debug.trace("node", node);
+Debug.trace("owner document", node.getOwnerDocument());
+Debug.trace("document element", node.getOwnerDocument().getDocumentElement());
 			nodeList.add(node.getOwnerDocument().getDocumentElement());	//add the document root to our list of matching objects
 		}
 		else	//if this isn't the root location step
