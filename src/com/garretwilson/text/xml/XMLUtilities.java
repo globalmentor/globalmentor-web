@@ -4,6 +4,9 @@ import java.io.*;
 import java.lang.ref.*;
 import java.util.*;
 import javax.mail.internet.ContentType;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import com.garretwilson.lang.*;
 import com.garretwilson.text.*;
@@ -162,6 +165,50 @@ public class XMLUtilities
 	}
 */
 
+	/**Creates and returns a default document builder without namespace awareness with no validation.
+	An entity resolver is installed to load requested resources from local resources if possible.
+	This allows quick local lookup of the XHTML DTDs, for example.
+	The Sun JDK 1.5 document builder handles the BOM correctly.
+	@return A new XML document builder.
+	@exception ParserConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	*/
+	public static DocumentBuilder createDocumentBuilder() throws ParserConfigurationException
+	{
+		return createDocumentBuilder(false);	//create a document builder with no namespace awareness
+	}
+
+	/**Creates and returns a default document builder, specifying namespace awareness with no validation.
+	An entity resolver is installed to load requested resources from local resources if possible.
+	This allows quick local lookup of the XHTML DTDs, for example.
+	The Sun JDK 1.5 document builder handles the BOM correctly.
+	@param namespaceAware <code>true</code> if the parser produced will provide support for XML namespaces, else <code>false</code>.
+	@return A new XML document builder.
+	@exception ParserConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	*/
+	public static DocumentBuilder createDocumentBuilder(final boolean namespaceAware) throws ParserConfigurationException
+	{
+		return createDocumentBuilder(namespaceAware, false);	//create a document builder with no validation
+	}
+
+	/**Creates and returns a default document builder, specifying namespace awareness and validation.
+	An entity resolver is installed to load requested resources from local resources if possible.
+	This allows quick local lookup of the XHTML DTDs, for example.
+	The Sun JDK 1.5 document builder handles the BOM correctly.
+	@param namespaceAware <code>true</code> if the parser produced will provide support for XML namespaces, else <code>false</code>.
+	@param validating <code>true</code> if the parser produced will validate documents as they are parsed, else <code>false</code>.
+	@return A new XML document builder.
+	@exception ParserConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	*/
+	public static DocumentBuilder createDocumentBuilder(final boolean namespaceAware, final boolean validating) throws ParserConfigurationException
+	{
+		final DocumentBuilderFactory documentBuilderFactory=DocumentBuilderFactory.newInstance();	//create a document builder factory			
+		documentBuilderFactory.setNamespaceAware(namespaceAware);	//set namespace awareness appropriately
+		documentBuilderFactory.setValidating(validating);	//set validating appropriately
+		final DocumentBuilder documentBuilder=documentBuilderFactory.newDocumentBuilder();	//create a new document builder
+		documentBuilder.setEntityResolver(XMLEntityResolver.getInstance());	//set its entity resolver to automatically look up XML entities from local resources
+		return documentBuilder;	//return the configured document builder
+	}
+		
 	/**Creates a character reference to represent the given characters.
 	@param character The character to encode.
 	@return A character reference in the form <code>&#xXX;</code>.

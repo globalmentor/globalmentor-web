@@ -2,6 +2,7 @@ package com.garretwilson.text.xml;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
@@ -12,10 +13,31 @@ import static com.garretwilson.io.FileUtilities.*;
 /**An entity resolver that looks up and returns special predefined entities, such as XHTML DTDs.
 This implementation searches for resource files within this package that have the same name as the public ID, with illegal characters replaced with "^XX", where "XX" is a hex code.
 For example, the entity public ID "-//W3C//DTD XHTML 1.1//EN" would be stored in this package under the filename "-^2F^2FW3C^2F^2FDTD XHTML 1.1^2F^2FEN".
+This is a singleton class that cannot be publicly instantiated.
 @author Garret Wilson
 */
 public class XMLEntityResolver implements EntityResolver
 {
+
+	/**The singleton instance reference of this entity resolver.*/
+	private static AtomicReference<XMLEntityResolver> instanceReference=new AtomicReference<XMLEntityResolver>();
+
+		/**Returns the singleton instance of this entity resolver.
+		This method is thread safe.
+		@return The singleton instance of this entity resolver.
+		*/
+		public static XMLEntityResolver getInstance()
+		{
+			if(instanceReference.get()==null)	//if there is no instance
+			{
+				instanceReference.compareAndSet(null, new XMLEntityResolver());	//update the entity resolver reference atomically
+			}
+			return instanceReference.get();	//return the singleton instance
+		}
+
+	private XMLEntityResolver()
+	{
+	}
 
 	/**Resolves the given entity based upon its public and system IDs.
 	@param publicID The entity putlic ID, or <code>null</code> if none was given.
