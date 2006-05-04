@@ -214,43 +214,41 @@ public class RDF	//TODO special-case rdf:nil list resources so that they are not
 		return resourceSet.size();  //return the size of the resource set
 	}
 
-	/**@return A read-only iterator of resources.*/
-	public Iterator<RDFResource> getResourceIterator()
+	/**@return A read-only iterable of resources.*/
+	public Iterable<RDFResource> getResources()
 	{
-		return Collections.unmodifiableCollection(resourceSet).iterator(); //return an unmodifiable iterator to the set of all resources
+		return Collections.unmodifiableCollection(resourceSet); //return an unmodifiable iterable to the set of all resources
 	}
 
-	/**@return A read-only iterator of resources appropriate for appearing at the
+	/**@return A read-only iterable of resources appropriate for appearing at the
 		root of a hierarchy, such as an RDF tree or an RDF+XML serialization.
 	*/
-	public Iterator<RDFResource> getRootResourceIterator()
+	public Iterable<RDFResource> getRootResources()
 	{
-		return getRootResourceIterator(null);	//return an unsorted iterator to the root resources 
+		return getRootResources(null);	//return an unsorted iterable to the root resources 
 	}
 
-	/**Returns a read-only iterator of resources appropriate for appearing at the
+	/**Returns a read-only iterable of resources appropriate for appearing at the
 		root of a hierarchy, such as an RDF tree or an RDF+XML serialization. The
 		resources are sorted using the optional comparator.
 	@param comparator The object that determines how the resources will be sorted,
 		or <code>null</code> if the resources should not be sorted.
-	@return A read-only iterator of root resources sorted by the optional
+	@return A read-only iterable of root resources sorted by the optional
 		comparator.
 	*/
-	public Iterator<RDFResource> getRootResourceIterator(final Comparator comparator)
+	public Iterable<RDFResource> getRootResources(final Comparator comparator)
 	{
 			//create a set in which to place the root resources, making the set sorted if we have a comparator
 ///TODO fix		final Set<RDFResource> rootResourceSet=comparator!=null ? (Set<RDFResource>)new TreeSet<RDFResource>(comparator) : (Set<RDFResource>)new HashSet<RDFResource>();	 		
-		final Set<RDFResource> rootResourceSet=new HashSet<RDFResource>();	//TODO fix comparing once we decide what type of comparator to use---shoudl it include just resources, or all RDF objects?	 		
-		final Iterator<RDFResource> resourceIterator=getResourceIterator();  //get an iterator to all the RDF resources
-		while(resourceIterator.hasNext()) //while there are resources remaining
+		final Set<RDFResource> rootResourceSet=new HashSet<RDFResource>();	//TODO fix comparing once we decide what type of comparator to use---shoudl it include just resources, or all RDF objects?
+		for(final RDFResource resource:getResources())	//look at all resouces
 		{
-			final RDFResource resource=resourceIterator.next();  //get the next resource
 			if(isRootResource(resource))	//if this is a root resource
 			{
 				rootResourceSet.add(resource);	//add the resource to the set of root resources
 			}
 		}
-		return Collections.unmodifiableCollection(rootResourceSet).iterator(); //return an unmodifiable iterator to the set of root resources
+		return Collections.unmodifiableCollection(rootResourceSet); //return an unmodifiable set of root resources
 	}
 
 	/**Determines if the given resource is appropriate for appearing at the root
@@ -644,10 +642,9 @@ public class RDF	//TODO special-case rdf:nil list resources so that they are not
 	public Map<RDFResource, Set<RDFResource>> getReferences(final Map<RDFResource, Set<RDFResource>> referenceMap)
 	{
 		final Set<RDFResource> referringResourceSet=new IdentityHashSet<RDFResource>();	//create a set of referring resources to prevent endless following of circular references
-		final Iterator<RDFResource> resourceIterator=getResourceIterator();	//get an iterator to all resources in this data model
-		while(resourceIterator.hasNext())	//while there are more resources in the data model
+		for(final RDFResource resource:getResources())	//for each resource in this data model
 		{
-			getReferences(resourceIterator.next(), referenceMap, referringResourceSet);	//gather all references to this resource
+			getReferences(resource, referenceMap, referringResourceSet);	//gather all references to this resource
 		}
 		return referenceMap;	//return the map we populated
 	}
