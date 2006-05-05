@@ -1,5 +1,6 @@
 package com.garretwilson.text.xml.stylesheets.css;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -183,7 +184,8 @@ Debug.trace("Found default stylesheet for namespace: ", namespaceURI);  //G***de
 				{
 						//create a URI from the original URI of the XML document and the stylesheet href
 					final URI styleSheetURI=URIUtilities.createURI(baseURI, styleSheetDescriptor.getHRef());
-					final Reader styleSheetReader=new BOMInputStreamReader(getInputStream(styleSheetURI));	//get an input stream to the stylesheet TODO do a preread check for the @charset "" CSS keyword 
+						//buffer the input stream so that the BOMInputStreamReader will be able to use mark/reset
+					final Reader styleSheetReader=new BOMInputStreamReader(new BufferedInputStream(getInputStream(styleSheetURI)));	//get an input stream to the stylesheet TODO do a preread check for the @charset "" CSS keyword 
 					try
 					{
 						final CSSStyleSheet cssStyleSheet=cssProcessor.parseStyleSheet(styleSheetReader, styleSheetURI); //parse the stylesheet
