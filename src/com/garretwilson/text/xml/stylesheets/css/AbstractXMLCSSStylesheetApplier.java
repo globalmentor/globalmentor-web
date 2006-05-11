@@ -2,7 +2,6 @@ package com.garretwilson.text.xml.stylesheets.css;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -15,7 +14,6 @@ import com.garretwilson.rdf.RDFResource;
 import static com.garretwilson.rdf.xpackage.XMLOntologyUtilities.*;
 
 import static com.garretwilson.rdf.RDFUtilities.*;
-import static com.garretwilson.rdf.xpackage.XMLOntologyUtilities.*;
 import static com.garretwilson.rdf.xpackage.XPackageUtilities.*;
 import com.garretwilson.text.xml.XMLNamespaceProcessor;
 import com.garretwilson.text.xml.XMLUtilities;
@@ -297,10 +295,9 @@ Debug.trace("Found default stylesheet for namespace: ", namespaceURI);  //G***de
 		}
 		if(description!=null)	//if a description of the resource is provided
 		{
-			final Iterator<RDFResource> namespaceResourceIterator=getNamespaces(description);	//get an iterator to all namespaces
-			while(namespaceResourceIterator.hasNext())	//while there are more namespaces
+			for(final RDFResource namespaceResource:getNamespaces(description))	//for each namespace resource
 			{
-				final URI namespaceURI=namespaceResourceIterator.next().getReferenceURI();	//get the next namespace resource URI
+				final URI namespaceURI=namespaceResource.getReferenceURI();	//get the next namespace resource URI
 				if(namespaceURI!=null)	//if this namespace resource has a URI
 				{
 					namespaceURISet.add(namespaceURI.toString());	//add the namespace URI to the set
@@ -326,19 +323,14 @@ Debug.trace("Found default stylesheet for namespace: ", namespaceURI);  //G***de
 			//gather all XML processing instructions stylesheet links
 		if(description!=null)	//if a description is provided
 		{
-			final Iterator<RDFObject> styleIterator=getStyles(description);	//get all listed styles
-			while(styleIterator.hasNext())	//while there are more styles
+			for(final RDFResource style:getStyles(description))	//get all listed styles
 			{
-				final RDFResource style=asResource(styleIterator.next());	//get the next style, only using it if it is a resouce
-				if(style!=null)	//if this style is a resource
+				//TODO check the media type, etc. here
+				final String href=getLocationHRef(style);	//get the style location TODO fix; this incorrectly will resolve the location href against the document base URI rather than the publication base URI
+				if(href!=null)	//if there is an href
 				{
-					//TODO check the media type, etc. here
-					final String href=getLocationHRef(style);	//get the style location TODO fix; this incorrectly will resolve the location href against the document base URI rather than the publication base URI
-					if(href!=null)	//if there is an href
-					{
-						final XMLStyleSheetDescriptor styleSheetDescriptor=new XMLStyleSheetDescriptor(href); //create a new descriptor for this stylesheet G***fix for media type, title, etc.
-						styleSheetDescriptorList.add(styleSheetDescriptor); //add the stylesheet descriptor to our list
-					}
+					final XMLStyleSheetDescriptor styleSheetDescriptor=new XMLStyleSheetDescriptor(href); //create a new descriptor for this stylesheet G***fix for media type, title, etc.
+					styleSheetDescriptorList.add(styleSheetDescriptor); //add the stylesheet descriptor to our list
 				}
 			}
 		}
