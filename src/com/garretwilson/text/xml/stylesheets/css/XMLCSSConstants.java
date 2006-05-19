@@ -1,19 +1,19 @@
 package com.garretwilson.text.xml.stylesheets.css;
 
 import java.awt.Color;
+import java.util.regex.Pattern;
 
 import javax.mail.internet.ContentType;
 
 import com.garretwilson.io.ContentTypeConstants;
 
+import static com.garretwilson.text.CharacterConstants.*;
+
 /**Several constants for CSS.*/
 public class XMLCSSConstants
 {
-	/**The package name of the XML classes.*/
-	public final String PACKAGE_NAME="com.garretwilson.text.xml.sylesheets.css";
-
 	/**The content type for CSS: <code>text/css</code>.*/ 
-	public static final ContentType CSS_CONTENT_TYPE=new ContentType(ContentTypeConstants.TEXT, ContentTypeConstants.CSS_SUBTYPE, null);
+	public static final ContentType TEXT_CSS_CONTENT_TYPE=new ContentType(ContentTypeConstants.TEXT, ContentTypeConstants.CSS_SUBTYPE, null);
 
 	/**A space character.*/
 	public final static char SPACE_CHAR=' ';
@@ -39,6 +39,10 @@ public class XMLCSSConstants
 	public final static String NUMBER_CHARS=DIGIT_CHARS+DECIMAL_CHAR;	//numbers are composed of digits and an optional decimal
 	/**The characters considered by CSS to be whitespace.*/
 	public final static String WHITESPACE_CHARS=""+SPACE_CHAR+TAB_CHAR+CR_CHAR+LF_CHAR+FF_CHAR;	//whitespace characters in CSS are space, tab, CR, LF, and FF
+	/**The characters considered by CSS to be whitespace.*/
+	public final static Pattern WHITESPACE_PATTERN=Pattern.compile("[\\u0020\\0009\\u000A\\u000C\\u000D]");	//whitespace characters in CSS are space, tab, CR, LF, and FF
+	/**The characters considered by CSS to be combinators.*/
+	public final static String COMBINATOR_CHARS=WHITESPACE_CHARS+GREATER_THAN_CHAR+PLUS_SIGN_CHAR+TILDE_CHAR;	//combinators are white space, "greater-than sign" (U+003E, >), "plus sign" (U+002B, +) and "tilde" (U+007E, ~)
 
 	/**The starting character of an at-rule: @{ident}.*/
 	public final static String AT_RULE_START="@";
@@ -70,6 +74,12 @@ public class XMLCSSConstants
 	public final static char SELECTOR_SEPARATOR_CHAR=',';
 	/**The character used to begin an RGB number in the form #RGB or #RRGGBB.*/
 	public final static char RGB_NUMBER_CHAR='#';
+	/**The delimiter used to introduce a class simple selector.*/
+	public final static char CLASS_SELECTOR_DELIMITER='.';
+	/**The delimiter used to introduce an ID simple selector.*/
+	public final static char ID_SELECTOR_DELIMITER='#';
+	/**The delimiter used to introduce a pseudo class simple selector.*/
+	public final static char PSEUDO_CLASS_DELIMITER=':';
 
 		//CSS units
 			//relative units

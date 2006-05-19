@@ -262,7 +262,7 @@ return 0;//G***throw an INVALID_ACCESS_ERR when we find out how to do so			throw
 	public void setStringValue(short stringType, String stringValue) throws DOMException
 	{
 		//G***check for read-only status here
-		if(isStringType(stringType))	//if the type they specified is compatible with a string
+		if(CSS_UNKNOWN==stringType || isStringType(stringType))	//if the type they specified is compatible with a string
 		{
 			//G***check about this inherit business
 			setPrimitiveType(stringType);	//set the unit type

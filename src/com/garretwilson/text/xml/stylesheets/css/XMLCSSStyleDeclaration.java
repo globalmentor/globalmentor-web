@@ -267,24 +267,23 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 //G***del System.out.println("Inside XMLCSSStyleDeclaration.setProperty with string: "+value);	//G***del
 
 			//check for shorthand properties
+/*TODO redo
 		if(propertyName.equals(CSS_PROP_BACKGROUND))  //if this is the background shorthand property G***fix for other types
 		{
 //G***del Debug.trace("Found background property; setting shorthand background");
 		  setBackgroundProperty(value, priority);  //set the background property
 //G***del Debug.trace("background property returning");
 			return;
-/*G***del when not needed
-			if(cssValue.getCssValueType()==cssValue.CSS_VALUE_LIST) //if this is the shorthand background, and not inherit
-		  {
-				final CSSValueList cssValueList=(CSSValueList)cssValue;  //cast the value to a value list
-				final int valueListCount=cssValueList.getLength();  //find out how many values there are
-				for(int i=0; i<valueListCount; ++i) //look at each
-
-//G***fix		  setBackgroundProperty(value, priority); //set the background shorthand property
-			return;
-*/
 		}
-
+		else
+*/
+		if(CSS_PROP_BACKGROUND.equals(propertyName) || CSS_PROP_BORDER.equals(propertyName)
+				|| CSS_PROP_BORDER_BOTTOM.equals(propertyName) || CSS_PROP_BORDER_LEFT.equals(propertyName) || CSS_PROP_BORDER_RIGHT.equals(propertyName) || CSS_PROP_BORDER_RIGHT.equals(propertyName)
+				|| CSS_PROP_FONT.equals(propertyName) || CSS_PROP_MARGIN.equals(propertyName) || CSS_PROP_PADDING.equals(propertyName))  //if this a shorthand property TODO fix correctly
+		{
+			setPropertyCSSValue(propertyName, new XMLCSSPrimitiveValue(CSSPrimitiveValue.CSS_UNKNOWN, value));	//create a general XML CSS primitive value
+			return;
+		}
 /*G***fix
 		if(propertyName.equals(CSS_PROP_BORDER))  //if this is the border shorthand property G***fix for other types
 		{
@@ -374,8 +373,8 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 	{
 //G***del Debug.trace("ready to parse value from value string: ", valueString); //G***del
 		XMLCSSValue value=null;	//we'll assign a value to this variable based upon which type of CSS value should be created G***is this the right way to do this? make sure the identical code in XMLCSSSTyleDeclaration is in sync
-		if(propertyName.equals(CSS_PROP_TEXT_DECORATION)	//if this is the text decoration property G***fix for other types
-		   || propertyName.equals(CSS_PROP_FONT_FAMILY))    //if this is a font-family property
+//TODO fix; this is incorrect		if(propertyName.equals(CSS_PROP_TEXT_DECORATION)	//if this is the text decoration property G***fix for other types
+		if(CSS_PROP_FONT_FAMILY.equals(propertyName))    //if this is a font-family property
 		{
 			value=XMLCSSValueList.createValueList(valueString);	//create a new list of values
 		}
@@ -424,6 +423,42 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 //	public static Color getColor(final String colorString)
 	}
 
+	/**Sets the margin shorthand property value and priority within this declaration block by calling <code>setProperty()</code> for each of the shorthand property's elements.
+	@param value  The new value of the property.
+	@param priority  The new priority of the property (e.g. "important").
+	@exception DOMException
+	<ul>
+		<li>SYNTAX_ERR: Raised if the specified value has a syntax error  and is unparsable.</li>
+		<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this declaration is readonly.</li>
+	</ul>
+	*/
+/*TODO fix
+	protected void setMarginProperty(String value, String priority) throws DOMException
+	{
+		final String[] values=WHITESPACE_PATTERN.split(value);	//split the values into tokens
+		if(values.length)
+		
+	  final StringTokenizer stringTokenizer=new StringTokenizer(value, WHITESPACE_CHARS); //create a string tokenizer to look at the individual values
+	  while(stringTokenizer.hasMoreTokens())  //while there are more tokens G***this currently will not work with quoted strings with spaces
+		{
+			final String token=stringTokenizer.nextToken(); //get the next token
+			final XMLCSSPrimitiveValue primitiveValue=XMLCSSPrimitiveValue.createPrimitiveValue(token); //create a primitive value from this value
+		  if(primitiveValue!=null)  //if we were able to parse this primitive value G***fix exception handling here, and what to do on error
+		  {
+				primitiveValue.setPriority(priority);	//set the priority of the property
+					//if the value is an RGB color or a color identifier value, it's the background color
+				if(primitiveValue.getPrimitiveType()==primitiveValue.CSS_RGBCOLOR ||
+					(primitiveValue.getPrimitiveType()==primitiveValue.CSS_IDENT && XMLCSSUtilities.getColor(primitiveValue.getStringValue())!=null))
+				{
+				  setPropertyCSSValue(CSS_PROP_BACKGROUND_COLOR, primitiveValue); //set the background color property
+				}
+		  }
+			//G***check for "inherit"
+		}
+	//public static Color getColor(final String colorString)
+	}
+*/
+	
 	/**The CSS rule that contains this declaration block or <code>null</code> if
 		this CSSStyleDeclaration is not attached to a <code>CSSRule</code>.
 	*/

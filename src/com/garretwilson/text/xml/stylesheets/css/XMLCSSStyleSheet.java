@@ -56,16 +56,16 @@ public class XMLCSSStyleSheet extends XMLStyleSheet implements CSSStyleSheet
 	//G***probably put this in a CssText property and call it from here
 	public String toString()
 	{
-		final StringBuffer stringBuffer=new StringBuffer(); //create a new string buffer to collect our data
+		final StringBuilder stringBuilder=new StringBuilder(); //create a new string builder to collect our data
 		//G***return whatever header stuff is needed
 		for(int ruleIndex=0; ruleIndex<((XMLCSSRuleList)getCssRules()).size(); ++ruleIndex)	//look at each of the rules
 		{
 //G***del			stringBuffer.append(RULE_GROUP_START_CHAR); //append the rule group start character
-			stringBuffer.append((XMLCSSRule)((XMLCSSRuleList)getCssRules()).get(ruleIndex)).toString();	//return a string representation of this rule, with a linefeed at the end to make it look nice
+			stringBuilder.append((XMLCSSRule)((XMLCSSRuleList)getCssRules()).get(ruleIndex)).toString();	//return a string representation of this rule, with a linefeed at the end to make it look nice
 //G***del			stringBuffer.append(RULE_GROUP_END_CHAR); //append the rule group end character
-			stringBuffer.append('\n'); //append a linefeed at the end to make it look nice
+			stringBuilder.append('\n'); //append a linefeed at the end to make it look nice
 		}
-		return stringBuffer.toString();	//return the string we constructed
+		return stringBuilder.toString();	//return the string we constructed
 	}
 
 

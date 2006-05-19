@@ -47,14 +47,14 @@ public class XMLCSSStyleRule extends XMLCSSRule implements CSSStyleRule	//G***fi
 	{
 //G***del		if(getStyle().getLength()
 
-		final StringBuffer stringBuffer=new StringBuffer(); //create a new string buffer to collect our data
-		stringBuffer.append(getSelectorText()); //add the selector text
-		stringBuffer.append('\n');  //add a newline
-		stringBuffer.append(RULE_GROUP_START_CHAR); //append the rule group start character
-		stringBuffer.append('\n');  //add a newline
-		stringBuffer.append(getStyle().getCssText()); //add the text of the style itself
-		stringBuffer.append(RULE_GROUP_END_CHAR); //append the rule group end character
-		stringBuffer.append('\n');  //add a newline
+		final StringBuilder stringBuilder=new StringBuilder(); //create a new string buffer to collect our data
+		stringBuilder.append(getSelectorText()); //add the selector text
+		stringBuilder.append('\n');  //add a newline
+		stringBuilder.append(RULE_GROUP_START_CHAR); //append the rule group start character
+		stringBuilder.append('\n');  //add a newline
+		stringBuilder.append(getStyle().getCssText()); //add the text of the style itself
+		stringBuilder.append(RULE_GROUP_END_CHAR); //append the rule group end character
+		stringBuilder.append('\n');  //add a newline
 /*G***del when works
 
 		//G***return whatever header stuff is needed
@@ -69,7 +69,7 @@ public class XMLCSSStyleRule extends XMLCSSRule implements CSSStyleRule	//G***fi
 
 		return getSelectorText()+" "+getStyle().getCssText();	//get the text of the selectors and add the text of the style to it
 */
-		return stringBuffer.toString();	//return the string we constructed
+		return stringBuilder.toString();	//return the string we constructed
 //G***del		for(int selectorIndex=0; selectorIndex<getSelectorArrayList().size(); ++selectorIndex)	//look at each selector
 //G***del		return CssText;
 	}
@@ -205,20 +205,24 @@ Debug.trace("Context "+contextIndex+": "+selectorContext.getTagName());	//G***de
 	*/
 	public String getSelectorText()
 	{
-		String selectorText="";
+		final StringBuilder stringBuilder=new StringBuilder();	//create a new string builder for constructing the text
 		for(int selectorIndex=0; selectorIndex<getSelectorArrayList().size(); ++selectorIndex)	//look at each selector array
 		{
 			final XMLCSSSelector[] contextArray=(XMLCSSSelector[])getSelectorArrayList().get(selectorIndex);	//get a reference to this array of selectors
 			for(int contextIndex=0; contextIndex<contextArray.length; ++contextIndex)	//look at each context for this selector
 			{
-				selectorText+=contextArray[contextIndex].getCssText();	//add this context to our selector string
+				stringBuilder.append(contextArray[contextIndex].getCssText());	//add this context to our selector string
 				if(contextIndex<contextArray.length-1)	//if this isn't the last context
-					selectorText+=SPACE_CHAR;	//place a space between contexts
+				{
+					stringBuilder.append(SPACE_CHAR);	//place a space between contexts
+				}
 			}
 			if(selectorIndex<getSelectorArrayList().size()-1)	//if this isn't the last selector
-				selectorText+=""+XMLCSSConstants.SELECTOR_SEPARATOR_CHAR+SPACE_CHAR;	//place a comma and a space between selectors
+			{
+				stringBuilder.append(SELECTOR_SEPARATOR_CHAR).append(SPACE_CHAR);	//place a comma and a space between selectors
+			}
 		}
-		return selectorText;	//return the text we constructed
+		return stringBuilder.toString();	//return the text we constructed
 	}
 
 	/**Sets the textual representation of the selector for the rule set.

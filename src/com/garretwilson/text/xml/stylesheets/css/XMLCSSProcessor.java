@@ -347,29 +347,54 @@ return value;	//G***throw the correct error here
 			skipWhitespaceCharacters(reader);	//skip any whitespace characters
 			if((char)reader.peek()==RULE_GROUP_END_CHAR)  //if we're at the end of the rule group (which will happen if the rule group is empty, for instance) G***what if this is just an empty string being passed, from an XHTML style="" attribute?
 				return true;  //show that we hit the end of the rule group G***this check is done at the end of this loop, too -- is there a place we can combine both checks?
-			final String propertyName=reader.readStringUntilChar(WHITESPACE_CHARS+PROPERTY_DIVIDER_CHAR+RULE_GROUP_END_CHAR);	//get the name of the property, which is followed by whitespace or a divider character
+			
+					//TODO fix CSS comment hack
+			final String propertyName=reader.readStringUntilChar(WHITESPACE_CHARS+PROPERTY_DIVIDER_CHAR+RULE_GROUP_END_CHAR+'/');	//get the name of the property, which is followed by whitespace or a divider character
 //G***del Debug.trace("Property name: "+propertyName);	//G***del
 
 			skipWhitespaceCharacters(reader);	//skip any whitespace characters
-			reader.readExpectedChar(PROPERTY_DIVIDER_CHAR);	//reade the divider between the property name and its value
-			skipWhitespaceCharacters(reader);	//skip any whitespace characters
-
-
-
-//G***del Debug.trace("Ready to parse ruleset value for property: ", propertyName);  //G***del
-		  final String propertyValueString=parseValue(reader, propertyName); //parse the value, showing which property the value is for
-//G***del when works			final XMLCSSValue propertyValue=parseValue(reader, propertyName);	//parse the value, showing which property the value is for
-			skipWhitespaceCharactersEOF(reader);	//skip over any whitespace characters, but do not throw an error for the end of the stream
-			//G***parse the priority somewhere here
-//G***del Debug.trace("ready to set property with value string: ", propertyValueString);  //G***fix
-		  if(propertyValueString.trim().length()>0) //if there actually is a property value
+			
+			
+			
+			
+			
+			if((char)reader.peek()=='/')
 			{
-//G***del Debug.trace("This value checked out");  //G***del
-				styleDeclaration.setProperty(propertyName, propertyValueString);  //set this property G***check about the DOM exception it throws
+				reader.readExpectedString(COMMENT_START);
+				while(!reader.isEOF())  //G***fix parsing comments; this is a hack
+				{
+					reader.readStringUntilChar('*');  //G***fix parsing comments; this is a hack
+					reader.readExpectedChar('*'); //G***fix parsing comments; this is a hack
+					if(reader.peekChar()=='/')  //G***fix parsing comments; this is a hack
+					{
+						reader.readExpectedChar('/');
+						break;
+					}
+				}
 			}
-
-//G***del when works			styleDeclaration.setPropertyCSSValue(propertyName, propertyValue);	//G***set this property
-			skipWhitespaceCharactersEOF(reader);	//skip over any whitespace characters, but do not throw an error for the end of the stream
+			else
+			{			
+			
+				reader.readExpectedChar(PROPERTY_DIVIDER_CHAR);	//reade the divider between the property name and its value
+				skipWhitespaceCharacters(reader);	//skip any whitespace characters
+	
+	
+	
+	//G***del Debug.trace("Ready to parse ruleset value for property: ", propertyName);  //G***del
+			  final String propertyValueString=parseValue(reader, propertyName); //parse the value, showing which property the value is for
+	//G***del when works			final XMLCSSValue propertyValue=parseValue(reader, propertyName);	//parse the value, showing which property the value is for
+				skipWhitespaceCharactersEOF(reader);	//skip over any whitespace characters, but do not throw an error for the end of the stream
+				//G***parse the priority somewhere here
+	//G***del Debug.trace("ready to set property with value string: ", propertyValueString);  //G***fix
+			  if(propertyValueString.trim().length()>0) //if there actually is a property value
+				{
+	//G***del Debug.trace("This value checked out");  //G***del
+					styleDeclaration.setProperty(propertyName, propertyValueString);  //set this property G***check about the DOM exception it throws
+				}
+	
+	//G***del when works			styleDeclaration.setPropertyCSSValue(propertyName, propertyValue);	//G***set this property
+				skipWhitespaceCharactersEOF(reader);	//skip over any whitespace characters, but do not throw an error for the end of the stream
+			}
 		}
 		while((char)reader.peek()!=RULE_GROUP_END_CHAR);	//keep reading rules until we've reached the end of the group G***should this be at the beginning? what if it's an empty style block {}?
 		return true;  //show that we found the end-of-rule-group character
@@ -446,7 +471,7 @@ return value;	//G***throw the correct error here
 					reader.readExpectedString(CDC);	//ignore the comment ending string
 					break;
 				default:	//if we didn't find any of the above, we'll assume this is a ruleset
-Debug.trace("Found a ruleset.");	//G***del
+//TODO del Debug.trace("Found a ruleset.");	//G***del
 					((XMLCSSRuleList)parentStyleSheet.getCssRules()).add(parseRuleSet(reader, parentStyleSheet));	//parse this ruleset and add it to our list of rules
 					break;
 			}
@@ -590,154 +615,4 @@ Debug.trace("parsed internal stylesheets"); //G***del
 		parseStyleSheetContent(styleSheetReader, styleSheet);	//parse the stylesheet content
 	}
 
-
-
-	/**Parses any external stylesheets contained in an XML document.
-	@param document The XML document that that contains stylesheet information.
-	@param sourceObject The source of the XML document (e.g. a String, File, or URL).
-//G***fix all this exception stuff
-	@except IOException Thrown when an i/o error occurs.
-	@except ParseUnexpectedDataException Thrown when an unexpected character is found.
-	@except ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
-	*/
-//G***actually, these parseXXXStyleSheets() should probably be inside an XMLStyleSheetProcessor which calls the correct type of processor based upon the style sheet type
-/*G***del when not needed
-	public void parseExternalStyleSheets(final XMLDocument document, final Object sourceObject) throws IOException, ParseUnexpectedDataException, ParseEOFException
-	{
-			//check for xml-stylesheet processing instructions
-		//G***we should probably eventually make sure the directives come at the right place, but an OEB version of this should have been validated against a DTD at some point which ensures this anyway
-		final XMLNodeList styleSheetProcessingInstructionList=(XMLNodeList)document.getNodesByName(XMLNode.PROCESSING_INSTRUCTION_NODE, XML_STYLESHEET_PROCESSING_INSTRUCTION, true);	//get a list of all the style processing instructions in the document G***use a constant here
-		for(int styleSheetIndex=0; styleSheetIndex<styleSheetProcessingInstructionList.size(); ++styleSheetIndex)	//look at each of the nodes representing a style sheet link
-		{
-			final XMLProcessingInstruction styleSheetLink=(XMLProcessingInstruction)styleSheetProcessingInstructionList.item(styleSheetIndex);	//get a reference to this child node
-				//G***check the media type, etc. here
-			final XMLCSSStyleSheet styleSheet=new XMLCSSStyleSheet(styleSheetLink);	//create a new stylesheet owned by this style processing instruction
-			final String href=styleSheetLink.getPseudoAttributeValue(HREF_ATTRIBUTE);	//get the value of the href attribute, if it is present
-			final URL styleSheetURL=URLUtilities.createURL(sourceObject, href);	//create a URL from the original URL of the XML document and the href
-//G***del Debug.notify(styleSheetURL.toString());	//G***del
-			final InputStreamReader inputStreamReader=new InputStreamReader(getInputStreamLocator().getInputStream(styleSheetURL));	//get an input stream to the external stylesheet G***use the document's encoding here
-			final ParseReader styleSheetReader=new ParseReader(inputStreamReader, styleSheetURL);	//create a parse reader reader to use to read the external stylesheet
-			try
-			{
-//G***fix			entityReader.setCurrentLineIndex(entity.getLineIndex());	//pretend we're reading where the entity was located in that file, so any errors will show the correct information
-//G***fix			entityReader.setCurrentCharIndex(entity.getCharIndex());	//pretend we're reading where the entity was located in that file, so any errors will show the correct information
-				parseStyleSheetContent(styleSheetReader, styleSheet);	//parse the stylesheet content
-				document.getStyleSheetList().add(styleSheet);	//add the stylesheet we created to the document's list of stylesheets
-			}
-			finally
-			{
-				styleSheetReader.close();	//always close the stylesheet reader
-			}
-		}
-	}
-*/
-
-	/**Parses any local styles contained in an XML document as a "style" attribute. G***this shouldn't go in the CSS processor itself
-	@param document The XML document that that contains style information.
-//G***fix all this exception stuff
-	@except IOException Thrown when an i/o error occurs.
-	@except ParseUnexpectedDataException Thrown when an unexpected character is found.
-	@except ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
-	*/
-//G***actually, these parseXXXStyleSheets() should probably be inside an XMLStyleSheetProcessor which calls the correct type of processor based upon the style sheet type
-//G***this can probably be static
-/*G***move
-	public void parseLocalStyles(final XMLDocument document) throws IOException, ParseUnexpectedDataException, ParseEOFException
-	{
-		NodeIterator nodeIterator=((DocumentTraversal)document).createNodeIterator(document.getDocumentElement(), NodeFilter.SHOW_ELEMENT, null, false); //create a node walker to traverse over every node
-		Node node;
-		while((node=nodeIterator.nextNode())!=null)  //while we haven't reached the last node
-		{
-//G***del Debug.trace("Node: "+node.getNodeName()+" namespace URI: "+node.getNamespaceURI()); //G***testing
-		  final Element element=(Element)node;  //cast the node to an element; elements are all we asked for
-		  final String elementName=element.getNodeName(); //get the name of the element G***fix for namespaces
-		  if(element.hasAttributeNS(null, "style")) //if this element has the style attribute G***use a constant, fix for a general attribute name case
-			{
-			  final String styleValue=element.getAttributeNS(null, "style");  //get the value of the style attribute G***use a constant, fix for a general attribute name case
-				if(styleValue.length()!=0)  //if there is a style value
-				{
-//G***del Debug.trace("Found local style value: ", styleValue); //G***del
-					final XMLCSSStyleDeclaration style=new XMLCSSStyleDeclaration(); //create a new style declaration
-					final ParseReader localStyleReader=new ParseReader(styleValue, "Element "+elementName+" Local Style");	//create a string reader from the value of this local style attribute G***i18n
-					parseRuleSet(localStyleReader, style); //read the style into our style declaration
-					((XMLElement)element).setLocalCSSStyle(style);  //set the element's style to whatever we constructed G***eventually use a separate style tree instead of the element itself
-				}
-			}
-		}
-	}
-*/
-
-	/**Parses any stylesheets contained in or referenced from an XML document, as
-		well as local style declarations in "style" attributes.
-	@param document The XML document that that contains stylesheet information.
-	@param sourceObject The source of the XML document (e.g. a String, File, or URL).
-//G***fix all this exception stuff
-	@except IOException Thrown when an i/o error occurs.
-	@except ParseUnexpectedDataException Thrown when an unexpected character is found.
-	@except ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
-	*/
-/*G***move
-	public void parseStyles(final XMLDocument document, final Object sourceObject) throws IOException, ParseUnexpectedDataException, ParseEOFException
-	{
-		parseExternalStyleSheets(document, sourceObject);	//parse any external stylesheets
-		parseInternalStyleSheets(document);	//parse any internal stylesheets
-		parseLocalStyles(document); //parse any local styles
-	}
-*/
-
-	//G***couldn't a lot of the functions above be static?
-
-	/**Determines the style of each element in the document based on the document's
-		stylesheets as well as local element style attributes.
-	*/
-/*G***move
-	public static void applyStyles(final XMLDocument document)
-	{
-			//apply all the styles in each stylesheet
-		for(int styleSheetIndex=0; styleSheetIndex<document.getStyleSheetList().size(); ++styleSheetIndex)	//look at each of this document's stylesheets
-		{
-			if(document.getStyleSheetList().get(styleSheetIndex) instanceof XMLCSSStyleSheet)	//if this stylesheet is a CSS stylesheet (we only support CSS stylesheets in this implementation) G***change this comment if we move this function somewhere else where it doesn't apply
-			{
-				final XMLCSSStyleSheet cssStyleSheet=(XMLCSSStyleSheet)document.getStyleSheetList().get(styleSheetIndex);	//get a reference to this CSS stylesheet
-				applyStyleSheet(document, cssStyleSheet);	//apply this stylesheet to the document
-			}
-		}
-			//apply all the local styles G***fix to make more efficient
-		final XMLNodeList elementList=(XMLNodeList)document.getElementsByTagName("*");	//get a list of all elements in this document G***maybe use a constant here
-		for(int elementIndex=0; elementIndex<elementList.size(); ++elementIndex)	//look at each of the elements
-		{
-			final XMLElement element=(XMLElement)elementList.get(elementIndex);	//get the element at this index
-		  final XMLCSSStyleDeclaration elementStyle=(XMLCSSStyleDeclaration)element.getCSSStyle();  //get a reference to this element's style G***eventually put the style tree somewhere else
-		  final XMLCSSStyleDeclaration elementLocalStyle=(XMLCSSStyleDeclaration)element.getLocalCSSStyle();  //get a reference to this element's local style, if available G***eventually put the style tree somewhere else
-		  if(elementLocalStyle!=null) //if this element has a local style
-				elementStyle.importStyle(elementLocalStyle);	//import this element's local style the element's overall style
-		}
-	}
-*/
-
-	/**Determines the style of each element in the document based on the document's
-		stylesheets as well as local element style attributes.
-	*/
-	//G***maybe put this in XMLCSSStyleSheet
-/*G***move
-	public static void applyStyleSheet(final XMLDocument document, final XMLCSSStyleSheet styleSheet)
-	{
-		  //G***this looks expensive -- the tree has to be walked first to gather the elements, then again to apply the styles
-		final XMLNodeList elementList=(XMLNodeList)document.getElementsByTagName("*");	//get a list of all elements in this document G***maybe use a constant here
-//G***del System.out.println("Looking at this many elements: "+elementList.size());
-		for(int elementIndex=0; elementIndex<elementList.size(); ++elementIndex)	//look at each of the elements
-		{
-			final XMLElement element=(XMLElement)elementList.get(elementIndex);	//get the element at this index
-			for(int ruleIndex=0; ruleIndex<styleSheet.getCssRules().getLength(); ++ruleIndex)	//look at each of our rules
-			{
-				if(styleSheet.getCssRules().item(ruleIndex).getType()==XMLCSSRule.STYLE_RULE)	//if this is a style rule G***fix for other rule types
-				{
-					final XMLCSSStyleRule styleRule=(XMLCSSStyleRule)styleSheet.getCssRules().item(ruleIndex);	//get a reference to this style rule in the stylesheet
-					if(styleRule.appliesTo(element))	//if this style rule applies to this element
-						((XMLCSSStyleDeclaration)element.getCSSStyle()).importStyle((XMLCSSStyleDeclaration)styleRule.getStyle());	//import this style's properties into the style of this element
-				}
-			}
-		}
-	}
-*/
 }

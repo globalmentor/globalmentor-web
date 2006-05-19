@@ -63,16 +63,16 @@ public class XMLCSSValueList extends XMLCSSValue implements CSSValueList
 	*/
 	public String getCssText()
 	{
-		final StringBuffer cssTextStringBuffer=new StringBuffer();	//create a string buffer to hold our values
+		final StringBuilder cssTextStringBuilder=new StringBuilder();	//create a string builder to hold our values
 		//G***fix; for now, we don't know whether to put spaces or commas between the values
 		for(int i=0; i<getLength(); ++i)	//look at each value
 		{
 			final CSSValue value=item(i);	//get the value for this item in the list
-			cssTextStringBuffer.append(value.getCssText());	//add the text of this value to the buffer
+			cssTextStringBuilder.append(value.getCssText());	//add the text of this value to the buffer
 			if(i<getLength()-1)	//if we're not printing the last value
-				cssTextStringBuffer.append(' ');	//put a space between the value G***check
+				cssTextStringBuilder.append(',');	//put a space between the value G***check
 		}
-		return cssTextStringBuffer.toString();	//return the string of the string buffer we constructed
+		return cssTextStringBuilder.toString();	//return the string of the string buffer we constructed
 	}
 
 
@@ -112,7 +112,7 @@ public class XMLCSSValueList extends XMLCSSValue implements CSSValueList
 				switch(token) //see what type of token this is
 				{
 					case StreamTokenizer.TT_WORD: //if this is a word
-	Debug.trace("tokenized word: ", valueTokenizer.sval); //G***del
+//TODO del	Debug.trace("tokenized word: ", valueTokenizer.sval); //G***del
 						valueString=valueTokenizer.sval;  //store the word value
 						break;
 /*G***del G***fix for numbers
@@ -122,7 +122,7 @@ public class XMLCSSValueList extends XMLCSSValue implements CSSValueList
 */
 					case '"': //if this is a quoted value with a double quote
 					case '\'': //if this is a quoted value with a single quote
-	Debug.trace("quoted string: ", valueTokenizer.sval); //G***del
+//					TODO del	Debug.trace("quoted string: ", valueTokenizer.sval); //G***del
 						valueString=(char)token+valueTokenizer.sval+(char)token;  //store the string value, adding the quotes back so that it can properly be stored as a string
 						break;
 //G***what about numbers?
