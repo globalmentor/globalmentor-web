@@ -111,6 +111,7 @@ public interface XHTMLConstants
 	public final static String ELEMENT_HR="hr";
 	public final static String ELEMENT_HTML="html";
 	public final static String ELEMENT_I="i";
+	public final static String ELEMENT_IFRAME="iframe";
 	public final static String ELEMENT_IMG="img";
 	public final static String ELEMENT_INPUT="input";
 	public final static String ELEMENT_KBD="kbd";
@@ -203,6 +204,10 @@ public interface XHTMLConstants
 	public final static String ELEMENT_FORM_ATTRIBUTE_METHOD="method";
 		public final static String FORM_METHOD_GET="get";
 		public final static String FORM_METHOD_POST="post";
+
+		//attributes for <iframe>
+	public final static String ELEMENT_IFRAME_ATTRIBUTE_SRC="src";
+	public final static String ELEMENT_IFRAME_ATTRIBUTE_FRAMEBORDER="frameborder";
 
 		//attributes for <img>
 	public final static String ELEMENT_IMG_ATTRIBUTE_ALT="alt";
