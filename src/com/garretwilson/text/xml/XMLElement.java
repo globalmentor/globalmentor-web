@@ -409,7 +409,8 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
 	*/
 	public String getAttribute(String name)
 	{
-		final XMLAttribute attribute=(XMLAttribute)getAttributeNode(name);	//see if we can get a matching attribute node
+		final XMLAttribute attribute=(XMLAttribute)getAttributeNodeNS(null, name);	//see if we can get a matching attribute node
+//TODO bring back and fix		final XMLAttribute attribute=(XMLAttribute)getAttributeNode(name);	//see if we can get a matching attribute node
 		return attribute!=null ? attribute.getNodeValue() : "";	//return the value if we found an attribute, otherwise return an empty string
 	}
 
@@ -890,6 +891,11 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
                                    boolean isId)
                                    throws DOMException {throw new UnsupportedOperationException();}	//TODO fix for DOM 3
 
+
+    public String getTextContent() throws DOMException	//TODO fix for DOM 3 in XMLNode
+      {
+      	return XMLUtilities.getText(this, true);
+      }
 
 }
 
