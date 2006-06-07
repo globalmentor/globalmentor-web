@@ -21,6 +21,27 @@ public class JavaScriptConstants
 	/**The character ']' for ending an array index.*/
 	public final static char ARRAY_INDEX_END_CHAR=']';
 
+	/**The character '[' for starting an array.*/
+	public final static char ARRAY_BEGIN_CHAR='[';
+
+	/**The character ']' for ending an array.*/
+	public final static char ARRAY_END_CHAR=']';
+
+	/**The character ',' for separating array elements.*/
+	public final static char ARRAY_DELIMITER=',';
+
+	/**The character '{' for starting an associative array.*/
+	public final static char ASSOCIATIVE_ARRAY_BEGIN_CHAR='{';
+
+	/**The character '}' for ending an associative array.*/
+	public final static char ASSOCIATIVE_ARRAY_END_CHAR='}';
+
+	/**The character ',' for separating associative array elements.*/
+	public final static char ASSOCIATIVE_ARRAY_DELIMITER=',';
+
+	/**The character ';' for separating associative array key/value pairs.*/
+	public final static char ASSOCIATIVE_ARRAY_KEY_VALUE_DELIMITER=':';
+
 	/**The character '{' for starting a block.*/
 	public final static char BLOCK_BEGIN_CHAR='{';
 
@@ -42,6 +63,11 @@ public class JavaScriptConstants
 	/**The character ';' indicating the ending of a statement.*/
 	public final static char STATEMENT_END_CHAR=';';
 
+	/**The characters that must be encoded in a string value.*/
+	public final static char[] STRING_ENCODE_CHARS=new char[]{'"', '\\', '/', '\b', '\f', '\n', '\r', '\t'};
+	/**The strings with which encoded characters will be replaced in a string value.*/
+	public final static String[] STRING_ENCODE_REPLACEMENT_STRINGS=new String[]{"\"", "\\\\", "\\/", "\\b", "\\f", "\\n", "\\r", "\\t"};
+	
 	/**The if keyword.*/
 	public final static String IF_KEYWORD="if";
 	/**The else keyword.*/
