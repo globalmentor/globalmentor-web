@@ -266,6 +266,7 @@ public interface XHTMLConstants
 		//attributes for <script>
 	public final static String ELEMENT_SCRIPT_ATTRIBUTE_SRC="src";
 	public final static String ELEMENT_SCRIPT_ATTRIBUTE_TYPE="type";
+	public final static String ELEMENT_SCRIPT_ATTRIBUTE_LANGUAGE="language";
 
 		//attributes for <select>
 	public final static String ELEMENT_SELECT_ATTRIBUTE_MULTIPLE="multiple";
