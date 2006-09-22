@@ -15,6 +15,7 @@ import com.garretwilson.util.Debug;
 import org.w3c.dom.*;
 import org.w3c.dom.traversal.*;
 
+import static com.garretwilson.lang.CharacterUtilities.*;
 import static com.garretwilson.text.xml.mathml.MathMLConstants.*;
 import static com.garretwilson.text.xml.svg.SVGConstants.*;
 import static com.garretwilson.text.xml.xhtml.XHTMLConstants.*;
@@ -153,7 +154,7 @@ public class XMLUtilities
 	@param string A string which could contain XML character codes.
 	@return A normal string.*/
 /*G***del; this is probably not needed
-	static public String fromXML(final String inString)
+	public static String fromXML(final String inString)
 	{
 		String outString=replace(inString, "&quot;", "\"");	//replace all occurences of &quot; with a quotes
 		outString=replace(outString, "&apos;", "\'");	//replace all occurrences of &apos; with single quotes
@@ -361,40 +362,16 @@ G***should we return data from CDATA sections as well?
 	@param c The character to check.
 	@return true if the character is a legal XML character.
 	*/
-	static public boolean isChar(final char c)
+	public static boolean isChar(final char c)
 	{
 		return isCharInRange(c, CHAR_RANGES);	//see if the character is a legal XML character
-	}
-
-	/**Sees if the specified character is in one of the specified ranges.
-	@param c The character to check.
-	@param ranges A string of character pairs, <em>in order</em>, the first of each pair specifying the bottom inclusive character of a range, the second of which specifying the top inclusive character of the range.
-	@return true if the character is in one of the ranges, else false.
-	*/
-	static protected boolean isCharInRange(final char c, final String ranges)
-	{
-		for(int i=0; i<ranges.length(); ++i)	//look at each character in the ranges string
-		{
-			if(c<ranges.charAt(i))	//if we've found a higher character than ours
-			{
-				if(i==0)	//if this is the first character
-					return false;	//our character must be below all of the characters
-				else if (c==ranges.charAt(i-1))	//if our character is equal to the previous character, it's in the range
-					return true;	//since our character is equal to one of the characters, it has to be in one of the ranges
-				else if((i & 1)!=0)	//if we're at an odd index, meaning that this is the second character in one of the pairs
-					return true;	//we've established that: 1) our character is below the upper range character and 2) it is above the lower range character
-				else	//if we get here, our character is between ranges
-					return false;	//we've established that: 1) our character is below the lower range character of a range and 2) it is above the upper range character of the range below it
-			}
-		}
-		return false;	//if we get here, this means our character is higher than any of the characters, meaning the character is higher than all the ranges
 	}
 
 	/**Checks to see if the specified character is XML whitespace.
 	@param c The character to check.
 	@return true if the character is XML whitespace.
 	*/
-	static public boolean isWhitespace(final char c)
+	public static boolean isWhitespace(final char c)
 	{
 		return WHITESPACE_CHARS.indexOf(c)!=-1;	//if the character matches any characters in our whitespace string, the character is whitespace
 	}
@@ -403,7 +380,7 @@ G***should we return data from CDATA sections as well?
 	@param c The character to check.
 	@return true if the character is an XML letter.
 	*/
-	static public boolean isLetter(final char c)
+	public static boolean isLetter(final char c)
 	{
 		return isCharInRange(c, BASE_CHAR_RANGES) || isCharInRange(c, IDEOGRAPHIC_RANGES);	//see if the character is a base character or an ideographic character
 	}
@@ -412,7 +389,7 @@ G***should we return data from CDATA sections as well?
 	@param c The character to check.
 	@return true if the character is an XML digit.
 	*/
-	static public boolean isDigit(final char c)
+	public static boolean isDigit(final char c)
 	{
 		return isCharInRange(c, DIGIT_RANGES);	//see if the character is a digit
 	}
@@ -421,7 +398,7 @@ G***should we return data from CDATA sections as well?
 	@param c The character to check.
 	@return true if the character is an XML combining character.
 	*/
-	static public boolean isCombiningChar(final char c)
+	public static boolean isCombiningChar(final char c)
 	{
 		return isCharInRange(c, COMBINING_CHAR_RANGES);	//see if the character is a combining character
 	}
@@ -430,7 +407,7 @@ G***should we return data from CDATA sections as well?
 	@param c The character to check.
 	@return true if the character is an XML extender.
 	*/
-	static public boolean isExtender(final char c)
+	public static boolean isExtender(final char c)
 	{
 		return isCharInRange(c, EXTENDER_RANGES);	//see if the character is an extender
 	}
@@ -439,9 +416,17 @@ G***should we return data from CDATA sections as well?
 	@param c The character to check.
 	@return <code>true</code> if the character is an XML name character.
 	*/
-	static public boolean isNameChar(final char c)
+	public static boolean isNameChar(final char c)
 	{
-		return isLetter(c) || isDigit(c) || c=='.' || c=='-' || c=='_' || c==':' || isCombiningChar(c) || isExtender(c);	//see if the character is a name character
+			//first do a quick check for the most common name characters, because the rigorous search is very inefficient; most name characters will be in the restricted quick-test ranges
+		if((c>='a' && c<='z')	//'a'-'z'
+				|| (c>='A' && c<='Z')	//'A'-'Z'
+				|| (c>='0' && c<='9')	//'0'-'9'
+				|| c=='.' || c=='-' || c=='_' || c==':')	//'.', '-', '_', ':'
+		{
+			return true;	//this is a name character
+		}
+		return isLetter(c) || isDigit(c) || isCombiningChar(c) || isExtender(c);	//only do a more rigorous check if the character isn't a common name character
 	}
 
 	/**Checks to see if the specified character is a valid character for the first
@@ -449,7 +434,7 @@ G***should we return data from CDATA sections as well?
 	@param c The character to check.
 	@return <code>true</code> if the character is an XML name first character.
 	*/
-	static public boolean isNameFirstChar(final char c)
+	public static boolean isNameFirstChar(final char c)
 	{
 		return isLetter(c) || c=='_' || c==':';	//the first character must be a letter, '_', or ':'
 	}
@@ -458,7 +443,7 @@ G***should we return data from CDATA sections as well?
 	@param name The name to check for validity.
 	@return <code>true</code> if the name is a valid XML name, else <code>false</code>.
 	*/
-	static public boolean isName(final String name)
+	public static boolean isName(final String name)
 	{
 //G***del when works		if(name.length()==0 || (!isLetter(name.charAt(0)) && name.charAt(0)!='_' && name.charAt(0)!=':'))	//the first character must be a letter, '_', or ':'
 		if(name.length()==0 || !isNameFirstChar(name.charAt(0)))	//the first character must be a letter, '_', or ':'
@@ -644,7 +629,7 @@ G***should we return data from CDATA sections as well?
 	@return <code>true</code> if the name is a valid processing instructin target,
 		else <code>false</code>.
 	*/
-	static public boolean isPITarget(final String piTarget)
+	public static boolean isPITarget(final String piTarget)
 	{
 		return isName(piTarget) && !piTarget.equalsIgnoreCase("xml");	//a PI target is a valid name that does not equal "XML" in any case
 	}
@@ -654,7 +639,7 @@ G***should we return data from CDATA sections as well?
 	@param c The Unicode character to be converted to a string.
 	*/
 /*G***del if not needed
-	static public String unicodeString(final char c)
+	public static String unicodeString(final char c)
 	{
 		return "#x"+Integer.toHexString((int)c);	//convert the character to a hex value and prepend a hex character correct symbol
 	}
