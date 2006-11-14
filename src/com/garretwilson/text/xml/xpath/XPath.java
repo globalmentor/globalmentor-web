@@ -160,11 +160,13 @@ public class XPath
 //G***del Debug.trace("nodeTest: "+nodeTest);
 		if(axisStep.getAxis().equals(ROOT))	//if this node indicates we should start from the root
 		{
+/*TODO del
 Debug.setDebug(true);
 Debug.trace("ready to add root.");
 Debug.trace("node", node);
 Debug.trace("owner document", node.getOwnerDocument());
 Debug.trace("document element", node.getOwnerDocument().getDocumentElement());
+*/
 			nodeList.add(node.getOwnerDocument().getDocumentElement());	//add the document root to our list of matching objects
 		}
 		else	//if this isn't the root location step
