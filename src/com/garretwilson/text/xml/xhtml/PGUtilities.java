@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.*;
 import com.garretwilson.io.*;
 import com.garretwilson.lang.*;
-import com.garretwilson.text.CharacterConstants;
+import static com.garretwilson.text.CharacterConstants.*;
 import com.garretwilson.text.xml.XMLUtilities;
 import com.garretwilson.util.Debug;
 import org.w3c.dom.*;
@@ -56,7 +56,7 @@ import org.w3c.dom.*;
 </dl>
 @author Garret Wilson
 */
-public class PGUtilities implements CharacterConstants
+public class PGUtilities
 {
 
 	/**The title string that appears in all Project Gutenberg title lines.*/
