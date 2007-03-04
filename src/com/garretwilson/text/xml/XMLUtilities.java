@@ -10,6 +10,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import com.garretwilson.lang.*;
 import com.garretwilson.text.*;
+
 import static com.garretwilson.text.xml.stylesheets.XMLStyleSheetConstants.*;
 import com.garretwilson.util.Debug;
 import org.w3c.dom.*;
@@ -699,6 +700,16 @@ G***should we return data from CDATA sections as well?
 		}
 	}
 
+	/**Performs a deep import on the children of the source node and adds them to the destination node.
+	@param destinationNode The node that will receive the imported child nodes.
+	@param sourceNode The node from whence the nodes will be imported.
+	*/
+	//G***list exceptions
+	public static void appendImportedChildNodes(final Node destinationNode, final Node sourceNode)
+	{
+		appendImportedChildNodes(destinationNode, sourceNode, true);	//import and append all descendant nodes
+	}
+
 	/**Performs an import on the children of the source node and adds them to the destination node.
 	@param destinationNode The node that will receive the imported child nodes.
 	@param sourceNode The node from whence the nodes will be imported.
@@ -713,7 +724,6 @@ G***should we return data from CDATA sections as well?
 		for(int i=0; i<sourceNodeCount; ++i)  //look at each of the source nodes
 		{
 			final Node sourceChildNode=sourceNodeList.item(i); //get a reference to this child node
-	//G***del Debug.trace("ready to clone child node: "+sourceChildNode.getNodeName()+" with parent: "+sourceChildNode.getParentNode().getNodeName());
 			destinationNode.appendChild(destinationDocument.importNode(sourceChildNode, deep));  //import the node and add it to the destination node
 		}
 	}
@@ -1072,38 +1082,50 @@ G***should we return data from CDATA sections as well?
 		return null;  //show that we didn't find the requested pseudo attribute value
 	}
 
-	/**Retrieves the text of the element contained in child nodes of type
-		<code>Node.Text</code>.
-		If <code>deep</code> is set to <code>true</code> the text of all descendant
-		nodes in document (depth-first) order; otherwise, only text of direct
-		children will be returned.
-	@param element The element from which text will be retrieved.
-	@param deep Whether text of all descendents in documet order will be returned.
-	@return The data of all <code>Text</code> children nodes.
+	/**Retrieves the text of the node contained in child nodes of type
+		<code>Node.Text</code>, extracting text deeply.
+	@param node The node from which text will be retrieved.
+	@return The data of all <code>Text</code> descendent nodes, which may be the empty string.
 	@see Node#TEXT_NODE
 	@see Text#getData
 	*/
-	public static String getText(final Element element, final boolean deep)
+	public static String getText(final Node node)
 	{
-		final StringBuilder stringBuilder=new StringBuilder(); //create a string buffer to collect the text data
-		getText(element, deep, stringBuilder); //collect the text in the string buffer
-		return stringBuilder.toString(); //convert the string buffer to a string and return it
+		return getText(node, true);	//get text deeply
 	}
 
-	/**Retrieves the text of the element contained in child nodes of type
+	/**Retrieves the text of the node contained in child nodes of type
 		<code>Node.Text</code>.
 		If <code>deep</code> is set to <code>true</code> the text of all descendant
 		nodes in document (depth-first) order; otherwise, only text of direct
 		children will be returned.
-	@param element The element from which text will be retrieved.
+	@param node The node from which text will be retrieved.
+	@param deep Whether text of all descendents in documet order will be returned.
+	@return The data of all <code>Text</code> children nodes, which may be the empty string.
+	@see Node#TEXT_NODE
+	@see Text#getData
+	*/
+	public static String getText(final Node node, final boolean deep)
+	{
+		final StringBuilder stringBuilder=new StringBuilder(); //create a string buffer to collect the text data
+		getText(node, deep, stringBuilder); //collect the text in the string buffer
+		return stringBuilder.toString(); //convert the string buffer to a string and return it
+	}
+
+	/**Retrieves the text of the node contained in child nodes of type
+		<code>Node.Text</code>.
+		If <code>deep</code> is set to <code>true</code> the text of all descendant
+		nodes in document (depth-first) order; otherwise, only text of direct
+		children will be returned.
+	@param node The node from which text will be retrieved.
 	@param deep Whether text of all descendents in documet order will be returned.
 	@param stringBuilder The buffer to which text will be added.
 	@see Node#TEXT_NODE
 	@see Text#getData
 	*/
-	public static void getText(final Element element, final boolean deep, final StringBuilder stringBuilder)
+	public static void getText(final Node node, final boolean deep, final StringBuilder stringBuilder)
 	{
-		final NodeList childNodeList=element.getChildNodes();  //get a reference to the child nodes
+		final NodeList childNodeList=node.getChildNodes();  //get a reference to the child nodes
 		final int childCount=childNodeList.getLength(); //find out how many children there are
 		for(int i=0; i<childCount; ++i) //look at each of the children
 		{
