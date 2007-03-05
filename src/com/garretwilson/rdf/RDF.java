@@ -465,12 +465,12 @@ public class RDF	//TODO special-case rdf:nil list resources so that they are not
 	@return The resource created with this reference URI, with the given type
 		added if a type was given.
 	*/
-	protected RDFResource createTypedResource(final URI referenceURI, final URI namespaceURI, final String localName, final URI typeNamespaceURI, final String typeLocalName)
+	protected RDFResource createTypedResource(final URI referenceURI, final URI namespaceURI, final String localName, final URI typeNamespaceURI, final String typeLocalName)	//TODO remove some of these parameters are no longer needed after namespaces and local names are no longer stored
 	{
 		RDFResource resource=createTypedResourceFromFactory(referenceURI, typeNamespaceURI, typeLocalName);	//see if we can create the resource from a resource factory
 		if(resource==null)  //if we didn't created a resource from a factory
 		{
-		  resource=new DefaultRDFResource(this, referenceURI, namespaceURI, localName);  //create a new resource from the given reference URI, showing which data model created the resource
+		  resource=new DefaultRDFResource(this, referenceURI);  //create a new resource from the given reference URI, showing which data model created the resource
 			addResource(resource);  //store the resource in the data model
 		}
 		if(typeNamespaceURI!=null && typeLocalName!=null)	//if we were given a type
