@@ -4,8 +4,9 @@ import java.io.*;
 import java.util.*;
 import org.w3c.dom.*;
 import com.garretwilson.lang.CharacterUtilities;
+import static com.garretwilson.lang.JavaConstants.*;
 import com.garretwilson.lang.StringBufferUtilities;
-import com.garretwilson.net.URIConstants;
+import static com.garretwilson.net.URIConstants.*;
 import com.garretwilson.net.http.webdav.WebDAVConstants;
 import com.garretwilson.rdf.dicto.DictoConstants;
 import com.garretwilson.rdf.dublincore.DCConstants;
@@ -16,6 +17,7 @@ import com.garretwilson.text.xml.oeb.OEBConstants;
 import com.garretwilson.assess.qti.QTIConstants;
 import com.garretwilson.rdf.RDFConstants;
 import com.garretwilson.rdf.maqro.MAQROConstants;
+import com.garretwilson.rdf.ploop.PLOOPConstants;
 import com.garretwilson.rdf.rdfs.RDFSConstants;
 import com.garretwilson.text.xml.schema.XMLSchemaConstants;
 import com.garretwilson.text.xml.xhtml.XHTMLConstants;
@@ -25,6 +27,7 @@ import com.garretwilson.rdf.xeb.XEBConstants;
 import com.garretwilson.rdf.xpackage.FileOntologyConstants;
 import com.garretwilson.rdf.xpackage.MIMEOntologyConstants;
 import com.garretwilson.rdf.xpackage.XPackageConstants;
+import com.garretwilson.util.Debug;
 import com.garretwilson.util.PropertyUtilities;
 
 import static com.garretwilson.text.xml.XMLConstants.*;
@@ -32,8 +35,8 @@ import static com.garretwilson.text.xml.XMLConstants.*;
 //G***del all the XMLUndefinedEntityReferenceException throws when we don't need them anymore, in favor of XMLWellFormednessException
 
 /**Class which serializes an XML document to a byte-oriented output stream.
-	Has the option of automatically formatting the output in a hierarchical
-	structure with tabs or other strings.
+Has the option of automatically formatting the output in a hierarchical structure with tabs or other strings.
+The Java package name of any Java URIs ending in '.' will be used as the namespace prefix if possible, if none exists already.
 @see XMLProcessor
 @author Garret Wilson
 */
@@ -142,6 +145,17 @@ public class XMLSerializer
 		*/
 		public void setUseEntities(final boolean newUseEntities) {useEntities=newUseEntities;}
 
+	/**Whether missing namespaces declarations should be added to the document element if possible, rather than the top-level element needing the declaration.*/
+	private boolean namespacesDocumentElementDeclarations=true;
+
+		/**@return Whether missing namespaces declarations should be added to the document element if possible, rather than the top-level element needing the declaration.*/
+		public boolean isNamespacesDocumentElementDeclarations() {return namespacesDocumentElementDeclarations;}
+
+		/**Sets whether missing namespace declarations are added to the document element if possible, or to the top-level element needing the declaration.
+		@param namespacesDocumentElementDeclarations Whether missing namespaces declarations should be added to the document element if possible, rather than the top-level element needing the declaration.
+		*/
+		public void setNamespacesDocumentElementDeclarations(final boolean namespacesDocumentElementDeclarations) {this.namespacesDocumentElementDeclarations=namespacesDocumentElementDeclarations;}
+
 	/**Sets the options based on the contents of the option properties.
 	@param options The properties which contain the options.
 	*/
@@ -204,6 +218,7 @@ public class XMLSerializer
 		map.put(DCConstants.DCMI11_ELEMENTS_NAMESPACE_URI.toString(), DCConstants.DCMI_ELEMENTS_NAMESPACE_PREFIX); //Dublin Core
 		map.put(MAQROConstants.MAQRO_NAMESPACE_URI.toString(), MAQROConstants.MAQRO_NAMESPACE_PREFIX); //MAQRO
 		map.put(OEBConstants.OEB1_DOCUMENT_NAMESPACE_URI.toString(), OEBConstants.OEB1_DOCUMENT_NAMESPACE_PREFIX); //OEB 1
+		map.put(PLOOPConstants.PLOOP_PROPERTY_NAMESPACE_URI.toString(), PLOOPConstants.PLOOP_NAMESPACE_PREFIX); //PLOOP
 		map.put(QTIConstants.QTI_1_1_NAMESPACE_URI.toString(), QTIConstants.QTI_NAMESPACE_PREFIX); //QTI
 		map.put(RDFConstants.RDF_NAMESPACE_URI.toString(), RDFConstants.RDF_NAMESPACE_PREFIX); //RDF
 		map.put(RDFSConstants.RDFS_NAMESPACE_URI.toString(), RDFSConstants.RDFS_NAMESPACE_PREFIX); //RDFS
@@ -239,6 +254,12 @@ public class XMLSerializer
 		return getNamespacePrefix(namespacePrefixMap, namespaceURI, true);	//get a namespace prefix, generating a new one if needed 
 	}
 
+	/**The prefix, "java:", of a Java package namespace URI.*/
+	private final static String JAVA_PACKAGE_NAMESPACE_URI_PREFIX=JAVA_SCHEME+SCHEME_SEPARATOR;
+
+	/**The suffix, ".", of a Java package namespace URI.*/
+	private final static String JAVA_PACKAGE_NAMESPACE_URI_SUFFIX=String.valueOf(PACKAGE_SEPARATOR);
+
 	/**Retrieves the prefix to use for the given namespace, using the provided
 		namespace prefix map.
 	<p>To accommodate vocabularies with different namespace-prefix mapping rules
@@ -248,6 +269,7 @@ public class XMLSerializer
 		namespace URI without that trailing fragment separator character.</p>
 	If a namespace is unrecognized, a new one will optionally be created and
 		stored in the map for future use.
+	<p>The Java package name of any Java URIs ending in '.' will be used as the namespace prefix if possible, if none exists already.</p>
 	@param namespaceURI The namespace URI for which a prefix should be returned
 	@param generatePrefix <code>true</code> if a prefix should be generated if
 		no prefix is assigned to the given namespace URI.
@@ -262,7 +284,7 @@ public class XMLSerializer
 		if(prefix==null)	//if we didn't find a prefix, try the namespaceURI without its ending # (RDF has different URI generation rules than, for example, XML Schema, resulting in different namespace representations)
 		{
 				//if this URI ends with '#' and has data before that character
-			if(namespaceURI!=null && namespaceURI.length()>1 && namespaceURI.charAt(namespaceURI.length()-1)==URIConstants.FRAGMENT_SEPARATOR)
+			if(namespaceURI!=null && namespaceURI.length()>1 && namespaceURI.charAt(namespaceURI.length()-1)==FRAGMENT_SEPARATOR)
 			{
 					//see if we recognize the URI without the ending '#'
 				prefix=(String)namespacePrefixMap.get(namespaceURI.substring(0, namespaceURI.length()-1));
@@ -270,7 +292,18 @@ public class XMLSerializer
 		}
 		if(prefix==null && generatePrefix)  //if there is no prefix for this namespace, and we should generate a prefix
 		{
-			prefix="namespace"+namespacePrefixMap.size()+1; //create a unique namespace prefix
+			if(namespaceURI.startsWith(JAVA_PACKAGE_NAMESPACE_URI_PREFIX) && namespaceURI.endsWith(JAVA_PACKAGE_NAMESPACE_URI_SUFFIX))	//if this is a Java package namespace
+			{
+				final String tentativePrefix=namespaceURI.substring(JAVA_PACKAGE_NAMESPACE_URI_PREFIX.length(), namespaceURI.length()-1);	//remove the prefix and suffix
+				if(tentativePrefix.length()>0 && !namespacePrefixMap.containsValue(tentativePrefix))	//check for the unlikely case that the original URI was "java:."; then if this prefix isn't already being used (this is an expensive operation, but necessary)
+				{
+					prefix=tentativePrefix;	//use the new prefix
+				}
+			}
+			if(prefix==null)	//if we didn't find a Java package namespace prefix
+			{
+				prefix="namespace"+namespacePrefixMap.size()+1; //create a unique namespace prefix
+			}
 			namespacePrefixMap.put(namespaceURI, prefix); //store the prefix in the map
 		}
 	  return prefix;  //return the prefix we found or created
@@ -415,7 +448,12 @@ public class XMLSerializer
 		else  //if there is no document type
 		  initializeEntityLookup(null); //always initialize the entity lookup, so that at least the five XML entities will be included in the table
 	  writeProcessingInstructions(document, writer);  //write any processing instructions
-		write(document.getDocumentElement(), writer);	//write the root element and all elements below it
+	  final Element documentElement=document.getDocumentElement();	//get the document element
+	  if(isNamespacesDocumentElementDeclarations())	//if missing namespaces should be declared on the document element, process the entire document before writing
+	  {
+	  	XMLNamespaceProcessor.ensureNamespaceDeclarations(documentElement, documentElement, true);	//make sure all namespaces are declared that all elements need (i.e. deep), declaring any missing elements on the document element
+	  }
+	  write(documentElement, writer);	//write the document element and all elements below it
 		writer.newLine();	//add a newline in the default format
 		writer.flush();	//flush any data we've buffered
 	}
@@ -692,7 +730,7 @@ public class XMLSerializer
 		if(formatted)	//if we should write formatted output
 			writeHorizontalAlignment(writer, nestLevel);		//horizontally align the element
 		writer.write(TAG_START+element.getNodeName());	//write the beginning of the start tag
-		XMLNamespaceProcessor.ensureNamespaceDeclarations(element);	//make sure all namespaces are declared that this element needs
+		XMLNamespaceProcessor.ensureNamespaceDeclarations(element, null, false);	//make sure all namespaces are declared that just this element needs; if any are missing, we can't declare up the tree, as those nodes have already been serialized
 /*TODO fix; this correctly doesn't add namespaces, to the tree itself, but not doing so means that the namespaces will just get added again lower down in the hierarchy
 			//get the undeclared namespaces for this element and write them before the normal attributes are written
 		final NameValuePair[] prefixNamespacePairs=XMLNamespaceProcessor.getUndeclaredNamespaces(element);
