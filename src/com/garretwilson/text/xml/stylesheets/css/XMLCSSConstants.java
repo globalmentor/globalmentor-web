@@ -412,10 +412,14 @@ public class XMLCSSConstants
 	public final static String CSS_PAGE_BREAK_BEFORE_RIGHT="right";
 	public final static String CSS_PAGE_BREAK_BEFORE_INHERIT="inherit";
 
-	//**Property <code>position</code>
+	//**property <code>position</code>
 	public final static String CSS_POSITION_ABSOLUTE="absolute";
 	public final static String CSS_POSITION_FIXED="fixed";
 	public final static String CSS_POSITION_RELATIVE="relative";
+
+	//**property <code>table-layout</code>
+	public final static String CSS_TABLE_LAYOUT_AUTO="auto";
+	public final static String CSS_TABLE_LAYOUT_FIXED="fixed";
 
 	//property <code>text-decoration</code>
 	public final static String CSS_TEXT_DECORATION_NONE="none";
