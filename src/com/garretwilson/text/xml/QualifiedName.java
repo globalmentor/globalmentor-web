@@ -16,7 +16,7 @@ public class QualifiedName extends DefaultResource implements IDable<URI>
 	/**The namespace URI, or <code>null</code> if there is no namespace URI.*/
 	private final String namespaceURI;
 
-		/**@return The namespace URI, or <code>null</code> if there is no namespace URI..*/
+		/**@return The namespace URI, or <code>null</code> if there is no namespace URI.*/
 		public String getNamespaceURI() {return namespaceURI;}
 
 		/**@return The unique identifier of the object.*/

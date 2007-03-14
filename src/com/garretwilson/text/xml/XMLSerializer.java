@@ -4,35 +4,15 @@ import java.io.*;
 import java.util.*;
 import org.w3c.dom.*;
 import com.garretwilson.lang.CharacterUtilities;
-import static com.garretwilson.lang.JavaConstants.*;
 import com.garretwilson.lang.StringBufferUtilities;
-import static com.garretwilson.net.URIConstants.*;
-import com.garretwilson.net.http.webdav.WebDAVConstants;
-import com.garretwilson.rdf.dicto.DictoConstants;
-import com.garretwilson.rdf.dublincore.DCConstants;
-import com.garretwilson.rdf.version.VersionConstants;
 import com.garretwilson.text.CharacterEncoding;
 import static com.garretwilson.text.CharacterEncodingConstants.*;
-import com.garretwilson.text.xml.oeb.OEBConstants;
-import com.garretwilson.assess.qti.QTIConstants;
-import com.garretwilson.rdf.RDFConstants;
-import com.garretwilson.rdf.maqro.MAQROConstants;
-import com.garretwilson.rdf.ploop.PLOOPConstants;
-import com.garretwilson.rdf.rdfs.RDFSConstants;
-import com.garretwilson.text.xml.schema.XMLSchemaConstants;
-import com.garretwilson.text.xml.xhtml.XHTMLConstants;
-import com.garretwilson.text.xml.xlink.XLinkConstants;
-//G***fix import com.garretwilson.text.xml.soap.SOAPConstants;
-import com.garretwilson.rdf.xeb.XEBConstants;
-import com.garretwilson.rdf.xpackage.FileOntologyConstants;
-import com.garretwilson.rdf.xpackage.MIMEOntologyConstants;
-import com.garretwilson.rdf.xpackage.XPackageConstants;
-import com.garretwilson.util.Debug;
+//TODO fix import com.garretwilson.text.xml.soap.SOAPConstants;
 import com.garretwilson.util.PropertyUtilities;
 
 import static com.garretwilson.text.xml.XMLConstants.*;
 
-//G***del all the XMLUndefinedEntityReferenceException throws when we don't need them anymore, in favor of XMLWellFormednessException
+//TODO del all the XMLUndefinedEntityReferenceException throws when we don't need them anymore, in favor of XMLWellFormednessException
 
 /**Class which serializes an XML document to a byte-oriented output stream.
 Has the option of automatically formatting the output in a hierarchical structure with tabs or other strings.
@@ -206,130 +186,6 @@ public class XMLSerializer
 
 		/**@return The options which specify how serialization should occur.*/
 //G***del		public Properties getOptions() {return options;}
-
-	/**@return A map of default namespace prefixes for known namespaces, keyed to
-		namespace URIs, to be used for serializing namespace references.
-	<p>Note that this method cannot use true URIs, primarily because WebDAV does not use a true URI for its namespace.</p> 
-	*/
-	public static Map<String, String> createNamespacePrefixMap()
-	{
-		final Map<String, String> map=new HashMap<String, String>();  //create a new hash map
-		map.put(DictoConstants.DICTO_NAMESPACE_URI.toString(), DictoConstants.DICTO_NAMESPACE_PREFIX); //Dicto
-		map.put(DCConstants.DCMI11_ELEMENTS_NAMESPACE_URI.toString(), DCConstants.DCMI_ELEMENTS_NAMESPACE_PREFIX); //Dublin Core
-		map.put(MAQROConstants.MAQRO_NAMESPACE_URI.toString(), MAQROConstants.MAQRO_NAMESPACE_PREFIX); //MAQRO
-		map.put(OEBConstants.OEB1_DOCUMENT_NAMESPACE_URI.toString(), OEBConstants.OEB1_DOCUMENT_NAMESPACE_PREFIX); //OEB 1
-		map.put(PLOOPConstants.PLOOP_PROPERTY_NAMESPACE_URI.toString(), PLOOPConstants.PLOOP_PROPERTY_NAMESPACE_PREFIX); //PLOOP property
-		map.put(QTIConstants.QTI_1_1_NAMESPACE_URI.toString(), QTIConstants.QTI_NAMESPACE_PREFIX); //QTI
-		map.put(RDFConstants.RDF_NAMESPACE_URI.toString(), RDFConstants.RDF_NAMESPACE_PREFIX); //RDF
-		map.put(RDFSConstants.RDFS_NAMESPACE_URI.toString(), RDFSConstants.RDFS_NAMESPACE_PREFIX); //RDFS
-//G***add SOAP
-		map.put(VersionConstants.VERSION_NAMESPACE_URI.toString(), VersionConstants.VERSION_NAMESPACE_PREFIX); //version
-		map.put(WebDAVConstants.WEBDAV_NAMESPACE, WebDAVConstants.WEBDAV_NAMESPACE_PREFIX); //WebDAV
-		map.put(XMLSchemaConstants.XML_SCHEMA_NAMESPACE_URI.toString(), XMLSchemaConstants.XML_SCHEMA_NAMESPACE_PREFIX); //XML Schema
-		map.put(XHTMLConstants.XHTML_NAMESPACE_URI.toString(), XHTMLConstants.XHTML_NAMESPACE_PREFIX); //XHTML
-		map.put(XLinkConstants.XLINK_NAMESPACE_URI.toString(), XLinkConstants.XLINK_NAMESPACE_PREFIX); //XLink
-		map.put(XMLConstants.XML_NAMESPACE_URI.toString(), XMLConstants.XML_NAMESPACE_PREFIX); //XML
-		map.put(XMLConstants.XML_NAMESPACE_URI.toString(), XMLConstants.XML_NAMESPACE_PREFIX); //XML namespaces
-		map.put(XEBConstants.XEB_NAMESPACE_URI.toString(), XEBConstants.XEB_NAMESPACE_PREFIX); //XEbook
-		map.put(XPackageConstants.XPACKAGE_NAMESPACE_URI.toString(), XPackageConstants.XPACKAGE_NAMESPACE_PREFIX); //XPackage
-		map.put(XPackageConstants.XML_ONTOLOGY_NAMESPACE_URI.toString(), XPackageConstants.XML_ONTOLOGY_NAMESPACE_PREFIX); //XPackage XML ontology
-		map.put(FileOntologyConstants.FILE_ONTOLOGY_NAMESPACE_URI.toString(), FileOntologyConstants.FILE_ONTOLOGY_NAMESPACE_PREFIX); //XPackage file ontology
-//TODO add XPackage Unicode ontology
-		map.put(MIMEOntologyConstants.MIME_ONTOLOGY_NAMESPACE_URI.toString(), MIMEOntologyConstants.MIME_ONTOLOGY_NAMESPACE_PREFIX); //XPackage MIME ontology
-			//applications
-//G***fix, maybe, for Marmot and others		map.put(MIMEOntologyConstants.MIME_ONTOLOGY_NAMESPACE_URI.toString(), MIMEOntologyConstants.MIME_ONTOLOGY_NAMESPACE_PREFIX); //XPackage MIME ontology
-		return map; //return the map we constructed
-	}
-
-	/**Retrieves the prefix to use for the given namespace, using the provided
-		namespace prefix map.
-	If a namespace is unrecognized, a new one will be created and stored in the
-		map for future use.
-	@param namespaceURI The namespace URI for which a prefix should be returned
-	@return A prefix for use with the given namespace.
-	@see #createNamespacePrefixMap
-	*/
-	public static String getNamespacePrefix(final Map<String, String> namespacePrefixMap, final String namespaceURI)
-	{
-		return getNamespacePrefix(namespacePrefixMap, namespaceURI, true);	//get a namespace prefix, generating a new one if needed 
-	}
-
-	/**The prefix, "java:", of a Java package namespace URI.*/
-	private final static String JAVA_PACKAGE_NAMESPACE_URI_PREFIX=JAVA_SCHEME+SCHEME_SEPARATOR;
-
-	/**The suffix, ".", of a Java package namespace URI.*/
-	private final static String JAVA_PACKAGE_NAMESPACE_URI_SUFFIX=String.valueOf(PACKAGE_SEPARATOR);
-
-	/**Retrieves the prefix to use for the given namespace, using the provided
-		namespace prefix map.
-	<p>To accommodate vocabularies with different namespace-prefix mapping rules
-		(such as RDF and and XML Schema) which result in different namespace
-		representations, if the namespace URI ends in a fragment separator ('#')
-		and no prefix is found, an attempt is made to look up a prefix using the
-		namespace URI without that trailing fragment separator character.</p>
-	If a namespace is unrecognized, a new one will optionally be created and
-		stored in the map for future use.
-	<p>The Java package name of any Java URIs ending in '.' will be used as the namespace prefix if possible, if none exists already.</p>
-	@param namespaceURI The namespace URI for which a prefix should be returned
-	@param generatePrefix <code>true</code> if a prefix should be generated if
-		no prefix is assigned to the given namespace URI.
-	@return A prefix for use with the given namespace, or <code>null</code> if
-		no prefix is assigned to the given namespace URI and
-		<code>generatePrefix</code> is <code>false</code>.
-	@see #createNamespacePrefixMap
-	*/
-	public static String getNamespacePrefix(final Map<String, String> namespacePrefixMap, final String namespaceURI, boolean generatePrefix)
-	{
-		String prefix=namespacePrefixMap.get(namespaceURI);  //get the prefix keyed by the namespace
-		if(prefix==null)	//if we didn't find a prefix, try the namespaceURI without its ending # (RDF has different URI generation rules than, for example, XML Schema, resulting in different namespace representations)
-		{
-				//if this URI ends with '#' and has data before that character
-			if(namespaceURI!=null && namespaceURI.length()>1 && namespaceURI.charAt(namespaceURI.length()-1)==FRAGMENT_SEPARATOR)
-			{
-					//see if we recognize the URI without the ending '#'
-				prefix=(String)namespacePrefixMap.get(namespaceURI.substring(0, namespaceURI.length()-1));
-			}			
-		}
-		if(prefix==null && generatePrefix)  //if there is no prefix for this namespace, and we should generate a prefix
-		{
-			if(namespaceURI.startsWith(JAVA_PACKAGE_NAMESPACE_URI_PREFIX) && namespaceURI.endsWith(JAVA_PACKAGE_NAMESPACE_URI_SUFFIX))	//if this is a Java package namespace
-			{
-				final String tentativePrefix=namespaceURI.substring(JAVA_PACKAGE_NAMESPACE_URI_PREFIX.length(), namespaceURI.length()-1);	//remove the prefix and suffix
-				if(tentativePrefix.length()>0 && !namespacePrefixMap.containsValue(tentativePrefix))	//check for the unlikely case that the original URI was "java:."; then if this prefix isn't already being used (this is an expensive operation, but necessary)
-				{
-					prefix=tentativePrefix;	//use the new prefix
-				}
-			}
-			if(prefix==null)	//if we didn't find a Java package namespace prefix
-			{
-				prefix="namespace"+namespacePrefixMap.size()+1; //create a unique namespace prefix
-			}
-			namespacePrefixMap.put(namespaceURI, prefix); //store the prefix in the map
-		}
-	  return prefix;  //return the prefix we found or created
-	}
-
-	/**Retrieves the prefix to use for the given namespace, using the provided
-		namespace prefix map. If a namespace is unrecognized, a new one will be
-		created and stored for future use.
-	@param namespacePrefixMap The map of prefix strings, each keyed to a namespace
-		URI.
-	@param namespaceURI The namespace URI for which a prefix should be returned
-	@return A prefix for use with the given namespace.
-	@see #createNamespacePrefixMap
-	*/
-/*G***del when works
-	public static String getNamespacePrefix(final Map namespacePrefixMap, final String namespaceURI)
-	{
-		String prefix=(String)namespacePrefixMap.get(namespaceURI);  //get the prefix keyed by the namespace
-		if(prefix==null)  //if there is no prefix for this namespace
-		{
-			prefix="namespace"+namespacePrefixMap.size()+1; //create a unique namespace prefix
-			namespacePrefixMap.put(namespaceURI, prefix); //store the prefix in the map
-		}
-	  return prefix;  //return the prefix we found or created
-	}
-*/
 
 	/**Default constructor for unformatted output.*/
 	public XMLSerializer()
