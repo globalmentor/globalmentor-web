@@ -889,6 +889,35 @@ G***should we return data from CDATA sections as well?
 		return childElement;  //return the element we created
 	}
 
+	/**Extracts a single node from its parent and places it in a document fragment.
+	@param node The node to be extracted. This node must have a valid parent and owner document.
+	@return A new document fragment containing the extracted node.
+	@exception DOMException
+	<ul>
+		<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
+	</ul>
+	@exception IllegalArgumentException if the given node has no owner document.
+	@exception IllegalArgumentException if the given node has no parent node.
+	@see #removeChildren(Node, int, int)
+	*/
+	public static DocumentFragment extractNode(final Node node) throws DOMException
+	{
+		final Document ownerDocument=node.getOwnerDocument();	//get the node owner document
+		if(ownerDocument==null)	//if there is no owner document
+		{
+			throw new IllegalArgumentException("Node "+node+"has no owner document.");
+		}
+		final Node parentNode=node.getParentNode();	//get the node's parent
+		if(parentNode==null)	//if there is no parent node
+		{
+			throw new IllegalArgumentException("Node "+node+"has no parent node.");
+		}
+		final DocumentFragment documentFragment=ownerDocument.createDocumentFragment(); //create a document fragment to hold the nodes
+	  parentNode.removeChild(node); //remove the node from its parent
+	  documentFragment.appendChild(node);  //append the removed child to the document fragment
+		return documentFragment;	//return the document fragment
+	}
+
 	/**Extracts all the child nodes from the given node and places them in a
 		document fragment.
 	@param node The node from which child nodes should be extracted. This node
@@ -918,21 +947,28 @@ G***should we return data from CDATA sections as well?
 		or if the ending index is greater than the number of children (unless
 		the ending index is not greater than the starting index).
 	G***should we throw an exception is startChildIndex>endChildIndex, like String.substring()?
+	@exception IllegalArgumentException if the given node has no owner document.
+	@exception ArrayIndexOutOfBoundsException if the given range is invalid for the given node's children.
 	@exception DOMException
 	<ul>
 		<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
 	</ul>
-	@see #removeChildren
+	@see #removeChildren(Node, int, int)
 	*/
 	public static DocumentFragment extractChildren(final Node node, final int startChildIndex, final int endChildIndex) throws ArrayIndexOutOfBoundsException, DOMException
 	{
+		final Document ownerDocument=node.getOwnerDocument();	//get the node owner document
+		if(ownerDocument==null)	//if there is no owner document
+		{
+			throw new IllegalArgumentException("Node "+node+"has no owner document.");
+		}
 		final NodeList childNodeList=node.getChildNodes();  //get a reference to the child nodes
 		final int childNodeCount=childNodeList.getLength(); //find out how many child nodes there are
 		if(startChildIndex<0 || (endChildIndex>startChildIndex && startChildIndex>=childNodeCount))  //if the start child index is out of range
 			throw new ArrayIndexOutOfBoundsException(startChildIndex); //throw an exception indicating the illegal index
 		if(endChildIndex<0 || (endChildIndex>startChildIndex && endChildIndex>childNodeCount))  //if the ending child index is out of range
 			throw new ArrayIndexOutOfBoundsException(endChildIndex); //throw an exception indicating the illegal index
-		final DocumentFragment documentFragment=node.getOwnerDocument().createDocumentFragment(); //create a document fragment to hold the nodes
+		final DocumentFragment documentFragment=ownerDocument.createDocumentFragment(); //create a document fragment to hold the nodes
 		Node lastAddedNode=null; //show that we haven't added any nodes, yet
 		for(int i=endChildIndex-1; i>=startChildIndex; --i)  //starting from the end, look at all the indexes before the ending index
 		{
@@ -973,6 +1009,68 @@ G***should we return data from CDATA sections as well?
 	{
 			//retrieve and return the attribute if it exists, else return null
 		return element.hasAttributeNS(namespaceURI, localName) ? element.getAttributeNS(namespaceURI, localName) : null;
+	}
+
+	/**Retrieves the first child node of the specified type.
+	@param node The node of which child elements will be examined.
+	@param nodeType The type of node to return.
+	@return The first node of the given type, or <code>null</code> if there is no such node of the given type.
+	*/
+	public static Node getChildNode(final Node node, final int nodeType)
+	{
+		final NodeList childNodeList=node.getChildNodes();  //get a reference to the child nodes
+		final int childCount=childNodeList.getLength(); //find out how many children there are
+		for(int i=0; i<childCount; ++i) //look at each of the children
+		{
+			final Node childNode=childNodeList.item(i); //get a reference to this node
+			if(childNode.getNodeType()==nodeType)	//if this node is of the correct type
+			{
+				return childNode;	//return this child node
+			}
+		}
+		return null;	//indicate that no matching nodes were found
+	}
+
+	/**Retrieves the first child node not of the specified type.
+	@param node The node of which child elements will be examined.
+	@param nodeType The type of node not to return.
+	@return The first node not of the given type, or <code>null</code> if there is no node not of the given type.
+	*/
+	public static Node getChildNodeNot(final Node node, final int nodeType)
+	{
+		final NodeList childNodeList=node.getChildNodes();  //get a reference to the child nodes
+		final int childCount=childNodeList.getLength(); //find out how many children there are
+		for(int i=0; i<childCount; ++i) //look at each of the children
+		{
+			final Node childNode=childNodeList.item(i); //get a reference to this node
+			if(childNode.getNodeType()!=nodeType)	//if this node is not of the specified type
+			{
+				return childNode;	//return this child node
+			}
+		}
+		return null;	//indicate that no non-matching nodes were found
+	}
+
+	/**Retrieves the nodes contained in child nodes of type {@link Node#ELEMENT_NODE}.
+	@param node The node from which child elements will be returned.
+	@see Node#ELEMENT_NODE
+	*/
+	public static List<Element> getChildElements(final Node node)
+	{
+		final List<Element> childElements=new ArrayList<Element>();	//create a list to hold the elements
+		final NodeList childNodeList=node.getChildNodes();  //get a reference to the child nodes
+		final int childCount=childNodeList.getLength(); //find out how many children there are
+		for(int i=0; i<childCount; ++i) //look at each of the children
+		{
+			final Node childNode=childNodeList.item(i); //get a reference to this node
+			switch(childNode.getNodeType()) //see which type of node this is
+			{
+				case Node.ELEMENT_NODE: //if this is an element
+					childElements.add((Element)childNode);	//add this child element
+					break;
+			}
+		}
+		return childElements;	//return the child element we collected
 	}
 
 	/**Returns a list of child nodes with a given type and
@@ -1082,8 +1180,7 @@ G***should we return data from CDATA sections as well?
 		return null;  //show that we didn't find the requested pseudo attribute value
 	}
 
-	/**Retrieves the text of the node contained in child nodes of type
-		<code>Node.Text</code>, extracting text deeply.
+	/**Retrieves the text of the node contained in child nodes of type {@link Node#TEXT_NODE}, extracting text deeply.
 	@param node The node from which text will be retrieved.
 	@return The data of all <code>Text</code> descendent nodes, which may be the empty string.
 	@see Node#TEXT_NODE
@@ -1094,8 +1191,7 @@ G***should we return data from CDATA sections as well?
 		return getText(node, true);	//get text deeply
 	}
 
-	/**Retrieves the text of the node contained in child nodes of type
-		<code>Node.Text</code>.
+	/**Retrieves the text of the node contained in child nodes of type {@link Node#TEXT_NODE}.
 		If <code>deep</code> is set to <code>true</code> the text of all descendant
 		nodes in document (depth-first) order; otherwise, only text of direct
 		children will be returned.
