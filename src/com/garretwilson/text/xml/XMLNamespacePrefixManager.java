@@ -6,6 +6,7 @@ import static com.garretwilson.net.URIConstants.*;
 import java.util.*;
 
 import com.garretwilson.assess.qti.QTIConstants;
+import com.garretwilson.net.http.webdav.ApacheWebDAVConstants;
 import com.garretwilson.net.http.webdav.WebDAVConstants;
 import com.garretwilson.rdf.RDFConstants;
 import com.garretwilson.rdf.dicto.DictoConstants;
@@ -65,6 +66,9 @@ public class XMLNamespacePrefixManager
 	/**Default constructor that is initialized with a default set of namespace prefix mappings.*/
 	public XMLNamespacePrefixManager()
 	{
+		
+		
+		registerNamespacePrefix(ApacheWebDAVConstants.APACHE_WEBDAV_PROPERTY_NAMESPACE_URI.toString(), ApacheWebDAVConstants.APACHE_WEBDAV_PROPERTY_NAMESPACE_PREFIX); //Apache WebDAV properties
 		registerNamespacePrefix(DictoConstants.DICTO_NAMESPACE_URI.toString(), DictoConstants.DICTO_NAMESPACE_PREFIX); //Dicto
 		registerNamespacePrefix(DCConstants.DCMI11_ELEMENTS_NAMESPACE_URI.toString(), DCConstants.DCMI_ELEMENTS_NAMESPACE_PREFIX); //Dublin Core
 		registerNamespacePrefix(MAQROConstants.MAQRO_NAMESPACE_URI.toString(), MAQROConstants.MAQRO_NAMESPACE_PREFIX); //MAQRO

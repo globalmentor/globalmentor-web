@@ -275,6 +275,7 @@ public interface XHTMLConstants
 
 		//attributes for <td>
 	public final static String ELEMENT_TD_ATTRIBUTE_COLSPAN="colspan";
+	public final static String ELEMENT_TD_ATTRIBUTE_ROWSPAN="rowspan";
 	public final static String ELEMENT_TD_ATTRIBUTE_SCOPE="scope";
 		public final static String TD_SCOPE_COLGROUP="colgroup";
 

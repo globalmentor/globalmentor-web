@@ -2,7 +2,7 @@ package com.garretwilson.text.xml;
 
 import java.net.URI;
 
-import com.garretwilson.model.DefaultResource;
+import com.garretwilson.net.DefaultResource;
 import com.garretwilson.util.IDable;
 
 /**Represents a qualified name (QName) of an XML element, including the namespace URI, the prefix, and the local name.
