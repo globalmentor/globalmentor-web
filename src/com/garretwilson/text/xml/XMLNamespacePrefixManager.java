@@ -3,6 +3,7 @@ package com.garretwilson.text.xml;
 import static com.garretwilson.lang.JavaConstants.*;
 import static com.garretwilson.net.URIConstants.*;
 
+import java.net.URI;
 import java.util.*;
 
 import com.garretwilson.assess.qti.QTIConstants;
@@ -66,13 +67,12 @@ public class XMLNamespacePrefixManager
 	/**Default constructor that is initialized with a default set of namespace prefix mappings.*/
 	public XMLNamespacePrefixManager()
 	{
-		
-		
 		registerNamespacePrefix(ApacheWebDAVConstants.APACHE_WEBDAV_PROPERTY_NAMESPACE_URI.toString(), ApacheWebDAVConstants.APACHE_WEBDAV_PROPERTY_NAMESPACE_PREFIX); //Apache WebDAV properties
 		registerNamespacePrefix(DictoConstants.DICTO_NAMESPACE_URI.toString(), DictoConstants.DICTO_NAMESPACE_PREFIX); //Dicto
 		registerNamespacePrefix(DCConstants.DCMI11_ELEMENTS_NAMESPACE_URI.toString(), DCConstants.DCMI_ELEMENTS_NAMESPACE_PREFIX); //Dublin Core
 		registerNamespacePrefix(MAQROConstants.MAQRO_NAMESPACE_URI.toString(), MAQROConstants.MAQRO_NAMESPACE_PREFIX); //MAQRO
 		registerNamespacePrefix(OEBConstants.OEB1_DOCUMENT_NAMESPACE_URI.toString(), OEBConstants.OEB1_DOCUMENT_NAMESPACE_PREFIX); //OEB 1
+		registerNamespacePrefix("http://globalmentor.com/namespaces/marmot#", "marmot"); //Marmot TODO link to Marmot constants when Marmot is included in normal libraries		
 		registerNamespacePrefix(PLOOPConstants.PLOOP_PROPERTY_NAMESPACE_URI.toString(), PLOOPConstants.PLOOP_PROPERTY_NAMESPACE_PREFIX); //PLOOP property
 		registerNamespacePrefix(QTIConstants.QTI_1_1_NAMESPACE_URI.toString(), QTIConstants.QTI_NAMESPACE_PREFIX); //QTI
 		registerNamespacePrefix(RDFConstants.RDF_NAMESPACE_URI.toString(), RDFConstants.RDF_NAMESPACE_PREFIX); //RDF
