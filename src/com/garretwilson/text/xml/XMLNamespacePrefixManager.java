@@ -12,6 +12,7 @@ import com.garretwilson.net.http.webdav.WebDAVConstants;
 import com.garretwilson.rdf.RDFConstants;
 import com.garretwilson.rdf.dicto.DictoConstants;
 import com.garretwilson.rdf.dublincore.DCConstants;
+import com.garretwilson.rdf.foaf.FOAF;
 import com.garretwilson.rdf.maqro.MAQROConstants;
 import com.garretwilson.rdf.ploop.PLOOPConstants;
 import com.garretwilson.rdf.rdfs.RDFSConstants;
@@ -70,6 +71,7 @@ public class XMLNamespacePrefixManager
 		registerNamespacePrefix(ApacheWebDAVConstants.APACHE_WEBDAV_PROPERTY_NAMESPACE_URI.toString(), ApacheWebDAVConstants.APACHE_WEBDAV_PROPERTY_NAMESPACE_PREFIX); //Apache WebDAV properties
 		registerNamespacePrefix(DictoConstants.DICTO_NAMESPACE_URI.toString(), DictoConstants.DICTO_NAMESPACE_PREFIX); //Dicto
 		registerNamespacePrefix(DCConstants.DCMI11_ELEMENTS_NAMESPACE_URI.toString(), DCConstants.DCMI_ELEMENTS_NAMESPACE_PREFIX); //Dublin Core
+		registerNamespacePrefix(FOAF.FOAF_NAMESPACE_URI.toString(), FOAF.FOAF_NAMESPACE_PREFIX); //FOAF
 		registerNamespacePrefix(MAQROConstants.MAQRO_NAMESPACE_URI.toString(), MAQROConstants.MAQRO_NAMESPACE_PREFIX); //MAQRO
 		registerNamespacePrefix(OEBConstants.OEB1_DOCUMENT_NAMESPACE_URI.toString(), OEBConstants.OEB1_DOCUMENT_NAMESPACE_PREFIX); //OEB 1
 		registerNamespacePrefix("http://globalmentor.com/namespaces/marmot#", "marmot"); //Marmot TODO link to Marmot constants when Marmot is included in normal libraries		
