@@ -14,14 +14,22 @@ public class FOAF
 	public final static URI FOAF_NAMESPACE_URI=URI.create("http://xmlns.com/foaf/0.1/");
 
 		//FOAF type names
-	/**A church. The local name of <code>foaf:Church</code>.*/
-	public final static String CHURCH_TYPE_NAME="Church";
 	/**An agent (e.g. person, group, software or physical artifact). The local name of <code>foaf:Agent</code>.*/
 	public final static String AGENT_TYPE_NAME="Agent";
+	/**A church. The local name of <code>foaf:Church</code>.*/
+	public final static String CHURCH_TYPE_NAME="Church";
+	/**A company. The local name of <code>foaf:Company</code>.*/
+	public final static String COMPANY_TYPE_NAME="Company";
+	/**A non-governmental organization. The local name of <code>foaf:NGO</code>.*/
+	public final static String NGO_TYPE_NAME="NGO";
+	/**A non-profit organization. The local name of <code>foaf:Nonprofit</code>.*/
+	public final static String NONPROFIT_TYPE_NAME="Nonprofit";
 	/**An organization. The local name of <code>foaf:Organization</code>.*/
 	public final static String ORGANIZATION_TYPE_NAME="Organization";
 	/**A person. The local name of <code>foaf:Person</code>.*/
 	public final static String PERSON_TYPE_NAME="Person";
+	/**A religious organization. The local name of <code>foaf:ReligiousOrganization</code>.*/
+	public final static String RELIGIOUS_ORGANIZATION_TYPE_NAME="ReligiousOrganization";
 	/**A school. The local name of <code>foaf:School</code>.*/
 	public final static String SCHOOL_TYPE_NAME="School";
 	/**A synagogue. The local name of <code>foaf:Synagogue</code>.*/
