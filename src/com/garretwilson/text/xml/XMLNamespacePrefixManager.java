@@ -11,6 +11,7 @@ import com.garretwilson.net.http.webdav.ApacheWebDAVConstants;
 import com.garretwilson.net.http.webdav.WebDAVConstants;
 import com.garretwilson.rdf.RDFConstants;
 import com.garretwilson.rdf.dicto.DictoConstants;
+import com.garretwilson.rdf.directory.card.Card;
 import com.garretwilson.rdf.dublincore.DCConstants;
 import com.garretwilson.rdf.foaf.FOAF;
 import com.garretwilson.rdf.maqro.MAQROConstants;
@@ -80,6 +81,7 @@ public class XMLNamespacePrefixManager
 		registerNamespacePrefix(RDFConstants.RDF_NAMESPACE_URI.toString(), RDFConstants.RDF_NAMESPACE_PREFIX); //RDF
 		registerNamespacePrefix(RDFSConstants.RDFS_NAMESPACE_URI.toString(), RDFSConstants.RDFS_NAMESPACE_PREFIX); //RDFS
 //G***add SOAP
+		registerNamespacePrefix(Card.CARD_NAMESPACE_URI.toString(), Card.CARD_NAMESPACE_PREFIX); //vCard
 		registerNamespacePrefix(VersionConstants.VERSION_NAMESPACE_URI.toString(), VersionConstants.VERSION_NAMESPACE_PREFIX); //version
 		registerNamespacePrefix(XMLSchemaConstants.XML_SCHEMA_NAMESPACE_URI.toString(), XMLSchemaConstants.XML_SCHEMA_NAMESPACE_PREFIX); //XML Schema
 		registerNamespacePrefix(XHTMLConstants.XHTML_NAMESPACE_URI.toString(), XHTMLConstants.XHTML_NAMESPACE_PREFIX); //XHTML
