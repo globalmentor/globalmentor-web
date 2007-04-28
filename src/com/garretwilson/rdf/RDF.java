@@ -73,12 +73,11 @@ public class RDF	//TODO special-case rdf:nil list resources so that they are not
 		}
 */
 
-	/**The base URI of the RDF data model, or <code>null</code> if unknown.*/
-	private final URI baseURI;
-	
-		/**@return The base URI of the RDF data model, or <code>null</code> if unknown.*/
-		public URI getBaseURI() {return baseURI;}
+	/**The base URI of the RDF data model, or <code>null</code> if the base URI is unknown.*/
+//TODO del if not needed	private final URI baseURI;
 
+		/**@return The base URI of the RDF data model, or <code>null</code> if the base URI is unknown.*/
+//TODO del if not needed		public URI getBaseURI() {return baseURI;}
 		
 	/**The map of classes for for automatic creation of resources before a resource factory is checked for the given namespace.*/
 //TODO implement if needed	private final Map<URI, Class<? extends RDFResource>> resourceTypeClassMap=new HashMap<URI, Class<? extends RDFResource>>();
@@ -630,9 +629,9 @@ public class RDF	//TODO special-case rdf:nil list resources so that they are not
 	/**Base URI constructor.
 	@param baseURI The base URI of the RDF data model, or <code>null</code> if unknown.
 	*/
-	public RDF(final URI baseURI)
+	public RDF(final URI baseURI)	//TODO del this constructor if not needed
 	{
-		this.baseURI=baseURI;	//save the base URI
+//TODO del if not needed		this.baseURI=baseURI;	//save the base URI
 				//register typed literal factories for certain default namespaces
 		registerTypedLiteralFactory(XMLSchemaConstants.XML_SCHEMA_NAMESPACE_URI, new XMLSchemaTypedLiteralFactory());	//XML Schema
 	}
