@@ -11,7 +11,7 @@ import com.garretwilson.net.http.webdav.ApacheWebDAVConstants;
 import com.garretwilson.net.http.webdav.WebDAVConstants;
 import com.garretwilson.rdf.RDFConstants;
 import com.garretwilson.rdf.dicto.DictoConstants;
-import com.garretwilson.rdf.directory.card.Card;
+import com.garretwilson.rdf.directory.vcard.Card;
 import com.garretwilson.rdf.dublincore.DCConstants;
 import com.garretwilson.rdf.foaf.FOAF;
 import com.garretwilson.rdf.maqro.MAQROConstants;
