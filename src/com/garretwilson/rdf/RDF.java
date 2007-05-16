@@ -172,7 +172,7 @@ public class RDF	//TODO special-case rdf:nil list resources so that they are not
 		}
 
 		/**Removes the typed literal factory being used to create literals with a
-			datatype from the specified namespace. If there is no typed litreal
+			datatype from the specified namespace. If there is no typed literal
 			factory registered for this namespace, no action will be taken.
 		@param datatypeNamespaceURI The namespace of the datatype for which this
 			factory should be used to create typed literals.
@@ -237,7 +237,7 @@ public class RDF	//TODO special-case rdf:nil list resources so that they are not
 	}
 
 	/**Retrieves a named resource from the data model using its reference URI.
-	@param resourceURI The reference URI of the resource to retreive.
+	@param resourceURI The reference URI of the resource to retrieve.
 	@return The resource, or <code>null</code> if no matching resource was found.
 	*/
 	public RDFResource getResource(final URI resourceURI)
