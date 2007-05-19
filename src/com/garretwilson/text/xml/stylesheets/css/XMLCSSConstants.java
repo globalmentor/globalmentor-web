@@ -80,6 +80,8 @@ public class XMLCSSConstants
 	public final static char ID_SELECTOR_DELIMITER='#';
 	/**The delimiter used to introduce a pseudo class simple selector.*/
 	public final static char PSEUDO_CLASS_DELIMITER=':';
+	/**The character used to separate items in a list.*/
+	public final static char LIST_DELIMITER_CHAR=',';
 
 		//CSS units
 			//relative units
