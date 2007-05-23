@@ -274,10 +274,28 @@ public interface XHTMLConstants
 	public final static String ELEMENT_SELECT_ATTRIBUTE_SIZE="size";
 
 		//attributes for <td>
+	public final static String ELEMENT_TD_ATTRIBUTE_ALIGN="align";
+		public final static String TD_ALIGN_LEFT="left";
+		public final static String TD_ALIGN_CENTER="center";
+		public final static String TD_ALIGN_RIGHT="right";
+	public final static String ELEMENT_TD_ATTRIBUTE_VALIGN="valign";
+		public final static String TD_VALIGN_TOP="top";
+		public final static String TD_VALIGN_MIDDLE="middle";
+		public final static String TD_VALIGN_BOTTOM="bottom";
 	public final static String ELEMENT_TD_ATTRIBUTE_COLSPAN="colspan";
 	public final static String ELEMENT_TD_ATTRIBUTE_ROWSPAN="rowspan";
 	public final static String ELEMENT_TD_ATTRIBUTE_SCOPE="scope";
 		public final static String TD_SCOPE_COLGROUP="colgroup";
+
+	//attributes for <tr>
+	public final static String ELEMENT_TR_ATTRIBUTE_ALIGN="align";
+		public final static String TR_ALIGN_LEFT="left";
+		public final static String TR_ALIGN_CENTER="center";
+		public final static String TR_ALIGN_RIGHT="right";
+	public final static String ELEMENT_TR_ATTRIBUTE_VALIGN="valign";
+		public final static String TR_VALIGN_TOP="top";
+		public final static String TR_VALIGN_MIDDLE="middle";
+		public final static String TR_VALIGN_BOTTOM="bottom";
 
 		//attributes for <textarea>
 	public final static String ELEMENT_TEXTAREA_ATTRIBUTE_COLS="cols";
