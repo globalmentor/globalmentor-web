@@ -239,6 +239,10 @@ public class XMLCSSConstants
 	//properties <code>border-color</code> and <code>border-XXX-color</code>
 	public final static String CSS_BORDER_COLOR_TRANSPARENT="transparent";
 
+	//properties <code>border-collapse</code>
+	public final static String CSS_BORDER_COLLAPSE_COLLAPSE="collapse";
+	public final static String CSS_BORDER_COLLAPSE_SEPARATE="separate";
+
 	//properties <code>border-style</code> and <code>border-XXX-style</code>
 	public final static String CSS_BORDER_STYLE_NONE="none";
 	public final static String CSS_BORDER_STYLE_HIDDEN="hidden";
