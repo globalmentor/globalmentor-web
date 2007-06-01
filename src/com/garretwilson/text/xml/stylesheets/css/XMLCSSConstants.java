@@ -319,6 +319,7 @@ public class XMLCSSConstants
 	//**Property "display"
 	public final static String CSS_DISPLAY_BLOCK="block";
 	public final static String CSS_DISPLAY_INLINE="inline";
+	public final static String CSS_DISPLAY_INLINE_BLOCK="inline-block";
 	public final static String CSS_DISPLAY_LIST_ITEM="list-item";
 	public final static String CSS_DISPLAY_RUN_IN="run-in";
 	public final static String CSS_DISPLAY_COMPACT="compact";
