@@ -14,6 +14,7 @@ In addition to standard JSON, any {@link Date} object will be formatted as a str
 	"Date and Time Formats", <a href="http://www.w3.org/TR/NOTE-datetime">http://www.w3.org/TR/NOTE-datetime</a>,
 	a profile of ISO 8601.
 @author Garret Wilson
+@see <a href="http://www.ietf.org/rfc/rfc4627.txt">The application/json Media Type for JavaScript Object Notation (JSON)</a>
 @see <a href="http://www.json.org/">Introducing JSON</a>
 @see <a href="http://www.w3.org/TR/NOTE-datetime">Date and Time Formats</a>
 @see W3CDateFormat.Style#DATE_TIME
@@ -186,5 +187,13 @@ public class JSON
 		replace(stringBuilder, STRING_ENCODE_CHARS, STRING_ENCODE_REPLACEMENT_STRINGS);	//replace the encode characters with their encoded replacements
 		return stringBuilder.toString();	//return the encoded string
 	}
-	
+
+	/**Serializes the given object in JSON.
+	@param object The objectd to serialize.
+	@return A string serialization of the given object.
+	*/
+	public static String serialize(final Object object)
+	{
+		return appendValue(new StringBuilder(), object).toString();	//serialize the given object and return the resulting string
+	}
 }
