@@ -48,6 +48,9 @@ public class JavaScriptConstants
 	/**The character '}' for ending a block.*/
 	public final static char BLOCK_END_CHAR='}';
 
+	/**The character used to escape characters in an encoded string.*/
+	public final static char ESCAPE_CHAR='\\';
+
 	/**The character '(' for starting a parameter list.*/
 	public final static char PARAMETER_BEGIN_CHAR='(';
 

@@ -4,9 +4,12 @@ import static java.lang.reflect.Array.*;
 import java.util.*;
 
 import static com.garretwilson.javascript.JavaScriptConstants.*;
+import static com.garretwilson.lang.CharSequenceUtilities.*;
 import static com.garretwilson.lang.StringBuilderUtilities.*;
 import static com.garretwilson.lang.ObjectUtilities.*;
 import static com.garretwilson.text.CharacterConstants.*;
+
+import com.garretwilson.text.SyntaxException;
 import com.garretwilson.text.W3CDateFormat;
 
 /**Utilities for encoding and decoding JavaScript Object Notation (JSON).
@@ -89,7 +92,7 @@ public class JSON
 	*/
 	public static StringBuilder appendStringValue(final StringBuilder stringBuilder, final CharSequence charSequence)
 	{
-		return stringBuilder.append(QUOTATION_MARK_CHAR).append(encodeStringValue(new StringBuilder(charSequence))).append(QUOTATION_MARK_CHAR);	//append and return "encodedString"
+		return stringBuilder.append(QUOTATION_MARK_CHAR).append(encodeStringValue(charSequence)).append(QUOTATION_MARK_CHAR);	//append and return "encodedString"
 	}
 
 	/**Appends a boolean value.
@@ -183,9 +186,21 @@ public class JSON
 	*/
 	public static String encodeStringValue(final CharSequence charSequence)
 	{
-		final StringBuilder stringBuilder=new StringBuilder(checkInstance(charSequence, "String value cannot be null."));	//create a new string builder with the contents of the character sequence
+		final StringBuilder stringBuilder=new StringBuilder(checkInstance(charSequence, "Character sequence cannot be null."));	//create a new string builder with the contents of the character sequence
 		replace(stringBuilder, STRING_ENCODE_CHARS, STRING_ENCODE_REPLACEMENT_STRINGS);	//replace the encode characters with their encoded replacements
 		return stringBuilder.toString();	//return the encoded string
+	}
+
+	/**Decodes a string value.
+	Every instance of {@value JavaScriptConstants#ESCAPE_CHAR} will be removed if followed by another character and the subsequent character will be ignored. 
+	@param charSequence The characters to encode.
+	@return A string containing encoded characters.
+	@exception NullPointerException if the given character sequence is <code>null</code>.
+	@exception IllegalArgumentException if the character sequence ends with the given escape character.
+	*/
+	public static String decodeStringValue(final CharSequence charSequence)
+	{
+		return unescape(new StringBuilder(checkInstance(charSequence, "Character sequence cannot be null.")), ESCAPE_CHAR).toString();	//unescape the string
 	}
 
 	/**Serializes the given object in JSON.
@@ -196,4 +211,55 @@ public class JSON
 	{
 		return appendValue(new StringBuilder(), object).toString();	//serialize the given object and return the resulting string
 	}
+
+	/**Parses an associative array encoded in a JSON string and delimited by {}.
+	The current brute-force implementation only supports a single-level associative array with string values containing no semicolons or escaped characters.
+	@param string The string to be parsed as an associative array.
+	@return A new map representing the contents of the JSON associative array.
+	@exception SyntaxException if the given string is not a syntactically correct JSON associative array.
+	*/
+/*TODO fix
+	public static Map<String, Object> parseAssociativeArray(final String string) throws SyntaxException
+	{
+		if(!startsWith(string, ASSOCIATIVE_ARRAY_BEGIN_CHAR) || !endsWith(string, ASSOCIATIVE_ARRAY_END_CHAR))	//if the string doesn't start or end with the correct characters
+		{
+			throw new SyntaxException(string, "String is not a syntactically correct JSON associative array.");
+		}
+		final String[] nameValuePairStrings=string.substring(1, string.length()-1).split(String.valueOf(ASSOCIATIVE_ARRAY_DELIMITER));	//split out the name/value pairs
+		for(final String nameValuePairString:nameValuePairStrings)	//for each name/value pair
+		{
+			final String[] nameValue=nameValuePairString.trim().split(String.valueOf(ASSOCIATIVE_ARRAY_KEY_VALUE_DELIMITER));	//split out the name and value
+			if(nameValue.length!=2)	//if we didn't get a name and a value
+			{
+				throw new SyntaxException(nameValuePairString, "Illegal JSON name-value syntax.");
+			}
+		}
+	}
+*/
+
+	/**Parses a string encoded in a JSON string and delimited by "".
+	The current brute-force implementation only supports a single-level associative array with string values containing no semicolons or escaped characters.
+	@param string The string to be parsed as an associative array.
+	@return A new map representing the contents of the JSON associative array.
+	@exception SyntaxException if the given string is not a syntactically correct JSON associative array.
+	*/
+/*TODO fix
+	public static String parseString(final String string) throws SyntaxException
+	{
+		if(!startsWith(string, ASSOCIATIVE_ARRAY_BEGIN_CHAR) || !endsWith(string, ASSOCIATIVE_ARRAY_END_CHAR))	//if the string doesn't start or end with the correct characters
+		{
+			throw new SyntaxException(string, "String is not a syntactically correct JSON associative array.");
+		}
+		final String[] nameValuePairStrings=string.substring(1, string.length()-1).split(String.valueOf(ASSOCIATIVE_ARRAY_DELIMITER));	//split out the name/value pairs
+		for(final String nameValuePairString:nameValuePairStrings)	//for each name/value pair
+		{
+			final String[] nameValue=nameValuePairString.trim().split(String.valueOf(ASSOCIATIVE_ARRAY_KEY_VALUE_DELIMITER));	//split out the name and value
+			if(nameValue.length!=2)	//if we didn't get a name and a value
+			{
+				throw new SyntaxException(nameValuePairString, "Illegal JSON name-value syntax.");
+			}
+			
+		}
+	}
+*/
 }
