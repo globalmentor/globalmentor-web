@@ -212,6 +212,46 @@ public class JSON
 		return appendValue(new StringBuilder(), object).toString();	//serialize the given object and return the resulting string
 	}
 
+	/**Parses a value encoded in a JSON string.
+	@param string The JSON string to be parsed.
+	@return A new {@link String}, {@link Boolean}, {@link Number}, array, {@link Map}, or <code>null</code> representing the value represented by the string.
+	@exception NullPointerException if the given string is <code>null</code>.
+	@exception IllegalArgumentException if the given string does not represent a valid JSON object.
+	*/
+	public static Object parseValue(final String string)
+	{
+		if(string.length()==0)	//if the string is empty
+		{
+			throw new IllegalArgumentException("A JSON string cannot be empty.");
+		}
+		switch(string.charAt(0))	//see what the first character is
+		{
+			case ASSOCIATIVE_ARRAY_BEGIN_CHAR:
+				throw new UnsupportedOperationException("Parsing JSON associative arrays not yet available.");
+			case ARRAY_BEGIN_CHAR:
+				throw new UnsupportedOperationException("Parsing JSON arrays not yet available.");
+			case QUOTATION_MARK_CHAR:
+				return parseString(string);
+			default:
+				if(TRUE.equals(string))	//if this is boolean true
+				{
+					return Boolean.TRUE;
+				}
+				else if(FALSE.equals(string))	//if this is boolean false
+				{
+					return Boolean.FALSE;
+				}
+				else if(NULL.equals(string))	//if this is null
+				{
+					return null;
+				}
+				else	//the only syntactic option left is a number
+				{
+					return parseNumber(string);
+				}
+		}
+	}
+
 	/**Parses an associative array encoded in a JSON string and delimited by {}.
 	The current brute-force implementation only supports a single-level associative array with string values containing no semicolons or escaped characters.
 	@param string The string to be parsed as an associative array.
@@ -221,7 +261,7 @@ public class JSON
 /*TODO fix
 	public static Map<String, Object> parseAssociativeArray(final String string) throws SyntaxException
 	{
-		if(!startsWith(string, ASSOCIATIVE_ARRAY_BEGIN_CHAR) || !endsWith(string, ASSOCIATIVE_ARRAY_END_CHAR))	//if the string doesn't start or end with the correct characters
+		if(!startsWith(string, ASSOCIATIVE_ARRAY_BEGIN_CHAR) || !endsWith(string, ASSOCIATIVE_ARRAY_END_CHAR))	//if the string doesn't start or doesn't end with the correct characters
 		{
 			throw new SyntaxException(string, "String is not a syntactically correct JSON associative array.");
 		}
@@ -238,28 +278,36 @@ public class JSON
 */
 
 	/**Parses a string encoded in a JSON string and delimited by "".
-	The current brute-force implementation only supports a single-level associative array with string values containing no semicolons or escaped characters.
-	@param string The string to be parsed as an associative array.
-	@return A new map representing the contents of the JSON associative array.
-	@exception SyntaxException if the given string is not a syntactically correct JSON associative array.
+	The current implementation does not support escaped characters.
+	@param string The string to be parsed as a string.
+	@exception NullPointerException if the given string is <code>null</code>.
+	@exception IllegalArgumentException if the given string does not represent a valid JSON string.
 	*/
-/*TODO fix
-	public static String parseString(final String string) throws SyntaxException
+	public static String parseString(final String string)
 	{
-		if(!startsWith(string, ASSOCIATIVE_ARRAY_BEGIN_CHAR) || !endsWith(string, ASSOCIATIVE_ARRAY_END_CHAR))	//if the string doesn't start or end with the correct characters
+		if(!startsWith(string, QUOTATION_MARK_CHAR) || !endsWith(string, QUOTATION_MARK_CHAR))	//if the string doesn't start or doesn't end with the correct character
 		{
-			throw new SyntaxException(string, "String is not a syntactically correct JSON associative array.");
+			throw new IllegalArgumentException("String is not a syntactically correct JSON string: "+string);
 		}
-		final String[] nameValuePairStrings=string.substring(1, string.length()-1).split(String.valueOf(ASSOCIATIVE_ARRAY_DELIMITER));	//split out the name/value pairs
-		for(final String nameValuePairString:nameValuePairStrings)	//for each name/value pair
+		return string.substring(1, string.length()-1);	//return the string without the quotation marks
+	}
+
+	/**Parses a number encoded in a JSON string.
+	@param string The string to be parsed as a number.
+	@return A new number representing the value represented by the string.
+	@exception NullPointerException if the given string is <code>null</code>.
+	@exception IllegalArgumentException if the given string does not represent a valid JSON number.
+	*/
+	public static Number parseNumber(final String string)
+	{
+		if(string.indexOf('.')>=0)	//if the string contains a decimal point
 		{
-			final String[] nameValue=nameValuePairString.trim().split(String.valueOf(ASSOCIATIVE_ARRAY_KEY_VALUE_DELIMITER));	//split out the name and value
-			if(nameValue.length!=2)	//if we didn't get a name and a value
-			{
-				throw new SyntaxException(nameValuePairString, "Illegal JSON name-value syntax.");
-			}
-			
+			return Double.valueOf(string);	//return a double
+		}
+			//TODO add support for real numbers
+		else	//if the string doesn't contain a decimal
+		{
+			return Long.valueOf(string);	//return a long
 		}
 	}
-*/
 }

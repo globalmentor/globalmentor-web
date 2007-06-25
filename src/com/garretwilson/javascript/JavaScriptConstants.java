@@ -96,4 +96,8 @@ public class JavaScriptConstants
 
 	/**The null identifier.*/
 	public final static String NULL="null";
+	/**The boolean true identifier.*/
+	public final static String TRUE="true";
+	/**The boolean false identifier.*/
+	public final static String FALSE="false";
 }
