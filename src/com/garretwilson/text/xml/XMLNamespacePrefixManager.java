@@ -1,12 +1,10 @@
 package com.garretwilson.text.xml;
 
-import static com.garretwilson.lang.JavaConstants.*;
-import static com.garretwilson.net.URIConstants.*;
-
-import java.net.URI;
 import java.util.*;
 
 import com.garretwilson.assess.qti.QTIConstants;
+import static com.garretwilson.lang.JavaConstants.*;
+import static com.garretwilson.net.URIConstants.*;
 import com.garretwilson.net.http.webdav.ApacheWebDAVConstants;
 import com.garretwilson.net.http.webdav.WebDAVConstants;
 import com.garretwilson.rdf.RDFConstants;
@@ -30,6 +28,7 @@ import com.garretwilson.text.xml.xlink.XLinkConstants;
 
 /**Manages XML namespaces and prefixes for serialization.
 This class is initialized with a default set of known namespace prefix mappings. 
+Mapping prefixes to the <code>null</code> namespace or to the <code>null</code> prefix is allowed.
 <p>This class is not thread safe.</p>
 @author Garret Wilson
 */
@@ -87,7 +86,7 @@ public class XMLNamespacePrefixManager
 		registerNamespacePrefix(XHTMLConstants.XHTML_NAMESPACE_URI.toString(), XHTMLConstants.XHTML_NAMESPACE_PREFIX); //XHTML
 		registerNamespacePrefix(XLinkConstants.XLINK_NAMESPACE_URI.toString(), XLinkConstants.XLINK_NAMESPACE_PREFIX); //XLink
 		registerNamespacePrefix(XMLConstants.XML_NAMESPACE_URI.toString(), XMLConstants.XML_NAMESPACE_PREFIX); //XML
-		registerNamespacePrefix(XMLConstants.XML_NAMESPACE_URI.toString(), XMLConstants.XML_NAMESPACE_PREFIX); //XML namespaces
+		registerNamespacePrefix(XMLConstants.XMLNS_NAMESPACE_URI.toString(), XMLConstants.XMLNS_NAMESPACE_PREFIX); //XML namespaces
 		registerNamespacePrefix(XEBConstants.XEB_NAMESPACE_URI.toString(), XEBConstants.XEB_NAMESPACE_PREFIX); //XEbook
 		registerNamespacePrefix(XPackageConstants.XPACKAGE_NAMESPACE_URI.toString(), XPackageConstants.XPACKAGE_NAMESPACE_PREFIX); //XPackage
 		registerNamespacePrefix(XPackageConstants.XML_ONTOLOGY_NAMESPACE_URI.toString(), XPackageConstants.XML_ONTOLOGY_NAMESPACE_PREFIX); //XPackage XML ontology
@@ -120,7 +119,7 @@ public class XMLNamespacePrefixManager
 		representations, if the namespace URI ends in a fragment separator ('#')
 		and no prefix is found, an attempt is made to look up a prefix using the
 		namespace URI without that trailing fragment separator character.</p>
-	<p>If a namespace is unrecognized, a new one will optionally be created and
+	<p>If a namespace is unrecognized (i.e. no prefix, inluding the <code>null</code> prefix, has been registered with the given namespace), a new one will optionally be created and
 		stored in the map for future use.</p>
 	<p>The Java package name of any Java URIs ending in '.' will be used as the namespace prefix if possible, if none exists already.</p>
 	@param namespace The namespace for which a prefix should be returned
@@ -130,7 +129,7 @@ public class XMLNamespacePrefixManager
 	public String getNamespacePrefix(final String namespaceURI, boolean generatePrefix)
 	{
 		String prefix=namespacePrefixMap.get(namespaceURI);  //get the prefix keyed by the namespace
-		if(prefix==null)	//if we didn't find a prefix, try the namespaceURI without its ending # (RDF has different URI generation rules than, for example, XML Schema, resulting in different namespace representations)
+		if(prefix==null && !namespacePrefixMap.containsKey(namespaceURI))	//if we didn't find a prefix because the namespace wasn't registered, try the namespaceURI without its ending # (RDF has different URI generation rules than, for example, XML Schema, resulting in different namespace representations)
 		{
 				//if this URI ends with '#' and has data before that character
 			if(namespaceURI!=null && namespaceURI.length()>1 && namespaceURI.charAt(namespaceURI.length()-1)==FRAGMENT_SEPARATOR)
@@ -138,22 +137,22 @@ public class XMLNamespacePrefixManager
 					//see if we recognize the URI without the ending '#'
 				prefix=namespacePrefixMap.get(namespaceURI.substring(0, namespaceURI.length()-1));
 			}			
-		}
-		if(prefix==null && generatePrefix)  //if there is no prefix for this namespace, and we should generate a prefix
-		{
-			if(namespaceURI.startsWith(JAVA_PACKAGE_NAMESPACE_URI_PREFIX) && namespaceURI.endsWith(JAVA_PACKAGE_NAMESPACE_URI_SUFFIX))	//if this is a Java package namespace
+			if(prefix==null && generatePrefix)  //if there is still no prefix for this namespace, and we should generate a prefix
 			{
-				final String tentativePrefix=namespaceURI.substring(JAVA_PACKAGE_NAMESPACE_URI_PREFIX.length(), namespaceURI.length()-1);	//remove the prefix and suffix
-				if(tentativePrefix.length()>0 && !namespacePrefixMap.containsValue(tentativePrefix))	//check for the unlikely case that the original URI was "java:."; then if this prefix isn't already being used (this is an expensive operation, but necessary)
+				if(namespaceURI.startsWith(JAVA_PACKAGE_NAMESPACE_URI_PREFIX) && namespaceURI.endsWith(JAVA_PACKAGE_NAMESPACE_URI_SUFFIX))	//if this is a Java package namespace
 				{
-					prefix=tentativePrefix;	//use the new prefix
+					final String tentativePrefix=namespaceURI.substring(JAVA_PACKAGE_NAMESPACE_URI_PREFIX.length(), namespaceURI.length()-1);	//remove the prefix and suffix
+					if(tentativePrefix.length()>0 && !namespacePrefixMap.containsValue(tentativePrefix))	//check for the unlikely case that the original URI was "java:."; then if this prefix isn't already being used (this is an expensive operation, but necessary)
+					{
+						prefix=tentativePrefix;	//use the new prefix
+					}
 				}
+				if(prefix==null)	//if we didn't find a Java package namespace prefix
+				{
+					prefix="namespace"+namespacePrefixMap.size()+1; //create a unique namespace prefix TODO use a constant
+				}
+				namespacePrefixMap.put(namespaceURI, prefix); //store the prefix in the map
 			}
-			if(prefix==null)	//if we didn't find a Java package namespace prefix
-			{
-				prefix="namespace"+namespacePrefixMap.size()+1; //create a unique namespace prefix TODO use a constant
-			}
-			namespacePrefixMap.put(namespaceURI, prefix); //store the prefix in the map
 		}
 	  return prefix;  //return the prefix we found or created
 	}

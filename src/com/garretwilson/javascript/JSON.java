@@ -9,7 +9,6 @@ import static com.garretwilson.lang.StringBuilderUtilities.*;
 import static com.garretwilson.lang.ObjectUtilities.*;
 import static com.garretwilson.text.CharacterConstants.*;
 
-import com.garretwilson.text.SyntaxException;
 import com.garretwilson.text.W3CDateFormat;
 
 /**Utilities for encoding and decoding JavaScript Object Notation (JSON).
@@ -229,7 +228,7 @@ public class JSON
 			case ASSOCIATIVE_ARRAY_BEGIN_CHAR:
 				throw new UnsupportedOperationException("Parsing JSON associative arrays not yet available.");
 			case ARRAY_BEGIN_CHAR:
-				throw new UnsupportedOperationException("Parsing JSON arrays not yet available.");
+				return parseArray(string);
 			case QUOTATION_MARK_CHAR:
 				return parseString(string);
 			default:
@@ -276,6 +275,28 @@ public class JSON
 		}
 	}
 */
+
+	/**Parses a string encoded in a JSON string and delimited by [].
+	The current implementation does not support nested arrays, strings with the array delimiter, or strings with escaped characters.
+	@param string The string to be parsed as an array.
+	@exception NullPointerException if the given string is <code>null</code>.
+	@exception IllegalArgumentException if the given string does not represent a valid JSON array.
+	*/
+	public static Object[] parseArray(final String string)
+	{
+		if(!startsWith(string, ARRAY_BEGIN_CHAR) || !endsWith(string, ARRAY_END_CHAR))	//if the string doesn't start or doesn't end with the correct character
+		{
+			throw new IllegalArgumentException("String is not a syntactically correct JSON array: "+string);
+		}
+		final String[] strings=string.substring(1, string.length()-1).split(String.valueOf(ARRAY_DELIMITER));	//split out the inidividual entries
+		final int length=strings.length;	//see how many objects there are
+		final Object[] objects=new Object[length];	//create a new array of objects
+		for(int i=length-1; i>=0; --i)	//for each index
+		{
+			objects[i]=parseValue(strings[i].trim());	//parse this object and store it in the array
+		}
+		return objects;	//return the parsed array
+	}
 
 	/**Parses a string encoded in a JSON string and delimited by "".
 	The current implementation does not support escaped characters.
