@@ -256,6 +256,8 @@ public interface XHTMLConstants
 	public final static String ELEMENT_OBJECT_ATTRIBUTE_TYPE="type";
 
 		//attributes for <option>
+	public final static String ELEMENT_OPTION_ATTRIBUTE_DISABLED="disabled";
+		public final static String OPTION_DISABLED_DISABLED="disabled";
 	public final static String ELEMENT_OPTION_ATTRIBUTE_SELECTED="selected";
 		public final static String OPTION_SELECTED_SELECTED="selected";
 
