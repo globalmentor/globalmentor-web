@@ -2,6 +2,7 @@ package com.garretwilson.text.xml;
 
 import java.net.URI;
 
+import static com.garretwilson.lang.ObjectUtilities.*;
 import com.garretwilson.net.DefaultResource;
 import com.garretwilson.util.IDable;
 
@@ -43,6 +44,7 @@ public class QualifiedName extends DefaultResource implements IDable<URI>
 	/**QName constructor.
 	@param namespaceURI The namespace URI, or <code>null</code> if there is no namespace URI.
 	@param qname The combined <var>prefix</var>:<var>localName</var> qualified name.
+	@exception NullPointerException if the given qualified name is <code>null</code>.
 	*/	
 	public QualifiedName(final String namespaceURI, final String qname)
 	{
@@ -53,13 +55,14 @@ public class QualifiedName extends DefaultResource implements IDable<URI>
 	@param namespaceURI The namespace URI, or <code>null</code> if there is no namespace URI.
 	@param prefix The prefix string, or <code>null</code> if there is no prefix.
 	@param localName The local name.
-	*/	
+	@exception NullPointerException if the given qualified name is <code>null</code>.
+	*/
 	public QualifiedName(final String namespaceURI, final String prefix, final String localName)
 	{
 		super(createReferenceURI(namespaceURI, localName));	//create our reference URI by combining our namespace URI and our local name
 		this.namespaceURI=namespaceURI;
 		this.prefix=prefix;
-		this.localName=localName;
+		this.localName=checkInstance(localName, "Qualified name cannot be null.");
 	}
 
 	/**@return The qualified name in <code><var>prefix</var>:<var>localName</var></code> form.*/

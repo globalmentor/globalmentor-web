@@ -283,40 +283,28 @@ G***should we return data from CDATA sections as well?
 	/**Returns the prefix from the qualified name.
 	@param qualifiedName The fully qualified name, with an optional namespace prefix.
 	@return The namespace prefix, or <code>null</code> if no prefix is present.
+	@exception NullPointerException if the given qualified name is <code>null</code>.
 	*/
 	public static String getPrefix(final String qualifiedName)
 	{
-		if(qualifiedName!=null)	//if there is a qualified name given
-		{
-			final int prefixDividerIndex=qualifiedName.indexOf(NAMESPACE_DIVIDER);  //see if there is a prefix
-			if(prefixDividerIndex>=0)  //if there is a prefix
-				return qualifiedName.substring(0, prefixDividerIndex);  //return the prefix
-			else  //if there is no prefix
-				return null;  //show that there is no prefix
-		}
-		else	//if there is no qualified name
-		{
-			return null;	//there is no prefix
-		}
+		final int prefixDividerIndex=qualifiedName.indexOf(NAMESPACE_DIVIDER);  //see if there is a prefix
+		if(prefixDividerIndex>=0)  //if there is a prefix
+			return qualifiedName.substring(0, prefixDividerIndex);  //return the prefix
+		else  //if there is no prefix
+			return null;  //show that there is no prefix
 	}
 
 	/**Retrieves the local name from a qualified name, removing the prefix, if any.
 	@param qualifiedName The XML qualified name.
 	@return The local name without a prefix.
+	@exception NullPointerException if the given qualified name is <code>null</code>.
 	*/
 	public static String getLocalName(final String qualifiedName)
 	{
-		if(qualifiedName!=null)	//if there is a qualified name given
-		{
-			final int namespaceDividerIndex=qualifiedName.indexOf(NAMESPACE_DIVIDER); //find where the namespace divider is in the name
-			return namespaceDividerIndex>=0 ? //if there is a namespace prefix
-				  qualifiedName.substring(namespaceDividerIndex+1) :  //remove the namespace prefix
-					qualifiedName;  //otherwise, just return the qualified name since it didn't have a prefix to begin with
-		}
-		else	//if there is no qualified name
-		{
-			return null;	//there is no local anme
-		}
+		final int namespaceDividerIndex=qualifiedName.indexOf(NAMESPACE_DIVIDER); //find where the namespace divider is in the name
+		return namespaceDividerIndex>=0 ? //if there is a namespace prefix
+			  qualifiedName.substring(namespaceDividerIndex+1) :  //remove the namespace prefix
+				qualifiedName;  //otherwise, just return the qualified name since it didn't have a prefix to begin with
 	}
 
 	/**Returns the local name from the qualified name.

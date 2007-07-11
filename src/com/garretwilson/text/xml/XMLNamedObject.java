@@ -125,8 +125,8 @@ public class XMLNamedObject	//TODO implement NamedObject or extend DefaultNamedO
 //G***fix		super(qname);	//construct the parent class
 		setNamespaceURI(namespaceURI);	//set the namespace URI
 		this.qname=qname;	//save the qualified name
-		prefix=XMLUtilities.getPrefix(qname);	//determine and set the prefix
-		localName=XMLUtilities.getLocalName(qname);	//determine and set the local name		
+		prefix=qname!=null ? XMLUtilities.getPrefix(qname) : null;	//determine and set the prefix
+		localName=qname!=null ? XMLUtilities.getLocalName(qname) : null;	//determine and set the local name		
 	}
 	
 }
