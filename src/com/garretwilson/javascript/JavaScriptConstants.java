@@ -69,7 +69,7 @@ public class JavaScriptConstants
 	/**The characters that must be encoded in a string value.*/
 	public final static char[] STRING_ENCODE_CHARS=new char[]{'"', '\\', '/', '\b', '\f', '\n', '\r', '\t'};
 	/**The strings with which encoded characters will be replaced in a string value.*/
-	public final static String[] STRING_ENCODE_REPLACEMENT_STRINGS=new String[]{"\"", "\\\\", "\\/", "\\b", "\\f", "\\n", "\\r", "\\t"};
+	public final static String[] STRING_ENCODE_REPLACEMENT_STRINGS=new String[]{"\\\"", "\\\\", "\\/", "\\b", "\\f", "\\n", "\\r", "\\t"};
 	
 	/**The if keyword.*/
 	public final static String IF_KEYWORD="if";
