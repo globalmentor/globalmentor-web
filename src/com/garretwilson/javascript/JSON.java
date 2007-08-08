@@ -445,7 +445,7 @@ public class JSON
 	
 	/**Parses a value encoded in a JSON character sequence.
 	@param charSequence The character sequence to be parsed.
-	@return A new {@link String}, {@link Boolean}, {@link Number}, array, {@link Map}, or <code>null</code> representing the value represented by the character sequence.
+	@return A new {@link String}, {@link Boolean}, {@link Number}, {@link List}, {@link Map}, or <code>null</code> representing the value represented by the character sequence.
 	@exception NullPointerException if the given character sequence is <code>null</code>.
 	@exception ArgumentParseException if the given character sequence does not represent a valid JSON object.
 	*/
