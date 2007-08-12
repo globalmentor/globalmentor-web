@@ -17,8 +17,6 @@ import com.garretwilson.rdf.ploop.PLOOPConstants;
 import com.garretwilson.rdf.rdfs.RDFSConstants;
 import com.garretwilson.rdf.version.VersionConstants;
 import com.garretwilson.rdf.xeb.XEBConstants;
-import com.garretwilson.rdf.xpackage.FileOntologyConstants;
-import com.garretwilson.rdf.xpackage.MIMEOntologyConstants;
 import com.garretwilson.rdf.xpackage.XPackageConstants;
 import com.garretwilson.text.xml.XMLConstants;
 import com.garretwilson.text.xml.oeb.OEBConstants;
@@ -90,9 +88,9 @@ public class XMLNamespacePrefixManager
 		registerNamespacePrefix(XEBConstants.XEB_NAMESPACE_URI.toString(), XEBConstants.XEB_NAMESPACE_PREFIX); //XEbook
 		registerNamespacePrefix(XPackageConstants.XPACKAGE_NAMESPACE_URI.toString(), XPackageConstants.XPACKAGE_NAMESPACE_PREFIX); //XPackage
 		registerNamespacePrefix(XPackageConstants.XML_ONTOLOGY_NAMESPACE_URI.toString(), XPackageConstants.XML_ONTOLOGY_NAMESPACE_PREFIX); //XPackage XML ontology
-		registerNamespacePrefix(FileOntologyConstants.FILE_ONTOLOGY_NAMESPACE_URI.toString(), FileOntologyConstants.FILE_ONTOLOGY_NAMESPACE_PREFIX); //XPackage file ontology
+//TODO del		registerNamespacePrefix(FileOntologyConstants.FILE_ONTOLOGY_NAMESPACE_URI.toString(), FileOntologyConstants.FILE_ONTOLOGY_NAMESPACE_PREFIX); //XPackage file ontology
 //TODO add XPackage Unicode ontology
-		registerNamespacePrefix(MIMEOntologyConstants.MIME_ONTOLOGY_NAMESPACE_URI.toString(), MIMEOntologyConstants.MIME_ONTOLOGY_NAMESPACE_PREFIX); //XPackage MIME ontology
+//TODO del		registerNamespacePrefix(MIMEOntologyConstants.MIME_ONTOLOGY_NAMESPACE_URI.toString(), MIMEOntologyConstants.MIME_ONTOLOGY_NAMESPACE_PREFIX); //XPackage MIME ontology
 		registerNamespacePrefix(WebDAVConstants.WEBDAV_NAMESPACE, WebDAVConstants.WEBDAV_NAMESPACE_PREFIX); //WebDAV namespace (quasi-URI)
 	}
 
