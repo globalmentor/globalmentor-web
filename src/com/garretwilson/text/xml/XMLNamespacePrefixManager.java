@@ -72,7 +72,8 @@ public class XMLNamespacePrefixManager
 		registerNamespacePrefix(FOAF.FOAF_NAMESPACE_URI.toString(), FOAF.FOAF_NAMESPACE_PREFIX); //FOAF
 		registerNamespacePrefix(MAQROConstants.MAQRO_NAMESPACE_URI.toString(), MAQROConstants.MAQRO_NAMESPACE_PREFIX); //MAQRO
 		registerNamespacePrefix(OEBConstants.OEB1_DOCUMENT_NAMESPACE_URI.toString(), OEBConstants.OEB1_DOCUMENT_NAMESPACE_PREFIX); //OEB 1
-		registerNamespacePrefix("http://globalmentor.com/namespaces/marmot#", "marmot"); //Marmot TODO link to Marmot constants when Marmot is included in normal libraries		
+		registerNamespacePrefix("http://globalmentor.com/namespaces/marmot#", "marmot"); //Marmot TODO link to Marmot constants when Marmot is included in normal libraries
+		registerNamespacePrefix("http://marmox.net/namespaces/content#", "content"); //Marmox content
 		registerNamespacePrefix(PLOOPConstants.PLOOP_PROPERTY_NAMESPACE_URI.toString(), PLOOPConstants.PLOOP_PROPERTY_NAMESPACE_PREFIX); //PLOOP property
 		registerNamespacePrefix(QTIConstants.QTI_1_1_NAMESPACE_URI.toString(), QTIConstants.QTI_NAMESPACE_PREFIX); //QTI
 		registerNamespacePrefix(RDFConstants.RDF_NAMESPACE_URI.toString(), RDFConstants.RDF_NAMESPACE_PREFIX); //RDF
