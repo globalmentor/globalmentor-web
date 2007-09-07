@@ -232,8 +232,8 @@ public class RDF	//TODO special-case rdf:nil list resources so that they are not
 //G***del Debug.traceStack(); //G***del
 
 		resourceSet.add(resource);	//add the resource to our set
-		if(resource.getReferenceURI()!=null)	//if this is not a blank node
-			resourceMap.put(resource.getReferenceURI(), resource);  //store the resource in the map
+		if(resource.getURI()!=null)	//if this is not a blank node
+			resourceMap.put(resource.getURI(), resource);  //store the resource in the map
 	}
 
 	/**Retrieves a named resource from the data model using its reference URI.
@@ -303,7 +303,7 @@ public class RDF	//TODO special-case rdf:nil list resources so that they are not
 	*/
 	public boolean isRootResource(final RDFResource resource)
 	{
-		final URI referenceURI=resource.getReferenceURI(); //get the resource reference URI
+		final URI referenceURI=resource.getURI(); //get the resource reference URI
 		final RDFLiteral label=RDFSUtilities.getLabel(resource);	//see if this resource has a label
 //TODO eventually we'll probably have to determine if something is actually a property---i.e. this doesn't work: if(resource.getReferenceURI()!=null || resource.getPropertyCount()>0)	//only show resources that have reference URIs or have properties, thereby not showing property resources and literals at the root
 			//if this is not a blank node and this resource actually has properties (even properties such as type identifiers are resources, but they don't have properties)

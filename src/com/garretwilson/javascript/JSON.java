@@ -274,13 +274,13 @@ public class JSON
 	/**Checks that the current character matches a specific character and advances to the next character.
 	@param charSequence The character sequence to be parsed.
 	@param index The current parse index in the character sequence.
-	@param c The character with which the current character should be checked.
+	@param c The character against which the current character should be checked.
 	@return The new index at which to continue parsing.
 	@exception NullPointerException if the given character sequence is <code>null</code>.
 	@exception ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
 	@exception ArgumentParseException if the current character in the sequence does not match the specified character.
 	*/
-	protected static int check(final CharSequence charSequence, final int index, final int c) throws ArgumentParseException
+	protected static int check(final CharSequence charSequence, final int index, final char c) throws ArgumentParseException
 	{
 		if(charSequence.charAt(index)!=c)	//if this character does not match what we expected
 		{
@@ -289,7 +289,7 @@ public class JSON
 		return index+1;	//return the subsequent index
 	}
 
-	/**Checks that the current characters matches a character in a range and advances to the next character.
+	/**Checks that the current character matches a character in a range and advances to the next character.
 	@param charSequence The character sequence to be parsed.
 	@param index The current parse index in the character sequence.
 	@param lowerBound The lowest character in the range.
@@ -332,7 +332,7 @@ public class JSON
 	@param index The current parse index in the character sequence.
 	@param match The character sequence with which the current characters should be checked.
 	@return The new index at which to continue parsing.
-	@exception NullPointerException if the given character sequence and/or match character seqeuence is <code>null</code>.
+	@exception NullPointerException if the given character sequence and/or match character sequence is <code>null</code>.
 	@exception ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
 	@exception ArgumentParseException if the current character in the sequence does not match the specified character sequence.
 	*/

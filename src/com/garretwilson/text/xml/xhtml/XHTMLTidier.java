@@ -466,7 +466,7 @@ public class XHTMLTidier extends TextUtilities
 				final Text text=(Text)childNode;  //cast the child to a text element
 				final String data=text.getData(); //get the text data
 				  //G***testing; comment; use StringBufferUtilities version, maybe
-				final String collapsedData=StringUtilities.collapseEveryChar(data, CharacterConstants.WHITESPACE_CHARS, "\n\n");
+				final String collapsedData=StringUtilities.collapseEveryChar(data, CharacterConstants.TRIM_CHARS, "\n\n");
 				text.setData(collapsedData);  //replace the text data with the collapsed data
 			}
 		}
@@ -671,8 +671,8 @@ public class XHTMLTidier extends TextUtilities
 						final String data=textNode.getData(); //get the text node data
 //G***del	Debug.trace("Found text node: ", data);
 							//create a tokenizer to extract the list item marker
-						final StringTokenizer stringTokenizer=new StringTokenizer(data, CharacterConstants.WHITESPACE_CHARS);
-	//G***del when works					final StringTokenizer stringTokenizer=new StringTokenizer(data, CharacterConstants.WHITESPACE_CHARS+LIST_ITEM_MARKER_DELIMITER_CHARS);
+						final StringTokenizer stringTokenizer=new StringTokenizer(data, CharacterConstants.TRIM_CHARS);
+	//G***del when works					final StringTokenizer stringTokenizer=new StringTokenizer(data, CharacterConstants.TRIM_CHARS+LIST_ITEM_MARKER_DELIMITER_CHARS);
 						if(stringTokenizer.hasMoreTokens()) //if there is a token, check to see if it's a list marker
 						{
 							markerString=stringTokenizer.nextToken();  //get the text which may be a marker
@@ -799,7 +799,7 @@ Debug.trace("Current list style type: ", listStyleType);  //G***del
 							{
 								final String data=textNode.getData(); //get the text node data
 									//see where the first whitespace is
-								final int whitespaceIndex=CharSequenceUtilities.charIndexOf(data, CharacterConstants.WHITESPACE_CHARS);
+								final int whitespaceIndex=CharSequenceUtilities.charIndexOf(data, CharacterConstants.TRIM_CHARS);
 								if(whitespaceIndex>=0)  //if there is whitespace (there always should be, or we could not have determined that this is a list item
 								{
 									textNode.setData(data.substring(whitespaceIndex+1)); //remove the marker and update the text node

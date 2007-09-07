@@ -297,7 +297,7 @@ Debug.trace("Found default stylesheet for namespace: ", namespaceURI);  //G***de
 		{
 			for(final RDFResource namespaceResource:getNamespaces(description))	//for each namespace resource
 			{
-				final URI namespaceURI=namespaceResource.getReferenceURI();	//get the next namespace resource URI
+				final URI namespaceURI=namespaceResource.getURI();	//get the next namespace resource URI
 				if(namespaceURI!=null)	//if this namespace resource has a URI
 				{
 					namespaceURISet.add(namespaceURI.toString());	//add the namespace URI to the set

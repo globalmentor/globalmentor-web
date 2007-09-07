@@ -142,7 +142,7 @@ Debug.trace("found body element");  //G***del
 //G***del Debug.trace("read line: ", textLine); //G***del
 		while(line!=null)	//read all the blank lines until we find one with text (or until we read the end of the data)
 		{
-			if(CharSequenceUtilities.notCharIndexOf(line, WHITESPACE_CHARS)>=0)		//if there is text for this line
+			if(CharSequenceUtilities.notCharIndexOf(line, TRIM_CHARS)>=0)		//if there is text for this line
 				break;	//we're ready to start storing the text
 		  line=getLine(bufferedReader);	//read the next line of text
 		}
@@ -157,7 +157,7 @@ Debug.trace("found body element");  //G***del
 		{
 				//make sure all the characters are valid XML characters
 			line=XMLUtilities.createValidString(line);
-			if(CharSequenceUtilities.notCharIndexOf(line, WHITESPACE_CHARS)>=0)		//if there is text for this line
+			if(CharSequenceUtilities.notCharIndexOf(line, TRIM_CHARS)>=0)		//if there is text for this line
 			{
 //G***del do we need to trim the line?				final String lineToAppend=line.trim();	//we'll append this line (trimmed) to the paragraph; we won't know until later whether we should add a newline
 //G***del do we need to trim the line?				if(isBreak(lineToAppend)) //if the line we want to append is a break
@@ -233,10 +233,10 @@ Debug.trace("found body element");  //G***del
 					else if(lineCount>0) //if we have lines in the paragraph
 					{
 							//get the index of the first non-whitespace character
-						final int firstCharIndex=CharSequenceUtilities.notCharIndexOf(line, WHITESPACE_CHARS);
+						final int firstCharIndex=CharSequenceUtilities.notCharIndexOf(line, TRIM_CHARS);
 						final char firstChar=line.charAt(firstCharIndex);  //get the first character
 							//get the index of the last non-whitespace character
-						final int lastCharIndex=CharSequenceUtilities.notCharLastIndexOf(line, WHITESPACE_CHARS);
+						final int lastCharIndex=CharSequenceUtilities.notCharLastIndexOf(line, TRIM_CHARS);
 						final char lastChar=line.charAt(lastCharIndex);  //get the last character
 						if(headingType==NO_HEADING) //if this is not a heading, we still need to sense the start of a new heading within the paragraph (if the paragraph started with a heading, we've already checked to see if it has changed types)
 						{
@@ -342,11 +342,11 @@ Debug.trace("autodetecting settings again");  //G***del
 	protected static boolean isBreak(final String text) //G***somehow combine this with TextUtilities.isPageBreakHeading()
 	{
 //G***del Debug.trace("checking text for page break: ", text);  //G***del
-//G***del Debug.trace("stripped of punctuation and whitespace: ", StringUtilities.trim(text, PUNCTUATION_CHARS+CharacterConstants.WHITESPACE_CHARS));  //G***del
+//G***del Debug.trace("stripped of punctuation and whitespace: ", StringUtilities.trim(text, PUNCTUATION_CHARS+CharacterConstants.TRIM_CHARS));  //G***del
 		if(StringUtilities.isAllChars(text, "*-"+EM_DASH_CHAR+EN_DASH_CHAR) && text.length()>10)  //if the string is only made up of asterisks and hyphens and is a certain length G***use a constant
 			return true;  //this is a page break heading
 				//if this line contains "page" surrounded by only punctuation
-		else if("page".equalsIgnoreCase(StringUtilities.trim(text, PUNCTUATION_CHARS+WHITESPACE_CHARS)))
+		else if("page".equalsIgnoreCase(StringUtilities.trim(text, PUNCTUATION_CHARS+TRIM_CHARS)))
 			return true;  //this is a page break indication
 		else  //if this is not a page break heading
 			return false; //show that we don't think this is a page break heading
@@ -418,7 +418,7 @@ Debug.trace("primed buffer, number of lines: ", getLineBuffer().size());
 //G***del System.out.print("Line "+i+": "+line);  //G***del
 			++lineCount;  //show that we've found another line
 			  //get the index of the last character in the string that isn't whitespace
-			final int lastNonWhitespaceCharIndex=CharSequenceUtilities.notCharLastIndexOf(line, WHITESPACE_CHARS);
+			final int lastNonWhitespaceCharIndex=CharSequenceUtilities.notCharLastIndexOf(line, TRIM_CHARS);
 			if(lastNonWhitespaceCharIndex>=0) //if this is not a blank line
 			{
 				++nonBlankLineCount;  //show that we've found another non-blank line
@@ -479,7 +479,7 @@ Debug.trace("paragraph sensing: "+isParagraphSensing()); //G***del
 		{
 		  final String line=(String)getLineBuffer().get(i); //get another line
 			++lineCount;  //show that we've found another line
-			final boolean isBlankLine=CharSequenceUtilities.notCharIndexOf(line, WHITESPACE_CHARS)<0; //see if this is a blank line
+			final boolean isBlankLine=CharSequenceUtilities.notCharIndexOf(line, TRIM_CHARS)<0; //see if this is a blank line
 			if(!isBlankLine)  //if this isn't a blank line
 				++nonBlankLineCount;  //show that we've found another non-blank line
 			if(blankLineRunStartIndex<0)  //if we haven't started a run, yet

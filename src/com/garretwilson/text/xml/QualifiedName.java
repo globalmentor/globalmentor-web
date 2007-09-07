@@ -21,7 +21,7 @@ public class QualifiedName extends DefaultResource implements IDable<URI>
 		public String getNamespaceURI() {return namespaceURI;}
 
 		/**@return The unique identifier of the object.*/
-		public URI getID() {return getReferenceURI();}
+		public URI getID() {return getURI();}
 
 	/**The namespace URI.*/
 //TODO del or fix	private final URI namespaceURI;

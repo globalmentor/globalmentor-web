@@ -5,6 +5,8 @@ import java.util.*;
 import com.garretwilson.io.*;
 import com.garretwilson.lang.*;
 import static com.garretwilson.text.CharacterConstants.*;
+
+import com.garretwilson.text.CharacterConstants;
 import com.garretwilson.text.xml.XMLUtilities;
 import com.garretwilson.util.Debug;
 import org.w3c.dom.*;
@@ -336,7 +338,7 @@ Debug.trace("extracting children up to divider: "+divIndex); //G***del
 		while(lineTokenizer.hasMoreTokens())  //while there are more lines
 		{
 				//get the next line and trim it of whitespace and asterisks
-			final String line=StringUtilities.trim(lineTokenizer.nextToken(), WHITESPACE_CHARS+'*'); //G***use a constant
+			final String line=StringUtilities.trim(lineTokenizer.nextToken(), TRIM_CHARS+'*'); //G***use a constant
 			if(StringUtilities.startsWithIgnoreCase(line, "end")) //if the line starts with "end" G***use a constant
 				foundEnd=true;  //show that we found the "end" line
 			if(StringUtilities.indexOfIgnoreCase(text, PROJECT_GUTENB)>=0) //if this line contains "Project Gutenberg" in it
@@ -436,7 +438,7 @@ Debug.trace("no etext, pretending it's at index: ", eTextStringIndex);  //G***de
 									}
 								}
 									//get the first non-whitespace character
-								final char firstChar=line.charAt(CharSequenceUtilities.notCharIndexOf(line, WHITESPACE_CHARS));
+								final char firstChar=line.charAt(CharSequenceUtilities.notCharIndexOf(line, TRIM_CHARS));
 //G***del			Debug.trace("first char: "+firstChar);  //G***del
 									//if this is the correct line, and there's whitespace or dependent punctuation after the etext string
 								if(eTextStringIndex>=0 && eTextStringIndex+eTextString.length()<line.length()
@@ -711,7 +713,7 @@ Debug.trace("found PG in line for author: ", line);  //G***del
 									if(possessionIndex>0) //if there is possession in the title
 									{
 											//try to find the start of the word showing possession
-										final int wordBeginIndex=CharSequenceUtilities.charLastIndexOf(remainingText, WHITESPACE_CHARS, possessionIndex-1)+1;
+										final int wordBeginIndex=CharSequenceUtilities.charLastIndexOf(remainingText, TRIM_CHARS, possessionIndex-1)+1;
 										if(wordBeginIndex<possessionIndex)  //if this is a valid index
 										{
 											remainingText=remainingText.substring(wordBeginIndex, possessionIndex); //get the word showing possession
@@ -890,7 +892,7 @@ Debug.trace("author at end: ", author);  //G***del
 					if(descriptionStringBuffer.length()>0)  //if there is already part of a description
 						descriptionStringBuffer.append(' ');    //separate the description components with spaces
 							//trim both ends of "*" and whitespace and add the line to the description
-					descriptionStringBuffer.append(StringUtilities.trim(line, WHITESPACE_CHARS+'*')); //G***use a constant here
+					descriptionStringBuffer.append(StringUtilities.trim(line, TRIM_CHARS+'*')); //G***use a constant here
 				}
 			}
 			if(descriptionStringBuffer.length()>0)  //if we have a description
@@ -987,7 +989,7 @@ Debug.trace("checking text for header element: ", text); //G***del
 //G***del if not needed						if(StringUtilities.startsWithIgnoreCase(line.substring(projectGutenbergIndex), "PROJECT GUTENBERG-tm"))
 						{
 								//get the first non-whitespace character
-							final char firstChar=line.charAt(CharSequenceUtilities.notCharIndexOf(line, WHITESPACE_CHARS));
+							final char firstChar=line.charAt(CharSequenceUtilities.notCharIndexOf(line, TRIM_CHARS));
 		//G***del Debug.trace("first char: "+firstChar);  //G***del
 								//if the line doesn't start with '*', make sure there's whitespace or
 								//  dependent punctuation after "etext" (e.g. it's not "...the first
@@ -1412,9 +1414,9 @@ Debug.trace("tidying author: ", string); //G***del
 		final StringBuffer stringBuffer=new StringBuffer(string); //create a new string buffer with the string
 		tidyProperty(stringBuffer); //do default tidying
 			//trim the string of all punctuation
-//G***del		StringBufferUtilities.trim(stringBuffer, PUNCTUATION_CHARS+WHITESPACE_CHARS);
+//G***del		StringBufferUtilities.trim(stringBuffer, PUNCTUATION_CHARS+TRIM_CHARS);
 			//trim the string of all punctuation (except quotes and group punctuation) and whitespace
-		StringBufferUtilities.trim(stringBuffer, PHRASE_PUNCTUATION_CHARS+HYPHEN_MINUS_CHAR+EM_DASH_CHAR+EN_DASH_CHAR+WHITESPACE_CHARS);
+		StringBufferUtilities.trim(stringBuffer, PHRASE_PUNCTUATION_CHARS+HYPHEN_MINUS_CHAR+EM_DASH_CHAR+EN_DASH_CHAR+TRIM_CHARS);
 			//if the string starts with "the" (but only in lowercase), remove it
 		if(StringBufferUtilities.startsWith(stringBuffer, THE)) //if the string starts with "the" (but only in lowercase)
 		{
@@ -1504,7 +1506,7 @@ Debug.trace("checking for punctuation: ", stringBuffer);  //G***de
 		  stringBuffer.delete(stringBuffer.length()-2, stringBuffer.length());  //remove the ending control character
 		}
 		/**The characters we'll trim from the front and back of the string.*/
-		final String TRIM_CHARS=WHITESPACE_CHARS+DEPENDENT_PUNCTUATION_CHARS+/*G***bring back if needed QUOTE_CHARS+*/'*'+'.';  //G**use constants
+		final String TRIM_CHARS=CharacterConstants.TRIM_CHARS+WHITESPACE_CHARS+DEPENDENT_PUNCTUATION_CHARS+/*G***bring back if needed QUOTE_CHARS+*/'*'+'.';  //G**use constants
 //G***del System.out.println("tidying: "+string); //G***del
 		  //trim the string of whitespace, dashes, and asterisks
 		StringBufferUtilities.trim(stringBuffer, TRIM_CHARS);
@@ -1514,7 +1516,7 @@ Debug.trace("checking for punctuation: ", stringBuffer);  //G***de
 		{
 //G***del System.out.println("found right group: "+rightGroupIndex); //G***del
 		    //if there's nothing but whitespace after the right group, we'll remove the entire group
-			if(StringBufferUtilities.notCharIndexOf(stringBuffer, WHITESPACE_CHARS, rightGroupIndex+1)<0)
+			if(StringBufferUtilities.notCharIndexOf(stringBuffer, CharacterConstants.TRIM_CHARS, rightGroupIndex+1)<0)
 			{
 //G***del System.out.println("nothing but whitespace after"); //G***del
 					//remove evertying from the start of the group onward
