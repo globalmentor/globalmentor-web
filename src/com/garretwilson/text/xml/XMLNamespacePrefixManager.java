@@ -13,7 +13,7 @@ import com.garretwilson.rdf.directory.vcard.VCard;
 import com.garretwilson.rdf.dublincore.DCConstants;
 import com.garretwilson.rdf.foaf.FOAF;
 import com.garretwilson.rdf.maqro.MAQROConstants;
-import com.garretwilson.rdf.ploop.PLOOPConstants;
+import com.garretwilson.rdf.ploop.PLOOP;
 import com.garretwilson.rdf.rdfs.RDFSConstants;
 import com.garretwilson.rdf.version.VersionConstants;
 import com.garretwilson.rdf.xeb.XEBConstants;
@@ -74,7 +74,7 @@ public class XMLNamespacePrefixManager
 		registerNamespacePrefix(OEBConstants.OEB1_DOCUMENT_NAMESPACE_URI.toString(), OEBConstants.OEB1_DOCUMENT_NAMESPACE_PREFIX); //OEB 1
 		registerNamespacePrefix("http://globalmentor.com/namespaces/marmot#", "marmot"); //Marmot TODO link to Marmot constants when Marmot is included in normal libraries
 		registerNamespacePrefix("http://marmox.net/namespaces/content#", "content"); //Marmox content
-		registerNamespacePrefix(PLOOPConstants.PLOOP_PROPERTY_NAMESPACE_URI.toString(), PLOOPConstants.PLOOP_PROPERTY_NAMESPACE_PREFIX); //PLOOP property
+		registerNamespacePrefix(PLOOP.PLOOP_PROPERTY_NAMESPACE_URI.toString(), PLOOP.PLOOP_PROPERTY_NAMESPACE_PREFIX); //PLOOP property
 		registerNamespacePrefix(QTIConstants.QTI_1_1_NAMESPACE_URI.toString(), QTIConstants.QTI_NAMESPACE_PREFIX); //QTI
 		registerNamespacePrefix(RDFConstants.RDF_NAMESPACE_URI.toString(), RDFConstants.RDF_NAMESPACE_PREFIX); //RDF
 		registerNamespacePrefix(RDFSConstants.RDFS_NAMESPACE_URI.toString(), RDFSConstants.RDFS_NAMESPACE_PREFIX); //RDFS
