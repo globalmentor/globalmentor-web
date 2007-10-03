@@ -13,7 +13,6 @@ import com.garretwilson.rdf.directory.vcard.VCard;
 import com.garretwilson.rdf.dublincore.DCConstants;
 import com.garretwilson.rdf.foaf.FOAF;
 import com.garretwilson.rdf.maqro.MAQROConstants;
-import com.garretwilson.rdf.ploop.PLOOP;
 import com.garretwilson.rdf.rdfs.RDFSConstants;
 import com.garretwilson.rdf.version.VersionConstants;
 import com.garretwilson.rdf.xeb.XEBConstants;
@@ -23,6 +22,7 @@ import com.garretwilson.text.xml.oeb.OEBConstants;
 import com.garretwilson.text.xml.schema.XMLSchemaConstants;
 import com.garretwilson.text.xml.xhtml.XHTMLConstants;
 import com.garretwilson.text.xml.xlink.XLinkConstants;
+import com.garretwilson.urf.ploop.PLOOP;
 
 /**Manages XML namespaces and prefixes for serialization.
 This class is initialized with a default set of known namespace prefix mappings. 
