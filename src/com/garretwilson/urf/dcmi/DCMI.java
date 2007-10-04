@@ -1,6 +1,10 @@
 package com.garretwilson.urf.dcmi;
 
 import java.net.URI;
+import java.util.Locale;
+
+import com.garretwilson.urf.*;
+import static com.garretwilson.util.LocaleUtilities.*;
 
 /**Constants used for Dublin Core as stored in URF.
 @author Garret Wilson
@@ -47,5 +51,14 @@ public class DCMI
 	public final static URI COVERAGE_PROPERTY_URI=DCMI11_ELEMENTS_NAMESPACE_URI.resolve("coverage");
 	/**The rights of a resource.*/
 	public final static URI RIGHTS_PROPERTY_URI=DCMI11_ELEMENTS_NAMESPACE_URI.resolve("rights");
+
+	/**Sets the «{@value #LANGUAGE_PROPERTY_URI}» property with the given value to the resource.
+	@param resource The resource to which the property should be set.
+	@param locale The property value to set.
+	*/
+	public static void setLanguage(final URFResource resource, final Locale locale)
+	{
+		resource.setPropertyValue(DCMI11_ELEMENTS_NAMESPACE_URI, new DefaultURFResource(createInfoLangURI(locale)));	//create a resource for the given locale and add it as the property
+	}
 
 }
