@@ -304,8 +304,12 @@ public interface XHTMLConstants
 	public final static String ELEMENT_TEXTAREA_ATTRIBUTE_ROWS="rows";
 	public final static String ELEMENT_TEXTAREA_ATTRIBUTE_WRAP="wrap";
 		public final static String TEXTAREA_WRAP_OFF="off";
+		public final static String TEXTAREA_WRAP_HARD="hard";
+		public final static String TEXTAREA_WRAP_SOFT="soft";
+/*"hard" and "soft" apparently have more acceptance than "physical" and "virtual"; see http://msdn2.microsoft.com/en-us/library/ms535152.aspx and http://lists.evolt.org/archive/Week-of-Mon-19991101/091388.html 
 		public final static String TEXTAREA_WRAP_PHYSICAL="physical";
 		public final static String TEXTAREA_WRAP_VIRTUAL="virtual";
+*/
 	public final static String ELEMENT_TEXTAREA_ATTRIBUTE_DISABLED="disabled";
 		public final static String TEXTAREA_DISABLED_DISABLED="disabled";
 	public final static String ELEMENT_TEXTAREA_ATTRIBUTE_READONLY="readonly";
