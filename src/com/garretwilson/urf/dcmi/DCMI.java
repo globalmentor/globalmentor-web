@@ -14,8 +14,8 @@ import static com.garretwilson.util.LocaleUtilities.*;
 public class DCMI
 {
 
-	/**The recommended prefix to the Dublin Core Metadata Initiative elements namespace.*/
-	public final static String DCMI_ELEMENTS_NAMESPACE_PREFIX="dc";
+	/**The recommended name of the Dublin Core Metadata Initiative elements namespace.*/
+	public final static String DCMI_ELEMENTS_NAMESPACE_NAME="dc";
 	/**The URI to the Dublin Core Metadata Initiative element set 1.0 namespace.*/
 	public final static URI DCMI10_ELEMENTS_NAMESPACE_URI=URI.create("http://purl.org/dc/elements/1.0/");
 	/**The URI to the Dublin Core Metadata Initiative element set 1.1 namespace.*/
