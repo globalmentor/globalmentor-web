@@ -725,7 +725,7 @@ public class JSON
 							c=CARRIAGE_RETURN;
 							break;
 						case ESCAPED_TAB:	//t tab U+0009	
-							c=QUOTATION_MARK;
+							c=HORIZONTAL_TAB;
 							break;
 						case ESCAPED_UNICODE:	//if this is an escaped version of a Unicode code point
 							{
