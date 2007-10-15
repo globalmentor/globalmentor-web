@@ -5,7 +5,6 @@ import java.util.Locale;
 
 import com.garretwilson.urf.*;
 import static com.garretwilson.urf.URF.*;
-import static com.garretwilson.util.LocaleUtilities.*;
 
 /**Constants and methods used for Dublin Core as stored in URF.
 <p>Copyright © 2007 GlobalMentor, Inc.
@@ -61,12 +60,12 @@ public class DCMI
 
 	/**Returns the value of the «{@value #LANGUAGE_PROPERTY_URI}» property.
 	@param resource The resource the property of which should be located.
-	@return The value of the first «{@value #LANGUAGE_PROPERTY_URI}» property, or <code>null</code> if no such property exists or the property value does not contain a resource with an <code>info:lang/</code> URI.
+	@return The value of the first «{@value #LANGUAGE_PROPERTY_URI}» property, or <code>null</code> if no such property exists or the property value does not contain a language resource.
 	@exception IllegalArgumentException if the language value resource represents a locale that does not have the correct syntax, such as if the language tag has more than three components.
 	*/
 	public static Locale getLanguage(final URFResource resource)
 	{
-		return asLocale(resource.getPropertyValue(LANGUAGE_PROPERTY_URI));	//return the language as a locale
+		return asLanguage(resource.getPropertyValue(LANGUAGE_PROPERTY_URI));	//return the language as a locale
 	}
 
 	/**Sets the «{@value #LANGUAGE_PROPERTY_URI}» property with the given value to the resource.
@@ -75,7 +74,7 @@ public class DCMI
 	*/
 	public static void setLanguage(final URFResource resource, final Locale locale)
 	{
-		resource.setPropertyValue(DCMI11_ELEMENTS_NAMESPACE_URI, new DefaultURFResource(createInfoLangURI(locale)));	//create a resource for the given locale and add it as the property
+		resource.setPropertyValue(DCMI11_ELEMENTS_NAMESPACE_URI, DEFAULT_URF_RESOURCE_FACTORY.createLanguageResource(locale));	//create a resource for the given locale and add it as the property
 	}
 
 	/**Returns the string value of the «{@value #TITLE_PROPERTY_URI}» property.
