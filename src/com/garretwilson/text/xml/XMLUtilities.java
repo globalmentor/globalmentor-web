@@ -1514,14 +1514,7 @@ G***should we return data from CDATA sections as well?
 	*/
 	public static String toString(final Element element)
 	{
-		try
-		{
-		  return new XMLSerializer(true).serialize(element); //serialize the element to a string, formatting the XML output
-		}
-		catch(final IOException ioException)  //if an IO exception occurs
-		{
-			return ioException.getMessage()+' '+element.toString();  //ask the document to convert itself to a string
-		}
+	  return new XMLSerializer(true).serialize(element); //serialize the element to a string, formatting the XML output
 	}
 
 }

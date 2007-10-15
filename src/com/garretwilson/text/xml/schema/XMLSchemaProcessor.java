@@ -1,10 +1,6 @@
 package com.garretwilson.text.xml.schema;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.*;
-import static com.garretwilson.text.CharacterEncodingConstants.*;
 import com.garretwilson.text.xml.XMLSerializer;
 import static com.garretwilson.text.xml.schema.XMLSchemaConstants.*;
 import com.garretwilson.util.Debug;
@@ -305,19 +301,12 @@ public class XMLSchemaProcessor
 						//if this is <appinfo> or <documentation>
 					if(childLocalName.equals(ELEMENT_APPINFO) || childLocalName.equals(ELEMENT_DOCUMENTATION))
 				  {
-						try
-						{
-							final String informationString=xmlSerializer.serializeContent(childElement); //serialize the content of the information element to a string
+						final String informationString=xmlSerializer.serializeContent(childElement); //serialize the content of the information element to a string
 //G***del Debug.trace("information: "+informationString); //G***fix
-							if(childLocalName.equals(ELEMENT_APPINFO))  //if this is application information
-							  annotation.addApplicationInformation(informationString);  //add the application information
-							else if(childLocalName.equals(ELEMENT_DOCUMENTATION)) //if this is user information
-							  annotation.addUserInformation(informationString); //add the user information
-						}
-						catch(IOException e)  //we don't expect general I/O exceptions, and we certainly don't expect UTF-8 to be unrecognized)
-						{
-							Debug.error(e); //we don't expect to produce this error
-						}
+						if(childLocalName.equals(ELEMENT_APPINFO))  //if this is application information
+						  annotation.addApplicationInformation(informationString);  //add the application information
+						else if(childLocalName.equals(ELEMENT_DOCUMENTATION)) //if this is user information
+						  annotation.addUserInformation(informationString); //add the user information
 				  }
 					else  //if this is not <appinfo> or <documentation>
 						Debug.error("Illegal annotation element: "+childLocalName); //G***fix
