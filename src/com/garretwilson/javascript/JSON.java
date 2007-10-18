@@ -8,7 +8,7 @@ import static com.garretwilson.lang.CharSequenceUtilities.*;
 import static com.garretwilson.lang.StringBuilderUtilities.*;
 import static com.garretwilson.lang.ObjectUtilities.*;
 
-import com.garretwilson.text.ArgumentParseException;
+import com.garretwilson.text.ArgumentSyntaxException;
 import com.garretwilson.text.W3CDateFormat;
 import static com.garretwilson.util.ArrayUtilities.*;
 
@@ -278,13 +278,13 @@ public class JSON
 	@return The new index at which to continue parsing.
 	@exception NullPointerException if the given character sequence is <code>null</code>.
 	@exception ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
-	@exception ArgumentParseException if the current character in the sequence does not match the specified character.
+	@exception ArgumentSyntaxException if the current character in the sequence does not match the specified character.
 	*/
-	protected static int check(final CharSequence charSequence, final int index, final char c) throws ArgumentParseException
+	protected static int check(final CharSequence charSequence, final int index, final char c) throws ArgumentSyntaxException
 	{
 		if(charSequence.charAt(index)!=c)	//if this character does not match what we expected
 		{
-			throw new ArgumentParseException(charSequence.toString(), index, "Expected "+(char)c+".");
+			throw new ArgumentSyntaxException("Expected "+(char)c+".", charSequence.toString(), index);
 		}
 		return index+1;	//return the subsequent index
 	}
@@ -297,14 +297,14 @@ public class JSON
 	@return The new index at which to continue parsing.
 	@exception NullPointerException if the given character sequence is <code>null</code>.
 	@exception ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
-	@exception ArgumentParseException if the current character in the sequence does not fall within the given range.
+	@exception ArgumentSyntaxException if the current character in the sequence does not fall within the given range.
 	*/
 	protected static int check(final CharSequence charSequence, int index, final char lowerBound, final char upperBound)
 	{
 		final char c=charSequence.charAt(index);	//get the current character
 		if(c<lowerBound || c>upperBound)	//if this character is not in the range
 		{
-			throw new ArgumentParseException(charSequence.toString(), index, "Expected character from "+(char)lowerBound+" to "+(char)upperBound+".");
+			throw new ArgumentSyntaxException("Expected character from "+(char)lowerBound+" to "+(char)upperBound+".", charSequence.toString(), index);
 		}
 		return index+1;	//return the subsequent index
 	}
@@ -316,13 +316,13 @@ public class JSON
 	@return The new index at which to continue parsing.
 	@exception NullPointerException if the given character sequence and/or the given characters is <code>null</code>.
 	@exception ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
-	@exception ArgumentParseException if the current character in the sequence does not match one of the specified characters.
+	@exception ArgumentSyntaxException if the current character in the sequence does not match one of the specified characters.
 	*/
 	protected static int check(final CharSequence charSequence, int index, final char[] characters)
 	{
 		if(indexOf(characters, charSequence.charAt(index))<0)	//if this character does not match one of the expected characters
 		{
-			throw new ArgumentParseException(charSequence.toString(), index, "Expected one of "+Arrays.toString(characters)+".");
+			throw new ArgumentSyntaxException("Expected one of "+Arrays.toString(characters)+".", charSequence.toString(), index);
 		}
 		return index+1;	//return the subsequent index
 	}
@@ -334,9 +334,9 @@ public class JSON
 	@return The new index at which to continue parsing.
 	@exception NullPointerException if the given character sequence and/or match character sequence is <code>null</code>.
 	@exception ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
-	@exception ArgumentParseException if the current character in the sequence does not match the specified character sequence.
+	@exception ArgumentSyntaxException if the current character in the sequence does not match the specified character sequence.
 	*/
-	protected static int check(final CharSequence charSequence, int index, final CharSequence match) throws ArgumentParseException
+	protected static int check(final CharSequence charSequence, int index, final CharSequence match) throws ArgumentSyntaxException
 	{
 		final int matchLength=match.length();	//get the length to match
 		for(int i=0; i<matchLength; ++i)	//for each match index
@@ -447,9 +447,9 @@ public class JSON
 	@param charSequence The character sequence to be parsed.
 	@return A new {@link String}, {@link Boolean}, {@link Number}, {@link List}, {@link Map}, or <code>null</code> representing the value represented by the character sequence.
 	@exception NullPointerException if the given character sequence is <code>null</code>.
-	@exception ArgumentParseException if the given character sequence does not represent a valid JSON object.
+	@exception ArgumentSyntaxException if the given character sequence does not represent a valid JSON object.
 	*/
-	public static Object parseValue(final CharSequence charSequence) throws ArgumentParseException
+	public static Object parseValue(final CharSequence charSequence) throws ArgumentSyntaxException
 	{
 		final ObjectHolder<Object> objectHolder=new ObjectHolder<Object>();	//create a new objecdt holder to hold the value
 		try
@@ -459,11 +459,11 @@ public class JSON
 		}
 		catch(final IndexOutOfBoundsException indexOutOfBoundsException)	//if we ran out of characters
 		{
-			throw new ArgumentParseException(charSequence.toString(), indexOutOfBoundsException);
+			throw new ArgumentSyntaxException(indexOutOfBoundsException, charSequence.toString());
 		}
 		catch(final NumberFormatException numberFormatException)	//if a number wasn't formatted correctly
 		{
-			throw new ArgumentParseException(charSequence.toString(), numberFormatException);
+			throw new ArgumentSyntaxException(numberFormatException, charSequence.toString());
 		}
 	}
 
@@ -473,10 +473,10 @@ public class JSON
 	@param objectHolder The object that will hold the parsed object: {@link String}, {@link Boolean}, {@link Number}, {@link List}, {@link Map}, or <code>null</code> representing the value represented by the character sequence..
 	@return The new index at which to continue parsing.
 	@exception NullPointerException if the given character sequence is <code>null</code>.
-	@exception ArgumentParseException if the given character sequence does not represent a valid JSON object.
+	@exception ArgumentSyntaxException if the given character sequence does not represent a valid JSON object.
 	@exception ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
 	*/
-	protected static int parseValue(final CharSequence charSequence, int index, final ObjectHolder<Object> objectHolder) throws ArgumentParseException
+	protected static int parseValue(final CharSequence charSequence, int index, final ObjectHolder<Object> objectHolder) throws ArgumentSyntaxException
 	{
 		final Object object;	//we'll set the object after parsing it
 		char c=charSequence.charAt(index);	//get the current character
@@ -533,7 +533,7 @@ public class JSON
 				object=Boolean.TRUE;	//the value is true
 				break;
 			default:
-				throw new ArgumentParseException(charSequence.toString(), index, "Illegal value character.");
+				throw new ArgumentSyntaxException("Illegal value character.", charSequence.toString(), index);
 		}
 		objectHolder.setObject(object);	//set the object we parsed
 		return index;	//return the new index
@@ -545,10 +545,10 @@ public class JSON
 	@param list The list in which the parsed array contents will be placed.
 	@return The new index at which to continue parsing after the array.
 	@exception NullPointerException if the given character sequence is <code>null</code>.
-	@exception ArgumentParseException if the given character sequence does not represent a valid JSON string.
+	@exception ArgumentSyntaxException if the given character sequence does not represent a valid JSON string.
 	@exception ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
 	*/
-	protected static int parseArray(final CharSequence charSequence, int index, final List<Object> list) throws ArgumentParseException
+	protected static int parseArray(final CharSequence charSequence, int index, final List<Object> list) throws ArgumentSyntaxException
 	{
 		index=check(charSequence, index, BEGIN_ARRAY);	//make sure this is the start of an array
 		index=parseArrayContents(charSequence, index, list);	//parse the contents of the array
@@ -561,10 +561,10 @@ public class JSON
 	@param list The list in which the parsed array contents will be placed.
 	@return The new index at which to continue parsing after the array contents (usually the character {@value #END_ARRAY}).
 	@exception NullPointerException if the given character sequence is <code>null</code>.
-	@exception ArgumentParseException if the given character sequence does not represent a valid JSON object.
+	@exception ArgumentSyntaxException if the given character sequence does not represent a valid JSON object.
 	@exception ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
 	*/
-	protected static int parseArrayContents(final CharSequence charSequence, int index, final List<Object> list) throws ArgumentParseException
+	protected static int parseArrayContents(final CharSequence charSequence, int index, final List<Object> list) throws ArgumentSyntaxException
 	{
 		index=skipWhitespace(charSequence, index);	//skip whitespace
 		if(charSequence.charAt(index)==END_ARRAY)	//if we've reached the end of the array
@@ -588,7 +588,7 @@ public class JSON
 			}
 			else	//if we don't have more values but we haven't reached the end of the array
 			{
-				throw new ArgumentParseException(charSequence.toString(), index, "Expected "+VALUE_SEPARATOR+" or "+END_ARRAY+".");
+				throw new ArgumentSyntaxException("Expected "+VALUE_SEPARATOR+" or "+END_ARRAY+".", charSequence.toString(), index);
 			}
 		}
 	}
@@ -599,10 +599,10 @@ public class JSON
 	@param list The list in which the parsed array contents will be placed.
 	@return The new index at which to continue parsing after the object.
 	@exception NullPointerException if the given character sequence is <code>null</code>.
-	@exception ArgumentParseException if the given character sequence does not represent a valid JSON string.
+	@exception ArgumentSyntaxException if the given character sequence does not represent a valid JSON string.
 	@exception ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
 	*/
-	protected static int parseObject(final CharSequence charSequence, int index, final Map<String, Object> map) throws ArgumentParseException
+	protected static int parseObject(final CharSequence charSequence, int index, final Map<String, Object> map) throws ArgumentSyntaxException
 	{
 		index=check(charSequence, index, BEGIN_OBJECT);	//make sure this is the start of an object
 		index=parseObjectContents(charSequence, index, map);	//parse the contents of the array
@@ -615,10 +615,10 @@ public class JSON
 	@param map The map in which the parsed object contents will be placed.
 	@return The new index at which to continue parsing after the object contents (usually the character {@value #END_OBJECT}).
 	@exception NullPointerException if the given character sequence is <code>null</code>.
-	@exception ArgumentParseException if the given character sequence does not represent a valid JSON object.
+	@exception ArgumentSyntaxException if the given character sequence does not represent a valid JSON object.
 	@exception ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
 	*/
-	protected static int parseObjectContents(final CharSequence charSequence, int index, final Map<String, Object> map) throws ArgumentParseException
+	protected static int parseObjectContents(final CharSequence charSequence, int index, final Map<String, Object> map) throws ArgumentSyntaxException
 	{
 		index=skipWhitespace(charSequence, index);	//skip whitespace
 		if(charSequence.charAt(index)==END_OBJECT)	//if we've reached the end of the object
@@ -647,7 +647,7 @@ public class JSON
 			}
 			else	//if we don't have more values but we haven't reached the end of the object
 			{
-				throw new ArgumentParseException(charSequence.toString(), index, "Expected "+VALUE_SEPARATOR+" or "+END_ARRAY+".");
+				throw new ArgumentSyntaxException("Expected "+VALUE_SEPARATOR+" or "+END_ARRAY+".", charSequence.toString(), index);
 			}
 		}
 	}
@@ -658,10 +658,10 @@ public class JSON
 	@param stringHolder The string holder in which the parsed string will be placed.
 	@return The new index at which to continue parsing after the string.
 	@exception NullPointerException if the given character sequence is <code>null</code>.
-	@exception ArgumentParseException if the given character sequence does not represent a valid JSON string.
+	@exception ArgumentSyntaxException if the given character sequence does not represent a valid JSON string.
 	@exception ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
 	*/
-	protected static int parseString(final CharSequence charSequence, int index, final ObjectHolder<String> stringHolder) throws ArgumentParseException
+	protected static int parseString(final CharSequence charSequence, int index, final ObjectHolder<String> stringHolder) throws ArgumentSyntaxException
 	{
 		index=check(charSequence, index, QUOTATION_MARK);	//make sure this is the start of a string
 		index=parseStringContents(charSequence, index, stringHolder);	//parse the contents of the string
@@ -674,10 +674,10 @@ public class JSON
 	@param stringHolder The string holder in which the parsed string contents will be placed.
 	@return The new index at which to continue parsing after the string contents (usually the character {@value #QUOTATION_MARK}).
 	@exception NullPointerException if the given character sequence is <code>null</code>.
-	@exception ArgumentParseException if the given character sequence does not represent a valid JSON object.
+	@exception ArgumentSyntaxException if the given character sequence does not represent a valid JSON object.
 	@exception ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
 	*/
-	protected static int parseStringContents(final CharSequence charSequence, int index, final ObjectHolder<String> stringHolder) throws ArgumentParseException
+	protected static int parseStringContents(final CharSequence charSequence, int index, final ObjectHolder<String> stringHolder) throws ArgumentSyntaxException
 	{
 		final int endQuoteIndex=indexOf(charSequence, QUOTATION_MARK, index);	//the most common case is a simple quoted string with no escaped characters; try to handle the common case by getting the ending quotation mark, which will be much faster than appending characters one at a time
 		final String commonCaseString=charSequence.subSequence(index, endQuoteIndex).toString();	//get the contents of the string (if there was no ending quotation mark, this will throw an exception, which we might as well throw now as any time)
@@ -735,7 +735,7 @@ public class JSON
 							}
 							break;
 						default:	//if we didn't recognize the escaped character
-							throw new ArgumentParseException(charSequence.toString(), index, "Unrecognized escaped character "+c+".");
+							throw new ArgumentSyntaxException("Unrecognized escaped character "+c+".", charSequence.toString(), index);
 					}
 				}
 				stringBuilder.append(c);	//append the character
@@ -750,11 +750,11 @@ public class JSON
 	@param numberHolder The number holder in which the parsed number will be placed.
 	@return The new index at which to continue parsing after the number.
 	@exception NullPointerException if the given character sequence is <code>null</code>.
-	@exception ArgumentParseException if the given character sequence does not represent a valid JSON number.
+	@exception ArgumentSyntaxException if the given character sequence does not represent a valid JSON number.
 	@exception NumberFormatException if the given character sequence does not contain a parsable JSON number.
 	@exception ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
 	*/
-	protected static int parseNumber(final CharSequence charSequence, int index, final ObjectHolder<Number> numberHolder) throws ArgumentParseException
+	protected static int parseNumber(final CharSequence charSequence, int index, final ObjectHolder<Number> numberHolder) throws ArgumentSyntaxException
 	{
 		final int length=charSequence.length();	//get the length of the character sequence
 		final int start=index;	//make note of where we start
