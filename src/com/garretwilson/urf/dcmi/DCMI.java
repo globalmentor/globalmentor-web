@@ -58,37 +58,61 @@ public class DCMI
 	/**The rights of a resource.*/
 	public final static URI RIGHTS_PROPERTY_URI=DCMI11_ELEMENTS_NAMESPACE_URI.resolve("rights");
 
-	/**Returns the value of the «{@value #LANGUAGE_PROPERTY_URI}» property.
+	/**Returns the description of the resource
 	@param resource The resource the property of which should be located.
-	@return The value of the first «{@value #LANGUAGE_PROPERTY_URI}» property, or <code>null</code> if no such property exists or the property value does not contain a language resource.
+	@return The string value of the property, or <code>null</code> if there is no such property or the property value is not a string.
+	@see #DESCRIPTION_PROPERTY_URI
+	*/
+	public static String getDescription(final URFResource resource)
+	{
+		return asString(resource.getPropertyValue(DESCRIPTION_PROPERTY_URI));
+	}
+
+	/**Sets the description of the resource.
+	@param resource The resource of which the property should be set.
+	@param value The property value to set.
+	@see #DESCRIPTION_PROPERTY_URI
+	*/
+	public static void setDescription(final URFResource resource, final String value)
+	{
+		resource.setPropertyValue(DESCRIPTION_PROPERTY_URI, value);
+	}
+
+	/**Returns the language of the resource.
+	@param resource The resource the property of which should be located.
+	@return The value of the first language property, or <code>null</code> if no such property exists or the property value does not contain a language resource.
 	@exception IllegalArgumentException if the language value resource represents a locale that does not have the correct syntax, such as if the language tag has more than three components.
+	@see #LANGUAGE_PROPERTY_URI
 	*/
 	public static Locale getLanguage(final URFResource resource)
 	{
 		return asLanguage(resource.getPropertyValue(LANGUAGE_PROPERTY_URI));	//return the language as a locale
 	}
 
-	/**Sets the «{@value #LANGUAGE_PROPERTY_URI}» property with the given value to the resource.
+	/**Sets the language of the resource.
 	@param resource The resource to which the property should be set.
 	@param locale The property value to set.
+	@see #LANGUAGE_PROPERTY_URI
 	*/
 	public static void setLanguage(final URFResource resource, final Locale locale)
 	{
 		resource.setPropertyValue(DCMI11_ELEMENTS_NAMESPACE_URI, DEFAULT_URF_RESOURCE_FACTORY.createLanguageResource(locale));	//create a resource for the given locale and add it as the property
 	}
 
-	/**Returns the string value of the «{@value #TITLE_PROPERTY_URI}» property.
+	/**Returns the title of the resource
 	@param resource The resource the property of which should be located.
 	@return The string value of the property, or <code>null</code> if there is no such property or the property value is not a string.
+	@see #TITLE_PROPERTY_URI
 	*/
 	public static String getTitle(final URFResource resource)
 	{
 		return asString(resource.getPropertyValue(TITLE_PROPERTY_URI));
 	}
 
-	/**Set the «{@value #TITLE_PROPERTY_URI}» property of the resource.
+	/**Sets the title of the resource.
 	@param resource The resource of which the property should be set.
 	@param value The property value to set.
+	@see #TITLE_PROPERTY_URI
 	*/
 	public static void setTitle(final URFResource resource, final String value)
 	{
