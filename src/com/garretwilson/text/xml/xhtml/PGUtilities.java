@@ -152,20 +152,20 @@ Debug.trace("this is a *** divider: "+i); //G***del
 					divIndex=i; //save the index of the divider in case we need it
 				}
 					//sometimes (e.g. lied210.txt) the end of the small print is missing, but this string gets us pretty close
-				else if(StringUtilities.indexOfIgnoreCase(text, "*WANT* TO SEND MONEY")>=0) //G***use a constant
+				else if(Strings.indexOfIgnoreCase(text, "*WANT* TO SEND MONEY")>=0) //G***use a constant
 				{
 Debug.trace("found *want* to send money at index: ", i);  //G***del
 					sendMoneyIndex=i; //this is the best divider we can find without actually finding the end of the small print
 				}
 				  //if we find that the text is starting, we'll count that as a divider if we haven't yet found one (e.g. "crowd11a.txt)
-				else if(StringUtilities.indexOfIgnoreCase(text, "Start of the Project Gutenberg")>=0 && divIndex<0) //G***use a constant
+				else if(Strings.indexOfIgnoreCase(text, "Start of the Project Gutenberg")>=0 && divIndex<0) //G***use a constant
 				{
 Debug.trace("this is 'Start of the PG' a divider: "+i); //G***del
 //G***del System.out.println("this is a divider"); //G***del
 					divIndex=i; //save the index of the divider in case we need it
 				}
 						//if this is the start of the PG header, and it's the first start we've found
-				else if(smallPrintStartIndex<0 && StringUtilities.indexOfIgnoreCase(text, SMALL_PRINT)>=0 && StringUtilities.indexOfIgnoreCase(text, SMALL_PRINT_START)>=0)
+				else if(smallPrintStartIndex<0 && Strings.indexOfIgnoreCase(text, SMALL_PRINT)>=0 && Strings.indexOfIgnoreCase(text, SMALL_PRINT_START)>=0)
 				{
 Debug.trace("small print start: ", i); //G***del
 //G***del System.out.println("found first small print start: "+i); //G***del
@@ -247,9 +247,9 @@ Debug.trace("extracting children up to divider: "+divIndex); //G***del
 		while(lineTokenizer.hasMoreTokens())  //while there are more lines
 		{
 			final String line=lineTokenizer.nextToken();  //get the next line
-			final int smallPrintIndex=StringUtilities.indexOfIgnoreCase(line, SMALL_PRINT); //get the index of "small print"
+			final int smallPrintIndex=Strings.indexOfIgnoreCase(line, SMALL_PRINT); //get the index of "small print"
 //G***del 	Debug.trace("offset of small print: ", smallPrintIndex); //G***del
-			final int smallPrintEndIndex=StringUtilities.indexOfIgnoreCase(line, SMALL_PRINT_END);  //get the index of "end"
+			final int smallPrintEndIndex=Strings.indexOfIgnoreCase(line, SMALL_PRINT_END);  //get the index of "end"
 //G***del 	Debug.trace("offset of end: ", smallPrintEndIndex); //G***del
 			if(smallPrintIndex>=0 && smallPrintEndIndex>=0) //if both "small print" and "end" are on the same line
 			{
@@ -338,10 +338,10 @@ Debug.trace("extracting children up to divider: "+divIndex); //G***del
 		while(lineTokenizer.hasMoreTokens())  //while there are more lines
 		{
 				//get the next line and trim it of whitespace and asterisks
-			final String line=StringUtilities.trim(lineTokenizer.nextToken(), TRIM_CHARS+'*'); //G***use a constant
-			if(StringUtilities.startsWithIgnoreCase(line, "end")) //if the line starts with "end" G***use a constant
+			final String line=Strings.trim(lineTokenizer.nextToken(), TRIM_CHARS+'*'); //G***use a constant
+			if(Strings.startsWithIgnoreCase(line, "end")) //if the line starts with "end" G***use a constant
 				foundEnd=true;  //show that we found the "end" line
-			if(StringUtilities.indexOfIgnoreCase(text, PROJECT_GUTENB)>=0) //if this line contains "Project Gutenberg" in it
+			if(Strings.indexOfIgnoreCase(text, PROJECT_GUTENB)>=0) //if this line contains "Project Gutenberg" in it
 				foundPG=true; //show that we found the Project Gutenberg line
 			if(foundEnd && foundPG) //if we've found both cases in this paragraph
 				return true;  //we think this is a Project Gutenberg footer
@@ -397,12 +397,12 @@ Debug.trace("found header element");  //G***del
 								//  other without
 							final String projectGutenbergString=getProjectGutenbergString(line);
 								//get the index of the string if it exists
-							final int projectGutenbergIndex=projectGutenbergString!=null ? StringUtilities.indexOfIgnoreCase(line, projectGutenbergString) : -1;
+							final int projectGutenbergIndex=projectGutenbergString!=null ? Strings.indexOfIgnoreCase(line, projectGutenbergString) : -1;
 //G***del							final int projectGutenbergIndex=StringUtilities.indexOfIgnoreCase(line, PROJECT_GUTENB);
 								//see if the word "copyright" is on the line, which means this is a false header
-							int copyrightIndex=StringUtilities.indexOfIgnoreCase(line, COPYRIGHT);
-							if(StringUtilities.indexOfIgnoreCase(line, "of:")>=0  //if the line contains "of:" G***last-minute hack for radio10.txt
-									|| StringUtilities.indexOfIgnoreCase(line, "of the")>=0)  //if the line contains "of the" G***last-minute hack for berne10.txt
+							int copyrightIndex=Strings.indexOfIgnoreCase(line, COPYRIGHT);
+							if(Strings.indexOfIgnoreCase(line, "of:")>=0  //if the line contains "of:" G***last-minute hack for radio10.txt
+									|| Strings.indexOfIgnoreCase(line, "of the")>=0)  //if the line contains "of the" G***last-minute hack for berne10.txt
 								copyrightIndex=-1;  //G***testing
 								//see if "Project Gutenberg EText" or "Project Gutenberg Edition" is on this line
 							if(projectGutenbergIndex>=0 && copyrightIndex<0)  //if "Project Gutenberg" is on this line, *without* a copyright indication
@@ -420,7 +420,7 @@ Debug.trace("found PG in line: "+line);  //G***del
 								boolean isSpecialFirstPGHeader=false; //we'll determine if this is the special beginning PG header; if so, we won't need to check about the etext string
 								if(eTextString!=null) // we have an etext string
 								{
-									eTextStringIndex=StringUtilities.indexOfIgnoreCase(line, eTextString);  //find out where the string starts
+									eTextStringIndex=Strings.indexOfIgnoreCase(line, eTextString);  //find out where the string starts
 								}
 								else  //if we didn't find "etext"
 								{
@@ -540,7 +540,7 @@ Debug.trace("we think the title is: "+title);  //G***del
 												&& getByIndex(line)<0 //if the current line has "by" in it, the title on the first line was probably correct (e.g. acrdi10.txt)
 													  //if the first line has "of" appearing before the almost-end
 												&& (
-													  (StringUtilities.indexOfIgnoreCase(line, " of ")<0 || StringUtilities.indexOfIgnoreCase(line, " of ")>(line.length()*3/4)) //it's risky going to the next line---make sure we want to go there (e.g. berne10.txt)
+													  (Strings.indexOfIgnoreCase(line, " of ")<0 || Strings.indexOfIgnoreCase(line, " of ")>(line.length()*3/4)) //it's risky going to the next line---make sure we want to go there (e.g. berne10.txt)
 														|| CharSequenceUtilities.endsWithIgnoreCase(remainingText, " folio")  //if the title ends in "folio" (e.g. 0ws??10.txt), the actual title is probably on the next line
 														)
 												)
@@ -639,7 +639,7 @@ Debug.trace("got author property: ", author); //G***del
 			author=getPropertyValue(headerFragment, "authors", ':'); //try to get the authors property in the header G***later try to separate them out G***use a constant here
 Debug.trace("got authors property: ", author); //G***del
 		}
-		if(author!=null && StringUtilities.startsWithIgnoreCase(author.trim(), "several"))  //if this author is "several" (e.g. cm63b10.txt) G***use a constant
+		if(author!=null && Strings.startsWithIgnoreCase(author.trim(), "several"))  //if this author is "several" (e.g. cm63b10.txt) G***use a constant
 		{
 			author=null;  //we really didn't find an author
 		}
@@ -674,13 +674,13 @@ Debug.trace("found PG header for author");  //G***del
 							final String line=lineTokenizer.nextToken();  //get the next line
 		//G***del Debug.trace("line: ", line);  //G***del
 								//see if "Project Gutenberg EText" or "Project Gutenberg Edition" is on this line
-							if(StringUtilities.indexOfIgnoreCase(line, PROJECT_GUTENB)>=0)  //if "Project Gutenberg" is on this line
+							if(Strings.indexOfIgnoreCase(line, PROJECT_GUTENB)>=0)  //if "Project Gutenberg" is on this line
 							{
 Debug.trace("found PG in line for author: ", line);  //G***del
 		//G***del Debug.trace("found project gutenberg"); //G***del
 								final String eTextString=getETextString(line);  //get the etext string on the line
 										//get the index of the etext string, if there was one
-								final int eTextStringIndex=eTextString!=null ? StringUtilities.indexOfIgnoreCase(line, eTextString) : -1;
+								final int eTextStringIndex=eTextString!=null ? Strings.indexOfIgnoreCase(line, eTextString) : -1;
 									//if this is the correct line, and there's whitespace after the etext string
 								if(eTextStringIndex>=0 && eTextStringIndex+eTextString.length()<line.length()
 										&& (CharacterUtilities.isWhitespace(line.charAt(eTextStringIndex+eTextString.length()))
@@ -709,7 +709,7 @@ Debug.trace("found PG in line for author: ", line);  //G***del
 										}
 									}
 										//try to find possession (e.g. "Shakespeare's") in the title---it may be all we have
-									final int possessionIndex=StringUtilities.indexOfIgnoreCase(remainingText, "'s");  //see if there is a "'s" in the title
+									final int possessionIndex=Strings.indexOfIgnoreCase(remainingText, "'s");  //see if there is a "'s" in the title
 									if(possessionIndex>0) //if there is possession in the title
 									{
 											//try to find the start of the word showing possession
@@ -718,7 +718,7 @@ Debug.trace("found PG in line for author: ", line);  //G***del
 										{
 											remainingText=remainingText.substring(wordBeginIndex, possessionIndex); //get the word showing possession
 											if(remainingText.length()>0 //if we have anything remaining
-											  && !StringUtilities.startsWithIgnoreCase(remainingText, "everybody"))  //"everybody" isn't a valid author (as in "Everybody's Magazine", 10evm10.txt)
+											  && !Strings.startsWithIgnoreCase(remainingText, "everybody"))  //"everybody" isn't a valid author (as in "Everybody's Magazine", 10evm10.txt)
 											{
 Debug.trace("setting title possession author: ", titlePossessionAuthor);  //G***del
 												titlePossessionAuthor=tidyAuthor(remainingText);  //whatever is left is the author
@@ -737,7 +737,7 @@ Debug.trace("searching non-'PG' line: ", line); //G***del
 								{
 Debug.trace("found by index: ", byIndex); //G***del
 										//see if "used" appears (as in "used by")
-								  final int usedIndex=StringUtilities.indexOfIgnoreCase(line, "used "); //G***use a constant
+								  final int usedIndex=Strings.indexOfIgnoreCase(line, "used "); //G***use a constant
 										//remove the "by" and everything before it, and tidy the property
 									String remainingText=byIndex>=0 //if we found by
 										? tidyAuthor(line.substring(byIndex+BY.length())) //use everything after by
@@ -754,9 +754,9 @@ Debug.trace("already found 'by' author: "+foundByAuthor); //G***del
 										if(author==null || CharSequenceUtilities.endsWithIgnoreCase(remainingText, author))
 										{
 											if(!foundByAuthor  //if this is the first author we've found using this method
-											  && !StringUtilities.startsWithIgnoreCase(remainingText, "AUTHOR")  //G***use a constant G***this code is duplicated
-											  && !StringUtilities.startsWithIgnoreCase(remainingText, "himself")  //(e.g. advlr10.txt) G***use a constant
-											  && !StringUtilities.startsWithIgnoreCase(remainingText, "herself"))  //(e.g. dbry11.txt) G***use a constant
+											  && !Strings.startsWithIgnoreCase(remainingText, "AUTHOR")  //G***use a constant G***this code is duplicated
+											  && !Strings.startsWithIgnoreCase(remainingText, "himself")  //(e.g. advlr10.txt) G***use a constant
+											  && !Strings.startsWithIgnoreCase(remainingText, "herself"))  //(e.g. dbry11.txt) G***use a constant
 											{
 Debug.trace("setting author from non-PG by: ", remainingText);
 												author=remainingText;  //whatever is left is the author
@@ -785,7 +785,7 @@ Debug.trace("found special line: ", text);  //G***del
 					{
 Debug.trace("we have no author");  //G***del
 //G***del						final String text=XMLUtilities.getText(childElement, true); //get the text of the element
-						if(StringUtilities.indexOfIgnoreCase(text, PROJECT_GUTENB)<0) //the author paragraph should *not* have "Project Gutenberg" in it (e.g. 22gbl10.txt)
+						if(Strings.indexOfIgnoreCase(text, PROJECT_GUTENB)<0) //the author paragraph should *not* have "Project Gutenberg" in it (e.g. 22gbl10.txt)
 						{
 							final StringTokenizer lineTokenizer=new StringTokenizer(text, EOL_CHARS); //create a tokenizer to look at each line
 //G***del						final int lineCount=lineTokenizer.countTokens();  //get the line count G***check; last minute addition for early works
@@ -798,13 +798,13 @@ Debug.trace("we have no author");  //G***del
 								if(title!=null) //if we have a title
 								{
 Debug.trace("we have title but no author");  //G***del
-									startSearchIndex=StringUtilities.indexOfIgnoreCase(line, title);  //see if the title is on this line
+									startSearchIndex=Strings.indexOfIgnoreCase(line, title);  //see if the title is on this line
 									if(startSearchIndex>=0) //if we found something to search after
 										startSearchIndex+=title.length(); //start searching after the title
 								}
 								if(startSearchIndex<0)  //if we didn't have a title or couldn't find it on this line
 								{
-									startSearchIndex=StringUtilities.indexOfIgnoreCase(line, "edited");  //see if "edited", as in "edited by", is on this line G***use a constant
+									startSearchIndex=Strings.indexOfIgnoreCase(line, "edited");  //see if "edited", as in "edited by", is on this line G***use a constant
 									if(startSearchIndex>=0) //if we found something to search after
 										startSearchIndex+="edited".length(); //start searching after the string G***use a constant
 								}
@@ -818,7 +818,7 @@ Debug.trace("we have title but no author");  //G***del
 								{
 Debug.trace("we found a place to search for by");  //G***del
 										 //see if there is a "by" on the line after the prefix
-									final int byIndex=StringUtilities.indexOfIgnoreCase(line, BY, startSearchIndex);
+									final int byIndex=Strings.indexOfIgnoreCase(line, BY, startSearchIndex);
 									if(byIndex>=0) //if there is a "by"
 									{
 											//remove the "by" and everything before it, and tidy the property
@@ -845,11 +845,11 @@ Debug.trace("by author: ", author);  //G***del
 				//  (the PG header author should always be the most accurate, but it
 				//  oftentimes be incomplete)
 			if(byAuthor!=null && byAuthor.length()<128 //if we found a by author and it's not too long
-				  && StringUtilities.indexOfIgnoreCase(byAuthor, "PROJECT GUTENBERG-tm")<0)  //the line with "PROJECT GUTENBERG-tm" talks about using or reading the work, and is not the header (e.g. alad10.txt) G***use a constant
+				  && Strings.indexOfIgnoreCase(byAuthor, "PROJECT GUTENBERG-tm")<0)  //the line with "PROJECT GUTENBERG-tm" talks about using or reading the work, and is not the header (e.g. alad10.txt) G***use a constant
 			{
 				if(author==null //if we don't have an author yet, or the by author is a more complete version of the one we have
 					  || (byAuthor.length()>author.length()
-									&& StringUtilities.indexOfIgnoreCase(byAuthor, author)>=0)
+									&& Strings.indexOfIgnoreCase(byAuthor, author)>=0)
 									&& !isFileLine(byAuthor)  //and this isn't the file line (e.g. sleep10.txt)
 									)
 				{
@@ -887,12 +887,12 @@ Debug.trace("author at end: ", author);  //G***del
 			{
 				final String line=lineTokenizer.nextToken();  //get the next line
 					//if this isn't the filename line, and it's not the "copyright laws are changing all over the world..." line
-				if(!isFileLine(line) && StringUtilities.indexOfIgnoreCase(line, "copyright laws")<0)  //G***use a constant
+				if(!isFileLine(line) && Strings.indexOfIgnoreCase(line, "copyright laws")<0)  //G***use a constant
 				{
 					if(descriptionStringBuffer.length()>0)  //if there is already part of a description
 						descriptionStringBuffer.append(' ');    //separate the description components with spaces
 							//trim both ends of "*" and whitespace and add the line to the description
-					descriptionStringBuffer.append(StringUtilities.trim(line, TRIM_CHARS+'*')); //G***use a constant here
+					descriptionStringBuffer.append(Strings.trim(line, TRIM_CHARS+'*')); //G***use a constant here
 				}
 			}
 			if(descriptionStringBuffer.length()>0)  //if we have a description
@@ -948,7 +948,7 @@ Debug.trace("checking text for header element: ", text); //G***del
 		final int lineCount=lineTokenizer.countTokens();  //see how many lines we have
 			//if this paragraph is four lines or less
 		if(lineCount<=4
-			  && StringUtilities.indexOfIgnoreCase(text, "money")<0)  //G***use a constant G***test; last minute hack to get this to work on the early texts
+			  && Strings.indexOfIgnoreCase(text, "money")<0)  //G***use a constant G***test; last minute hack to get this to work on the early texts
 //G***del			  && StringUtilities.indexOfIgnoreCase(text, "using or reading")<0)  //G***use a constant
 		{
 			while(lineTokenizer.hasMoreTokens())  //while there are more lines
@@ -964,15 +964,15 @@ Debug.trace("checking text for header element: ", text); //G***del
 					//  other without
 				final String projectGutenbergString=getProjectGutenbergString(line);
 					//get the index of the string if it exists
-				final int projectGutenbergIndex=projectGutenbergString!=null ? StringUtilities.indexOfIgnoreCase(line, projectGutenbergString) : -1;
+				final int projectGutenbergIndex=projectGutenbergString!=null ? Strings.indexOfIgnoreCase(line, projectGutenbergString) : -1;
 	//G***del			int projectGutenbergIndex=StringUtilities.indexOfIgnoreCase(line, PROJECT_GUTENB);
 					//see if the word "copyright" is on the line, which means this is a false header
-				final int copyrightIndex=StringUtilities.indexOfIgnoreCase(line, COPYRIGHT);
+				final int copyrightIndex=Strings.indexOfIgnoreCase(line, COPYRIGHT);
 	Debug.trace("project gutenbergIndex: "+projectGutenbergIndex); //G***del
 				final String eTextString=getETextString(line);  //get the etext string on the line
 	Debug.trace("eText String: "+eTextString); //G***del
 						//get the index of the etext string, if there was one
-				final int eTextStringIndex=eTextString!=null ? StringUtilities.indexOfIgnoreCase(line, eTextString) : -1;
+				final int eTextStringIndex=eTextString!=null ? Strings.indexOfIgnoreCase(line, eTextString) : -1;
 	Debug.trace("header etext string: "+eTextString);  //G***del
 				if(projectGutenbergIndex>=0 && eTextStringIndex>=0 && copyrightIndex<0)  //if this element contains the header text
 				{
@@ -1068,7 +1068,7 @@ Debug.trace("checking text for header element: ", text); //G***del
 //G***del; did we ever need this?				if(StringUtilities.charIndexOf(text, EOL_CHARS)<0)  //make sure CR/LF isn't present
 //G***del				text.indexOf(CARRIAGE_RETURN_CHAR)<0 && text.indexOf(LINE_FEED_CHAR)<0)
 				{
-					if(StringUtilities.startsWithIgnoreCase(text, property+delimiter)) //if the string starts with the property and the delimiter (e.g. "property:"), case insensitive
+					if(Strings.startsWithIgnoreCase(text, property+delimiter)) //if the string starts with the property and the delimiter (e.g. "property:"), case insensitive
 					{
 						  //get everything after the colon and tidy it---that's the property value
 						final String propertyValue=tidyProperty(text.substring(property.length()+1));
@@ -1113,7 +1113,7 @@ Debug.trace("checking text for header element: ", text); //G***del
 					{
 //G***del System.out.println("Checking first indicator: etext string: "+getETextString(text));
 							//if the text contains both "Project Gutenberg" and "EText", "Edition", or "EBook"
-						if(StringUtilities.indexOfIgnoreCase(text, PROJECT_GUTENB)>=0
+						if(Strings.indexOfIgnoreCase(text, PROJECT_GUTENB)>=0
 							  && getETextString(text)!=null)
 						{
 							++indicatorIndex; //go to the next indicators
@@ -1123,8 +1123,8 @@ Debug.trace("found indicator: "+indicatorIndex); //G***del
 						}
 					}
 						//for the other indicators, do normal checks if the text contains both of our current indicators
-					else if(StringUtilities.indexOfIgnoreCase(text, indicatorStrings[indicatorIndex][0])>=0
-						&& StringUtilities.indexOfIgnoreCase(text, indicatorStrings[indicatorIndex][1])>=0)
+					else if(Strings.indexOfIgnoreCase(text, indicatorStrings[indicatorIndex][0])>=0
+						&& Strings.indexOfIgnoreCase(text, indicatorStrings[indicatorIndex][1])>=0)
 					{
 						++indicatorIndex; //go to the next indicators
 Debug.trace("found indicator: "+indicatorIndex); //G***del
@@ -1237,7 +1237,7 @@ Debug.trace("found small print end");
 //G***del Debug.trace("current title being tidied: ", stringBuffer);  //G***del
 		}
 			//if the string contains with "title:" in any case (e.g. wacia10.txt)
-		final int titlePropertyIndex=StringUtilities.indexOfIgnoreCase(stringBuffer.toString(), "title:"); //G***use a constant G***use StringBufferUtiliites
+		final int titlePropertyIndex=Strings.indexOfIgnoreCase(stringBuffer.toString(), "title:"); //G***use a constant G***use StringBufferUtiliites
 		if(titlePropertyIndex>=0) //G***this should probably go in getProperty(), as that's where the value comes from
 		{
 			tidyProperty(stringBuffer.delete(titlePropertyIndex, stringBuffer.length())); //remove that text and tidy the string G***use a constant
@@ -1246,7 +1246,7 @@ Debug.trace("found small print end");
 		  //see if "Project Gutenberg" or a variation is in the string
 		final String projectGutenbergString=getProjectGutenbergString(stringBuffer.toString()); //G***do something more efficient than creating a string
 			//get the index of the string if it exists
-		final int projectGutenbergIndex=projectGutenbergString!=null ? StringUtilities.indexOfIgnoreCase(stringBuffer.toString(), projectGutenbergString) : -1;  //G***do something more efficient than creating a string
+		final int projectGutenbergIndex=projectGutenbergString!=null ? Strings.indexOfIgnoreCase(stringBuffer.toString(), projectGutenbergString) : -1;  //G***do something more efficient than creating a string
 			//if the string starts with a variant of "Project Gutenberg" or "The Project Gutenberg"
 		if(projectGutenbergString!=null
 			&& (StringBufferUtilities.startsWith(stringBuffer, projectGutenbergString)
@@ -1337,7 +1337,7 @@ Debug.trace("found small print end");
 			}
 		}
 			//if the string contains with "author:" in any case (e.g. ffnt110.txt)
-		final int authorPropertyIndex=StringUtilities.indexOfIgnoreCase(stringBuffer.toString(), "author:"); //G***use a constant G***use StringBufferUtiliites
+		final int authorPropertyIndex=Strings.indexOfIgnoreCase(stringBuffer.toString(), "author:"); //G***use a constant G***use StringBufferUtiliites
 		if(authorPropertyIndex>=0)  //G***this should probably go in getProperty(), as that's where the value comes from
 		{
 			tidyProperty(stringBuffer.delete(authorPropertyIndex, stringBuffer.length())); //remove that text and tidy the string G***use a constant
@@ -1348,7 +1348,7 @@ Debug.trace("found small print end");
 		  tidyProperty(stringBuffer.delete(byIndex, stringBuffer.length()));  //remove "by" and everything after it G***add a convenience routine like the one for strings
 		}
 			//see if "copyright" appears in the string
-		final int copyrightIndex=StringUtilities.indexOfIgnoreCase(stringBuffer.toString(), COPYRIGHT);  //G***use a StringBufferUtilities method
+		final int copyrightIndex=Strings.indexOfIgnoreCase(stringBuffer.toString(), COPYRIGHT);  //G***use a StringBufferUtilities method
 		if(copyrightIndex>=0) //if "copyright" appears in the title
 		{
 				//if "copyright" is followed by a copyright character
@@ -1360,7 +1360,7 @@ Debug.trace("found small print end");
 			}
 		}
 			//see if "(c)" appears in the string (e.g. truth10.txt)
-		final int copyrightCIndex=StringUtilities.indexOfIgnoreCase(stringBuffer.toString(), "(c)");  //G***use a StringBufferUtilities method; G***use a constant
+		final int copyrightCIndex=Strings.indexOfIgnoreCase(stringBuffer.toString(), "(c)");  //G***use a StringBufferUtilities method; G***use a constant
 		if(copyrightCIndex>=0) //if "(c)" appears in the title
 		{
 			tidyProperty(stringBuffer.delete(copyrightCIndex, stringBuffer.length()));  //remove "(c)" and everything after it G***add a convenience routine like the one for strings
@@ -1380,7 +1380,7 @@ Debug.trace("found small print end");
 		while(startSearchIndex<string.length()) //if we have something to search after
 		{
 				 //see if there is a "by" on the line
-			final int byIndex=StringUtilities.indexOfIgnoreCase(string, BY, startSearchIndex);
+			final int byIndex=Strings.indexOfIgnoreCase(string, BY, startSearchIndex);
 			if(byIndex>=0)  //if by appears
 			{
 				 //if "by" is surrounded by whitespace or asterisks G***fix; right now, this removes parts of titles if those titles have "by" in them
@@ -1423,7 +1423,7 @@ Debug.trace("tidying author: ", string); //G***del
 			tidyProperty(stringBuffer.delete(0, THE.length())); //remove the beginning "the" and tidy the string
 		}
 			//if the string contains with "author:" in any case (e.g. idiot10.txt)
-		final int authorPropertyIndex=StringUtilities.indexOfIgnoreCase(stringBuffer.toString(), "author:"); //G***use a constant G***use StringBufferUtiliites
+		final int authorPropertyIndex=Strings.indexOfIgnoreCase(stringBuffer.toString(), "author:"); //G***use a constant G***use StringBufferUtiliites
 		if(authorPropertyIndex>=0)  //G***this should probably go in getProperty(), as that's where the value comes from
 		{
 			tidyProperty(stringBuffer.delete(authorPropertyIndex, stringBuffer.length())); //remove that text and tidy the string G***use a constant
@@ -1435,7 +1435,7 @@ Debug.trace("tidying author: ", string); //G***del
 		}
 Debug.trace("checking for copyright: ", stringBuffer);  //G***de
 		  //see if "copyright 19" or "copyright 20" or "copyrihgt (", etc. appears in the string (e.g. efpap10.txt)
-		int copyrightIndex=StringUtilities.indexOfIgnoreCase(stringBuffer.toString(), COPYRIGHT); //see if "copyright" appears in the string G***change to StringBufferUtilities
+		int copyrightIndex=Strings.indexOfIgnoreCase(stringBuffer.toString(), COPYRIGHT); //see if "copyright" appears in the string G***change to StringBufferUtilities
 		if(copyrightIndex>=0 &&
 			(
 		CharSequenceUtilities.charIndexOf(stringBuffer, "@"+COPYRIGHT_SIGN)>=0 //if "copyright" is followed by a copyright sign
@@ -1495,7 +1495,7 @@ Debug.trace("checking for punctuation: ", stringBuffer);  //G***de
 	protected static StringBuffer tidyProperty(final StringBuffer stringBuffer)  //G***eventually put in some common class
 	{
 			//see if "contents" is part of the property (e.g. tbroa10.txt)
-		final int contentsIndex=StringUtilities.indexOfIgnoreCase(stringBuffer.toString(), "contents");  //G***use a constant; use StringBufferUtilities
+		final int contentsIndex=Strings.indexOfIgnoreCase(stringBuffer.toString(), "contents");  //G***use a constant; use StringBufferUtilities
 //G***del Debug.trace("tidying: ", stringBuffer); //G***del
 //G***del Debug.trace("contents index: ", contentsIndex); //G***del
 		if(contentsIndex>0 && EOL_CHARS.indexOf(stringBuffer.charAt(contentsIndex-1))>=0) //if contents appears after a linebreak
@@ -1551,9 +1551,9 @@ Debug.trace("checking for punctuation: ", stringBuffer);  //G***de
 		final String trimmedLine=line.trim(); //trim the line
 		return (trimmedLine.startsWith("*")  //see if the line begins and ends with asterisks and contains the string "file"
 			  && trimmedLine.endsWith("*")
-				&& StringUtilities.indexOfIgnoreCase(trimmedLine, "file")>=0) //G***use a constant
-					|| StringUtilities.indexOfIgnoreCase(trimmedLine, ".txt")>=0 //G***use a constant
-					|| StringUtilities.indexOfIgnoreCase(trimmedLine, ".zip")>=0; //G***use a constant
+				&& Strings.indexOfIgnoreCase(trimmedLine, "file")>=0) //G***use a constant
+					|| Strings.indexOfIgnoreCase(trimmedLine, ".txt")>=0 //G***use a constant
+					|| Strings.indexOfIgnoreCase(trimmedLine, ".zip")>=0; //G***use a constant
 	}
 
 	/**Searches for "Project Gutenberg" or "PG" in the current string, and
@@ -1569,7 +1569,7 @@ Debug.trace("checking for punctuation: ", stringBuffer);  //G***de
 			final String pgString=pgStrings[i];  //get this string
 //G***del System.out.println("Checking etext string: "+eTextString);  //G***del
 				//see if the string is in the text
-			final int pgStringIndex=StringUtilities.indexOfIgnoreCase(text, pgString);
+			final int pgStringIndex=Strings.indexOfIgnoreCase(text, pgString);
 			if(pgStringIndex>=0)  //if the string is in the text
 			{
 					//return the real string we found
@@ -1595,7 +1595,7 @@ Debug.trace("checking for punctuation: ", stringBuffer);  //G***de
 			final String eTextString=eTextStrings[i];  //get this etext string
 //G***del System.out.println("Checking etext string: "+eTextString);  //G***del
 				//see if the etext string is in the text
-			final int eTextStringIndex=StringUtilities.indexOfIgnoreCase(text, eTextString);
+			final int eTextStringIndex=Strings.indexOfIgnoreCase(text, eTextString);
 			if(eTextStringIndex>=0)  //if the etext string is in the text
 			{
 				if(eTextStringIndex+eTextString.length()==text.length() //make sure the string either comes at the end of the text
@@ -1624,7 +1624,7 @@ Debug.trace("checking for punctuation: ", stringBuffer);  //G***de
 	public static String getID(final String filename)
 	{
 			//get the name of the file and remove its extension
-		final StringBuffer stringBuffer=new StringBuffer(FileUtilities.removeExtension(filename));
+		final StringBuffer stringBuffer=new StringBuffer(Files.removeExtension(filename));
 		int versionEndIndex=stringBuffer.length();  //start assuming the version is at the end of the name
 		  //find the first digit on the right
 		while(versionEndIndex>0)  //while we haven't ran out of characters

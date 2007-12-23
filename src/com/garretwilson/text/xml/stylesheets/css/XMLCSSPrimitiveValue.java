@@ -3,7 +3,7 @@ package com.garretwilson.text.xml.stylesheets.css;
 import java.awt.Color;
 import java.text.NumberFormat;
 import com.garretwilson.lang.CharSequenceUtilities;
-import com.garretwilson.lang.StringUtilities;
+import com.garretwilson.lang.Strings;
 import static com.garretwilson.text.xml.stylesheets.css.XMLCSSConstants.*;
 import com.garretwilson.util.Debug;
 import org.w3c.dom.DOMException;
@@ -155,9 +155,9 @@ G***fix
 			final RGBColor rgbColor=getRGBColorValue(); //get the RGB color value
 			//G***what if this is a color value which can only be stored in a rgb() format? is there even such a value, or can everything be stored in #XXXXXX format?
 			return RGB_NUMBER_CHAR+ //return a string in the format #RRGGBB
-				StringUtilities.makeStringLength(Integer.toHexString((int)rgbColor.getRed().getFloatValue(CSSPrimitiveValue.CSS_NUMBER)).toUpperCase(), 2, '0', 0)+  //get the red value
-				StringUtilities.makeStringLength(Integer.toHexString((int)rgbColor.getGreen().getFloatValue(CSSPrimitiveValue.CSS_NUMBER)).toUpperCase(), 2, '0', 0)+  //get the red value
-				StringUtilities.makeStringLength(Integer.toHexString((int)rgbColor.getBlue().getFloatValue(CSSPrimitiveValue.CSS_NUMBER)).toUpperCase(), 2, '0', 0);  //get the red value
+				Strings.makeStringLength(Integer.toHexString((int)rgbColor.getRed().getFloatValue(CSSPrimitiveValue.CSS_NUMBER)).toUpperCase(), 2, '0', 0)+  //get the red value
+				Strings.makeStringLength(Integer.toHexString((int)rgbColor.getGreen().getFloatValue(CSSPrimitiveValue.CSS_NUMBER)).toUpperCase(), 2, '0', 0)+  //get the red value
+				Strings.makeStringLength(Integer.toHexString((int)rgbColor.getBlue().getFloatValue(CSSPrimitiveValue.CSS_NUMBER)).toUpperCase(), 2, '0', 0);  //get the red value
 		}
 		else if(getPrimitiveType()==CSS_STRING) //if this is a string
 		  return '"'+StringValue+'"'; //return the value as a string inside quotes G***make sure there aren't quotes inside the quotes

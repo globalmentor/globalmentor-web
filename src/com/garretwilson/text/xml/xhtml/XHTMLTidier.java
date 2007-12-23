@@ -3,7 +3,7 @@ package com.garretwilson.text.xml.xhtml;
 import java.io.*;
 import java.util.*;
 import com.garretwilson.io.ContentTypeUtilities;
-import com.garretwilson.io.FileUtilities;
+import com.garretwilson.io.Files;
 import com.garretwilson.lang.*;
 import com.garretwilson.text.*;
 import com.garretwilson.text.xml.XMLConstants;
@@ -403,7 +403,7 @@ public class XHTMLTidier extends TextUtilities
 						cssTidier.tidy(cssStyleSheet);  //tidy the stylesheet
 						if(contextFile!=null) //if we have a context file
 						{
-							final File stylesheetFile=new File(FileUtilities.changeExtension(contextFile, "css").getCanonicalPath());  //create a file with a .css extension G***use a constant here
+							final File stylesheetFile=new File(Files.changeExtension(contextFile, "css").getCanonicalPath());  //create a file with a .css extension G***use a constant here
 								//create an output file stream for writing the stylesheet
 							final OutputStream stylesheetOutputStream=new BufferedOutputStream(new FileOutputStream(stylesheetFile));
 							try
@@ -466,7 +466,7 @@ public class XHTMLTidier extends TextUtilities
 				final Text text=(Text)childNode;  //cast the child to a text element
 				final String data=text.getData(); //get the text data
 				  //G***testing; comment; use StringBufferUtilities version, maybe
-				final String collapsedData=StringUtilities.collapseEveryChar(data, CharacterConstants.TRIM_CHARS, "\n\n");
+				final String collapsedData=Strings.collapseEveryChar(data, CharacterConstants.TRIM_CHARS, "\n\n");
 				text.setData(collapsedData);  //replace the text data with the collapsed data
 			}
 		}
@@ -690,7 +690,7 @@ public class XHTMLTidier extends TextUtilities
 //G***delDebug.trace("Found delimiter: ", String.valueOf(markerString.charAt(delimiterIndex)));
 										  //G***same the delimiter somewhere
 										//trim the "." or ")" or whatever from the string, giving us just the marker
-									markerString=StringUtilities.trim(markerString, LIST_ITEM_MARKER_DELIMITER_CHARS);
+									markerString=Strings.trim(markerString, LIST_ITEM_MARKER_DELIMITER_CHARS);
 									if(CharSequenceUtilities.isLatinDigits(markerString)) //if this string contains only latin digits (the digits '0'-'9')
 									{
 /*G***del
@@ -1115,9 +1115,9 @@ Debug.trace("hierarchical heading: ", text); //G***del
 						if(headingType==SUB_HEADING || headingType==TITLE_HEADING)  //if this is a sub-heading or a title heading
 						{
 								//if this heading text contains the title text (trimmed of punctuation)
-							if(getTitle()!=null && StringUtilities.indexOfIgnoreCase(
-										StringUtilities.trim(text, PUNCTUATION_CHARS),
-										StringUtilities.trim(getTitle(), PUNCTUATION_CHARS))>=0)
+							if(getTitle()!=null && Strings.indexOfIgnoreCase(
+										Strings.trim(text, PUNCTUATION_CHARS),
+										Strings.trim(getTitle(), PUNCTUATION_CHARS))>=0)
 							{
 Debug.trace("is book title heading"); //G***del
 								headingLevel=2; //use a high level for the title
@@ -1348,7 +1348,7 @@ Debug.trace("subsequent page break pass");  //G***del
 //G***del Debug.trace("Found text node for element: ", elementName); //G***del
 //G***del Debug.trace("Text data: ", textNode.getData()); //G***del
 				//trim all beginning whitespace from the text node
-				textNode.setData(StringUtilities.trimWhitespaceNoBreakBeginning(textNode.getData()));
+				textNode.setData(Strings.trimWhitespaceNoBreakBeginning(textNode.getData()));
 			}
 		}
 		return element; //return whatever element we wound up with
@@ -1524,7 +1524,7 @@ Debug.trace("Checking break element: ", element.getNodeName());
 		if(element.hasAttributeNS(null, ATTRIBUTE_STYLE)) //if this element has a style attribute
 		{
 			/*G***bring back final */String styleValue=element.getAttributeNS(null, ATTRIBUTE_STYLE); //get the value of the style attribute
-			if(StringUtilities.indexOfIgnoreCase(styleValue, "symbol")>=0)  //if the word "symbol" is found in the style, assume it is the symbol font G***actually parse the style
+			if(Strings.indexOfIgnoreCase(styleValue, "symbol")>=0)  //if the word "symbol" is found in the style, assume it is the symbol font G***actually parse the style
 			{
 				final NodeList childNodeList=element.getChildNodes(); //get a list of the child nodes
 				final int childNodeCount=childNodeList.getLength(); //see how many child nodes there are
@@ -1629,9 +1629,9 @@ Debug.trace("new style: "+newStyle.getCssText());  //G***del
 			else if(isNormalizeStyleClasses())  //if we should normalize style classes
 		  {
 					//if the class contains "num" and at least "chap" or "title"
-				if(StringUtilities.indexOfIgnoreCase(classValue, CHAPTER_TITLE_CLASS_NUM_SUBSTRING)!=-1
-						&& (StringUtilities.indexOfIgnoreCase(classValue, CHAPTER_TITLE_CLASS_CHAP_SUBSTRING)!=-1
-							|| StringUtilities.indexOfIgnoreCase(classValue, CHAPTER_TITLE_CLASS_TITLE_SUBSTRING)!=-1))
+				if(Strings.indexOfIgnoreCase(classValue, CHAPTER_TITLE_CLASS_NUM_SUBSTRING)!=-1
+						&& (Strings.indexOfIgnoreCase(classValue, CHAPTER_TITLE_CLASS_CHAP_SUBSTRING)!=-1
+							|| Strings.indexOfIgnoreCase(classValue, CHAPTER_TITLE_CLASS_TITLE_SUBSTRING)!=-1))
 				{
 					element.setAttributeNS(null, ATTRIBUTE_CLASS, CHAPTER_NUMBER_CLASS); //change the class value to "chapterNumber"
 				  if(!elementName.equals(ELEMENT_H1)) //if this is not an H1 element
@@ -2155,7 +2155,7 @@ Debug.trace("found enclosing start at index: ", startIndex);  //G***del
 //G***del Debug.trace("after trim: ("+StringUtilities.trimWhitespaceNoBreak(textNode.getData())+")");  //G***del
 							//trim all beginning whitespace from the text node;
 							//  if the text was only whitespace or non-breaking spaces
-						if(StringUtilities.trimWhitespaceNoBreak(textNode.getData()).length()==0)
+						if(Strings.trimWhitespaceNoBreak(textNode.getData()).length()==0)
 							return true;  //remove the entire element
 				  }
 				}
@@ -2233,7 +2233,7 @@ if(Debug.isDebug() && parentNode.getNodeType()==Node.ELEMENT_NODE) //G***del
 					if(parentNodeName.equals(ELEMENT_BODY) && parentNode.getNodeType()==parentNode.ELEMENT_NODE && getChildCount((Element)parentNode, Node.ELEMENT_NODE)==1) //if the div is the only child of the body
 						return true;  //<body><div> should be pruned
 						//if the div element has only one attribute, "class", and its value contains "section" in any case
-					if(element.getAttributes().getLength()==1 && StringUtilities.indexOfIgnoreCase(element.getAttributeNS(null, ATTRIBUTE_CLASS), "section")>=0)
+					if(element.getAttributes().getLength()==1 && Strings.indexOfIgnoreCase(element.getAttributeNS(null, ATTRIBUTE_CLASS), "section")>=0)
 						return true;  //<div class="*section*> should be pruned
 /*G***decide if we want this or not -- after all, <object> an <img> should be inside a block
 					boolean onlyWhitespace=true;  //we'll see if there is any non-text whitespace

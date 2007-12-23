@@ -8,7 +8,7 @@ import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import static com.garretwilson.io.FileUtilities.*;
+import static com.garretwilson.io.Files.*;
 
 /**An entity resolver that looks up and returns special predefined entities, such as XHTML DTDs.
 This implementation searches for resource files within this package that have the same name as the public ID, with illegal characters replaced with "^XX", where "XX" is a hex code.

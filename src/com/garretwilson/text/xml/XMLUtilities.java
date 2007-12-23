@@ -539,7 +539,7 @@ G***should we return data from CDATA sections as well?
 	*/
 	public static String createValidContent(final String string)
 	{
-		return StringUtilities.replace(string, XML_ENTITY_CHARS, XML_ENTITY_REPLACMENTS); //do the replacments for the special XML symbols and return the results
+		return Strings.replace(string, XML_ENTITY_CHARS, XML_ENTITY_REPLACMENTS); //do the replacments for the special XML symbols and return the results
 	}
 
 	/**Creates a string in which all illegal XML characters are replaced with
@@ -1479,13 +1479,13 @@ G***should we return data from CDATA sections as well?
 				for(int i=0; i<tabPos+1; ++i)
 					printStream.print(tabString);	//G***fix to adjust automatically to tabDelta, comment
 				printStream.print("[Text] ");	//G**fix to adjust automatically to tabDelta, comment
-				printStream.println(StringUtilities.replace(node.getNodeValue(), '\n', "\\n"));	//print the text of this node
+				printStream.println(Strings.replace(node.getNodeValue(), '\n', "\\n"));	//print the text of this node
 				break;
 			case Node.COMMENT_NODE:	//if this is a comment node
 				for(int i=0; i<tabPos+1; i+=++i)
 					printStream.print(tabString);	//G***fix to adjust automatically to tabDelta, comment
 				printStream.print("[Comment] ");	//G**fix to adjust automatically to tabDelta, comment
-				printStream.println(StringUtilities.replace(node.getNodeValue(), '\n', "\\n"));	//print the text of this node
+				printStream.println(Strings.replace(node.getNodeValue(), '\n', "\\n"));	//print the text of this node
 				break;
 		}
 	}

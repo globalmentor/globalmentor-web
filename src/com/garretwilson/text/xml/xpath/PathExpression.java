@@ -2,7 +2,7 @@ package com.garretwilson.text.xml.xpath;
 
 import java.util.*;
 
-import com.garretwilson.lang.StringUtilities;
+import com.garretwilson.lang.Strings;
 
 import static com.garretwilson.text.xml.xpath.XPathConstants.*;
 
@@ -103,7 +103,7 @@ public class PathExpression implements Iterable<Step>
 		else if(stepString.equals(PARENT_NODE_ABBREVIATION))	//if this is an abbreviation for parent::node()
 			stepString=PARENT+AXIS_SEPARATOR_STRING+NODE_NODE_TEST;
 				//replace every occurrence of "@" with "attribute::" as per the XPath spec
-		stepString=StringUtilities.replace(stepString, ATTRIBUTE_ABBREVIATION, ATTRIBUTE+AXIS_SEPARATOR_STRING);
+		stepString=Strings.replace(stepString, ATTRIBUTE_ABBREVIATION, ATTRIBUTE+AXIS_SEPARATOR_STRING);
 		if(stepString.indexOf(AXIS_SEPARATOR_STRING)<0)	//get the index of "::"; if there is no axis separator
 		{
 			stepString=CHILD+AXIS_SEPARATOR_STRING+stepString;	//prepend "child::"

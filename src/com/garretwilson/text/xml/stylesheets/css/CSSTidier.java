@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.*;
 import com.garretwilson.lang.MathUtilities;
 import com.garretwilson.lang.StringBufferUtilities;
-import com.garretwilson.lang.StringUtilities;
+import com.garretwilson.lang.Strings;
 import com.garretwilson.text.CharacterConstants;
 import com.garretwilson.text.xml.oeb.css.OEBCSSUtilities; //G***move to OEBCSSTidier
 import static com.garretwilson.text.xml.stylesheets.css.XMLCSSConstants.*;
@@ -205,7 +205,7 @@ Debug.trace("we should remove property");
 				final CSSStyleRule cssStyleRule=(CSSStyleRule)cssRule;  //G***fix
 				final String selectorText=cssStyleRule.getSelectorText(); //get the selector text
 					//if this selects a normal paragraph G***fix this; this is highly dependent on HTML and MSWord
-				if(selectorText.indexOf("p.")>=0 && StringUtilities.indexOfIgnoreCase(selectorText, "normal")>=0)
+				if(selectorText.indexOf("p.")>=0 && Strings.indexOfIgnoreCase(selectorText, "normal")>=0)
 				{
 					final CSSStyleDeclaration cssStyleDeclaration=cssStyleRule.getStyle();  //get the style declaration
 					final int propertyCount=cssStyleDeclaration.getLength();  //get the number of properties

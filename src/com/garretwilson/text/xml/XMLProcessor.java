@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import com.garretwilson.io.FileUtilities;
+import com.garretwilson.io.Files;
 import com.garretwilson.io.ParseEOFException;	//G***go through and catch all these and throw XML exceptions
 import com.garretwilson.io.ParseUnexpectedDataException;
 import com.garretwilson.io.URIInputStreamable;
@@ -448,7 +448,7 @@ public class XMLProcessor implements URIInputStreamable
 			final URI uri=systemID!=null ? URIUtilities.createURI(context, systemID) : null;
 				//convert the public ID (if there is one) to a valid filaname and see if we can load this
 				//  resource locally rather than from the literal file location
-			final String localFilename=publicID!=null ? FileUtilities.encodeCrossPlatformFilename(publicID) : null;	//get the name of the file if it were to be stored locally
+			final String localFilename=publicID!=null ? Files.encodeCrossPlatformFilename(publicID) : null;	//get the name of the file if it were to be stored locally
 /*G***del
 			if(publicID!=null)	//G***del
 			{
