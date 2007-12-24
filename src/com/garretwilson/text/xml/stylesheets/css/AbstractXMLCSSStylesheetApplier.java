@@ -8,7 +8,7 @@ import java.net.URISyntaxException;
 import java.util.*;
 import javax.mail.internet.ContentType;
 import com.garretwilson.io.*;
-import com.garretwilson.net.URIUtilities;
+import com.garretwilson.net.URIs;
 import com.garretwilson.rdf.RDFObject;
 import com.garretwilson.rdf.RDFResource;
 import static com.garretwilson.rdf.xpackage.XMLOntologyUtilities.*;
@@ -181,7 +181,7 @@ Debug.trace("Found default stylesheet for namespace: ", namespaceURI);  //G***de
 				try
 				{
 						//create a URI from the original URI of the XML document and the stylesheet href
-					final URI styleSheetURI=URIUtilities.createURI(baseURI, styleSheetDescriptor.getHRef());
+					final URI styleSheetURI=URIs.createURI(baseURI, styleSheetDescriptor.getHRef());
 						//buffer the input stream so that the BOMInputStreamReader will be able to use mark/reset
 					final Reader styleSheetReader=new BOMInputStreamReader(new BufferedInputStream(getInputStream(styleSheetURI)));	//get an input stream to the stylesheet TODO do a preread check for the @charset "" CSS keyword 
 					try

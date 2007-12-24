@@ -9,7 +9,7 @@ import com.garretwilson.io.ParseEOFException;	//G***go through and catch all the
 import com.garretwilson.io.ParseUnexpectedDataException;
 import com.garretwilson.io.URIInputStreamable;
 import com.garretwilson.lang.CharSequenceUtilities;
-import com.garretwilson.net.URIUtilities;
+import com.garretwilson.net.URIs;
 import com.garretwilson.text.CharacterEncoding;
 import static com.garretwilson.text.CharacterEncodingConstants.*;
 import static com.garretwilson.text.xml.XMLUtilities.*;
@@ -445,7 +445,7 @@ public class XMLProcessor implements URIInputStreamable
 		try
 		{
 				//create a URI for the system ID (there should always be one) in relation to our reader's context, if any
-			final URI uri=systemID!=null ? URIUtilities.createURI(context, systemID) : null;
+			final URI uri=systemID!=null ? URIs.createURI(context, systemID) : null;
 				//convert the public ID (if there is one) to a valid filaname and see if we can load this
 				//  resource locally rather than from the literal file location
 			final String localFilename=publicID!=null ? Files.encodeCrossPlatformFilename(publicID) : null;	//get the name of the file if it were to be stored locally
