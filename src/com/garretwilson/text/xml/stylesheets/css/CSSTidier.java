@@ -5,7 +5,7 @@ import java.util.*;
 import com.garretwilson.lang.MathUtilities;
 import com.garretwilson.lang.StringBufferUtilities;
 import com.garretwilson.lang.Strings;
-import com.garretwilson.text.CharacterConstants;
+import com.garretwilson.text.Characters;
 import com.garretwilson.text.xml.oeb.css.OEBCSSUtilities; //G***move to OEBCSSTidier
 import static com.garretwilson.text.xml.stylesheets.css.XMLCSSConstants.*;
 import com.garretwilson.util.Debug;

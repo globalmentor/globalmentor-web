@@ -4,9 +4,9 @@ import java.io.*;
 import java.util.*;
 import com.garretwilson.io.*;
 import com.garretwilson.lang.*;
-import static com.garretwilson.text.CharacterConstants.*;
+import static com.garretwilson.text.Characters.*;
 
-import com.garretwilson.text.CharacterConstants;
+import com.garretwilson.text.Characters;
 import com.garretwilson.text.xml.XMLUtilities;
 import com.garretwilson.util.Debug;
 import org.w3c.dom.*;
@@ -1506,7 +1506,7 @@ Debug.trace("checking for punctuation: ", stringBuffer);  //G***de
 		  stringBuffer.delete(stringBuffer.length()-2, stringBuffer.length());  //remove the ending control character
 		}
 		/**The characters we'll trim from the front and back of the string.*/
-		final String TRIM_CHARS=CharacterConstants.TRIM_CHARS+WHITESPACE_CHARS+DEPENDENT_PUNCTUATION_CHARS+/*G***bring back if needed QUOTE_CHARS+*/'*'+'.';  //G**use constants
+		final String TRIM_CHARS=Characters.TRIM_CHARS+WHITESPACE_CHARS+DEPENDENT_PUNCTUATION_CHARS+/*G***bring back if needed QUOTE_CHARS+*/'*'+'.';  //G**use constants
 //G***del System.out.println("tidying: "+string); //G***del
 		  //trim the string of whitespace, dashes, and asterisks
 		StringBufferUtilities.trim(stringBuffer, TRIM_CHARS);
@@ -1516,7 +1516,7 @@ Debug.trace("checking for punctuation: ", stringBuffer);  //G***de
 		{
 //G***del System.out.println("found right group: "+rightGroupIndex); //G***del
 		    //if there's nothing but whitespace after the right group, we'll remove the entire group
-			if(StringBufferUtilities.notCharIndexOf(stringBuffer, CharacterConstants.TRIM_CHARS, rightGroupIndex+1)<0)
+			if(StringBufferUtilities.notCharIndexOf(stringBuffer, Characters.TRIM_CHARS, rightGroupIndex+1)<0)
 			{
 //G***del System.out.println("nothing but whitespace after"); //G***del
 					//remove evertying from the start of the group onward

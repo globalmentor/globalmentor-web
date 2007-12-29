@@ -558,7 +558,7 @@ G***should we return data from CDATA sections as well?
 			{
 				if(stringBuffer==null)  //if we haven't create a string buffer, yet
 					stringBuffer=new StringBuffer(string);  //create a string buffer to hold our replacements
-				stringBuffer.setCharAt(i, CharacterConstants.SPACE_CHAR); //replace this character with a space
+				stringBuffer.setCharAt(i, Characters.SPACE_CHAR); //replace this character with a space
 			}
 		}
 		return stringBuffer!=null ? stringBuffer.toString() : string; //return the original string unless we've actually modified something
