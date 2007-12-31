@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 
 import static com.garretwilson.lang.CharSequenceUtilities.*;
 import static com.garretwilson.lang.StringBuilderUtilities.*;
-import static com.garretwilson.lang.ObjectUtilities.*;
+import static com.garretwilson.lang.Objects.*;
 
 import com.garretwilson.text.ArgumentSyntaxException;
 import com.garretwilson.text.W3CDateFormat;

@@ -11,7 +11,7 @@ import com.garretwilson.io.URIInputStreamable;
 import com.garretwilson.lang.CharSequenceUtilities;
 import com.garretwilson.net.URIs;
 import com.garretwilson.text.CharacterEncoding;
-import static com.garretwilson.text.CharacterEncodingConstants.*;
+import static com.garretwilson.text.CharacterEncoding.*;
 import static com.garretwilson.text.xml.XMLUtilities.*;
 import com.garretwilson.text.xml.schema.*;
 
@@ -241,14 +241,14 @@ public class XMLProcessor implements URIInputStreamable
 			}
 			else if(bytesPerCharacter==2)	//if there are two bytes for each character, the first two make up the true Byte Order Mark, so ignore them
 			{
-				if(characterEncoding.getEndian()==CharacterEncoding.Endian.BE)	//if the least-sigificant byte (the one we're interested in) comes second
+				if(characterEncoding.getEndian()==Endian.BE)	//if the least-sigificant byte (the one we're interested in) comes second
 					autodetectPrereadCharacters.append((char)byteOrderMarkArray[3]);	//take the second byte (ignoring the Byte Order Mark)
 				else	//if the least-sigificant byte (the one we're interested in) comes first
 					autodetectPrereadCharacters.append((char)byteOrderMarkArray[2]);	//take the first byte (ignoring the Byte Order Mark)
 			}
 			else if(bytesPerCharacter==4)	//if there are four bytes for each character
 			{
-				if(characterEncoding.getEndian()==CharacterEncoding.Endian.BE)	//if the least-sigificant byte (the one we're interested in) comes last
+				if(characterEncoding.getEndian()==Endian.BE)	//if the least-sigificant byte (the one we're interested in) comes last
 					autodetectPrereadCharacters.append((char)byteOrderMarkArray[3]);	//take the last byte
 				else	//if the least-sigificant byte (the one we're interested in) comes first
 					autodetectPrereadCharacters.append((char)byteOrderMarkArray[0]);	//take the first byte
@@ -261,7 +261,7 @@ public class XMLProcessor implements URIInputStreamable
 					nextCharInt=inputStream.read();	//read the next character normally
 				else if(bytesPerCharacter==2)	//if there are two bytes for each character
 				{
-					if(characterEncoding.getEndian()==CharacterEncoding.Endian.BE)	//if the least-sigificant byte (the one we're interested in) comes second
+					if(characterEncoding.getEndian()==Endian.BE)	//if the least-sigificant byte (the one we're interested in) comes second
 					{
 						inputStream.skip(1);	//skip the first byte
 						nextCharInt=inputStream.read();	//read the next character normally
@@ -274,7 +274,7 @@ public class XMLProcessor implements URIInputStreamable
 				}
 				else if(bytesPerCharacter==4)	//if there are four bytes for each character
 				{
-					if(characterEncoding.getEndian()==CharacterEncoding.Endian.BE)	//if the least-sigificant byte (the one we're interested in) comes last
+					if(characterEncoding.getEndian()==Endian.BE)	//if the least-sigificant byte (the one we're interested in) comes last
 					{
 						inputStream.skip(3);	//skip the first three byte
 						nextCharInt=inputStream.read();	//read the next character normally
@@ -387,7 +387,7 @@ public class XMLProcessor implements URIInputStreamable
 			if(!isTidy() && UTF_16.equalsIgnoreCase(characterEncoding.getFamily()) && characterEncoding.getByteOrderMark().length==0) 
 				throw new XMLWellFormednessException(XMLWellFormednessException.INVALID_FORMAT, new Object[]{}, 0, 0, sourceObject!=null ? sourceObject.toString() : "");	//show that the UTF-16 had no Byte Order Mark
 /*G***see how this should really be interpreted; probably don't do this in the parser itself
-			if(!encoding.equalsIgnoreCase(CharacterEncoding.UTF8))	//if the encoding was something besides UTF-8, yet there was no "encoding" attribute, this is an error
+			if(!encoding.equalsIgnoreCase(UTF8))	//if the encoding was something besides UTF-8, yet there was no "encoding" attribute, this is an error
 				throw new XMLWellFormednessException(XMLWellFormednessException.INVALID_ENCODING, new Object[]{encoding}, 0, 0, sourceObject!=null ? sourceObject.toString() : "");	//show that something besides UTF-8 was used with no "encoding" attribute
 */
 		}
@@ -398,9 +398,9 @@ public class XMLProcessor implements URIInputStreamable
 //G***even worse, we're checking the characters sent to us---won't that always be the XML declarations? and why 
 					//if we couldn't find an encoding, if we should tidy this document and the document started with "<?xml..."
 				if(tidy && autodetectPrereadCharacters.toString().startsWith(XML_DECL_START.substring(0, Math.min(autodetectPrereadCharacters.length(), XML_DECL_START.length()))))
-					characterEncoding=new CharacterEncoding(CharacterEncoding.ISO_8859_1, false);	//construct a default ISO-LATIN-1 character encoding for tidied documents TODO maybe use the default encoding
+					characterEncoding=new CharacterEncoding(ISO_8859_1, false);	//construct a default ISO-LATIN-1 character encoding for tidied documents TODO maybe use the default encoding
 				else  //if we couldn't find the encoding, but we're either not tidying or there was a "<?xml..." (which means we have to assume UTF-8)
-					characterEncoding=new CharacterEncoding(CharacterEncoding.UTF_8, false);	//construct a default UTF-8 character encoding, since we don't recognize the Byte Order Mark (the big-endian/little-endian byte order flag is meaningless here)
+					characterEncoding=new CharacterEncoding(UTF_8, false);	//construct a default UTF-8 character encoding, since we don't recognize the Byte Order Mark (the big-endian/little-endian byte order flag is meaningless here)
 		}
 */			
 		final InputStreamReader xmlInputStreamReader=new InputStreamReader(xmlInputStream, characterEncoding.toString());	//create a new input stream reader with the correct encoding

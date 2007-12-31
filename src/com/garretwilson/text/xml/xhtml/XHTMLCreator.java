@@ -73,7 +73,7 @@ public class XHTMLCreator extends TextUtilities implements XHTMLConstants
 	*/
 	public void createXHTMLFromText(final Document document, final InputStream inputStream) throws IOException
 	{
-		createXHTMLFromText(document, inputStream, CharacterEncodingConstants.ISO_8859_1);  //create the XHTML using the default encoding
+		createXHTMLFromText(document, inputStream, CharacterEncoding.ISO_8859_1);  //create the XHTML using the default encoding
 	}
 
 	/**Creates an XHTML document from the text retrieved from the given input

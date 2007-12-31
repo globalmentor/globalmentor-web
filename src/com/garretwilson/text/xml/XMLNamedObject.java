@@ -1,6 +1,6 @@
 package com.garretwilson.text.xml;
 
-import com.garretwilson.lang.ObjectUtilities;
+import com.garretwilson.lang.Objects;
 //G***del import com.garretwilson.util.NamedObject;
 
 /**The base class for XML objects that are named&mdash;identified by
@@ -50,7 +50,7 @@ public class XMLNamedObject	//TODO implement NamedObject or extend DefaultNamedO
 		*/
 		public void setPrefix(final String prefix)
 		{
-			if(!ObjectUtilities.equals(getPrefix(), prefix))	//if the prefix is really changing
+			if(!Objects.equals(getPrefix(), prefix))	//if the prefix is really changing
 			{
 				setName(prefix, getLocalName()); //set the prefix and the local name, and update the node name itself
 			}
@@ -68,7 +68,7 @@ public class XMLNamedObject	//TODO implement NamedObject or extend DefaultNamedO
 		public void setLocalName(final String localName)
 		{
 //G***del when works			localName=newLocalName;
-			if(!ObjectUtilities.equals(getLocalName(), localName))	//if the local name is really changing
+			if(!Objects.equals(getLocalName(), localName))	//if the local name is really changing
 			{
 				setName(prefix, getLocalName()); //set the prefix and the local name, and update the node name itself
 			}

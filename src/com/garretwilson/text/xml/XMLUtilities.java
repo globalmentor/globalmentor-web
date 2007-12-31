@@ -22,7 +22,7 @@ import static com.garretwilson.text.xml.svg.SVGConstants.*;
 import static com.garretwilson.text.xml.xhtml.XHTMLConstants.*;
 
 import static com.garretwilson.io.ContentTypeConstants.*;
-import static com.garretwilson.io.ContentTypeUtilities.*;
+import static com.garretwilson.io.ContentTypes.*;
 import static com.garretwilson.lang.IntegerUtilities.*;
 import static com.garretwilson.text.xml.XMLConstants.*;
 

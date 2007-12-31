@@ -6,7 +6,7 @@ import org.w3c.dom.*;
 import com.garretwilson.lang.CharacterUtilities;
 import com.garretwilson.lang.StringBufferUtilities;
 import com.garretwilson.text.CharacterEncoding;
-import static com.garretwilson.text.CharacterEncodingConstants.*;
+import static com.garretwilson.text.CharacterEncoding.*;
 //TODO fix import com.garretwilson.text.xml.soap.SOAPConstants;
 import com.garretwilson.util.PropertyUtilities;
 
@@ -228,7 +228,7 @@ public class XMLSerializer
 		{
 			final ByteArrayOutputStream byteArrayOutputStream=new ByteArrayOutputStream();  //create an output stream for receiving the XML data
 			serialize(document, byteArrayOutputStream, UTF_8_ENCODING_NO_BOM);  //serialize the document to the output stream using UTF-8 with no byte order mark
-			return byteArrayOutputStream.toString(UTF_8_ENCODING_NO_BOM.getEncoding());  //convert the byte array to a string, using the UTF-8 encoding, and return it
+			return byteArrayOutputStream.toString(UTF_8_ENCODING_NO_BOM.toString());  //convert the byte array to a string, using the UTF-8 encoding, and return it
 		}
 		catch(final UnsupportedEncodingException unsupportedEncodingException)	//UTF-8 should always be supported
 		{
@@ -250,7 +250,7 @@ public class XMLSerializer
 		{
 			final ByteArrayOutputStream byteArrayOutputStream=new ByteArrayOutputStream();  //create an output stream for receiving the XML data
 			serialize(documentFragment, byteArrayOutputStream, UTF_8_ENCODING_NO_BOM);  //serialize the document fragment to the output stream using UTF-8 with no byte order mark
-			return byteArrayOutputStream.toString(UTF_8_ENCODING_NO_BOM.getEncoding());  //convert the byte array to a string, using the UTF-8 encoding, and return it
+			return byteArrayOutputStream.toString(UTF_8_ENCODING_NO_BOM.toString());  //convert the byte array to a string, using the UTF-8 encoding, and return it
 		}
 		catch(final UnsupportedEncodingException unsupportedEncodingException)	//UTF-8 should always be supported
 		{
@@ -272,7 +272,7 @@ public class XMLSerializer
 		{
 			final ByteArrayOutputStream byteArrayOutputStream=new ByteArrayOutputStream();  //create an output stream for receiving the XML data
 			serialize(element, byteArrayOutputStream, UTF_8_ENCODING_NO_BOM);  //serialize the element to the output stream using UTF-8 with no byte order mark
-			return byteArrayOutputStream.toString(UTF_8_ENCODING_NO_BOM.getEncoding());  //convert the byte array to a string, using the UTF-8 encoding, and return it
+			return byteArrayOutputStream.toString(UTF_8_ENCODING_NO_BOM.toString());  //convert the byte array to a string, using the UTF-8 encoding, and return it
 		}
 		catch(final UnsupportedEncodingException unsupportedEncodingException)	//UTF-8 should always be supported
 		{
@@ -296,7 +296,7 @@ public class XMLSerializer
 		{
 			final ByteArrayOutputStream byteArrayOutputStream=new ByteArrayOutputStream();  //create an output stream for receiving the XML data
 			serializeContent(node, byteArrayOutputStream, UTF_8_ENCODING_NO_BOM);  //serialize the node content to the output stream using UTF-8 with no byte order mark
-			return byteArrayOutputStream.toString(UTF_8_ENCODING_NO_BOM.getEncoding());  //convert the byte array to a string, using the UTF-8 encoding, and return it
+			return byteArrayOutputStream.toString(UTF_8_ENCODING_NO_BOM.toString());  //convert the byte array to a string, using the UTF-8 encoding, and return it
 		}
 		catch(final UnsupportedEncodingException unsupportedEncodingException)	//UTF-8 should always be supported
 		{
@@ -337,8 +337,8 @@ public class XMLSerializer
 	{
 		nestLevel=0;	//show that we haven't started nesting yet
 		outputStream.write(encoding.getByteOrderMark());	//write the byte order mark, which may be an empty array
-		final BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(outputStream, encoding.getEncoding()));	//create a new writer based on our encoding
-		writeProlog(document, writer, encoding.getEncoding());	//write the prolog
+		final BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(outputStream, encoding.toString()));	//create a new writer based on our encoding
+		writeProlog(document, writer, encoding.toString());	//write the prolog
 		final DocumentType documentType=document.getDoctype();	//get the document type, if there is one
 		if(documentType!=null)	//if there is a document type
 		{
@@ -408,7 +408,7 @@ public class XMLSerializer
 	{
 		nestLevel=0;	//show that we haven't started nesting yet
 		outputStream.write(encoding.getByteOrderMark());	//write the byte order mark, which may be an empty array
-		final BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(outputStream, encoding.getEncoding()));	//create a new writer based on our encoding
+		final BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(outputStream, encoding.toString()));	//create a new writer based on our encoding
 		write(element, writer);	//write the element and all elements below it
 		if(isFormatted())	//if we should write formatted output
 		{
@@ -444,7 +444,7 @@ public class XMLSerializer
 	{
 		nestLevel=0;	//show that we haven't started nesting yet
 		outputStream.write(encoding.getByteOrderMark());	//write the byte order mark, which may be an empty array
-		final BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(outputStream, encoding.getEncoding()));	//create a new writer based on our encoding
+		final BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(outputStream, encoding.toString()));	//create a new writer based on our encoding
 		writeContent(node, writer);	//write all children of the node
 		if(isFormatted())	//if we should write formatted output
 		{

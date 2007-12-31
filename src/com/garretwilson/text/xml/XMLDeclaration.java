@@ -1,7 +1,6 @@
 package com.garretwilson.text.xml;
 
-import org.w3c.dom.DOMException;
-import static com.garretwilson.text.CharacterEncodingConstants.*;
+import static com.garretwilson.text.CharacterEncoding.*;
 
 /**XML declaration in an XML document.
 @see XMLNode

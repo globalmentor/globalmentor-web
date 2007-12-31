@@ -3,7 +3,8 @@ package com.garretwilson.text.xml;
 import java.io.*;
 import java.net.*;
 import com.garretwilson.io.*;
-import com.garretwilson.text.CharacterEncodingConstants;
+import com.garretwilson.text.CharacterEncoding;
+
 import org.w3c.dom.Document;
 
 /**Class for loading and saving an XML document model.
@@ -70,7 +71,7 @@ public class XMLDocumentModelIOKit extends AbstractIOKit<XMLNodeModel<Document>>
 	*/
 	public void save(final XMLNodeModel<Document> model, final OutputStream outputStream) throws IOException
 	{
-		final Writer writer=new OutputStreamWriter(outputStream, CharacterEncodingConstants.UTF_8);	//create a UTF-8 writer
+		final Writer writer=new OutputStreamWriter(outputStream, CharacterEncoding.UTF_8);	//create a UTF-8 writer
 		new XMLSerializer(true).serialize(model.getXML(), outputStream);	//serialize the XML document
 		writer.flush();	//flush the data to the output stream
 	}
