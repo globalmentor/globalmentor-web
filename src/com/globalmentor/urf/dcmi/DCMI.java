@@ -1,10 +1,11 @@
-package com.garretwilson.urf.dcmi;
+package com.globalmentor.urf.dcmi;
 
 import java.net.URI;
 import java.util.Locale;
 
-import com.garretwilson.urf.*;
-import static com.garretwilson.urf.URF.*;
+import com.globalmentor.urf.*;
+
+import static com.globalmentor.urf.URF.*;
 
 /**Constants and methods used for Dublin Core as stored in URF.
 <p>Copyright © 2007 GlobalMentor, Inc.
