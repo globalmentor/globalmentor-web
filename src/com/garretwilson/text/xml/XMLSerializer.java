@@ -8,7 +8,7 @@ import static com.garretwilson.text.CharacterEncoding.*;
 //TODO fix import com.garretwilson.text.xml.soap.SOAPConstants;
 import com.garretwilson.util.PropertyUtilities;
 import com.globalmentor.java.CharacterUtilities;
-import com.globalmentor.java.StringBufferUtilities;
+import com.globalmentor.java.StringBuffers;
 
 import static com.garretwilson.text.xml.XMLConstants.*;
 
@@ -513,31 +513,31 @@ public class XMLSerializer
 				}
 			}
 				//add the "amp" entity if needed
-			if(StringBufferUtilities.indexOf(entityCharacterValueStringBuffer, ENTITY_AMP_VALUE)<0) //if this entity value isn't defined
+			if(StringBuffers.indexOf(entityCharacterValueStringBuffer, ENTITY_AMP_VALUE)<0) //if this entity value isn't defined
 			{
 				entityNameList.add(ENTITY_AMP_NAME);  //add the default entity name
 				entityCharacterValueStringBuffer.append(ENTITY_AMP_VALUE);  //add the default entity value
 			}
 				//add the "lt" entity if needed
-			if(StringBufferUtilities.indexOf(entityCharacterValueStringBuffer, ENTITY_LT_VALUE)<0) //if this entity value isn't defined
+			if(StringBuffers.indexOf(entityCharacterValueStringBuffer, ENTITY_LT_VALUE)<0) //if this entity value isn't defined
 			{
 				entityNameList.add(ENTITY_LT_NAME);  //add the default entity name
 				entityCharacterValueStringBuffer.append(ENTITY_LT_VALUE);  //add the default entity value
 			}
 				//add the "gt" entity if needed
-			if(StringBufferUtilities.indexOf(entityCharacterValueStringBuffer, ENTITY_GT_VALUE)<0) //if this entity value isn't defined
+			if(StringBuffers.indexOf(entityCharacterValueStringBuffer, ENTITY_GT_VALUE)<0) //if this entity value isn't defined
 			{
 				entityNameList.add(ENTITY_GT_NAME);  //add the default entity name
 				entityCharacterValueStringBuffer.append(ENTITY_GT_VALUE);  //add the default entity value
 			}
 				//add the "apos" entity if needed
-			if(StringBufferUtilities.indexOf(entityCharacterValueStringBuffer, ENTITY_APOS_VALUE)<0) //if this entity value isn't defined
+			if(StringBuffers.indexOf(entityCharacterValueStringBuffer, ENTITY_APOS_VALUE)<0) //if this entity value isn't defined
 			{
 				entityNameList.add(ENTITY_APOS_NAME);  //add the default entity name
 				entityCharacterValueStringBuffer.append(ENTITY_APOS_VALUE);  //add the default entity value
 			}
 				//add the "quot" entity if needed
-			if(StringBufferUtilities.indexOf(entityCharacterValueStringBuffer, ENTITY_QUOT_VALUE)<0) //if this entity value isn't defined
+			if(StringBuffers.indexOf(entityCharacterValueStringBuffer, ENTITY_QUOT_VALUE)<0) //if this entity value isn't defined
 			{
 				entityNameList.add(ENTITY_QUOT_NAME);  //add the default entity name
 				entityCharacterValueStringBuffer.append(ENTITY_QUOT_VALUE);  //add the default entity value

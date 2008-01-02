@@ -25,7 +25,7 @@ import static com.garretwilson.io.ContentTypeConstants.*;
 import static com.garretwilson.io.ContentTypes.*;
 import static com.garretwilson.text.xml.XMLConstants.*;
 import static com.globalmentor.java.CharacterUtilities.*;
-import static com.globalmentor.java.IntegerUtilities.*;
+import static com.globalmentor.java.Integers.*;
 
 /**Various XML manipuliating functions. The methods here are meant to be generic
 in that they only access XML through the W3C DOM.

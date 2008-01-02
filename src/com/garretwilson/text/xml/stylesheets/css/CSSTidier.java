@@ -7,8 +7,8 @@ import com.garretwilson.text.xml.oeb.css.OEBCSSUtilities; //G***move to OEBCSSTi
 import static com.garretwilson.text.xml.stylesheets.css.XMLCSSConstants.*;
 import com.garretwilson.util.Debug;
 import com.garretwilson.util.PropertyUtilities;
-import com.globalmentor.java.MathUtilities;
-import com.globalmentor.java.StringBufferUtilities;
+import com.globalmentor.java.Maths;
+import com.globalmentor.java.StringBuffers;
 import com.globalmentor.java.Strings;
 
 import org.w3c.dom.css.*;

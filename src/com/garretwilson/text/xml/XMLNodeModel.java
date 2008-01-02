@@ -3,7 +3,7 @@ package com.garretwilson.text.xml;
 import java.net.URI;
 import com.garretwilson.io.URIInputStreamable;
 import com.garretwilson.model.URIAccessibleModel;
-import com.globalmentor.java.JavaConstants;
+import com.globalmentor.java.Java;
 
 import org.w3c.dom.*;
 
@@ -20,7 +20,7 @@ public class XMLNodeModel<N extends Node> extends URIAccessibleModel
 {
 
 	/**The XML node property.*/
-	public final String XML_PROPERTY=XMLNodeModel.class.getName()+JavaConstants.PACKAGE_SEPARATOR+"xml";
+	public final String XML_PROPERTY=XMLNodeModel.class.getName()+Java.PACKAGE_SEPARATOR+"xml";
 
 	/**The XML information being modeled, or <code>null</code> if there is no XML information.*/
 	private N xml=null;

@@ -685,14 +685,14 @@ public class XHTMLTidier extends TextUtilities
 							else  //if the marker is not the bullet character
 							{
 									//see if this "marker" contains at least one list item delimiter
-								final int delimiterIndex=CharSequenceUtilities.charIndexOf(markerString, LIST_ITEM_MARKER_DELIMITER_CHARS);
+								final int delimiterIndex=CharSequences.charIndexOf(markerString, LIST_ITEM_MARKER_DELIMITER_CHARS);
 								if(delimiterIndex>=0) //if this marker contained a delimiter, it's starting to look like a real marker; we'll trim the delimeters and see for sure
 								{
 //G***delDebug.trace("Found delimiter: ", String.valueOf(markerString.charAt(delimiterIndex)));
 										  //G***same the delimiter somewhere
 										//trim the "." or ")" or whatever from the string, giving us just the marker
 									markerString=Strings.trim(markerString, LIST_ITEM_MARKER_DELIMITER_CHARS);
-									if(CharSequenceUtilities.isLatinDigits(markerString)) //if this string contains only latin digits (the digits '0'-'9')
+									if(CharSequences.isLatinDigits(markerString)) //if this string contains only latin digits (the digits '0'-'9')
 									{
 /*G***del
 Debug.trace("Is latin digits"); //G***del
@@ -800,7 +800,7 @@ Debug.trace("Current list style type: ", listStyleType);  //G***del
 							{
 								final String data=textNode.getData(); //get the text node data
 									//see where the first whitespace is
-								final int whitespaceIndex=CharSequenceUtilities.charIndexOf(data, Characters.TRIM_CHARS);
+								final int whitespaceIndex=CharSequences.charIndexOf(data, Characters.TRIM_CHARS);
 								if(whitespaceIndex>=0)  //if there is whitespace (there always should be, or we could not have determined that this is a list item
 								{
 									textNode.setData(data.substring(whitespaceIndex+1)); //remove the marker and update the text node
@@ -1832,7 +1832,7 @@ Debug.trace("found enclosing start at index: ", startIndex);  //G***del
 	protected static boolean tidyText(final StringBuffer stringBuffer)
 	{
 			//make the necessary replacements and make a note of how many replacements were made
-		final int replacementCount=StringBufferUtilities.replace(stringBuffer, CHARACTER_MATCH_REPLACE_SET_ARRAY);
+		final int replacementCount=StringBuffers.replace(stringBuffer, CHARACTER_MATCH_REPLACE_SET_ARRAY);
 /*G***fix
 					final String textTransform=oldStyle.getTextTransform(); //see if there is a text transform request
 					if(textTransform.length()>0)  //if a text transformation was requested
@@ -1844,11 +1844,11 @@ Debug.trace("found enclosing start at index: ", startIndex);  //G***del
 		boolean modified=replacementCount>0;  //see if we modified the characters
 		final int originalLength=stringBuffer.length(); //get the length before we replace runs
 			//replace "--", "---", and "----" with an em-dash (this can only make the string shorter)
-		StringBufferUtilities.replaceRuns(stringBuffer, HYPHEN_MINUS_CHAR, 2, 4, EM_DASH_CHAR);
+		StringBuffers.replaceRuns(stringBuffer, HYPHEN_MINUS_CHAR, 2, 4, EM_DASH_CHAR);
 			//replace "''" (subsequent apostrophes) with a quote character (this can only make the string shorter)
-		StringBufferUtilities.replaceRuns(stringBuffer, APOSTROPHE_CHAR, 2, 2, QUOTATION_MARK_CHAR);
+		StringBuffers.replaceRuns(stringBuffer, APOSTROPHE_CHAR, 2, 2, QUOTATION_MARK_CHAR);
 			//replace "``" (subsequent grave accents) with a quote character (this can only make the string shorter)
-		StringBufferUtilities.replaceRuns(stringBuffer, GRAVE_ACCENT_CHAR, 2, 2, QUOTATION_MARK_CHAR);
+		StringBuffers.replaceRuns(stringBuffer, GRAVE_ACCENT_CHAR, 2, 2, QUOTATION_MARK_CHAR);
 		if(stringBuffer.length()!=originalLength) //if replacing runs changed the length of the string buffer
 			modified=true;  //something was modified
 /*G***this needs to be thought through more---what about at the end of a word? should we replace all of them?
@@ -1888,7 +1888,7 @@ Debug.trace("found enclosing start at index: ", startIndex);  //G***del
 	{
 			//G***shouldn't we have a function that transforms this automatically?
 //G***del Debug.trace("Converting symbol string: ", stringBuffer);  //G***del
-		StringBufferUtilities.replace(stringBuffer, SYMBOL_FONT_TO_UNICODE_TABLE);  //convert all symbol characters to Unicode
+		StringBuffers.replace(stringBuffer, SYMBOL_FONT_TO_UNICODE_TABLE);  //convert all symbol characters to Unicode
 /*G***del when works
 		final int converstionTableLength=SYMBOL_FONT_TO_UNICODE_TABLE.length; //find out how many characters we recognize
 		final int stringBufferLength=stringBuffer.length(); //find out how many characters there are to convert

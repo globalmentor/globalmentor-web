@@ -4,7 +4,6 @@ import java.util.*;
 
 import com.garretwilson.assess.qti.QTIConstants;
 import static com.garretwilson.net.URIConstants.*;
-import static com.globalmentor.java.JavaConstants.*;
 
 import com.garretwilson.net.http.webdav.ApacheWebDAV;
 import com.garretwilson.net.http.webdav.WebDAVConstants;
@@ -23,7 +22,8 @@ import com.garretwilson.text.xml.oeb.OEBConstants;
 import com.garretwilson.text.xml.schema.XMLSchemaConstants;
 import com.garretwilson.text.xml.xhtml.XHTMLConstants;
 import com.garretwilson.text.xml.xlink.XLinkConstants;
-import com.globalmentor.urf.ploop.PLOOP;
+
+import static com.globalmentor.java.Java.*;
 
 /**Manages XML namespaces and prefixes for serialization.
 This class is initialized with a default set of known namespace prefix mappings. 

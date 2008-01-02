@@ -12,8 +12,8 @@ import com.garretwilson.text.CharacterEncoding;
 import com.garretwilson.util.Debug;
 import com.garretwilson.util.PropertyUtilities;
 import com.globalmentor.java.CharacterUtilities;
-import com.globalmentor.java.IntegerUtilities;
-import com.globalmentor.java.StringBufferUtilities;
+import com.globalmentor.java.Integers;
+import com.globalmentor.java.StringBuffers;
 
 //G***del all the XMLUndefinedEntityReferenceException throws when we don't need them anymore, in favor of XMLWellFormednessException
 

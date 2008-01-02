@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.text.NumberFormat;
 import static com.garretwilson.text.xml.stylesheets.css.XMLCSSConstants.*;
 import com.garretwilson.util.Debug;
-import com.globalmentor.java.CharSequenceUtilities;
+import com.globalmentor.java.CharSequences;
 import com.globalmentor.java.Strings;
 
 import org.w3c.dom.DOMException;
@@ -534,7 +534,7 @@ return null;//G***throw an INVALID_ACCESS_ERR when we find out how to do so			th
 			if(NUMBER_CHARS.indexOf(firstChar)!=-1)	//if the first character is a digit or a decimal, we'll assume this is a number; now we'll need to determine what kind of units this represents
 			{
 //G***del System.out.println("XMLPrimitiveValue.createPrimitiveValue() starts with a digit");	//G***del
-				final int typeCharIndex=CharSequenceUtilities.notCharIndexOf(valueString, NUMBER_CHARS, 0);	//find the first character that isn't a digit or a decimal point G***use a constant here
+				final int typeCharIndex=CharSequences.notCharIndexOf(valueString, NUMBER_CHARS, 0);	//find the first character that isn't a digit or a decimal point G***use a constant here
 				if(typeCharIndex!=-1)	//if we found a non-digit character int the string
 				{
 					final String typeString=valueString.substring(typeCharIndex, valueString.length());	//get a string representing the type of unit

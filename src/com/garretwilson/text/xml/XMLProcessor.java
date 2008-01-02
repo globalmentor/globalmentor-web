@@ -16,7 +16,7 @@ import com.garretwilson.text.xml.schema.*;
 
 import static com.garretwilson.text.xml.XMLConstants.*;
 import com.garretwilson.util.Debug;
-import com.globalmentor.java.CharSequenceUtilities;
+import com.globalmentor.java.CharSequences;
 
 //G***del all the XMLUndefinedEntityReferenceException throws when we don't need them anymore, in favor of XMLWellFormednessException
 
@@ -294,7 +294,7 @@ public class XMLProcessor implements URIInputStreamable
 					//if we've read enough characters to see if this stream starts with the XML declaration "<?xml...", and if it doesn't
 				if(autodetectPrereadCharacters.length()==XML_DECL_START.length() && !XML_DECL_START.contentEquals(autodetectPrereadCharacters))
 					break;	//stop looking for an encoding attribute, since there isn't even an XML declaration
-				if(CharSequenceUtilities.endsWith(autodetectPrereadCharacters, XML_DECL_END))	//if we've read all of the XML declaration
+				if(CharSequences.endsWith(autodetectPrereadCharacters, XML_DECL_END))	//if we've read all of the XML declaration
 					break;	//stop trying to autodetect the encoding and process what we have
 				final int encodingDeclarationStartIndex=autodetectPrereadCharacters.indexOf(ENCODINGDECL_NAME);	//see where the "encoding" declaration starts (assuming we've read it yet)
 				if(encodingDeclarationStartIndex>=0)	//if we've at least found the "encoding" declaration (but perhaps not the actual value)

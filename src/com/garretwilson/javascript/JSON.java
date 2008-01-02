@@ -8,9 +8,9 @@ import java.util.regex.Pattern;
 import com.garretwilson.text.ArgumentSyntaxException;
 import com.garretwilson.text.W3CDateFormat;
 import static com.garretwilson.util.ArrayUtilities.*;
-import static com.globalmentor.java.CharSequenceUtilities.*;
+import static com.globalmentor.java.CharSequences.*;
 import static com.globalmentor.java.Objects.*;
-import static com.globalmentor.java.StringBuilderUtilities.*;
+import static com.globalmentor.java.StringBuilders.*;
 
 import com.garretwilson.util.ObjectHolder;
 
