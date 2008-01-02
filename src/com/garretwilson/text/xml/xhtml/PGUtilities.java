@@ -3,12 +3,13 @@ package com.garretwilson.text.xml.xhtml;
 import java.io.*;
 import java.util.*;
 import com.garretwilson.io.*;
-import com.garretwilson.lang.*;
 import static com.garretwilson.text.Characters.*;
 
 import com.garretwilson.text.Characters;
 import com.garretwilson.text.xml.XMLUtilities;
 import com.garretwilson.util.Debug;
+import com.globalmentor.java.*;
+
 import org.w3c.dom.*;
 
 /**Tidies an XHTML document representing a Project Gutenberg etext.

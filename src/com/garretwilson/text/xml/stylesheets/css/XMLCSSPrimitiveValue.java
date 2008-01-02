@@ -2,10 +2,11 @@ package com.garretwilson.text.xml.stylesheets.css;
 
 import java.awt.Color;
 import java.text.NumberFormat;
-import com.garretwilson.lang.CharSequenceUtilities;
-import com.garretwilson.lang.Strings;
 import static com.garretwilson.text.xml.stylesheets.css.XMLCSSConstants.*;
 import com.garretwilson.util.Debug;
+import com.globalmentor.java.CharSequenceUtilities;
+import com.globalmentor.java.Strings;
+
 import org.w3c.dom.DOMException;
 import org.w3c.dom.css.*;
 

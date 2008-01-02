@@ -11,9 +11,9 @@ import javax.mail.MethodNotSupportedException;
 import org.w3c.dom.*;
 import org.w3c.dom.events.*;
 
-import com.garretwilson.lang.Objects;
 import com.garretwilson.text.xml.events.*;
 import com.garretwilson.util.Debug;
+import com.globalmentor.java.Objects;
 
 import static com.garretwilson.text.xml.XMLConstants.*;
 

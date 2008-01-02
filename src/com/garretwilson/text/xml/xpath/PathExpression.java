@@ -2,7 +2,7 @@ package com.garretwilson.text.xml.xpath;
 
 import java.util.*;
 
-import com.garretwilson.lang.Strings;
+import com.globalmentor.java.Strings;
 
 import static com.garretwilson.text.xml.xpath.XPathConstants.*;
 

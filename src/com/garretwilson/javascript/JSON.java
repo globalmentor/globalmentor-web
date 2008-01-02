@@ -4,13 +4,13 @@ import static java.lang.reflect.Array.*;
 import java.util.*;
 import java.util.regex.Pattern;
 
-import static com.garretwilson.lang.CharSequenceUtilities.*;
-import static com.garretwilson.lang.StringBuilderUtilities.*;
-import static com.garretwilson.lang.Objects.*;
 
 import com.garretwilson.text.ArgumentSyntaxException;
 import com.garretwilson.text.W3CDateFormat;
 import static com.garretwilson.util.ArrayUtilities.*;
+import static com.globalmentor.java.CharSequenceUtilities.*;
+import static com.globalmentor.java.Objects.*;
+import static com.globalmentor.java.StringBuilderUtilities.*;
 
 import com.garretwilson.util.ObjectHolder;
 

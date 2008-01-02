@@ -4,7 +4,6 @@ import java.io.*;
 import java.util.*;
 import com.garretwilson.io.ContentTypes;
 import com.garretwilson.io.Files;
-import com.garretwilson.lang.*;
 import com.garretwilson.text.*;
 import com.garretwilson.text.xml.XMLConstants;
 import com.garretwilson.text.xml.XMLUtilities;
@@ -17,6 +16,8 @@ import static com.garretwilson.text.xml.stylesheets.css.XMLCSSConstants.*;
 import static com.garretwilson.text.xml.xhtml.XHTMLConstants.*;
 import static com.garretwilson.text.unicode.SymbolEncodingConstants.*;
 import com.garretwilson.util.*;
+import com.globalmentor.java.*;
+
 import org.w3c.dom.*;
 import org.w3c.dom.traversal.NodeFilter;
 import org.w3c.dom.css.*;

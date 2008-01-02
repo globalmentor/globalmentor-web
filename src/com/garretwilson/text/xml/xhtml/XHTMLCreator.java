@@ -3,10 +3,11 @@ package com.garretwilson.text.xml.xhtml;
 import java.io.*;
 import java.util.*;
 import com.garretwilson.io.*;
-import com.garretwilson.lang.CharSequenceUtilities;
 import com.garretwilson.text.*;
 import com.garretwilson.text.xml.XMLUtilities;
 import com.garretwilson.util.Debug;
+import com.globalmentor.java.CharSequenceUtilities;
+
 import org.w3c.dom.*;
 
 import static com.garretwilson.text.Characters.*;

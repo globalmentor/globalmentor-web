@@ -1,7 +1,6 @@
 package com.garretwilson.text.xml;
 
-import com.garretwilson.lang.Objects;
-//G***del import com.garretwilson.util.NamedObject;
+import com.globalmentor.java.Objects;
 
 /**The base class for XML objects that are named&mdash;identified by
 	qname and/or namespace and local name.

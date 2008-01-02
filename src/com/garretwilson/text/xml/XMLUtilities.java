@@ -8,23 +8,24 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import com.garretwilson.lang.*;
 import com.garretwilson.text.*;
 
 import static com.garretwilson.text.xml.stylesheets.XMLStyleSheetConstants.*;
 import com.garretwilson.util.Debug;
+import com.globalmentor.java.*;
+
 import org.w3c.dom.*;
 import org.w3c.dom.traversal.*;
 
-import static com.garretwilson.lang.CharacterUtilities.*;
 import static com.garretwilson.text.xml.mathml.MathMLConstants.*;
 import static com.garretwilson.text.xml.svg.SVGConstants.*;
 import static com.garretwilson.text.xml.xhtml.XHTMLConstants.*;
 
 import static com.garretwilson.io.ContentTypeConstants.*;
 import static com.garretwilson.io.ContentTypes.*;
-import static com.garretwilson.lang.IntegerUtilities.*;
 import static com.garretwilson.text.xml.XMLConstants.*;
+import static com.globalmentor.java.CharacterUtilities.*;
+import static com.globalmentor.java.IntegerUtilities.*;
 
 /**Various XML manipuliating functions. The methods here are meant to be generic
 in that they only access XML through the W3C DOM.

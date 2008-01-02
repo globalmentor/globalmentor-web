@@ -8,7 +8,6 @@ import com.garretwilson.io.Files;
 import com.garretwilson.io.ParseEOFException;	//G***go through and catch all these and throw XML exceptions
 import com.garretwilson.io.ParseUnexpectedDataException;
 import com.garretwilson.io.URIInputStreamable;
-import com.garretwilson.lang.CharSequenceUtilities;
 import com.garretwilson.net.URIs;
 import com.garretwilson.text.CharacterEncoding;
 import static com.garretwilson.text.CharacterEncoding.*;
@@ -17,6 +16,7 @@ import com.garretwilson.text.xml.schema.*;
 
 import static com.garretwilson.text.xml.XMLConstants.*;
 import com.garretwilson.util.Debug;
+import com.globalmentor.java.CharSequenceUtilities;
 
 //G***del all the XMLUndefinedEntityReferenceException throws when we don't need them anymore, in favor of XMLWellFormednessException
 

@@ -3,8 +3,9 @@ package com.garretwilson.text.xml;
 import java.util.*;
 
 import com.garretwilson.assess.qti.QTIConstants;
-import static com.garretwilson.lang.JavaConstants.*;
 import static com.garretwilson.net.URIConstants.*;
+import static com.globalmentor.java.JavaConstants.*;
+
 import com.garretwilson.net.http.webdav.ApacheWebDAV;
 import com.garretwilson.net.http.webdav.WebDAVConstants;
 import com.garretwilson.rdf.RDFConstants;

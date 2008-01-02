@@ -2,7 +2,8 @@ package com.garretwilson.text.xml;
 
 import java.net.URI;
 
-import static com.garretwilson.lang.Objects.*;
+import static com.globalmentor.java.Objects.*;
+
 import com.garretwilson.net.DefaultResource;
 import com.garretwilson.util.IDable;
 

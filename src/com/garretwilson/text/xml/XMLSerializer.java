@@ -3,12 +3,12 @@ package com.garretwilson.text.xml;
 import java.io.*;
 import java.util.*;
 import org.w3c.dom.*;
-import com.garretwilson.lang.CharacterUtilities;
-import com.garretwilson.lang.StringBufferUtilities;
 import com.garretwilson.text.CharacterEncoding;
 import static com.garretwilson.text.CharacterEncoding.*;
 //TODO fix import com.garretwilson.text.xml.soap.SOAPConstants;
 import com.garretwilson.util.PropertyUtilities;
+import com.globalmentor.java.CharacterUtilities;
+import com.globalmentor.java.StringBufferUtilities;
 
 import static com.garretwilson.text.xml.XMLConstants.*;
 
