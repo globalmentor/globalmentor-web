@@ -3,9 +3,9 @@ package com.garretwilson.text.xml.xhtml;
 import java.io.*;
 import java.util.*;
 import com.garretwilson.io.*;
-import static com.garretwilson.text.Characters.*;
 
-import com.garretwilson.text.Characters;
+import static com.globalmentor.java.Characters.*;
+
 import com.garretwilson.text.xml.XMLUtilities;
 import com.garretwilson.util.Debug;
 import com.globalmentor.java.*;
@@ -445,7 +445,7 @@ Debug.trace("no etext, pretending it's at index: ", eTextStringIndex);  //G***de
 								if(eTextStringIndex>=0 && eTextStringIndex+eTextString.length()<line.length()
 										&& (firstChar=='*'  //G***test with original problem etext, use constant
 											|| isSpecialFirstPGHeader //we don't need to check for etext for the special header that has no etext
-											|| CharacterUtilities.isWhitespace(line.charAt(eTextStringIndex+eTextString.length()))
+											|| Characters.isWhitespace(line.charAt(eTextStringIndex+eTextString.length()))
 										  || DEPENDENT_PUNCTUATION_CHARS.indexOf(line.charAt(eTextStringIndex+eTextString.length()))>=0))
 								{
 Debug.trace("found etext: "+eTextString); //G***del
@@ -684,7 +684,7 @@ Debug.trace("found PG in line for author: ", line);  //G***del
 								final int eTextStringIndex=eTextString!=null ? Strings.indexOfIgnoreCase(line, eTextString) : -1;
 									//if this is the correct line, and there's whitespace after the etext string
 								if(eTextStringIndex>=0 && eTextStringIndex+eTextString.length()<line.length()
-										&& (CharacterUtilities.isWhitespace(line.charAt(eTextStringIndex+eTextString.length()))
+										&& (Characters.isWhitespace(line.charAt(eTextStringIndex+eTextString.length()))
 										  || DEPENDENT_PUNCTUATION_CHARS.indexOf(line.charAt(eTextStringIndex+eTextString.length()))>=0))
 								{
 		Debug.trace("found etext"); //G***del
@@ -997,7 +997,7 @@ Debug.trace("checking text for header element: ", text); //G***del
 								//  nine Project Gutenberg Etexts...")
 							if(eTextStringIndex+eTextString.length()<line.length()
 								&& (firstChar=='*'  //G***check with original problem etext; use constant
-										|| CharacterUtilities.isWhitespace(line.charAt(eTextStringIndex+eTextString.length()))
+										|| Characters.isWhitespace(line.charAt(eTextStringIndex+eTextString.length()))
 										|| DEPENDENT_PUNCTUATION_CHARS.indexOf(text.charAt(eTextStringIndex+eTextString.length()))>=0))
 
 							{

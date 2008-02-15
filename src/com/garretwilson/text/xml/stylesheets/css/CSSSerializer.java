@@ -11,7 +11,6 @@ import static com.garretwilson.text.xml.stylesheets.css.XMLCSSConstants.*;
 import com.garretwilson.text.CharacterEncoding;
 import com.garretwilson.util.Debug;
 import com.garretwilson.util.PropertyUtilities;
-import com.globalmentor.java.CharacterUtilities;
 import com.globalmentor.java.Integers;
 import com.globalmentor.java.StringBuffers;
 

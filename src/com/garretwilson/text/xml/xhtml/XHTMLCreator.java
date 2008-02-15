@@ -10,7 +10,7 @@ import com.globalmentor.java.CharSequences;
 
 import org.w3c.dom.*;
 
-import static com.garretwilson.text.Characters.*;
+import static com.globalmentor.java.Characters.*;
 
 /**Allows creation of an XHTML document from a text document. Each group of
 	lines is converted to an XHTML <code>&lt;p&gt;</code>.

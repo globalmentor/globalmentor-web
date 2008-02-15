@@ -8,8 +8,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import com.garretwilson.text.*;
-
 import static com.garretwilson.text.xml.stylesheets.XMLStyleSheetConstants.*;
 import com.garretwilson.util.Debug;
 import com.globalmentor.java.*;
@@ -24,7 +22,7 @@ import static com.garretwilson.text.xml.xhtml.XHTMLConstants.*;
 import static com.garretwilson.io.ContentTypeConstants.*;
 import static com.garretwilson.io.ContentTypes.*;
 import static com.garretwilson.text.xml.XMLConstants.*;
-import static com.globalmentor.java.CharacterUtilities.*;
+
 import static com.globalmentor.java.Integers.*;
 
 /**Various XML manipuliating functions. The methods here are meant to be generic
@@ -354,7 +352,7 @@ G***should we return data from CDATA sections as well?
 	*/
 	public static boolean isChar(final char c)
 	{
-		return isCharInRange(c, CHAR_RANGES);	//see if the character is a legal XML character
+		return Characters.isCharInRange(c, CHAR_RANGES);	//see if the character is a legal XML character
 	}
 
 	/**Checks to see if the specified character is XML whitespace.
@@ -372,7 +370,7 @@ G***should we return data from CDATA sections as well?
 	*/
 	public static boolean isLetter(final char c)
 	{
-		return isCharInRange(c, BASE_CHAR_RANGES) || isCharInRange(c, IDEOGRAPHIC_RANGES);	//see if the character is a base character or an ideographic character
+		return Characters.isCharInRange(c, BASE_CHAR_RANGES) || Characters.isCharInRange(c, IDEOGRAPHIC_RANGES);	//see if the character is a base character or an ideographic character
 	}
 
 	/**Checks to see if the specified character is a digit.
@@ -381,7 +379,7 @@ G***should we return data from CDATA sections as well?
 	*/
 	public static boolean isDigit(final char c)
 	{
-		return isCharInRange(c, DIGIT_RANGES);	//see if the character is a digit
+		return Characters.isCharInRange(c, DIGIT_RANGES);	//see if the character is a digit
 	}
 
 	/**Checks to see if the specified character is a combining character.
@@ -390,7 +388,7 @@ G***should we return data from CDATA sections as well?
 	*/
 	public static boolean isCombiningChar(final char c)
 	{
-		return isCharInRange(c, COMBINING_CHAR_RANGES);	//see if the character is a combining character
+		return Characters.isCharInRange(c, COMBINING_CHAR_RANGES);	//see if the character is a combining character
 	}
 
 	/**Checks to see if the specified character is an extender.
@@ -399,7 +397,7 @@ G***should we return data from CDATA sections as well?
 	*/
 	public static boolean isExtender(final char c)
 	{
-		return isCharInRange(c, EXTENDER_RANGES);	//see if the character is an extender
+		return Characters.isCharInRange(c, EXTENDER_RANGES);	//see if the character is an extender
 	}
 
 	/**Checks to see if the specified character is a name character.
@@ -559,7 +557,7 @@ G***should we return data from CDATA sections as well?
 			{
 				if(stringBuffer==null)  //if we haven't create a string buffer, yet
 					stringBuffer=new StringBuffer(string);  //create a string buffer to hold our replacements
-				stringBuffer.setCharAt(i, Characters.SPACE_CHAR); //replace this character with a space
+				stringBuffer.setCharAt(i, SPACE_CHAR); //replace this character with a space
 			}
 		}
 		return stringBuffer!=null ? stringBuffer.toString() : string; //return the original string unless we've actually modified something

@@ -23,8 +23,8 @@ import org.w3c.dom.traversal.NodeFilter;
 import org.w3c.dom.css.*;
 
 import static com.garretwilson.io.ContentTypeConstants.*;
-import static com.garretwilson.text.Characters.*;
 import static com.garretwilson.text.xml.XMLConstants.*;
+import static com.globalmentor.java.Characters.*;
 
 /**Contains several routines for tidying XHTML documents.
 <p><code>tidy()</code> performs the following operations:</p>
@@ -1773,10 +1773,10 @@ if(startIndex<data.length()-1)  //G***del
 */
 					//if it's either at the start of the string or preceded by whitespace or punctuation
 				if((startIndex==0 ||
-							(CharacterUtilities.isWordDelimiter(data.charAt(startIndex-1))
+							(Characters.isWordDelimiter(data.charAt(startIndex-1))
 							&& data.charAt(startIndex-1)!=delimiter)) //(but not preceded by another delimiter)
 						&& startIndex<data.length()-1 //and there's a character after the delimiter
-						&& !CharacterUtilities.isWhitespace(data.charAt(startIndex+1))  //that is not whitespace
+						&& !Characters.isWhitespace(data.charAt(startIndex+1))  //that is not whitespace
 						&& data.charAt(startIndex+1)!=delimiter)  //or the delimiter itself
 				{
 Debug.trace("found enclosing start inside: ", data);  //G***del
@@ -1785,7 +1785,7 @@ Debug.trace("found enclosing start at index: ", startIndex);  //G***del
 //G***del Debug.trace("start matches, endIndex: ", endIndex);  //G***del
 					if(endIndex>startIndex+1  //if there is at least one character between the delimiters
 								//and the rightmost delimiter does not come after whitespace
-						 && !CharacterUtilities.isWhitespace(data.charAt(endIndex-1)))
+						 && !Characters.isWhitespace(data.charAt(endIndex-1)))
 					{
 //G***del Debug.trace("ready to split text from: ", startIndex);  //G***del
 //G***del Debug.trace("ready to split text to: ", endIndex);  //G***del

@@ -7,7 +7,7 @@ import com.garretwilson.text.CharacterEncoding;
 import static com.garretwilson.text.CharacterEncoding.*;
 //TODO fix import com.garretwilson.text.xml.soap.SOAPConstants;
 import com.garretwilson.util.PropertyUtilities;
-import com.globalmentor.java.CharacterUtilities;
+import com.globalmentor.java.Characters;
 import com.globalmentor.java.StringBuffers;
 
 import static com.garretwilson.text.xml.XMLConstants.*;
@@ -845,7 +845,7 @@ public class XMLSerializer
 			//  but it is an extended character and we should XML-encode such
 			//  characters (note that the ampersand and less-than/greater-than should *always* be encoded)
 			else if(
-					((xmlEncodeNonASCII && !CharacterUtilities.isASCII(c)) || c==ENTITY_AMP_VALUE || c==ENTITY_LT_VALUE || c==ENTITY_GT_VALUE)
+					((xmlEncodeNonASCII && !Characters.isASCII(c)) || c==ENTITY_AMP_VALUE || c==ENTITY_LT_VALUE || c==ENTITY_GT_VALUE)
 					|| (xmlEncodeControl && Character.isISOControl(c))  //if we should encode control characters, and this is a control character
 					|| (xmlEncodePrivateUse && Character.getType(c)==Character.PRIVATE_USE) //if we should encode control characters, and this is a control character
 					|| (c==delimiter) //the delimiter character, if present, will *always* be encoded

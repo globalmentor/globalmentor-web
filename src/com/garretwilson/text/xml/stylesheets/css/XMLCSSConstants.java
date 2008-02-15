@@ -7,7 +7,7 @@ import javax.mail.internet.ContentType;
 
 import com.garretwilson.io.ContentTypeConstants;
 
-import static com.garretwilson.text.Characters.*;
+import static com.globalmentor.java.Characters.*;
 
 /**Several constants for CSS.*/
 public class XMLCSSConstants
