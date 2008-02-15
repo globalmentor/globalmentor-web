@@ -20,7 +20,7 @@ import com.garretwilson.rdf.xpackage.XPackageConstants;
 import com.garretwilson.text.xml.XMLConstants;
 import com.garretwilson.text.xml.oeb.OEBConstants;
 import com.garretwilson.text.xml.schema.XMLSchemaConstants;
-import com.garretwilson.text.xml.xhtml.XHTMLConstants;
+import com.garretwilson.text.xml.xhtml.XHTML;
 import com.garretwilson.text.xml.xlink.XLinkConstants;
 
 import static com.globalmentor.java.Java.*;
@@ -83,7 +83,7 @@ public class XMLNamespacePrefixManager
 		registerNamespacePrefix(VCard.VCARD_NAMESPACE_URI.toString(), VCard.VCARD_NAMESPACE_PREFIX); //vCard
 		registerNamespacePrefix(VersionConstants.VERSION_NAMESPACE_URI.toString(), VersionConstants.VERSION_NAMESPACE_PREFIX); //version
 		registerNamespacePrefix(XMLSchemaConstants.XML_SCHEMA_NAMESPACE_URI.toString(), XMLSchemaConstants.XML_SCHEMA_NAMESPACE_PREFIX); //XML Schema
-		registerNamespacePrefix(XHTMLConstants.XHTML_NAMESPACE_URI.toString(), XHTMLConstants.XHTML_NAMESPACE_PREFIX); //XHTML
+		registerNamespacePrefix(XHTML.XHTML_NAMESPACE_URI.toString(), XHTML.XHTML_NAMESPACE_PREFIX); //XHTML
 		registerNamespacePrefix(XLinkConstants.XLINK_NAMESPACE_URI.toString(), XLinkConstants.XLINK_NAMESPACE_PREFIX); //XLink
 		registerNamespacePrefix(XMLConstants.XML_NAMESPACE_URI.toString(), XMLConstants.XML_NAMESPACE_PREFIX); //XML
 		registerNamespacePrefix(XMLConstants.XMLNS_NAMESPACE_URI.toString(), XMLConstants.XMLNS_NAMESPACE_PREFIX); //XML namespaces

@@ -17,7 +17,7 @@ import org.w3c.dom.traversal.*;
 
 import static com.garretwilson.text.xml.mathml.MathMLConstants.*;
 import static com.garretwilson.text.xml.svg.SVGConstants.*;
-import static com.garretwilson.text.xml.xhtml.XHTMLConstants.*;
+import static com.garretwilson.text.xml.xhtml.XHTML.*;
 
 import static com.garretwilson.io.ContentTypeConstants.*;
 import static com.garretwilson.io.ContentTypes.*;

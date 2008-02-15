@@ -132,7 +132,7 @@ public class PGUtilities
 	*/
 	public static DocumentFragment extractHeader(final Document document/*G***del, final String title*/)
 	{
-		final Element bodyElement=XHTMLUtilities.getBodyElement(document);  //get the <body> element of the XHTML document
+		final Element bodyElement=XHTML.getBodyElement(document);  //get the <body> element of the XHTML document
 		int divIndex=-1;  //we'll check for dividers, just in case we can't find the header
 		int sendMoneyIndex=-1;  //we'll find the "send money" index in case we need it to be a divider
 //G***del for now		int titleIndex=-1;  //we'll check for the title, just in case we can't find the header
@@ -283,7 +283,7 @@ Debug.trace("extracting children up to divider: "+divIndex); //G***del
 	*/
 	public static DocumentFragment extractFooter(final Document document)
 	{
-		final Element bodyElement=XHTMLUtilities.getBodyElement(document);  //get the <body> element of the XHTML document
+		final Element bodyElement=XHTML.getBodyElement(document);  //get the <body> element of the XHTML document
 		final NodeList childNodes=bodyElement.getChildNodes();  //get the list of body child nodes
 		for(int i=childNodes.getLength()-1; i>=0; --i) //look at each child node, starting at the end
 		{
@@ -306,7 +306,7 @@ Debug.trace("extracting children up to divider: "+divIndex); //G***del
 	*/
 	public static Element getPGFooterElement(final Document document)
 	{
-		final Element bodyElement=XHTMLUtilities.getBodyElement(document);  //get the <body> element of the XHTML document
+		final Element bodyElement=XHTML.getBodyElement(document);  //get the <body> element of the XHTML document
 		final NodeList childNodes=bodyElement.getChildNodes();  //get the list of body child nodes
 		for(int i=childNodes.getLength()-1; i>=0; --i) //look at each child node, starting at the end
 		{
@@ -1097,7 +1097,7 @@ Debug.trace("checking text for header element: ", text); //G***del
 			//these three pairs of strings are the the ones to search for, in the order of lines given
 		final String[][] indicatorStrings={{PROJECT_GUTENB, ETEXT}, {SMALL_PRINT, SMALL_PRINT_START}, {SMALL_PRINT, SMALL_PRINT_END}};
 		int indicatorIndex=0;
-		final Element bodyElement=XHTMLUtilities.getBodyElement(document);  //get the <body> element of the XHTML document
+		final Element bodyElement=XHTML.getBodyElement(document);  //get the <body> element of the XHTML document
 		if(bodyElement!=null) //if there is a body element
 		{
 			final NodeList childNodes=bodyElement.getChildNodes();  //get the list of body child nodes

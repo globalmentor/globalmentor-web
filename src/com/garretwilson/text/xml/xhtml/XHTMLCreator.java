@@ -5,6 +5,7 @@ import java.util.*;
 import com.garretwilson.io.*;
 import com.garretwilson.text.*;
 import com.garretwilson.text.xml.XMLUtilities;
+import static com.garretwilson.text.xml.xhtml.XHTML.*;
 import com.garretwilson.util.Debug;
 import com.globalmentor.java.CharSequences;
 
@@ -16,7 +17,7 @@ import static com.globalmentor.java.Characters.*;
 	lines is converted to an XHTML <code>&lt;p&gt;</code>.
 @author Garret Wilson
 */
-public class XHTMLCreator extends TextUtilities implements XHTMLConstants
+public class XHTMLCreator extends TextUtilities
 {
 	protected long totalLineCount=0;  //G***testing; comment; tidy
 	protected long totalLineLengthSum=0;
@@ -109,7 +110,7 @@ Debug.trace("constructing buffered reader to text input stream"); //G***del
 	protected void parseText(final Document document, final BufferedReader bufferedReader) throws IOException
 	{
 Debug.trace("parsing text");  //G***del
-		final Element bodyElement=XHTMLUtilities.getBodyElement(document);  //get a reference to the body element
+		final Element bodyElement=XHTML.getBodyElement(document);  //get a reference to the body element
 		assert bodyElement!=null : "Missing body element";  //we should always have a body element starting out
 Debug.trace("found body element");  //G***del
 		Element paragraphElement=parseParagraph(document, bodyElement.getNamespaceURI(), bufferedReader);	//parse the first paragraph

@@ -18,10 +18,10 @@ import static com.garretwilson.rdf.xpackage.XPackageUtilities.*;
 import com.garretwilson.text.xml.XMLNamespaceProcessor;
 import com.garretwilson.text.xml.XMLUtilities;
 import static com.garretwilson.text.xml.stylesheets.XMLStyleSheetConstants.*;
-import static com.garretwilson.text.xml.xhtml.XHTMLConstants.*;
+import static com.garretwilson.text.xml.xhtml.XHTML.*;
 
 import com.garretwilson.text.xml.stylesheets.XMLStyleSheetDescriptor;
-import com.garretwilson.text.xml.xhtml.XHTMLConstants;
+import com.garretwilson.text.xml.xhtml.XHTML;
 //G***del import com.garretwilson.text.xml.xhtml.XHTMLUtilities;  //G***del
 import com.garretwilson.util.Debug;
 import com.garretwilson.util.NameValuePair;
@@ -215,7 +215,7 @@ Debug.trace("Found default stylesheet for namespace: ", namespaceURI);  //G***de
 				final E childElement=getChildElement(documentElement, childIndex); //get a reference to the child element
 				final String childElementLocalName=getElementLocalName(childElement);  //get the child element local name
 						//if this element is <head> and it's an HTML <head>
-				if(XHTMLConstants.ELEMENT_HEAD.equals(childElementLocalName))
+				if(XHTML.ELEMENT_HEAD.equals(childElementLocalName))
 	//TODO fix checking to see if this is HTML					&& XHTMLSwingTextUtilities.isHTMLElement(childAttributeSet, documentAttributeSet))
 				{
 					getInternalStylesheets(childElement, cssProcessor, styleSheetList); //get the internal stylesheets from the HTML <head> element
@@ -236,7 +236,7 @@ Debug.trace("Found default stylesheet for namespace: ", namespaceURI);  //G***de
 	{
 		final String elementLocalName=getElementLocalName(element);  //get the element's local name
 			//if this is an HTML <style>
-		if(XHTMLConstants.ELEMENT_STYLE.equals(elementLocalName))
+		if(XHTML.ELEMENT_STYLE.equals(elementLocalName))
 //TODO fix checking to see if this is HTML				&& XHTMLSwingTextUtilities.isHTMLElement(attributeSet, swingDocumentElement.getAttributes()))
 		{
 			try
@@ -575,7 +575,7 @@ Debug.trace("Context "+contextIndex+": "+selectorContext.getTagName());	//G***de
 		{
 //G***del Debug.trace("Element "+element.getNodeName()+" matched, now checking to see if class: "+element.getAttributeNS(null, "class")+" equals the tag we expect: "+getTagClass());	//G***del
 					//G***right now this is XHTML-specific---make more generic if possible
-			if(selectorContext.getTagClass().length()==0 || selectorContext.getTagClass().equals(getElementAttributeValue(element, null, XHTMLConstants.ATTRIBUTE_CLASS)))	//if the class names match as well (or there isn't a specified class in this selector)
+			if(selectorContext.getTagClass().length()==0 || selectorContext.getTagClass().equals(getElementAttributeValue(element, null, XHTML.ATTRIBUTE_CLASS)))	//if the class names match as well (or there isn't a specified class in this selector)
 				return true;
 		}
 		return false;	//if we get to this point, this selector doesn't apply to this element

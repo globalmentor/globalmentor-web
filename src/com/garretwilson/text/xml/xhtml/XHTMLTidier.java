@@ -13,7 +13,7 @@ import com.garretwilson.text.xml.xpath.XPath;
 import com.garretwilson.text.xml.xpath.XPathConstants;
 
 import static com.garretwilson.text.xml.stylesheets.css.XMLCSSConstants.*;
-import static com.garretwilson.text.xml.xhtml.XHTMLConstants.*;
+import static com.garretwilson.text.xml.xhtml.XHTML.*;
 import static com.garretwilson.text.unicode.SymbolEncodingConstants.*;
 import com.garretwilson.util.*;
 import com.globalmentor.java.*;
@@ -533,7 +533,7 @@ public class XHTMLTidier extends TextUtilities
 			}
 		}
 			//get the element's style G***later remove the cast when XMLCSSStyleDeclaration implements CSS2Properties
-		final XMLCSSStyleDeclaration oldStyle=(XMLCSSStyleDeclaration)XHTMLUtilities.getLocalStyle(element);
+		final XMLCSSStyleDeclaration oldStyle=(XMLCSSStyleDeclaration)XHTML.getLocalStyle(element);
 		if(oldStyle!=null)  //if there is an existing style
 		{
 			final XMLCSSStyleDeclaration newStyle=new XMLCSSStyleDeclaration(); //create a new style declaration to received the tidied styles
@@ -873,7 +873,7 @@ Debug.trace("Current list style type: ", listStyleType);  //G***del
 					float leftMargin=0; //we'll store the left margin here, if we find one
 					float rightMargin=0; //we'll store the right margin here, if we find one
 					final Element childElement=(Element)childNode;  //cast the node to an element
-				  final CSSStyleDeclaration style=XHTMLUtilities.getLocalStyle(childElement); //get the child element's style from the style attribute
+				  final CSSStyleDeclaration style=XHTML.getLocalStyle(childElement); //get the child element's style from the style attribute
 					if(style!=null) //if this element has a local style
 					{
 						final CSSPrimitiveValue leftMarginValue=(CSSPrimitiveValue)style.getPropertyCSSValue(CSS_PROP_MARGIN_LEFT); //get the left margin value
@@ -1462,16 +1462,16 @@ Debug.trace("Checking break element: ", element.getNodeName());
 //G***del Debug.trace("XHTMLTider.tidyAttributes() element: "+element.getNodeName());
 		tidyStyleAttribute(element);  //tidy the style attribute, if it's present
 			//change any "lang" attribute to "xml:lang"
-		if(element.hasAttributeNS(null, XHTMLConstants.ATTRIBUTE_LANG))  //if there is a lang attribute defined
+		if(element.hasAttributeNS(null, XHTML.ATTRIBUTE_LANG))  //if there is a lang attribute defined
 		{
-			final String langValue=element.getAttributeNS(null, XHTMLConstants.ATTRIBUTE_LANG);  //get the lang attribute value
+			final String langValue=element.getAttributeNS(null, XHTML.ATTRIBUTE_LANG);  //get the lang attribute value
 //G***del 	Debug.trace("found name value: "+nameValue);
 			if(!element.hasAttributeNS(XML_NAMESPACE_URI.toString(), XMLConstants.ATTRIBUTE_LANG)) //if there is no xml:lang attribute G***use a constant, use namespaces
 			{
 //G***del 	Debug.trace("no name attribute, though; moving name to id");
 					//create an xml:lang attribute with the value of the lang attribute G***use a constant here, use namespaces
 				element.setAttributeNS(XML_NAMESPACE_URI.toString(), XMLUtilities.createQualifiedName(XMLConstants.XML_NAMESPACE_PREFIX, XMLConstants.ATTRIBUTE_LANG), langValue);  
-				element.removeAttributeNS(null, XHTMLConstants.ATTRIBUTE_LANG);  //remove the lang attribute
+				element.removeAttributeNS(null, XHTML.ATTRIBUTE_LANG);  //remove the lang attribute
 			}
 		}
 		final String elementName=element.getNodeName(); //get the element's name G***make this namespace aware
@@ -1549,7 +1549,7 @@ styleValue="";  //G***fix
 				{
 
 						//G***move all of this to tidy text or something
-					final XMLCSSStyleDeclaration oldStyle=(XMLCSSStyleDeclaration)XHTMLUtilities.getLocalStyle(element); //get the element's style G***later remove the cast when XMLCSSStyleDeclaration implements CSS2Properties
+					final XMLCSSStyleDeclaration oldStyle=(XMLCSSStyleDeclaration)XHTML.getLocalStyle(element); //get the element's style G***later remove the cast when XMLCSSStyleDeclaration implements CSS2Properties
 /*G***del when works
 							//G***change to XHTMLUtilities.getLocalStyle()
 					final XMLCSSProcessor cssProcessor=new XMLCSSProcessor();	//create a new CSS processor G***make one for the entire tidier object -- don't create it locally

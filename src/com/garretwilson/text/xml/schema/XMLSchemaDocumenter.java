@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Iterator;
 import com.garretwilson.text.xml.*;
+import static com.garretwilson.text.xml.xhtml.XHTML.*;
 import com.garretwilson.util.Debug;
 import org.w3c.dom.*;
 
@@ -13,7 +14,7 @@ import org.w3c.dom.*;
 /**Class which generates XHTML documentation for an XML schema.
 @author Garret Wilson
 */
-public class XMLSchemaDocumenter implements com.garretwilson.text.xml.xhtml.XHTMLConstants
+public class XMLSchemaDocumenter
 {
 
 	/**Documents an XML schema by creating an XHTML cross-referenced document.
