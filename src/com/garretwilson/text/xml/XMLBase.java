@@ -6,7 +6,7 @@ import java.net.URISyntaxException;
 import com.garretwilson.util.Debug;
 import org.w3c.dom.*;
 
-import static com.garretwilson.text.xml.XMLConstants.*;
+import static com.garretwilson.text.xml.XML.*;
 import static com.garretwilson.text.xml.XMLBaseConstants.*;
 
 /**Class that allows discovery of a base URI according to XML Base,

@@ -15,7 +15,7 @@ import com.garretwilson.text.xml.events.*;
 import com.garretwilson.util.Debug;
 import com.globalmentor.java.Objects;
 
-import static com.garretwilson.text.xml.XMLConstants.*;
+import static com.garretwilson.text.xml.XML.*;
 
 /**The class which forms a basis for all other XML document classes.
 @see XMLNodeList
@@ -960,14 +960,14 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 			if(namespaceURI!=null && prefix!=null)  //if the namespace URI and prefix are not null
 			{
 				boolean mismatchedPrefix=false; //we'll set this to true if the prefix doesn't go with the URI
-				if(prefix.equals(XMLConstants.XML_NAMESPACE_PREFIX)) //if this is the prefix, "xml"
+				if(prefix.equals(XML.XML_NAMESPACE_PREFIX)) //if this is the prefix, "xml"
 				{
-					if(!namespaceURI.equals(XMLConstants.XML_NAMESPACE_URI)) //if the correct URI is not assigned
+					if(!namespaceURI.equals(XML.XML_NAMESPACE_URI)) //if the correct URI is not assigned
 						mismatchedPrefix=true;  //show that this namespace prefix doesn't go with the namespace URI
 				}
-				else if(getNodeType()==ATTRIBUTE_NODE && prefix.equals(XMLConstants.XMLNS_NAMESPACE_PREFIX)) //if this is the prefix, "xmlns" for an attribute
+				else if(getNodeType()==ATTRIBUTE_NODE && prefix.equals(XML.XMLNS_NAMESPACE_PREFIX)) //if this is the prefix, "xmlns" for an attribute
 				{
-					if(!namespaceURI.equals(XMLConstants.XMLNS_NAMESPACE_URI)) //if the correct URI is not assigned
+					if(!namespaceURI.equals(XML.XMLNS_NAMESPACE_URI)) //if the correct URI is not assigned
 						mismatchedPrefix=true;  //show that this namespace prefix doesn't go with the namespace URI
 				}
 				if(!mismatchedPrefix)  //if the prefix matches the URI

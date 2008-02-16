@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import org.w3c.dom.DOMException;
 
-import static com.garretwilson.text.xml.XMLConstants.*;
+import static com.garretwilson.text.xml.XML.*;
 
 /**A processing instruction in an XML document.
 @see org.w3c.dom.ProcessingInstruction

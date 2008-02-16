@@ -14,7 +14,7 @@ import static com.garretwilson.text.CharacterEncoding.*;
 import static com.garretwilson.text.xml.XMLUtilities.*;
 import com.garretwilson.text.xml.schema.*;
 
-import static com.garretwilson.text.xml.XMLConstants.*;
+import static com.garretwilson.text.xml.XML.*;
 import com.garretwilson.util.Debug;
 import com.globalmentor.java.CharSequences;
 
@@ -49,7 +49,7 @@ G***make tidy fix things like <li>All rights reserved.</p></li>; right now it tr
 	<p>If possible, each instance of this class caches any DTDs loaded. This means
 		performance increases can be achieved if the same XML processor is used for
 		loading multiple documents which reference the same external DTD subset.</p>
-@see XMLConstants
+@see XML
 @author Garret Wilson
 //G***del if we don't need @see XMLStatusReportable
 */

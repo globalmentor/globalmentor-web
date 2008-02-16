@@ -10,7 +10,7 @@ import org.w3c.dom.events.EventException;
 public class XMLEventException extends EventException
 {
 	/**The base name used for getting resources.*/	//G***move this to XMLException, make XMLException an interface, and implement that interface here
-	protected static final String RESOURCE_BUNDLE_BASE_NAME=XMLEventConstants.PACKAGE_NAME+".XMLEventExceptionResources";	//G***implement this resource file
+	protected static final String RESOURCE_BUNDLE_BASE_NAME=XMLEventException.class.getPackage().getName()+".XMLEventExceptionResources";	//G***implement this resource file
 
 	/**The prefix used as a prefix for all event error string resources.*/
 	protected static final String RESOURCE_PREFIX="Event";

@@ -17,7 +17,7 @@ import com.garretwilson.rdf.rdfs.RDFSConstants;
 import com.garretwilson.rdf.version.VersionConstants;
 import com.garretwilson.rdf.xeb.XEBConstants;
 import com.garretwilson.rdf.xpackage.XPackageConstants;
-import com.garretwilson.text.xml.XMLConstants;
+import com.garretwilson.text.xml.XML;
 import com.garretwilson.text.xml.oeb.OEBConstants;
 import com.garretwilson.text.xml.schema.XMLSchemaConstants;
 import com.garretwilson.text.xml.xhtml.XHTML;
@@ -85,8 +85,8 @@ public class XMLNamespacePrefixManager
 		registerNamespacePrefix(XMLSchemaConstants.XML_SCHEMA_NAMESPACE_URI.toString(), XMLSchemaConstants.XML_SCHEMA_NAMESPACE_PREFIX); //XML Schema
 		registerNamespacePrefix(XHTML.XHTML_NAMESPACE_URI.toString(), XHTML.XHTML_NAMESPACE_PREFIX); //XHTML
 		registerNamespacePrefix(XLinkConstants.XLINK_NAMESPACE_URI.toString(), XLinkConstants.XLINK_NAMESPACE_PREFIX); //XLink
-		registerNamespacePrefix(XMLConstants.XML_NAMESPACE_URI.toString(), XMLConstants.XML_NAMESPACE_PREFIX); //XML
-		registerNamespacePrefix(XMLConstants.XMLNS_NAMESPACE_URI.toString(), XMLConstants.XMLNS_NAMESPACE_PREFIX); //XML namespaces
+		registerNamespacePrefix(XML.XML_NAMESPACE_URI.toString(), XML.XML_NAMESPACE_PREFIX); //XML
+		registerNamespacePrefix(XML.XMLNS_NAMESPACE_URI.toString(), XML.XMLNS_NAMESPACE_PREFIX); //XML namespaces
 		registerNamespacePrefix(XEBConstants.XEB_NAMESPACE_URI.toString(), XEBConstants.XEB_NAMESPACE_PREFIX); //XEbook
 		registerNamespacePrefix(XPackageConstants.XPACKAGE_NAMESPACE_URI.toString(), XPackageConstants.XPACKAGE_NAMESPACE_PREFIX); //XPackage
 		registerNamespacePrefix(XPackageConstants.XML_ONTOLOGY_NAMESPACE_URI.toString(), XPackageConstants.XML_ONTOLOGY_NAMESPACE_PREFIX); //XPackage XML ontology

@@ -2,7 +2,7 @@ package com.garretwilson.text.xml;
 
 import org.w3c.dom.*;
 
-import static com.garretwilson.text.xml.XMLConstants.*;
+import static com.garretwilson.text.xml.XML.*;
 
 /**A tag in an XML document. G***make comment clarifying whether this is part of the DOM
 @see XMLNode

@@ -1,23 +1,23 @@
 package com.garretwilson.text.xml;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.*;
 import org.w3c.dom.*;
-import com.garretwilson.text.CharacterEncoding;
-import static com.garretwilson.text.CharacterEncoding.*;
+
+import com.garretwilson.io.ByteOrderMark;
+import static com.garretwilson.io.Charsets.*;
 //TODO fix import com.garretwilson.text.xml.soap.SOAPConstants;
 import com.garretwilson.util.PropertyUtilities;
 import com.globalmentor.java.Characters;
 import com.globalmentor.java.StringBuffers;
 
-import static com.garretwilson.text.xml.XMLConstants.*;
+import static com.garretwilson.text.xml.XML.*;
 
 //TODO del all the XMLUndefinedEntityReferenceException throws when we don't need them anymore, in favor of XMLWellFormednessException
 
 /**Class which serializes an XML document to a byte-oriented output stream.
 Has the option of automatically formatting the output in a hierarchical structure with tabs or other strings.
-The Java package name of any Java URIs ending in '.' will be used as the namespace prefix if possible, if none exists already.
-@see XMLProcessor
 @author Garret Wilson
 */
 public class XMLSerializer
@@ -53,6 +53,17 @@ public class XMLSerializer
 
 		/**Default to using one-character predefined entities for encoding.*/
 		public final static boolean USE_ENTITIES_OPTION_DEFAULT=true;
+
+	/**Whether a byte order mark (BOM) is written.*/
+	private boolean bomWritten=false;
+
+		/**@return Whether a byte order mark (BOM) is written.*/
+		public boolean isBOMWritten() {return bomWritten;}
+
+		/**Whether a byte order mark (BOM) is written.
+		@param bomWritten Whether a byte order mark (BOM) is written.
+		*/
+		public void setBOMWritten(final boolean bomWritten) {this.bomWritten=bomWritten;}
 
 	/**Whether the output should be formatted.*/
 	private boolean formatted=FORMAT_OUTPUT_OPTION_DEFAULT;
@@ -213,9 +224,6 @@ public class XMLSerializer
 		setFormatted(formatted);	//set whether the output should be formatted
 	}
 
-	/**A UTF-8 encoding with no byte order mark.*/
-	protected final static CharacterEncoding UTF_8_ENCODING_NO_BOM=new CharacterEncoding(UTF_8, null, NO_BOM);
-
 	/**Serializes the specified document to a string using the UTF-8 encoding with no byte order mark.
 	@param document The XML document to serialize.
 	@return A string containing the serialized XML data.
@@ -227,8 +235,8 @@ public class XMLSerializer
 		try
 		{
 			final ByteArrayOutputStream byteArrayOutputStream=new ByteArrayOutputStream();  //create an output stream for receiving the XML data
-			serialize(document, byteArrayOutputStream, UTF_8_ENCODING_NO_BOM);  //serialize the document to the output stream using UTF-8 with no byte order mark
-			return byteArrayOutputStream.toString(UTF_8_ENCODING_NO_BOM.toString());  //convert the byte array to a string, using the UTF-8 encoding, and return it
+			serialize(document, byteArrayOutputStream, UTF_8_CHARSET);  //serialize the document to the output stream using UTF-8 with no byte order mark
+			return byteArrayOutputStream.toString(UTF_8_CHARSET.name());  //convert the byte array to a string, using the UTF-8 encoding, and return it
 		}
 		catch(final UnsupportedEncodingException unsupportedEncodingException)	//UTF-8 should always be supported
 		{
@@ -249,8 +257,8 @@ public class XMLSerializer
 		try
 		{
 			final ByteArrayOutputStream byteArrayOutputStream=new ByteArrayOutputStream();  //create an output stream for receiving the XML data
-			serialize(documentFragment, byteArrayOutputStream, UTF_8_ENCODING_NO_BOM);  //serialize the document fragment to the output stream using UTF-8 with no byte order mark
-			return byteArrayOutputStream.toString(UTF_8_ENCODING_NO_BOM.toString());  //convert the byte array to a string, using the UTF-8 encoding, and return it
+			serialize(documentFragment, byteArrayOutputStream, UTF_8_CHARSET);  //serialize the document fragment to the output stream using UTF-8 with no byte order mark
+			return byteArrayOutputStream.toString(UTF_8_CHARSET.name());  //convert the byte array to a string, using the UTF-8 encoding, and return it
 		}
 		catch(final UnsupportedEncodingException unsupportedEncodingException)	//UTF-8 should always be supported
 		{
@@ -271,8 +279,8 @@ public class XMLSerializer
 		try
 		{
 			final ByteArrayOutputStream byteArrayOutputStream=new ByteArrayOutputStream();  //create an output stream for receiving the XML data
-			serialize(element, byteArrayOutputStream, UTF_8_ENCODING_NO_BOM);  //serialize the element to the output stream using UTF-8 with no byte order mark
-			return byteArrayOutputStream.toString(UTF_8_ENCODING_NO_BOM.toString());  //convert the byte array to a string, using the UTF-8 encoding, and return it
+			serialize(element, byteArrayOutputStream, UTF_8_CHARSET);  //serialize the element to the output stream using UTF-8 with no byte order mark
+			return byteArrayOutputStream.toString(UTF_8_CHARSET.name());  //convert the byte array to a string, using the UTF-8 encoding, and return it
 		}
 		catch(final UnsupportedEncodingException unsupportedEncodingException)	//UTF-8 should always be supported
 		{
@@ -295,8 +303,8 @@ public class XMLSerializer
 		try
 		{
 			final ByteArrayOutputStream byteArrayOutputStream=new ByteArrayOutputStream();  //create an output stream for receiving the XML data
-			serializeContent(node, byteArrayOutputStream, UTF_8_ENCODING_NO_BOM);  //serialize the node content to the output stream using UTF-8 with no byte order mark
-			return byteArrayOutputStream.toString(UTF_8_ENCODING_NO_BOM.toString());  //convert the byte array to a string, using the UTF-8 encoding, and return it
+			serializeContent(node, byteArrayOutputStream, UTF_8_CHARSET);  //serialize the node content to the output stream using UTF-8 with no byte order mark
+			return byteArrayOutputStream.toString(UTF_8_CHARSET.name());  //convert the byte array to a string, using the UTF-8 encoding, and return it
 		}
 		catch(final UnsupportedEncodingException unsupportedEncodingException)	//UTF-8 should always be supported
 		{
@@ -317,7 +325,7 @@ public class XMLSerializer
 	{
 		try
 		{
-			serialize(document, outputStream, UTF_8_ENCODING);	//serialize the document, defaulting to UTF-8
+			serialize(document, outputStream, UTF_8_CHARSET);	//serialize the document, defaulting to UTF-8
 		}
 		catch(final IOException ioException)	//there should never by an I/O exception writing to a byte array output stream
 		{
@@ -329,16 +337,21 @@ public class XMLSerializer
 	Any byte order mark specified in the character encoding will be written to the stream.
 	@param document The XML document to serialize.
 	@param outputStream The stream into which the document should be serialized.
-	@param encoding The character encoding format to use when serializing.
+	@param charset The character set to use when serializing.
 	@exception IOException Thrown if an I/O error occurred.
 	@exception UnsupportedEncodingException Thrown if the specified encoding is not recognized.
 	*/
-	public void serialize(final Document document, final OutputStream outputStream, final CharacterEncoding encoding) throws IOException, UnsupportedEncodingException
+	public void serialize(final Document document, final OutputStream outputStream, final Charset charset) throws IOException, UnsupportedEncodingException
 	{
 		nestLevel=0;	//show that we haven't started nesting yet
-		outputStream.write(encoding.getByteOrderMark());	//write the byte order mark, which may be an empty array
-		final BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(outputStream, encoding.toString()));	//create a new writer based on our encoding
-		writeProlog(document, writer, encoding.toString());	//write the prolog
+//TODO del if not needed		outputStream.write(charset.getByteOrderMark());	//write the byte order mark, which may be an empty array
+		if(isBOMWritten())	//if we should write a BOM
+		{
+			final ByteOrderMark bom=getByteOrderMark(charset);	//get the byte order mark, if there is one
+			outputStream.write(bom.getBytes());	//write the byte order mark
+		}
+		final BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(outputStream, charset));	//create a new writer based on our encoding TODO see if the writer automatically writes the byte order mark already for non-UTF-8
+		writeProlog(document, writer, charset);	//write the prolog
 		final DocumentType documentType=document.getDoctype();	//get the document type, if there is one
 		if(documentType!=null)	//if there is a document type
 		{
@@ -369,20 +382,20 @@ public class XMLSerializer
 	*/
 	public void serialize(final DocumentFragment documentFragment, final OutputStream outputStream) throws UnsupportedEncodingException, IOException
 	{
-		serialize(documentFragment, outputStream, UTF_8_ENCODING);	//serialize the document, defaulting to UTF-8
+		serialize(documentFragment, outputStream, UTF_8_CHARSET);	//serialize the document, defaulting to UTF-8
 	}
 
 	/**Serializes the specified document fragment to the given output stream using the specified encoding.
 	Any byte order mark specified in the character encoding will be written to the stream.
 	@param documentFragment The XML document fragment to serialize.
 	@param outputStream The stream into which the document fragment should be serialized.
-	@param encoding The encoding format to use when serializing.
+	@param charset The charset to use when serializing.
 	@exception IOException Thrown if an I/O error occurred.
 	@exception UnsupportedEncodingException Thrown if the specified encoding is not recognized.
 	*/
-	public void serialize(final DocumentFragment documentFragment, final OutputStream outputStream, final CharacterEncoding encoding) throws IOException, UnsupportedEncodingException
+	public void serialize(final DocumentFragment documentFragment, final OutputStream outputStream, final Charset charset) throws IOException, UnsupportedEncodingException
 	{
-		serializeContent(documentFragment, outputStream, encoding);	//serialize the content of the document fragment		
+		serializeContent(documentFragment, outputStream, charset);	//serialize the content of the document fragment		
 	}
 
 	/**Serializes the specified element and its children to the given output stream using the UTF-8 encoding with the UTF-8 byte order mark.
@@ -393,22 +406,27 @@ public class XMLSerializer
 	*/
 	public void serialize(final Element element, final OutputStream outputStream) throws IOException, UnsupportedEncodingException
 	{
-		serialize(element, outputStream, UTF_8_ENCODING);  //serialize the element using the UTF-8 encoding
+		serialize(element, outputStream, UTF_8_CHARSET);  //serialize the element using UTF-8
 	}
 
 	/**Serializes the specified element and its children to the given output stream using the specified encoding.
 	Any byte order mark specified in the character encoding will be written to the stream.
 	@param element The XML element to serialize.
 	@param outputStream The stream into which the element should be serialized.
-	@param encoding The encoding format to use when serializing.
+	@param charset The charset to use when serializing.
 	@exception IOException Thrown if an I/O error occurred.
 	@exception UnsupportedEncodingException Thrown if the specified encoding is not recognized.
 	*/
-	public void serialize(final Element element, final OutputStream outputStream, final CharacterEncoding encoding) throws IOException, UnsupportedEncodingException
+	public void serialize(final Element element, final OutputStream outputStream, final Charset charset) throws IOException, UnsupportedEncodingException
 	{
 		nestLevel=0;	//show that we haven't started nesting yet
-		outputStream.write(encoding.getByteOrderMark());	//write the byte order mark, which may be an empty array
-		final BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(outputStream, encoding.toString()));	//create a new writer based on our encoding
+//TODO del if not needed		outputStream.write(charset.getByteOrderMark());	//write the byte order mark, which may be an empty array
+		if(isBOMWritten())	//if we should write a BOM
+		{
+			final ByteOrderMark bom=getByteOrderMark(charset);	//get the byte order mark, if there is one
+			outputStream.write(bom.getBytes());	//write the byte order mark
+		}
+		final BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(outputStream, charset));	//create a new writer based on our encoding TODO see if the writer automatically writes the byte order mark already for non-UTF-8
 		write(element, writer);	//write the element and all elements below it
 		if(isFormatted())	//if we should write formatted output
 		{
@@ -427,7 +445,7 @@ public class XMLSerializer
 	*/
 	protected void serializeContent(final Node node, final OutputStream outputStream) throws IOException, UnsupportedEncodingException
 	{
-		serializeContent(node, outputStream, UTF_8_ENCODING); //serialize the content using UTF-8 as the encoding
+		serializeContent(node, outputStream, UTF_8_CHARSET); //serialize the content UTF-8
 	}
 
 	/**Serializes the content (all child nodes and their descendants) of a
@@ -436,15 +454,20 @@ public class XMLSerializer
 	@param node The XML node the content of which to serialize&mdash;usually an
 		element or document fragment.
 	@param outputStream The stream into which the element content should be serialized.
-	@param encoding The encoding format to use when serializing.
+	@param charset The charset to use when serializing.
 	@exception IOException Thrown if an I/O error occurred.
 	@exception UnsupportedEncodingException Thrown if the specified encoding is not recognized.
 	*/
-	protected void serializeContent(final Node node, final OutputStream outputStream, final CharacterEncoding encoding) throws IOException, UnsupportedEncodingException
+	protected void serializeContent(final Node node, final OutputStream outputStream, final Charset charset) throws IOException, UnsupportedEncodingException
 	{
 		nestLevel=0;	//show that we haven't started nesting yet
-		outputStream.write(encoding.getByteOrderMark());	//write the byte order mark, which may be an empty array
-		final BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(outputStream, encoding.toString()));	//create a new writer based on our encoding
+//TODO del if not needed		outputStream.write(charset.getByteOrderMark());	//write the byte order mark, which may be an empty array
+		if(isBOMWritten())	//if we should write a BOM
+		{
+			final ByteOrderMark bom=getByteOrderMark(charset);	//get the byte order mark, if there is one
+			outputStream.write(bom.getBytes());	//write the byte order mark
+		}
+		final BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(outputStream, charset));	//create a new writer based on our encoding TODO see if the writer automatically writes the byte order mark already for non-UTF-8
 		writeContent(node, writer);	//write all children of the node
 		if(isFormatted())	//if we should write formatted output
 		{
@@ -551,15 +574,15 @@ public class XMLSerializer
 	/**Serializes the specified document's to the given writer.
 	@param document The XML document the prolog of which to serialize.
 	@param writer The writer into which the prolog should be written.
-	@param encoding The encoding format in use.
+	@param charset The charset in use.
 	@exception IOException Thrown if an I/O error occurred.
 	*/
-	protected void writeProlog(final Document document, final BufferedWriter writer, final String encoding) throws IOException
+	protected void writeProlog(final Document document, final BufferedWriter writer, final Charset charset) throws IOException
 	{
 		writer.write(XML_DECL_START+SPACE_CHAR+
 			VERSIONINFO_NAME+EQUAL_CHAR+DOUBLE_QUOTE_CHAR+XML_VERSION+DOUBLE_QUOTE_CHAR+SPACE_CHAR+
-			ENCODINGDECL_NAME+EQUAL_CHAR+DOUBLE_QUOTE_CHAR+encoding+DOUBLE_QUOTE_CHAR+
-			//G***fix standalone writing here
+			ENCODINGDECL_NAME+EQUAL_CHAR+DOUBLE_QUOTE_CHAR+charset.name()+DOUBLE_QUOTE_CHAR+
+			//TODO standalone writing here
 			XML_DECL_END);	//write the XML prolog
 		if(isFormatted())	//if we should write formatted output
 		{
@@ -700,7 +723,7 @@ public class XMLSerializer
 			writer.write(TAG_START+'/'+element.getNodeName()+TAG_END);	//write the ending tag G***use a constant here
 		}
 		else	//if there are no child elements, this is an empty element
-			writer.write(String.valueOf(XMLConstants.SPACE_CHAR)+'/'+TAG_END);	//write the end of the empty element tag, with an extra space for HTML browser compatibility G***use a constant here
+			writer.write(String.valueOf(XML.SPACE_CHAR)+'/'+TAG_END);	//write the end of the empty element tag, with an extra space for HTML browser compatibility G***use a constant here
 		if(formatted)	//if we should write formatted output
 			writer.newLine();	//add a newline after the element
 //G***del if not needed		writer.newLine();	//add a newline in the default format
@@ -761,16 +784,16 @@ public class XMLSerializer
 //G***del Debug.trace("Found comment node, nestLevel: "+nestLevel);
 					if(formatted)	//if we should write formatted output
 						writeHorizontalAlignment(writer, nestLevel);		//horizontally align the element
-					writer.write(XMLConstants.COMMENT_START);	//write the start of the comment
+					writer.write(XML.COMMENT_START);	//write the start of the comment
 					writer.write(childNode.getNodeValue());	//write the text value of the node, but don't encode the string for XML since it's inside a comment
-					writer.write(XMLConstants.COMMENT_END);	//write the end of the comment
+					writer.write(XML.COMMENT_END);	//write the end of the comment
 					if(formatted)	//if we should write formatted output
 						writer.newLine();	//add a newline after the element
 					break;
 				case Node.CDATA_SECTION_NODE:	//if this is a CDATA section node
-					writer.write(XMLConstants .CDATA_START);	//write the start of the CDATA section
+					writer.write(XML .CDATA_START);	//write the start of the CDATA section
 					writer.write(encodeContent(childNode.getNodeValue()));	//write the text value of the node after encoding the string for XML
-					writer.write(XMLConstants.CDATA_END);	//write the end of the CDATA section
+					writer.write(XML.CDATA_END);	//write the end of the CDATA section
 					break;
 				//G***see if there are any other types of nodes that need serialized
 			}

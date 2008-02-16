@@ -5,7 +5,7 @@ import java.util.*;
 import com.garretwilson.io.ContentTypes;
 import com.garretwilson.io.Files;
 import com.garretwilson.text.*;
-import com.garretwilson.text.xml.XMLConstants;
+import com.garretwilson.text.xml.XML;
 import com.garretwilson.text.xml.XMLUtilities;
 import com.garretwilson.text.xml.oeb.OEBConstants;
 import com.garretwilson.text.xml.stylesheets.css.*;
@@ -23,7 +23,7 @@ import org.w3c.dom.traversal.NodeFilter;
 import org.w3c.dom.css.*;
 
 import static com.garretwilson.io.ContentTypeConstants.*;
-import static com.garretwilson.text.xml.XMLConstants.*;
+import static com.garretwilson.text.xml.XML.*;
 import static com.globalmentor.java.Characters.*;
 
 /**Contains several routines for tidying XHTML documents.
@@ -1466,11 +1466,11 @@ Debug.trace("Checking break element: ", element.getNodeName());
 		{
 			final String langValue=element.getAttributeNS(null, XHTML.ATTRIBUTE_LANG);  //get the lang attribute value
 //G***del 	Debug.trace("found name value: "+nameValue);
-			if(!element.hasAttributeNS(XML_NAMESPACE_URI.toString(), XMLConstants.ATTRIBUTE_LANG)) //if there is no xml:lang attribute G***use a constant, use namespaces
+			if(!element.hasAttributeNS(XML_NAMESPACE_URI.toString(), XML.ATTRIBUTE_LANG)) //if there is no xml:lang attribute G***use a constant, use namespaces
 			{
 //G***del 	Debug.trace("no name attribute, though; moving name to id");
 					//create an xml:lang attribute with the value of the lang attribute G***use a constant here, use namespaces
-				element.setAttributeNS(XML_NAMESPACE_URI.toString(), XMLUtilities.createQualifiedName(XMLConstants.XML_NAMESPACE_PREFIX, XMLConstants.ATTRIBUTE_LANG), langValue);  
+				element.setAttributeNS(XML_NAMESPACE_URI.toString(), XMLUtilities.createQualifiedName(XML.XML_NAMESPACE_PREFIX, XML.ATTRIBUTE_LANG), langValue);  
 				element.removeAttributeNS(null, XHTML.ATTRIBUTE_LANG);  //remove the lang attribute
 			}
 		}

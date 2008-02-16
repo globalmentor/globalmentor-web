@@ -10,7 +10,7 @@ import org.w3c.dom.DOMException;
 public class XMLDOMException extends DOMException
 {
 	/**The base name used for getting resources.*/	//G***move this to XMLException, make XMLException an interface, and implement that interface here
-	protected static final String RESOURCE_BUNDLE_BASE_NAME=XMLConstants.PACKAGE_NAME+".XMLDOMExceptionResources";	//G***implement this resource file
+	protected static final String RESOURCE_BUNDLE_BASE_NAME=XMLDOMException.class.getPackage().getName()+".XMLDOMExceptionResources";	//G***implement this resource file
 
 	/**The prefix used as a prefix for all DOM error string resources.*/
 	protected static final String RESOURCE_PREFIX="DOM";

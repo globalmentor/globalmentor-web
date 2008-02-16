@@ -21,7 +21,7 @@ import static com.garretwilson.text.xml.xhtml.XHTML.*;
 
 import static com.garretwilson.io.ContentTypeConstants.*;
 import static com.garretwilson.io.ContentTypes.*;
-import static com.garretwilson.text.xml.XMLConstants.*;
+import static com.garretwilson.text.xml.XML.*;
 
 import static com.globalmentor.java.Integers.*;
 
@@ -750,6 +750,7 @@ G***should we return data from CDATA sections as well?
 	@param element The element to which text should be added. This element must
 		have a valid owner document.
 	@param textString The text to add to the element.
+	@throws NullPointerException if the given element and/or text string is <code>null</code>.
 	@return The new text node that was created.
 	*/
 //G***list exceptions
@@ -840,8 +841,7 @@ G***should we return data from CDATA sections as well?
 
 	/**Creates a document wrapped around a copy of the given element.
 	@param element The element to become the document element of the new document.
-	@return A new document with a clone of the given element as the document
-		element.
+	@return A new document with a clone of the given element as the document element.
 	*/
 	public static Document createDocument(final Element element)
 	{

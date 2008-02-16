@@ -6,7 +6,7 @@ import com.garretwilson.io.ParseReader;
 //G***del import com.garretwilson.lang.StringManipulator;	//G***del when we don't need
 import com.garretwilson.util.Debug;
 
-import static com.garretwilson.text.xml.XMLConstants.*;
+import static com.garretwilson.text.xml.XML.*;
 
 /**Class for parsing XML data from a stream.
 This class lets <code>ParseReader</code> do most of the work, while overriding

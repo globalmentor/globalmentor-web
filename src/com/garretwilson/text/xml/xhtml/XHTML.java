@@ -4,7 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import javax.mail.internet.ContentType;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.ParserConfigurationException;
 
+import org.w3c.dom.DOMException;
+import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
@@ -14,8 +18,7 @@ import com.garretwilson.io.ContentTypeConstants;
 import com.garretwilson.io.ContentTypes;
 import com.garretwilson.io.Files;
 import com.garretwilson.io.ParseReader;
-import com.garretwilson.text.xml.XMLDOMImplementation;
-import com.garretwilson.text.xml.XMLUtilities;
+import static com.garretwilson.text.xml.XMLUtilities.*;
 import com.garretwilson.text.xml.oeb.OEBConstants;
 import com.garretwilson.text.xml.stylesheets.css.XMLCSSProcessor;
 import com.garretwilson.text.xml.stylesheets.css.XMLCSSStyleDeclaration;
@@ -344,19 +347,111 @@ public class XHTML
 	public final static String ELEMENT_TEXTAREA_ATTRIBUTE_READONLY="readonly";
 		public final static String TEXTAREA_READONLY_READONLY="readonly";
 
-	/**@return A newly created default generic XHTML document with a body.*/
-	public static Document createXHTMLDocument()  //G***maybe allow public ID, system ID, and namespace parameters
+	/**Creates a new unformatted default XHTML document with the required minimal structure,
+	{@code <html><head><title></title<head><body></html>}, with no document type.
+	@param title The title of the document.
+	@param includeDocumentType Whether a document type should be added to the document.
+	@param publicID The external subset public identifier, or <code>null</code> if there is no such identifier.
+	@param systemID The external subset system identifier, or <code>null</code> if there is no such identifier.
+	@return A newly created default generic XHTML document with the required minimal structure.
+	@throws NullPointerException if the given title is <code>null</code>.
+	@throws IllegalStateException if a document builder cannot be created which satisfies the configuration requested.
+	@throws DOMException if there is an error creating the XHTML document.
+	*/
+	public static Document createXHTMLDocument(final String title) throws DOMException
 	{
-		final XMLDOMImplementation domImplementation=new XMLDOMImplementation();	//create a new DOM implementation G***later use some Java-specific stuff
-			//create an XHTML document type TODO eventually use a real XHTML document type once we support processing the complex XHTML DTDs
-		final DocumentType documentType=domImplementation.createDocumentType(ELEMENT_HTML, OEBConstants.OEB101_DOCUMENT_PUBLIC_ID, OEBConstants.OEB101_DOCUMENT_SYSTEM_ID);
+		return createXHTMLDocument(title, false);	//create an unformatted XHTML document with no document type
+	}
+
+	/**Creates a new default XHTML document with the required minimal structure,
+	{@code <html><head><title></title<head><body></html>}, with no document type.
+	@param title The title of the document.
+	@param includeDocumentType Whether a document type should be added to the document.
+	@param publicID The external subset public identifier, or <code>null</code> if there is no such identifier.
+	@param systemID The external subset system identifier, or <code>null</code> if there is no such identifier.
+	@param formatted <code>true</code> if the sections of the document should be formatted.
+	@return A newly created default generic XHTML document with the required minimal structure.
+	@throws NullPointerException if the given title is <code>null</code>.
+	@throws IllegalStateException if a document builder cannot be created which satisfies the configuration requested.
+	@throws DOMException if there is an error creating the XHTML document.
+	*/
+	public static Document createXHTMLDocument(final String title, final boolean formatted) throws DOMException
+	{
+		return createXHTMLDocument(title, false, null, null, formatted);	//create an XHTML document with no document type 
+	}
+
+	/**Creates a new unformatted default XHTML document with the required minimal structure,
+	{@code <html><head><title></title<head><body></html>}, with an optional document type.
+	@param title The title of the document.
+	@param includeDocumentType Whether a document type should be added to the document.
+	@param publicID The external subset public identifier, or <code>null</code> if there is no such identifier.
+	@param systemID The external subset system identifier, or <code>null</code> if there is no such identifier.
+	@return A newly created default generic XHTML document with the required minimal structure.
+	@throws NullPointerException if the given title is <code>null</code>.
+	@throws IllegalStateException if a document builder cannot be created which satisfies the configuration requested.
+	@throws DOMException if there is an error creating the XHTML document.
+	*/
+	public static Document createXHTMLDocument(final String title, final boolean includeDocumentType, final String publicID, final String systemID) throws DOMException
+	{
+		return createXHTMLDocument(title, includeDocumentType, publicID, systemID, false);	//create an unformatted XHTML document
+	}
+
+	/**Creates a new default XHTML document with the required minimal structure,
+	{@code <html><head><title></title<head><body></html>}, with an optional document type.
+	@param title The title of the document.
+	@param includeDocumentType Whether a document type should be added to the document.
+	@param publicID The external subset public identifier, or <code>null</code> if there is no such identifier.
+	@param systemID The external subset system identifier, or <code>null</code> if there is no such identifier.
+	@param formatted <code>true</code> if the sections of the document should be formatted.
+	@return A newly created default generic XHTML document with the required minimal structure.
+	@throws IllegalStateException if a document builder cannot be created which satisfies the configuration requested.
+	@throws NullPointerException if the given title is <code>null</code>.
+	@throws DOMException if there is an error creating the XHTML document.
+	*/
+	public static Document createXHTMLDocument(final String title, final boolean includeDocumentType, final String publicID, final String systemID, final boolean formatted) throws DOMException
+	{
+		final DocumentBuilder documentBuilder;
+		try
+		{
+			documentBuilder=createDocumentBuilder(true);	//create a namespace-aware document builder
+		}
+		catch(final ParserConfigurationException parserConfigurationException)	//if there is no namespace-aware parser
+		{
+			throw new IllegalStateException(parserConfigurationException);
+		}
+		final DOMImplementation domImplementation=documentBuilder.getDOMImplementation();	//get the DOM implementation from the document builder
+		final DocumentType documentType;	//the document type, if any
+		if(includeDocumentType)	//if we should add a document type
+		{
+			documentType=domImplementation.createDocumentType(ELEMENT_HTML, publicID, systemID);	//create an XHTML document, using the given identifiers, if any 
+		}
+		else	//if we should not add a document type
+		{
+			documentType=null;	//don't use a document type
+		}
 		final Document document=domImplementation.createDocument(XHTML_NAMESPACE_URI.toString(), ELEMENT_HTML, documentType);	//create an XHTML document
 			//G***check about whether we need to add a <head> and <title>
 		final Element htmlElement=document.getDocumentElement();	//get the html element
-		XMLUtilities.appendText(htmlElement, "\n");	//append a newline to start the content of the html element
+		if(formatted)	//if we should format the document
+		{
+			appendText(htmlElement, "\n");	//append a newline to start the content of the html element
+		}
+		final Element headElement=document.createElementNS(XHTML_NAMESPACE_URI.toString(), ELEMENT_HEAD);	//create the head element
+		htmlElement.appendChild(headElement);	//add the head element to the html element
+		if(formatted)	//if we should format the document
+		{
+			appendText(headElement, "\n");	//append a newline to start the content in the head
+			appendText(htmlElement, "\n");	//append a newline to seaprate the content of the html element
+		}
+		final Element titleElement=document.createElementNS(XHTML_NAMESPACE_URI.toString(), ELEMENT_TITLE);	//create the title element
+		headElement.appendChild(titleElement);	//add the title element to the head element
+		appendText(titleElement, title);	//append the title text to the title element 
 		final Element bodyElement=document.createElementNS(XHTML_NAMESPACE_URI.toString(), ELEMENT_BODY);	//create the body element
 		htmlElement.appendChild(bodyElement);	//add the body element to the html element
-		XMLUtilities.appendText(bodyElement, "\n");	//append a newline to separate the information in the body
+		if(formatted)	//if we should format the document
+		{
+			appendText(bodyElement, "\n");	//append a newline to separate the information in the body
+		}
 		return document;  //return the document we created
 	}
 	/**Finds the XHTML <code>&lt;body&gt;</code> element.
@@ -400,12 +495,12 @@ public class XHTML
 				if(elementName.equals(ELEMENT_IMG)) //if the corresponding element is an img element
 				{
 						//get the src attribute, representing the href of the image, or null if not present
-					return XMLUtilities.getDefinedAttributeNS(element, null, ELEMENT_IMG_ATTRIBUTE_SRC);
+					return getDefinedAttributeNS(element, null, ELEMENT_IMG_ATTRIBUTE_SRC);
 				}
 				else if(elementName.equals(ELEMENT_OBJECT)) //if the corresponding element is an object element
 				{
 						//get the data attribute, representing the href of the image, or null if not present
-					return XMLUtilities.getDefinedAttributeNS(element, null, ELEMENT_OBJECT_ATTRIBUTE_DATA);
+					return getDefinedAttributeNS(element, null, ELEMENT_OBJECT_ATTRIBUTE_DATA);
 				}
 			}
 		}
@@ -429,7 +524,7 @@ public class XHTML
 				final String elementName=element.getLocalName();  //get the element's name
 				if(elementName.equals(ELEMENT_A))	//if this is an <a> element
 				{
-					return XMLUtilities.getDefinedAttributeNS(element, null, ELEMENT_A_ATTRIBUTE_HREF);  //return the value of the href attribute, if there is one
+					return getDefinedAttributeNS(element, null, ELEMENT_A_ATTRIBUTE_HREF);  //return the value of the href attribute, if there is one
 				}
 			}
 		}

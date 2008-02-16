@@ -1,6 +1,6 @@
 package com.garretwilson.text.xml;
 
-import static com.garretwilson.text.xml.XMLConstants.*;
+import static com.garretwilson.text.xml.XML.*;
 
 /**A comment in an XML document.
 @see XMLCharacterData

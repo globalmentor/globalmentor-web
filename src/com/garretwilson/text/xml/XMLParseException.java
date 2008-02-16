@@ -11,7 +11,7 @@ This inherits from IOException so that it may be thrown from a
 public class XMLParseException extends IOException	//G***it looks like we were going to make this descend from ParseIOException
 {
 	/**The base name used for getting resources.*/
-	protected static final String RESOURCE_BUNDLE_BASE_NAME=XMLConstants.PACKAGE_NAME+".XMLParseExceptionResources";
+	protected static final String RESOURCE_BUNDLE_BASE_NAME=XMLParseException.class.getPackage().getName()+".XMLParseExceptionResources";
 
 	/**The index of the line on which the error occurred.
   @see CharIndex

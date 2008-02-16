@@ -2,7 +2,7 @@ package com.garretwilson.text.xml;
 
 import org.w3c.dom.*;
 
-import static com.garretwilson.text.xml.XMLConstants.*;
+import static com.garretwilson.text.xml.XML.*;
 
 /**A lightweight portion of an XML document.
 @see XMLNode
