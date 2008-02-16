@@ -1,6 +1,9 @@
 package com.garretwilson.javascript;
 
 import javax.mail.internet.ContentType;
+
+import com.garretwilson.io.ContentTypes;
+
 import static com.garretwilson.io.ContentTypeConstants.*;
 
 /**Constants for working with JavaScript.
@@ -10,7 +13,7 @@ public class JavaScriptConstants
 {
 
 	/**The content type for JavaScript: <code>text/javascript</code>.*/ 
-	public static final ContentType JAVASCRIPT_CONTENT_TYPE=new ContentType(TEXT, JAVASCRIPT_SUBTYPE, null);
+	public static final ContentType JAVASCRIPT_CONTENT_TYPE=new ContentType(ContentTypes.TEXT_PRIMARY_TYPE, JAVASCRIPT_SUBTYPE, null);
 
 	/**The delimiter '.' for object properties.*/
 	public final static char PROPERTY_DELIMITER='.';

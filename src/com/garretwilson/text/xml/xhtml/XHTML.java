@@ -14,7 +14,6 @@ import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
 import org.w3c.dom.css.CSSStyleDeclaration;
 
-import com.garretwilson.io.ContentTypeConstants;
 import com.garretwilson.io.ContentTypes;
 import com.garretwilson.io.Files;
 import com.garretwilson.io.ParseReader;
@@ -38,13 +37,13 @@ public class XHTML
 {
 
 	/**The content type for HTML: <code>text/html</code>.*/
-	public static final ContentType HTML_CONTENT_TYPE=new ContentType(TEXT, HTML_SUBTYPE, null);
+	public static final ContentType HTML_CONTENT_TYPE=new ContentType(ContentTypes.TEXT_PRIMARY_TYPE, HTML_SUBTYPE, null);
 
 	/**The content type for XHTML: <code>application/xhtml+xml</code>.*/
-	public static final ContentType XHTML_CONTENT_TYPE=new ContentType(APPLICATION, XHTML_XML_SUBTYPE, null);
+	public static final ContentType XHTML_CONTENT_TYPE=new ContentType(ContentTypes.APPLICATION_PRIMARY_TYPE, XHTML_XML_SUBTYPE, null);
 
 	/**The content type for an XHTML fragment: <code>application/xhtml+xml-external-parsed-entity</code>.*/
-	public static final ContentType XHTML_FRAGMENT_CONTENT_TYPE=new ContentType(APPLICATION, XHTML_XML_EXTERNAL_PARSED_ENTITY_SUBTYPE, null);
+	public static final ContentType XHTML_FRAGMENT_CONTENT_TYPE=new ContentType(ContentTypes.APPLICATION_PRIMARY_TYPE, XHTML_XML_EXTERNAL_PARSED_ENTITY_SUBTYPE, null);
 
 	/**The old extension for HTML resource names.*/
 	public final static String HTM_NAME_EXTENSION="htm";
@@ -229,9 +228,9 @@ public class XHTML
 	public final static String ELEMENT_FORM_ATTRIBUTE_ACTION="action";
 	public final static String ELEMENT_FORM_ATTRIBUTE_ENCTYPE="enctype";
 		/**The "application/x-www-form-urlencoded" encoding type; see <a href="http://www.rfc-editor.org/rfc/rfc1867.txt">RFC 1867</a>.*/
-		public final static ContentType APPLICATION_X_WWW_FORM_URLENCODED_CONTENT_TYPE=new ContentType(APPLICATION, X_WWW_FORM_URLENCODED, null);
+		public final static ContentType APPLICATION_X_WWW_FORM_URLENCODED_CONTENT_TYPE=new ContentType(ContentTypes.APPLICATION_PRIMARY_TYPE, X_WWW_FORM_URLENCODED, null);
 		/**The "multipart/form-data" encoding type; see <a href="http://www.rfc-editor.org/rfc/rfc1867.txt">RFC 1867</a>.*/
-		public final static ContentType MULTIPART_FORM_DATA_CONTENT_TYPE=new ContentType(MULTIPART, FORM_DATA_SUBTYPE, null);
+		public final static ContentType MULTIPART_FORM_DATA_CONTENT_TYPE=new ContentType(ContentTypes.MULTIPART_PRIMARY_TYPE, FORM_DATA_SUBTYPE, null);
 
 	public final static String ELEMENT_FORM_ATTRIBUTE_METHOD="method";
 		public final static String FORM_METHOD_GET="get";
@@ -575,7 +574,7 @@ public class XHTML
 		{
 			final String primaryType=contentType.getPrimaryType();	//get the primary type
 			final String subType=contentType.getSubType();	//get the sub type
-			if(TEXT.equals(primaryType))	//if this is "text/?"
+			if(ContentTypes.TEXT_PRIMARY_TYPE.equals(primaryType))	//if this is "text/?"
 			{
 				if(HTML_SUBTYPE.equals(subType)		//if this is "text/html"
 						|| X_OEB1_DOCUMENT_SUBTYPE.equals(subType))	//if this is "text/x-oeb1-document"
@@ -583,7 +582,7 @@ public class XHTML
 					return true;	//show that this is HTML
 				}
 			}
-			if(APPLICATION.equals(primaryType))	//if this is "application/?"
+			if(ContentTypes.APPLICATION_PRIMARY_TYPE.equals(primaryType))	//if this is "application/?"
 			{
 					//TODO probably add a parameter to specify whether we should allow fragments to qualify as XHTML---right now this behavior is not consistent with XMLUtilities.isXML(), which doesn't recognize fragments as XML
 				if(XHTML_XML_SUBTYPE.equals(subType) || XHTML_XML_EXTERNAL_PARSED_ENTITY_SUBTYPE.equals(subType))		//if this is "application/xhtml+xml" or "application/xhtml+xml-external-parsed-entity"
@@ -648,7 +647,7 @@ public class XHTML
 					{
 						final String type=element.getAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_TYPE);  //get the type
 						final ContentType mediaType=ContentTypes.createContentType(type); //create a media type from the given type
-						if(mediaType.getPrimaryType().equals(ContentTypeConstants.IMAGE)) //if this is an image
+						if(mediaType.getPrimaryType().equals(ContentTypes.IMAGE_PRIMARY_TYPE)) //if this is an image
 							return true;  //show that this is an image object
 					}
 						//see if there is a data attribute, since there is no type specified
@@ -656,7 +655,7 @@ public class XHTML
 					{
 						final String data=element.getAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_DATA);  //get the data
 						final ContentType mediaType=Files.getContentType(new File(data)); //try to get a media type from the file
-						if(mediaType!=null && mediaType.getPrimaryType().equals(ContentTypeConstants.IMAGE)) //if this is an image
+						if(mediaType!=null && mediaType.getPrimaryType().equals(ContentTypes.IMAGE_PRIMARY_TYPE)) //if this is an image
 							return true;  //show that this is an image object
 					}
 				}

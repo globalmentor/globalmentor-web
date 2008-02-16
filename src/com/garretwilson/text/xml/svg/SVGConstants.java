@@ -3,6 +3,7 @@ package com.garretwilson.text.xml.svg;
 import java.net.URI;
 import javax.mail.internet.ContentType;
 import com.garretwilson.io.ContentTypeConstants;
+import com.garretwilson.io.ContentTypes;
 
 /**Constants for SVG.
 @author Garret Wilson
@@ -12,7 +13,7 @@ public class SVGConstants
 {
 
 	/**The content type for SVG: <code>application/svg+xml</code>.*/ 
-	public static final ContentType SVG_CONTENT_TYPE=new ContentType(ContentTypeConstants.APPLICATION, ContentTypeConstants.SVG_XML_SUBTYPE, null);
+	public static final ContentType SVG_CONTENT_TYPE=new ContentType(ContentTypes.APPLICATION_PRIMARY_TYPE, ContentTypeConstants.SVG_XML_SUBTYPE, null);
 
 	/**The recommended prefix to the SVG namespace.*/
 	public static final String SVG_NAMESPACE_PREFIX="svg";

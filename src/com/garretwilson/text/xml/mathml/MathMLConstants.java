@@ -3,6 +3,7 @@ package com.garretwilson.text.xml.mathml;
 import java.net.URI;
 import javax.mail.internet.ContentType;
 import com.garretwilson.io.ContentTypeConstants;
+import com.garretwilson.io.ContentTypes;
 
 /**Constants for MathML.
 @author Garret Wilson
@@ -12,7 +13,7 @@ public class MathMLConstants
 {
 
 	/**The content type for MathML: <code>application/mathml+xml</code>.*/ 
-	public static final ContentType MATHML_CONTENT_TYPE=new ContentType(ContentTypeConstants.APPLICATION, ContentTypeConstants.MATHML_XML_SUBTYPE, null);
+	public static final ContentType MATHML_CONTENT_TYPE=new ContentType(ContentTypes.APPLICATION_PRIMARY_TYPE, ContentTypeConstants.MATHML_XML_SUBTYPE, null);
 
 	/**The recommended prefix to the MathML namespace.*/
 	public static final String MATHML_NAMESPACE_PREFIX="mathml";

@@ -9,6 +9,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import static com.garretwilson.text.xml.stylesheets.XMLStyleSheetConstants.*;
+
+import com.garretwilson.io.ContentTypes;
 import com.garretwilson.util.Debug;
 import com.globalmentor.java.*;
 
@@ -460,11 +462,11 @@ G***should we return data from CDATA sections as well?
 	{
 		if(contentType!=null)	//if a content type is given
 		{
-			if(TEXT.equals(contentType.getPrimaryType()) && XML_SUBTYPE.equals(contentType.getSubType()))	//if this is "text/xml"
+			if(ContentTypes.TEXT_PRIMARY_TYPE.equals(contentType.getPrimaryType()) && XML_SUBTYPE.equals(contentType.getSubType()))	//if this is "text/xml"
 			{
 				return true;	//text/xml is an XML content type
 			}
-			if(APPLICATION.equals(contentType.getPrimaryType()))	//if this is "application/*"
+			if(ContentTypes.APPLICATION_PRIMARY_TYPE.equals(contentType.getPrimaryType()))	//if this is "application/*"
 			{
 				return XML_SUBTYPE.equals(contentType.getSubType())	//see if the subtype is "xml"
 						|| hasSubTypeSuffix(contentType, XML_SUBTYPE_SUFFIX);	//see if the subtype has an XML suffix
@@ -489,7 +491,7 @@ G***should we return data from CDATA sections as well?
 		if(contentType!=null)	//if a content type is given
 		{
 			final String primaryType=contentType.getPrimaryType();	//get the primary type
-			if(TEXT.equals(primaryType) || APPLICATION.equals(primaryType))	//if this is "text/*" or "application/*"
+			if(ContentTypes.TEXT_PRIMARY_TYPE.equals(primaryType) || ContentTypes.APPLICATION_PRIMARY_TYPE.equals(primaryType))	//if this is "text/*" or "application/*"
 			{
 				final String subType=contentType.getSubType();	//get the subtype
 				return XML_EXTERNAL_PARSED_ENTITY_SUBTYPE.equals(subType)	//if the subtype is /xml-external-parsed-entity
@@ -750,11 +752,11 @@ G***should we return data from CDATA sections as well?
 	@param element The element to which text should be added. This element must
 		have a valid owner document.
 	@param textString The text to add to the element.
-	@throws NullPointerException if the given element and/or text string is <code>null</code>.
 	@return The new text node that was created.
+	@throws NullPointerException if the given element and/or text string is <code>null</code>.
+	@throws DOMException if there was an error appending the text.
 	*/
-//G***list exceptions
-	public static Text appendText(final Element element, final String textString)
+	public static Text appendText(final Element element, final String textString) throws DOMException
 	{
 		final Text textNode=element.getOwnerDocument().createTextNode(textString);	//create a new text node with the specified text
 		element.appendChild(textNode);	//append the text node to our paragraph
@@ -772,7 +774,7 @@ G***should we return data from CDATA sections as well?
 //G***list exceptions
 	public static Element replaceDocumentElement(final Document document, final String elementNamespaceURI, final String elementName)
 	{
-		return replaceDocumentElement(document, elementNamespaceURI, elementName, null);  //append an element with no text
+		return replaceDocumentElementNS(document, elementNamespaceURI, elementName, null);  //append an element with no text
 	}
 
 	/**Convenience function to create an element, replace the document element 
@@ -780,35 +782,30 @@ G***should we return data from CDATA sections as well?
 		element. A heading, for instance, might be added using
 		<code>replaceDocumentElement(document, XHTML_NAMESPACE_URI, ELEMENT_H2,
 		"My Heading");</code>.
-	@param document The document which will serve as parent of the newly
-		created element.
+	@param document The document which will serve as parent of the newly created element.
 	@param elementNamespaceURI The namespace URI of the element to be created.
 	@param elementName The name of the element to create.
-	@param textContent The text to add as a child of the created element, or
-		<code>null</code> if no text should be added.
+	@param textContent The text to add as a child of the created element, or <code>null</code> if no text should be added.
 	@return The newly created child element.
+	@throws DOMException if there was an error creating the element, appending the text, or replacing the child.
 	*/
-//G***list exceptions
-	public static Element replaceDocumentElement(final Document document, final String elementNamespaceURI, final String elementName, final String textContent)
+	public static Element replaceDocumentElementNS(final Document document, final String elementNamespaceURI, final String elementName, final String textContent)
 	{
-		final Element childElement=createElement(document, elementNamespaceURI, elementName, textContent);  //create the new element
+		final Element childElement=createElementNS(document, elementNamespaceURI, elementName, textContent);  //create the new element
 		document.replaceChild(childElement, document.getDocumentElement());	//replace the document element of the document
 		return childElement;  //return the element we created
 	}
 
-	/**Convenience function to create an element and add it as a child of the given
-		parent element.
-	@param parentElement The element which will serve as parent of the newly
-		created element. This element must have a valid owner document.
+	/**Convenience function to create an element and add it as a child of the given parent element.
+	@param parentElement The element which will serve as parent of the newly created element. This element must have a valid owner document.
 	@param elementNamespaceURI The namespace URI of the element to be created.
 	@param elementName The name of the element to create.
 	@return The newly created child element.
+	@throws DOMException if there was an error creating the element or appending the element to the parent element.
 	*/
-//G***list exceptions
-//G***change name to XXXNS
-	public static Element appendElement(final Element parentElement, final String elementNamespaceURI, final String elementName)
+	public static Element appendElementNS(final Element parentElement, final String elementNamespaceURI, final String elementName)
 	{
-		return appendElement(parentElement, elementNamespaceURI, elementName, null);  //append the element with no text
+		return appendElementNS(parentElement, elementNamespaceURI, elementName, null);  //append the element with no text
 	}
 
 	/**Convenience function to create an element, add it as a child of the given
@@ -816,26 +813,17 @@ G***should we return data from CDATA sections as well?
 		heading, for instance, might be added using
 		<code>appendElement(bodyElement, XHTML_NAMESPACE_URI, ELEMENT_H2,
 		"My Heading");</code>.
-	@param parentElement The element which will serve as parent of the newly
-		created element. This element must have a valid owner document.
+	@param parentElement The element which will serve as parent of the newly created element. This element must have a valid owner document.
 	@param elementNamespaceURI The namespace URI of the element to be created.
 	@param elementName The name of the element to create.
-	@param textContent The text to add as a child of the created element, or
-		<code>null</code> if no text should be added.
+	@param textContent The text to add as a child of the created element, or <code>null</code> if no text should be added.
 	@return The newly created child element.
+	@throws DOMException if there was an error creating the element, appending the text, or appending the element to the parent element.
 	*/
-//G***list exceptions
-//G***change name to XXXNS
-	public static Element appendElement(final Element parentElement,
-	    final String elementNamespaceURI, final String elementName, final String textContent)
+	public static Element appendElementNS(final Element parentElement, final String elementNamespaceURI, final String elementName, final String textContent)
 	{
-		final Element childElement=createElement(parentElement.getOwnerDocument(), elementNamespaceURI, elementName, textContent);  //create the new element
-//G***del when works		final Element childElement=parentElement.getOwnerDocument().createElementNS(elementNamespaceURI, elementName);	//create the new element
+		final Element childElement=createElementNS(parentElement.getOwnerDocument(), elementNamespaceURI, elementName, textContent);  //create the new element
 		parentElement.appendChild(childElement);	//add the child element to the parent element
-/*G***del when works
-		if(textContent!=null) //if we have text content to add
-		  appendText(childElement, textContent);	//append the text content to the newly created child element
-*/
 		return childElement;  //return the element we created
 	}
 
@@ -856,23 +844,24 @@ G***should we return data from CDATA sections as well?
 
 	/**Convenience function to create an element and add optional text as a child
 		of the given element. A heading, for instance, might be created using
-		<code>appendElement(document, XHTML_NAMESPACE_URI, ELEMENT_H2,
+		<code>appendElementNS(document, XHTML_NAMESPACE_URI, ELEMENT_H2,
 		"My Heading");</code>.
 	@param document The document to be used to create the new element.
 	@param elementNamespaceURI The namespace URI of the element to be created.
 	@param elementName The name of the element to create.
-	@param textContent The text to add as a child of the created element, or
-		<code>null</code> if no text should be added.
+	@param textContent The text to add as a child of the created element, or <code>null</code> if no text should be added.
 	@return The newly created child element.
+	@throws DOMException if there was an error creating the element or appending the text.
+	@see Document#createElementNS(String, String)
+	@see #appendText(Element, String)
 	*/
-//G***list exceptions
-//G***change name to XXXNS
-	public static Element createElement(final Document document,
-	    final String elementNamespaceURI, final String elementName, final String textContent)
+	public static Element createElementNS(final Document document, final String elementNamespaceURI, final String elementName, final String textContent) throws DOMException
 	{
 		final Element childElement=document.createElementNS(elementNamespaceURI, elementName);	//create the new element
 		if(textContent!=null) //if we have text content to add
+		{
 		  appendText(childElement, textContent);	//append the text content to the newly created child element
+		}
 		return childElement;  //return the element we created
 	}
 
@@ -973,10 +962,9 @@ G***should we return data from CDATA sections as well?
 	@param element The element to check for the specified attribute.
 	@param name The name of the attribute to retrieve.
 	@return The attribute value, if the attribute is defined, else <code>null</code>.
-	@see Element@hasAttribute
-	@see Element@getAttribute
+	@see Element#hasAttribute(String)
+	@see Element#getAttribute(String)
 	*/
-//G***list exceptions
 	public static String getDefinedAttribute(final Element element, final String name)
 	{
 			//retrieve and return the attribute if it exists, else return null
@@ -988,10 +976,9 @@ G***should we return data from CDATA sections as well?
 	@param namespaceURI The namespace of the attribute to retrieve.
 	@param localName The local name of the attribute.
 	@return The attribute value, if the attribute is defined, else <code>null</code>.
-	@see Element@hasAttributeNS
-	@see Element@getAttributeNS
+	@see Element#hasAttributeNS(String, String)
+	@see Element#getAttributeNS(String, String)
 	*/
-//G***list exceptions
 	public static String getDefinedAttributeNS(final Element element, final String namespaceURI, final String localName)
 	{
 			//retrieve and return the attribute if it exists, else return null

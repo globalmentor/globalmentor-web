@@ -70,7 +70,7 @@ Debug.trace("found annotation");
 					//get the next user information
 				final XMLSchemaAnnotation.UserInformation userInfo=(XMLSchemaAnnotation.UserInformation)userInfoIterator.next();
 Debug.trace("found user info: ", userInfo.toString());
-				final Element userInfoParagraphElement=XMLUtilities.appendElement(bodyElement, XHTML_NAMESPACE_URI.toString(),
+				final Element userInfoParagraphElement=XMLUtilities.appendElementNS(bodyElement, XHTML_NAMESPACE_URI.toString(),
 						ELEMENT_P, null); //create the annotation documentation paragraph, but do not add any content
 				  //G***do something besides creating a new XML parser from scratch
 					//G***see if we can do something besides casting the document to an XMLDocument
@@ -109,7 +109,7 @@ Debug.trace("attribute groups: ", attributeGroupCollection.size());
 		if(attributeGroupCollection.size()>0) //if there are global attribute groups
 		{
 			//<h2>Global Attribute Groups</h2>
-		  final Element headingElement=XMLUtilities.appendElement(bodyElement, XHTML_NAMESPACE_URI.toString(),
+		  final Element headingElement=XMLUtilities.appendElementNS(bodyElement, XHTML_NAMESPACE_URI.toString(),
 				  ELEMENT_H2, "Global Attribute Groups"); //create the heading G***i18n
 			XMLUtilities.appendText(bodyElement, "\n");	//append a newline to separate the information in the body
 			final Iterator attributeGroupIterator=attributeGroupCollection.iterator();  //get an iterator to look through the attribute groups
@@ -129,7 +129,7 @@ Debug.trace("attribute groups: ", attributeGroupCollection.size());
 	public static void generateDocumentation(final XMLSchema schema, final Element bodyElement, final XMLSchemaAttributeGroup attributeGroup)
 	{
 		//<h3>Attribute Group Name</h3>
-		final Element attributeGroupHeadingElement=XMLUtilities.appendElement(bodyElement, XHTML_NAMESPACE_URI.toString(),
+		final Element attributeGroupHeadingElement=XMLUtilities.appendElementNS(bodyElement, XHTML_NAMESPACE_URI.toString(),
 				ELEMENT_H3, attributeGroup.getName()); //create the heading for the attribute group
 			//set the "id" attribute to identify this attribute
 		attributeGroupHeadingElement.setAttributeNS(null, ATTRIBUTE_ID, "attributeGroup_"+attributeGroup.getName());

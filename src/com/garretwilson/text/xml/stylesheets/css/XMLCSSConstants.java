@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 import javax.mail.internet.ContentType;
 
 import com.garretwilson.io.ContentTypeConstants;
+import com.garretwilson.io.ContentTypes;
 
 import static com.globalmentor.java.Characters.*;
 
@@ -13,7 +14,7 @@ import static com.globalmentor.java.Characters.*;
 public class XMLCSSConstants
 {
 	/**The content type for CSS: <code>text/css</code>.*/ 
-	public static final ContentType TEXT_CSS_CONTENT_TYPE=new ContentType(ContentTypeConstants.TEXT, ContentTypeConstants.CSS_SUBTYPE, null);
+	public static final ContentType TEXT_CSS_CONTENT_TYPE=new ContentType(ContentTypes.TEXT_PRIMARY_TYPE, ContentTypeConstants.CSS_SUBTYPE, null);
 
 	/**A space character.*/
 	public final static char SPACE_CHAR=' ';
