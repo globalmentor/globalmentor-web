@@ -7,7 +7,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
 import javax.mail.internet.ContentType;
-import com.garretwilson.io.*;
 import com.garretwilson.net.URIs;
 import com.garretwilson.rdf.RDFObject;
 import com.garretwilson.rdf.RDFResource;
@@ -23,6 +22,7 @@ import static com.garretwilson.text.xml.xhtml.XHTML.*;
 import com.garretwilson.text.xml.stylesheets.XMLStyleSheetDescriptor;
 import com.garretwilson.text.xml.xhtml.XHTML;
 //G***del import com.garretwilson.text.xml.xhtml.XHTMLUtilities;  //G***del
+import com.globalmentor.io.*;
 import com.globalmentor.util.Debug;
 import com.globalmentor.util.NameValuePair;
 

@@ -4,10 +4,6 @@ import java.io.*;
 import java.util.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import com.garretwilson.io.Files;
-import com.garretwilson.io.ParseEOFException;	//G***go through and catch all these and throw XML exceptions
-import com.garretwilson.io.ParseUnexpectedDataException;
-import com.garretwilson.io.URIInputStreamable;
 import com.garretwilson.net.URIs;
 import com.garretwilson.text.CharacterEncoding;
 import static com.garretwilson.text.CharacterEncoding.*;
@@ -15,6 +11,11 @@ import static com.garretwilson.text.xml.XMLUtilities.*;
 import com.garretwilson.text.xml.schema.*;
 
 import static com.garretwilson.text.xml.XML.*;
+
+import com.globalmentor.io.Files;
+import com.globalmentor.io.ParseEOFException;
+import com.globalmentor.io.ParseUnexpectedDataException;
+import com.globalmentor.io.URIInputStreamable;
 import com.globalmentor.java.CharSequences;
 import com.globalmentor.util.Debug;
 

@@ -2,9 +2,9 @@ package com.garretwilson.javascript;
 
 import javax.mail.internet.ContentType;
 
-import com.garretwilson.io.ContentTypes;
+import com.globalmentor.io.ContentTypes;
 
-import static com.garretwilson.io.ContentTypeConstants.*;
+import static com.globalmentor.io.ContentTypeConstants.*;
 
 /**Constants for working with JavaScript.
 @author Garret Wilson

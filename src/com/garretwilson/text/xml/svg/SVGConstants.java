@@ -2,8 +2,9 @@ package com.garretwilson.text.xml.svg;
 
 import java.net.URI;
 import javax.mail.internet.ContentType;
-import com.garretwilson.io.ContentTypeConstants;
-import com.garretwilson.io.ContentTypes;
+
+import com.globalmentor.io.ContentTypeConstants;
+import com.globalmentor.io.ContentTypes;
 
 /**Constants for SVG.
 @author Garret Wilson

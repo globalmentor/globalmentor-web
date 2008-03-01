@@ -2,8 +2,9 @@ package com.garretwilson.text.xml;
 
 import java.util.ResourceBundle;
 import java.text.MessageFormat;
-import com.garretwilson.io.ParseEOFException;
-import com.garretwilson.io.ParseUnexpectedDataException;
+
+import com.globalmentor.io.ParseEOFException;
+import com.globalmentor.io.ParseUnexpectedDataException;
 import com.globalmentor.util.Debug;
 
 /**A well-formedness constraint error.

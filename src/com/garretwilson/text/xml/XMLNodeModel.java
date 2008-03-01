@@ -1,8 +1,8 @@
 package com.garretwilson.text.xml;
 
 import java.net.URI;
-import com.garretwilson.io.URIInputStreamable;
 import com.garretwilson.model.URIAccessibleModel;
+import com.globalmentor.io.URIInputStreamable;
 import com.globalmentor.java.Java;
 
 import org.w3c.dom.*;

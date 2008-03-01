@@ -5,14 +5,14 @@ import java.nio.charset.Charset;
 import java.util.*;
 import org.w3c.dom.*;
 
-import com.garretwilson.io.ByteOrderMark;
-import static com.garretwilson.io.Charsets.*;
 //TODO fix import com.garretwilson.text.xml.soap.SOAPConstants;
+import com.globalmentor.io.ByteOrderMark;
 import com.globalmentor.java.Characters;
 import com.globalmentor.java.StringBuffers;
 import com.globalmentor.util.PropertiesUtilities;
 
 import static com.garretwilson.text.xml.XML.*;
+import static com.globalmentor.io.Charsets.*;
 
 //TODO del all the XMLUndefinedEntityReferenceException throws when we don't need them anymore, in favor of XMLWellFormednessException
 

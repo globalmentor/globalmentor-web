@@ -1,7 +1,8 @@
 package com.garretwilson.text.xml;
 
 import java.io.IOException;
-import com.garretwilson.io.ParseIOException;
+
+import com.globalmentor.io.ParseIOException;
 
 /**General exception class for all XML parsing errors.
 This inherits from IOException so that it may be thrown from a

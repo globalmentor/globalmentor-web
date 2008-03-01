@@ -3,8 +3,8 @@ package com.garretwilson.text.xml.stylesheets.css;
 import java.net.URI;
 import java.io.*;
 import java.util.*;
-import com.garretwilson.io.*;
 import com.garretwilson.text.xml.XMLUtilities;
+import com.globalmentor.io.*;
 import com.globalmentor.util.NameValuePair;
 
 import org.w3c.dom.*;

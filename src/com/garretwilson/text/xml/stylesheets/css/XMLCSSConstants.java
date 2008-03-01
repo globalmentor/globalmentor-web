@@ -5,8 +5,8 @@ import java.util.regex.Pattern;
 
 import javax.mail.internet.ContentType;
 
-import com.garretwilson.io.ContentTypeConstants;
-import com.garretwilson.io.ContentTypes;
+import com.globalmentor.io.ContentTypeConstants;
+import com.globalmentor.io.ContentTypes;
 
 import static com.globalmentor.java.Characters.*;
 

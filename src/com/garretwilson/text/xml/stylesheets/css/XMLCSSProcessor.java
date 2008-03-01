@@ -9,15 +9,15 @@ import java.util.HashMap;
 import org.w3c.dom.DOMException;
 */
 import java.net.URI;
-import com.garretwilson.io.ParseReader;
-import com.garretwilson.io.ParseEOFException;	//G***go through and catch all these and throw CSS exceptions
-import com.garretwilson.io.ParseUnexpectedDataException;
-import com.garretwilson.io.URIInputStreamable;
 //G***del import com.garretwilson.lang.StringManipulator;
 import com.garretwilson.text.xml.*;
 import static com.garretwilson.text.xml.stylesheets.XMLStyleSheetConstants.*;
 import static com.garretwilson.text.xml.stylesheets.css.XMLCSSConstants.*;
 
+import com.globalmentor.io.ParseEOFException;
+import com.globalmentor.io.ParseReader;
+import com.globalmentor.io.ParseUnexpectedDataException;
+import com.globalmentor.io.URIInputStreamable;
 import com.globalmentor.util.Debug;
 
 import org.w3c.dom.*;

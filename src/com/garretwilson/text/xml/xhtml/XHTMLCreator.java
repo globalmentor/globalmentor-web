@@ -2,10 +2,11 @@ package com.garretwilson.text.xml.xhtml;
 
 import java.io.*;
 import java.util.*;
-import com.garretwilson.io.*;
 import com.garretwilson.text.*;
 import com.garretwilson.text.xml.XMLUtilities;
 import static com.garretwilson.text.xml.xhtml.XHTML.*;
+
+import com.globalmentor.io.*;
 import com.globalmentor.java.CharSequences;
 import com.globalmentor.util.Debug;
 

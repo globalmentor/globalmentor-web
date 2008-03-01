@@ -2,8 +2,8 @@ package com.garretwilson.text.xml;
 
 import java.io.*;
 import java.net.*;
-import com.garretwilson.io.*;
 import com.garretwilson.text.CharacterEncoding;
+import com.globalmentor.io.*;
 
 import org.w3c.dom.Document;
 

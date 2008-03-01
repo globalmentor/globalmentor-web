@@ -6,7 +6,8 @@ import java.net.*;
 import javax.xml.parsers.*;
 import javax.xml.validation.Schema;
 
-import com.garretwilson.io.IO;
+import com.globalmentor.io.IO;
+
 import static com.garretwilson.text.xml.XMLUtilities.*;
 
 import org.w3c.dom.Document;

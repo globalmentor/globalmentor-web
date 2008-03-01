@@ -2,8 +2,8 @@ package com.garretwilson.text.xml;
 
 import java.io.Reader;
 import java.io.IOException;
-import com.garretwilson.io.ParseReader;
 //G***del import com.garretwilson.lang.StringManipulator;	//G***del when we don't need
+import com.globalmentor.io.ParseReader;
 import com.globalmentor.util.Debug;
 
 import static com.garretwilson.text.xml.XML.*;
@@ -12,7 +12,7 @@ import static com.garretwilson.text.xml.XML.*;
 This class lets <code>ParseReader</code> do most of the work, while overriding
 <code>processBufferedData()</code> to convert all line-end markers to LF as
 XML specifies.
-@see com.garretwilson.io.ParseReader
+@see com.globalmentor.io.ParseReader
 */
 public class XMLReader extends ParseReader
 {
