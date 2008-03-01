@@ -74,14 +74,14 @@ public class XMLNamedObject	//TODO implement NamedObject or extend DefaultNamedO
 		}
 
 	/**@return The qualified name of the object.
-	@see DefaultNamedObject#getName()
+	@see DefaultNamed#getName()
 	*/	
 	public String getQName() {return qname;}
 	
 	/**Sets the qualified name of the object, updating the prefix and local
 		name as well.
 	@param qname The new qualified name of the object.
-	@see DefaultNamedObject#setName(Object)
+	@see DefaultNamed#setName(Object)
 	*/
 	public void setQName(final String qname)
 	{

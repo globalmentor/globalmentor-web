@@ -1,7 +1,8 @@
 package com.garretwilson.text.xml.schema;
 
 import java.util.*;
-import com.garretwilson.util.Debug;
+
+import com.globalmentor.util.Debug;
 
 /**The class which represents an XML schema by holding a collection of schema
 	components.

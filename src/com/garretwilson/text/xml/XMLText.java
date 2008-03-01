@@ -3,7 +3,7 @@ package com.garretwilson.text.xml;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Text;
 //G***del if not needed import com.garretwilson.lang.StringUtilities;
-import com.garretwilson.util.Debug;
+import com.globalmentor.util.Debug;
 
 import static com.garretwilson.text.xml.XML.*;
 

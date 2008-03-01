@@ -5,14 +5,14 @@ import java.net.URI;
 import static com.globalmentor.java.Objects.*;
 
 import com.garretwilson.net.DefaultResource;
-import com.garretwilson.util.IDable;
+import com.globalmentor.util.IDed;
 
 /**Represents a qualified name (QName) of an XML element, including the namespace URI, the prefix, and the local name.
 The reference URI indicates the concatenation of the namespace URI and the local name.
 <p>This class does not currently use true URIs for namespaces, primarily because WebDAV uses a namespace ("DAV:") which is not a true URI.</p>
 @author Garret Wilson
 */
-public class QualifiedName extends DefaultResource implements IDable<URI>
+public class QualifiedName extends DefaultResource implements IDed<URI>
 {
 
 	/**The namespace URI, or <code>null</code> if there is no namespace URI.*/

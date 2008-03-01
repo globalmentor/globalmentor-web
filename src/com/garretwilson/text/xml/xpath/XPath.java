@@ -4,8 +4,8 @@ import java.util.*;
 import org.w3c.dom.*;
 import com.garretwilson.text.xml.XMLNodeList;
 import static com.garretwilson.text.xml.xpath.XPathConstants.*;
-import com.garretwilson.util.Debug;
 import com.globalmentor.java.Strings;
+import com.globalmentor.util.Debug;
 
 /**Parses XPath expressions and performs XPath operations on an XML document.
 The current implementation only interprets location paths.

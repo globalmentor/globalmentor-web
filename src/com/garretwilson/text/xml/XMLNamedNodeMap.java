@@ -5,7 +5,8 @@ import java.util.HashMap;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.DOMException;
-import com.garretwilson.util.Debug;
+
+import com.globalmentor.util.Debug;
 
 /**A map of nodes in an XML document in no particular order.
 @see XMLNode

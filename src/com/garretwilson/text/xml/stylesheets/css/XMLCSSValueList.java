@@ -8,7 +8,8 @@ import java.util.List;
 import static com.garretwilson.text.xml.stylesheets.css.XMLCSSConstants.*;
 import org.w3c.dom.css.CSSValue;
 import org.w3c.dom.css.CSSValueList;
-import com.garretwilson.util.Debug;
+
+import com.globalmentor.util.Debug;
 
 /**An ordered collection of CSS vlaues. An empty list is the same as a list that
 contains the medium <code>"all"</code>.

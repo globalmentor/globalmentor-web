@@ -2,6 +2,8 @@ package com.garretwilson.text.xml.xhtml;
 
 import java.io.*;
 import java.util.*;
+import java.util.Arrays;
+
 import com.garretwilson.io.ContentTypes;
 import com.garretwilson.io.Files;
 import com.garretwilson.text.*;
@@ -15,16 +17,16 @@ import com.garretwilson.text.xml.xpath.XPathConstants;
 import static com.garretwilson.text.xml.stylesheets.css.XMLCSSConstants.*;
 import static com.garretwilson.text.xml.xhtml.XHTML.*;
 import static com.garretwilson.text.unicode.SymbolEncodingConstants.*;
-import com.garretwilson.util.*;
 import com.globalmentor.java.*;
-
-import org.w3c.dom.*;
-import org.w3c.dom.traversal.NodeFilter;
-import org.w3c.dom.css.*;
+import com.globalmentor.util.*;
 
 import static com.garretwilson.io.ContentTypeConstants.*;
 import static com.garretwilson.text.xml.XML.*;
 import static com.globalmentor.java.Characters.*;
+
+import org.w3c.dom.*;
+import org.w3c.dom.traversal.NodeFilter;
+import org.w3c.dom.css.*;
 
 /**Contains several routines for tidying XHTML documents.
 <p><code>tidy()</code> performs the following operations:</p>
@@ -321,9 +323,9 @@ public class XHTMLTidier extends TextUtilities
 	*/
 	public void setOptions(final Properties options)
 	{
-		setConvertUnderlineItalics(PropertyUtilities.getBooleanProperty(options, CONVERT_UNDERLINE_ITALICS_OPTION, CONVERT_UNDERLINE_ITALICS_OPTION_DEFAULT));
-		setExtractInternalStylesheets(PropertyUtilities.getBooleanProperty(options, EXTRACT_INTERNAL_STYLESHEETS_OPTION, EXTRACT_INTERNAL_STYLESHEETS_OPTION_DEFAULT));
-		setNormalizeStyleClasses(PropertyUtilities.getBooleanProperty(options, NORMALIZE_STYLE_CLASSES_OPTION, NORMALIZE_STYLE_CLASSES_OPTION_DEFAULT));
+		setConvertUnderlineItalics(PropertiesUtilities.getBooleanProperty(options, CONVERT_UNDERLINE_ITALICS_OPTION, CONVERT_UNDERLINE_ITALICS_OPTION_DEFAULT));
+		setExtractInternalStylesheets(PropertiesUtilities.getBooleanProperty(options, EXTRACT_INTERNAL_STYLESHEETS_OPTION, EXTRACT_INTERNAL_STYLESHEETS_OPTION_DEFAULT));
+		setNormalizeStyleClasses(PropertiesUtilities.getBooleanProperty(options, NORMALIZE_STYLE_CLASSES_OPTION, NORMALIZE_STYLE_CLASSES_OPTION_DEFAULT));
 		cssTidier.setOptions(options);  //pass the options along to the CSS tidier
 	}
 

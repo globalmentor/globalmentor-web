@@ -4,7 +4,7 @@ import java.util.ResourceBundle;
 import java.text.MessageFormat;
 import com.garretwilson.io.ParseEOFException;
 import com.garretwilson.io.ParseUnexpectedDataException;
-import com.garretwilson.util.Debug;
+import com.globalmentor.util.Debug;
 
 /**A well-formedness constraint error.
 @see XMLParseException

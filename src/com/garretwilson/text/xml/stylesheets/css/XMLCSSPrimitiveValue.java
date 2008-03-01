@@ -3,9 +3,9 @@ package com.garretwilson.text.xml.stylesheets.css;
 import java.awt.Color;
 import java.text.NumberFormat;
 import static com.garretwilson.text.xml.stylesheets.css.XMLCSSConstants.*;
-import com.garretwilson.util.Debug;
 import com.globalmentor.java.CharSequences;
 import com.globalmentor.java.Strings;
+import com.globalmentor.util.Debug;
 
 import org.w3c.dom.DOMException;
 import org.w3c.dom.css.*;

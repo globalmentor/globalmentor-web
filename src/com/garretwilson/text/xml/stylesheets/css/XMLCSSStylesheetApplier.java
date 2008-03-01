@@ -5,7 +5,8 @@ import java.io.*;
 import java.util.*;
 import com.garretwilson.io.*;
 import com.garretwilson.text.xml.XMLUtilities;
-import com.garretwilson.util.NameValuePair;
+import com.globalmentor.util.NameValuePair;
+
 import org.w3c.dom.*;
 import org.w3c.dom.css.*;
 import org.w3c.dom.stylesheets.*;

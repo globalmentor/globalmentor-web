@@ -17,7 +17,9 @@ import com.garretwilson.io.URIInputStreamable;
 import com.garretwilson.text.xml.*;
 import static com.garretwilson.text.xml.stylesheets.XMLStyleSheetConstants.*;
 import static com.garretwilson.text.xml.stylesheets.css.XMLCSSConstants.*;
-import com.garretwilson.util.Debug;
+
+import com.globalmentor.util.Debug;
+
 import org.w3c.dom.*;
 import org.w3c.dom.stylesheets.StyleSheet;
 import org.w3c.dom.css.*;

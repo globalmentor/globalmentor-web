@@ -12,7 +12,7 @@ import org.w3c.dom.TypeInfo;
 //G***del import org.w3c.dom.css.CSSValue;
 //G***del import com.garretwilson.lang.StringUtilities;	//G***see if we really need this or not
 //G***del import com.garretwilson.text.xml.stylesheets.css.XMLCSSStyleDeclaration;
-import com.garretwilson.util.Debug;
+import com.globalmentor.util.Debug;
 
 /**An element in an XML document.
 @see XMLNode

@@ -4,12 +4,12 @@ import java.io.*;
 import java.util.*;
 import com.garretwilson.text.xml.oeb.css.OEBCSSUtilities; //G***move to OEBCSSTidier
 import static com.garretwilson.text.xml.stylesheets.css.XMLCSSConstants.*;
-import com.garretwilson.util.Debug;
-import com.garretwilson.util.PropertyUtilities;
 import com.globalmentor.java.Characters;
 import com.globalmentor.java.Maths;
 import com.globalmentor.java.StringBuffers;
 import com.globalmentor.java.Strings;
+import com.globalmentor.util.Debug;
+import com.globalmentor.util.PropertiesUtilities;
 
 import org.w3c.dom.css.*;
 
@@ -71,8 +71,8 @@ public class CSSTidier
 	*/
 	public void setOptions(final Properties options)
 	{
-		setMakeFontSizesRelative(PropertyUtilities.getBooleanProperty(options, MAKE_FONT_SIZES_RELATIVE_OPTION, MAKE_FONT_SIZES_RELATIVE_OPTION_DEFAULT));
-		setRemoveMSOfficeProperties(PropertyUtilities.getBooleanProperty(options, REMOVE_MS_OFFICE_PROPERTIES_OPTION, REMOVE_MS_OFFICE_PROPERTIES_OPTION_DEFAULT));
+		setMakeFontSizesRelative(PropertiesUtilities.getBooleanProperty(options, MAKE_FONT_SIZES_RELATIVE_OPTION, MAKE_FONT_SIZES_RELATIVE_OPTION_DEFAULT));
+		setRemoveMSOfficeProperties(PropertiesUtilities.getBooleanProperty(options, REMOVE_MS_OFFICE_PROPERTIES_OPTION, REMOVE_MS_OFFICE_PROPERTIES_OPTION_DEFAULT));
 	}
 
 	/**The base font size, if we've found one, in its original CSS value.*/

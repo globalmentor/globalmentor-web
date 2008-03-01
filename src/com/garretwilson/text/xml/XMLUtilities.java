@@ -11,8 +11,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import static com.garretwilson.text.xml.stylesheets.XMLStyleSheetConstants.*;
 
 import com.garretwilson.io.ContentTypes;
-import com.garretwilson.util.Debug;
 import com.globalmentor.java.*;
+import com.globalmentor.util.Debug;
 
 import org.w3c.dom.*;
 import org.w3c.dom.traversal.*;

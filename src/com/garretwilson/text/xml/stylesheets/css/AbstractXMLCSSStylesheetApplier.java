@@ -23,8 +23,9 @@ import static com.garretwilson.text.xml.xhtml.XHTML.*;
 import com.garretwilson.text.xml.stylesheets.XMLStyleSheetDescriptor;
 import com.garretwilson.text.xml.xhtml.XHTML;
 //G***del import com.garretwilson.text.xml.xhtml.XHTMLUtilities;  //G***del
-import com.garretwilson.util.Debug;
-import com.garretwilson.util.NameValuePair;
+import com.globalmentor.util.Debug;
+import com.globalmentor.util.NameValuePair;
+
 import org.w3c.dom.css.*;
 
 /**Applies styles to XML elements.

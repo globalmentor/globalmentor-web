@@ -4,7 +4,7 @@ import java.util.*;
 import org.w3c.dom.*;
 import org.w3c.dom.traversal.*;
 import com.garretwilson.text.xml.*;
-import com.garretwilson.util.Debug;
+import com.globalmentor.util.Debug;
 
 /**An iterator that iterates of XML objects of a particular type contained in a
 	collection of child objects.

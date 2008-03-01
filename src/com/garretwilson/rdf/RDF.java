@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
+import static java.util.Collections.*;
 
 import com.garretwilson.net.URIConstants;
 import static com.garretwilson.rdf.RDFConstants.*;
@@ -11,7 +12,7 @@ import static com.garretwilson.rdf.RDFUtilities.*;
 import com.garretwilson.rdf.rdfs.RDFSUtilities;
 import com.garretwilson.rdf.xmlschema.XMLSchemaTypedLiteralFactory;
 import com.garretwilson.text.xml.schema.XMLSchemaConstants;
-import com.garretwilson.util.*;
+import com.globalmentor.util.*;
 
 /**An RDF data model.
 <p>The data model should be used to create resources, as it keeps a list of
@@ -256,7 +257,7 @@ public class RDF	//TODO special-case rdf:nil list resources so that they are not
 	/**@return A read-only iterable of resources.*/
 	public Iterable<RDFResource> getResources()
 	{
-		return Collections.unmodifiableCollection(resourceSet); //return an unmodifiable iterable to the set of all resources
+		return unmodifiableCollection(resourceSet); //return an unmodifiable iterable to the set of all resources
 	}
 
 	/**@return A read-only iterable of resources appropriate for appearing at the
@@ -287,7 +288,7 @@ public class RDF	//TODO special-case rdf:nil list resources so that they are not
 				rootResourceSet.add(resource);	//add the resource to the set of root resources
 			}
 		}
-		return Collections.unmodifiableCollection(rootResourceSet); //return an unmodifiable set of root resources
+		return unmodifiableCollection(rootResourceSet); //return an unmodifiable set of root resources
 	}
 
 	/**Determines if the given resource is appropriate for appearing at the root

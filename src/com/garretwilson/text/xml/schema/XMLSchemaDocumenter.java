@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Iterator;
 import com.garretwilson.text.xml.*;
 import static com.garretwilson.text.xml.xhtml.XHTML.*;
-import com.garretwilson.util.Debug;
+
+import com.globalmentor.util.Debug;
+
 import org.w3c.dom.*;
 
 //G***do we really want this separate class? do we really want it in com.garretwilson.text.xml.schema?

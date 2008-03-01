@@ -9,7 +9,7 @@ import org.w3c.dom.css.*;
 import com.garretwilson.text.xml.XMLDOMException;
 import static com.garretwilson.text.xml.stylesheets.css.XMLCSSConstants.*;
 //G***del if we don't need import com.garretwilson.util.StringManipulator;
-import com.garretwilson.util.Debug;
+import com.globalmentor.util.Debug;
 
 /**The class which represents a signle rule set in a CSS stylesheet.
 @see org.w3c.dom.css.CSSRule

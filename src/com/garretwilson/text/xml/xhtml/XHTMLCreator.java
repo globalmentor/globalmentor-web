@@ -6,8 +6,8 @@ import com.garretwilson.io.*;
 import com.garretwilson.text.*;
 import com.garretwilson.text.xml.XMLUtilities;
 import static com.garretwilson.text.xml.xhtml.XHTML.*;
-import com.garretwilson.util.Debug;
 import com.globalmentor.java.CharSequences;
+import com.globalmentor.util.Debug;
 
 import org.w3c.dom.*;
 

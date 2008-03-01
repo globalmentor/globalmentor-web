@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import com.garretwilson.util.Debug;
+
+import com.globalmentor.util.Debug;
 
 /**An annotation to a primary or secondary schema component.
 @author Garret Wilson

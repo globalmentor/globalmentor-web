@@ -3,7 +3,8 @@ package com.garretwilson.text.xml;
 import java.net.URI;
 import java.net.URISyntaxException;
 //G***del when works import com.garretwilson.net.URLUtilities;
-import com.garretwilson.util.Debug;
+import com.globalmentor.util.Debug;
+
 import org.w3c.dom.*;
 
 import static com.garretwilson.text.xml.XML.*;

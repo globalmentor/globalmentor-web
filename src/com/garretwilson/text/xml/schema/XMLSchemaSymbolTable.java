@@ -4,7 +4,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import com.garretwilson.util.Debug;
+
+import com.globalmentor.util.Debug;
 
 /**A table which provides mappings from names to schema components, based upon
 the component type category (e.g. simple and complex type components fall into

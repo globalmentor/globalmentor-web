@@ -12,8 +12,8 @@ import org.w3c.dom.*;
 import org.w3c.dom.events.*;
 
 import com.garretwilson.text.xml.events.*;
-import com.garretwilson.util.Debug;
 import com.globalmentor.java.Objects;
+import com.globalmentor.util.Debug;
 
 import static com.garretwilson.text.xml.XML.*;
 

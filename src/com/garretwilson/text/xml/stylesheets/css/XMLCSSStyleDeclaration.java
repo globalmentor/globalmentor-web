@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.StringTokenizer;
 import com.garretwilson.text.xml.XMLDOMException;
 import static com.garretwilson.text.xml.stylesheets.css.XMLCSSConstants.*;
-import com.garretwilson.util.Debug;
+
+import com.globalmentor.util.Debug;
+
 import org.w3c.dom.DOMException;
 import org.w3c.dom.css.*;
 

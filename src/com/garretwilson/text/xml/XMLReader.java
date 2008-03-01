@@ -4,7 +4,7 @@ import java.io.Reader;
 import java.io.IOException;
 import com.garretwilson.io.ParseReader;
 //G***del import com.garretwilson.lang.StringManipulator;	//G***del when we don't need
-import com.garretwilson.util.Debug;
+import com.globalmentor.util.Debug;
 
 import static com.garretwilson.text.xml.XML.*;
 

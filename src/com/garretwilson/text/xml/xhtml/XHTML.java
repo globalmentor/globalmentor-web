@@ -23,8 +23,8 @@ import com.garretwilson.text.xml.stylesheets.css.XMLCSSProcessor;
 import com.garretwilson.text.xml.stylesheets.css.XMLCSSStyleDeclaration;
 import com.garretwilson.text.xml.xpath.XPath;
 import com.garretwilson.text.xml.xpath.XPathConstants;
-import com.garretwilson.util.ArrayUtilities;
 import com.globalmentor.java.Objects;
+import com.globalmentor.util.Arrays;
 
 import static com.garretwilson.io.ContentTypeConstants.*;
 
@@ -696,7 +696,7 @@ public class XHTML
 		final String[] EMPTY_ELEMENT_LOCAL_NAMES=new String[]{ELEMENT_BASE, ELEMENT_META, ELEMENT_LINK, ELEMENT_HR, ELEMENT_BR, ELEMENT_PARAM, ELEMENT_IMG, ELEMENT_AREA, ELEMENT_INPUT, ELEMENT_COL};	//TODO probably put these in a better place, either in a hash set for faster lookup or put this constant in XHTMLConstants
 		if(localName!=null && (namespaceURI==null || isHTMLNamespaceURI(namespaceURI)))	//if this element has an HTML namespace or no namespace
 		{
-			return ArrayUtilities.indexOf(EMPTY_ELEMENT_LOCAL_NAMES, localName)>=0;	//return whether the local name is one of the empty element local names
+			return Arrays.indexOf(EMPTY_ELEMENT_LOCAL_NAMES, localName)>=0;	//return whether the local name is one of the empty element local names
 		}
 		return false; //this does not appear to be an empty element
 	}

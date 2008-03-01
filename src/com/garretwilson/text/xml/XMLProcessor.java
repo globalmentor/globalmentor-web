@@ -15,8 +15,8 @@ import static com.garretwilson.text.xml.XMLUtilities.*;
 import com.garretwilson.text.xml.schema.*;
 
 import static com.garretwilson.text.xml.XML.*;
-import com.garretwilson.util.Debug;
 import com.globalmentor.java.CharSequences;
+import com.globalmentor.util.Debug;
 
 //G***del all the XMLUndefinedEntityReferenceException throws when we don't need them anymore, in favor of XMLWellFormednessException
 

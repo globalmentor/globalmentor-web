@@ -4,15 +4,15 @@ import static java.lang.reflect.Array.*;
 import java.util.*;
 import java.util.regex.Pattern;
 
-
 import com.garretwilson.text.ArgumentSyntaxException;
 import com.garretwilson.text.W3CDateFormat;
-import static com.garretwilson.util.ArrayUtilities.*;
+
 import static com.globalmentor.java.CharSequences.*;
 import static com.globalmentor.java.Objects.*;
 import static com.globalmentor.java.StringBuilders.*;
+import static com.globalmentor.util.Arrays.*;
 
-import com.garretwilson.util.ObjectHolder;
+import com.globalmentor.util.ObjectHolder;
 
 /**Utilities for encoding and decoding JavaScript Object Notation (JSON).
 In addition to standard JSON, any {@link Date} object will be formatted as a string value according to the W3C Note, 
@@ -322,7 +322,7 @@ public class JSON
 	{
 		if(indexOf(characters, charSequence.charAt(index))<0)	//if this character does not match one of the expected characters
 		{
-			throw new ArgumentSyntaxException("Expected one of "+Arrays.toString(characters)+".", charSequence.toString(), index);
+			throw new ArgumentSyntaxException("Expected one of "+java.util.Arrays.toString(characters)+".", charSequence.toString(), index);
 		}
 		return index+1;	//return the subsequent index
 	}

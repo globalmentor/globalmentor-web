@@ -8,9 +8,9 @@ import org.w3c.dom.*;
 import com.garretwilson.io.ByteOrderMark;
 import static com.garretwilson.io.Charsets.*;
 //TODO fix import com.garretwilson.text.xml.soap.SOAPConstants;
-import com.garretwilson.util.PropertyUtilities;
 import com.globalmentor.java.Characters;
 import com.globalmentor.java.StringBuffers;
+import com.globalmentor.util.PropertiesUtilities;
 
 import static com.garretwilson.text.xml.XML.*;
 
@@ -153,11 +153,11 @@ public class XMLSerializer
 	public void setOptions(final Properties options)
 	{
 //G***del Debug.notify("XMLSerializer: "+options);  //G***del
-		setFormatted(PropertyUtilities.getBooleanProperty(options, FORMAT_OUTPUT_OPTION, FORMAT_OUTPUT_OPTION_DEFAULT));
-		setUseEntities(PropertyUtilities.getBooleanProperty(options, USE_ENTITIES_OPTION, USE_ENTITIES_OPTION_DEFAULT));
-		setXMLEncodeControl(PropertyUtilities.getBooleanProperty(options, XML_ENCODE_CONTROL_OPTION, XML_ENCODE_CONTROL_OPTION_DEFAULT));
-		setXMLEncodeNonASCII(PropertyUtilities.getBooleanProperty(options, XML_ENCODE_NON_ASCII_OPTION, XML_ENCODE_NON_ASCII_OPTION_DEFAULT));
-		setXMLEncodePrivateUse(PropertyUtilities.getBooleanProperty(options, XML_ENCODE_PRIVATE_USE_OPTION, XML_ENCODE_PRIVATE_USE_OPTION_DEFAULT));
+		setFormatted(PropertiesUtilities.getBooleanProperty(options, FORMAT_OUTPUT_OPTION, FORMAT_OUTPUT_OPTION_DEFAULT));
+		setUseEntities(PropertiesUtilities.getBooleanProperty(options, USE_ENTITIES_OPTION, USE_ENTITIES_OPTION_DEFAULT));
+		setXMLEncodeControl(PropertiesUtilities.getBooleanProperty(options, XML_ENCODE_CONTROL_OPTION, XML_ENCODE_CONTROL_OPTION_DEFAULT));
+		setXMLEncodeNonASCII(PropertiesUtilities.getBooleanProperty(options, XML_ENCODE_NON_ASCII_OPTION, XML_ENCODE_NON_ASCII_OPTION_DEFAULT));
+		setXMLEncodePrivateUse(PropertiesUtilities.getBooleanProperty(options, XML_ENCODE_PRIVATE_USE_OPTION, XML_ENCODE_PRIVATE_USE_OPTION_DEFAULT));
 	}
 
 	/**The string to use for horizontally aligning the elements if formatting is
