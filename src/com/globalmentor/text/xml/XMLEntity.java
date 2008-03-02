@@ -1,12 +1,30 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml;
 
 import org.w3c.dom.Node;
 
 /**An entity value, either parsed or unparsed, in an XML document.
 This does <em>not</em> model the entity declaration itself, only the entity value.
+@author Garret Wilson
 @see XMLNode
 @see XMLEntityReference
 @see org.w3c.dom.Entity
+@deprecated
 */
 public class XMLEntity extends XMLNode implements org.w3c.dom.Entity
 {
@@ -16,15 +34,14 @@ public class XMLEntity extends XMLNode implements org.w3c.dom.Entity
 	public XMLEntity(final XMLDocument ownerDocument)
 	{
 		super(XMLNode.ENTITY_NODE, ownerDocument);	//construct the parent class
-//G***del		setNodeType(XMLNode.ENTITY_NODE);	//show that this is an XML entity
 	}
 
 	/**Constructor that specifies an entity name.
 	@param ownerDocument The document which owns this node.
 	@param newName The name of the XML entity.
-//G***fix	@exception XMLInvalidNameException Thrown if the specified name is invalid.
+//TODO fix	@exception XMLInvalidNameException Thrown if the specified name is invalid.
 	*/
-	public XMLEntity(final XMLDocument ownerDocument, final String newName)	//G***fix throws XMLInvalidNameException
+	public XMLEntity(final XMLDocument ownerDocument, final String newName)	//TODO fix throws XMLInvalidNameException
 	{
 		this(ownerDocument);	//do the default constructing
 		setNodeName(newName);	//set the name
@@ -34,13 +51,12 @@ public class XMLEntity extends XMLNode implements org.w3c.dom.Entity
 	@param ownerDocument The document which owns this node.
 	@param newName The name of the XML entity.
 	@param value The value for this entity.
-//G***fix	@exception XMLInvalidNameException Thrown if the specified name is invalid.
+//TODO fix	@exception XMLInvalidNameException Thrown if the specified name is invalid.
 	*/
-	public XMLEntity(final XMLDocument ownerDocument, final String newName, final String value)	//G***fix throws XMLInvalidNameException
+	public XMLEntity(final XMLDocument ownerDocument, final String newName, final String value)	//TODO fix throws XMLInvalidNameException
 	{
 		this(ownerDocument, newName);	//do the default constructing
-			//G***should we check for a DOMException and throw something based on XMLException here?
-//G***del		appendChild(new XMLText(getOwnerXMLDocument(), characterContent));	//create a text node from the character content and add it to our children
+			//TODO should we check for a DOMException and throw something based on XMLException here?
 		appendText(value);	//create a text node from the character content and add it to our children
 	}
 
@@ -65,14 +81,12 @@ public class XMLEntity extends XMLNode implements org.w3c.dom.Entity
 	@return Whether or not the specified node can be added to the list of children.
 	@see XMLNode#isNodeTypeAllowed
 	*/
-	protected boolean isNodeTypeAllowed(final Node node)	//G***maybe rename this to isChildNodeTypeAllowed
+	protected boolean isNodeTypeAllowed(final Node node)	//TODO maybe rename this to isChildNodeTypeAllowed
 	{
-		return true;	//G***fix this to actually check the type of node
+		return true;	//TODO fix this to actually check the type of node
 	}
 
-
 	/**Whether or not this entity is a parameter entity. Defaults to <code>false</code>.*/
-
 	private boolean ParameterEntity=false;
 
 
@@ -82,36 +96,28 @@ public class XMLEntity extends XMLNode implements org.w3c.dom.Entity
 	*/
 	public boolean isParameterEntity() {return ParameterEntity;}
 
-
 	/**Specifies if this entity is a parameter entity.
 	@param parameterEntity <code>true</code> if this is a parameter entity, or
 	<code>false</code> if this is a general entity.
 	*/
-
 	void setParameterEntity(final boolean parameterEntity) {ParameterEntity=parameterEntity;}
-
 
 	/**Returns whether or not this is an external entity by checking to see if
 	getSystemID() is not <code>null</code>.
 	@return <code>true</code> if this is an external entity, else <code>false</code>.
 	@see XMLEntity#getSystemID
 	*/
-
 	public boolean isExternalEntity() {return getSystemID()!=null;}
-
 
 	/**Returns whether or not this is a parsed entity by checking to see if
 	getNotationName() is <code>null</code>.
 	@return <code>true</code> if this is a  parsed entity, else <code>false</code>.
 	@see XMLEntity#getNotationName
 	*/
-
 	public boolean isParsedEntity() {return getNotationName()==null;}
-
 
 	/**The public identifier of this entity, or <code>null</code> if there is none.*/
 	private String PublicID=null;
-
 
 	/**@return The public identifier, or <code>null</code> if there is none.
 	For the DOM version, see getPublicId().

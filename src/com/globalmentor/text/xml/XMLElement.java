@@ -1,3 +1,19 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml;
 
 import java.io.*;
@@ -9,14 +25,13 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.TypeInfo;
-//G***del import org.w3c.dom.css.CSSValue;
-//G***del import com.garretwilson.lang.StringUtilities;	//G***see if we really need this or not
-//G***del import com.garretwilson.text.xml.stylesheets.css.XMLCSSStyleDeclaration;
 import com.globalmentor.util.Debug;
 
 /**An element in an XML document.
+@author Garret Wilson
 @see XMLNode
 @see org.w3c.dom.Element
+@deprecated
 */
 public class XMLElement extends XMLNode implements org.w3c.dom.Element
 {
@@ -26,16 +41,15 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
 	public XMLElement(final XMLDocument ownerDocument)
 	{
 		super(XMLNode.ELEMENT_NODE, ownerDocument);	//construct the parent class
-//G***del		setNodeType(XMLNode.ELEMENT_NODE);	//show that this is an XML element
 	}
 
 	/**Constructor that uses a specified name. Namespace-related names will be set
 		to <code>null</code>.
 	@param ownerDocument The document which owns this node.
 	@param newName The new name for the XML element, or "" to specify no name.
-//G***fix	@exception XMLInvalidNameException Thrown if the specified name is invalid.
+//TODO fix	@exception XMLInvalidNameException Thrown if the specified name is invalid.
 	*/
-	public XMLElement(final XMLDocument ownerDocument, final String newName)//G***fix throws XMLInvalidNameException
+	public XMLElement(final XMLDocument ownerDocument, final String newName)//TODO fix throws XMLInvalidNameException
 	{
 		this(ownerDocument);	//do the default constructing
 		setNodeName(newName);	//set the node name
@@ -45,9 +59,9 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
 		from the tag will be used.
 	@param ownerDocument The document which owns this node.
 	@param elementTag The tag which begins the element.
-//G***fix	@exception XMLInvalidNameException Thrown if the specified name is invalid.
+//TODO fix	@exception XMLInvalidNameException Thrown if the specified name is invalid.
 	*/
-	public XMLElement(final XMLDocument ownerDocument, final XMLTag elementTag)//G***fix throws XMLInvalidNameException
+	public XMLElement(final XMLDocument ownerDocument, final XMLTag elementTag)//TODO fix throws XMLInvalidNameException
 	{
 		this(ownerDocument);	//do the default constructing
 		setNodeName(elementTag.getNodeName());	//set the node name from the tag
@@ -118,7 +132,7 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
 		@return A map of attributes of this element node.
 		@see XMLNode#getAttributes
 		*/
-		private XMLNamedNodeMap getAttributeXMLNamedNodeMap() {return AttributeMap;}  //G***probably remove this in favor of the DOM version
+		private XMLNamedNodeMap getAttributeXMLNamedNodeMap() {return AttributeMap;}  //TODO probably remove this in favor of the DOM version
 
 		/**Returns a <code>NamedNodeMap</code> containing the attributes
 		of this element.
@@ -141,7 +155,7 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
 		@param attributeName The name of the desired attribute.
 		@return A reference to the attribute object with the specified name, or null if no attribute with that name exists.
 		*/
-/*G***fix
+/*TODO fix
 		public XMLAttribute getAttribute(final String attributeName)
 		{
 			return (XMLAttribute)getAttributeXMLNamedNodeMap().get(attributeName);	//return the attribute with the given name
@@ -152,7 +166,7 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
 		@param attributeName The name of the desired attribute.
 		@return The value of the attribute with the specified name, or "" if no such named attribute exists.
 		*/
-/*G***fix
+/*TODO fix
 		public String getAttributeValue(final String attributeName)
 		{
 			final XMLAttribute attribute=getAttribute(attributeName);	//find the attribute with the given name
@@ -167,7 +181,7 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
 		@param attributeName The name of the desired attribute.
 		@return The integer value of the attribute with the specified name, or 0 if no such named attribute exists or there was an invalid integer.
 		*/
-/*G***fix
+/*TODO fix
 		public int getAttributeIntegerValue(final String attributeName)
 		{
 			final String attributeValue=getAttributeValue(attributeName);	//get the string value of the attribute
@@ -177,7 +191,7 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
 			}
 			catch(NumberFormatException e)	//if this was an invalid number
 			{
-				return 0;	//return zero as the default G***maybe later make a function that specifies the default
+				return 0;	//return zero as the default TODO maybe later make a function that specifies the default
 			}
 		}
 */
@@ -186,7 +200,7 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
 		@param attributeName The name of the desired attribute.
 		@return The boolean value of the attribute with the specified name, or false if no such named attribute exists or there was an invalid boolean value.
 		*/
-/*G***fix
+/*TODO fix
 		public boolean getAttributeBooleanValue(final String attributeName)
 		{
 			final String attributeValue=getAttributeValue(attributeName);	//get the string value of the attribute
@@ -196,66 +210,9 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
 			}
 			catch(NumberFormatException e)	//if this was an invalid number
 			{
-				return false;	//return false as the default G***maybe later make a function that specifies the default
+				return false;	//return false as the default TODO maybe later make a function that specifies the default
 			}
 		}
-*/
-
-	/**The local CSS style, if any, of this element.*/
-//G***del	private XMLCSSStyleDeclaration LocalStyle=null;
-
-	/**@return The local CSS style of this element (e.g. style from a "style"
-		attribute), or <code>null</code> if there is no local CSS style.
-	@see XMLCSSStyleDeclaration
-	@see XMLElement#getCSSStyle
-	*/
-//G***del	public XMLCSSStyleDeclaration getLocalCSSStyle() {return LocalStyle;}
-
-	/**Sets the local CSS style of this element.
-	@param style The new local CSS style of this element.
-	@see XMLCSSStyleDeclaration
-	@see XMLElement#setCSSStyle
-	*/
-//G***del	public void setLocalCSSStyle(final XMLCSSStyleDeclaration style) {LocalStyle=style;}
-
-	/**The resulting CSS style of this element, after processing stylesheets and local styles.*/
-//G***del	private XMLCSSStyleDeclaration Style=new XMLCSSStyleDeclaration();
-
-	/**@return The resulting CSS style of this element, after processing
-		stylesheets and local styles.
-	@see XMLCSSStyleDeclaration
-	@see XMLElement#getLocalCSSStyle
-	*/
-//G***del	public XMLCSSStyleDeclaration getCSSStyle() {return Style;}
-
-	/**Sets the resulting style of this element, after processing stylesheets and
-		local styles.
-	@param style The new resulting style of this element.
-	@see XMLCSSStyleDeclaration
-	@see XMLElement#setLocalCSSStyle
-	*/
-//G***del	public void setCSSStyle(final XMLCSSStyleDeclaration style) {Style=style;}
-
-
-	/**Retrieves the object representation of the value of this element's CSS
-		style property if it has been set. If it has not been set, this element's
-		parent node will be searched, and so on up the hierarchy.
-	@param propertyName  The name of the CSS property. See the CSS property index.
-	@return  Returns the value of the property if it has been set somewhere up the
-		hierarchy, or <code>null</code> if the property has not been set.
-	@see XMLCSSStyleDeclaration#getPropertyCSSValue
-	@see XMLCSSStyleDeclaration#getPropertyValue
-	@see XMLCSSStyleDeclaration#setProperty
-	*/
-/*G***fix or delete
-	public CSSValue getPropertyCSSValue(String propertyName)
-	{
-		final CSSValue cssValue=getCSSStyle().getPropertyCSSValue();	//get the
-
-
-
-		return (CSSValue)get(propertyName);	//get the item with the specified property name
-	}
 */
 
 	/**Function override to specify the types of nodes that can be child nodes.
@@ -278,112 +235,9 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
 		}
 	}
 
-		/**Sets the name of the XML element.
-		@param newName The new name for the XML element, or "" to specify no name.
-		@exception XMLInvalidNameException Thrown if the specified name is invalid.
-		*/
-		//G***fix; either change name or make it have package access or something
-/*G***del and check about valid names
-		public void setName(String newName) throws XMLInvalidNameException
-		{
-			if(newName.length()!=0)	//don't check empty strings, because empty strings really aren't valid XML names, and we want to allow clearing the name
-				XMLProcessor.checkValidName(newName);	//make sure the name is valid
-			setNodeName(newName);	//set the name
-		}
-*/
+//TODO it would probably be best to find a way not to have to typecast all of the getChildNodes() calls below
 
-//G***it would probably be best to find a way not to have to typecast all of the getChildNodes() calls below
-
-	/**@return An iterator of only child elements.
-	@see XMLElement
-	@see XMLNodeIterator
-	*/
-/*G***del if we don't need
-	public final synchronized Iterator elements()
-	{
-		return new XMLNodeIterator((XMLNodeList)getChildNodes(), XMLNode.ELEMENT_NODE);	//construct an XMLNodeIterator that looks at our children and only returns elements
-	}
-*/
-
-//G***maybe make an entities() function here
-
-	/**@return An iterator of only comments.
-	@see XMLComment
-	@see XMLNodeIterator
-	*/
-/*G***del if we don't need
-	public final synchronized Iterator comments()
-	{
-		return new XMLNodeIterator((XMLNodeList)getChildNodes(), XMLNode.COMMENT_NODE);	//construct an XMLNodeIterator that looks at our children and only returns comments
-	}
-	*/
-
-	/**@return An iterator of only processing instructions.
-	@see XMLProcessingInstructions
-	@see XMLNodeIterator
-	*/
-/*G***del if we don't need
-	public final synchronized Iterator processingInstructions()
-	{
-		return new XMLNodeIterator((XMLNodeList)getChildNodes(), XMLNode.PROCESSING_INSTRUCTION_NODE);	//construct an XMLNodeIterator that looks at our children and only returns processing instructions
-	}
-*/
-
-	/**@return An iterator of only CDATA objects.
-	@see XMLCDATA
-	@see XMLNodeIterator
-	*/
-/*G***del if we don't need
-	public final synchronized Iterator CDATAs()
-	{
-		return new XMLNodeIterator((XMLNodeList)getChildNodes(), XMLNode.CDATA_SECTION_NODE);	//construct an XMLNodeIterator that looks at our children and only returns CDATA object
-	}
-*/
-
-	/**@return The complete character data of the element without markup.
-	@see XMLEntity#getCharacterData
-	*/
-/*G***del if we don't need
-	public String getCharacterData()
-	{
-		String characterData="";	//we'll collect the character data here
-*/
-/*G***fix this to work with the DOM
-		int charIndex=0;	//this will be our index into this element's character content
-		for(int childIndex=0; childIndex<getChildNodes().getLength(); childIndex++)	//look at each child node
-		{
-			Node node=getChildNodes().item(childIndex);	//look at this node
-			String charactersToAdd="";	//this will be the characters to add
-			switch(node.getNodeType())	//see which type of object this is
-			{
-				case XMLNode.ELEMENT_NODE:	//if this is an element
-					charactersToAdd=((XMLElement)node).getCharacterData();	//get the characters from the element
-					break;
-				case XMLNode.CDATA_SECTION_NODE:	//if this is a CDATA object
-					charactersToAdd+=((XMLCDATA)node).getNodeValue();	//get the characters from the CDATA object
-					break;
-				//G***add code for comment sections and such
-			}
-			if(charactersToAdd.length()!=0)	//if we have characters to add (which means that this is an object whose characters should be added
-			{
-				int objectCharacterIndex=node.getCharacterIndex();	//get the character index of the object
-				if(objectCharacterIndex>getCharacterContent().length())	//if for some reason the object's character index is above the end of our character content (which would make substring() throw an error)
-					objectCharacterIndex=getCharacterContent().length();		//bring the object's character index back into range; put it one past the end of the character content, which menas we're defaulting to putting the object after our character content
-				if(objectCharacterIndex>charIndex)	//if this object comes later in the character content
-				{
-					characterData+=getCharacterContent().substring(charIndex, objectCharacterIndex);	//append all the character content up to this point
-					charIndex=objectCharacterIndex;	//show how much character content we've added to the character data
-				}
-				characterData+=charactersToAdd;	//add the character data from this object
-			}
-		}
-		if(charIndex<getCharacterContent().length())	//if we still have character content we haven't added, yet
-			characterData+=getCharacterContent().substring(charIndex);	//append the remaining characters
-*/
-/*G***del if we don't need
-		return characterData;	//return the character data we constructed
-	}
-*/
+//TODO maybe make an entities() function here
 
 	/**Returns the name of the element. For example, in:
 	<pre>
@@ -397,7 +251,7 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
 		form, regardless of the case in the  source HTML document.
 	@version DOM Level 1
 	*/
-	public String getTagName() {return getNodeName();}	//G***check to see if this is an HTML document and canonicize the names if so
+	public String getTagName() {return getNodeName();}	//TODO check to see if this is an HTML document and canonicize the names if so
 
 	/**Retrieves an attribute value by name.
 	@param name The name of the attribute to retrieve.
@@ -437,8 +291,8 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
 	*/
 	public void setAttribute(String name, String value) throws DOMException
 	{
-		//G***check for valid name characters here
-		//G***check for read-only status here
+		//TODO check for valid name characters here
+		//TODO check for read-only status here
 		XMLAttribute attribute;	//we'll use this to either find an existing attribute or create a new one
 		if(getAttributeXMLNamedNodeMap().containsKey(name))	//if an attribute with this name already exists
 			attribute=(XMLAttribute)getAttributeXMLNamedNodeMap().getNamedItem(name);	//get a reference to the attribute
@@ -447,7 +301,7 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
 			attribute=new XMLAttribute(getOwnerXMLDocument(), name);	//create an attribute with the specified name
 			getAttributeXMLNamedNodeMap().setNamedItem(attribute);	//add this attribute to our map
 		}
-		attribute.setValue(value);	//set the value of the attribute G***check about setValue() setNodeValue() and such
+		attribute.setValue(value);	//set the value of the attribute TODO check about setValue() setNodeValue() and such
 	}
 
 	/**Removes an attribute by name. If the removed attribute is known to have a
@@ -461,10 +315,10 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
 	*/
 	public void removeAttribute(String name) throws DOMException
 	{
-		//G***check read-only status here
+		//TODO check read-only status here
 		if(hasAttribute(name))  //if the attribute exists (needed because this function in the DOM throws now not-found exception)
 			getAttributeXMLNamedNodeMap().removeNamedItem(name);	//remove any attribute with this name, if there is one
-		//G***check to see if there's a default value that we should add
+		//TODO check to see if there's a default value that we should add
 	}
 
 	/**Retrieves an attribute node by name.
@@ -504,9 +358,9 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
 	*/
 	public Attr setAttributeNode(Attr newAttr) throws DOMException
 	{
-		//G***make sure this is the correct document
-		//G***check for read-only status
-		//G***check to see if the attribute is already in use
+		//TODO make sure this is the correct document
+		//TODO check for read-only status
+		//TODO check to see if the attribute is already in use
 		return (Attr)getAttributeXMLNamedNodeMap().setNamedItem(newAttr);	//add this attribute to our map
 	}
 
@@ -522,27 +376,7 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
 	 *   of the element.
 	 */
 	public Attr               removeAttributeNode(Attr oldAttr)
-																								throws DOMException {return null;}	//G***fix
-
-
-	/**Returns a NodeList of first-level descendant elements with a given tag name.
-	If deep is set to <code>true</code>, returns a NodeList of all descendant elements
-		with a given tag name, in the	order	in which they would be encountered in a preorder
-		traversal of the element tree.
-	@param name The name of the tag to match on. The special value "*" matches all tags.
-	@param deep Whether or not matching child elements of each matching child element, etc. should be included.
-	@return A new NodeList object containing all the matching element nodes.
-	@see XMLElement
-	@see XMLDocument
-	@see XMLDocument#getElementsByTagName
-	@see XMLNodeList
-	*/
-/*G***del
-	public NodeList getElementsByTagName(String name, boolean deep)
-	{
-		return getNodesByName(ELEMENT_NODE, name, deep);	//get all the element nodes with matching name
-	}
-*/
+																								throws DOMException {return null;}	//TODO fix
 
 	/**Returns a NodeList of all descendant elements with a given tag name, in the
 		order	in which they would be encountered in a preorder traversal of the element
@@ -555,87 +389,11 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
 	@see XMLNodeList
 	@version DOM Level 1
 	*/
-	public NodeList getElementsByTagName(String name) //G***does this correctly return a *preorder* traversal?
+	public NodeList getElementsByTagName(String name) //TODO does this correctly return a *preorder* traversal?
 	{
-//G***we may want to just remove the function below and replace it with a direct call to getNodesByName()
+//TODO we may want to just remove the function below and replace it with a direct call to getNodesByName()
 		return getNodesByName(ELEMENT_NODE, name, true);	//get the elements, showing that we want *all* the child elements at whatever level
-//G***del		return getElementsByTagName(name, true);	//get the elements, showing that we want *all* the child elements at whatever level
 	}
-
-	/**Returns a NodeList of all descendant elements with a given nested order of
-		elements named in tagPathArray. At each level, the first matching element
-		will be used if there is more than one match, but if that path comes to a
-		dead end the next matching element will be searched, and so on up the hierarchy.
-		If the path has been traversed up to its last element, the list of nodes will
-		be returned even if it is emty.<br/>
-		That is, for the xml structure
-		<code>&lt;top&gt;&lt;middle&gt;&lt;tag1/&gt;&lt;tag2/&gt;&lt;tag3/&gt;&lt;/middle&gt;&lt;/top&gt;</code>,
-		all the internal tags may be returned by passing a path of
-		{"top", "middle", "*"}.
-	@param tagPathArray An array of names representing a path of tags to follow in
-		retrieving a list of elements. The special value "*" matches all tags.
-	@return A new NodeList object containing all the matching element nodes at the
-		end of the path, or <code>null</code> if the path could not be traversed up
-		to its last tag name.
-	@see XMLElement
-	@see XMLDocument
-	@see XMLNodeList
-	@see XMLDocument#getElementsByTagPath
-	@see #getElementsByTagName
-	*/
-/*G***del if not needed
-	public NodeList getElementsByTagPath(final String[] tagPathArray)
-	{
-		if(tagPathArray.length>0)	//if a valid path was passed
-			return getElementsByTagPath(tagPathArray, 0);	//start with this node and try to traverse the path starting at its first element
-		else	//if there are no tag names in the path
-			return null;	//show that no path was passed
-	}
-*/
-
-	/**Helper function for <code>getElementsByTagPath()<code> which recursively
-		finds the matching path, searching alternate paths if one comes to a dead end.
-		Returns a NodeList of all descendant elements with a given nested order of
-		elements named in tagPathArray. At each level, the first matching element
-		will be used if there is more than one match, but if that path comes to a
-		dead end the next matching element will be searched, and so on up the hierarchy.
-		If the path has been traversed up to its last element, the list of nodes will
-		be returned even if it is emty.<br/>
-		That is, for the xml structure
-		<code>&lt;top&gt;&lt;middle&gt;&lt;tag1/&gt;&lt;tag2/&gt;&lt;tag3/&gt;&lt;/middle&gt;&lt;/top&gt;</code>,
-		all the internal tags may be returned by passing a path of
-		{"top", "middle", "*"}.<br/>
-	@param tagPathArray An array of names representing a path of tags to follow in
-		retrieving a list of elements. The special value "*" matches all tags.
-	@param pathIndex The current part of the path being searched.
-	@return A new NodeList object containing all the matching element nodes at the
-		end of the path, or <code>null</code> if the path could not be traversed up
-		to its last tag name.
-	@see XMLElement
-	@see XMLDocument
-	@see XMLNodeList
-	@see #getElementsByTagName
-	@see #getElementsByTagPath
-	*/
-/*G***del if not needed
-	protected NodeList getElementsByTagPath(final String[] tagPathArray, final int pathIndex)
-	{
-		final NodeList elementsAvailableList=getElementsByTagName(tagPathArray[pathIndex], false);	//get the list of elements at this level in the path
-		if(pathIndex==tagPathArray.length-1)	//if this is the last tag on the path
-			return elementsAvailableList;	//return the list we constructed, even if it is empty
-		else	//otherwise, if we're somewhere in the middle of the path
-		{
-			for(int elementIndex=0; elementIndex<elementsAvailableList.getLength(); ++elementIndex)	//look at each of our possible paths at this point
-			{
-				final Element element=(Element)elementsAvailableList.item(elementIndex);	//get a reference to this element
-				final NodeList elementsFoundList=((XMLElement)element).getElementsByTagPath(tagPathArray, pathIndex+1);	//see if this path works
-				if(elementsFoundList!=null)	//if this path retrieved a list of elements (even an empty list), this means we were able to follow the complete path
-					return elementsFoundList;	//return the list we found
-			}
-			return null;	//show that none of our paths worked; they all failed somewhere in the middle
-		}
-	}
-*/
 
 	/**Retrieves an attribute value by local name and namespace URI.
 	@param namespaceURI The namespace URI of the attribute to retrieve.
@@ -684,8 +442,8 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
 	*/
 	public void setAttributeNS(String namespaceURI, String qualifiedName, String value) throws DOMException
 	{
-		//G***check for valid name characters here
-		//G***check for read-only status here
+		//TODO check for valid name characters here
+		//TODO check for read-only status here
 		final String localName=XMLUtilities.getLocalName(qualifiedName); //get the local name of the qualified name
 		XMLAttribute attribute;	//we'll use this to either find an existing attribute or create a new one
 		if(getAttributeXMLNamedNodeMap().containsKeyNS(namespaceURI, localName))	//if an attribute with this name already exists
@@ -697,7 +455,6 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
 		}
 		else	//if this attribute doesn't exist
 		{
-//G***del Debug.trace("adding attribute with value: ", value);  //G***del
 			attribute=new XMLAttribute(getOwnerXMLDocument(), namespaceURI, qualifiedName, value); //create an attribute with the specified name and value
 			getAttributeXMLNamedNodeMap().setNamedItemNS(attribute);	//add this attribute to our map
 		}
@@ -717,10 +474,10 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
 	*/
 	public void removeAttributeNS(String namespaceURI, String localName) throws DOMException
 	{
-		//G***check read-only status here
+		//TODO check read-only status here
 		if(hasAttributeNS(namespaceURI, localName))  //if the attribute exists (needed because this function in the DOM throws now not-found exception)
 			getAttributeXMLNamedNodeMap().removeNamedItemNS(namespaceURI, localName); //remove any attribute with this name, if there is one
-		//G***check to see if there's a default value that we should add
+		//TODO check to see if there's a default value that we should add
 	}
 
 	/**Retrieves an <code>Attr</code> node by local name and namespace URI.
@@ -762,10 +519,9 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
 	*/
 	public Attr setAttributeNodeNS(Attr newAttr) throws DOMException
 	{
-		//G***make sure this is the correct document
-		//G***check for read-only status
-		//G***check to see if the attribute is already in use
-//G***del Debug.trace("inside setAttributeNodeNS()");
+		//TODO make sure this is the correct document
+		//TODO check for read-only status
+		//TODO check to see if the attribute is already in use
 		return (Attr)getAttributeXMLNamedNodeMap().setNamedItemNS(newAttr);	//add this attribute to our map
 	}
 
@@ -811,7 +567,6 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
 	*/
 	public boolean hasAttributeNS(String namespaceURI, String localName)
 	{
-//G***del Debug.trace("--inside XMLElement.hasAttributeNS, looking for namespace URI: "+namespaceURI+" local name: "+localName);  //G***del
 		return ((XMLNamedNodeMap)getAttributes()).containsKeyNS(namespaceURI, localName);  //return whether there's a node in our attribute map with the given namespace URI and local name for a key
 	}
 

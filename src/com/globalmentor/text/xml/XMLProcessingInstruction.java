@@ -1,14 +1,31 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.StringTokenizer;
+import java.util.*;
+
+import static com.globalmentor.text.xml.XMLUtilities.*;
+
 import org.w3c.dom.DOMException;
 
-import static com.globalmentor.text.xml.XML.*;
-
 /**A processing instruction in an XML document.
+@author Garret Wilson
 @see org.w3c.dom.ProcessingInstruction
+@deprecated
 */
 public class XMLProcessingInstruction extends XMLNode implements org.w3c.dom.ProcessingInstruction
 {
@@ -96,10 +113,10 @@ public class XMLProcessingInstruction extends XMLNode implements org.w3c.dom.Pro
 		@param nodeValue The new character data for the attribute.
 		@version DOM Level 1
 		*/
-		public void setNodeValue(String nodeValue) throws DOMException  //G***change to use the new XMLUtilities.getProcessingInstructionPseudoAttributeValues()
+		public void setNodeValue(String nodeValue) throws DOMException  //TODO change to use the new getProcessingInstructionPseudoAttributeValues()
 		{
 			Value=nodeValue;	//set the value
-				//G***this stuff may be eventually placed back into XMLProcessor
+				//TODO this stuff may be eventually placed back into XMLProcessor
 			pseudoAttributeMap.clear();	//clear all of the keys and values from the map
 			final StringTokenizer tokenizer=new StringTokenizer(nodeValue, WHITESPACE_CHARS);	//create a tokenizer that separates tokens based on XML whitespace
 			while(tokenizer.hasMoreTokens())	//while there are more tokens
@@ -113,7 +130,7 @@ public class XMLProcessingInstruction extends XMLNode implements org.w3c.dom.Pro
 					if((quoteChar==SINGLE_QUOTE_CHAR || quoteChar==DOUBLE_QUOTE_CHAR) && token.charAt(token.length()-1)==quoteChar)
 					{
 						final String pseudoAttributeName=token.substring(0, equalsIndex);	//get the name of the attribute
-							//G***this does not correctly interpret embedded entities; does XML require it?
+							//TODO this does not correctly interpret embedded entities; does XML require it?
 						final String pseudoAttributeValue=token.substring(equalsIndex+2, token.length()-1);	//get the value of the attribute
 						pseudoAttributeMap.put(pseudoAttributeName, pseudoAttributeValue);	//put the name and value in the map
 					}
@@ -143,7 +160,7 @@ public class XMLProcessingInstruction extends XMLNode implements org.w3c.dom.Pro
 	*/
 	public void setData(String data) throws DOMException
 	{
-		//G***check about this readonly stuff
+		//TODO check about this readonly stuff
 		setNodeValue(data);
 	}
 

@@ -1,3 +1,19 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml;
 
 import java.io.IOException;
@@ -7,9 +23,11 @@ import com.globalmentor.io.ParseIOException;
 /**General exception class for all XML parsing errors.
 This inherits from IOException so that it may be thrown from a
 <code>Reader.read()</code> function, for example.
+@author Garret Wilson
 @see IOException
+@deprecated
 */
-public class XMLParseException extends IOException	//G***it looks like we were going to make this descend from ParseIOException
+public class XMLParseException extends IOException	//TODO it looks like we were going to make this descend from ParseIOException
 {
 	/**The base name used for getting resources.*/
 	protected static final String RESOURCE_BUNDLE_BASE_NAME=XMLParseException.class.getPackage().getName()+".XMLParseExceptionResources";
@@ -106,62 +124,6 @@ public class XMLParseException extends IOException	//G***it looks like we were g
 		//do the default constructing with the data from the ParseIOException
 		this(parseIOException.getLineIndex(), parseIOException.getCharIndex(), parseIOException.getSourceName());
 	}
-
-	//G***make this print Unicode codes for characters which may not be displayable.
-	/**Converts a list of delimiter characters to a string with the characters in a list, each in a single quote.
-	Whitespace characters besides space are displayed in their escaped form.
-	@param delimiterChars A string with the delimiter characters to be converted to a string.
-	*/
-/*G***del if we don't need
-	static public String convertDelimitersToMessage(final String delimiterChars)
-	{
-		String messageString="";	//this string will receive the message to return
-		for(int i=0; i<delimiterChars.length(); ++i)	//look at each character in the string
-		{
-			messageString+='\'';	//add a single quote character
-			switch(delimiterChars.charAt(i))	//see which character this is
-			{
-				case XMLProcessor.TAB_CHAR:
-					messageString+="\\t";
-					break;
-				case XMLProcessor.CR_CHAR:
-					messageString+="\\r";
-					break;
-      	case XMLProcessor.LF_CHAR:
-        	messageString+="\\n";
-          break;
-        default:	//if we don't recognize the character
-        	messageString+=delimiterChars.charAt(i);	//add it normally
-          break;
-      }
-      if(i<delimiterChars.length()-1)	//if this isn't the last character in the string
-      	messageString+="', ";	//show that there will be another character
-      else	//if this is the last character in the string
-      	messageString+="'";	//add just a single quote
-    }
-    return messageString;	//return the message string we constructed
-	}
-*/
-
-	/**Converts an array of strings to a message with the strings separated by commas.
-	@param stringArray An array of strings to be converted to a string.
-	*/
-	//G***convert the characters in these strings so that whitespace gets converted to characters
-/*G***del if we don't need
-	static public String convertStringsToMessage(final String[] stringArray)
-	{
-		String messageString="";	//this string will receive the message to return
-		for(int i=0; i<stringArray.length; ++i)	//look at each string in the array
-		{
-			messageString+="\""+stringArray[i];	//add a double quote character followed by this string
-			if(i<stringArray.length-1)	//if this isn't the last string in the array
-				messageString+="\", ";	//show that there will be another string
-			else	//if this is the last string in the array
-				messageString+='"';	//add just a double quote
-		}
-		return messageString;	//return the message string we constructed
-	}
-*/
 
 }
 

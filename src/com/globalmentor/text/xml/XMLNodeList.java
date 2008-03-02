@@ -1,32 +1,34 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import org.w3c.dom.Node;
 
 /**A list of nodes in an XML document.
+@author Garret Wilson
 @see XMLNode
 @see XMLNodeIterator
 @see org.w3c.dom.Node
 @see org.w3c.dom.NodeList
+@deprecated
 */
 public class XMLNodeList extends LinkedList implements org.w3c.dom.NodeList
 {
-
-//G***del	private XMLNodeList() {}	//G***testing
-
-	/**The node which owns this list and all nodes in the list.*/
-//G***del	private XMLNode ParentNode;
-
-	/**Constructs a node list with the parent node specified.
-	@param parentNode The node which owns this list and all nodes in the list.
-	*/
-/*G***del
-	public XMLNodeList(XMLNode parentNode)
-	{
-		ParentNode=parentNode;	//set the parent node
-	}
-*/
 
 	/**Creates and returns a duplicate copy of this node list with no values.
 	@return A duplicate "shallow clone" copy of this node list.
@@ -60,7 +62,7 @@ public class XMLNodeList extends LinkedList implements org.w3c.dom.NodeList
 		 * @param o element to be appended to this list.
 		 * @return <tt>true</tt> (as per the general contract of Collection.add).
 		 */
-//G***fix		public boolean add(Object o) {
+//TODO fix		public boolean add(Object o) {
 
 
 	/**Returns the <code>index</code>th item in the collection. If

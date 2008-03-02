@@ -1,3 +1,19 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml;
 
 import com.globalmentor.java.Objects;
@@ -6,23 +22,14 @@ import com.globalmentor.java.Objects;
 	qname and/or namespace and local name.
 <p>This class can be used indepedently of the rest of the W3C DOM
 	implementations in this package.</p>
+@author Garret Wilson
+@deprecated
 */
 public class XMLNamedObject	//TODO implement NamedObject or extend DefaultNamedObject when Java gets generics; also investigate leveraging the new QualifiedName
 {
 
 	/**The qualified name of the object.*/
 	private String qname=null;
-
-	/**The name of the object.*/
-//G**del	private Stname=null;
-
-		/**@return The name of the object.*/
-//G***del	public String getName() {return qname;}
-		
-		/**Sets the name of the object.
-		@param newName The object's new name.
-		*/
-//G**del		protected void setName(final Object newName) {name=newName;}
 
 	/**The namespace URI, or <code>null</code> if there is no namespace.*/
 	private String namespaceURI=null;
@@ -66,7 +73,6 @@ public class XMLNamedObject	//TODO implement NamedObject or extend DefaultNamedO
 		*/
 		public void setLocalName(final String localName)
 		{
-//G***del when works			localName=newLocalName;
 			if(!Objects.equals(getLocalName(), localName))	//if the local name is really changing
 			{
 				setName(prefix, getLocalName()); //set the prefix and the local name, and update the node name itself
@@ -85,16 +91,7 @@ public class XMLNamedObject	//TODO implement NamedObject or extend DefaultNamedO
 	*/
 	public void setQName(final String qname)
 	{
-//G***del		setName(qname);	//store the qname in the name property
 		this.qname=qname;	//save the qualified name
-/*G***del if not needed; this is slightly more efficient
-			
-		  final int namespaceDividerIndex=qualifiedName.indexOf(XMLConstants.NAMESPACE_DIVIDER); //find where the namespace divider is in the name
-			if(namespaceDividerIndex!=-1) //if there was a namespace prefix indicated
-				setNodeName(qualifiedName.substring(0, namespaceDividerIndex), qualifiedName.substring(namespaceDividerIndex+1)); //extract the prefix and local name from the qualified name and set them
-			else  //if there was no namespace prefix indicated
-				setNodeName(null, qualifiedName); //set just the qualified name, which will also update the local name
-*/
 		prefix=XMLUtilities.getPrefix(qname);	//determine and set the prefix
 		localName=XMLUtilities.getLocalName(qname);	//determine and set the local name		
 	}
@@ -111,7 +108,6 @@ public class XMLNamedObject	//TODO implement NamedObject or extend DefaultNamedO
 		prefix=newPrefix;  //set the prefix
 		localName=newLocalName;	//set the local name
 		qname=XMLUtilities.createQualifiedName(newPrefix, newLocalName);	//create a qualified name and store it (don't call setQName(), which will needlessly reset the prefix and local name)
-//G***del when works		setName(XMLUtilities.createQualifiedName(newPrefix, newLocalName));	//create a qualified name and store it (don't call setQName(), which will needlessly reset the prefix and local name)
 	}
 
 	/**Constructor specifying the namespace and qname of the object.
@@ -121,7 +117,7 @@ public class XMLNamedObject	//TODO implement NamedObject or extend DefaultNamedO
 	*/
 	public XMLNamedObject(final String namespaceURI, final String qname)
 	{
-//G***fix		super(qname);	//construct the parent class
+//TODO fix		super(qname);	//construct the parent class
 		setNamespaceURI(namespaceURI);	//set the namespace URI
 		this.qname=qname;	//save the qualified name
 		prefix=qname!=null ? XMLUtilities.getPrefix(qname) : null;	//determine and set the prefix

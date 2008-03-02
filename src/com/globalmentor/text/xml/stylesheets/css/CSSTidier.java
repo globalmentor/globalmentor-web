@@ -9,7 +9,7 @@ import com.globalmentor.java.Characters;
 import com.globalmentor.java.Maths;
 import com.globalmentor.java.StringBuffers;
 import com.globalmentor.java.Strings;
-import com.globalmentor.text.xml.oeb.css.OEBCSSUtilities;
+import com.globalmentor.text.xml.oeb.css.OEBCSS;
 import com.globalmentor.util.Debug;
 import com.globalmentor.util.PropertiesUtilities;
 
@@ -240,7 +240,7 @@ Debug.trace("we should remove property");
 				//if we should remove MS Office properties, and this is an MS Office property
 		if(isRemoveMSOfficeProperties() && propertyName.startsWith("mso-")) //G***use a constant here
 			return true;  //show that we should remove this property
-		if(!OEBCSSUtilities.isOEB1CSSProperty(propertyName))  //if this is not an OEB 1.0 CSS property G***move this to an OEBCSSTidier
+		if(!OEBCSS.isOEB1CSSProperty(propertyName))  //if this is not an OEB 1.0 CSS property G***move this to an OEBCSSTidier
 			return true;  //remove non-OEB CSS properties
 		return false; //since we didn't find a reason to, don't remove this property
 	}

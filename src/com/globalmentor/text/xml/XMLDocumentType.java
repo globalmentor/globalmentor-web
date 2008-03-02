@@ -1,29 +1,44 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml;
 
-import org.w3c.dom.NamedNodeMap;
-
-//G***why don't we import the document type
+import org.w3c.dom.*;
 
 /**An interface to the entities defined for an XML document along with other items.
+@author Garret Wilson
 @see XMLNode
 @see org.w3c.dom.DocumentType
+@deprecated
 */
-public class XMLDocumentType extends XMLNode implements org.w3c.dom.DocumentType
+public class XMLDocumentType extends XMLNode implements DocumentType
 {
-	/*Constructor which requires an owner document to be specified.
+	/**Constructor which requires an owner document to be specified.
 	@param ownerDocument The document which owns this node.
 	*/
 	public XMLDocumentType(final XMLDocument ownerDocument)
 	{
 		super(XMLNode.DOCUMENT_TYPE_NODE, ownerDocument);	//construct the parent class
-//G***del		setNodeType(XMLNode.DOCUMENT_TYPE_NODE);	//show that this is an XML document type
 	}
 
 	/**Constructor that specifies a document type name.
 	@param ownerDocument The document which owns this node.
 	@param newName The new name for the XML document type.
 	*/
-	public XMLDocumentType(final XMLDocument ownerDocument, final String newName)//G***fix throws XMLInvalidNameException
+	public XMLDocumentType(final XMLDocument ownerDocument, final String newName)//TODO fix throws XMLInvalidNameException
 	{
 		this(ownerDocument);	//do the default constructing
 		setNodeName(newName);	//set the name
@@ -41,7 +56,7 @@ public class XMLDocumentType extends XMLNode implements org.w3c.dom.DocumentType
 	{
 		final XMLDocumentType clone=new XMLDocumentType(getOwnerXMLDocument(), getNodeName());	//create a new document type with the same owner document and the same name
 		clone.setEntityXMLNamedNodeMap(getEntityXMLNamedNodeMap().cloneDeep());	//clone the entities and put them in the clone
-		//G***clone the notations
+		//TODO clone the notations
 		clone.setPublicID(getPublicID());	//give the clone the same public ID
 		clone.setSystemID(getSystemID());	//give the clone the same system ID
 		return clone;	//return our cloned node
@@ -106,7 +121,7 @@ public class XMLDocumentType extends XMLNode implements org.w3c.dom.DocumentType
 	 * <br>The DOM Level 2 does not support editing notations, therefore
 	 * <code>notations</code> cannot be altered in any way.
 	 */
-	public NamedNodeMap       getNotations() {return null;}	//G***fix
+	public NamedNodeMap       getNotations() {return null;}	//TODO fix
 
 	/**The public identifier of this document type, or <code>null</code> if there is none.*/
 	private String PublicID=null;
@@ -123,13 +138,13 @@ public class XMLDocumentType extends XMLNode implements org.w3c.dom.DocumentType
      *  The public identifier of the external subset.
      * @since DOM Level 2
      */
-    public String getPublicId() {return getPublicID();}	//G***fix, comment
+    public String getPublicId() {return getPublicID();}	//TODO fix, comment
 
 
 	/**Sets the public identifier.
 	@see XMLDocumentType#setSystemID
 	*/
-	public void setPublicID(final String publicID) {PublicID=publicID;} //G***this shouldn't be public; for now it's used by XHTMLTidier
+	public void setPublicID(final String publicID) {PublicID=publicID;} //TODO this shouldn't be public; for now it's used by XHTMLTidier
 
 	/**The system identifier of this document type, or <code>null</code> if there is none.*/
 	private String SystemID=null;
@@ -145,13 +160,13 @@ public class XMLDocumentType extends XMLNode implements org.w3c.dom.DocumentType
      *  The system identifier of the external subset.
      * @since DOM Level 2
      */
-    public String getSystemId() {return getSystemID();}	//G***fix, comment
+    public String getSystemId() {return getSystemID();}	//TODO fix, comment
 
 
 	/**Sets the system identifier.
 	@see XMLDocumentType#setPublicID
 	*/
-	public void setSystemID(final String systemID) {SystemID=systemID;} //G***this shouldn't be public; for now it's used by XHTMLTidier
+	public void setSystemID(final String systemID) {SystemID=systemID;} //TODO this shouldn't be public; for now it's used by XHTMLTidier
 
 	/**Sets the public identifier and system identifier. Only for use within this
 	package.
@@ -172,6 +187,6 @@ public class XMLDocumentType extends XMLNode implements org.w3c.dom.DocumentType
      * to build the document.
      * @since DOM Level 2
      */
-    public String getInternalSubset() {return "";}	//G***fix
+    public String getInternalSubset() {return "";}	//TODO fix
 
 }

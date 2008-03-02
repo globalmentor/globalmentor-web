@@ -1,12 +1,29 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml;
 
-import org.w3c.dom.*;
+import static com.globalmentor.text.xml.XMLUtilities.*;
 
-import static com.globalmentor.text.xml.XML.*;
+import org.w3c.dom.*;
 
 /**A lightweight portion of an XML document.
 @see XMLNode
 @author Garret Wilson
+@deprecated
 */
 public class XMLDocumentFragment extends XMLNode implements DocumentFragment
 {
@@ -24,7 +41,7 @@ public class XMLDocumentFragment extends XMLNode implements DocumentFragment
 	@return Whether or not the specified node can be added to the list of children.
 	@see XMLNode#isNodeTypeAllowed
 	*/
-	protected boolean isNodeTypeAllowed(final Node node)  //G***make sure these are the right nodes for DocumentFragment to accept
+	protected boolean isNodeTypeAllowed(final Node node)  //TODO make sure these are the right nodes for DocumentFragment to accept
 	{
 		switch(node.getNodeType())	//see which type of node this is
 		{
@@ -50,7 +67,7 @@ public class XMLDocumentFragment extends XMLNode implements DocumentFragment
 	*/
 	public Object clone()
 	{
-		return new XMLDocumentFragment();	//create a new document fragment G***this isn't right; we need to copy the child nodes, even if we don't clone them
+		return new XMLDocumentFragment();	//create a new document fragment TODO this isn't right; we need to copy the child nodes, even if we don't clone them
 	}
 
 }

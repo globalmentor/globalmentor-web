@@ -1,9 +1,27 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml;
 
 import static com.globalmentor.text.CharacterEncoding.*;
 
 /**XML declaration in an XML document.
+@author Garret Wilson
 @see XMLNode
+@deprecated
 */
 public class XMLDeclaration extends XMLNode
 {
@@ -44,8 +62,7 @@ public class XMLDeclaration extends XMLNode
 	public XMLDeclaration(final XMLDocument ownerDocument)
 	{
 		super(XMLNode.XMLDECL_NODE, ownerDocument);	//construct the parent class
-//G***what about specifying a constant name, here?
-//G***del		setNodeType(XMLNode.XMLDECL_NODE);	//show that this is an XML declaration
+//TODO what about specifying a constant name, here?
 	}
 
 	/**Creates and returns a duplicate copy of this node. The clone has no parent.
@@ -56,7 +73,7 @@ public class XMLDeclaration extends XMLNode
 	@see XMLNode#cloneNode
 	@see XMLNode#getParentXMLNode
 	*/
-/*G*** fix cloning
+/*TODO fix cloning
 	public Object clone()
 	{
 		return new XMLCDATA(getOwnerDocument(), getNodeValue());	//create a new node with the same owner document and the same value
@@ -64,19 +81,6 @@ public class XMLDeclaration extends XMLNode
 */
 
 
-//G***fix all the DOM stuff
-
-	/**The character data of the comment.*/
-//G***del	private String Value="";
-
-		/**DOM: Returns the value of the comment.
-		@return The value of the comment.
-		*/
-//G***del		public String getNodeValue() throws DOMException {return Value;}
-
-		/**DOM: Sets the value of the comment.
-		@param nodeValue The new value for the comment.*/
-//G***del		public void setNodeValue(String nodeValue) throws DOMException {Value=nodeValue;}
-
+//TODO fix all the DOM stuff
 
 }

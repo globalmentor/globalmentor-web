@@ -1,10 +1,28 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml;
 
 import java.util.ListResourceBundle;
 
 /**Resource bundle for XML parsing errors.
+@author Garret Wilson
 @see XMLWellFormednessException
 @see XMLValidityException
+@deprecated
 */
 public class XMLParseExceptionResources extends ListResourceBundle
 {
@@ -16,7 +34,7 @@ public class XMLParseExceptionResources extends ListResourceBundle
 				//error name
 		{XMLWellFormednessException.RESOURCE_PREFIX+XMLWellFormednessException.ERROR_NAME_RESOURCE_ID, "Well-Formedness Error"},
 				//error types
-		{XMLWellFormednessException.RESOURCE_PREFIX+XMLWellFormednessException.PE_IN_INTERNAL_SUBSET, "G***fix for PE_IN_INTERNAL_SUBSET"},
+		{XMLWellFormednessException.RESOURCE_PREFIX+XMLWellFormednessException.PE_IN_INTERNAL_SUBSET, "TODO fix for PE_IN_INTERNAL_SUBSET"},
 		{XMLWellFormednessException.RESOURCE_PREFIX+XMLWellFormednessException.ELEMENT_TYPE_MATCH, "(Element Type Match) Element ending tag \"{1}\" does not match the beginning tag \"{0}\"."},
 		{XMLWellFormednessException.RESOURCE_PREFIX+XMLWellFormednessException.UNIQUE_ATT_SPEC, "(Unique Att Spec) Attribute \"{1}\" already defined for tag \"{0}\"."},
 		{XMLWellFormednessException.RESOURCE_PREFIX+XMLWellFormednessException.NO_EXTERNAL_ENTITY_REFERENCES, "(No External Entity References) Attribute \"{0}\" contains reference to external general entity \"{1}\"."},

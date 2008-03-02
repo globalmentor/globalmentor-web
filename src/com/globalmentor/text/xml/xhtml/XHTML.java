@@ -18,7 +18,7 @@ import com.globalmentor.io.ContentTypes;
 import com.globalmentor.io.Files;
 import com.globalmentor.io.ParseReader;
 import com.globalmentor.java.Objects;
-import com.globalmentor.text.xml.oeb.OEBConstants;
+import com.globalmentor.text.xml.oeb.OEB;
 import com.globalmentor.text.xml.stylesheets.css.XMLCSSProcessor;
 import com.globalmentor.text.xml.stylesheets.css.XMLCSSStyleDeclaration;
 import com.globalmentor.text.xml.xpath.XPath;
@@ -577,7 +577,7 @@ public class XHTML
 			if(ContentTypes.TEXT_PRIMARY_TYPE.equals(primaryType))	//if this is "text/?"
 			{
 				if(HTML_SUBTYPE.equals(subType)		//if this is "text/html"
-						|| X_OEB1_DOCUMENT_SUBTYPE.equals(subType))	//if this is "text/x-oeb1-document"
+						|| OEB.X_OEB1_DOCUMENT_SUBTYPE.equals(subType))	//if this is "text/x-oeb1-document"
 				{
 					return true;	//show that this is HTML
 				}
@@ -610,7 +610,7 @@ public class XHTML
 		{
 				//if it's part of the XHTML or OEB namespace
 			if(XHTML_NAMESPACE_URI.equals(namespaceURI)
-					|| OEBConstants.OEB1_DOCUMENT_NAMESPACE_URI.equals(namespaceURI))
+					|| OEB.OEB1_DOCUMENT_NAMESPACE_URI.equals(namespaceURI))
 				return true;  //show that this is an HTML namespace
 		}
 		return false;	//show that we didn't recognize the namespace as HTML

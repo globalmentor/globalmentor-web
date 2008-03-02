@@ -18,7 +18,7 @@ import static com.globalmentor.text.xml.xhtml.XHTML.*;
 	lines is converted to an XHTML <code>&lt;p&gt;</code>.
 @author Garret Wilson
 */
-public class XHTMLCreator extends TextUtilities
+public class XHTMLCreator
 {
 	protected long totalLineCount=0;  //G***testing; comment; tidy
 	protected long totalLineLengthSum=0;

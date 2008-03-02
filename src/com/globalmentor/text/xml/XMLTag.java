@@ -1,11 +1,29 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml;
+
+import static com.globalmentor.text.xml.XMLUtilities.*;
 
 import org.w3c.dom.*;
 
-import static com.globalmentor.text.xml.XML.*;
-
-/**A tag in an XML document. G***make comment clarifying whether this is part of the DOM
+/**A tag in an XML document. TODO make comment clarifying whether this is part of the DOM
+@author Garret Wilson
 @see XMLNode
+@deprecated
 */
 class XMLTag extends XMLNode
 {
@@ -28,18 +46,11 @@ class XMLTag extends XMLNode
 		@param newTagType The new type for the tag.*/
 		public void setTagType(int newTagType) {TagType=newTagType;}
 
-	/**The name of the XML tag.*/
-//G***del DOM	private String Name="";
-
-		/**@return The name of the XML tag.*/
-//del DOM		public String getName() {return Name;}
-
-//G***fix
 		/**Sets the name of the XML tag.
 		@param newName The new name for the XML tag, or "" to specify no name.
 		@exception XMLInvalidNameException Thrown if the specified name is invalid.
 		*/
-/*G***fix and reconcile with DOM
+/*TODO fix and reconcile with DOM
 		public void setName(String newName) throws XMLInvalidNameException
 		{
 			if(newName.length()!=0)	//don't check empty strings, because empty strings really aren't valid XML names, and we want to allow clearing the name
@@ -47,13 +58,6 @@ class XMLTag extends XMLNode
 			Name=newName;
 		}
 */
-
-
-	/**The map of attributes.*/
-//G***del	private Map AttributeList=new HashMap();
-
-		/**@return The list of attributes, which may contain duplicates.*/
-//G***del		Map getAttributeMap() {return AttributeMap;}
 
 	/**The map of attributes in this element.
 	@see XMLAttribute
@@ -66,7 +70,7 @@ class XMLTag extends XMLNode
 		@return A map of attributes of this element node.
 		@see XMLNode#getAttributes
 		*/
-		public XMLNamedNodeMap getAttributeXMLNamedNodeMap() {return AttributeMap;}	//G***should we just have the DOM version of getAttributes() or whatever it is? tidy up these comments, too
+		public XMLNamedNodeMap getAttributeXMLNamedNodeMap() {return AttributeMap;}	//TODO should we just have the DOM version of getAttributes() or whatever it is? tidy up these comments, too
 
 		/**Returns a <code>NamedNodeMap</code> containing the attributes of this element.
 		@return A map of attributes of this element node.
@@ -90,7 +94,6 @@ class XMLTag extends XMLNode
 	public XMLTag(final XMLDocument ownerDocument)
 	{
 		super(XMLNode.TAG_NODE, ownerDocument);	//construct the parent class
-//G***del		setNodeType(XMLNode.TAG_NODE);	//show that this is an XML tag
 	}
 
 	/**@return A string representation of the tag as it should appear in an XML document.*/
@@ -103,27 +106,11 @@ class XMLTag extends XMLNode
 		stringBuffer.append(getNodeName()); //append the name of the tag
 		if(getTagType()==EMPTY_ELEMENT_TAG) //if this is an empty element tag
 			stringBuffer.append(END_TAG_IDENTIFIER_CHAR); //add the character for identifying the tag as an empty element tag
-//G***should we	add a space above for HTML compatibility for empty element tags?
+//TODO should we	add a space above for HTML compatibility for empty element tags?
 		stringBuffer.append(TAG_END); //append the ending character for a tag
 		return stringBuffer.toString(); //convert the string buffer to a string and return it
 	}
 
-	/**@return A string representation of the tag.*/
-/*G***del when not needed
-	public String toString()
-	{
-		final StringBuffer stringBuffer=new StringBuffer(super.toString()); //create a string buffer to hold the characters, starting with the default text
-		stringBuffer.append(TAG_START); //append the starting character for a tag
-		if(getTagType()==END_TAG) //if this is an ending tag
-			stringBuffer.append(END_TAG_IDENTIFIER_CHAR); //add the character for identifying the tag as an end tag
-		stringBuffer.append(getNodeName()); //append the name of the tag
-		if(getTagType()==EMPTY_ELEMENT_TAG) //if this is an empty element tag
-			stringBuffer.append(END_TAG_IDENTIFIER_CHAR); //add the character for identifying the tag as an empty element tag
-//G***should we	add a space above for HTML compatibility for empty element tags?
-		stringBuffer.append(TAG_END); //append the ending character for a tag
-		return stringBuffer.toString(); //convert the string buffer to a string and return it
-	}
-*/
-//G***do we want or need a clone() function here?
+//TODO do we want or need a clone() function here?
 
 }

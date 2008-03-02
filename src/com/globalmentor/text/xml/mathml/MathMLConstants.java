@@ -1,26 +1,42 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml.mathml;
 
-import java.net.URI;
 import javax.mail.internet.ContentType;
 
-import com.globalmentor.io.ContentTypeConstants;
-import com.globalmentor.io.ContentTypes;
+import static com.globalmentor.io.ContentTypes.*;
+import static com.globalmentor.text.xml.XMLUtilities.*;
 
 /**Constants for MathML.
 @author Garret Wilson
-@see http://www.w3.org/QA/2002/04/valid-dtd-list.html
+@see <a href="http://www.w3.org/TR/MathML2/">Mathematical Markup Language (MathML)</a>
+@see <a href="http://www.w3.org/QA/2002/04/valid-dtd-list.html">W3C QA - Recommended List of DTDs</a>
 */
 public class MathMLConstants
 {
 
+	/**A  MathML application.*/
+	public final static String MATHML_XML_SUBTYPE="mathml"+SUBTYPE_SUFFIX_DELIMITER_CHAR+XML_SUBTYPE_SUFFIX;
+
 	/**The content type for MathML: <code>application/mathml+xml</code>.*/ 
-	public static final ContentType MATHML_CONTENT_TYPE=new ContentType(ContentTypes.APPLICATION_PRIMARY_TYPE, ContentTypeConstants.MATHML_XML_SUBTYPE, null);
+	public static final ContentType MATHML_CONTENT_TYPE=new ContentType(APPLICATION_PRIMARY_TYPE, MATHML_XML_SUBTYPE, null);
 
 	/**The recommended prefix to the MathML namespace.*/
 	public static final String MATHML_NAMESPACE_PREFIX="mathml";
-
-	/**The URI to the XHTML namespace.*/
-//TODO fix	public static final URI XHTML_NAMESPACE_URI=URI.create("http://www.w3.org/1999/xhtml");
 
 	/**The system ID for the MathML 1.01 DTD.*/
 	public final static String MATHML_1_01_SYSTEM_ID="http://www.w3.org/Math/DTD/mathml1/mathml.dtd";

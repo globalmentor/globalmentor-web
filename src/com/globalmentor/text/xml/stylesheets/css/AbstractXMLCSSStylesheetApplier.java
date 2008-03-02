@@ -19,7 +19,6 @@ import static com.globalmentor.text.xml.xhtml.XHTML.*;
 
 //G***del import com.garretwilson.text.xml.xhtml.XHTMLUtilities;  //G***del
 import com.globalmentor.io.*;
-import com.globalmentor.text.xml.XMLNamespaceProcessor;
 import com.globalmentor.text.xml.XMLUtilities;
 import com.globalmentor.text.xml.stylesheets.XMLStyleSheetDescriptor;
 import com.globalmentor.text.xml.xhtml.XHTML;
@@ -289,7 +288,7 @@ Debug.trace("Found default stylesheet for namespace: ", namespaceURI);  //G***de
 		{
 			namespaceURISet.add(documentElementNamespaceURI);	//add the document element namespace to the namespace set
 		}
-		final URI mediaTypeNamespaceURI=XMLNamespaceProcessor.getDefaultNamespaceURI(mediaType);	//see if we can find a default namespace for the media type
+		final URI mediaTypeNamespaceURI=XMLUtilities.getDefaultNamespaceURI(mediaType);	//see if we can find a default namespace for the media type
 		if(mediaTypeNamespaceURI!=null)	//if we found a namespace for the media type
 		{
 			namespaceURISet.add(mediaTypeNamespaceURI.toString());	//add the content type namespace to the namespace set

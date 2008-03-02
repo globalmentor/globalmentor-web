@@ -1,3 +1,19 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml;
 
 import java.util.Iterator;
@@ -9,10 +25,12 @@ import org.w3c.dom.DOMException;
 import com.globalmentor.util.Debug;
 
 /**A map of nodes in an XML document in no particular order.
+@author Garret Wilson
 @see XMLNode
 @see XMLNodeIterator
 @see org.w3c.dom.Node
 @see org.w3c.dom.NamedNodeMap
+@deprecated
 */
 public class XMLNamedNodeMap extends HashMap implements NamedNodeMap
 {
@@ -21,30 +39,12 @@ public class XMLNamedNodeMap extends HashMap implements NamedNodeMap
 	*/
 	protected final static char NAMESPACE_DELIMITER='$';
 
-	/**The map of nodes with keys of combined namespaceURI+localName.*/
-//G***del	private Map namespaceMap=null;
-
-	/**The preferred way to get the namespace map, as the map will not be created
-		unless needed. This function will create the namespace map if it does not
-		exist.
-	@return The map of nodes with keys of combined namespaceURI+localName,
-		guaranteed not to be <code>null</code>.
-	*/
-/*G***del
-	protected Map getNamespaceMap()
-	{
-		if(namespaceMap==null)  //if there is no namespace map
-			namespaceMap=new HashMap(); //create a new map for namespace nodes
-		return namespaceMap;  //return the namespace map
-	}
-*/
-
 	/**Specifies which XML document owns these nodes. Can only be accessed from
 		within this package. Used to set all document owners in one batch.
 	@param ownerDocument The document which owns the nodes.
 	@see XMLNode#setOwnerXMLDocument
 	*/
-	void setOwnerXMLDocument(final XMLDocument ownerDocument) //G***add this method to XMLNodeList, too
+	void setOwnerXMLDocument(final XMLDocument ownerDocument) //TODO add this method to XMLNodeList, too
 	{
 		final Iterator childIterator=values().iterator(); //get an iterator of all the values
 		while(childIterator.hasNext())  //while there are children
@@ -54,7 +54,7 @@ public class XMLNamedNodeMap extends HashMap implements NamedNodeMap
 		}
 	}
 
-//G***there's a method somewhere that we'll probably use which adds the contents of a list to the map; see if we need to override it and make sure all the parents or whatever are updated
+//TODO there's a method somewhere that we'll probably use which adds the contents of a list to the map; see if we need to override it and make sure all the parents or whatever are updated
 
 	/**Creates and returns a duplicate copy of this named node map with no values.
 	@return A duplicate "shallow clone" copy of this named node map.
@@ -66,7 +66,7 @@ public class XMLNamedNodeMap extends HashMap implements NamedNodeMap
 	public Object clone()
 	{
 		return new XMLNamedNodeMap();	//create a new named node map and return it
-		//G***this doesn't look right; even a shallow clone should have children, just not cloned children
+		//TODO this doesn't look right; even a shallow clone should have children, just not cloned children
 	}
 
 	/**Creates and returns a duplicate copy of this named node map containing clones of all its children.
@@ -77,7 +77,7 @@ public class XMLNamedNodeMap extends HashMap implements NamedNodeMap
 	*/
 	public XMLNamedNodeMap cloneDeep()
 	{
-//G***important: fix for namespaces
+//TODO important: fix for namespaces
 		final XMLNamedNodeMap clone=(XMLNamedNodeMap)clone();	//create a new named node map
 		//create an iterator to look through the keys
 		//we'll look up the values from the keys instead of just looking through the
@@ -90,7 +90,7 @@ public class XMLNamedNodeMap extends HashMap implements NamedNodeMap
 			final Node node=(Node)get(key); //get the value that goes with the key
 			clone.put(key, node.cloneNode(true)); //perform a deep clone of the node and add it to our named node map
 		}
-/*G***del when works with namespaces
+/*TODO del when works with namespaces
 		final Iterator nodeIterator=values().iterator();	//get an interator of our values
 		while(nodeIterator.hasNext())	//while we still have nodes
 			clone.setNamedItem(((XMLNode)nodeIterator.next()).cloneXMLNode(true));	//deep clone the next node and store it in our named node map clone
@@ -107,9 +107,6 @@ public class XMLNamedNodeMap extends HashMap implements NamedNodeMap
 	*/
 	public boolean containsKeyNS(final String namespaceURI, final String localName)
 	{
-//G***del Debug.trace("--inside XMLNamedNodeMap.containsKeyNS(), looking for namespace URI: "+namespaceURI+" local name: "+localName);  //G***del
-//G***del Debug.trace("--combined key is: "+getNamespaceKey(namespaceURI, localName));  //G***del
-
 		return containsKey(getNamespaceKey(namespaceURI, localName));  //see if there is a key based on the namespace URI and local name
 	}
 
@@ -169,10 +166,10 @@ public class XMLNamedNodeMap extends HashMap implements NamedNodeMap
 	*/
 	public Node setNamedItem(Node arg) throws DOMException
 	{
-		//G***check to make sure the node has the same document
-		//G***check to see if we are readonly
-		//G***check the node to see if it is used by another attribute
-		//G***what's that "special" string name clash thing above?
+		//TODO check to make sure the node has the same document
+		//TODO check to see if we are readonly
+		//TODO check the node to see if it is used by another attribute
+		//TODO what's that "special" string name clash thing above?
 		return (Node)put(arg.getNodeName(), arg);	//add the node, using its node name as the key, and return the previously existing node, if any; we'll let runtime exceptions occur, but their shouldn't be any in our implementation
 	}
 
@@ -192,13 +189,13 @@ public class XMLNamedNodeMap extends HashMap implements NamedNodeMap
 	*/
 	public Node removeNamedItem(String name) throws DOMException
 	{
-		//G***check read-only here, and elsewhere
+		//TODO check read-only here, and elsewhere
 		Node existingNode=(Node)remove(name);	//remove the node with this name, and store the the node if it existed; we'll allow runtime errors to occur, which shouldn't happen in our implementation, anyway
 		if(existingNode!=null)	//if a node exists
 			return existingNode;		//return that node
 		else	//if the node didn't exist to begin with
 			throw new XMLDOMException(DOMException.NOT_FOUND_ERR, new Object[]{name});	//show that we couldn't find the existing node
-		//G***do whatever is needed for bringing default nodes in
+		//TODO do whatever is needed for bringing default nodes in
 	}
 
 	/**Returns the <code>index</code>th item in the map. If <code>index</code>
@@ -245,7 +242,7 @@ public class XMLNamedNodeMap extends HashMap implements NamedNodeMap
 	*/
 	public Node getNamedItemNS(String namespaceURI, String localName)
 	{
-//G***check to see if either namespaceURI or localName is null
+//TODO check to see if either namespaceURI or localName is null
 		return getNamedItem(getNamespaceKey(namespaceURI, localName)); //get the named item from its namespace key
 	}
 
@@ -273,12 +270,10 @@ public class XMLNamedNodeMap extends HashMap implements NamedNodeMap
 	*/
 	public Node setNamedItemNS(Node arg) throws DOMException
 	{
-		//G***check to make sure the node has the same document
-		//G***check to see if we are readonly
-		//G***check the node to see if it is used by another attribute
-		//G***what's that "special" string name clash thing above?
-//G***del Debug.trace("ready to put item with key: "+getNamespaceKey(arg.getNamespaceURI(), arg.getLocalName()));
-
+		//TODO check to make sure the node has the same document
+		//TODO check to see if we are readonly
+		//TODO check the node to see if it is used by another attribute
+		//TODO what's that "special" string name clash thing above?
 		return (Node)put(getNamespaceKey(arg.getNamespaceURI(), arg.getLocalName()), arg);	//add the node, using its combined namespace URI and local name as the key, and return the previously existing node, if any; we'll let runtime exceptions occur, but there shouldn't be any in our implementation
 	}
 

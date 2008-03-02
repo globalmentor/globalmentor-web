@@ -1,11 +1,24 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml;
 
-import org.w3c.dom.DOMException;
-import org.w3c.dom.Text;
-//G***del if not needed import com.garretwilson.lang.StringUtilities;
-import com.globalmentor.util.Debug;
+import static com.globalmentor.text.xml.XMLUtilities.*;
 
-import static com.globalmentor.text.xml.XML.*;
+import org.w3c.dom.*;
 
 /**Character data in an XML document residing in an element or attribute.
 XMLText contains no markup. Immediately after parsing, an element with no
@@ -15,10 +28,11 @@ normalized into one XMLText child before writing. It is recommended that
 normalize() be called to merge adjacent XMLText children before employing
 operations that depend on a particular document structure, such as navigation
 with <code>XPointers</code>.
-
+@author Garret Wilson
 @see XMLCharacterData
 @see XMLElement#normalize
 @see org.w3c.dom.Text
+@deprecated
 */
 public class XMLText extends XMLCharacterData implements org.w3c.dom.Text
 {
@@ -28,7 +42,6 @@ public class XMLText extends XMLCharacterData implements org.w3c.dom.Text
 	public XMLText(final XMLDocument ownerDocument)
 	{
 		super(XMLNode.TEXT_NODE, ownerDocument);	//construct the parent class
-//G***del		setNodeType(XMLNode.TEXT_NODE);	//show that this is a text node
 		setNodeName(TEXT_NODE_NAME);	//set the appropriate name for this type of character data node
 	}
 
@@ -40,7 +53,6 @@ public class XMLText extends XMLCharacterData implements org.w3c.dom.Text
 	protected XMLText(final short nodeType, final XMLDocument ownerDocument)
 	{
 		super(nodeType, ownerDocument);	//construct the parent class
-//G***del		setNodeType(XMLNode.TEXT_NODE);	//show that this is a text node
 		setNodeName(TEXT_NODE_NAME);	//set the appropriate name for this type of character data node
 	}
 
@@ -53,8 +65,6 @@ public class XMLText extends XMLCharacterData implements org.w3c.dom.Text
 	{
 		super(XMLNode.TEXT_NODE, ownerDocument, characterData);	//do the default constructing
 		setNodeName(TEXT_NODE_NAME);	//set the appropriate name for this type of character data node
-//G***del		setNodeType(XMLNode.TEXT_NODE);	//show that this is a text node
-//G***del		setData(characterData);	//set the character data
 	}
 
 	/**Returns the text of this node, which is the same as that returned by getNodeValue().
@@ -91,13 +101,13 @@ public class XMLText extends XMLCharacterData implements org.w3c.dom.Text
 		final int thisIndex=parentNodeList.indexOf(this);	//find our index in our list of siblings
 		parentNodeList.add(thisIndex+1, secondTextNode);	//add the second text node to our list of siblings, making sure it comes right after us
 		secondTextNode.setParentXMLNode(getParentXMLNode());	//set the parent of the added child
-/*G***fix
-		if(isEventsEnabled()) //if events are enabled G***should this be here?
+/*TODO fix
+		if(isEventsEnabled()) //if events are enabled TODO should this be here?
 		{
 			//create a new event for the inserted node
 			final Event nodeInsertedEvent=XMLMutationEvent.createDOMNodeInsertedEvent(xmlNewChild, this);
 			xmlNewChild.dispatchEvent(nodeInsertedEvent); //dispatch the event
-			//G***dispatch the document events
+			//TODO dispatch the document events
 		}
 */
 		return secondTextNode;	//return the second text node which contains the split data
@@ -179,7 +189,6 @@ public class XMLText extends XMLCharacterData implements org.w3c.dom.Text
 	*/
 	public Object clone()
 	{
-//G***del Debug.trace(this, "clone() text: "+getText()); //G***del
 		return new XMLText(getOwnerXMLDocument(), getNodeValue());	//create a new node with the same owner document and the same value
 	}
 

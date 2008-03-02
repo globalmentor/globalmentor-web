@@ -1,23 +1,39 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml;
 
-//G***del if we don't need import java.io.*;
-import java.util.List;
-import java.util.ArrayList;
-import org.w3c.dom.*;
-import org.w3c.dom.events.*;
-import org.w3c.dom.traversal.*;
+import java.util.*;
 
 import com.globalmentor.text.xml.events.*;
 import com.globalmentor.text.xml.traversal.*;
 
+import org.w3c.dom.*;
+import org.w3c.dom.events.*;
+import org.w3c.dom.traversal.*;
+
 /**The entire XML document. Each node has an owner document.
-@see XMLNode
 @author Garret Wilson
+@see XMLNode
+@deprecated
 */
 public class XMLDocument extends XMLNode implements Document, DocumentTraversal, DocumentEvent
 {
 
-//G***should we override getNodeName() to return the correct name from the document type?
+//TODO should we override getNodeName() to return the correct name from the document type?
 
 	/**Whether events are enabled. If set to <code>false</code>, no events will be generated.*/
 	private boolean eventsEnabled=true;
@@ -31,16 +47,12 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 		*/
 		public void setEventsEnabled(final boolean newEventsEnabled) {eventsEnabled=newEventsEnabled;}
 
-	/**The DOM implementation, which will be statically created..*/
-//G***del	private static DOMImplementation=null;
-
 	/**Default constructor for a document. Since a document has no owner document,
 	its owner document will be set to <code>null</code>.
 	*/
 	public XMLDocument()
 	{
 		super(XMLNode.DOCUMENT_NODE, null);	//show that we have no owner document
-//G***del		setNodeType(XMLNode.DOCUMENT_NODE);	//show that this is a document
 		setXMLDeclaration(new XMLDeclaration(this));	//have a default XML declaration
 	}
 
@@ -54,7 +66,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	*/
 	public Object clone()
 	{
-		return new XMLDocument();	//create a new document G***do we clone the document type and stuff as well?
+		return new XMLDocument();	//create a new document TODO do we clone the document type and stuff as well?
 	}
 
 
@@ -82,14 +94,14 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	@see com.globalmentor.text.xml.stylesheets.XMLStyleSheet
 	@see com.globalmentor.text.xml.stylesheets.css.XMLCSSStyleSheet
 	*/
-	private List StyleSheetList=new ArrayList();  //G***remove this proprietary stuff when we can
+	private List StyleSheetList=new ArrayList();  //TODO remove this proprietary stuff when we can
 
 	/**@return The list of stylesheets for this document in order encountered.
 	@see org.w3c.dom.stylesheets.StyleSheet
 	@see com.globalmentor.text.xml.stylesheets.XMLStyleSheet
 	@see com.globalmentor.text.xml.stylesheets.css.XMLCSSStyleSheet
 	*/
-	public List getStyleSheetList() {return StyleSheetList;}  //G***remove this proprietary stuff when we can
+	public List getStyleSheetList() {return StyleSheetList;}  //TODO remove this proprietary stuff when we can
 
 	/**The XML declaration of this XML document.*/
 	private XMLDeclaration XMLDecl;
@@ -108,7 +120,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	@return The root element of the document.
 	@see XMLDocument#getDocumentElement
 	*/
-	//G***there might be a more efficient way to implement this
+	//TODO there might be a more efficient way to implement this
 	public XMLElement getDocumentXMLElement()
 	{
 		for(int i=0; i<getChildXMLNodeList().size(); ++i)	//look at each of the child nodes
@@ -148,7 +160,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	@see XMLDocument#getXMLDocumentType
 	@see XMLDocument#getDoctype
 	*/
-	public void setXMLDocumentType(final XMLDocumentType documentType)  //G***this shouldn't be public; for now it's used by XHTMLTidier
+	public void setXMLDocumentType(final XMLDocumentType documentType)  //TODO this shouldn't be public; for now it's used by XHTMLTidier
 	{
 		DocumentType=documentType;	//set the document type
 		if(documentType!=null)	//if they are actually setting a document type
@@ -172,7 +184,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	*/
 	public DOMImplementation getImplementation()
 	{
-		return new XMLDOMImplementation();  //return the XML DOM implementation these classes use G***do we really want to create a new one each time? probably create one and use it until its weak reference is garbage collected
+		return new XMLDOMImplementation();  //return the XML DOM implementation these classes use TODO do we really want to create a new one each time? probably create one and use it until its weak reference is garbage collected
 	}
 
 	/**Creates an element of the type specified. If the document type has known
@@ -198,7 +210,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	public Element createElement(String tagName) throws DOMException
 	{
 		final XMLElement element=new XMLElement(this, tagName);	//create a new XML element with the specified name
-		//G***create default attributes if needed
+		//TODO create default attributes if needed
 		return element;	//return the new element we constructed
 	}
 
@@ -243,7 +255,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	*/
 	public CDATASection createCDATASection(String data) throws DOMException
 	{
-		//G***check to see if this is an HTML document, and if so throw an exception
+		//TODO check to see if this is an HTML document, and if so throw an exception
 		return new XMLCDATASection(this, data);	//create a CDATA section node with the given data and return it
 	}
 
@@ -259,7 +271,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	*/
 	public ProcessingInstruction createProcessingInstruction(String target, String data) throws DOMException
 	{
-		//G***check for an invalid character
+		//TODO check for an invalid character
 		//create a new processing instruction with the specified target and data
 		final XMLProcessingInstruction processingInstruction=new XMLProcessingInstruction(this, target, data);
 		return processingInstruction;	//return the new processing instruction we constructed
@@ -282,7 +294,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	*/
 	public Attr createAttribute(String name) throws DOMException
 	{
-		//G***check the attribute name here and throw an exception if needed
+		//TODO check the attribute name here and throw an exception if needed
 		return new XMLAttribute(this, name);	//create a new attribute with the given name and return it
 	}
 
@@ -296,7 +308,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	 *   <br>NOT_SUPPORTED_ERR: Raised if this document is an HTML document.
 	 */
 	public EntityReference    createEntityReference(String name)
-																									throws DOMException {return null;}	//G***fix
+																									throws DOMException {return null;}	//TODO fix
 
 
 	/**Returns a NodeList of first-level descendant elements with a given tag name.
@@ -311,12 +323,11 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	@see XMLDocument#getElementsByTagName
 	@see XMLNodeList
 	*/
-/*G***decide if we need or not
+/*TODO decide if we need or not
 	public NodeList getElementsByTagName(String name, boolean deep)
 	{
 		final XMLNodeList nodeList=new XMLNodeList();	//create a new node list to return
-//G***del		final boolean matchAllTags=name.equals("*");	//see if they passed us the wildcard character
-		if((getDocumentElement().getNodeName().equals("*") || getDocumentElement().getNodeName().equals(name)))	//if the root element has the correct name (or they passed us the wildcard character) G***use a constant here
+		if((getDocumentElement().getNodeName().equals("*") || getDocumentElement().getNodeName().equals(name)))	//if the root element has the correct name (or they passed us the wildcard character) TODO use a constant here
 			nodeList.add(getDocumentElement());	//add this node to the list
 		if(deep)	//if each of the children should check for matching tags as well
 			nodeList.addAll((XMLNodeList)(((XMLElement)getDocumentElement())).getElementsByTagName(name, deep));	//get the root element's elements by name and add them to our list
@@ -336,60 +347,15 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	@see XMLNodeList
 	@version DOM Level 1
 	*/
-//G***why is this needed? why not use the XMLNOde version?
+//TODO why is this needed? why not use the XMLNOde version?
 	public NodeList getElementsByTagName(String tagname)
 	{
 		final XMLNodeList nodeList=new XMLNodeList();	//create a new node list to return
-//G***del		final boolean matchAllTags=name.equals("*");	//see if they passed us the wildcard character
-		if((tagname.equals("*") || getDocumentElement().getNodeName().equals(tagname)))	//if the root element has the correct name (or they passed us the wildcard character) G***use a constant here
+		if((tagname.equals("*") || getDocumentElement().getNodeName().equals(tagname)))	//if the root element has the correct name (or they passed us the wildcard character) TODO use a constant here
 			nodeList.add(getDocumentElement());	//add this node to the list
 		nodeList.addAll((XMLNodeList)(((XMLElement)getDocumentElement()).getNodesByName(ELEMENT_NODE, tagname, true)));	//get the root element's elements by name and add them to our list
-//G***del when works		nodeList.addAll((XMLNodeList)(getDocumentElement()).getElementsByTagName(tagname));	//get the root element's elements by name and add them to our list
 		return nodeList;	//return the list we created and filled
 	}
-
-	/**Returns a NodeList of all descendant elements with a given nested order of
-		elements named in tagPathArray. At each level, the first matching element
-		will be used if there is more than one match, but if that path comes to a
-		dead end the next matching element will be searched, and so on up the hierarchy.
-		If the path has been traversed up to its last element, the list of nodes will
-		be returned even if it is emty.<br/>
-		That is, for the xml structure
-		<code>&lt;top&gt;&lt;middle&gt;&lt;tag1/&gt;&lt;tag2/&gt;&lt;tag3/&gt;&lt;/middle&gt;&lt;/top&gt;</code>,
-		all the internal tags may be returned by passing a path of
-		{"top", "middle", "*"}.
-	@param tagPathArray An array of names representing a path of tags to follow in
-		retrieving a list of elements. The special value "*" matches all tags.
-	@return A new NodeList object containing all the matching element nodes at the
-		end of the path, or <code>null</code> if the path could not be traversed up
-		to its last tag name.
-	@see XMLElement
-	@see XMLDocument
-	@see XMLNodeList
-	@see XMLDocument#getElementsByTagPath
-	@see #getElementsByTagName
-	*/
-/*G***del if not needed
-	public NodeList getElementsByTagPath(final String[] tagPathArray)
-	{
-		if(tagPathArray.length>0)	//if a valid path was passed
-		{
-			if(tagPathArray.length==1)	//if there's just one tag in the path
-				return getElementsByTagName(tagPathArray[0], false);	//return tags normally
-			else	//if there are more than one tag in the path
-			{
-				final Element documentElement=getDocumentElement();	//get the document element
-				if((documentElement.getNodeName().equals("*") || documentElement.getNodeName().equals(tagPathArray[0])))	//if the root element has the correct name (or they passed us the wildcard character) G***use a constant here
-				{
-					final NodeList elementsFoundList=((XMLElement)documentElement).getElementsByTagPath(tagPathArray, 1);	//see if the rest of the path works
-					if(elementsFoundList!=null)	//if this path retrieved a list of elements (even an empty list), this means we were able to follow the complete path
-						return elementsFoundList;	//return the list we found
-				}
-			}
-		}
-		return null;	//show that no path was able to be found or the path was invalid to begin with
-	}
-*/
 
 	/**Creates a copy of a node from another document and imports it to this document.
 		The returned node has no parent. The source node is not altered or removed
@@ -436,7 +402,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 			<li>DOCUMENT_FRAGMENT_NODE: If the <code>deep</code> option was set to
 				<code>true</code>, the descendants of the source element will be recursively
 				imported and the resulting nodes reassembled to form the corresponding
-				subtree. Otherwise, this simply generates an empty DocumentFragment node.</li> G***is that last sentence really true?
+				subtree. Otherwise, this simply generates an empty DocumentFragment node.</li> TODO is that last sentence really true?
 			<li>NOTATION_NODE: Notation nodes can be imported, however in the current
 				release of the DOM the document type is readonly. Ability to add these imported
 				nodes to a document type will be considered for addition to a
@@ -461,35 +427,10 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	*/
 	public Node importNode(Node importedNode, boolean deep) throws DOMException
 	{
-		//G***check the type of node being imported
+		//TODO check the type of node being imported
 		final XMLNode xmlNodeClone=(XMLNode)importedNode.cloneNode(deep);  //clone the imported node
 		xmlNodeClone.setOwnerXMLDocument(this);  //show that we own the cloned element
-		return xmlNodeClone;  //return the imported node G***this all isn't quite correct; make sure it's complete
-/*G***del when works
-		switch(importedNode.getNodeType())  //see what type of node we're importing
-		{
-			case DOCUMENT_FRAGMENT_NODE:  //if this is a document fragment
-				{
-					final NodeList childNodeList=importedNode.getChildNodes();  //get a list of the node fragment's children
-					final int childCount=childNodeList.getLength(); //see how many children there are
-					for(int i=0; i<childCount; ++i) //look at each child
-					{
-						//G***make sure we can import the node (i.e. it's not a comment or something)
-						importNode(childNodeList.item(i), deep); //import this child
-					}
-					return importedNode;  //G***is is what really should be returned?
-				}
-			case ELEMENT_NODE:  //if this is an element
-				{
-					final XMLElement elementClone=(XMLElement)importedNode.cloneNode(deep);  //clone the node and cast it to our own element type
-					elementClone.setOwnerXMLDocument(getOwnerXMLDocument());  //change the owner of the cloned element to be the same as our owner
-				  appendChild(elementClone);  //append this cloned element
-					return elementClone;  //return the cloned element
-				}
-			default:  //if we don't recognize the type of node being imported
-				throw new XMLDOMException(DOMException.NOT_SUPPORTED_ERR, new Object[]{importedNode.getNodeName()});	//show that this node type isn't allowed to be imported G***should we instead show the type of node instead of its name?
-		}
-*/
+		return xmlNodeClone;  //return the imported node TODO this all isn't quite correct; make sure it's complete
 	}
 
 	/**Inserts the node <code>newChild</code> before the existing child node
@@ -560,7 +501,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 			final XMLNode xmlNewChild=(XMLNode)newChild;  //cast the child to an XMLNode
 				//TODO make sure this replacement fires the correct events
 			getChildXMLNodeList().set(index, xmlNewChild);	//replace the document element
-			//G***set the document, set the parent, etc.
+			//TODO set the document, set the parent, etc.
 			xmlNewChild.setParentXMLNode(this);	//set the parent of the added child
 			return oldChild;	//return the old replaced node
 		}
@@ -645,9 +586,9 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	*/
 	public Element createElementNS(String namespaceURI, String qualifiedName) throws DOMException
 	{
-		//G***check for an invalid character here, and decide if this should be done here or in the element constructor
+		//TODO check for an invalid character here, and decide if this should be done here or in the element constructor
 		final XMLElement element=new XMLElement(this, namespaceURI, qualifiedName);	//create a new XML element with the specified names
-		//G***create default attributes if needed
+		//TODO create default attributes if needed
 		return element;	//return the new element we constructed
 	}
 
@@ -680,8 +621,8 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	*/
 	public Attr createAttributeNS(String namespaceURI, String qualifiedName) throws DOMException
 	{
-		//G***check for an invalid character here, and decide if this should be done here or in the attribute constructor
-		//G***check the attribute name here and throw an exception if needed
+		//TODO check for an invalid character here, and decide if this should be done here or in the attribute constructor
+		//TODO check the attribute name here and throw an exception if needed
 		return new XMLAttribute(this, namespaceURI, qualifiedName, "");	//create a new attribute with the specified names and no value and return it
 	}
 
@@ -698,7 +639,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
      * @since DOM Level 2
      */
     public NodeList getElementsByTagNameNS(String namespaceURI,
-                                           String localName) {return null;}   //G***fix namespace
+                                           String localName) {return null;}   //TODO fix namespace
 
 
     /**
@@ -714,7 +655,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
      * @return  The matching element.
      * @since DOM Level 2
      */
-    public Element getElementById(String elementId) {return null;}	//G***fix
+    public Element getElementById(String elementId) {return null;}	//TODO fix
 
     /**
      * The Document Type Declaration (see <code>DocumentType</code>) 
@@ -1100,7 +1041,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 		  boolean entityReferenceExpansion) throws DOMException
 	{
 		if(root==null)  //if an invalid root was given
-			throw new XMLDOMException(DOMException.NOT_SUPPORTED_ERR, new Object[]{"null"});	//show that a null root is not allowed G***use a constant here
+			throw new XMLDOMException(DOMException.NOT_SUPPORTED_ERR, new Object[]{"null"});	//show that a null root is not allowed TODO use a constant here
 		return new XMLNodeIterator(root, whatToShow, filter, entityReferenceExpansion); //create and return a new node iterator
 	}
 
@@ -1135,7 +1076,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
                                        int whatToShow,
                                        NodeFilter filter,
                                        boolean entityReferenceExpansion)
-                                       throws DOMException {return null;} //G***fix
+                                       throws DOMException {return null;} //TODO fix
 
 
 	/**Creates an event supported by this implementation.

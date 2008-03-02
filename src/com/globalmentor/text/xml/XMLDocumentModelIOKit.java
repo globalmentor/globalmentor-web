@@ -1,7 +1,24 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml;
 
 import java.io.*;
 import java.net.*;
+
 import com.globalmentor.io.*;
 import com.globalmentor.text.CharacterEncoding;
 
@@ -10,6 +27,7 @@ import org.w3c.dom.Document;
 /**Class for loading and saving an XML document model.
 @author Garret Wilson
 @see XMLDocumentModel
+@deprecated
 */
 public class XMLDocumentModelIOKit extends AbstractIOKit<XMLNodeModel<Document>>
 {
@@ -57,7 +75,7 @@ public class XMLDocumentModelIOKit extends AbstractIOKit<XMLNodeModel<Document>>
 	*/ 
 	public XMLNodeModel<Document> load(final InputStream inputStream, final URI baseURI) throws IOException
 	{
-		inputStream.mark(Integer.MAX_VALUE);	//G***testing
+		inputStream.mark(Integer.MAX_VALUE);	//TODO testing
 		final XMLProcessor xmlProcessor=new XMLProcessor(this);	//create a new XML processor that knows how to access streams from URIs
 		final Document xml=xmlProcessor.parseDocument(inputStream, baseURI);	//parse the XML
 		return new XMLNodeModel<Document>(xml, baseURI, this);	//return a new XML document model

@@ -1,20 +1,34 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml;
 
 import java.io.*;
-import java.nio.charset.Charset;
 import java.util.*;
-import org.w3c.dom.*;
 
-//TODO fix import com.garretwilson.text.xml.soap.SOAPConstants;
+import java.nio.charset.Charset;
+
 import com.globalmentor.io.ByteOrderMark;
+import static com.globalmentor.io.Charsets.*;
 import com.globalmentor.java.Characters;
 import com.globalmentor.java.StringBuffers;
+import static com.globalmentor.text.xml.XMLUtilities.*;
 import com.globalmentor.util.PropertiesUtilities;
 
-import static com.globalmentor.io.Charsets.*;
-import static com.globalmentor.text.xml.XML.*;
-
-//TODO del all the XMLUndefinedEntityReferenceException throws when we don't need them anymore, in favor of XMLWellFormednessException
+import org.w3c.dom.*;
 
 /**Class which serializes an XML document to a byte-oriented output stream.
 Has the option of automatically formatting the output in a hierarchical structure with tabs or other strings.
@@ -152,7 +166,6 @@ public class XMLSerializer
 	*/
 	public void setOptions(final Properties options)
 	{
-//G***del Debug.notify("XMLSerializer: "+options);  //G***del
 		setFormatted(PropertiesUtilities.getBooleanProperty(options, FORMAT_OUTPUT_OPTION, FORMAT_OUTPUT_OPTION_DEFAULT));
 		setUseEntities(PropertiesUtilities.getBooleanProperty(options, USE_ENTITIES_OPTION, USE_ENTITIES_OPTION_DEFAULT));
 		setXMLEncodeControl(PropertiesUtilities.getBooleanProperty(options, XML_ENCODE_CONTROL_OPTION, XML_ENCODE_CONTROL_OPTION_DEFAULT));
@@ -192,18 +205,10 @@ public class XMLSerializer
 	*/
 	private String[] entityNames;
 
-	/**The options which specify how serialization should occur.*/
-//G***del	private final Properties options;
-
-		/**@return The options which specify how serialization should occur.*/
-//G***del		public Properties getOptions() {return options;}
-
 	/**Default constructor for unformatted output.*/
 	public XMLSerializer()
 	{
-		initializeEntityLookup(null); //always initialize the entity lookup, so that at least the five XML entities will be included in the table in case they serialize only part of a document G***fix better so that serializing part of the document somehow initializes these
-//G***del		this(new Properties()); //do the default construction with default properties
-//G***del	  this(false);  //default to unformatted output
+		initializeEntityLookup(null); //always initialize the entity lookup, so that at least the five XML entities will be included in the table in case they serialize only part of a document TODO fix better so that serializing part of the document somehow initializes these
 	}
 
 	/**Constructor that specifies serialize options.
@@ -364,7 +369,7 @@ public class XMLSerializer
 	  final Element documentElement=document.getDocumentElement();	//get the document element
 	  if(isNamespacesDocumentElementDeclarations())	//if missing namespaces should be declared on the document element, process the entire document before writing
 	  {
-	  	XMLNamespaceProcessor.ensureNamespaceDeclarations(documentElement, documentElement, true);	//make sure all namespaces are declared that all elements need (i.e. deep), declaring any missing elements on the document element
+	  	ensureNamespaceDeclarations(documentElement, documentElement, true);	//make sure all namespaces are declared that all elements need (i.e. deep), declaring any missing elements on the document element
 	  }
 	  write(documentElement, writer);	//write the document element and all elements below it
 		if(isFormatted())	//if we should write formatted output
@@ -476,18 +481,6 @@ public class XMLSerializer
 		writer.flush();	//flush any data we've buffered
 	}
 
-	/**Serializes the specified document to the given writer.
-	@param document The XML document to write.
-	@param writer The writer into which the document should be written.
-	@exception IOException Thrown if an I/O error occurred.
-	*/
-/*G***del if not needed
-	protected static void write(final Document document, final BufferedWriter writer)
-	{
-
-	}
-*/
-
 	/**Initializes the internal entity lookup with the entities defined in the
 		specified map. The given entities will only be placed in the lookup table
 		if the "useEntities" option is turned on, and then only entities which
@@ -506,7 +499,6 @@ public class XMLSerializer
 	 */
 	protected void initializeEntityLookup(final NamedNodeMap entityMap)
 	{
-	//G***del Debug.trace("looking at entity map with entries: ", entityMap.getLength()); //G***del
 		final List<String> entityNameList=new ArrayList<String>();  //create an array to hold the entity names we use
 		final StringBuffer entityCharacterValueStringBuffer=new StringBuffer(); //create a buffer to hold all the character values
 		if(isUseEntities()) //if we were asked to use their entities
@@ -516,9 +508,7 @@ public class XMLSerializer
 				final int entityCount=entityMap.getLength();  //find out how many entities there are
 				for(int i=0; i<entityCount; ++i)  //look at each of the entities
 				{
-	//G***del Debug.trace("looking at entity: ", i);
 					final Entity entity=(Entity)entityMap.item(i);  //get a reference to this entity
-	//G***del Debug.trace("entity: ", entity);
 					final int entityChildCount=entity.getChildNodes().getLength();  //see how many children this entity has (entities store text content in child text nodes not in the entity value)
 					if(entityChildCount==1) //if there is only one child node
 					{
@@ -566,7 +556,6 @@ public class XMLSerializer
 				entityCharacterValueStringBuffer.append(ENTITY_QUOT_VALUE);  //add the default entity value
 			}
 		}
-	//G***del Debug.trace("Found entities to serialize: ", entityCharacterValueStringBuffer.length());  //G***del
 		entityNames=entityNameList.toArray(new String[entityNameList.size()]);  //convert the entities in the list to an array
 		entityCharacterValues=entityCharacterValueStringBuffer.toString();  //convert the values into one searchable string
 	}
@@ -582,7 +571,6 @@ public class XMLSerializer
 		writer.write(XML_DECL_START+SPACE_CHAR+
 			VERSIONINFO_NAME+EQUAL_CHAR+DOUBLE_QUOTE_CHAR+XML_VERSION+DOUBLE_QUOTE_CHAR+SPACE_CHAR+
 			ENCODINGDECL_NAME+EQUAL_CHAR+DOUBLE_QUOTE_CHAR+charset.name()+DOUBLE_QUOTE_CHAR+
-			//TODO standalone writing here
 			XML_DECL_END);	//write the XML prolog
 		if(isFormatted())	//if we should write formatted output
 		{
@@ -597,7 +585,6 @@ public class XMLSerializer
 	*/
 	protected void writeProcessingInstructions(final Document document, final BufferedWriter writer) throws IOException
 	{
-//G***del		final Element rootElement=document.getDocumentElement();  //get the document element
 		final NodeList childNodeList=document.getChildNodes(); //get the list of document child nodes
 		final int childNodeCount=childNodeList.getLength(); //find out how many document child nodes there are
 		for(int childIndex=0; childIndex<childNodeCount; childIndex++)	//look at each document child node
@@ -666,12 +653,10 @@ public class XMLSerializer
 	*/
 	protected void write(final Element element, final BufferedWriter writer, boolean formatted) throws IOException
 	{
-//G***del Debug.trace("starting element, nestLevel: "+nestLevel);
-//G***del		if(isFormatted())	//if we should write formatted output
 		if(formatted)	//if we should write formatted output
 			writeHorizontalAlignment(writer, nestLevel);		//horizontally align the element
 		writer.write(TAG_START+element.getNodeName());	//write the beginning of the start tag
-		XMLNamespaceProcessor.ensureNamespaceDeclarations(element, null, false);	//make sure all namespaces are declared that just this element needs; if any are missing, we can't declare up the tree, as those nodes have already been serialized
+		ensureNamespaceDeclarations(element, null, false);	//make sure all namespaces are declared that just this element needs; if any are missing, we can't declare up the tree, as those nodes have already been serialized
 /*TODO fix; this correctly doesn't add namespaces, to the tree itself, but not doing so means that the namespaces will just get added again lower down in the hierarchy
 			//get the undeclared namespaces for this element and write them before the normal attributes are written
 		final NameValuePair[] prefixNamespacePairs=XMLNamespaceProcessor.getUndeclaredNamespaces(element);
@@ -681,8 +666,8 @@ public class XMLSerializer
 			final String prefix=(String)prefixNamespacePair.getName();	//get the prefix to use
 					//get the namespace URI to use (using "" if no namespace is intended)
 			final String namespaceURI=prefixNamespacePair.getValue()!=null ? (String)prefixNamespacePair.getValue() : "";
-					//see if the attribute should be in the form xmlns:prefix="namespaceURI" or xmlns="namespaceURI" G***fix for attributes that may use the same prefix for different namespace URIs
-			final String attributeName=prefix!=null ? XMLUtilities.createQualifiedName(XMLNS_NAMESPACE_PREFIX, prefix) : XMLNS_NAMESPACE_URI.toString();
+					//see if the attribute should be in the form xmlns:prefix="namespaceURI" or xmlns="namespaceURI" TODO fix for attributes that may use the same prefix for different namespace URIs
+			final String attributeName=prefix!=null ? createQualifiedName(XMLNS_NAMESPACE_PREFIX, prefix) : XMLNS_NAMESPACE_URI.toString();
 			writeAttribute(attributeName, namespaceURI, writer);	//write this namespace attribute attribute
 		}
 */
@@ -704,7 +689,6 @@ public class XMLSerializer
 					if(childNodeType==Node.ELEMENT_NODE)	//if this is an element child node
 					{
 						contentFormatted=true; //show that we should format the element content
-//G***del						break;  //we know we should format; stop looking for element children
 					}
 					else if(childNodeType==Node.TEXT_NODE)  //if this is text
 					{
@@ -720,13 +704,12 @@ public class XMLSerializer
 			--nestLevel;	//show that we're finished with this level of the document hierarchy
 			if(contentFormatted)	//if we should write formatted output for the content
 				writeHorizontalAlignment(writer, nestLevel);		//horizontally align the element's ending tag
-			writer.write(TAG_START+'/'+element.getNodeName()+TAG_END);	//write the ending tag G***use a constant here
+			writer.write(TAG_START+'/'+element.getNodeName()+TAG_END);	//write the ending tag TODO use a constant here
 		}
 		else	//if there are no child elements, this is an empty element
-			writer.write(String.valueOf(XML.SPACE_CHAR)+'/'+TAG_END);	//write the end of the empty element tag, with an extra space for HTML browser compatibility G***use a constant here
+			writer.write(String.valueOf(SPACE_CHAR)+'/'+TAG_END);	//write the end of the empty element tag, with an extra space for HTML browser compatibility TODO use a constant here
 		if(formatted)	//if we should write formatted output
 			writer.newLine();	//add a newline after the element
-//G***del if not needed		writer.newLine();	//add a newline in the default format
 	}
 
 	/**Serializes the specified attribute name and value to the given writer.
@@ -768,34 +751,30 @@ public class XMLSerializer
 	{
 		for(int childIndex=0; childIndex<node.getChildNodes().getLength(); childIndex++)	//look at each child node
 		{
-//G***del Debug.trace("writing child: "+childIndex+", nestLevel: "+nestLevel);
 			final Node childNode=node.getChildNodes().item(childIndex);	//look at this node
 			switch(childNode.getNodeType())	//see which type of object this is
 			{
 				case Node.ELEMENT_NODE:	//if this is an element
-//G***del Debug.trace("Found element node, nestLevel: "+nestLevel);
 					write((Element)childNode, writer, formatted);	//write this element
 					break;
 				case Node.TEXT_NODE:	//if this is a text node
-//G***del Debug.trace("Found text node, nestLevel: "+nestLevel);
 					writer.write(encodeContent(childNode.getNodeValue()));	//write the text value of the node after encoding the string for XML
 					break;
 				case Node.COMMENT_NODE:	//if this is a comment node
-//G***del Debug.trace("Found comment node, nestLevel: "+nestLevel);
 					if(formatted)	//if we should write formatted output
 						writeHorizontalAlignment(writer, nestLevel);		//horizontally align the element
-					writer.write(XML.COMMENT_START);	//write the start of the comment
+					writer.write(COMMENT_START);	//write the start of the comment
 					writer.write(childNode.getNodeValue());	//write the text value of the node, but don't encode the string for XML since it's inside a comment
-					writer.write(XML.COMMENT_END);	//write the end of the comment
+					writer.write(COMMENT_END);	//write the end of the comment
 					if(formatted)	//if we should write formatted output
 						writer.newLine();	//add a newline after the element
 					break;
 				case Node.CDATA_SECTION_NODE:	//if this is a CDATA section node
-					writer.write(XML .CDATA_START);	//write the start of the CDATA section
+					writer.write(XMLUtilities .CDATA_START);	//write the start of the CDATA section
 					writer.write(encodeContent(childNode.getNodeValue()));	//write the text value of the node after encoding the string for XML
-					writer.write(XML.CDATA_END);	//write the end of the CDATA section
+					writer.write(CDATA_END);	//write the end of the CDATA section
 					break;
-				//G***see if there are any other types of nodes that need serialized
+				//TODO see if there are any other types of nodes that need serialized
 			}
 		}
 	}
@@ -807,10 +786,8 @@ public class XMLSerializer
 	*/
 	protected void writeHorizontalAlignment(final BufferedWriter writer, int nestLevel) throws IOException
 	{
-//G***del Debug.trace("Inside writing horizontal alignment, nestLevel: "+this.nestLevel);
 		while(nestLevel>0)	//while we haven't finished nesting
 		{
-//G***del Debug.trace("Writing horizontal alignment.");
 			writer.write(getHorizontalAlignString());	//write another string for horizontal alignment
 			--nestLevel;	//show that we have one less level to next
 		}
@@ -845,7 +822,6 @@ public class XMLSerializer
 	*/
 	protected String encodeContent(final String text, final char delimiter)
 	{
-//G***del		final boolean useEntities=isUseEntities();  //see if we should use entities if available
 		final boolean xmlEncodeControl=isXMLEncodeControl();  //see if we should XML-encode control characters
 		final boolean xmlEncodeNonASCII=isXMLEncodeNonASCII();  //see if we should XML-encode characters over 127
 		final boolean xmlEncodePrivateUse=isXMLEncodePrivateUse();  //see if we should XML-encode Unicode private use characters
@@ -875,9 +851,9 @@ public class XMLSerializer
 				)
 			{
 				stringBuffer.append(CHARACTER_REF_START); //append the start-of-character-reference
-				stringBuffer.append('x'); //show that this will be a hexadecimal number G***use a constant here
+				stringBuffer.append('x'); //show that this will be a hexadecimal number TODO use a constant here
 				stringBuffer.append(Integer.toHexString(c).toUpperCase()); //append the hex representation of the character
-//G***del if not needed				stringBuffer.append(IntegerUtilities.toHexString(c, 4));  //append the character in four-digit hex format (i.g. &#XXXX;)
+//TODO del if not needed				stringBuffer.append(IntegerUtilities.toHexString(c, 4));  //append the character in four-digit hex format (i.g. &#XXXX;)
 				stringBuffer.append(CHARACTER_REF_END); //append the end-of-character-reference
 			}
 		  else  //if this character shouldn't be encoded

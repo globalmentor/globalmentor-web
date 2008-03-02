@@ -4,15 +4,12 @@ import java.io.*;
 import java.util.*;
 import java.util.Arrays;
 
-
-
 import com.globalmentor.io.ContentTypes;
 import com.globalmentor.io.Files;
 import com.globalmentor.java.*;
-import com.globalmentor.text.*;
-import com.globalmentor.text.xml.XML;
+import com.globalmentor.text.Prose;
 import com.globalmentor.text.xml.XMLUtilities;
-import com.globalmentor.text.xml.oeb.OEBConstants;
+import com.globalmentor.text.xml.oeb.OEB;
 import com.globalmentor.text.xml.stylesheets.css.*;
 import com.globalmentor.text.xml.xpath.XPath;
 import com.globalmentor.text.xml.xpath.XPathConstants;
@@ -20,8 +17,8 @@ import com.globalmentor.util.*;
 
 import static com.globalmentor.io.ContentTypeConstants.*;
 import static com.globalmentor.java.Characters.*;
+import static com.globalmentor.text.xml.XMLUtilities.*;
 import static com.globalmentor.text.unicode.SymbolEncodingConstants.*;
-import static com.globalmentor.text.xml.XML.*;
 import static com.globalmentor.text.xml.stylesheets.css.XMLCSSConstants.*;
 import static com.globalmentor.text.xml.xhtml.XHTML.*;
 
@@ -146,7 +143,7 @@ G***added stuff not commented:
 * removed <html> attributes
 * added OEB DOCTYPe
 */
-public class XHTMLTidier extends TextUtilities
+public class XHTMLTidier
 {
 
 	/**Whether underline tags (<code>&lt;u&gt;</code>) should be converted to
@@ -414,7 +411,7 @@ public class XHTMLTidier extends TextUtilities
 							{
 								new CSSSerializer().serialize(cssStyleSheet, stylesheetOutputStream); //write the stylesheet out to the file G***use a pre-created serializer, maybe
 								stylesheetOutputStream.flush(); //flush the output stream
-		  		  		XMLUtilities.addStyleSheetReference(document, stylesheetFile.getName(), OEBConstants.OEB10_CSS_MEDIA_TYPE);  //add the stylesheet to the document G***eventually change to text/css
+		  		  		addStyleSheetReference(document, stylesheetFile.getName(), OEB.OEB10_CSS_MEDIA_TYPE);  //add the stylesheet to the document G***eventually change to text/css
 
 							}
 							finally
@@ -669,7 +666,7 @@ public class XHTMLTidier extends TextUtilities
 		//G***check to see if this is already a list item; or maybe wait until we've found a marker and then, if it's a list item, remove the literal marker (but then we'd need to check to see if the style made it a plain list item, meaning there would be no automatic marker)
 					String markerListStyleType=null;  //we'll set this to a valid list style type if this item has a valid marker
 					String markerString=null; //if we find what appears to be a marker (setting markerListStyleType to a valid value), we'll store the marker string here
-					final Text textNode=(Text)XMLUtilities.getFirstNode(childNode, NodeFilter.SHOW_TEXT); //get the first text node in the element
+					final Text textNode=(Text)getFirstNode(childNode, NodeFilter.SHOW_TEXT); //get the first text node in the element
 					if(textNode!=null)  //if we found a text node somewhere inside this text node
 					{
 						final String data=textNode.getData(); //get the text node data
@@ -796,9 +793,9 @@ Debug.trace("Current list style type: ", listStyleType);  //G***del
 						if(listItemNodeList.indexOf(moveNode)>=0)  //if we just moved an element that we've already determined should be a list item
 						{
 //G***del							final Element listItemElement=(Element)moveNode;  //cast our node to an element
-							final Element listItemElement=XMLUtilities.replaceElementNS((Element)moveNode, elementNamespace, ELEMENT_LI);  //rename the element to "li"
+							final Element listItemElement=replaceElementNS((Element)moveNode, elementNamespace, ELEMENT_LI);  //rename the element to "li"
 							  //remove the marker from the list item
-							final Text textNode=(Text)XMLUtilities.getFirstNode(listItemElement, NodeFilter.SHOW_TEXT); //get the first text node in the element
+							final Text textNode=(Text)getFirstNode(listItemElement, NodeFilter.SHOW_TEXT); //get the first text node in the element
 							if(textNode!=null)  //if we found a text node somewhere inside this text node
 							{
 								final String data=textNode.getData(); //get the text node data
@@ -975,7 +972,7 @@ Debug.trace("finished a blockquote list");
 				else  //if we only found one blockquote, simply rename the single element to a blockquote; we'll need to search again, starting right after that blockquote
 				{
 //G***del Debug.trace("Single blockquote converted.");
-					final Element blockquoteElement=XMLUtilities.replaceElementNS((Element)blockquoteNodeList.get(0), elementNamespace, ELEMENT_DIV);  //rename the element to "div"
+					final Element blockquoteElement=replaceElementNS((Element)blockquoteNodeList.get(0), elementNamespace, ELEMENT_DIV);  //rename the element to "div"
 					blockquoteElement.setAttributeNS(null, "class", "fullIndent");  //G***comment; use constants; what if there already is a class?
 				  searchStartNode=element.getFirstChild();  //since we found a blockquote, we should check the child elements again for blockquotes, starting with the first child
 //G***del				  searchStartNode=blockquoteElement.getNextSibling();  //we'll search the child nodes again, this time starting with the node right after the one node we found last time
@@ -1068,7 +1065,7 @@ Debug.trace("finished a blockquote list");
 				{
 //G***del					String localName=null;  //if we decide this is a heading, we'll put the local name here
 //G***del					boolean isHeading=false;  //this won't be a heading unless we specifically find out it is
-					final String text=XMLUtilities.getText(childElement, true).trim(); //get the trimmed text of the element
+					final String text=getText(childElement, true).trim(); //get the trimmed text of the element
 //G***del Debug.trace("looking at text: ", text); //G***del
 				  if(Prose.isPageNumber(text))  //if this is a page number
 					{
@@ -1188,7 +1185,7 @@ Debug.trace("is book title heading"); //G***del
 							boolean isIndependent=true; //a header must be indepedent of the other text; we'll confirm that this one is
 							if(lastElement!=null) //if we've already processing an element
 							{
-								final String lastElementText=XMLUtilities.getText(lastElement, true).trim(); //get the trimmed text of the last element
+								final String lastElementText=getText(lastElement, true).trim(); //get the trimmed text of the last element
 								if(lastElementText.length()>0)  //if there was text before us
 								{
 									final char lastChar=lastElementText.charAt(lastElementText.length()-1); //get the last character in the last element's text
@@ -1211,7 +1208,7 @@ Debug.trace("is book title heading"); //G***del
 							if(isIndependent) //if this heading is independent
 							{
 								final String localName="h"+headingLevel;  //G***fix
-								childElement=XMLUtilities.replaceElementNS(childElement, childElementNamespace, localName);  //rename the element to to a heading G***fix the namespace here
+								childElement=replaceElementNS(childElement, childElementNamespace, localName);  //rename the element to to a heading G***fix the namespace here
 								  //see if the last page break was a fixed heading
 								final boolean isLastPageBreakHeadingFixed=/*G***del lastPageBreakElement==lastElement && */lastPageBreakType<0;
 									//see if we should do a page break
@@ -1346,7 +1343,7 @@ Debug.trace("subsequent page break pass");  //G***del
 				(isTextContainer(element) || getChildBlockElementCount(element)==0))
 		{
 			element=checkBreakElement(element); //break this element into several if we need to
-			final Text textNode=(Text)XMLUtilities.getFirstNode(element, NodeFilter.SHOW_TEXT); //get the first text node in the element
+			final Text textNode=(Text)getFirstNode(element, NodeFilter.SHOW_TEXT); //get the first text node in the element
 			if(textNode!=null)  //if we found a text node
 			{
 //G***del Debug.trace("Found text node for element: ", elementName); //G***del
@@ -1371,7 +1368,7 @@ Debug.trace("subsequent page break pass");  //G***del
 		if(isConvertUnderlineItalics()) //if we should replace underline tags with italics tags
 		{
 			if(elementName.equals(ELEMENT_U)) //if this is the underline element
-				element=XMLUtilities.replaceElementNS(element, element.getNamespaceURI(), ELEMENT_I);  //rename the element to "i"
+				element=replaceElementNS(element, element.getNamespaceURI(), ELEMENT_I);  //rename the element to "i"
 		}
 		return element; //return whatever element we wound up with
 	}
@@ -1431,9 +1428,9 @@ Debug.trace("Checking break element: ", element.getNodeName());
 						XMLUtilities.appendClonedChildNodes(fragmentElement, element, true);  //deep-clone the child nodes of the element and add them to the new fragment element
 */
 						if(childNodeCount>nextBreakIndex) //if there is content after the fragment
-							XMLUtilities.removeChildren(fragmentElement, nextBreakIndex, childNodeCount); //remove all children after the fragment, starting at the next break and including all remaining children
+							removeChildren(fragmentElement, nextBreakIndex, childNodeCount); //remove all children after the fragment, starting at the next break and including all remaining children
 						if(lastBreakIndex>0)  //if there is content before the fragment
-							XMLUtilities.removeChildren(fragmentElement, 0, lastBreakIndex+1); //remove all children before the fragment, starting at the first child and including the last break
+							removeChildren(fragmentElement, 0, lastBreakIndex+1); //remove all children before the fragment, starting at the first child and including the last break
 						fragmentElementArray[fragmentCount++]=fragmentElement;  //store this fragment and show that we've found another fragment
 					}
 					lastBreakIndex=nextBreakIndex;  //update our record of our last break index
@@ -1469,11 +1466,11 @@ Debug.trace("Checking break element: ", element.getNodeName());
 		{
 			final String langValue=element.getAttributeNS(null, XHTML.ATTRIBUTE_LANG);  //get the lang attribute value
 //G***del 	Debug.trace("found name value: "+nameValue);
-			if(!element.hasAttributeNS(XML_NAMESPACE_URI.toString(), XML.ATTRIBUTE_LANG)) //if there is no xml:lang attribute G***use a constant, use namespaces
+			if(!element.hasAttributeNS(XML_NAMESPACE_URI.toString(), XMLUtilities.ATTRIBUTE_LANG)) //if there is no xml:lang attribute G***use a constant, use namespaces
 			{
 //G***del 	Debug.trace("no name attribute, though; moving name to id");
 					//create an xml:lang attribute with the value of the lang attribute G***use a constant here, use namespaces
-				element.setAttributeNS(XML_NAMESPACE_URI.toString(), XMLUtilities.createQualifiedName(XML.XML_NAMESPACE_PREFIX, XML.ATTRIBUTE_LANG), langValue);  
+				element.setAttributeNS(XML_NAMESPACE_URI.toString(), createQualifiedName(XML_NAMESPACE_PREFIX, XMLUtilities.ATTRIBUTE_LANG), langValue);  
 				element.removeAttributeNS(null, XHTML.ATTRIBUTE_LANG);  //remove the lang attribute
 			}
 		}
@@ -1507,12 +1504,12 @@ Debug.trace("Checking break element: ", element.getNodeName());
 //G***del		  (com.garretwilson.text.xml.XMLNamedNodeMap)element.getAttributes().getC
 
 /*G***del
-				//G***important: this will *not* work after XMLUtilities.replaceElementNS() clones attributes, as it should do now
+				//G***important: this will *not* work after replaceElementNS() clones attributes, as it should do now
 			if(element.getAttributes().getLength()>0) //if there are attributes
 			{
-				XMLUtilities.replaceElementNS(element, element.getNamespaceURI(), element.getLocalName());  //remove the attributes G***fix
+				replaceElementNS(element, element.getNamespaceURI(), element.getLocalName());  //remove the attributes G***fix
 			}
-				//G***replace all this with a XMLUtilities.removeAllAttribute(), which calls XMLUtilities.removeAllChildren(attributeMap) or something
+				//G***replace all this with a removeAllAttribute(), which calls removeAllChildren(attributeMap) or something
 */
 
 		}
@@ -1624,7 +1621,7 @@ Debug.trace("new style: "+newStyle.getCssText());  //G***del
 	*/  //G***document the element name normalization in the file header comments
 	protected Element tidyClassAttribute(Element element)
 	{
-		final String classValue=XMLUtilities.getDefinedAttributeNS(element, null, ATTRIBUTE_CLASS);  //get the class attribute if it is defined
+		final String classValue=getDefinedAttributeNS(element, null, ATTRIBUTE_CLASS);  //get the class attribute if it is defined
 		if(classValue!=null)  //if there is a class defined
 		{
 			final String elementName=element.getNodeName(); //get the element's name G***fix for namespaces
@@ -1641,7 +1638,7 @@ Debug.trace("new style: "+newStyle.getCssText());  //G***del
 				  if(!elementName.equals(ELEMENT_H1)) //if this is not an H1 element
 					{
 							//replace the element with an <h1> element
-						element=XMLUtilities.replaceElementNS(element, element.getNamespaceURI(), ELEMENT_H1);
+						element=replaceElementNS(element, element.getNamespaceURI(), ELEMENT_H1);
 					}
 				}
 				else if(tidyMicrosoft)  //if we should tidy Microsoft-related classes
@@ -1655,7 +1652,7 @@ Debug.trace("new style: "+newStyle.getCssText());  //G***del
 					{
 						element.removeAttributeNS(null, ATTRIBUTE_CLASS);   //remove the class attribute
 							//replace the element with a blockquote element and return it G***only turn some of these into blockquotes; for others, use div class="fullIndent"
-						return XMLUtilities.replaceElementNS(element, element.getNamespaceURI(), ELEMENT_BLOCKQUOTE);
+						return replaceElementNS(element, element.getNamespaceURI(), ELEMENT_BLOCKQUOTE);
 					}
 					else if(classValue.equals(MSO_TITLE_CLASS)) //or if this is the "MsoTitle" class
 					{
@@ -1663,7 +1660,7 @@ Debug.trace("new style: "+newStyle.getCssText());  //G***del
 						if(!elementName.equals(ELEMENT_H1)) //if this is not an H1 element
 						{
 								//replace the element with an <h1> element
-							element=XMLUtilities.replaceElementNS(element, element.getNamespaceURI(), ELEMENT_H1);
+							element=replaceElementNS(element, element.getNamespaceURI(), ELEMENT_H1);
 						}
 					}
 				}
@@ -1797,7 +1794,7 @@ Debug.trace("found enclosing start at index: ", startIndex);  //G***del
 						--endIndex; //decrement the ending index to compensate for removing the starting delimiter
 						final Element parentElement=(Element)textNode.getParentNode();  //get the parent of the text node
 							//split the selected text into a separate text node
-						final Text splitTextNode=XMLUtilities.splitText(textNode, startIndex, endIndex);
+						final Text splitTextNode=splitText(textNode, startIndex, endIndex);
 //G***del Debug.trace("finished splitting node: ", splitTextNode.getData());
 							//create an element to wrap the characters
 						final Element element=textNode.getOwnerDocument().createElementNS(namespaceURI, qname);
@@ -1934,8 +1931,8 @@ Debug.trace("found enclosing start at index: ", startIndex);  //G***del
 			alt="Image";  //G***fix
 */
 //G***del		if(alt!=null) //if there is alternate text
-			XMLUtilities.appendText(objectElement, alt);  //add the alternate text as child text to the object element
-//G***del		XMLUtilities.addClonedChildren(objectElement, element, true); //clone the applet element's child nodes and add them to the new object node
+			appendText(objectElement, alt);  //add the alternate text as child text to the object element
+//G***del		addClonedChildren(objectElement, element, true); //clone the applet element's child nodes and add them to the new object node
 		return objectElement; //return the element we created
 	}
 
@@ -1961,8 +1958,8 @@ Debug.trace("found enclosing start at index: ", startIndex);  //G***del
 			objectElement.setAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_HEIGHT, height); //set the object height attribute
 		if(width!=null)  //if there is a width attribute
 			objectElement.setAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_WIDTH, width); //set the object width attribute
-		XMLUtilities.appendClonedChildNodes(objectElement, element, true); //clone the applet element's child nodes and add them to the new object node
-		XMLUtilities.appendText(objectElement, "This OEB reading system does not support Java.");  //add alternate text as child text to the object element G***i18n; fix
+		appendClonedChildNodes(objectElement, element, true); //clone the applet element's child nodes and add them to the new object node
+		appendText(objectElement, "This OEB reading system does not support Java.");  //add alternate text as child text to the object element G***i18n; fix
 		return objectElement; //return the element we created
 	}
 
@@ -1993,7 +1990,7 @@ Debug.trace("found enclosing start at index: ", startIndex);  //G***del
 			{
 				final Node previousNode=childNode.getPreviousSibling(); //pruning a node may promote its children; we'll have to recalculate the next node in that case
 				prepareNodeForRemoval(childNode); //do whatever we need to do before removing the node, such as promoting attributes if this is an element
-				XMLUtilities.pruneChild(element, childNode);  //prune the child, promoting the child's children
+				pruneChild(element, childNode);  //prune the child, promoting the child's children
 				removedChildCount++;  //show that we removed another child node
 				//the next node will be the first node after the old previous sibling, or if there was no previous sibling, the first child node of the element
 				nextNode=previousNode!=null ? previousNode.getNextSibling() : element.getFirstChild();
@@ -2097,7 +2094,7 @@ Debug.trace("found enclosing start at index: ", startIndex);  //G***del
 		  Node nextNode=childNode.getNextSibling();	//get a reference to the next sibling so we'll have it when we need it
 			if(shouldPrune(childNode)) //if this child should be pruned G***put this in a separate method
 			{
-				XMLUtilities.pruneChild(element, childNode);  //prune the child, promoting the child's children
+				pruneChild(element, childNode);  //prune the child, promoting the child's children
 				removedChildCount++;  //show that we removed another child node
 			}
 			childNode=nextNode;	//look at the next node

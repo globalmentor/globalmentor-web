@@ -1,3 +1,19 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml;
 
 import org.w3c.dom.Element;
@@ -5,9 +21,11 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.TypeInfo;
 
 /**An attribute of a tag (and therefore of an element).
+@author Garret Wilson
 @see XMLTag
 @see XMLElement
 @see org.w3c.dom.Attr
+@deprecated
 */
 public class XMLAttribute extends XMLNode implements org.w3c.dom.Attr
 {
@@ -15,9 +33,9 @@ public class XMLAttribute extends XMLNode implements org.w3c.dom.Attr
 	/**Constructor for an attribute taking a name.
 	@param ownerDocument The document which owns this node.
 	@param newName The new name of the attribute.
-//G***fix for DOM	@exception XMLInvalidNameException Thrown if the specified name is invalid.
+//TODO fix for DOM	@exception XMLInvalidNameException Thrown if the specified name is invalid.
 	*/
-	public XMLAttribute(final XMLDocument ownerDocument, final String newName) //G***fix for DOM throws XMLInvalidNameException
+	public XMLAttribute(final XMLDocument ownerDocument, final String newName) //TODO fix for DOM throws XMLInvalidNameException
 	{
 		super(XMLNode.ATTRIBUTE_NODE, ownerDocument);	//construct the parent class
 		setNodeName(newName);	//set the name
@@ -56,19 +74,19 @@ public class XMLAttribute extends XMLNode implements org.w3c.dom.Attr
 		super(XMLNode.ATTRIBUTE_NODE, ownerDocument);	//construct the parent class
 		setNamespaceURI(namespaceURI);  //set the namespace URI
 		setNodeNameNS(qualifiedName);	//set the node name, correctly extracting namespace information
-		setNodeValue(newValue);	//set the value G***do we want to have an XMLNode constructor that accepts a value as well?
+		setNodeValue(newValue);	//set the value TODO do we want to have an XMLNode constructor that accepts a value as well?
 	}
 
 	/**Constructor for an attribute taking both a name and a value.
 	@param ownerDocument The document which owns this node.
 	@param newName The new name of the attribute.
 	@param newValue The new value of the attribute.
-//G***fix for DOM	@exception XMLInvalidNameException Thrown if the specified name is invalid.
+//TODO fix for DOM	@exception XMLInvalidNameException Thrown if the specified name is invalid.
 	*/
-	public XMLAttribute(final XMLDocument ownerDocument, final String newName, final String newValue) //G***fix for DOM throws XMLInvalidNameException
+	public XMLAttribute(final XMLDocument ownerDocument, final String newName, final String newValue) //TODO fix for DOM throws XMLInvalidNameException
 	{
 		this(ownerDocument, newName);	//do the default constructing
-		setNodeValue(newValue);	//set the value G***do we want to have an XMLNode constructor that accepts a value as well?
+		setNodeValue(newValue);	//set the value TODO do we want to have an XMLNode constructor that accepts a value as well?
 	}
 
 	/**Constructor for an attribute taking a name.
@@ -76,9 +94,9 @@ public class XMLAttribute extends XMLNode implements org.w3c.dom.Attr
 	@param newName The new name of the attribute.
 	@param newLineIndex The new line index.
 	@param newCharIndex The new character index.
-	//G***fix for DOM	@exception XMLInvalidNameException Thrown if the specified name is invalid.
+	//TODO fix for DOM	@exception XMLInvalidNameException Thrown if the specified name is invalid.
 	*/
-	public XMLAttribute(final XMLDocument ownerDocument, final String newName, final long newLineIndex, final long newCharIndex) //G***fix for DOM throws XMLInvalidNameException
+	public XMLAttribute(final XMLDocument ownerDocument, final String newName, final long newLineIndex, final long newCharIndex) //TODO fix for DOM throws XMLInvalidNameException
 	{
 		this(ownerDocument, newName);	//do the default constructing
 		setLineIndex(newLineIndex);	//set the line index
@@ -91,25 +109,25 @@ public class XMLAttribute extends XMLNode implements org.w3c.dom.Attr
 	@param newValue The new value of the attribute.
 	@param newLineIndex The new line index.
 	@param newCharIndex The new character index.
-	//G***fix for DOM	@exception XMLInvalidNameException Thrown if the specified name is invalid.
+	//TODO fix for DOM	@exception XMLInvalidNameException Thrown if the specified name is invalid.
 	*/
-	public XMLAttribute(final XMLDocument ownerDocument, final String newName, final String newValue, final long newLineIndex, final long newCharIndex) //G***fix for DOM throws XMLInvalidNameException
+	public XMLAttribute(final XMLDocument ownerDocument, final String newName, final String newValue, final long newLineIndex, final long newCharIndex) //TODO fix for DOM throws XMLInvalidNameException
 	{
 		this(ownerDocument, newName, newValue);	//do the default constructing
 		setLineIndex(newLineIndex);	//set the line index
 		setCharIndex(newCharIndex);	//set the character index
 	}
 
-//G***maybe make this have package level access or something
+//TODO maybe make this have package level access or something
 		/**Sets the name of the attribute.
 		@param newName The new name for the attribute, or "" to specify no name.
-//G***fix for DOM		@exception XMLInvalidNameException Thrown if the specified name is invalid.
+//TODO fix for DOM		@exception XMLInvalidNameException Thrown if the specified name is invalid.
 		*/
-/*G***fix exceptions and stuff and reconcile with DOM
-		public void setName(String newName) //G***fix for DOM throws XMLInvalidNameException
+/*TODO fix exceptions and stuff and reconcile with DOM
+		public void setName(String newName) //TODO fix for DOM throws XMLInvalidNameException
 		{
-//G***fix for DOM			if(newName.length()!=0)	//don't check empty strings, because empty strings really aren't valid XML names, and we want to allow clearing the name
-//G***fix for DOM				XMLProcessor.checkValidName(newName);	//make sure the name is valid
+//TODO fix for DOM			if(newName.length()!=0)	//don't check empty strings, because empty strings really aren't valid XML names, and we want to allow clearing the name
+//TODO fix for DOM				XMLProcessor.checkValidName(newName);	//make sure the name is valid
 			Name=newName;
 		}
 */
@@ -135,7 +153,7 @@ public class XMLAttribute extends XMLNode implements org.w3c.dom.Attr
 			setSpecified(true);	//show that this value has been specified
 		}
 
-//G***fix these different value types, and maybe move them to node or something
+//TODO fix these different value types, and maybe move them to node or something
 		/**Gets the integer value of the attribute.
 		@throw NumberFormatException Thrown when the value being read is not a valid integer.
 		@return The integer value of the attribute.
@@ -212,7 +230,7 @@ public class XMLAttribute extends XMLNode implements org.w3c.dom.Attr
 	</ul>
 	@since DOM Level 2
 	*/
-/*G***fix; this doesn't check the namespace URI, and it doesn't even update the prefix by calling the parent version
+/*TODO fix; this doesn't check the namespace URI, and it doesn't even update the prefix by calling the parent version
 	public void setPrefix(String prefix) throws DOMException
 	{
 		if(prefix!=null && prefix.equals(XMLConstants.XMLNS_NAMESPACE_PREFIX))  //if this is the "xmlns" prefix
@@ -230,8 +248,7 @@ public class XMLAttribute extends XMLNode implements org.w3c.dom.Attr
 	*/
 	public Object clone()
 	{
-		return new XMLAttribute(getOwnerXMLDocument(), getNamespaceURI(), getNodeName(), getNodeValue()); //create a duplicate attribute G***eventually put all line and char index information elsewhere, like in the parser
-//G***del		return new XMLAttribute(getOwnerXMLDocument(), getNodeName(), getNodeValue(), getLineIndex(), getCharIndex());	//create a new node with the same owner document and the same name
+		return new XMLAttribute(getOwnerXMLDocument(), getNamespaceURI(), getNodeName(), getNodeValue()); //create a duplicate attribute TODO eventually put all line and char index information elsewhere, like in the parser
 	}
 
 	/**The index of the line on which this attribute begins, or -1 if unknown
@@ -301,7 +318,7 @@ public class XMLAttribute extends XMLNode implements org.w3c.dom.Attr
 
 	/**Sets the value of the attribute, and makes a note that the attribute has
 	now been explicitely specified.
-	G***fix On setting, this creates a <code>Text</code> node with the unparsed
+	TODO fix On setting, this creates a <code>Text</code> node with the unparsed
 	contents of the string.
 	@param value The new value for the attribute.
 	@exception DOMException

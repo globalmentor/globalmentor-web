@@ -1,3 +1,19 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml;
 
 import java.util.ArrayList;
@@ -6,8 +22,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.mail.MethodNotSupportedException;
-
 import org.w3c.dom.*;
 import org.w3c.dom.events.*;
 
@@ -15,11 +29,10 @@ import com.globalmentor.java.Objects;
 import com.globalmentor.text.xml.events.*;
 import com.globalmentor.util.Debug;
 
-import static com.globalmentor.text.xml.XML.*;
-
 /**The class which forms a basis for all other XML document classes.
-@see XMLNodeList
 @author Garret Wilson
+@see XMLNodeList
+@deprecated
 */
 public abstract class XMLNode extends XMLNamedObject implements Node, EventTarget, Cloneable
 {
@@ -70,10 +83,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 			return captureEventListenerListMap;  //return the map
 		}
 
-	/**The list of event listeners.*/
-//G***del	private List eventListenerList=new LinkedList();
-
-	/*Constructor which requires an owner document to be specified. Certain derived
+	/**Constructor which requires an owner document to be specified. Certain derived
 	objects, such as <code>XMLDocument</code>, may set this to <code>null</code>.
 	@param nodeType The type of node this is.
 	@param ownerDocument The document which owns this node.
@@ -86,19 +96,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 		OwnerDocument=ownerDocument;	//set the owner document
 	}
 
-	/**Constructor that specifes a node name.
-	@param ownerDocument The document which owns this node.
-	@param newName The new name for the node.
-	*/
-/*G***del; it's better if the derived classes create their own versions of this
-	public XMLNode(final XMLDocument ownerDocument, final String newName)//G***do we want to support some sort of XMLInvalidNameException
-	{
-		this(ownerDocument);	//do the default constructing
-		setNodeName(newName);	//set the name
-	}
-*/
-
-	/**The type of XML node this is.*/	//G***probably delete the default value
+	/**The type of XML node this is.*/	//TODO probably delete the default value
 	private short NodeType=UNDEFINED_NODE;
 
 		/**Returns the type of XML node.
@@ -106,9 +104,6 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 		@version DOM Level 1
 		*/
 		public short getNodeType() {return NodeType;}
-
-	/**The name of the XML node.*/
-//G***del	private String Name="";
 
 		/**Returns the name of this node, depending on its type.
 		@return The name of this node.
@@ -123,7 +118,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 		@param newName The new name of the node.
 		@see #setNodeName
 		@see #getNodeType
-		*/	//G***we now set the qname, which has side effects of updating the prefix and local name---make sure this doesn't cause problems
+		*/	//TODO we now set the qname, which has side effects of updating the prefix and local name---make sure this doesn't cause problems
 		protected void setNodeName(final String newName) {setQName(newName);}
 
 
@@ -280,17 +275,6 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	*/
 	public NodeList getChildNodes() {return getChildXMLNodeList();}
 
-
-	/**Returns a list of all child nodes in "flat" document order.
-	@return A list of all child nodes...
-	public NodeList getChildNodesDeep()
-	*/
-/*G***del
-	{
-
-	}
-*/
-
 	/**Specifies whether or not a particular node can be added as a child of this node.
 	This allows all node functionality to be included in XMLNode, while allowing
 	derived node types to simply override this function to specify if a particular
@@ -317,29 +301,10 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	{
 		if(!isNodeTypeAllowed(node))	//if we can't add this type of node
 			throw new XMLDOMException(DOMException.HIERARCHY_REQUEST_ERR, new Object[]{node.getNodeName()});	//show that this node type isn't allowed
-		//G***see if the node is one of this node's ancestors
-		//G***check the document type
-		//G***check readonly status
+		//TODO see if the node is one of this node's ancestors
+		//TODO check the document type
+		//TODO check readonly status
 	}
-
-	/**Retrieves the first child node with the specified name.
-	@param name The name of the child node to retrieve.
-	@return A <code>Node</code> (of any type) with the specified name, or
-	<code>null</code> if the specified name did not identify any child node.
-	@see XMLNode getFirstChildXMLNode
-	*/
-/*G***del if we don't need
-	public XMLNode getFirstNamedChildXMLNode(String name)
-	{
-		for(int i=0; i<getChildXMLNodeList().size(); ++i)	//look at each of our child nodes
-		{
-			final XMLNode node=(XMLNode)getChildXMLNodeList().get(i);	//get a reference to this node
-			if(node.getNodeName().equals(name))	//if this node has the correct name
-				return node;	//return this node
-		}
-		return null;	//if we can't find a node with the given name, return null
-	}
-*/
 
 	/**Returns the first child of this node, or <code>null</code> if there are no children.
 	For the DOM version, see getFirstChild().
@@ -482,7 +447,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	/**Inserts the node <code>newChild</code> before the existing child node
 		<code>refChild</code>. If <code>refChild</code> is <code>null</code>,
 		inserts <code>newChild</code> at the end of the list of children.
-		//G***fix this comment
+		//TODO fix this comment
 	 * <br>If <code>newChild</code> is a <code>DocumentFragment</code> object,
 	 * all of its children are inserted, in the same order, before
 	 * <code>refChild</code>. If the <code>newChild</code> is already in the
@@ -509,11 +474,10 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	*/
 	public Node insertBefore(Node newChild, Node refChild) throws DOMException
 	{
-//G***del Debug.trace("insertBefore()");
 		final XMLNode xmlNewChild=(XMLNode)newChild;  //cast the child to an XMLNode
-		//G***check the hierarchy
-		//G***check the document
-		//G***check read-only status here
+		//TODO check the hierarchy
+		//TODO check the document
+		//TODO check read-only status here
 		if(newChild.getNodeType()==DOCUMENT_FRAGMENT_NODE)  //if a document fragment is being added
 		{
 			final NodeList childNodeList=newChild.getChildNodes();  //get a list of the element fragment's children
@@ -529,17 +493,15 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 			final int refChildIndex=getChildXMLNodeList().indexOf(refChild);	//get the index of the reference child
 			if(refChildIndex==-1)	//if we can't find the reference child
 				throw new XMLDOMException(DOMException.NOT_FOUND_ERR, new Object[]{refChild.getNodeName()});	//show that we couldn't find the reference node
-	//G***del Debug.trace("adding child at index: "+refChildIndex);
 			getChildXMLNodeList().add(refChildIndex, newChild);	//add this child to our list at the appropriate index
-			//G***set the document, set the parent, etc.
-	//G***del Debug.trace("setting parent to this");
+			//TODO set the document, set the parent, etc.
 			xmlNewChild.setParentXMLNode(this);	//set the parent of the added child
 			if(isEventsEnabled()) //if events are enabled
 			{
 				//create a new event for the inserted node
 				final Event nodeInsertedEvent=XMLMutationEvent.createDOMNodeInsertedEvent(xmlNewChild, this);
 				xmlNewChild.dispatchEvent(nodeInsertedEvent); //dispatch the event
-				//G***dispatch the document events
+				//TODO dispatch the document events
 			}
 		}
 		return newChild;	//return the inserted child
@@ -567,16 +529,12 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	*/
 	public Node replaceChild(Node newChild, Node oldChild) throws DOMException
 	{
-//G***del Debug.trace(this, "replaceChild()");
 		if(getChildXMLNodeList().indexOf(oldChild)==-1)	//if the old child isn't in the list (do this first, even though this will be checked again in our call to removeChild(), so that errors will occur before modifications occur
 			throw new XMLDOMException(DOMException.NOT_FOUND_ERR, new Object[]{oldChild.getNodeName()});	//show that we couldn't find the node to remove
 		final int newChildIndex=getChildXMLNodeList().indexOf(newChild);	//see if the new child is already in our list
 		if(newChildIndex!=-1)	//if the new child is already in our list
 			getChildXMLNodeList().remove(newChildIndex);	//remove the new child from the list before we replace the old child with it
-//G***del Debug.trace(this, "before call to insertBefore()");
-
 			//TODO probably replace this code with a simple replacement operations, taking care to fire the right events
-
 		insertBefore(newChild, oldChild);	//insert the new child before the old child
 		removeChild(oldChild);	//remove the old child
 		return oldChild;	//return the child we replaced
@@ -597,13 +555,13 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	public Node removeChild(Node oldChild) throws DOMException
 	{
 		final XMLNode xmlOldChild=(XMLNode)oldChild;  //cast the child to an XMLNode
-		//G***check for read-only status
+		//TODO check for read-only status
 		if(isEventsEnabled()) //if events are enabled
 		{
 			//create a new event for the removed node
 		  final Event nodeRemovedEvent=XMLMutationEvent.createDOMNodeRemovedEvent(xmlOldChild, this);
 			xmlOldChild.dispatchEvent(nodeRemovedEvent); //dispatch the event
-			//G***dispatch the document events
+			//TODO dispatch the document events
 		}
 		final int oldChildIndex=getChildXMLNodeList().indexOf(oldChild);	//get the index of the child to remove
 		if(oldChildIndex==-1)	//if we can't find the child they want removed
@@ -635,9 +593,9 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	public Node appendChild(Node newChild) throws DOMException
 	{
 		final XMLNode xmlNewChild=(XMLNode)newChild;  //cast the child to an XMLNode
-		//G***check the hierarchy
-		//G***check the document
-		//G***check read-only status here
+		//TODO check the hierarchy
+		//TODO check the document
+		//TODO check read-only status here
 		if(newChild.getNodeType()==DOCUMENT_FRAGMENT_NODE)  //if a document fragment is being added
 		{
 			final NodeList childNodeList=newChild.getChildNodes();  //get a list of the element fragment's children
@@ -651,14 +609,14 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 		{
 			checkNodeBeforeAdding(newChild);	//make sure this node can be added to our list; if not, the appropriate exception will be thrown
 			getChildXMLNodeList().add(newChild);	//add this child to our list
-			//G***set the document, set the parent, etc.
+			//TODO set the document, set the parent, etc.
 			xmlNewChild.setParentXMLNode(this);	//set the parent of the added child
 			if(isEventsEnabled()) //if events are enabled
 			{
 				//create a new event for the inserted node
 				final Event nodeInsertedEvent=XMLMutationEvent.createDOMNodeInsertedEvent(xmlNewChild, this);
 				xmlNewChild.dispatchEvent(nodeInsertedEvent); //dispatch the event
-				//G***dispatch the document events
+				//TODO dispatch the document events
 			}
 		}
 		return newChild;	//return the appended child
@@ -683,7 +641,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	@see XMLNode#appendChild
 	@see XMLNode#isNodeTypeAllowed
 	*/
-	public void appendText(final String textString) throws DOMException //G***is this a DOM method? if not, it probably goes in XMLUtilities
+	public void appendText(final String textString) throws DOMException //TODO is this a DOM method? if not, it probably goes in XMLUtilities
 	{
 		final XMLNode lastNode=getLastChildXMLNode();	//get our last child node
 		if(lastNode!=null && lastNode.getNodeType()==Node.TEXT_NODE)	//if we have a last node, and it is a text node
@@ -692,7 +650,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 		{
 			if(textString.length()>0)	//if there is character content (we don't want to create an empty XMLText node, although that wouldn't really hurt anything)
 			{
-									//G***should we check for a DOMException and throw something based on XMLException here?
+									//TODO should we check for a DOMException and throw something based on XMLException here?
 				appendChild(new XMLText(getOwnerXMLDocument(), textString));	//create a text node from the character content and add it to our children
 			}
 		}
@@ -718,7 +676,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	*/
 	public boolean hasChildNodes() {return getChildNodes().getLength()>0;}
 
-	/*Creates and returns a duplicate copy of this node. The clone has no parent.
+	/**Creates and returns a duplicate copy of this node. The clone has no parent.
 	For the DOM version, see cloneNode().
 	@param deep If <code>true</code>, recursively clone the subtree under the
 	specified node; if <code>false</code>, clone only the node itself (and
@@ -743,7 +701,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 		}
 	}
 
-	/*Creates and returns a duplicate copy of this node. The clone has no parent.
+	/**Creates and returns a duplicate copy of this node. The clone has no parent.
 	Cloning an <code>Element</code> copies all attributes and their
 	values, including those generated by the XML processor to represent
 	defaulted attributes, but this method does not copy any text it contains
@@ -786,27 +744,21 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	*/
 	private static void normalize(final Node node)
 	{
-//G***del Debug.trace("Normalizing node: "+node.getNodeName()); //G***Del
 		Node childNode=node.getFirstChild();	//get the first child
 		while(childNode!=null)	//while we have a child node to examine
 		{
-//G***del Debug.trace("Looking at child node: "+childNode.getNodeName());
 		  Node nextNode=childNode.getNextSibling();	//get a reference to the next sibling so we'll have it when we need it
 		  if(childNode.getNodeType()==Node.TEXT_NODE) //if the child node is a text node
 			{
-//G***del Debug.trace("Node is a text node");
 				final Text currentTextNode=(Text)childNode; //cast the child node to a text node
 				if(currentTextNode.getData().length()==0) //if this is an empty text node
 					node.removeChild(currentTextNode);  //remove the empty text node
 				else  //if this text node isn't empty, we'll combine as many following text nodes as we can
 				{
-//G***del Debug.trace("Node is a text node");
 					while(nextNode!=null && nextNode.getNodeType()==Node.TEXT_NODE)  //while the next child node is a text node
 					{
-//G***del Debug.trace("Next node is a text node");
 						final Text nextTextNode=(Text)nextNode; //cast the next child node to a text node
 						final String nextData=nextTextNode.getData(); //get the data from the next text node
-//G***del Debug.trace("Next data: "+nextData);
 						if(nextData.length()!=0) //if the next text node is not empty, we'll need to combine them
 						{
 							currentTextNode.appendData(nextData);  //append the next text node's data to that of the first
@@ -837,52 +789,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
      * @since DOM Level 2
      */
     public boolean isSupported(String feature,
-                               String version) {return false;}  //G***fix DOM
-
-	/**The namespace URI of this node, set at creation time by an element or attribute.*/
-//G***del when works	private String namespaceURI=null;
-
-		/**Returns the namespace URI of this node, or <code>null</code> if it is
-			unspecified.
-			<p>This is not a computed value that is the result of a namespace
-			lookup based on an examination of the namespace declarations in
-			scope. It is merely the namespace URI given at creation time.</p>
-			<p>For nodes of any type other than <code>ELEMENT_NODE</code> and
-			<code>ATTRIBUTE_NODE</code> and nodes created with a DOM Level 1
-			method, such as <code>createElement</code> from the
-			<code>Document</code> interface, this is always <code>null</code>. Per
-			the Namespaces in XML Specification  an attribute does not inherit
-			its namespace from the element it is attached to. If an attribute is
-			not explicitly given a namespace, it simply has no namespace.</p>
-		@return The namespace URI of this node, or <code>null</code> if it is
-			unspecified.
-		@since DOM Level 2
-		*/
-//G***del when works		public String getNamespaceURI() {return namespaceURI;}
-
-		/**Sets the namespace URI. Can only be called from derived classes, and should
-		  only be set by the creation of an element or attribute. This method is also
-			called by classes in this package which need to directly manipulate this
-			value, such as the XML namespace processor.
-		@param newNamespaceURI The new namespace URI.
-		@see XMLNamespaceProcessor
-		*/
-//G***del when works		void setNamespaceURI(final String newNamespaceURI) {namespaceURI=newNamespaceURI;}
-
-	/**The namespace prefix of this node.*/
-//G***del when works	private String prefix=null;
-
-		/**Returns the namespace prefix of this node, or <code>null</code> if it is
-			unspecified.
-			<p>For nodes of any type other than <code>ELEMENT_NODE</code> and
-			<code>ATTRIBUTE_NODE</code> and nodes created with a DOM Level 1
-			method, such as <code>createElement</code> from the
-			<code>Document</code> interface, this is always <code>null</code>.</p>
-		@return The namespace prefix of this node, or <code>null</code> if it is
-			unspecified.
-		@since DOM Level 2
-		*/
-//G***del when works		public String getPrefix() {return prefix;}
+                               String version) {return false;}  //TODO fix DOM
 
 		/**Sets the namespace prefix of this node. The prefix is actually set in
 		  <code>setNodeName()</code>.
@@ -917,9 +824,9 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 		{
 			if(!Objects.equals(getPrefix(), prefix))	//if the prefix is really changing
 			{
-				//G***check for an illegal character
-				//G***check for read-only status
-				//G***check to see if the prefix is malformed
+				//TODO check for an illegal character
+				//TODO check for read-only status
+				//TODO check to see if the prefix is malformed
 				checkNamespace(getNamespaceURI(), prefix);  //make sure the namespace URI and prefix are compatible
 				final String localName=XMLUtilities.getLocalName(getNodeName()); //get the current local name from the qualified node name (we can't use getLocalName(), because it may return null if this node was created with a DOM Level 1 method)
 				setNodeName(prefix, localName); //set the prefix and the local name, and update the node name itself
@@ -960,14 +867,14 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 			if(namespaceURI!=null && prefix!=null)  //if the namespace URI and prefix are not null
 			{
 				boolean mismatchedPrefix=false; //we'll set this to true if the prefix doesn't go with the URI
-				if(prefix.equals(XML.XML_NAMESPACE_PREFIX)) //if this is the prefix, "xml"
+				if(prefix.equals(XMLUtilities.XML_NAMESPACE_PREFIX)) //if this is the prefix, "xml"
 				{
-					if(!namespaceURI.equals(XML.XML_NAMESPACE_URI)) //if the correct URI is not assigned
+					if(!namespaceURI.equals(XMLUtilities.XML_NAMESPACE_URI)) //if the correct URI is not assigned
 						mismatchedPrefix=true;  //show that this namespace prefix doesn't go with the namespace URI
 				}
-				else if(getNodeType()==ATTRIBUTE_NODE && prefix.equals(XML.XMLNS_NAMESPACE_PREFIX)) //if this is the prefix, "xmlns" for an attribute
+				else if(getNodeType()==ATTRIBUTE_NODE && prefix.equals(XMLUtilities.XMLNS_NAMESPACE_PREFIX)) //if this is the prefix, "xmlns" for an attribute
 				{
-					if(!namespaceURI.equals(XML.XMLNS_NAMESPACE_URI)) //if the correct URI is not assigned
+					if(!namespaceURI.equals(XMLUtilities.XMLNS_NAMESPACE_URI)) //if the correct URI is not assigned
 						mismatchedPrefix=true;  //show that this namespace prefix doesn't go with the namespace URI
 				}
 				if(!mismatchedPrefix)  //if the prefix matches the URI
@@ -977,33 +884,13 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 		}
 	}
 
-	/**The local name of the node.*/
-//G***del when works	private String localName=null;
-
-		/**Returns the local part of the qualified name of this node.
-			<p>For nodes of any type other than <code>ELEMENT_NODE</code> and
-			<code>ATTRIBUTE_NODE</code> and nodes created with a DOM Level 1
-			method, such as <code>createElement</code> from the
-			<code>Document</code> interface, this is always <code>null</code>.</p>
-		@return The local part of the qualified name of this node.
-		@since DOM Level 2
-		*/
-//G***del when works		public String getLocalName() {return localName;}
-
-		/**Sets the node's local name.
-		@param newLocalName The new local name for the node.
-		*/
-//G***del when works		public void setLocalName(final String newLocalName) {localName=newLocalName;}
-
-    /**
-     * Returns whether this node (if it is an element) has any attributes.
-     * @return <code>true</code> if this node has any attributes,
-     *   <code>false</code> otherwise.
-     * @since DOM Level 2
-     */
-    public boolean hasAttributes() {return false;}  //G***fix DOM
-
-
+  /**
+   * Returns whether this node (if it is an element) has any attributes.
+   * @return <code>true</code> if this node has any attributes,
+   *   <code>false</code> otherwise.
+   * @since DOM Level 2
+   */
+  public boolean hasAttributes() {return false;}  //G***fix DOM
 
 	/**Adds an event listener to the specified map.
 	@param map The listenerListMap The map of lists of listeners.
@@ -1035,7 +922,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 			eventListenerList.remove(listener); //remove the message listener if it exists
 		  if(eventListenerList.size()==0) //if there are no more listeners in this list
 				listenerListMap.remove(eventListenerList);  //remove the list itself from the map
-			//G***note that, if the map is now empty, it will not be removed; we may want to add this capability elsewhere
+			//TODO note that, if the map is now empty, it will not be removed; we may want to add this capability elsewhere
 		}
 	}
 
@@ -1126,7 +1013,6 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	*/
 	public boolean dispatchEvent(Event event) throws EventException
 	{
-//G***del		boolean defaultActionOccurring=true;  //we'll change this to false if any
 		if(event.getType()==null || event.getType().length()==0)  //if the event type has not been set
 			throw new XMLEventException(XMLEventException.UNSPECIFIED_EVENT_TYPE_ERR, new Object[]{});  //show that the event type has not been set
 		final XMLEvent xmlEvent=(XMLEvent)event;  //cast the event to our implementation type
@@ -1257,11 +1143,9 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	*/
 	public NodeList getNodesByName(final int nodeType, final String nodeName, final boolean deep)
 	{
-
-//G***change this to use XMLUtilities.getNodesByNameNS
-
+//TODO change this to use XMLUtilities.getNodesByNameNS
 		final XMLNodeList nodeList=new XMLNodeList();	//create a new node list to return
-		final boolean matchAllNodes="*".equals(nodeName);	//see if they passed us the wildcard character G***use a constant here
+		final boolean matchAllNodes="*".equals(nodeName);	//see if they passed us the wildcard character TODO use a constant here
 		for(int childIndex=0; childIndex<getChildXMLNodeList().size(); childIndex++)	//look at each child node
 		{
 			final XMLNode node=((XMLNode)getChildXMLNodeList().get(childIndex));	//get a reference to this node
@@ -1291,20 +1175,13 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	*/
 	public NodeList getNodesByNameNS(final int nodeType, final String namespaceURI, final String localName, final boolean deep)
 	{
-
-//G***change this to use XMLUtilities.getNodesByNameNS
-
-//G***del Debug.trace("namespace URI: ", namespaceURI); //G***del
-//G***del Debug.trace("localName: ", localName); //G***del
+//TODO change this to use XMLUtilities.getNodesByNameNS
 		final XMLNodeList nodeList=new XMLNodeList();	//create a new node list to return
-		final boolean matchAllNamespaces="*".equals(namespaceURI);	//see if they passed us the wildcard character for the namespace URI G***use a constant here
-		final boolean matchAllLocalNames="*".equals(localName);	//see if they passed us the wildcard character for the local name G***use a constant here
-//G***del Debug.trace("Nodes: ", getChildXMLNodeList().size());
+		final boolean matchAllNamespaces="*".equals(namespaceURI);	//see if they passed us the wildcard character for the namespace URI TODO use a constant here
+		final boolean matchAllLocalNames="*".equals(localName);	//see if they passed us the wildcard character for the local name TODO use a constant here
 		for(int childIndex=0; childIndex<getChildXMLNodeList().size(); childIndex++)	//look at each child node
 		{
-//G***del Debug.trace("looking at child: ", childIndex);  //G**8del
 			final XMLNode node=((XMLNode)getChildXMLNodeList().get(childIndex));	//get a reference to this node
-//G***del Debug.trace("node: ", node.getNodeName());  //G**8del
 			if(node.getNodeType()==nodeType)	//if this is a node of the correct type
 			{
 				final String nodeNamespaceURI=node.getNamespaceURI(); //get the node's namespace URI
@@ -1316,7 +1193,6 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 				{
 					if(matchAllLocalNames || localName.equals(nodeLocalName)) //if we should match all local names, or the local names match
 					{
-Debug.trace("node matches");  //G***del
 						nodeList.add(node);	//add this node to the list
 					}
 				}

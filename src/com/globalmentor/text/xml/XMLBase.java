@@ -1,22 +1,36 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-//G***del when works import com.garretwilson.net.URLUtilities;
-import com.globalmentor.util.Debug;
+
+import static com.globalmentor.text.xml.XMLUtilities.*;
 
 import org.w3c.dom.*;
 
-import static com.globalmentor.text.xml.XML.*;
-import static com.globalmentor.text.xml.XMLBaseConstants.*;
-
 /**Class that allows discovery of a base URI according to XML Base,
 <a href="http://www.w3.org/TR/xmlbase/">http://www.w3.org/TR/xmlbase/</a>.
-Currently this class processes all URIs as URLs.
 @author Garret Wilson
 */
 public class XMLBase
 {
+	/**The local name of the <code>xml:base</code> attribute.*/
+	public final static String ATTRIBUTE_BASE="base";
 
 	/**Retrieves the value of the <code>xml:base</code> attribute, if present.
 	@param element The element for which the <code>xml:base</code> attribute value
@@ -26,7 +40,7 @@ public class XMLBase
 	 */
 	public static String getXMLBaseAttributeValue(final Element element)
 	{
-		return XMLUtilities.getDefinedAttributeNS(element, XML_NAMESPACE_URI.toString(), ATTRIBUTE_BASE);  //return the xml:base attribute value, if it exists
+		return getDefinedAttributeNS(element, XML_NAMESPACE_URI.toString(), ATTRIBUTE_BASE);  //return the xml:base attribute value, if it exists
 	}
 
 	/**Retrieves the base URI of the given element by traversing up the element
@@ -55,10 +69,7 @@ public class XMLBase
 	*/
 	public static URI getBaseURI(final Element element, final URI documentBaseURI) throws URISyntaxException
 	{
-//G***del Debug.trace("Getting base URI for element: ", element.getNodeName()); //G***del
 		final String xmlBaseValue=getXMLBaseAttributeValue(element);  //get the element's xml:base attribute value
-//G***del Debug.trace("xml:base: ", xmlBaseValue); //G***del
-
 		final URI parentBaseURI; //determine the base URI of the parent, so that we can resolve relative URIs, if we need to
 		final Node parentNode=element.getParentNode();  //get the element's parent node
 		if(parentNode!=null && parentNode.getNodeType()==Node.ELEMENT_NODE) //if there is a parent element
@@ -69,22 +80,11 @@ public class XMLBase
 			parentBaseURI=documentBaseURI;  //use the provided document base URI
 		if(xmlBaseValue!=null)  //if the element has an xml:base attribute value
 		{
-//G***del Debug.trace("found xml base value, creating URL with parent: ", parentBaseURI); //G***del
 			return parentBaseURI!=null ? parentBaseURI.resolve(xmlBaseValue) : new URI(xmlBaseValue);	//create a URI relative to the parent's base URI	
-//G**del when new URI stuff works			return URLUtilities.createURL(parentBaseURI!=null ? new URL(parentBaseURI) : null, xmlBaseValue).toString(); //create a URI relative to the base URI G***fix to use URIs instead of URLs
 		}
 		else  //if there is no xml:base attribute value
 		{
 			return parentBaseURI; //return the base URI of the parent, if we could find one
-/*G***del
-			final Node parentNode=element.getParentNode();  //get the element's parent node
-			if(parentNode!=null && parentNode.getNodeType()==Node.ELEMENT_NODE) //if there is a parent element
-			{
-				return getBaseURI((Element)parentNode); //get the base URI of the parent element
-			}
-			else  //if there is no parent node
-				return null;  //show that there's no XML base to be found
-*/
 		}
 	}
 
@@ -114,7 +114,6 @@ public class XMLBase
 		final URI baseURI=getBaseURI(element, documentBaseURI);  //get the base URI of the element
 		  //resolve the given URI to the base URI we determine
 		return baseURI!=null ? baseURI.resolve(uri) : uri;
-//G***del when new URI stuff works		return URLUtilities.createURL(baseURI!=null ? new URL(baseURI) : null, uri).toString();
 	}
 
 	/**Creates a URI by resolving the given string relative to the base URI of the
@@ -143,7 +142,6 @@ public class XMLBase
 		final URI baseURI=getBaseURI(element, documentBaseURI);  //get the base URI of the element
 			//resolve the given URI to the base URI we determine
 		return baseURI!=null ? baseURI.resolve(string) : new URI(string);
-//G***del when new URI stuff works		return URLUtilities.createURL(baseURI!=null ? new URL(baseURI) : null, uri).toString();
 	}
 
 }
