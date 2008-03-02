@@ -4,14 +4,14 @@ import static java.lang.reflect.Array.*;
 import java.util.*;
 import java.util.regex.Pattern;
 
-import com.garretwilson.text.ArgumentSyntaxException;
-import com.garretwilson.text.W3CDateFormat;
 
 import static com.globalmentor.java.CharSequences.*;
 import static com.globalmentor.java.Objects.*;
 import static com.globalmentor.java.StringBuilders.*;
 import static com.globalmentor.util.Arrays.*;
 
+import com.globalmentor.text.ArgumentSyntaxException;
+import com.globalmentor.text.W3CDateFormat;
 import com.globalmentor.util.ObjectHolder;
 
 /**Utilities for encoding and decoding JavaScript Object Notation (JSON).

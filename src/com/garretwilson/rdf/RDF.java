@@ -11,7 +11,7 @@ import static com.garretwilson.rdf.RDFConstants.*;
 import static com.garretwilson.rdf.RDFUtilities.*;
 import com.garretwilson.rdf.rdfs.RDFSUtilities;
 import com.garretwilson.rdf.xmlschema.XMLSchemaTypedLiteralFactory;
-import com.garretwilson.text.xml.schema.XMLSchemaConstants;
+import com.globalmentor.text.xml.schema.XMLSchemaConstants;
 import com.globalmentor.util.*;
 
 /**An RDF data model.
