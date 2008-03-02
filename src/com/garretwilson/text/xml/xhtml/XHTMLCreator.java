@@ -90,7 +90,7 @@ public class XHTMLCreator extends TextUtilities
 	public void createXHTMLFromText(final Document document, final InputStream inputStream, final String encoding) throws IOException
 	{
 			//see if we can detect an encoding from a byte order mark
-		final CharacterEncoding detectedEncoding=InputStreamUtilities.getBOMEncoding(inputStream);
+		final CharacterEncoding detectedEncoding=InputStreams.getBOMEncoding(inputStream);
 //G***del		final String detectedEncoding=null;
 Debug.trace("detected encoding: ", detectedEncoding);  //G***del
 Debug.trace("constructing buffered reader to text input stream"); //G***del
