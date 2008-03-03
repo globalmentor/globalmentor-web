@@ -17,13 +17,16 @@
 package com.globalmentor.text.xml.stylesheets;
 
 import java.util.LinkedList;
-import org.w3c.dom.stylesheets.StyleSheet;
+
+import com.globalmentor.text.xml.*;
+
+import org.w3c.dom.stylesheets.*;
 
 /**A list of stylesheets in an XML document.
-@see com.garretwilson.xml.XMLDocument
-@see com.garretwilson.xml.stylesheets.XMLStyleSheet
-@see org.w3c.dom.stylesheets.StyleSheet
-@see org.w3c.dom.stylesheets.StyleSheetList
+@see XMLDocument
+@see XMLStyleSheet
+@see StyleSheet
+@see StyleSheetList
 @deprecated
 */
 public class XMLStyleSheetList extends LinkedList implements org.w3c.dom.stylesheets.StyleSheetList

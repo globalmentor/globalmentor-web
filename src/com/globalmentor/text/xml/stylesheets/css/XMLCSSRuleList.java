@@ -17,12 +17,15 @@
 package com.globalmentor.text.xml.stylesheets.css;
 
 import java.util.ArrayList;
+
+import com.globalmentor.text.xml.*;
+
 import org.w3c.dom.css.CSSRule;
 
 /**A list of CSS rules.
 @author Garret Wilson
-@see com.garretwilson.xml.XMLDocument
-@see org.w3c.dom.css.CSSRule
+@see XMLDocument
+@see CSSRule
 @deprecated
 */
 public class XMLCSSRuleList extends ArrayList implements org.w3c.dom.css.CSSRuleList

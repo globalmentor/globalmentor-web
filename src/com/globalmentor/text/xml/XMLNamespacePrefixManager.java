@@ -18,8 +18,6 @@ package com.globalmentor.text.xml;
 
 import java.util.*;
 
-import com.garretwilson.assess.qti.QTIConstants;
-
 import static com.globalmentor.java.Java.*;
 import com.globalmentor.net.http.webdav.*;
 import static com.globalmentor.net.URIs.*;
@@ -92,7 +90,7 @@ public class XMLNamespacePrefixManager	//TODO replace with XMLNamespaceLabelMana
 		registerNamespacePrefix("http://globalmentor.com/namespaces/marmot#", "marmot"); //Marmot TODO link to Marmot constants when Marmot is included in normal libraries
 		registerNamespacePrefix("http://marmox.net/namespaces/content#", "content"); //Marmox content
 //TODO del		registerNamespacePrefix(PLOOP.PLOOP_PROPERTY_NAMESPACE_URI.toString(), PLOOP.PLOOP_PROPERTY_NAMESPACE_PREFIX); //PLOOP property
-		registerNamespacePrefix(QTIConstants.QTI_1_1_NAMESPACE_URI.toString(), QTIConstants.QTI_NAMESPACE_PREFIX); //QTI
+//TODO del		registerNamespacePrefix(QTIConstants.QTI_1_1_NAMESPACE_URI.toString(), QTIConstants.QTI_NAMESPACE_PREFIX); //QTI
 		registerNamespacePrefix(RDF.RDF_NAMESPACE_URI.toString(), RDF.RDF_NAMESPACE_PREFIX); //RDF
 		registerNamespacePrefix(RDFS.RDFS_NAMESPACE_URI.toString(), RDFS.RDFS_NAMESPACE_PREFIX); //RDFS
 //TODO add SOAP
