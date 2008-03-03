@@ -20,44 +20,76 @@ Any redistribution of this source code or derived source code must include these
 public class DCMI
 {
 
-	/**The recommended name of the Dublin Core Metadata Initiative elements namespace.*/
-	public final static String DCMI_ELEMENTS_NAMESPACE_NAME="dc";
+	/**The recommended prefix of the Dublin Core Metadata Initiative elements namespace.*/
+	public final static String DCMI_ELEMENTS_NAMESPACE_PREFIX="dc";
 	/**The URI to the Dublin Core Metadata Initiative element set 1.0 namespace.*/
 	public final static URI DCMI10_ELEMENTS_NAMESPACE_URI=URI.create("http://purl.org/dc/elements/1.0/");
 	/**The URI to the Dublin Core Metadata Initiative element set 1.1 namespace.*/
 	public final static URI DCMI11_ELEMENTS_NAMESPACE_URI=URI.create("http://purl.org/dc/elements/1.1/");
 
-		//Dublin Core Dublin Core Metadata Initiative element property names
+		//Dublin Core property names
 	/**The title of a resource.*/
-	public final static URI TITLE_PROPERTY_URI=DCMI11_ELEMENTS_NAMESPACE_URI.resolve("title");
+	public final static String TITLE_PROPERTY_NAME="title";
 	/**The creator of a resource.*/
-	public final static URI CREATOR_PROPERTY_URI=DCMI11_ELEMENTS_NAMESPACE_URI.resolve("creator");
+	public final static String CREATOR_PROPERTY_NAME="creator";
 	/**The subject of a resource.*/
-	public final static URI SUBJECT_PROPERTY_URI=DCMI11_ELEMENTS_NAMESPACE_URI.resolve("subject");
+	public final static String SUBJECT_PROPERTY_NAME="subject";
 	/**The description of a resource.*/
-	public final static URI DESCRIPTION_PROPERTY_URI=DCMI11_ELEMENTS_NAMESPACE_URI.resolve("description");
+	public final static String DESCRIPTION_PROPERTY_NAME="description";
 	/**The publisher of a resource.*/
-	public final static URI PUBLISHER_PROPERTY_URI=DCMI11_ELEMENTS_NAMESPACE_URI.resolve("publisher");
+	public final static String PUBLISHER_PROPERTY_NAME="publisher";
 	/**The contributor of a resource.*/
-	public final static URI CONTRIBUTOR_PROPERTY_URI=DCMI11_ELEMENTS_NAMESPACE_URI.resolve("contributor");
+	public final static String CONTRIBUTOR_PROPERTY_NAME="contributor";
 	/**The date of a resource.*/
-	public final static URI DATE_PROPERTY_URI=DCMI11_ELEMENTS_NAMESPACE_URI.resolve("date");
+	public final static String DATE_PROPERTY_NAME="date";
 	/**The Dublin Core type of a resource.*/
-	public final static URI TYPE_PROPERTY_URI=DCMI11_ELEMENTS_NAMESPACE_URI.resolve("type");
+	public final static String TYPE_PROPERTY_NAME="type";
 	/**The format of a resource.*/
-	public final static URI FORMAT_PROPERTY_URI=DCMI11_ELEMENTS_NAMESPACE_URI.resolve("format");
+	public final static String FORMAT_PROPERTY_NAME="format";
 	/**The Dublin Core identifier of a resource.*/
-	public final static URI IDENTIFIER_PROPERTY_URI=DCMI11_ELEMENTS_NAMESPACE_URI.resolve("identifier");
+	public final static String IDENTIFIER_PROPERTY_NAME="identifier";
 	/**The source of a resource.*/
-	public final static URI SOURCE_PROPERTY_URI=DCMI11_ELEMENTS_NAMESPACE_URI.resolve("source");
+	public final static String SOURCE_PROPERTY_NAME="source";
 	/**The language of a resource.*/
-	public final static URI LANGUAGE_PROPERTY_URI=DCMI11_ELEMENTS_NAMESPACE_URI.resolve("language");
+	public final static String LANGUAGE_PROPERTY_NAME="language";
 	/**The relation of a resource.*/
-	public final static URI RELATION_PROPERTY_URI=DCMI11_ELEMENTS_NAMESPACE_URI.resolve("relation");
+	public final static String RELATION_PROPERTY_NAME="relation";
 	/**The coverage of a resource.*/
-	public final static URI COVERAGE_PROPERTY_URI=DCMI11_ELEMENTS_NAMESPACE_URI.resolve("coverage");
+	public final static String COVERAGE_PROPERTY_NAME="coverage";
 	/**The rights of a resource.*/
-	public final static URI RIGHTS_PROPERTY_URI=DCMI11_ELEMENTS_NAMESPACE_URI.resolve("rights");
+	public final static String RIGHTS_PROPERTY_NAME="rights";
+
+		//Dublin Core property URIs
+	/**The title of a resource.*/
+	public final static URI TITLE_PROPERTY_URI=DCMI11_ELEMENTS_NAMESPACE_URI.resolve(TITLE_PROPERTY_NAME);
+	/**The creator of a resource.*/
+	public final static URI CREATOR_PROPERTY_URI=DCMI11_ELEMENTS_NAMESPACE_URI.resolve(CREATOR_PROPERTY_NAME);
+	/**The subject of a resource.*/
+	public final static URI SUBJECT_PROPERTY_URI=DCMI11_ELEMENTS_NAMESPACE_URI.resolve(SUBJECT_PROPERTY_NAME);
+	/**The description of a resource.*/
+	public final static URI DESCRIPTION_PROPERTY_URI=DCMI11_ELEMENTS_NAMESPACE_URI.resolve(DESCRIPTION_PROPERTY_NAME);
+	/**The publisher of a resource.*/
+	public final static URI PUBLISHER_PROPERTY_URI=DCMI11_ELEMENTS_NAMESPACE_URI.resolve(PUBLISHER_PROPERTY_NAME);
+	/**The contributor of a resource.*/
+	public final static URI CONTRIBUTOR_PROPERTY_URI=DCMI11_ELEMENTS_NAMESPACE_URI.resolve(CONTRIBUTOR_PROPERTY_NAME);
+	/**The date of a resource.*/
+	public final static URI DATE_PROPERTY_URI=DCMI11_ELEMENTS_NAMESPACE_URI.resolve(DATE_PROPERTY_NAME);
+	/**The Dublin Core type of a resource.*/
+	public final static URI TYPE_PROPERTY_URI=DCMI11_ELEMENTS_NAMESPACE_URI.resolve(TYPE_PROPERTY_NAME);
+	/**The format of a resource.*/
+	public final static URI FORMAT_PROPERTY_URI=DCMI11_ELEMENTS_NAMESPACE_URI.resolve(FORMAT_PROPERTY_NAME);
+	/**The Dublin Core identifier of a resource.*/
+	public final static URI IDENTIFIER_PROPERTY_URI=DCMI11_ELEMENTS_NAMESPACE_URI.resolve(IDENTIFIER_PROPERTY_NAME);
+	/**The source of a resource.*/
+	public final static URI SOURCE_PROPERTY_URI=DCMI11_ELEMENTS_NAMESPACE_URI.resolve(SOURCE_PROPERTY_NAME);
+	/**The language of a resource.*/
+	public final static URI LANGUAGE_PROPERTY_URI=DCMI11_ELEMENTS_NAMESPACE_URI.resolve(LANGUAGE_PROPERTY_NAME);
+	/**The relation of a resource.*/
+	public final static URI RELATION_PROPERTY_URI=DCMI11_ELEMENTS_NAMESPACE_URI.resolve(RELATION_PROPERTY_NAME);
+	/**The coverage of a resource.*/
+	public final static URI COVERAGE_PROPERTY_URI=DCMI11_ELEMENTS_NAMESPACE_URI.resolve(COVERAGE_PROPERTY_NAME);
+	/**The rights of a resource.*/
+	public final static URI RIGHTS_PROPERTY_URI=DCMI11_ELEMENTS_NAMESPACE_URI.resolve(RIGHTS_PROPERTY_NAME);
 
 	/**Returns the description of the resource
 	@param resource The resource the property of which should be located.
