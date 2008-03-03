@@ -108,7 +108,7 @@ public class XMLNamespacePrefixManager	//TODO replace with XMLNamespaceLabelMana
 //TODO del		registerNamespacePrefix(FileOntologyConstants.FILE_ONTOLOGY_NAMESPACE_URI.toString(), FileOntologyConstants.FILE_ONTOLOGY_NAMESPACE_PREFIX); //XPackage file ontology
 //TODO add XPackage Unicode ontology
 //TODO del		registerNamespacePrefix(MIMEOntologyConstants.MIME_ONTOLOGY_NAMESPACE_URI.toString(), MIMEOntologyConstants.MIME_ONTOLOGY_NAMESPACE_PREFIX); //XPackage MIME ontology
-		registerNamespacePrefix(WebDAVConstants.WEBDAV_NAMESPACE, WebDAVConstants.WEBDAV_NAMESPACE_PREFIX); //WebDAV namespace (quasi-URI)
+		registerNamespacePrefix(WebDAV.WEBDAV_NAMESPACE, WebDAV.WEBDAV_NAMESPACE_PREFIX); //WebDAV namespace (quasi-URI)
 	}
 
 	/**The prefix, "java:", of a Java package namespace URI.*/
