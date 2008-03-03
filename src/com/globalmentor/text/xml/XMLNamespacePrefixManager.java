@@ -20,20 +20,21 @@ import java.util.*;
 
 import com.garretwilson.assess.qti.QTIConstants;
 
-import com.garretwilson.rdf.RDFConstants;
-import com.garretwilson.rdf.dicto.DictoConstants;
-import com.garretwilson.rdf.directory.vcard.VCard;
-import com.garretwilson.rdf.dublincore.DCConstants;
-import com.garretwilson.rdf.foaf.FOAF;
-import com.garretwilson.rdf.maqro.MAQROConstants;
-import com.garretwilson.rdf.rdfs.RDFSConstants;
-import com.garretwilson.rdf.version.VersionConstants;
-import com.garretwilson.rdf.xeb.XEBConstants;
-import com.garretwilson.rdf.xpackage.XPackageConstants;
 
 import static com.globalmentor.java.Java.*;
 import com.globalmentor.net.http.webdav.*;
 import static com.globalmentor.net.URIs.*;
+
+import com.globalmentor.rdf.RDF;
+import com.globalmentor.rdf.dicto.DictoConstants;
+import com.globalmentor.rdf.directory.vcard.VCard;
+import com.globalmentor.rdf.dublincore.DCConstants;
+import com.globalmentor.rdf.foaf.FOAF;
+import com.globalmentor.rdf.maqro.MAQROConstants;
+import com.globalmentor.rdf.rdfs.RDFSConstants;
+import com.globalmentor.rdf.version.VersionConstants;
+import com.globalmentor.rdf.xeb.XEBConstants;
+import com.globalmentor.rdf.xpackage.XPackageConstants;
 import com.globalmentor.text.xml.oeb.OEB;
 import com.globalmentor.text.xml.schema.XMLSchema;
 import com.globalmentor.text.xml.xhtml.XHTML;
@@ -92,7 +93,7 @@ public class XMLNamespacePrefixManager	//TODO replace with XMLNamespaceLabelMana
 		registerNamespacePrefix("http://marmox.net/namespaces/content#", "content"); //Marmox content
 //TODO del		registerNamespacePrefix(PLOOP.PLOOP_PROPERTY_NAMESPACE_URI.toString(), PLOOP.PLOOP_PROPERTY_NAMESPACE_PREFIX); //PLOOP property
 		registerNamespacePrefix(QTIConstants.QTI_1_1_NAMESPACE_URI.toString(), QTIConstants.QTI_NAMESPACE_PREFIX); //QTI
-		registerNamespacePrefix(RDFConstants.RDF_NAMESPACE_URI.toString(), RDFConstants.RDF_NAMESPACE_PREFIX); //RDF
+		registerNamespacePrefix(RDF.RDF_NAMESPACE_URI.toString(), RDF.RDF_NAMESPACE_PREFIX); //RDF
 		registerNamespacePrefix(RDFSConstants.RDFS_NAMESPACE_URI.toString(), RDFSConstants.RDFS_NAMESPACE_PREFIX); //RDFS
 //TODO add SOAP
 		registerNamespacePrefix(VCard.VCARD_NAMESPACE_URI.toString(), VCard.VCARD_NAMESPACE_PREFIX); //vCard

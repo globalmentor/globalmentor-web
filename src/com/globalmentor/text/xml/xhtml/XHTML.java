@@ -33,6 +33,8 @@ import com.globalmentor.text.xml.oeb.OEB;
 import com.globalmentor.text.xml.stylesheets.css.*;
 import static com.globalmentor.text.xml.xpath.XPath.*;
 import com.globalmentor.util.Arrays;
+import com.globalmentor.util.ConfigurationException;
+
 import static com.globalmentor.io.ContentTypeConstants.*;
 import static com.globalmentor.text.xml.XML.*;
 
@@ -372,7 +374,7 @@ public class XHTML
 	@param systemID The external subset system identifier, or <code>null</code> if there is no such identifier.
 	@return A newly created default generic XHTML document with the required minimal structure.
 	@throws NullPointerException if the given title is <code>null</code>.
-	@throws IllegalStateException if a document builder cannot be created which satisfies the configuration requested.
+	@throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
 	@throws DOMException if there is an error creating the XHTML document.
 	*/
 	public static Document createXHTMLDocument(final String title) throws DOMException
@@ -389,7 +391,7 @@ public class XHTML
 	@param formatted <code>true</code> if the sections of the document should be formatted.
 	@return A newly created default generic XHTML document with the required minimal structure.
 	@throws NullPointerException if the given title is <code>null</code>.
-	@throws IllegalStateException if a document builder cannot be created which satisfies the configuration requested.
+	@throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
 	@throws DOMException if there is an error creating the XHTML document.
 	*/
 	public static Document createXHTMLDocument(final String title, final boolean formatted) throws DOMException
@@ -405,7 +407,7 @@ public class XHTML
 	@param systemID The external subset system identifier, or <code>null</code> if there is no such identifier.
 	@return A newly created default generic XHTML document with the required minimal structure.
 	@throws NullPointerException if the given title is <code>null</code>.
-	@throws IllegalStateException if a document builder cannot be created which satisfies the configuration requested.
+	@throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
 	@throws DOMException if there is an error creating the XHTML document.
 	*/
 	public static Document createXHTMLDocument(final String title, final boolean includeDocumentType, final String publicID, final String systemID) throws DOMException
@@ -421,21 +423,13 @@ public class XHTML
 	@param systemID The external subset system identifier, or <code>null</code> if there is no such identifier.
 	@param formatted <code>true</code> if the sections of the document should be formatted.
 	@return A newly created default generic XHTML document with the required minimal structure.
-	@throws IllegalStateException if a document builder cannot be created which satisfies the configuration requested.
 	@throws NullPointerException if the given title is <code>null</code>.
+	@throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
 	@throws DOMException if there is an error creating the XHTML document.
 	*/
 	public static Document createXHTMLDocument(final String title, final boolean includeDocumentType, final String publicID, final String systemID, final boolean formatted) throws DOMException
 	{
-		final DocumentBuilder documentBuilder;
-		try
-		{
-			documentBuilder=createDocumentBuilder(true);	//create a namespace-aware document builder
-		}
-		catch(final ParserConfigurationException parserConfigurationException)	//if there is no namespace-aware parser
-		{
-			throw new IllegalStateException(parserConfigurationException);
-		}
+		final DocumentBuilder documentBuilder=createDocumentBuilder(true);	//create a namespace-aware document builder
 		final DOMImplementation domImplementation=documentBuilder.getDOMImplementation();	//get the DOM implementation from the document builder
 		final DocumentType documentType;	//the document type, if any
 		if(includeDocumentType)	//if we should add a document type

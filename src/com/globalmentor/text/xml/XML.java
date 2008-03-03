@@ -28,6 +28,7 @@ import com.globalmentor.io.*;
 import com.globalmentor.java.*;
 import com.globalmentor.text.xml.oeb.OEB;
 import com.globalmentor.text.xml.xhtml.XHTML;
+import com.globalmentor.util.ConfigurationException;
 import com.globalmentor.util.NameValuePair;
 
 import org.w3c.dom.*;
@@ -481,9 +482,9 @@ public class XML
 	This allows quick local lookup of the XHTML DTDs, for example.
 	The Sun JDK 1.5 document builder handles the BOM correctly.
 	@return A new XML document builder.
-	@exception ParserConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	@throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
 	*/
-	public static DocumentBuilder createDocumentBuilder() throws ParserConfigurationException
+	public static DocumentBuilder createDocumentBuilder()
 	{
 		return createDocumentBuilder(false);	//create a document builder with no namespace awareness
 	}
@@ -494,9 +495,9 @@ public class XML
 	The Sun JDK 1.5 document builder handles the BOM correctly.
 	@param namespaceAware <code>true</code> if the parser produced will provide support for XML namespaces, else <code>false</code>.
 	@return A new XML document builder.
-	@exception ParserConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	@throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
 	*/
-	public static DocumentBuilder createDocumentBuilder(final boolean namespaceAware) throws ParserConfigurationException
+	public static DocumentBuilder createDocumentBuilder(final boolean namespaceAware)
 	{
 		return createDocumentBuilder(namespaceAware, false);	//create a document builder with no validation
 	}
@@ -508,16 +509,23 @@ public class XML
 	@param namespaceAware <code>true</code> if the parser produced will provide support for XML namespaces, else <code>false</code>.
 	@param validating <code>true</code> if the parser produced will validate documents as they are parsed, else <code>false</code>.
 	@return A new XML document builder.
-	@exception ParserConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	@throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
 	*/
-	public static DocumentBuilder createDocumentBuilder(final boolean namespaceAware, final boolean validating) throws ParserConfigurationException
+	public static DocumentBuilder createDocumentBuilder(final boolean namespaceAware, final boolean validating)
 	{
-		final DocumentBuilderFactory documentBuilderFactory=DocumentBuilderFactory.newInstance();	//create a document builder factory			
-		documentBuilderFactory.setNamespaceAware(namespaceAware);	//set namespace awareness appropriately
-		documentBuilderFactory.setValidating(validating);	//set validating appropriately
-		final DocumentBuilder documentBuilder=documentBuilderFactory.newDocumentBuilder();	//create a new document builder
-		documentBuilder.setEntityResolver(XMLEntityResolver.getInstance());	//set its entity resolver to automatically look up XML entities from local resources
-		return documentBuilder;	//return the configured document builder
+		try
+		{
+			final DocumentBuilderFactory documentBuilderFactory=DocumentBuilderFactory.newInstance();	//create a document builder factory			
+			documentBuilderFactory.setNamespaceAware(namespaceAware);	//set namespace awareness appropriately
+			documentBuilderFactory.setValidating(validating);	//set validating appropriately
+			final DocumentBuilder documentBuilder=documentBuilderFactory.newDocumentBuilder();	//create a new document builder
+			documentBuilder.setEntityResolver(XMLEntityResolver.getInstance());	//set its entity resolver to automatically look up XML entities from local resources
+			return documentBuilder;	//return the configured document builder
+		}
+		catch(final ParserConfigurationException parserConfigurationException)	//if the requested parser is not supported
+		{
+			throw new ConfigurationException(parserConfigurationException);
+		}
 	}
 		
 	/**Creates a character reference to represent the given characters.

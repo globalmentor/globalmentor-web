@@ -1,16 +1,30 @@
-package com.garretwilson.rdf;
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-import java.lang.reflect.Constructor;
+package com.globalmentor.rdf;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
 import static java.util.Collections.*;
 
-import static com.garretwilson.rdf.RDFConstants.*;
-import static com.garretwilson.rdf.RDFUtilities.*;
-import com.garretwilson.rdf.rdfs.RDFSUtilities;
-import com.garretwilson.rdf.xmlschema.XMLSchemaTypedLiteralFactory;
 import com.globalmentor.net.URIs;
+import static com.globalmentor.rdf.RDFUtilities.*;
+import com.globalmentor.rdf.rdfs.RDFSUtilities;
+import com.globalmentor.rdf.xmlschema.XMLSchemaTypedLiteralFactory;
 import com.globalmentor.text.xml.schema.XMLSchema;
 import com.globalmentor.util.*;
 
@@ -33,90 +47,69 @@ import com.globalmentor.util.*;
 public class RDF	//TODO special-case rdf:nil list resources so that they are not located, but a different instance is created for each one, to make RDFListResource convenience methods work correctly 
 {
 
-	/**The next ID to use in an anonymous resource reference URI.*/
-//G***del when works	private int nextAnonymousID=1;
+	/**The recommended prefix to the RDF namespace.*/
+	public final static String RDF_NAMESPACE_PREFIX="rdf";
 
-		/**@return A new reference URI for an anonymous resource.
-		@exception URISyntaxException Thrown if an anonymous URI cannot be created.
-		*/
-/*G***del when works
-		URI createAnonymousReferenceURI()
-		{
-			final int anonymousID=nextAnonymousID++;  //get the next anonymous ID and increment the counter
-			try
-			{
-				return new URI("anonymous", Integer.toString(anonymousID), null);	//return an anonymous reference URI using the ID G***use a constant here
-			}
-			catch (URISyntaxException e)
-			{
-				Debug.error("could not create anonymous URI");	//G***fix better
-				return null;	//G***fix better
-			}	
-		}
-*/
+	/**The URI to the RDF namespace.*/
+	public final static URI RDF_NAMESPACE_URI=URI.create("http://www.w3.org/1999/02/22-rdf-syntax-ns#");
 
-	/**The map of prefixes, keyed by namespace URIs, used for serialization,
-		lazily constructed.
+	
+	  //RDF property names
+	/**The pseudo-property name of a member container used only for serialization. The local name of rdf:li.*/
+	public final static String LI_PROPERTY_NAME="li";
+	/**The first element of a list. The local name of rdf:first.*/
+	public final static String FIRST_PROPERTY_NAME="first";
+	/**The rest of the elements of a list. The local name of rdf:rest.*/
+	public final static String REST_PROPERTY_NAME="rest";
+	/**The type of an RDF resource. The local name of rdf:type.*/
+	public final static String TYPE_PROPERTY_NAME="type";
+	/**The value of an RDF resource. The local name of rdf:value. (Defined in RDFS.)*/
+	public final static String VALUE_PROPERTY_NAME="value";
+
+	  //RDF class names
+  /**The local name of rdf:Alt.*/
+  public final static String ALT_CLASS_NAME="Alt";
+  /**The local name of rdf:Bag.*/
+  public final static String BAG_CLASS_NAME="Bag";
+  /**The local name of rdf:List.*/
+  public final static String LIST_CLASS_NAME="List";
+  /**The local name of rdf:Seq.*/
+  public final static String SEQ_CLASS_NAME="Seq";
+
+		//RDF datatypes
+	/**The local name of the rdf:XMLLiteral.*/
+	public final static String XML_LITERAL_DATATYPE_NAME="XMLLiteral";
+	/**The URI of the <code>rdf:XMLLiteral</code> datatype.*/
+	public final static URI XML_LITERAL_DATATYPE_URI=RDFUtilities.createReferenceURI(RDF_NAMESPACE_URI, XML_LITERAL_DATATYPE_NAME);
+
+	/**The prefix to be used when generating property names for each member of
+		a container, originally represented by <code>&lt;li&gt;</code> in the
+		serialization.
 	*/
-//G***del if not needed	private Map namespacePrefixMap;
+	public final static String CONTAINER_MEMBER_PREFIX="_";
 
-		/**@return The map of prefixes, keyed by namespace URI; one will be created
-		  if it does not already exist.
-		*/
-/*G***del if not needed
-		public Map getNamespacePrefixMap()
-		{
-			if(namespacePrefixMap==null)  //if we don't yet have a namespace prefix map
-			{
-				namespacePrefixMap=XMLSerializer.createNamespacePrefixMap();  //create a map of default XML namespace prefixes
-			}
-			return namespacePrefixMap;
-		}
-*/
+		//RDF predefined reference URIs
+	/**The name of the <code>rdf:nil</code> resource.*/
+	public final static String NIL_RESOURCE_NAME="nil";
+	/**The URI of the <code>rdf:nil</code> resource.*/
+	public final static URI NIL_RESOURCE_URI=RDFUtilities.createReferenceURI(RDF_NAMESPACE_URI, NIL_RESOURCE_NAME);
 
-	/**The base URI of the RDF data model, or <code>null</code> if the base URI is unknown.*/
-//TODO del if not needed	private final URI baseURI;
+		//RDF XML predefined class reference URIs
+	/**The reference URI of the rdf:alt property.*/ 
+	public final static URI ALT_PROPERTY_REFERENCE_URI=RDFUtilities.createReferenceURI(RDF_NAMESPACE_URI, ALT_CLASS_NAME);
+	/**The reference URI of the rdf:bag property.*/ 
+	public final static URI BAG_PROPERTY_REFERENCE_URI=RDFUtilities.createReferenceURI(RDF_NAMESPACE_URI, BAG_CLASS_NAME);
+	/**The reference URI of the rdf:list property.*/ 
+	public final static URI LIST_PROPERTY_REFERENCE_URI=RDFUtilities.createReferenceURI(RDF_NAMESPACE_URI, LIST_CLASS_NAME);
+	/**The reference URI of the rdf:seq property.*/ 
+	public final static URI SEQ_PROPERTY_REFERENCE_URI=RDFUtilities.createReferenceURI(RDF_NAMESPACE_URI, SEQ_CLASS_NAME);
 
-		/**@return The base URI of the RDF data model, or <code>null</code> if the base URI is unknown.*/
-//TODO del if not needed		public URI getBaseURI() {return baseURI;}
-		
-	/**The map of classes for for automatic creation of resources before a resource factory is checked for the given namespace.*/
-//TODO implement if needed	private final Map<URI, Class<? extends RDFResource>> resourceTypeClassMap=new HashMap<URI, Class<? extends RDFResource>>();
+		//RDF XML predefined property reference URIs
+	/**The reference URI of the rdf:li property.*/ 
+	public final static URI LI_PROPERTY_REFERENCE_URI=RDFUtilities.createReferenceURI(RDF_NAMESPACE_URI, LI_PROPERTY_NAME);
+	/**The reference URI of the rdf:type property.*/ 
+	public final static URI TYPE_PROPERTY_REFERENCE_URI=RDFUtilities.createReferenceURI(RDF_NAMESPACE_URI, TYPE_PROPERTY_NAME);
 
-		/**Registers a class to be used in creating objects of a specific type before a resource factory is checked for the given namespace.
-		If another class is already registered for the given type URI, it will be replaced.
-		@param typeURI The URI of the type that should be represented by an instance of the given class.
-		@param resourceClass The class to use in instantiating a resource for the given type.
-		*/
-/*TODO implement if needed
-		public void registerTypeClass(final URI typeURI, final Class<? extends RDFResource> resourceClass)
-		{
-			resourceTypeClassMap.put(typeURI, resourceClass);	//store the class in the map keyed to the type URI
-		}
-*/
-
-		/**Removes a class from being used in creating objects of a specific type.
-		If no class is currently registered for the given type URI, no action will occur.
-		@param typeURI The URI of the type that should be unregistered from being created with a particular class.
-		*/
-/*TODO implement if needed
-		public void unregisterTypeClass(final URI typeURI)
-		{
-			resourceTypeClassMap.remove(typeURI);	//remove whatever class is keyed to the type URI
-		}
-*/
-
-		/**Determines the class to be used in creating objects of a specific type before a resource factory is checked for the given namespace.
-		@param typeURI The URI of the type that should be represented by an instance of the returned class.
-		@return The class to use in instantiating a resource for the given type, or <code>null</code> if no class is registered for the given type URI.
-		*/
-/*TODO implement if needed
-		public Class<? extends RDFResource> getTypeClass(final URI typeURI)
-		{
-			return resourceTypeClassMap.get(typeURI);	//return whatever class is keyed to the type URI
-		}
-*/
-		
 	/**A map of resource factories, keyed to namespace URI.*/
 	private final Map<URI, RDFResourceFactory> resourceFactoryMap=new HashMap<URI, RDFResourceFactory>();
 
@@ -229,9 +222,6 @@ public class RDF	//TODO special-case rdf:nil list resources so that they are not
 	*/
 	public void addResource(final RDFResource resource)
 	{
-//G***del Debug.trace("putting resource with URI: ", resource.getReferenceURI());
-//G***del Debug.traceStack(); //G***del
-
 		resourceSet.add(resource);	//add the resource to our set
 		if(resource.getURI()!=null)	//if this is not a blank node
 			resourceMap.put(resource.getURI(), resource);  //store the resource in the map
@@ -243,8 +233,6 @@ public class RDF	//TODO special-case rdf:nil list resources so that they are not
 	*/
 	public RDFResource getResource(final URI resourceURI)
 	{
-//G***del Debug.trace("getting resource with URI: ", resourceURI);
-//G***del Debug.traceStack(); //G***del
 		return resourceMap.get(resourceURI); //retrieve the resource
 	}
 
@@ -387,7 +375,6 @@ public class RDF	//TODO special-case rdf:nil list resources so that they are not
 	public RDFResource createResource()
 	{
 		return createResource(null);  //create a resource with an anonymous reference URI
-//G***del		return createResource(createAnonymousReferenceURI()); //create a resource with an anonymous reference URI
 	}
 
 	/**Creates a general resource with the a reference URI based upon an XML
@@ -534,25 +521,25 @@ public class RDF	//TODO special-case rdf:nil list resources so that they are not
 		}
 		if(resource==null)  //if we haven't created a resource, see if this is an RDF resource
 		{
-			if(NIL_RESOURCE_URI.equals(referenceURI))	//if we are creating the nil resource
+			if(RDF.NIL_RESOURCE_URI.equals(referenceURI))	//if we are creating the nil resource
 			{
-				resource=new RDFListResource(this, NIL_RESOURCE_URI);	//create the nil resource with the special RDF nil URI
+				resource=new RDFListResource(this, RDF.NIL_RESOURCE_URI);	//create the nil resource with the special RDF nil URI
 			}
-			else if(RDF_NAMESPACE_URI.equals(typeNamespaceURI)) //if this resource is an RDF resource
+			else if(RDF.RDF_NAMESPACE_URI.equals(typeNamespaceURI)) //if this resource is an RDF resource
 			{
-				if(ALT_CLASS_NAME.equals(typeLocalName)) //<rdf:Alt>
+				if(RDF.ALT_CLASS_NAME.equals(typeLocalName)) //<rdf:Alt>
 				{
-					//G***fix for alt
+					//TODO fix for alt
 				}
-				else if(BAG_CLASS_NAME.equals(typeLocalName))  //<rdf:Bag>
+				else if(RDF.BAG_CLASS_NAME.equals(typeLocalName))  //<rdf:Bag>
 				{
 					resource=new RDFBagResource(this, referenceURI);  //create a bag resource
 				}
-				else if(SEQ_CLASS_NAME.equals(typeLocalName))  //<rdf:Seq>
+				else if(RDF.SEQ_CLASS_NAME.equals(typeLocalName))  //<rdf:Seq>
 				{
 					resource=new RDFSequenceResource(this, referenceURI);  //create a sequence resource
 				}
-				else if(LIST_CLASS_NAME.equals(typeLocalName))  //<rdf:Seq>
+				else if(RDF.LIST_CLASS_NAME.equals(typeLocalName))  //<rdf:Seq>
 				{
 					resource=new RDFListResource(this, referenceURI);  //create a list resource
 				}
@@ -592,13 +579,6 @@ public class RDF	//TODO special-case rdf:nil list resources so that they are not
 		{
 			throw new IllegalArgumentException("A datatype must be given to create a typed literal.");	//TODO fix
 		}
-			//create an anonymous reference URI if needed
-//G***del when works		final URI resourceReferenceURI=referenceURI!=null ? referenceURI : createAnonymousReferenceURI();
-//G***del Debug.trace("Ready to create resource with reference URI: ", referenceURI); //G***del
-//G***del Debug.trace("Type namespace URI: ", typeNamespaceURI); //G***del
-//G***del Debug.trace("Type local name: ", typeLocalName); //G***del
-
-
 			//try to get the namespace of the datatype
 		final URI datatypeNamespaceURI=RDFUtilities.getNamespaceURI(datatypeURI);
 		RDFTypedLiteral<?> typedLiteral=null; //start by assuming that no factory is registered for this datatype namespace, or the registered factory can't create a typed literal
@@ -609,7 +589,7 @@ public class RDF	//TODO special-case rdf:nil list resources so that they are not
 		}
 		if(typedLiteral==null)  //if we haven't created a typed literal, see if this is an RDF datatype
 		{
-			if(XML_LITERAL_DATATYPE_URI.equals(datatypeURI))	//if we are creating an XML typed literal
+			if(RDF.XML_LITERAL_DATATYPE_URI.equals(datatypeURI))	//if we are creating an XML typed literal
 			{
 				typedLiteral=new RDFXMLLiteral(lexicalForm);	//create a new XML typed literal containing the lexical form
 			}
@@ -624,16 +604,7 @@ public class RDF	//TODO special-case rdf:nil list resources so that they are not
 	/**Default constructor.*/
 	public RDF()
 	{
-		this(null);	//construct the data model with no known base URI
-	}
-
-	/**Base URI constructor.
-	@param baseURI The base URI of the RDF data model, or <code>null</code> if unknown.
-	*/
-	public RDF(final URI baseURI)	//TODO del this constructor if not needed
-	{
-//TODO del if not needed		this.baseURI=baseURI;	//save the base URI
-				//register typed literal factories for certain default namespaces
+		//register typed literal factories for certain default namespaces
 		registerTypedLiteralFactory(XMLSchema.XML_SCHEMA_NAMESPACE_URI, new XMLSchemaTypedLiteralFactory());	//XML Schema
 	}
 

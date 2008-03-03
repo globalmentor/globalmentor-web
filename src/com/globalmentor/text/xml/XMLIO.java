@@ -23,8 +23,8 @@ import javax.xml.parsers.*;
 import javax.xml.validation.Schema;
 
 import com.globalmentor.io.IO;
-
 import static com.globalmentor.text.xml.XML.*;
+import com.globalmentor.util.ConfigurationException;
 
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -157,19 +157,12 @@ public class XMLIO extends DocumentBuilderFactory implements IO<Document>
 	@param validating <code>true</code> if the parser produced will validate documents as they are parsed, else <code>false</code>.
 	@return The XML document representing the data read.
 	@exception NullPointerException if the given input stream is <code>null</code>.
+	@exception ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
 	@exception IOException if there is an error reading the data.
-	@exception IllegalStateException if there is no available parser to match the configuration.
 	*/
 	public static Document readXML(final InputStream inputStream, final URI baseURI, final boolean namespaceAware, final boolean validating) throws IOException
 	{
-		try
-		{
-			return readXML(inputStream, baseURI, createDocumentBuilder(namespaceAware, validating));	//create a document builder and read the XML
-		}
-		catch(final ParserConfigurationException parserConfigurationException)	//if there is an error finding an appropriate parser
-		{
-			throw new IllegalStateException(parserConfigurationException);
-		}
+		return readXML(inputStream, baseURI, createDocumentBuilder(namespaceAware, validating));	//create a document builder and read the XML
 	}
 	
 	/**Reads an XML document from an input stream using the provided document builder.
