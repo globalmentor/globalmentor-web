@@ -1,4 +1,20 @@
-package com.garretwilson.javascript;
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.globalmentor.javascript;
 
 import static java.lang.reflect.Array.*;
 import java.util.*;
@@ -19,7 +35,7 @@ In addition to standard JSON, any {@link Date} object will be formatted as a str
 	"Date and Time Formats", <a href="http://www.w3.org/TR/NOTE-datetime">http://www.w3.org/TR/NOTE-datetime</a>,
 	a profile of ISO 8601.
 @author Garret Wilson
-@see <a href="http://www.ietf.org/rfc/rfc4627.txt">The application/json Media Type for JavaScript Object Notation (JSON)</a>
+@see <a href="http://www.ietf.org/rfc/rfc4627.txt">RFC 4627: The application/json Media Type for JavaScript Object Notation (JSON)</a>
 @see <a href="http://www.json.org/">Introducing JSON</a>
 @see <a href="http://www.w3.org/TR/NOTE-datetime">Date and Time Formats</a>
 @see W3CDateFormat.Style#DATE_TIME
