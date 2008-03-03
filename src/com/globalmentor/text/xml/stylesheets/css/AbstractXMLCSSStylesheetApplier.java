@@ -24,8 +24,8 @@ import java.net.URISyntaxException;
 import java.util.*;
 import javax.mail.internet.ContentType;
 
-import static com.globalmentor.rdf.xpackage.XMLOntologyUtilities.*;
-import static com.globalmentor.rdf.xpackage.XPackageUtilities.*;
+import static com.globalmentor.rdf.xpackage.XMLOntology.*;
+import static com.globalmentor.rdf.xpackage.XPackage.*;
 import static com.globalmentor.text.xml.stylesheets.XMLStyleSheets.*;
 import static com.globalmentor.text.xml.xhtml.XHTML.*;
 

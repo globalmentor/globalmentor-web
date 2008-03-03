@@ -22,9 +22,9 @@ import java.util.*;
 import static java.util.Collections.*;
 
 import com.globalmentor.net.URIs;
-import static com.globalmentor.rdf.RDFUtilities.*;
-import com.globalmentor.rdf.rdfs.RDFSUtilities;
-import com.globalmentor.rdf.xmlschema.XMLSchemaTypedLiteralFactory;
+import static com.globalmentor.rdf.RDFResources.*;
+import com.globalmentor.rdf.rdfs.RDFS;
+import com.globalmentor.rdf.xmlschema.XMLSchemaRDFTypedLiteralFactory;
 import com.globalmentor.text.xml.schema.XMLSchema;
 import com.globalmentor.util.*;
 
@@ -80,7 +80,7 @@ public class RDF	//TODO special-case rdf:nil list resources so that they are not
 	/**The local name of the rdf:XMLLiteral.*/
 	public final static String XML_LITERAL_DATATYPE_NAME="XMLLiteral";
 	/**The URI of the <code>rdf:XMLLiteral</code> datatype.*/
-	public final static URI XML_LITERAL_DATATYPE_URI=RDFUtilities.createReferenceURI(RDF_NAMESPACE_URI, XML_LITERAL_DATATYPE_NAME);
+	public final static URI XML_LITERAL_DATATYPE_URI=RDFResources.createReferenceURI(RDF_NAMESPACE_URI, XML_LITERAL_DATATYPE_NAME);
 
 	/**The prefix to be used when generating property names for each member of
 		a container, originally represented by <code>&lt;li&gt;</code> in the
@@ -92,23 +92,23 @@ public class RDF	//TODO special-case rdf:nil list resources so that they are not
 	/**The name of the <code>rdf:nil</code> resource.*/
 	public final static String NIL_RESOURCE_NAME="nil";
 	/**The URI of the <code>rdf:nil</code> resource.*/
-	public final static URI NIL_RESOURCE_URI=RDFUtilities.createReferenceURI(RDF_NAMESPACE_URI, NIL_RESOURCE_NAME);
+	public final static URI NIL_RESOURCE_URI=RDFResources.createReferenceURI(RDF_NAMESPACE_URI, NIL_RESOURCE_NAME);
 
 		//RDF XML predefined class reference URIs
 	/**The reference URI of the rdf:alt property.*/ 
-	public final static URI ALT_PROPERTY_REFERENCE_URI=RDFUtilities.createReferenceURI(RDF_NAMESPACE_URI, ALT_CLASS_NAME);
+	public final static URI ALT_PROPERTY_REFERENCE_URI=RDFResources.createReferenceURI(RDF_NAMESPACE_URI, ALT_CLASS_NAME);
 	/**The reference URI of the rdf:bag property.*/ 
-	public final static URI BAG_PROPERTY_REFERENCE_URI=RDFUtilities.createReferenceURI(RDF_NAMESPACE_URI, BAG_CLASS_NAME);
+	public final static URI BAG_PROPERTY_REFERENCE_URI=RDFResources.createReferenceURI(RDF_NAMESPACE_URI, BAG_CLASS_NAME);
 	/**The reference URI of the rdf:list property.*/ 
-	public final static URI LIST_PROPERTY_REFERENCE_URI=RDFUtilities.createReferenceURI(RDF_NAMESPACE_URI, LIST_CLASS_NAME);
+	public final static URI LIST_PROPERTY_REFERENCE_URI=RDFResources.createReferenceURI(RDF_NAMESPACE_URI, LIST_CLASS_NAME);
 	/**The reference URI of the rdf:seq property.*/ 
-	public final static URI SEQ_PROPERTY_REFERENCE_URI=RDFUtilities.createReferenceURI(RDF_NAMESPACE_URI, SEQ_CLASS_NAME);
+	public final static URI SEQ_PROPERTY_REFERENCE_URI=RDFResources.createReferenceURI(RDF_NAMESPACE_URI, SEQ_CLASS_NAME);
 
 		//RDF XML predefined property reference URIs
 	/**The reference URI of the rdf:li property.*/ 
-	public final static URI LI_PROPERTY_REFERENCE_URI=RDFUtilities.createReferenceURI(RDF_NAMESPACE_URI, LI_PROPERTY_NAME);
+	public final static URI LI_PROPERTY_REFERENCE_URI=RDFResources.createReferenceURI(RDF_NAMESPACE_URI, LI_PROPERTY_NAME);
 	/**The reference URI of the rdf:type property.*/ 
-	public final static URI TYPE_PROPERTY_REFERENCE_URI=RDFUtilities.createReferenceURI(RDF_NAMESPACE_URI, TYPE_PROPERTY_NAME);
+	public final static URI TYPE_PROPERTY_REFERENCE_URI=RDFResources.createReferenceURI(RDF_NAMESPACE_URI, TYPE_PROPERTY_NAME);
 
 	/**A map of resource factories, keyed to namespace URI.*/
 	private final Map<URI, RDFResourceFactory> resourceFactoryMap=new HashMap<URI, RDFResourceFactory>();
@@ -293,7 +293,7 @@ public class RDF	//TODO special-case rdf:nil list resources so that they are not
 	public boolean isRootResource(final RDFResource resource)
 	{
 		final URI referenceURI=resource.getURI(); //get the resource reference URI
-		final RDFLiteral label=RDFSUtilities.getLabel(resource);	//see if this resource has a label
+		final RDFLiteral label=RDFS.getLabel(resource);	//see if this resource has a label
 //TODO eventually we'll probably have to determine if something is actually a property---i.e. this doesn't work: if(resource.getReferenceURI()!=null || resource.getPropertyCount()>0)	//only show resources that have reference URIs or have properties, thereby not showing property resources and literals at the root
 			//if this is not a blank node and this resource actually has properties (even properties such as type identifiers are resources, but they don't have properties)
 		return (referenceURI!=null && resource.getPropertyCount()>0)
@@ -454,7 +454,7 @@ public class RDF	//TODO special-case rdf:nil list resources so that they are not
 		}
 		if(typeNamespaceURI!=null && typeLocalName!=null)	//if we were given a type
 		{
-			RDFUtilities.addType(resource, typeNamespaceURI, typeLocalName); //add the type property
+			RDFResources.addType(resource, typeNamespaceURI, typeLocalName); //add the type property
 		}
 		return resource;  //return the resource we created
 	}
@@ -580,7 +580,7 @@ public class RDF	//TODO special-case rdf:nil list resources so that they are not
 			throw new IllegalArgumentException("A datatype must be given to create a typed literal.");	//TODO fix
 		}
 			//try to get the namespace of the datatype
-		final URI datatypeNamespaceURI=RDFUtilities.getNamespaceURI(datatypeURI);
+		final URI datatypeNamespaceURI=RDFResources.getNamespaceURI(datatypeURI);
 		RDFTypedLiteral<?> typedLiteral=null; //start by assuming that no factory is registered for this datatype namespace, or the registered factory can't create a typed literal
 		final RDFTypedLiteralFactory typedLiteralFactory=getTypedLiteralFactory(datatypeNamespaceURI); //get a typed literal factory for this namespace
 		if(typedLiteralFactory!=null) //if we have a factory
@@ -605,7 +605,7 @@ public class RDF	//TODO special-case rdf:nil list resources so that they are not
 	public RDF()
 	{
 		//register typed literal factories for certain default namespaces
-		registerTypedLiteralFactory(XMLSchema.XML_SCHEMA_NAMESPACE_URI, new XMLSchemaTypedLiteralFactory());	//XML Schema
+		registerTypedLiteralFactory(XMLSchema.XML_SCHEMA_NAMESPACE_URI, new XMLSchemaRDFTypedLiteralFactory());	//XML Schema
 	}
 
 	/**Looks at all the resources in the RDF data model and recursively gathers

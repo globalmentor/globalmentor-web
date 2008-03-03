@@ -20,25 +20,25 @@ import java.util.*;
 
 import com.garretwilson.assess.qti.QTIConstants;
 
-
 import static com.globalmentor.java.Java.*;
 import com.globalmentor.net.http.webdav.*;
 import static com.globalmentor.net.URIs.*;
 
 import com.globalmentor.rdf.RDF;
-import com.globalmentor.rdf.dicto.DictoConstants;
-import com.globalmentor.rdf.directory.vcard.VCard;
-import com.globalmentor.rdf.dublincore.DCConstants;
-import com.globalmentor.rdf.foaf.FOAF;
-import com.globalmentor.rdf.maqro.MAQROConstants;
-import com.globalmentor.rdf.rdfs.RDFSConstants;
-import com.globalmentor.rdf.version.VersionConstants;
-import com.globalmentor.rdf.xeb.XEBConstants;
-import com.globalmentor.rdf.xpackage.XPackageConstants;
+import com.globalmentor.rdf.dicto.Dicto;
+import com.globalmentor.rdf.directory.vcard.RDFVCard;
+import com.globalmentor.rdf.maqro.MAQRO;
+import com.globalmentor.rdf.rdfs.RDFS;
+import com.globalmentor.rdf.version.RDFVersion;
+import com.globalmentor.rdf.xeb.RDFXEB;
+import com.globalmentor.rdf.xpackage.XMLOntology;
+import com.globalmentor.rdf.xpackage.XPackage;
 import com.globalmentor.text.xml.oeb.OEB;
 import com.globalmentor.text.xml.schema.XMLSchema;
 import com.globalmentor.text.xml.xhtml.XHTML;
 import com.globalmentor.text.xml.xlink.XLink;
+import com.globalmentor.urf.dcmi.DCMI;
+import com.globalmentor.urf.foaf.FOAF;
 
 /**Manages XML namespaces and prefixes for serialization.
 This class is initialized with a default set of known namespace prefix mappings. 
@@ -84,28 +84,28 @@ public class XMLNamespacePrefixManager	//TODO replace with XMLNamespaceLabelMana
 	public XMLNamespacePrefixManager()
 	{
 		registerNamespacePrefix(ApacheWebDAV.APACHE_WEBDAV_PROPERTY_NAMESPACE_URI.toString(), ApacheWebDAV.APACHE_WEBDAV_PROPERTY_NAMESPACE_PREFIX); //Apache WebDAV properties
-		registerNamespacePrefix(DictoConstants.DICTO_NAMESPACE_URI.toString(), DictoConstants.DICTO_NAMESPACE_PREFIX); //Dicto
-		registerNamespacePrefix(DCConstants.DCMI11_ELEMENTS_NAMESPACE_URI.toString(), DCConstants.DCMI_ELEMENTS_NAMESPACE_PREFIX); //Dublin Core
+		registerNamespacePrefix(Dicto.DICTO_NAMESPACE_URI.toString(), Dicto.DICTO_NAMESPACE_PREFIX); //Dicto
+		registerNamespacePrefix(DCMI.DCMI11_ELEMENTS_NAMESPACE_URI.toString(), DCMI.DCMI_ELEMENTS_NAMESPACE_PREFIX); //Dublin Core
 		registerNamespacePrefix(FOAF.FOAF_NAMESPACE_URI.toString(), FOAF.FOAF_NAMESPACE_PREFIX); //FOAF
-		registerNamespacePrefix(MAQROConstants.MAQRO_NAMESPACE_URI.toString(), MAQROConstants.MAQRO_NAMESPACE_PREFIX); //MAQRO
+		registerNamespacePrefix(MAQRO.MAQRO_NAMESPACE_URI.toString(), MAQRO.MAQRO_NAMESPACE_PREFIX); //MAQRO
 		registerNamespacePrefix(OEB.OEB1_DOCUMENT_NAMESPACE_URI.toString(), OEB.OEB1_DOCUMENT_NAMESPACE_PREFIX); //OEB 1
 		registerNamespacePrefix("http://globalmentor.com/namespaces/marmot#", "marmot"); //Marmot TODO link to Marmot constants when Marmot is included in normal libraries
 		registerNamespacePrefix("http://marmox.net/namespaces/content#", "content"); //Marmox content
 //TODO del		registerNamespacePrefix(PLOOP.PLOOP_PROPERTY_NAMESPACE_URI.toString(), PLOOP.PLOOP_PROPERTY_NAMESPACE_PREFIX); //PLOOP property
 		registerNamespacePrefix(QTIConstants.QTI_1_1_NAMESPACE_URI.toString(), QTIConstants.QTI_NAMESPACE_PREFIX); //QTI
 		registerNamespacePrefix(RDF.RDF_NAMESPACE_URI.toString(), RDF.RDF_NAMESPACE_PREFIX); //RDF
-		registerNamespacePrefix(RDFSConstants.RDFS_NAMESPACE_URI.toString(), RDFSConstants.RDFS_NAMESPACE_PREFIX); //RDFS
+		registerNamespacePrefix(RDFS.RDFS_NAMESPACE_URI.toString(), RDFS.RDFS_NAMESPACE_PREFIX); //RDFS
 //TODO add SOAP
-		registerNamespacePrefix(VCard.VCARD_NAMESPACE_URI.toString(), VCard.VCARD_NAMESPACE_PREFIX); //vCard
-		registerNamespacePrefix(VersionConstants.VERSION_NAMESPACE_URI.toString(), VersionConstants.VERSION_NAMESPACE_PREFIX); //version
+		registerNamespacePrefix(RDFVCard.VCARD_NAMESPACE_URI.toString(), RDFVCard.VCARD_NAMESPACE_PREFIX); //vCard
+		registerNamespacePrefix(RDFVersion.VERSION_NAMESPACE_URI.toString(), RDFVersion.VERSION_NAMESPACE_PREFIX); //version
 		registerNamespacePrefix(XMLSchema.XML_SCHEMA_NAMESPACE_URI.toString(), XMLSchema.XML_SCHEMA_NAMESPACE_PREFIX); //XML Schema
 		registerNamespacePrefix(XHTML.XHTML_NAMESPACE_URI.toString(), XHTML.XHTML_NAMESPACE_PREFIX); //XHTML
 		registerNamespacePrefix(XLink.XLINK_NAMESPACE_URI.toString(), XLink.XLINK_NAMESPACE_PREFIX); //XLink
 		registerNamespacePrefix(XML.XML_NAMESPACE_URI.toString(), XML.XML_NAMESPACE_PREFIX); //XML
 		registerNamespacePrefix(XML.XMLNS_NAMESPACE_URI.toString(), XML.XMLNS_NAMESPACE_PREFIX); //XML namespaces
-		registerNamespacePrefix(XEBConstants.XEB_NAMESPACE_URI.toString(), XEBConstants.XEB_NAMESPACE_PREFIX); //XEbook
-		registerNamespacePrefix(XPackageConstants.XPACKAGE_NAMESPACE_URI.toString(), XPackageConstants.XPACKAGE_NAMESPACE_PREFIX); //XPackage
-		registerNamespacePrefix(XPackageConstants.XML_ONTOLOGY_NAMESPACE_URI.toString(), XPackageConstants.XML_ONTOLOGY_NAMESPACE_PREFIX); //XPackage XML ontology
+		registerNamespacePrefix(RDFXEB.XEB_NAMESPACE_URI.toString(), RDFXEB.XEB_NAMESPACE_PREFIX); //XEbook
+		registerNamespacePrefix(XPackage.XPACKAGE_NAMESPACE_URI.toString(), XPackage.XPACKAGE_NAMESPACE_PREFIX); //XPackage
+		registerNamespacePrefix(XMLOntology.XML_ONTOLOGY_NAMESPACE_URI.toString(), XMLOntology.XML_ONTOLOGY_NAMESPACE_PREFIX); //XPackage XML ontology
 //TODO del		registerNamespacePrefix(FileOntologyConstants.FILE_ONTOLOGY_NAMESPACE_URI.toString(), FileOntologyConstants.FILE_ONTOLOGY_NAMESPACE_PREFIX); //XPackage file ontology
 //TODO add XPackage Unicode ontology
 //TODO del		registerNamespacePrefix(MIMEOntologyConstants.MIME_ONTOLOGY_NAMESPACE_URI.toString(), MIMEOntologyConstants.MIME_ONTOLOGY_NAMESPACE_PREFIX); //XPackage MIME ontology
