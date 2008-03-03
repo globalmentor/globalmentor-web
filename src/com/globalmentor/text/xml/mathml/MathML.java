@@ -16,17 +16,19 @@
 
 package com.globalmentor.text.xml.mathml;
 
+import java.net.URI;
+
 import javax.mail.internet.ContentType;
 
 import static com.globalmentor.io.ContentTypes.*;
-import static com.globalmentor.text.xml.XMLUtilities.*;
+import static com.globalmentor.text.xml.XML.*;
 
 /**Constants for MathML.
 @author Garret Wilson
 @see <a href="http://www.w3.org/TR/MathML2/">Mathematical Markup Language (MathML)</a>
 @see <a href="http://www.w3.org/QA/2002/04/valid-dtd-list.html">W3C QA - Recommended List of DTDs</a>
 */
-public class MathMLConstants
+public class MathML
 {
 
 	/**A  MathML application.*/
@@ -37,6 +39,9 @@ public class MathMLConstants
 
 	/**The recommended prefix to the MathML namespace.*/
 	public static final String MATHML_NAMESPACE_PREFIX="mathml";
+
+	/**The URI to the MathML namespace.*/
+	public static final URI MATHML_NAMESPACE_URI=URI.create("http://www.w3.org/1998/Math/MathML");
 
 	/**The system ID for the MathML 1.01 DTD.*/
 	public final static String MATHML_1_01_SYSTEM_ID="http://www.w3.org/Math/DTD/mathml1/mathml.dtd";

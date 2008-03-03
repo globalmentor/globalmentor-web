@@ -1,3 +1,19 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml.xhtml;
 
 import java.io.*;
@@ -6,7 +22,7 @@ import java.util.*;
 import com.globalmentor.io.*;
 import com.globalmentor.java.CharSequences;
 import com.globalmentor.text.*;
-import com.globalmentor.text.xml.XMLUtilities;
+import com.globalmentor.text.xml.XML;
 import com.globalmentor.util.Debug;
 
 import org.w3c.dom.*;
@@ -20,7 +36,7 @@ import static com.globalmentor.text.xml.xhtml.XHTML.*;
 */
 public class XHTMLCreator
 {
-	protected long totalLineCount=0;  //G***testing; comment; tidy
+	protected long totalLineCount=0;  //TODO testing; comment; tidy
 	protected long totalLineLengthSum=0;
 
 	/**The list of buffered lines for analyzing.*/
@@ -91,11 +107,8 @@ public class XHTMLCreator
 	{
 			//see if we can detect an encoding from a byte order mark
 		final CharacterEncoding detectedEncoding=InputStreams.getBOMEncoding(inputStream);
-//G***del		final String detectedEncoding=null;
-Debug.trace("detected encoding: ", detectedEncoding);  //G***del
-Debug.trace("constructing buffered reader to text input stream"); //G***del
 		getLineBuffer().clear();  //clear our list of lines
-		  //create a reader to read the information in using the correct input encoding G***change the encoding to what Java understands
+		  //create a reader to read the information in using the correct input encoding TODO change the encoding to what Java understands
 		final BufferedReader bufferedReader=new BufferedReader(
 			  new InputStreamReader(inputStream, detectedEncoding!=null ? detectedEncoding.toString() : encoding));
 		autodetectSettings(bufferedReader);  //calculate the line spacing used
@@ -110,20 +123,17 @@ Debug.trace("constructing buffered reader to text input stream"); //G***del
 	*/
 	protected void parseText(final Document document, final BufferedReader bufferedReader) throws IOException
 	{
-Debug.trace("parsing text");  //G***del
 		final Element bodyElement=XHTML.getBodyElement(document);  //get a reference to the body element
 		assert bodyElement!=null : "Missing body element";  //we should always have a body element starting out
-Debug.trace("found body element");  //G***del
 		Element paragraphElement=parseParagraph(document, bodyElement.getNamespaceURI(), bufferedReader);	//parse the first paragraph
 		while(paragraphElement!=null)	//keep reading until we run out of paragraphs
 		{
-			XMLUtilities.appendText(bodyElement, "\n");	//append a newline to separate the paragraphs
+			XML.appendText(bodyElement, "\n");	//append a newline to separate the paragraphs
 			bodyElement.appendChild(paragraphElement);	//add the paragraph element to our document
 			paragraphElement=parseParagraph(document, bodyElement.getNamespaceURI(), bufferedReader);	//parse the next paragraph
 		}
-		XMLUtilities.appendText(bodyElement, "\n");	//append a newline to end the content of the body element
-		XMLUtilities.appendText(document.getDocumentElement(), "\n");	//append a newline to end the content of the html element
-//G***del XMLUtilities.printTree(document, Debug.getOutput());  //G***del
+		XML.appendText(bodyElement, "\n");	//append a newline to end the content of the body element
+		XML.appendText(document.getDocumentElement(), "\n");	//append a newline to end the content of the html element
 	}
 
 	/**Parses text and returns a paragraph element with the next subsequent non-empty
@@ -138,51 +148,41 @@ Debug.trace("found body element");  //G***del
 	protected Element parseParagraph(final Document document, final String namespaceURI, final BufferedReader bufferedReader) throws IOException
 	{
 
-//G***del Debug.trace("parsing paragraph"); //G***del
-//G***del		boolean foundBreak=false; //we'll change this when we find a break
-		final Element element=document.createElementNS(namespaceURI, ELEMENT_P);	//create a new paragraph element G***this assumes the namespace is the default name
+		final Element element=document.createElementNS(namespaceURI, ELEMENT_P);	//create a new paragraph element TODO this assumes the namespace is the default name
 		String line=getLine(bufferedReader);	//read the first line of text
-//G***del Debug.trace("read line: ", textLine); //G***del
 		while(line!=null)	//read all the blank lines until we find one with text (or until we read the end of the data)
 		{
 			if(CharSequences.notCharIndexOf(line, TRIM_CHARS)>=0)		//if there is text for this line
 				break;	//we're ready to start storing the text
 		  line=getLine(bufferedReader);	//read the next line of text
 		}
-//G***del		final int lineSpacing=getLineSpacing();  //get the number of lines per line of text we expect
 		int lineCount=0;  //we haven't added any lines to the paragraph, yet
 		int lineNumber=1; //this will keep track of the line number we're on, as far as linespacing goes
 		int lineLengthSum=0;  //we'll keep track of the sum of line lengths that we've added
 		boolean isLastLine=false; //we don't think this is the last line
 		int headingType=Prose.NO_HEADING; //we don't think this paragraph is a heading
-//G***del		String lineToAppend=null;	//this will hold the line to append each time
 		while(line!=null && !isLastLine)	//keep reading until we read the end of the data or we we hit the last line of the paragraph
 		{
 				//make sure all the characters are valid XML characters
-			line=XMLUtilities.createValidString(line);
+			line=XML.createValidString(line);
 			if(CharSequences.notCharIndexOf(line, TRIM_CHARS)>=0)		//if there is text for this line
 			{
-//G***del do we need to trim the line?				final String lineToAppend=line.trim();	//we'll append this line (trimmed) to the paragraph; we won't know until later whether we should add a newline
-//G***del do we need to trim the line?				if(isBreak(lineToAppend)) //if the line we want to append is a break
 				if(Prose.isBreak(line) && line.length()>10) //if the line we want to append is a break
 				{
 					if(lineCount>0) //if we already have lines accumulated
 					{
 						ungetLine(line);  //put the line back in the buffer
 						break;  //return what we have so far, and come back later for this break
-//G***del						return element; //return what we have so far, and come back later for this break
 					}
 					else  //if we haven't accumulated any lines
 					{
-						XMLUtilities.appendText(element, line); //append the break text to the element
+						XML.appendText(element, line); //append the break text to the element
 						break;  //return the break element
-//G***del						return element; //return the break element
 					}
 				}
 					//see if this group of text starts with a heading, and if we need to detach that heading
 				if(lineCount==0)  //if we haven't added any lines yet
 				{
-//G***del Debug.trace("getting heading type for line: ", line); //G***del
 				  final int possibleHeadingType=Prose.getHeadingType(line); //find out if this line appears to be a heading
 					  //title headings are too risky to break out---a couple of proper
 						//  names on the last line of a paragraph would look like a title
@@ -190,35 +190,23 @@ Debug.trace("found body element");  //G***del
 					if(possibleHeadingType!=Prose.TITLE_HEADING)  //if this isn't a title heading
 					{
 					  headingType=possibleHeadingType;  //we'll suppose this really is a heading
-//G***del Debug.trace("changed heading type: ", headingType); //G***del
 					}
 				}
 				else if(headingType!=Prose.NO_HEADING)  //if this isn't the first line and we have a heading
 				{
-//G***del Debug.trace("other line heading type: ", getHeadingType(line)); //G***del
 				  final int possibleHeadingType=Prose.getHeadingType(line); //find out if this line appears to be a heading
 					if(possibleHeadingType!=headingType) //if this line is of a different heading type (or no heading type)
 					{
-/*G***fix; this partially solves the problem, but then how does the XHTMLTidier know if this is a paragraph or a heading?
+/*TODO fix; this partially solves the problem, but then how does the XHTMLTidier know if this is a paragraph or a heading?
 						final float averageLineLength=lineLengthSum/lineCount;  //find out the average line length
 							//if we've had the heading for more than two lines, or if this line s signficantly longer than the first one
 						if(lineCount>2 || line.length()>averageLineLength*1.10)
 						{
 */
 
-/*G***del; this was mistakenly added---this doesn't count if we already have a heading
-							//title headings and subheadings are too risky to break out in
-							//  the middle of a paragraph---a couple of proper names on the
-							//  last line of a paragraph would look like a title heading
-							//  (see gabrm10.txt), as would a capitalized phrase on the end
-							//  of a line (see rslas10.txt)
-						if(possibleHeadingType!=TITLE_HEADING && possibleHeadingType!=SUB_HEADING)  //if this isn't a title heading or a subheading
-						{
-*/
 							ungetLine(line);  //put the line back in the buffer
 						  break;  //return what we have so far, and come back later for this text (which could be the start of a paragraph after a heading, for instance)
-//G***del						}
-/*G***fix; this partially solves the problem, but then how does the XHTMLTidier know if this is a paragraph or a heading?
+/*TODO fix; this partially solves the problem, but then how does the XHTMLTidier know if this is a paragraph or a heading?
 						}
 						else  //if this is the second line and it isn't much longer than the first, this probably isn't a header
 						{
@@ -257,17 +245,14 @@ Debug.trace("found body element");  //G***del
 								}
 							}
 						}
-//G***del Debug.trace("sensing line: ", line);
-//G***del Debug.trace("first character: "+firstChar);
 						if(LEFT_QUOTE_CHARS.indexOf(firstChar)>=0) //if the first character is a quote, this is the start of a new line
 						{
-//G***del Debug.trace("is quoted string; stopping paragraph");
 							ungetLine(line);  //put the line back in the buffer
 							break;  //return what we have so far, and come back later for the quoted line
 						}
 							//next, check to see if this is the last line of the current paragraph
 						final float averageLineLength=(float)lineLengthSum/lineCount; //get the average length so far
-						final float expectedLength=averageLineLength*0.75f; //see how long we expect the line to be to be considered part of the paragraph body G***use a constant
+						final float expectedLength=averageLineLength*0.75f; //see how long we expect the line to be to be considered part of the paragraph body TODO use a constant
 						final float probablyLength=averageLineLength*0.85f; //see how long we expect the line to be to be considered part of the paragraph if the line ends in punctuation
 						  //find out the length of the actual characters in the string (we don't have to worry about blank lines, because we've already checked for that)
 						final int textLength=lastCharIndex-firstCharIndex+1;
@@ -280,7 +265,7 @@ Debug.trace("found body element");  //G***del
 							String nextLine=getLine(bufferedReader);  //get the next line
 							if(nextLine!=null && Prose.isPageNumber(nextLine))  //if the next line is a page number
 							{
-								;  //do nothing---just discard the next line and keep going (but we'll still add this line) G***this can probably be made more efficient and logical
+								;  //do nothing---just discard the next line and keep going (but we'll still add this line) TODO this can probably be made more efficient and logical
 							}
 							else  //if the next line is not a page number
 							{
@@ -294,27 +279,24 @@ Debug.trace("found body element");  //G***del
 				if(line!=null)  //if we have a line to add (that is, we haven't thrown the line away)
 				{
 					if(lineCount>0) //if we've already added lines
-						XMLUtilities.appendText(element, "\n"); //append a newline to the paragraph G***is there something more efficient and more spatially economic
-					XMLUtilities.appendText(element, line); //append the line of text to the element
+						XML.appendText(element, "\n"); //append a newline to the paragraph TODO is there something more efficient and more spatially economic
+					XML.appendText(element, line); //append the line of text to the element
 					++lineCount;  //show that we have more lines in the paragraph
 					++totalLineCount;  //update our total line count
 					lineNumber=2; //we're back to the first line in the linespacing (actually, this was the first line---the next will be the second)
 					lineLengthSum+=line.length(); //add the line length to our sum of lengths
 					totalLineLengthSum+=line.length();  //add this line length to our total sum of lengths
-/*G***testing; might be useful later
+/*TODO testing; might be useful later
 					if(lineCount%15==0) //every 15 lines of a paragraph, see if we need to recalculate linespacing
 					{
 							//get the average length of all the lines
 						final float totalAverageLineLength=(float)totalLineLengthSum/totalLineCount;
-Debug.trace("total average line length: "+totalAverageLineLength); //G***del
 							//get the average line length of the current paragraph
 						final float averageLineLength=(float)lineLengthSum/lineCount;
-Debug.trace("paragraph average line length: "+averageLineLength); //G***del
 						  //if our paragraph length is less than have or greater than twice the total average
 						if(averageLineLength<totalAverageLineLength/2 || averageLineLength>totalAverageLineLength*2)
 						{
-Debug.trace("autodetecting settings again");  //G***del
-						  autodetectSettings(bufferedReader); //autodetect our settings again G***then maybe unread our paragraphs
+						  autodetectSettings(bufferedReader); //autodetect our settings again TODO then maybe unread our paragraphs
 						}
 					}
 */
@@ -331,30 +313,8 @@ Debug.trace("autodetecting settings again");  //G***del
 			  line=getLine(bufferedReader);	//read another line of text
 		}
 		return element.getChildNodes().getLength()!=0 ? element : null;	//if we found any non-empty lines of text, return the paragraph element, else return null
-			//G***remove the last '\n' from the paragraph
-//G***del		return element.getChildNodes().getLength()!=0 ? element : null;	//if we found any non-empty lines of text, return the paragraph element, else return null
+			//TODO remove the last '\n' from the paragraph
 	}
-
-	/**Determines if the given text is a break.
-		A break is either comprised completely of '*' and/or '-', or is the
-		word "page" on a single line surrounded by only punctuation and/or whitespace.
-	@param text The text to check.
-	@return <code>true</code> if the text is a break.
-	*/
-/*G***del; combined with TextUtilities.isBread()
-	protected static boolean isBreak(final String text) //G***somehow combine this with TextUtilities.isPageBreakHeading()
-	{
-//G***del Debug.trace("checking text for page break: ", text);  //G***del
-//G***del Debug.trace("stripped of punctuation and whitespace: ", StringUtilities.trim(text, PUNCTUATION_CHARS+CharacterConstants.TRIM_CHARS));  //G***del
-		if(StringUtilities.isAllChars(text, "*-"+EM_DASH_CHAR+EN_DASH_CHAR) && text.length()>10)  //if the string is only made up of asterisks and hyphens and is a certain length G***use a constant
-			return true;  //this is a page break heading
-				//if this line contains "page" surrounded by only punctuation
-		else if("page".equalsIgnoreCase(StringUtilities.trim(text, PUNCTUATION_CHARS+TRIM_CHARS)))
-			return true;  //this is a page break indication
-		else  //if this is not a page break heading
-			return false; //show that we don't think this is a page break heading
-	}
-*/
 
 	/**Gets the next available line, either from the buffer or from the given
 		reader.
@@ -389,7 +349,7 @@ Debug.trace("autodetecting settings again");  //G***del
 	protected void primeBuffer(final BufferedReader bufferedReader) throws IOException
 	{
 		String line=bufferedReader.readLine();  //read a line from the buffer
-		while(line!=null && getLineBuffer().size()<2000)  //while we have lines to add, and we haven't yet have enough in the buffer G***use a constant here
+		while(line!=null && getLineBuffer().size()<2000)  //while we have lines to add, and we haven't yet have enough in the buffer TODO use a constant here
 		{
 			getLineBuffer().addLast(line);  //add the line to the end of our buffer
 		  line=bufferedReader.readLine();  //read another line from the buffer
@@ -405,7 +365,7 @@ Debug.trace("primed buffer, number of lines: ", getLineBuffer().size());
 	@see #isParagraphSensing
 	@exception IOException Thrown if there is an I/O error.
 	*/
-	protected void autodetectSettings(final BufferedReader bufferedReader) throws IOException //G***fix the cases in which each paragraph appears on one line--i.e. check the average line length
+	protected void autodetectSettings(final BufferedReader bufferedReader) throws IOException //TODO fix the cases in which each paragraph appears on one line--i.e. check the average line length
 	{
 		primeBuffer(bufferedReader);  //preload the buffer with lines
 		tidyBuffer(); //tidy the buffer of long line runs (important for Project Gutenberg truth10.txt, for example)
@@ -418,7 +378,6 @@ Debug.trace("primed buffer, number of lines: ", getLineBuffer().size());
 		for(int i=startIndex; i<endIndex; ++i)  //look at each line following each non-blank line
 		{
 		  final String line=(String)getLineBuffer().get(i); //get another line
-//G***del System.out.print("Line "+i+": "+line);  //G***del
 			++lineCount;  //show that we've found another line
 			  //get the index of the last character in the string that isn't whitespace
 			final int lastNonWhitespaceCharIndex=CharSequences.notCharLastIndexOf(line, TRIM_CHARS);
@@ -431,18 +390,10 @@ Debug.trace("primed buffer, number of lines: ", getLineBuffer().size());
 				  ++endingPunctuationSum; //show that we found another line with ending punctuation
 			}
 		}
-Debug.trace("line count: ", lineCount); //G***del
-Debug.trace("nonblank line count: ", nonBlankLineCount); //G***del
 			//get the number of lines used for each non-blank line
 		final float linesPerLine=(float)lineCount/(float)nonBlankLineCount;
-Debug.trace("lines per line: "+linesPerLine); //G***del
-//G***del		  //only use this line spacing if it's within our recogni
-//G***del		final int lineSpacing=Math.round(linesPerLine); //determine the line spacing
-
 		  //see the fraction of lines that end in punctuation
 		final float endingPunctuationFraction=(float)endingPunctuationSum/nonBlankLineCount;
-Debug.trace("ending punctuation sum: ", endingPunctuationSum);  //G***del
-Debug.trace("ending punctuation fraction: "+endingPunctuationFraction);  //G***del
 		final int lineSpacing; //determine the line spacing differently depending on whether we think paragraphs are each on one long line or not
 		if(endingPunctuationFraction>0.85f) //if most lines end in punctuation, each line is probably a paragraph
 		{
@@ -453,20 +404,14 @@ Debug.trace("ending punctuation fraction: "+endingPunctuationFraction);  //G***d
 		  lineSpacing=(int)linesPerLine; //determine the line spacing by dropping the decimal portion---do *not* round, because partial lines per line do not count
 		}
 		setLineSpacing(lineSpacing);  //set the line spacing
-Debug.trace("line spacing: ", getLineSpacing()); //G***del
 		  //normalize the lines-per-line measurement by subtracting out the lines
 			//  expected for line spacing
 		final float normalizedLinesPerLine=((float)lineCount-nonBlankLineCount*(lineSpacing-1))/(float)nonBlankLineCount;
-Debug.trace("normalized lines per line: "+normalizedLinesPerLine); //G***del
 		//we expect a certain number of blank lines to be used just for paragraphs;
 		//  if not, that means there's not enough blank lines, so we'll have to
 		//  sense paragraphs (note that 1.2 is too high a threshold for works like
 		//  Project Gutenberg rlas10.txt (1.16))
-//G***del; this is too high		setParagraphSensing(normalizedLinesPerLine<1.2);  //set the paragraph sensing
-//G***del; this is too high		setParagraphSensing(normalizedLinesPerLine<1.1);  //set the paragraph sensing
-//G***del; this is still too high		setParagraphSensing(normalizedLinesPerLine<1.05);  //set the paragraph sensing
 		setParagraphSensing(normalizedLinesPerLine<1.04);  //set the paragraph sensing
-Debug.trace("paragraph sensing: "+isParagraphSensing()); //G***del
 	}
 
 	/**Collapses large runs of blank lines in the buffer, which would skew our
@@ -489,7 +434,6 @@ Debug.trace("paragraph sensing: "+isParagraphSensing()); //G***del
 			{
 				if(isBlankLine) //if this is a blank line
 				{
-//G***del Debug.trace("starting blank line run at index: ", i); //G***del
 					blankLineRunStartIndex=i; //show that this is where the run starts
 				}
 			}
@@ -497,22 +441,17 @@ Debug.trace("paragraph sensing: "+isParagraphSensing()); //G***del
 			{
 				if(!isBlankLine || i==getLineBuffer().size()-1) //if this is not another blank line, or we're out of lines altogether (which will skew our count by one line, but it's the end of the buffer so we don't know the real end of the run, anyway)
 				{
-//G***del Debug.trace("end of run at index: ", i); //G***del
 					final int blankLineRunLength=i-blankLineRunStartIndex;  //see how long this run was
-//G***del Debug.trace("run length: ", blankLineRunLength); //G***del
 					if(blankLineRunLength>MAX_BLANK_LINE_RUN_LENGTH)  //if this run was too long
 					{
 							//get the number of lines used for each non-blank line on average
 						final float linesPerLine=(float)lineCount/(float)nonBlankLineCount;
 		  		  final int lineSpacing=(int)linesPerLine; //determine the line spacing so far by dropping the decimal portion---do *not* round, because partial lines per line do not count
-//G***del Debug.trace("before collapsing, current line spacing is: ", lineSpacing); //G***del
-//G***del Debug.trace("collapsing a blank line run of: ", blankLineRunLength);  //G***del
 						  //we'll leave as many blank lines as the current average line spacing would suggest
 						final int newBlankLineRunStartIndex=blankLineRunStartIndex+lineSpacing-1;
 						  //look at each blank line, from the last to the first, skipping the first
 						for(int blankLineIndex=i-1; blankLineIndex>newBlankLineRunStartIndex; --blankLineIndex)
 						{
-//G***del Debug.trace("removing index: ", blankLineIndex);  //G***del
 							getLineBuffer().remove(blankLineIndex); //remove this blank line
 						}
 						i=newBlankLineRunStartIndex; //we've collapsed everything down to one line, so we're on the first line of the run again (compensating for line spacing)
@@ -531,7 +470,7 @@ Debug.trace("paragraph sensing: "+isParagraphSensing()); //G***del
 	@see #isParagraphSensing
 	@exception IOException Thrown if there is an I/O error.
 	*/
-	protected void autodetectEncoding(final BufferedReader bufferedReader) throws IOException //G***fix the cases in which each paragraph appears on one line--i.e. check the average line length
+	protected void autodetectEncoding(final BufferedReader bufferedReader) throws IOException //TODO fix the cases in which each paragraph appears on one line--i.e. check the average line length
 	{
 		primeBuffer(bufferedReader);  //preload the buffer with lines
 		tidyBuffer(); //tidy the buffer of long line runs (important for Project Gutenberg truth10.txt, for example)

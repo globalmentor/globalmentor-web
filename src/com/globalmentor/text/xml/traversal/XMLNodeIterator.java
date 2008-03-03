@@ -1,3 +1,19 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml.traversal;
 
 import java.util.*;
@@ -5,15 +21,16 @@ import org.w3c.dom.*;
 import org.w3c.dom.traversal.*;
 
 import com.globalmentor.text.xml.*;
-import com.globalmentor.util.Debug;
 
 /**An iterator that iterates of XML objects of a particular type contained in a
 	collection of child objects.
+@author Garret Wilson
 @see Iterator
 @see Collection
 @see XMLNode
+@deprecated
 */
-public class XMLNodeIterator implements NodeIterator/*G***del, Iterator*/ //G***do we need this class?
+public class XMLNodeIterator implements NodeIterator
 {
 
 	/**The root node of this iterator.*/
@@ -88,7 +105,7 @@ public class XMLNodeIterator implements NodeIterator/*G***del, Iterator*/ //G***
 		root=rootNode;  //set the root node
 		setReferenceNode(rootNode); //set the root node as the reference node
 		setBeforeReferenceNode(true); //set our iterator to be before our reference node
-//G***register as a listener of the root node
+//TODO register as a listener of the root node
 	}
 
 	/**Creates a node iterator, specifying the root and the nodes to show and not
@@ -115,11 +132,11 @@ public class XMLNodeIterator implements NodeIterator/*G***del, Iterator*/ //G***
 		this(rootNode); //do the default construction
 		whatToShow=nodesToShow; //show which nodes to show
 		nodeFilter=filter;  //set the node filter
-		//G***do something with entityReferenceExpansion here
+		//TODO do something with entityReferenceExpansion here
 	}
 
-	/**The node filter used to screen nodes. G***fix.*/
-	private NodeFilter nodeFilter=null;
+	/**The node filter used to screen nodes.*/
+	private NodeFilter nodeFilter=null;	//TODO fix
 
 		/**@return The node filter used to screen nodes.*/
 		public NodeFilter getFilter() {return nodeFilter;}
@@ -141,7 +158,7 @@ public class XMLNodeIterator implements NodeIterator/*G***del, Iterator*/ //G***
 		  <code>expandEntityReferences</code> to false.
 		@return Whether entity reference should be expanded.
 		*/
-    public boolean getExpandEntityReferences() {return false;}  //G***fix
+    public boolean getExpandEntityReferences() {return false;}  //TODO fix
 
 	/**Returns the next node in the set and advances the position of the
 		iterator in the set. After a <code>NodeIterator</code> is created,
@@ -159,14 +176,11 @@ public class XMLNodeIterator implements NodeIterator/*G***del, Iterator*/ //G***
 	{
 		final Node oldReferenceNode=getReferenceNode();  //get the original reference node, in case we need to restore it
 		final boolean wasBeforeReferenceNode=isBeforeReferenceNode(); //see if we're before the reference node
-//G***del Debug.trace("was before reference: "+wasBeforeReferenceNode+" reference was node: "+oldReferenceNode.getNodeName());
-//G***del Debug.trace("old reference node has parent: "+(oldReferenceNode.getParentNode()!=null ? oldReferenceNode.getParentNode().getNodeName() : "null"));
 		Node node;  //we'll store the node here temporarily to make sure it should be included
 		//get the next node, not checking to see if it should be included
 		while((node=getNextNode())!=null) //while we haven't reached the last node
 		{
-//G***del Debug.trace("got a node: "+node.getNodeName()+" of type: "+node.getNodeType()); //G***del
-			if(shouldShow(node, getWhatToShow()))  //if we should show this node G***update for the filter, if present
+			if(shouldShow(node, getWhatToShow()))  //if we should show this node TODO update for the filter, if present
 				return node;  //return the node
 		}
 		setReferenceNode(oldReferenceNode); //restore the old reference node, since we can't find the next node
@@ -193,7 +207,7 @@ public class XMLNodeIterator implements NodeIterator/*G***del, Iterator*/ //G***
 		//get the previous node, not checking to see if it should be included
 		while((node=getPreviousNode())!=null) //while we haven't reached the first node
 		{
-			if(shouldShow(node, getWhatToShow()))  //if we should show this node G***update for the filter, if present
+			if(shouldShow(node, getWhatToShow()))  //if we should show this node TODO update for the filter, if present
 				return node;  //return the node
 		}
 		setReferenceNode(oldReferenceNode); //restore the old reference node, since we can't find the previous node
@@ -219,17 +233,13 @@ public class XMLNodeIterator implements NodeIterator/*G***del, Iterator*/ //G***
 		if(isDetached())  //if this iterator has been detached
 			throw new XMLDOMException(DOMException.INVALID_STATE_ERR, new Object[]{getClass().getName()});	//show that iterator is in an invalid state
 		final Node oldReferenceNode=getReferenceNode();  //get the reference node
-//G***del Debug.trace("getNextNode() old reference: "+oldReferenceNode.getNodeName());
-//G***del Debug.trace("old reference node has parent: "+(oldReferenceNode.getParentNode()!=null ? oldReferenceNode.getParentNode().getNodeName() : "null"));
 		if(isBeforeReferenceNode()) //if we're before the reference node
 		{
 			setAfterReferenceNode(true);  //show that our iterator is now after the reference node
 		  return oldReferenceNode;  //return the reference node
-//G***del			return getReferenceNode();  //return the reference node
 		}
 		else  //if we're after the reference node
 		{
-//G***del Debug.trace("checking after reference node");
 			if(oldReferenceNode.hasChildNodes())  //if the reference node has children
 			{
 				final Node newReferenceNode=oldReferenceNode.getFirstChild(); //the first child will be the new reference node
@@ -238,18 +248,14 @@ public class XMLNodeIterator implements NodeIterator/*G***del, Iterator*/ //G***
 			}
 			else if(oldReferenceNode!=getRoot())  //if the reference node has no children (and it's not a childless root), try to get the next sibling
 			{
-//G***del Debug.trace("old reference node has no children; trying next sibling");
 			  Node currentReferenceNode=oldReferenceNode; //we'll be changing the reference node, and we'll use this as a temporary reference node
 			  Node newReferenceNode=currentReferenceNode.getNextSibling(); //look for the next sibling
 				while(newReferenceNode==null) //while we haven't found a new reference node
 				{
-//G***del Debug.trace("no sibling, getting parent");
 					currentReferenceNode=currentReferenceNode.getParentNode(); //try to find this node's parent
-//G***del Debug.trace("current reference node is "+Debug.getNullStatus(currentReferenceNode)+" and is root? "+(currentReferenceNode==getRoot()));
 						//if this node has a parent, and it's not the root of our iterator
 				  if(currentReferenceNode!=null && currentReferenceNode!=getRoot())
 					{
-//G***del Debug.trace("getting parent's next sibling");
 					  newReferenceNode=currentReferenceNode.getNextSibling(); //look for the next sibling
 					}
 					else  //if we couldn't find a parent, or we found the root, we're at the end of the iterator
@@ -285,7 +291,6 @@ public class XMLNodeIterator implements NodeIterator/*G***del, Iterator*/ //G***
 		{
 			setBeforeReferenceNode(true);  //show that our iterator is now before the reference node
 		  return oldReferenceNode;  //return the reference node
-//G***del			return getReferenceNode();  //return the reference node
 		}
 		else  //if we're before the reference node
 		{
@@ -313,20 +318,20 @@ public class XMLNodeIterator implements NodeIterator/*G***del, Iterator*/ //G***
 	}
 
 	/**The list (derived from the collection) which contains the objects to iterate through.*/
-//G***fix or del	private List ChildList;
+//TODO fix or del	private List ChildList;
 
 	/**The type of node to iterate through in the iteration (all others will be ignored).*/
-//G***fix or del	private short NodeType;
+//TODO fix or del	private short NodeType;
 
 	/**The current child we're looking at.*/
-//G***fix or del	private int ChildIndex;
+//TODO fix or del	private int ChildIndex;
 
 	/**Constructor that specifies the children which contain the objects, along with the type of object to iterate through.
 	@param childCollection The collection of children which contains the objects to iterate through.
 	@param nodeType The type of node to iterate through in the iteration (all others will be ignored).
 	@see XMLNode
 	*/
-/*G***fix or del
+/*TODO fix or del
 	public XMLNodeIterator(final Collection childCollection, final short nodeType)
 	{
 		ChildList=new ArrayList(childCollection);	//create an array list with the children in the collection
@@ -338,7 +343,7 @@ public class XMLNodeIterator implements NodeIterator/*G***del, Iterator*/ //G***
 	/**@return true if there are more child objects of the correct type.
   @see Iterator.hasNext
   */
-/*G***fix
+/*TODO fix
 	public boolean hasNext()
 	{
 		for(int i=ChildIndex; i<ChildList.size(); ++i)	//look at the child objects
@@ -354,7 +359,7 @@ public class XMLNodeIterator implements NodeIterator/*G***del, Iterator*/ //G***
   @throw NoSuchElementException Thrown if no more child objects are left.
   @see Iterator.next
   */
-/*G***fix or del
+/*TODO fix or del
 	public Object next()
 	{
 		for(; ChildIndex<ChildList.size(); ++ChildIndex)	//look at the child object
@@ -374,7 +379,7 @@ public class XMLNodeIterator implements NodeIterator/*G***del, Iterator*/ //G***
   @throw UnsupportedOperationException Always thrown, because this operation is currently not supported.
   @see Iterator.remove
   */
-/*G***fix or del
+/*TODO fix or del
   public void remove()
   {
 		throw new UnsupportedOperationException();	//show that we currently don't support this operation
@@ -391,7 +396,7 @@ public class XMLNodeIterator implements NodeIterator/*G***del, Iterator*/ //G***
 	*/
 	public void detach()
 	{
-		//G***remove ourselves as a listener from the root node
+		//TODO remove ourselves as a listener from the root node
 		referenceNode=null; //set the reference node to null
 		root=null;  //show that we don't have a root anymore
 		nodeFilter=null;  //get rid of the node filter
@@ -404,36 +409,35 @@ public class XMLNodeIterator implements NodeIterator/*G***del, Iterator*/ //G***
 	*/
 	protected static boolean shouldShow(final Node node, final int whatToShow)
 	{
-//G***del Debug.trace("XMLNodeIterstor.shouldShow() node: "+node.getNodeName()+" of type: "+node.getNodeType());
 		final short nodeType=node.getNodeType();  //see which type of node this is
 		switch(whatToShow)  //see which nodes should be shown
 		{
 			case NodeFilter.SHOW_ALL: //if all nodes should be shown
 				return true;
 			case NodeFilter.SHOW_ATTRIBUTE:
-				return nodeType==node.ATTRIBUTE_NODE;
+				return nodeType==Node.ATTRIBUTE_NODE;
 			case NodeFilter.SHOW_CDATA_SECTION:
-				return nodeType==node.CDATA_SECTION_NODE;
+				return nodeType==Node.CDATA_SECTION_NODE;
 			case NodeFilter.SHOW_COMMENT:
-				return nodeType==node.COMMENT_NODE;
+				return nodeType==Node.COMMENT_NODE;
 			case NodeFilter.SHOW_DOCUMENT:
-				return nodeType==node.DOCUMENT_NODE;
+				return nodeType==Node.DOCUMENT_NODE;
 			case NodeFilter.SHOW_DOCUMENT_FRAGMENT:
-				return nodeType==node.DOCUMENT_FRAGMENT_NODE;
+				return nodeType==Node.DOCUMENT_FRAGMENT_NODE;
 			case NodeFilter.SHOW_DOCUMENT_TYPE:
-				return nodeType==node.DOCUMENT_TYPE_NODE;
+				return nodeType==Node.DOCUMENT_TYPE_NODE;
 			case NodeFilter.SHOW_ELEMENT:
-				return nodeType==node.ELEMENT_NODE;
+				return nodeType==Node.ELEMENT_NODE;
 			case NodeFilter.SHOW_ENTITY:
-				return nodeType==node.ENTITY_NODE;
+				return nodeType==Node.ENTITY_NODE;
 			case NodeFilter.SHOW_ENTITY_REFERENCE:
-				return nodeType==node.ENTITY_REFERENCE_NODE;
+				return nodeType==Node.ENTITY_REFERENCE_NODE;
 			case NodeFilter.SHOW_NOTATION:
-				return nodeType==node.NOTATION_NODE;
+				return nodeType==Node.NOTATION_NODE;
 			case NodeFilter.SHOW_PROCESSING_INSTRUCTION:
-				return nodeType==node.PROCESSING_INSTRUCTION_NODE;
+				return nodeType==Node.PROCESSING_INSTRUCTION_NODE;
 			case NodeFilter.SHOW_TEXT:
-				return nodeType==node.TEXT_NODE;
+				return nodeType==Node.TEXT_NODE;
 			default:  //if we don't recognize the type of node to show
 				return false; //show that we shouldn't include the node
 		}

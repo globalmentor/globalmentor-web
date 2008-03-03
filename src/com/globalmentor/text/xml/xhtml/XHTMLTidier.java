@@ -1,3 +1,19 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml.xhtml;
 
 import java.io.*;
@@ -8,18 +24,17 @@ import com.globalmentor.io.ContentTypes;
 import com.globalmentor.io.Files;
 import com.globalmentor.java.*;
 import com.globalmentor.text.Prose;
-import com.globalmentor.text.xml.XMLUtilities;
+import com.globalmentor.text.xml.XML;
 import com.globalmentor.text.xml.oeb.OEB;
 import com.globalmentor.text.xml.stylesheets.css.*;
 import com.globalmentor.text.xml.xpath.XPath;
-import com.globalmentor.text.xml.xpath.XPathConstants;
 import com.globalmentor.util.*;
 
 import static com.globalmentor.io.ContentTypeConstants.*;
 import static com.globalmentor.java.Characters.*;
-import static com.globalmentor.text.xml.XMLUtilities.*;
+import static com.globalmentor.text.xml.XML.*;
 import static com.globalmentor.text.unicode.SymbolEncodingConstants.*;
-import static com.globalmentor.text.xml.stylesheets.css.XMLCSSConstants.*;
+import static com.globalmentor.text.xml.stylesheets.css.XMLCSS.*;
 import static com.globalmentor.text.xml.xhtml.XHTML.*;
 
 import org.w3c.dom.*;
@@ -67,7 +82,7 @@ import org.w3c.dom.css.*;
 	<li>0x8C replaced with a Unicode Latin uppercase ligature OE, 0x0152.</li>
 	<li>0x85 replaced with a Unicode horizontal ellipsis, 0x2026.</li>
 	<li>0x9F replaced with a Unicode uppercase Y with diaeresis, 0x0178.</li>
-//G***del if not needed	<li>0x00A0 non-breaking space replaced with a space, 0x0020.</li>
+//TODO del if not needed	<li>0x00A0 non-breaking space replaced with a space, 0x0020.</li>
 	<li>Runs of "--", "---", and "----" replaced with an m dash character, 0x2014.</li>
 </ul>
 <p>The following elements and attributes are removed:</p>
@@ -96,7 +111,7 @@ import org.w3c.dom.css.*;
 		  a single list child element of the same name (duplicated nested lists).</li>
 	<li><code>&lt;div&gt;</code> elements that are the only element children of
 		  <code>&lt;body&gt;</code>.</li>
-//G***decide	<li><code>&lt;div&gt;</code> elements that contain only whitespace and
+//TODO decide	<li><code>&lt;div&gt;</code> elements that contain only whitespace and
 		empty elements (such as <code>&lt;hr&gt;</code>).</li>
 </ul>
 <p>If Microsoft tidying is enabled, the the following operations are performed:</p>
@@ -138,8 +153,7 @@ import org.w3c.dom.css.*;
 	</li>
 </ul>
 @author Garret Wilson
-
-G***added stuff not commented:
+TODO added stuff not commented:
 * removed <html> attributes
 * added OEB DOCTYPe
 */
@@ -236,8 +250,8 @@ public class XHTMLTidier
 	/**The normal title class.*/
 	public final static String TITLE_CLASS="title";
 
-	/**A substring "chap" which might appear in a chapter title class. G***shouldn't this be chapterNumber?*/
-	public final static String CHAPTER_TITLE_CLASS_CHAP_SUBSTRING="chap";
+	/**A substring "chap" which might appear in a chapter title class.*/
+	public final static String CHAPTER_TITLE_CLASS_CHAP_SUBSTRING="chap";	//TODO shouldn't this be chapterNumber?
 
 	/**A substring "num" which might appear in a chapter title class.*/
 	public final static String CHAPTER_TITLE_CLASS_NUM_SUBSTRING="num";
@@ -245,7 +259,7 @@ public class XHTMLTidier
 	/**A substring "title" which might appear in a chapter title class.*/
 	public final static String CHAPTER_TITLE_CLASS_TITLE_SUBSTRING="title";
 
-//G***probably pass a namespace and check all the elements against the namespace
+//TODO probably pass a namespace and check all the elements against the namespace
 
 	/**Whether Microsoft-specific items should be tidied.*/
 	private static final boolean tidyMicrosoft=true;
@@ -253,9 +267,9 @@ public class XHTMLTidier
 	/**Whether some uncommon Unicode characters should be converted to more
 		common representations, such as mdash to a hyphen.
 	*/
-//G***fix for option only private static final boolean tidyUnicode=false; //G***fix
+//TODO fix for option only private static final boolean tidyUnicode=false; //TODO fix
 
-		//characters to be converted G***probably put these in some constant Unicode file
+		//characters to be converted TODO probably put these in some constant Unicode file
 
 	/**An incorrect ellipsis.*/
 	protected final static char BAD_ELLIPSIS=0x85;
@@ -290,7 +304,7 @@ public class XHTMLTidier
 	/**An incorrect Y umlaut.*/
 	protected final static char BAD_UPPERCASE_Y_UMLAUT=0x9F;
 
-	/**Characters to be replaced, along with their replacements.*/  //G***move these up after moving the match character references (above) elsewhere
+	/**Characters to be replaced, along with their replacements.*/  //TODO move these up after moving the match character references (above) elsewhere
 	protected final static char[][] CHARACTER_MATCH_REPLACE_SET_ARRAY=new char[][]
 			  {
 					{BAD_LEFT_SINGLE_QUOTE, LEFT_SINGLE_QUOTATION_MARK_CHAR},
@@ -304,14 +318,8 @@ public class XHTMLTidier
 					{BAD_UPPERCASE_OE, LATIN_CAPITAL_LIGATURE_OE_CHAR},
 					{BAD_ELLIPSIS, HORIZONTAL_ELLIPSIS_CHAR},
 					{BAD_UPPERCASE_Y_UMLAUT, LATIN_CAPITAL_LETTER_Y_WITH_DIAERESIS_CHAR}
-//G***del if not needed					{NO_BREAK_SPACE_CHAR, SPACE_CHAR}
+//TODO del if not needed					{NO_BREAK_SPACE_CHAR, SPACE_CHAR}
 			  };
-
-	/**The options which specify how tidying should occur.*/
-//G***del	private final Properties options;
-
-		/**@return The options which specify how tidying should occur.*/
-//G***del		public Properties getOptions() {return options;}
 
 	/**Our object to tidy CSS, should we ever need to use it.*/
 	protected final CSSTidier cssTidier=new CSSTidier();
@@ -343,7 +351,6 @@ public class XHTMLTidier
 	/**Default constructor initialized with the default options.*/
   public XHTMLTidier()
   {
-//G***del		this(new Properties()); //do the default construction with default properties
   }
 
 	/**Constructs an XHTML tidier with a list of options.
@@ -352,7 +359,6 @@ public class XHTMLTidier
 	public XHTMLTidier(final Properties options)
 	{
 		setOptions(options);  //set the options from the properties
-//G***del		options=tidyOptions;  //store the options
 	}
 
 	/**Tidies a document assumed to be XHTML. The entire document hierarchy is
@@ -378,25 +384,20 @@ public class XHTMLTidier
 	*/
 	public void tidy(final Document document, final File contextFile)
 	{
-//G***del Debug.trace("Ready to tidy document element");
-/*G***fix
-
+/*TODO fix
 					final XMLCSSProcessor cssProcessor=new XMLCSSProcessor();	//create a new CSS processor
 					cssProcessor.parseStyles(xmlDocument, publicationURL);	//parse this document's styles
-							//G***check to make sure the styles are valid OEB styles somewhere here
+							//TODO check to make sure the styles are valid OEB styles somewhere here
 					cssProcessor.applyxStyles(xmlDocument);	//apply the styles
-
 */
-//G***del Debug.trace("ready to tidy document");  //G***del
-//G***del XMLUtilities.printTree(document, Debug.getOutput()); //G***del
 		document.normalize(); //normalize the document so that multiple subsequent text nodes will be combined (important for finding enclosing characters, for instance)
 		if(isExtractInternalStylesheets())  //if we should extract internal stylesheets
 		{
 			try
 			{
 				final XMLCSSProcessor cssProcessor=new XMLCSSProcessor();	//create a new CSS processor
-				cssProcessor.parseInternalStyleSheets((com.globalmentor.text.xml.XMLDocument)document);  //parse the internal stylesheets G***this needs to be fixed so that it doesn't store stylesheets in the document
-				if(((com.globalmentor.text.xml.XMLDocument)document).getStyleSheetList().size()>0)  //if there are internal stylesheets G***this is terrible; fix
+				cssProcessor.parseInternalStyleSheets((com.globalmentor.text.xml.XMLDocument)document);  //parse the internal stylesheets TODO this needs to be fixed so that it doesn't store stylesheets in the document
+				if(((com.globalmentor.text.xml.XMLDocument)document).getStyleSheetList().size()>0)  //if there are internal stylesheets TODO this is terrible; fix
 				{
 					if(((com.globalmentor.text.xml.XMLDocument)document).getStyleSheetList().get(0) instanceof CSSStyleSheet) //if the first stylesheet is a CSS stylesheet
 					{
@@ -404,14 +405,14 @@ public class XHTMLTidier
 						cssTidier.tidy(cssStyleSheet);  //tidy the stylesheet
 						if(contextFile!=null) //if we have a context file
 						{
-							final File stylesheetFile=new File(Files.changeExtension(contextFile, "css").getCanonicalPath());  //create a file with a .css extension G***use a constant here
+							final File stylesheetFile=new File(Files.changeExtension(contextFile, "css").getCanonicalPath());  //create a file with a .css extension TODO use a constant here
 								//create an output file stream for writing the stylesheet
 							final OutputStream stylesheetOutputStream=new BufferedOutputStream(new FileOutputStream(stylesheetFile));
 							try
 							{
-								new CSSSerializer().serialize(cssStyleSheet, stylesheetOutputStream); //write the stylesheet out to the file G***use a pre-created serializer, maybe
+								new CSSSerializer().serialize(cssStyleSheet, stylesheetOutputStream); //write the stylesheet out to the file TODO use a pre-created serializer, maybe
 								stylesheetOutputStream.flush(); //flush the output stream
-		  		  		addStyleSheetReference(document, stylesheetFile.getName(), OEB.OEB10_CSS_MEDIA_TYPE);  //add the stylesheet to the document G***eventually change to text/css
+		  		  		addStyleSheetReference(document, stylesheetFile.getName(), OEB.OEB10_CSS_MEDIA_TYPE);  //add the stylesheet to the document TODO eventually change to text/css
 
 							}
 							finally
@@ -427,46 +428,33 @@ public class XHTMLTidier
 				Debug.warn(exception);  //warn and move on
 			}
 		}
-
-
-//G***del Debug.trace("document currently has entities: ", document.getDoctype().getEntities().getLength());  //G***del
 		final Element documentElement=document.getDocumentElement();  //get the root element
 		tidy(documentElement);  //tidy the root element and all elements beneath it
 		tidyStyle(documentElement); //now that we've tidied the document, tidy all styles, removing unneeded ones
-
-//G***del Debug.trace("body XPath: "+XPath.LOCATION_STEP_SEPARATOR_CHAR+ELEMENT_HTML+
-//G***del				XPath.LOCATION_STEP_SEPARATOR_CHAR+ELEMENT_BODY); //G***del
-//G***del		document.normalize(); //make sure the document is normalized
-//G***del Debug.trace("Ready to collapse document whitespace");
 		collapseChildWhitespaceLF(document.getDocumentElement());  //change whitespace to LFs in the root element
-//G***del Debug.trace("Ready to collapse head whitespace");
 		//get a reference to the head element, if there is one
-		final Element headElement=(Element)XPath.getNode(document, XPathConstants.LOCATION_STEP_SEPARATOR_CHAR+ELEMENT_HEAD);
+		final Element headElement=(Element)XPath.getNode(document, XPath.LOCATION_STEP_SEPARATOR_CHAR+ELEMENT_HEAD);
 		if(headElement!=null) //if there is a head element
 			collapseChildWhitespaceLF(headElement);  //collapse whitespace to LFs in the head element
-//G***del Debug.trace("Ready to collapse body whitespace");
 		//get a reference to the body element
-		final Element bodyElement=(Element)XPath.getNode(document, XPathConstants.LOCATION_STEP_SEPARATOR_CHAR+ELEMENT_BODY);
+		final Element bodyElement=(Element)XPath.getNode(document, XPath.LOCATION_STEP_SEPARATOR_CHAR+ELEMENT_BODY);
 		if(bodyElement!=null) //if there is a body element (there always should be one)
 			collapseChildWhitespaceLF(bodyElement);  //collapse whitespace to LFs in the body element
 	}
-
-	//G***testing; comment; rename
+	//TODO testing; comment; rename
 	public static void collapseChildWhitespaceLF(final Node node)
 	{
-//G***del Debug.trace("Collapsing whitespace for node: "+node.getNodeName());
 		node.normalize(); //make sure the node is normalized
 		final NodeList childNodes=node.getChildNodes();  //get the list of child nodes
 		final int childNodeCount=childNodes.getLength();  //find out how many child nodes there are
 		for(int i=0; i<childNodeCount; ++i) //look at each child node
 		{
-//G***del Debug.trace("Looking at node: "+i);
 		  final Node childNode=childNodes.item(i);  //get a reference to this node
 			if(childNode.getNodeType()==Node.TEXT_NODE) //if this is a text node
 			{
 				final Text text=(Text)childNode;  //cast the child to a text element
 				final String data=text.getData(); //get the text data
-				  //G***testing; comment; use StringBufferUtilities version, maybe
+				  //TODO testing; comment; use StringBufferUtilities version, maybe
 				final String collapsedData=Strings.collapseEveryChar(data, Characters.TRIM_CHARS, "\n\n");
 				text.setData(collapsedData);  //replace the text data with the collapsed data
 			}
@@ -483,19 +471,16 @@ public class XHTMLTidier
 			<li>If this is a block element, tidy child node groups.</li>
 		</ol>
 	@param node The node to tidy.
-//G***del if not needed	@return The tidied node, which is the original node or a new node resulting
-//G***del if not needed		from tidying the node.
+//TODO del if not needed	@return The tidied node, which is the original node or a new node resulting
+//TODO del if not needed		from tidying the node.
 	*/
 	protected void tidy(final Node node)
 	{
-//G***del System.out.print('X');  //G***change to Debug.info()
-//G***del Debug.trace("Tidying node: ", node.getNodeName());  //G***del
 		final short nodeType=node.getNodeType();  //get the node's type
 		if(nodeType==Node.ELEMENT_NODE) //if this is an element
 			tidyAttributes((Element)node);  //tidy the attributes of the element, if needed
-		  //G***check to make sure the element is in the correct namespace here
+		  //TODO check to make sure the element is in the correct namespace here
 		tidyChildNodes(node); //tidy the child nodes of this node
-//G***del Debug.trace("Finished tidying child nodes for node: ", node.getNodeName());  //G***del
 		switch(nodeType)  //see which type of node this is
 		{
 			case Node.ELEMENT_NODE: //if this is an element node
@@ -532,13 +517,13 @@ public class XHTMLTidier
 				tidyStyle((Element)childNode); //tidy the style of this child element
 			}
 		}
-			//get the element's style G***later remove the cast when XMLCSSStyleDeclaration implements CSS2Properties
+			//get the element's style TODO later remove the cast when XMLCSSStyleDeclaration implements CSS2Properties
 		final XMLCSSStyleDeclaration oldStyle=(XMLCSSStyleDeclaration)XHTML.getLocalStyle(element);
 		if(oldStyle!=null)  //if there is an existing style
 		{
 			final XMLCSSStyleDeclaration newStyle=new XMLCSSStyleDeclaration(); //create a new style declaration to received the tidied styles
-				//G***automate this style copying
-			final CSSValue colorValue=oldStyle.getPropertyCSSValue(CSS_PROP_COLOR); //G***testing -- do we want to copy the color, too?
+				//TODO automate this style copying
+			final CSSValue colorValue=oldStyle.getPropertyCSSValue(CSS_PROP_COLOR); //TODO testing -- do we want to copy the color, too?
 			if(colorValue!=null) //if we have a background set
 				newStyle.setPropertyCSSValue(CSS_PROP_COLOR, colorValue);
 			final CSSValue backgroundColorValue=oldStyle.getPropertyCSSValue(CSS_PROP_BACKGROUND_COLOR);
@@ -547,14 +532,11 @@ public class XHTMLTidier
 			final CSSValue listStyleTypeValue=oldStyle.getPropertyCSSValue(CSS_PROP_LIST_STYLE_TYPE);
 			if(listStyleTypeValue!=null) //if we have a list style type set
 				newStyle.setPropertyCSSValue(CSS_PROP_LIST_STYLE_TYPE, listStyleTypeValue);
-	//G***bring over other style properties
-
-	//G***fix
-	/*G***fix
-					((XMLElement)element).setLocalCSSStyle(style);  //set the element's style to whatever we constructed G***eventually use a separate style tree instead of the element itself
+	//TODO bring over other style properties
+	/*TODO fix
+					((XMLElement)element).setLocalCSSStyle(style);  //set the element's style to whatever we constructed TODO eventually use a separate style tree instead of the element itself
 	*/
 			final String newStyleValue=newStyle.getCssText().trim(); //get the new style
-//G***del 	Debug.trace("new style: "+newStyle.getCssText());  //G***del
 			if(newStyleValue.length()>0)  //if we carried any styles over
 				element.setAttributeNS(null, ATTRIBUTE_STYLE, newStyleValue); //change the style to match our new style
 			else  //if we didn't carry any styles over
@@ -571,11 +553,10 @@ public class XHTMLTidier
 	protected void tidyChildNodes(final Node node)
 	{
 		final NodeList childNodeList=node.getChildNodes(); //get a list of child nodes
-//G***del		final int childNodeCount=childNodeList.getLength(); //find out how many nodes there are
 			//Tidy all the children, first. Dynamically check the length each time,
 			//  because certain operations can add child nodes by breaking apart
 			//  child nodes.
-		for(int i=0; i<childNodeList.getLength(); ++i)  //look at each child node G***we probably want to use some sort of iterator instead, in case tidying a node can remove, replace, or otherwise modify the list
+		for(int i=0; i<childNodeList.getLength(); ++i)  //look at each child node TODO we probably want to use some sort of iterator instead, in case tidying a node can remove, replace, or otherwise modify the list
 		{
 			final Node childNode=childNodeList.item(i); //get a reference to this child node
 			tidy(childNode); //tidy this child node
@@ -590,18 +571,14 @@ public class XHTMLTidier
 	*/
 	protected void tidyChildGroups(final Element element)
 	{
-//G***del Debug.trace("element: ", element.getNodeName());  //G***del
-//G***del System.out.print("Converting Headings");  //G***change to Debug.info()
 		convertChildHeadings(element);  //convert any children that appear to be headings into headings
-//G***del System.out.print("List Items");  //G***change to Debug.info()
 		convertChildListItems(element);  //convert any children into lists that appear to be list items
-//G***del System.out.print("Converting Indented Items");  //G***change to Debug.info()
 		convertChildIndentedItems(element);  //convert any children into indented blocks that appear to be blockquotes
 	}
 
-	/**Characters which could conceivably be appended to a list marker.*/ //G***move this to the beginning, probably
+	/**Characters which could conceivably be appended to a list marker.*/ //TODO move this to the beginning, probably
 	protected final static String LIST_ITEM_MARKER_DELIMITER_CHARS=".)-"+EM_DASH_CHAR+EN_DASH_CHAR;
-	/**A string representation of the bullet character which will be converted to a list item marker.*/ //G***move this to the beginning, probably
+	/**A string representation of the bullet character which will be converted to a list item marker.*/ //TODO move this to the beginning, probably
 	protected final static String BULLET_STRING=String.valueOf(BULLET_CHAR);
 
 	/**Searches all first-level child block elements for any content which could
@@ -625,7 +602,7 @@ public class XHTMLTidier
 	@param element The element the children of which should be tidied.
 	@see #tidyChildGroups
 	*/
-/*G***currently lists like this will turn into lists incorrectly:
+/*TODO currently lists like this will turn into lists incorrectly:
 1.
 2.
 	1.
@@ -633,51 +610,41 @@ public class XHTMLTidier
 3.
 4.
 */
-	//G***make the calling method not call this method for lists
+	//TODO make the calling method not call this method for lists
 	protected void convertChildListItems(final Element element)
 	{
 		final Document document=element.getOwnerDocument(); //get the owner document of the element
 		final String elementNamespace=element.getNamespaceURI(); //get the element's namespace
-//G***delDebug.trace("element: ", element.getNodeName());  //G***del
-//G***delDebug.trace("element has nodes: ", element.getChildNodes().getLength());  //G***del
-//G***del		boolean shouldSearchAgain;  //this will record whether we find a list on each iteration through the child elements; if so, we'll set this to true
 		Node searchStartNode=element.getFirstChild();    //show that we should start the search at the first child of the element; we'll use this later if we need to start searching again at the first child node or anywhere else in the list
 		do
 		{
-//G***del			shouldSearchAgain=false;  //show we have not found a list, yet
 			final List listItemNodeList=new ArrayList();  //create a new list to hold sequential nodes we think might be part of a list
 			String listStyleType=null; //when we start a list, we'll store what type of list we think it is here
-//G***del			Node lastListNode=null; //show that we haven't found any list nodes, yet; when we do find one, we'll set
 			Node childNode=searchStartNode; //start searching at the requested location
 			searchStartNode=null;  //show that we've started our search; if we need to search again, we'll set this to some valid value
 			while(childNode!=null)  //while we have a child to look at
 			{
 				Node nextNode=childNode.getNextSibling(); //make a note of what we *think* will be the next node
-//G***del 	Debug.trace("looking at "+element.getNodeName()+" child node: "+childNode.getNodeName());  //G***del
-//G***del 	XMLUtilities.printTree(childNode, Debug.getOutput());  //G***del
 				final int childNodeType=childNode.getNodeType();  //get the type of this child node
-				final String childNodeName=childNode.getNodeName(); //get the node's name G***use namespaces
+				final String childNodeName=childNode.getNodeName(); //get the node's name TODO use namespaces
 					//only look at block elements that are not list items
 				if(childNodeType==childNode.ELEMENT_NODE
-					&& !ELEMENT_LI.equals(childNodeName)  //skip list items G***what if we skip some in the middle of a list?
+					&& !ELEMENT_LI.equals(childNodeName)  //skip list items TODO what if we skip some in the middle of a list?
 					&& !childNodeName.startsWith("h") //skip headings
-					&& isBlockElement((Element)childNode))  //G***eventually use isListItem() or something, or check the styles in case other elements are classified as list items
+					&& isBlockElement((Element)childNode))  //TODO eventually use isListItem() or something, or check the styles in case other elements are classified as list items
 				{
-		//G***check to see if this is already a list item; or maybe wait until we've found a marker and then, if it's a list item, remove the literal marker (but then we'd need to check to see if the style made it a plain list item, meaning there would be no automatic marker)
+		//TODO check to see if this is already a list item; or maybe wait until we've found a marker and then, if it's a list item, remove the literal marker (but then we'd need to check to see if the style made it a plain list item, meaning there would be no automatic marker)
 					String markerListStyleType=null;  //we'll set this to a valid list style type if this item has a valid marker
 					String markerString=null; //if we find what appears to be a marker (setting markerListStyleType to a valid value), we'll store the marker string here
 					final Text textNode=(Text)getFirstNode(childNode, NodeFilter.SHOW_TEXT); //get the first text node in the element
 					if(textNode!=null)  //if we found a text node somewhere inside this text node
 					{
 						final String data=textNode.getData(); //get the text node data
-//G***del	Debug.trace("Found text node: ", data);
 							//create a tokenizer to extract the list item marker
 						final StringTokenizer stringTokenizer=new StringTokenizer(data, Characters.TRIM_CHARS);
-	//G***del when works					final StringTokenizer stringTokenizer=new StringTokenizer(data, CharacterConstants.TRIM_CHARS+LIST_ITEM_MARKER_DELIMITER_CHARS);
 						if(stringTokenizer.hasMoreTokens()) //if there is a token, check to see if it's a list marker
 						{
 							markerString=stringTokenizer.nextToken();  //get the text which may be a marker
-//G***del		Debug.trace("Checking token: ", markerString);  //G***del
 							if(markerString.equals(BULLET_STRING))  //if the marker is the bullet character
 							{
 								markerListStyleType=CSS_LIST_STYLE_TYPE_DISC;  //this is the disc style type
@@ -688,21 +655,12 @@ public class XHTMLTidier
 								final int delimiterIndex=CharSequences.charIndexOf(markerString, LIST_ITEM_MARKER_DELIMITER_CHARS);
 								if(delimiterIndex>=0) //if this marker contained a delimiter, it's starting to look like a real marker; we'll trim the delimeters and see for sure
 								{
-//G***delDebug.trace("Found delimiter: ", String.valueOf(markerString.charAt(delimiterIndex)));
-										  //G***same the delimiter somewhere
+										  //TODO same the delimiter somewhere
 										//trim the "." or ")" or whatever from the string, giving us just the marker
 									markerString=Strings.trim(markerString, LIST_ITEM_MARKER_DELIMITER_CHARS);
 									if(CharSequences.isLatinDigits(markerString)) //if this string contains only latin digits (the digits '0'-'9')
 									{
-/*G***del
-Debug.trace("Is latin digits"); //G***del
-Debug.trace("Current list style type: ", listStyleType);  //G***del
-*/
 										markerListStyleType=CSS_LIST_STYLE_TYPE_DECIMAL;  //assume this is a decimal list style type
-	/*G***del when works
-				Debug.trace("Entire data: ", data); //G***del
-				XMLUtilities.printTree(element, Debug.getOutput());  //G***del
-	*/
 									}
 									else if(markerString.length()==1) //if the marker is only one character long
 									{
@@ -715,7 +673,7 @@ Debug.trace("Current list style type: ", listStyleType);  //G***del
 										{
 											markerListStyleType=CSS_LIST_STYLE_TYPE_UPPER_ALPHA;  //show that this is uppercase letters
 										}
-										//G***fix for other types
+										//TODO fix for other types
 									}
 								}
 							}
@@ -726,11 +684,10 @@ Debug.trace("Current list style type: ", listStyleType);  //G***del
 					//  started a list)
 					if(markerListStyleType!=null && (listStyleType==null || markerListStyleType==listStyleType))
 					{
-//G***del 		Debug.trace("This seems to be marker list style type: ", markerListStyleType);  //G***del
 							//get what we expect the marker string to be based upon the index this list item would be in the list
-						final String expectedMarkerString=XMLCSSUtilities.getMarkerString(markerListStyleType, listItemNodeList.size());
+						final String expectedMarkerString=XMLCSS.getMarkerString(markerListStyleType, listItemNodeList.size());
 						  //to detect new lists starting, see what would come at the first of this type of list
-						final String expectedFirstMarkerString=XMLCSSUtilities.getMarkerString(markerListStyleType, 0);
+						final String expectedFirstMarkerString=XMLCSS.getMarkerString(markerListStyleType, 0);
 					  final boolean isExpectedMarker; //we'll see if this is the marker we were expecting
 							//if this is one of the list types that always have the same marker
 						if(markerListStyleType==CSS_LIST_STYLE_TYPE_CIRCLE || markerListStyleType==CSS_LIST_STYLE_TYPE_DISC || markerListStyleType==CSS_LIST_STYLE_TYPE_SQUARE)
@@ -738,8 +695,6 @@ Debug.trace("Current list style type: ", listStyleType);  //G***del
 						else  //if this is a list type in which the marker can change for each list item
 						{
 							isExpectedMarker=markerString.equals(expectedMarkerString);  //see if the list item is what we expeted
-//G***del 	Debug.trace("We were expecting a marker like this: ", expectedMarkerString);  //G***del
-//G***del 	Debug.trace("Here's what we received: ", markerString);  //G***del
 						}
 						if(isExpectedMarker) //if we got what we expected, we seem to be guessing right
 						{
@@ -758,7 +713,7 @@ Debug.trace("Current list style type: ", listStyleType);  //G***del
 								break;  //stop and process the list we filled; we can come back and get this second list the next time around
 						}
 						else  //if this doesn't match what we expect, either list is finished
-							markerListStyleType=null; //show that this turned out to not be a marker list style type after all G***we may not use this line anymore
+							markerListStyleType=null; //show that this turned out to not be a marker list style type after all TODO we may not use this line anymore
 					}
 				}
 				childNode=nextNode; //go to the next node
@@ -767,17 +722,11 @@ Debug.trace("Current list style type: ", listStyleType);  //G***del
 			{
 				if(listItemNodeList.size()>1) //if we have at least two list items, this constitutes a list
 				{
-//G***del					shouldSearchAgain=true; //show that we found a list; this will make us check the child elements again for lists
-//G***del Debug.trace("Found a list of nodes for element: "+element.getNodeName()+": ", listItemNodeList.size()); //G***del
-//G***del XMLUtilities.printTree((Node)listItemNodeList.get(0), Debug.getOutput());  //G***del
-//G***del XMLUtilities.printTree((Node)listItemNodeList.get(1), Debug.getOutput());  //G***del
-//G***del	Debug.trace("These are all children of element: "); //G***del
-//G***del	XMLUtilities.printTree(element, Debug.getOutput());  //G***del
-					final String listElementName=ELEMENT_OL;  //G***fix
+					final String listElementName=ELEMENT_OL;  //TODO fix
 						//create a new list element to contain the elements we found
 					final Element listElement=document.createElementNS(elementNamespace, listElementName);
-						//add the class="list-style: listStyleType" attribute with the correct list style G***maybe later create a style declaration and write it to the class attribute, so this will be created automatically
-					listElement.setAttributeNS(null, ATTRIBUTE_STYLE, CSS_PROP_LIST_STYLE_TYPE+XMLCSSConstants.PROPERTY_DIVIDER_CHAR+XMLCSSConstants.SPACE_CHAR+listStyleType);
+						//add the class="list-style: listStyleType" attribute with the correct list style TODO maybe later create a style declaration and write it to the class attribute, so this will be created automatically
+					listElement.setAttributeNS(null, ATTRIBUTE_STYLE, CSS_PROP_LIST_STYLE_TYPE+XMLCSS.PROPERTY_DIVIDER_CHAR+XMLCSS.SPACE_CHAR+listStyleType);
 					final Element firstListItemElement=(Element)listItemNodeList.get(0);  //get a reference to our first element to become a list item
 					final Element lastListItemElement=(Element)listItemNodeList.get(listItemNodeList.size()-1);  //get a reference to our last element to become a list item
 					element.insertBefore(listElement, firstListItemElement); //insert our list right before the first list item
@@ -787,12 +736,11 @@ Debug.trace("Current list style type: ", listStyleType);  //G***del
 					{
 						moveNode=nextMoveNode;  //see which node we should move
 						nextMoveNode=moveNode.getNextSibling();  //after we move this node, this is the node we'll move next
-//G***del when works								Node replacementNode=element.removeChild(moveNode); //remove the node from its parent
+//TODO del when works								Node replacementNode=element.removeChild(moveNode); //remove the node from its parent
 						element.removeChild(moveNode); //remove the node from its parent
 						listElement.appendChild(moveNode); //append the list item element to the list element
 						if(listItemNodeList.indexOf(moveNode)>=0)  //if we just moved an element that we've already determined should be a list item
 						{
-//G***del							final Element listItemElement=(Element)moveNode;  //cast our node to an element
 							final Element listItemElement=replaceElementNS((Element)moveNode, elementNamespace, ELEMENT_LI);  //rename the element to "li"
 							  //remove the marker from the list item
 							final Text textNode=(Text)getFirstNode(listItemElement, NodeFilter.SHOW_TEXT); //get the first text node in the element
@@ -817,7 +765,6 @@ Debug.trace("Current list style type: ", listStyleType);  //G***del
 				{
 				  searchStartNode=((Element)listItemNodeList.get(0)).getNextSibling();  //we'll search the list again, this time starting with the node right after the one node we found last time
 				}
-//G***del				listItemNodeList.clear(); //clear the items in the list so that we can start collecting new list items for a new list
 			}
 		}
 		while(searchStartNode!=null);  //keep going through the list until we are not able to find a new list
@@ -837,38 +784,31 @@ Debug.trace("Current list style type: ", listStyleType);  //G***del
 				element(s).</li>
 			<li>If at the end of the child elements there are collected elements, they
 				are grouped in a <code>&lt;div class="fullIndented"&gt;</code> element.</li>
-//G***del; this causes recursion		  <li>The newly formed blockquote is tidied.</li>
 			<li>This procedure is repeated from the beginning, starting at the first
 				child, until no new indented elements have been created.</li>
 		</ol>
 	@param element The element the children of which should be tidied.
 	@see #tidyChildGroups
-//G***currently a nested blockquote that begins its group will not be recognized
+//TODO currently a nested blockquote that begins its group will not be recognized
 	*/
 	protected void convertChildIndentedItems(final Element element)
 	{
 		final Document document=element.getOwnerDocument(); //get the owner document of the element
 		final String elementNamespace=element.getNamespaceURI(); //get the element's namespace
-//G***del Debug.trace("element: ", element.getNodeName());  //G***del
-//G***del Debug.trace("element has nodes: ", element.getChildNodes().getLength());  //G***del
 		Node searchStartNode=element.getFirstChild();    //show that we should start the search at the first child of the element; we'll use this later if we need to start searching again at the first child node or anywhere else
 		do
 		{
 			final List blockquoteNodeList=new ArrayList();  //create a new list to hold sequential nodes we think might be part of a blockquote
 		  float margin=0; //show that we haven't found any indentations, yet
-//G***del			String listStyleType=null; //when we start a list, we'll store what type of list we think it is here
-//G***del			Node lastListNode=null; //show that we haven't found any list nodes, yet; when we do find one, we'll set
 			Node childNode=searchStartNode; //start searching at the requested location
 			searchStartNode=null;  //show that we've started our search; if we need to search again, we'll set this to some valid value
 			while(childNode!=null)  //while we have a child to look at
 			{
 				Node nextNode=childNode.getNextSibling(); //make a note of what we *think* will be the next node
-	Debug.trace("looking at "+element.getNodeName()+" child node: "+childNode.getNodeName());  //G***del
-//G***del 	XMLUtilities.printTree(childNode, Debug.getOutput());  //G***del
 				final int childNodeType=childNode.getNodeType();  //get the type of this child node
-				final String childNodeName=childNode.getNodeName(); //get the node's name G***use namespaces
-					//only look at block elements that are not blockquotes G***what if we skip some in the middle of a list?
-				if(childNodeType==childNode.ELEMENT_NODE /*G***testing && !childNodeName.equals(ELEMENT_BLOCKQUOTE)*/ && isBlockElement((Element)childNode))
+				final String childNodeName=childNode.getNodeName(); //get the node's name TODO use namespaces
+					//only look at block elements that are not blockquotes TODO what if we skip some in the middle of a list?
+				if(childNodeType==childNode.ELEMENT_NODE /*TODO testing && !childNodeName.equals(ELEMENT_BLOCKQUOTE)*/ && isBlockElement((Element)childNode))
 				{
 					float leftMargin=0; //we'll store the left margin here, if we find one
 					float rightMargin=0; //we'll store the right margin here, if we find one
@@ -884,27 +824,21 @@ Debug.trace("Current list style type: ", listStyleType);  //G***del
 							{
 								leftMargin=leftMarginValue.getFloatValue(leftMarginValue.getPrimitiveType()); //get the left margin, ignoring the units
 								rightMargin=leftMarginValue.getFloatValue(rightMarginValue.getPrimitiveType()); //get the left margin, ignoring the units
-/*G***del when works
-Debug.trace("Found left margin: "+leftMargin); //G***del
-Debug.trace("Found right margin: "+rightMargin); //G***del
+/*TODO del when works
 								if(leftMargin==rightMargin)  //if the left and right margins are identical, we assume this is a blockquote
 								{
-Debug.trace("margins are equal");
 									if(leftMargin>margin) //if the margin increased, this is the start of another blockquote
 									{
-Debug.trace("new blockquote set");
 										blockquoteNodeList.clear(); //we'll start the list over, because this is a nested blockquote
 										blockquoteNodeList.add(childElement); //add this element which will become a blockquote
 										margin=leftMargin;  //show the margin our new blockquote uses
 									}
 									else if(leftMargin>0 && leftMargin==margin) //if this is valid blockquote at the same level of blockquote we had before
 									{
-Debug.trace("another blockquote");
 										blockquoteNodeList.add(childElement); //add this element to our list of elements to become blockquotes
 									}
 									else if(blockquoteNodeList.size()>0)  //if the margin decreased, the blockqoute is finished
 									{
-Debug.trace("finished a blockquote list");
 										break;  //we finished a blockquote; stop this current iteration of searching
 									}
 								}
@@ -912,9 +846,7 @@ Debug.trace("finished a blockquote list");
 							}
 						}
 					}
-//G***it would probably be best to give the left and right margins some initial invalid number
-//G***del Debug.trace("Found left margin: "+leftMargin); //G***del
-//G***del Debug.trace("Found right margin: "+rightMargin); //G***del
+//TODO it would probably be best to give the left and right margins some initial invalid number
 						//if this is a blockquote and we've started a list, assume this is a nested blockquote
 					if(ELEMENT_DIV.equals(childNodeName) && "fullIndent".equals(childElement.getAttributeNS(null, "class")) && blockquoteNodeList.size()>0) //G**use constants here
 					{
@@ -922,22 +854,18 @@ Debug.trace("finished a blockquote list");
 					}
 				  else if(leftMargin==rightMargin)  //if the left and right margins are identical, we assume this is a blockquote
 					{
-//G***del Debug.trace("margins are equal");
 						if(leftMargin>margin) //if the margin increased, this is the start of another blockquote
 						{
-//G***del Debug.trace("new blockquote set");
 							blockquoteNodeList.clear(); //we'll start the list over, because this is a nested blockquote
 							blockquoteNodeList.add(childElement); //add this element which will become a blockquote
 							margin=leftMargin;  //show the margin our new blockquote uses
 						}
 						else if(leftMargin>0 && leftMargin==margin) //if this is valid blockquote at the same level of blockquote we had before
 						{
-//G***del Debug.trace("another blockquote");
 							blockquoteNodeList.add(childElement); //add this element to our list of elements to become blockquotes
 						}
 						else if(blockquoteNodeList.size()>0)  //if the margin decreased, the blockqoute is finished
 						{
-//G***del Debug.trace("finished a blockquote list");
 							break;  //we finished a blockquote; stop this current iteration of searching
 						}
 					}
@@ -948,10 +876,9 @@ Debug.trace("finished a blockquote list");
 			{
 				if(blockquoteNodeList.size()>1) //if we have at least two items, we'll wrap a blockquote around them
 				{
-//G***del Debug.trace("Found a list of nodes for element: "+element.getNodeName()+": ", blockquoteNodeList.size()); //G***del
-						//create a new blockquote element to contain the elements we found G***eventually probably make this a separate utilities method
+						//create a new blockquote element to contain the elements we found TODO eventually probably make this a separate utilities method
 					final Element blockquoteElement=document.createElementNS(elementNamespace, ELEMENT_DIV);
-					blockquoteElement.setAttributeNS(null, "class", "fullIndent");  //G***comment; use constants
+					blockquoteElement.setAttributeNS(null, "class", "fullIndent");  //TODO comment; use constants
 					final Element firstBlockquoteElement=(Element)blockquoteNodeList.get(0);  //get a reference to our first element to become a blockquote
 					final Element lastBlockquoteElement=(Element)blockquoteNodeList.get(blockquoteNodeList.size()-1);  //get a reference to our last element to become a blockquote
 					element.insertBefore(blockquoteElement, firstBlockquoteElement); //insert our list right before the first list item
@@ -961,21 +888,17 @@ Debug.trace("finished a blockquote list");
 					{
 						moveNode=nextMoveNode;  //see which node we should move
 						nextMoveNode=moveNode.getNextSibling();  //after we move this node, this is the node we'll move next
-//G***del when works								Node replacementNode=element.removeChild(moveNode); //remove the node from its parent
 						element.removeChild(moveNode); //remove the node from its parent
 						blockquoteElement.appendChild(moveNode); //append the element to the blockquote element
 					}
 					while(moveNode!=lastBlockquoteElement); //keep moving nodes until we've moved the last element
-//G***del; this causes recursion					tidy(blockquoteElement);  //tidy the blockquote element we just created
 				  searchStartNode=element.getFirstChild();  //since we found a blockquote, we should check the child elements again for blockquotes, starting with the first child
 				}
 				else  //if we only found one blockquote, simply rename the single element to a blockquote; we'll need to search again, starting right after that blockquote
 				{
-//G***del Debug.trace("Single blockquote converted.");
 					final Element blockquoteElement=replaceElementNS((Element)blockquoteNodeList.get(0), elementNamespace, ELEMENT_DIV);  //rename the element to "div"
-					blockquoteElement.setAttributeNS(null, "class", "fullIndent");  //G***comment; use constants; what if there already is a class?
+					blockquoteElement.setAttributeNS(null, "class", "fullIndent");  //TODO comment; use constants; what if there already is a class?
 				  searchStartNode=element.getFirstChild();  //since we found a blockquote, we should check the child elements again for blockquotes, starting with the first child
-//G***del				  searchStartNode=blockquoteElement.getNextSibling();  //we'll search the child nodes again, this time starting with the node right after the one node we found last time
 				}
 			}
 		}
@@ -1038,38 +961,27 @@ Debug.trace("finished a blockquote list");
 		int lastAttemptedPageBreakType=Prose.NO_HEADING; //the type of heading that last attempted to make a page break
 		final Document document=element.getOwnerDocument(); //get the owner document of the element
 		final String elementNamespace=element.getNamespaceURI(); //get the element's namespace
-//G***del Debug.trace("element: ", element.getNodeName());  //G***del
-//G***del Debug.trace("element has nodes: ", element.getChildNodes().getLength());  //G***del
-//G***fix		final List headerElementList=new ArrayList(); //we'll put all headers in here
-//G***del		Node childNode=element.getFirstChild(); //get the first child node;
+//TODO fix		final List headerElementList=new ArrayList(); //we'll put all headers in here
 		for(Node childNode=element.getFirstChild(); //get the first child node
 				childNode!=null;  //while we still have child nodes (we'll use getNextSibling() because we may dynamically remove elements
 					//get the next sibling node to check (because we might remove the first node, this will get the first child if the node has been removed)
 				childNode=childNode!=null ? childNode.getNextSibling() : element.getFirstChild())
-//G***del		while(childNode!=null)  //while we still have child nodes (we'll use getNextSibling() because we may dynamically remove elements
-/*G***del when works
+/*TODO del when works
 		final NodeList childNodes=element.getChildNodes();  //get the list of child nodes
 		for(int childIndex=0; childIndex<childNodes.getLength(); ++childIndex) //look at each child node
 */
 		{
-//G***del			final Node childNode=childNodes.item(childIndex);  //get this child node
-//G***del Debug.trace("looking at child node: ", childNode);  //G***del
 				//if this is an element that is not a list item
 			if(childNode.getNodeType()==Node.ELEMENT_NODE && !ELEMENT_LI.equals(childNode.getLocalName()))
 			{
-//G***del System.out.print('.');  //G***change to Debug.info()
 				Element childElement=(Element)childNode;  //get a reference to this element
 				++elementIndex; //show that we're processing another element
 				final String childElementNamespace=childElement.getNamespaceURI(); //get the child element's namespace
 				if(isBlockElement(childElement)) //if this is a block element
 				{
-//G***del					String localName=null;  //if we decide this is a heading, we'll put the local name here
-//G***del					boolean isHeading=false;  //this won't be a heading unless we specifically find out it is
 					final String text=getText(childElement, true).trim(); //get the trimmed text of the element
-//G***del Debug.trace("looking at text: ", text); //G***del
 				  if(Prose.isPageNumber(text))  //if this is a page number
 					{
-//G***del Debug.trace("found page number: ", text);
 						element.removeChild(childElement);  //remove the last page break
 						childElement=lastElement; //go back to the last element we found
 						childNode=lastElement;  //syncrhonize the node and element variables
@@ -1077,30 +989,8 @@ Debug.trace("finished a blockquote list");
 					}
 					boolean isBookTitleHeading=false; //we'll see if this heading is the same as the book title
 					final int headingType=Prose.getHeadingType(text); //see what type of heading this is
-//G***del Debug.trace("found heading type: ", headingType); //G***del
 						//determine the heading level
 					int headingLevel=2; //start out at the default heading level 2
-/*G***del
-					switch(headingType)  //determine the heading level
-					{
-						case PAGE_BREAK_HEADING:  //page break headings don't need heading levels
-							break;
-						case CONTENTS_HEADING:
-							contentsHeadingElement=childElement;  //show that we're processing the table of contents
-						case PREFACE_HEADING:
-						case FOREWORD_HEADING:
-						case BIBLIOGRAPHY_HEADING:
-						case GLOSSARY_HEADING:
-						case INDEX_HEADING:
-						case GOSPEL_HEADING:
-Debug.trace("unordered heading: ", text); //G***del
-//G***fix							localName=ELEMENT_H2; //always use a second-level heading for the known headings
-							break;
-						case NO_HEADING:
-							contentsHeadingElement=null; //turn off processing of contents
-							break;
-						default:  //for all the ordered headings
-*/
 					if(headingType==Prose.CONTENTS_HEADING) //if this is a contents heading
 					{
 						contentsHeadingElement=childElement;  //show that we're processing the table of contents
@@ -1111,7 +1001,6 @@ Debug.trace("unordered heading: ", text); //G***del
 					}
 					else if(headingType>Prose.NO_HEADING)  //if we have a hierarchical heading
 				  {
-Debug.trace("hierarchical heading: ", text); //G***del
 								//see if this heading is the book title
 						if(headingType==Prose.SUB_HEADING || headingType==Prose.TITLE_HEADING)  //if this is a sub-heading or a title heading
 						{
@@ -1120,10 +1009,8 @@ Debug.trace("hierarchical heading: ", text); //G***del
 										Strings.trim(text, PUNCTUATION_CHARS),
 										Strings.trim(getTitle(), PUNCTUATION_CHARS))>=0)
 							{
-Debug.trace("is book title heading"); //G***del
 								headingLevel=2; //use a high level for the title
 								isBookTitleHeading=true;  //show that this is a book title
-//G***del								break;  //don't go through the normal checks for  hierarchical headings
 							}
 						}
 						if(!isBookTitleHeading) //if this is not a book title
@@ -1146,16 +1033,13 @@ Debug.trace("is book title heading"); //G***del
 										++headingLevels[i]; //increase that heading level, as it is above our heading type
 								}
 							}
-	Debug.trace("heading level: ", headingLevel); //G***del
-	//G***del						break;
 						}
 					}
-//G***del					switch(headingType)  //actually process the heading
 				  if(headingType==Prose.PAGE_BREAK_HEADING)
 					{
 						//create a page break element
-						final Element breakElement=childElement.getOwnerDocument().createElementNS(childElementNamespace, "br");  //G***use a constant
-						breakElement.setAttributeNS(null, "class", "significantBreak"); //make this a hard page break G***use constants
+						final Element breakElement=childElement.getOwnerDocument().createElementNS(childElementNamespace, "br");  //TODO use a constant
+						breakElement.setAttributeNS(null, "class", "significantBreak"); //make this a hard page break TODO use constants
 						element.replaceChild(breakElement, childElement);  //replace the child element with our new break element
 						childElement=breakElement;  //show that we're now processing the new break element
 						  //if we're following another hard page break <br/>
@@ -1170,8 +1054,7 @@ Debug.trace("is book title heading"); //G***del
 					}
 					else if(headingType!=Prose.NO_HEADING) //if this is any other type of heading
 					{
-//G***del Debug.trace("found heading: ", text); //G***del
-/*G***fix
+/*TODO fix
 						if(contentsHeadingElement!=null && contentsHeadingElement!=childElement)  //if we're processing the table of contents
 						{
 								//find out how many lines there are
@@ -1179,7 +1062,7 @@ Debug.trace("is book title heading"); //G***del
 
 						}
 						if(contentsHeadingElement==null || contentsHeadingElement==childElement)  //if we're not processing the table of contents, turn this element into a heading normally
-//G***fix						else  //if we're not processing a table of contents, turn this element into a heading normally
+//TODO fix						else  //if we're not processing a table of contents, turn this element into a heading normally
 */
 						{
 							boolean isIndependent=true; //a header must be indepedent of the other text; we'll confirm that this one is
@@ -1189,7 +1072,6 @@ Debug.trace("is book title heading"); //G***del
 								if(lastElementText.length()>0)  //if there was text before us
 								{
 									final char lastChar=lastElementText.charAt(lastElementText.length()-1); //get the last character in the last element's text
-//G***del Debug.trace("Checking last element text: ", lastElementText); //G***del
 										  //check for a heading appearing after a dependent character such as a colon
 									if(DEPENDENT_PUNCTUATION_CHARS.indexOf(lastChar)>=0)  //if this "heading" appears after element ending characters such as a colon, it isn't an independent heading
 										isIndependent=false;  //this heading doesn't stand alone, so discount it as a heading
@@ -1207,46 +1089,29 @@ Debug.trace("is book title heading"); //G***del
 							}
 							if(isIndependent) //if this heading is independent
 							{
-								final String localName="h"+headingLevel;  //G***fix
-								childElement=replaceElementNS(childElement, childElementNamespace, localName);  //rename the element to to a heading G***fix the namespace here
+								final String localName="h"+headingLevel;  //TODO fix
+								childElement=replaceElementNS(childElement, childElementNamespace, localName);  //rename the element to to a heading TODO fix the namespace here
 								  //see if the last page break was a fixed heading
-								final boolean isLastPageBreakHeadingFixed=/*G***del lastPageBreakElement==lastElement && */lastPageBreakType<0;
+								final boolean isLastPageBreakHeadingFixed=lastPageBreakType<0;
 									//see if we should do a page break
 									//second-level headings always get page breaks, as do chapter
 									//  headings or a heading that falls directly under a larger
 									//  division (i.e. if there have been no chapter heading)
-//G***del when works								if(headingLevel==2 || headingType==CHAPTER_HEADING || headingLevels[CHAPTER_HEADING]<0)
+//TODO del when works								if(headingLevel==2 || headingType==CHAPTER_HEADING || headingLevels[CHAPTER_HEADING]<0)
 								if(headingLevel==2 || headingType<=Prose.MAX_SIGNIFICANT_HEADING || headingLevels[Prose.CHAPTER_HEADING]<0)
 								{
-/*G***debug
-Debug.trace("we want to page break for text: ", text);  //G***del
-Debug.trace("last element was a page break: "+(lastElement==lastPageBreakElement)); //G***del
-Debug.trace("this heading type: ", headingType);  //G***del
-Debug.trace("page break heading type: ", lastPageBreakType);  //G***del
-Debug.trace("last element was attempted page break? "+(lastElement==lastAttemptedPageBreakElement));  //G***del
-Debug.trace("is higher heading than last attempted page break? "+(headingType<lastAttemptedPageBreakType));  //G***del
-Debug.trace("is last page break heading fixed? "+isLastPageBreakHeadingFixed);  //G***del
-Debug.trace("more than one element since last attempted page break? "+(elementIndex>lastAttemptedPageBreakElementIndex+2)); //G***del
-*/
 										//don't allow two page breaks to follow one another unless
 										//  this one is a higher heading (i.e. a lower number) than
 										//  the last or the last was a hard page break heading
 										//  element (<br/>), in which case mark that last element
 										//  for removal; book title headings always get page breaks
-/*G***del
-										; also allow breaks from a fixed heading
-										//  if one or more non-headings have passed since the last
-										//  attempted page break
-*/
 									if(lastElement!=lastAttemptedPageBreakElement
 										  || headingType<lastAttemptedPageBreakType
 											|| lastAttemptedPageBreakType==Prose.PAGE_BREAK_HEADING
 											|| isBookTitleHeading)
-//G***Del if not needed											|| (isLastPageBreakHeadingFixed && elementIndex>lastAttemptedPageBreakElementIndex+2))
-//G***fix											|| lastPageBreakType<0) //G***testing
+//TODO del if not needed											|| (isLastPageBreakHeadingFixed && elementIndex>lastAttemptedPageBreakElementIndex+2))
+//TODO fix											|| lastPageBreakType<0) //TODO testing
 									{
-Debug.trace("subsequent page break pass");  //G***del
-//G***del System.out.println("current spacing: "+(elementIndex-lastPageBreakElementIndex)); //G***del
 										//only allow page breaks if there is more than one element between the page breaks,
 										//  or if there have been no page breaks, or if the last page
 										//  break was a fixed heading (such as the table of contents)
@@ -1258,7 +1123,7 @@ Debug.trace("subsequent page break pass");  //G***del
 												//don't even break pages on the first element
 											if(headingLevel<4 && elementIndex>0)
 											{
-												childElement.setAttributeNS(null, "class", "significantHeading"); //make this a chapter heading elemeng G***use constants
+												childElement.setAttributeNS(null, "class", "significantHeading"); //make this a chapter heading elemeng TODO use constants
 												lastPageBreakElement=childElement;  //show that we made a page break
 												lastPageBreakElementIndex=elementIndex; //show at what index we made a page break
 												lastPageBreakType=headingType;  //show what type of heading we used
@@ -1268,7 +1133,7 @@ Debug.trace("subsequent page break pass");  //G***del
 										}
 									}
 								}
-//G***fix								if(lastElement!=lastPageBreakElement || lastPageBreakType>0)  //G***testing
+//TODO fix								if(lastElement!=lastPageBreakElement || lastPageBreakType>0)  //TODO testing
 								{
 									lastAttemptedPageBreakElement=childElement;  //always show that we wanted to make a page break, even if we didn't
 		  						lastAttemptedPageBreakElementIndex=elementIndex; //show at what index we wanted to make a page break
@@ -1277,7 +1142,7 @@ Debug.trace("subsequent page break pass");  //G***del
 							}
 						}
 					}
-/*G***del; this doesn't seem to skip blank paragraphs as it was supposed to
+/*TODO del; this doesn't seem to skip blank paragraphs as it was supposed to
 				  if(text.length()>0) //if we had text for this element, we'll count this as our last element
 						lastElement=childElement; //show that this is the last element we found
 */
@@ -1285,20 +1150,8 @@ Debug.trace("subsequent page break pass");  //G***del
 				lastElement=childElement; //show that this is the last element we found
 				childNode=childElement; //make sure the child node is syncrhonized with the element we're on, in case we've replaced one
 			}
-//G***del			childNode=childNode.getNextSibling(); //get the next sibling node to check
 		}
 	}
-
-	/**Checks to see if this element has any block element children.
-	@param The element the children of which should be checked.
-
-	*/
-/*G***del; not needed
-	protected boolean hasBlockElementChildren(final Element element)
-	{
-
-	}
-*/
 
 	/**Tidies an element of an XHTML document. This method may, if needed, replace
 		the element with one or more elements.
@@ -1308,36 +1161,28 @@ Debug.trace("subsequent page break pass");  //G***del
 	*/
 	protected Element tidyElement(Element element)
 	{
-//G***del Debug.trace("Looking at element: ", element.getNodeName());
-		element=tidyClassAttribute(element); //tidy class-related attributes, reassigning the element in case it was replaced G***maybe move to tidyAttiributes()
+		element=tidyClassAttribute(element); //tidy class-related attributes, reassigning the element in case it was replaced TODO maybe move to tidyAttiributes()
 		element=checkRenameElement(element);  //rename the element if we need to
-//G***del when works; moved to tidyAttributes()					removeStyleAttribute(element);  //remove the style attribute, if it's present
 		int removedChildCount;  //this will hold the number of child nodes we remove on each iteration
-//G***del Debug.trace("try to remove children");
-
 		do  //sometimes removing a child will make a child we've already examined ripe for removal, so check several times
 		{
-//G***del Debug.trace("removing elements");
 			element.normalize();  //normalize the element to combine all adjacent text nodes
 			removedChildCount=removeUnknownElements(element); //remove unknown child elements from the element
 		}
 		while(removedChildCount>0);  //keep calling the function until we can remove no more child nodes
-//G***del Debug.trace("children removed");
-		final String elementName=element.getNodeName(); //get the element's name G***fix for namespaces
+		final String elementName=element.getNodeName(); //get the element's name TODO fix for namespaces
 		final String elementNamespace=element.getNamespaceURI(); //get the element's namespace
 		final Node parentNode=element.getParentNode();  //get the element's parent node
-//G***del Debug.trace("checking applet");
-		if(elementName.equals(ELEMENT_APPLET))  //if this is the applet element, replace it with an object element G***use namespaces here
+		if(elementName.equals(ELEMENT_APPLET))  //if this is the applet element, replace it with an object element TODO use namespaces here
 		{
 			final Element objectElement=createAppletObjectElement(element); //convert the applet element to an object element
 			parentNode.replaceChild(objectElement, element); //replace the applet element with the object element
 		}
-		else if(elementName.equals(ELEMENT_IMG))  //if this is the img element, replace it with an object element G***use namespaces here
+		else if(elementName.equals(ELEMENT_IMG))  //if this is the img element, replace it with an object element TODO use namespaces here
 		{
 			final Element objectElement=createImageObjectElement(element); //convert the img element to an object element
 			parentNode.replaceChild(objectElement, element); //replace the img element with the object element
 		}
-//G***del Debug.trace("Checking for block text");
 			//if this is a block text container, trim beginning whitespace
 		if(isBlockElement(element) &&   //if this is a block element that either is meant to be a text container or has no block child elements
 				(isTextContainer(element) || getChildBlockElementCount(element)==0))
@@ -1346,8 +1191,6 @@ Debug.trace("subsequent page break pass");  //G***del
 			final Text textNode=(Text)getFirstNode(element, NodeFilter.SHOW_TEXT); //get the first text node in the element
 			if(textNode!=null)  //if we found a text node
 			{
-//G***del Debug.trace("Found text node for element: ", elementName); //G***del
-//G***del Debug.trace("Text data: ", textNode.getData()); //G***del
 				//trim all beginning whitespace from the text node
 				textNode.setData(Strings.trimWhitespaceNoBreakBeginning(textNode.getData()));
 			}
@@ -1364,7 +1207,7 @@ Debug.trace("subsequent page break pass");  //G***del
 	*/
 	protected Element checkRenameElement(Element element)
 	{
-		final String elementName=element.getNodeName(); //get the element's name G***fix for namespaces
+		final String elementName=element.getNodeName(); //get the element's name TODO fix for namespaces
 		if(isConvertUnderlineItalics()) //if we should replace underline tags with italics tags
 		{
 			if(elementName.equals(ELEMENT_U)) //if this is the underline element
@@ -1395,7 +1238,7 @@ Debug.trace("Checking break element: ", element.getNodeName());
 			for(int i=0; i<childNodeCount; ++i) //look at each of the child nodes
 			{
 				final Node childNode=childNodeList.item(i); //get a reference to this node
-					//if this node is a <br> element G***fix for namespaces
+					//if this node is a <br> element TODO fix for namespaces
 				if(childNode.getNodeType()==childNode.ELEMENT_NODE && childNode.getNodeName().equals(ELEMENT_BR))
 				{
 					breakIndexes[breakCount++]=i;  //store this break index in our array, and show that we found one more break element
@@ -1405,26 +1248,21 @@ Debug.trace("Checking break element: ", element.getNodeName());
 			{
 				final Document document=element.getOwnerDocument(); //get the owner document
 				final String namespaceURI=element.getNamespaceURI();  //get the element's namespace URI
-//G***del Debug.trace("Found breaks: ", breakCount);
-//G***del XMLUtilities.printTree(element, Debug.getOutput());  //G***del
 				if(breakIndexes[breakCount-1]<childNodeCount-1) //if the last break element is not the last element, there is still content after that last break element
 					breakIndexes[breakCount++]=childNodeCount;  //create a fake break that comes just after the content, so we'll be sure and get the content after the last real break element
-//G***del Debug.trace("New break count: ", breakCount);
 				final Element[] fragmentElementArray=new Element[breakCount];  //we'll create several clones and remove content from each of them
 				int lastBreakIndex=-1; //show that we haven't had a break, yet
 				int fragmentCount=0;  //there may actually be less fragments than breaks, because there may be no content between some breaks
 				for(int i=0; i<breakCount; ++i) //create each of the broken elements
 				{
-//G***del Debug.trace("last break index: ", lastBreakIndex);
-	//G***fix				fragmentElementArray[i]=element.;
+	//TODO fix				fragmentElementArray[i]=element.;
 					final int nextBreakIndex=breakIndexes[i]; //find out the index of the break at the end of this content
-//G***del Debug.trace("next break index: ", nextBreakIndex);
 				  if(nextBreakIndex>0 && nextBreakIndex>lastBreakIndex) //if there is actually content between these two breaks, and the break isn't at the first of the content
 					{
 						final Element fragmentElement=(Element)element.cloneNode(true);  //create a deep clone of the element
-/*G***del, maybe
+/*TODO del, maybe
 						final Element fragmentElement=document.createElementNS(namespaceURI, ELEMENT_DIV);	//create the new div element
-						//G***important: have a function here for appending cloned attributes
+						//TODO important: have a function here for appending cloned attributes
 						XMLUtilities.appendClonedChildNodes(fragmentElement, element, true);  //deep-clone the child nodes of the element and add them to the new fragment element
 */
 						if(childNodeCount>nextBreakIndex) //if there is content after the fragment
@@ -1459,32 +1297,27 @@ Debug.trace("Checking break element: ", element.getNodeName());
 	*/
 	protected static void tidyAttributes(final Element element)
 	{
-//G***del Debug.trace("XHTMLTider.tidyAttributes() element: "+element.getNodeName());
 		tidyStyleAttribute(element);  //tidy the style attribute, if it's present
 			//change any "lang" attribute to "xml:lang"
 		if(element.hasAttributeNS(null, XHTML.ATTRIBUTE_LANG))  //if there is a lang attribute defined
 		{
 			final String langValue=element.getAttributeNS(null, XHTML.ATTRIBUTE_LANG);  //get the lang attribute value
-//G***del 	Debug.trace("found name value: "+nameValue);
-			if(!element.hasAttributeNS(XML_NAMESPACE_URI.toString(), XMLUtilities.ATTRIBUTE_LANG)) //if there is no xml:lang attribute G***use a constant, use namespaces
+			if(!element.hasAttributeNS(XML_NAMESPACE_URI.toString(), XML.ATTRIBUTE_LANG)) //if there is no xml:lang attribute TODO use a constant, use namespaces
 			{
-//G***del 	Debug.trace("no name attribute, though; moving name to id");
-					//create an xml:lang attribute with the value of the lang attribute G***use a constant here, use namespaces
-				element.setAttributeNS(XML_NAMESPACE_URI.toString(), createQualifiedName(XML_NAMESPACE_PREFIX, XMLUtilities.ATTRIBUTE_LANG), langValue);  
+					//create an xml:lang attribute with the value of the lang attribute TODO use a constant here, use namespaces
+				element.setAttributeNS(XML_NAMESPACE_URI.toString(), createQualifiedName(XML_NAMESPACE_PREFIX, XML.ATTRIBUTE_LANG), langValue);  
 				element.removeAttributeNS(null, XHTML.ATTRIBUTE_LANG);  //remove the lang attribute
 			}
 		}
-		final String elementName=element.getNodeName(); //get the element's name G***make this namespace aware
+		final String elementName=element.getNodeName(); //get the element's name TODO make this namespace aware
 		if(!elementName.equals(ELEMENT_PARAM))  //if this isn't a param element
 		{
 				//change any "name" attribute to "id"
 		  if(element.hasAttributeNS(null, ATTRIBUTE_NAME))  //if there is a name attribute defined
 			{
 				final String nameValue=element.getAttributeNS(null, ATTRIBUTE_NAME);  //get the name attribute value
-//G***del 	Debug.trace("found name value: "+nameValue);
 				if(!element.hasAttributeNS(null, ATTRIBUTE_ID)) //if there is no ID attribute
 				{
-//G***del 	Debug.trace("no name attribute, though; moving name to id");
 					element.setAttributeNS(null, ATTRIBUTE_ID, nameValue);  //create a name attribute with the value of the name attribute
 					element.removeAttributeNS(null, ATTRIBUTE_NAME);  //remove the name attribute
 				}
@@ -1492,40 +1325,27 @@ Debug.trace("Checking break element: ", element.getNodeName());
 		}
 		if(ELEMENT_HTML.equals(elementName))  //if this is the HTML element
 		{
-
-				//G***replace this with an XMLUtilities method which removes the attributes
+				//TODO replace this with an XMLUtilities method which removes the attributes
 		  final NamedNodeMap nodeMap=element.getAttributes(); //get a map of the attributes
 			while(nodeMap.getLength()>0)  //while there are more nodes to remove
 			{
 				final Node lastNode=nodeMap.item(nodeMap.getLength()-1);  //get a reference to the last node
 				nodeMap.removeNamedItemNS(lastNode.getNamespaceURI(), lastNode.getLocalName()); //remove the last node
 			}
-
-//G***del		  (com.garretwilson.text.xml.XMLNamedNodeMap)element.getAttributes().getC
-
-/*G***del
-				//G***important: this will *not* work after replaceElementNS() clones attributes, as it should do now
-			if(element.getAttributes().getLength()>0) //if there are attributes
-			{
-				replaceElementNS(element, element.getNamespaceURI(), element.getLocalName());  //remove the attributes G***fix
-			}
-				//G***replace all this with a removeAllAttribute(), which calls removeAllChildren(attributeMap) or something
-*/
-
 		}
 	}
 
-	/**Tidies the style attribute from an element, if it's present. G***rename, perhaps, to tidyStyle()
+	/**Tidies the style attribute from an element, if it's present.
 		If the style element specifies the "Symbol" font family, the immediate child
 		text nodes are converted from the Symbol encoding to Unicode.
 	@param element The element to be checked for a style attribute.
 	*/
-	protected static void tidyStyleAttribute(final Element element)
+	protected static void tidyStyleAttribute(final Element element)	//TODO rename, perhaps, to tidyStyle()
 	{
 		if(element.hasAttributeNS(null, ATTRIBUTE_STYLE)) //if this element has a style attribute
 		{
-			/*G***bring back final */String styleValue=element.getAttributeNS(null, ATTRIBUTE_STYLE); //get the value of the style attribute
-			if(Strings.indexOfIgnoreCase(styleValue, "symbol")>=0)  //if the word "symbol" is found in the style, assume it is the symbol font G***actually parse the style
+			/*TODO bring back final */String styleValue=element.getAttributeNS(null, ATTRIBUTE_STYLE); //get the value of the style attribute
+			if(Strings.indexOfIgnoreCase(styleValue, "symbol")>=0)  //if the word "symbol" is found in the style, assume it is the symbol font TODO actually parse the style
 			{
 				final NodeList childNodeList=element.getChildNodes(); //get a list of the child nodes
 				final int childNodeCount=childNodeList.getLength(); //see how many child nodes there are
@@ -1540,24 +1360,24 @@ Debug.trace("Checking break element: ", element.getNodeName());
 						textNode.setData(dataStringBuffer.toString());  //update the text node's data
 					}
 				}
-element.removeAttributeNS(null, ATTRIBUTE_STYLE); //remove the style attribute G***this is a hack, to accommodate for symbol elements that have non-symbol nested spans the text of which will be promosted; fix by only removing the font style on this line
-styleValue="";  //G***fix
+element.removeAttributeNS(null, ATTRIBUTE_STYLE); //remove the style attribute TODO this is a hack, to accommodate for symbol elements that have non-symbol nested spans the text of which will be promosted; fix by only removing the font style on this line
+styleValue="";  //TODO fix
 			}
-//G***del			try
+//TODO del			try
 			{
 				if(styleValue.length()!=0)  //if there is a style value
 				{
 
-						//G***move all of this to tidy text or something
-					final XMLCSSStyleDeclaration oldStyle=(XMLCSSStyleDeclaration)XHTML.getLocalStyle(element); //get the element's style G***later remove the cast when XMLCSSStyleDeclaration implements CSS2Properties
-/*G***del when works
-							//G***change to XHTMLUtilities.getLocalStyle()
-					final XMLCSSProcessor cssProcessor=new XMLCSSProcessor();	//create a new CSS processor G***make one for the entire tidier object -- don't create it locally
+						//TODO move all of this to tidy text or something
+					final XMLCSSStyleDeclaration oldStyle=(XMLCSSStyleDeclaration)XHTML.getLocalStyle(element); //get the element's style TODO later remove the cast when XMLCSSStyleDeclaration implements CSS2Properties
+/*TODO del when works
+							//TODO change to XHTMLUtilities.getLocalStyle()
+					final XMLCSSProcessor cssProcessor=new XMLCSSProcessor();	//create a new CSS processor TODO make one for the entire tidier object -- don't create it locally
 					final XMLCSSStyleDeclaration oldStyle=new XMLCSSStyleDeclaration(); //create a new style declaration
-					final ParseReader styleReader=new ParseReader(styleValue, "Element "+element.getNodeName()+" Local Style");	//create a string reader from the value of this local style attribute G***i18n
+					final ParseReader styleReader=new ParseReader(styleValue, "Element "+element.getNodeName()+" Local Style");	//create a string reader from the value of this local style attribute TODO i18n
 					cssProcessor.parseRuleSet(styleReader, oldStyle); //read the style into our style declaration
 */
-					//G***check for parseRuleSet() return value
+					//TODO check for parseRuleSet() return value
 					final String textTransform=oldStyle.getTextTransform(); //see if there is a text transform request
 					if(textTransform.length()>0)  //if a text transformation was requested
 					{
@@ -1571,30 +1391,26 @@ styleValue="";  //G***fix
 								if(childNode.getNodeType()==Node.TEXT_NODE) //if this is a text node
 								{
 									final Text textNode=(Text)childNode; //cast the node to a text node
-									textNode.setData(textNode.getData().toUpperCase()); //convert the text to uppercase G***check locale; all this should be done better
+									textNode.setData(textNode.getData().toUpperCase()); //convert the text to uppercase TODO check locale; all this should be done better
 								}
 							}
 						}
 					}
-
-//G***del Debug.trace("old style: "+oldStyle.getCssText());  //G***del
 					final XMLCSSStyleDeclaration newStyle=new XMLCSSStyleDeclaration(); //create a new style declaration to received the tidied styles
-						//G***automate this style copying
+						//TODO automate this style copying
 				  final CSSValue backgroundColorValue=oldStyle.getPropertyCSSValue(CSS_PROP_BACKGROUND_COLOR);
 				  if(backgroundColorValue!=null) //if we have a background set
 						newStyle.setPropertyCSSValue(CSS_PROP_BACKGROUND_COLOR, backgroundColorValue);
 				  final CSSValue listStyleTypeValue=oldStyle.getPropertyCSSValue(CSS_PROP_LIST_STYLE_TYPE);
 				  if(listStyleTypeValue!=null) //if we have a list style type set
 						newStyle.setPropertyCSSValue(CSS_PROP_LIST_STYLE_TYPE, listStyleTypeValue);
-//G***bring over other style properties
+//TODO bring over other style properties
 
-//G***fix
-	/*G***fix
-					((XMLElement)element).setLocalCSSStyle(style);  //set the element's style to whatever we constructed G***eventually use a separate style tree instead of the element itself
+	/*TODO fix
+					((XMLElement)element).setLocalCSSStyle(style);  //set the element's style to whatever we constructed TODO eventually use a separate style tree instead of the element itself
 	*/
-/*G***fix; remove at a later stage in the process
+/*TODO fix; remove at a later stage in the process
 				  final String newStyleValue=newStyle.getCssText().trim(); //get the new style
-Debug.trace("new style: "+newStyle.getCssText());  //G***del
 					if(newStyleValue.length()>0)  //if we carried any styles over
 						element.setAttributeNS(null, ATTRIBUTE_STYLE, newStyleValue); //change the style to match our new style
 					else  //if we didn't carry any styles over
@@ -1602,13 +1418,13 @@ Debug.trace("new style: "+newStyle.getCssText());  //G***del
 */
 				}
 			}
-/*G***del
+/*TODO del
 			catch(IOException e)
 			{
-				Debug.error(e); //G***do something better here
+				Debug.error(e); //TODO do something better here
 			}
 */
-//G***del when works			element.removeAttributeNS(null, ATTRIBUTE_STYLE); //remove the style attribute
+//TODO del when works			element.removeAttributeNS(null, ATTRIBUTE_STYLE); //remove the style attribute
 		}
 	}
 
@@ -1618,13 +1434,13 @@ Debug.trace("new style: "+newStyle.getCssText());  //G***del
 		replacement.
 	@param element The element to tidy class-related attributes.
 	@return The resulting element, either the same element or its replacement.
-	*/  //G***document the element name normalization in the file header comments
+	*/  //TODO document the element name normalization in the file header comments
 	protected Element tidyClassAttribute(Element element)
 	{
 		final String classValue=getDefinedAttributeNS(element, null, ATTRIBUTE_CLASS);  //get the class attribute if it is defined
 		if(classValue!=null)  //if there is a class defined
 		{
-			final String elementName=element.getNodeName(); //get the element's name G***fix for namespaces
+			final String elementName=element.getNodeName(); //get the element's name TODO fix for namespaces
 		  if(classValue.trim().equalsIgnoreCase(elementName)) //if the class name and the element name are identical
 				element.removeAttributeNS(null, ATTRIBUTE_CLASS);   //remove the class attribute
 			else if(isNormalizeStyleClasses())  //if we should normalize style classes
@@ -1648,10 +1464,10 @@ Debug.trace("new style: "+newStyle.getCssText());  //G***del
 					else if(classValue.equals(MSO_CAPTION_CLASS)) //or if this is the "MsoCaption" class
 						element.setAttributeNS(null, ATTRIBUTE_CLASS, CAPTION_CLASS); //change the class value to "caption"
 					else if(classValue.equals(MSO_BODY_TEXT_INDENT_CLASS) //if this is the "MsoBodyTextIndent" class
-							|| classValue.equals(MSO_BLOCK_TEXT_CLASS)) //or if this is the "MsoBlockText" class G***maybe do something more intelligent with this class
+							|| classValue.equals(MSO_BLOCK_TEXT_CLASS)) //or if this is the "MsoBlockText" class TODO maybe do something more intelligent with this class
 					{
 						element.removeAttributeNS(null, ATTRIBUTE_CLASS);   //remove the class attribute
-							//replace the element with a blockquote element and return it G***only turn some of these into blockquotes; for others, use div class="fullIndent"
+							//replace the element with a blockquote element and return it TODO only turn some of these into blockquotes; for others, use div class="fullIndent"
 						return replaceElementNS(element, element.getNamespaceURI(), ELEMENT_BLOCKQUOTE);
 					}
 					else if(classValue.equals(MSO_TITLE_CLASS)) //or if this is the "MsoTitle" class
@@ -1669,30 +1485,7 @@ Debug.trace("new style: "+newStyle.getCssText());  //G***del
 		return element; //return the element that we may have modified, and that might be a replacement
 	}
 
-	/**Tidies an element which is assumed to hold image information (i.e. this
-		is either an "img" or "object" element. The image is loaded and the width
-		and height attributes are updated.
-	@param element The element which contains image information.
-	@return The resulting element, either the same element or its replacement.
-	*/
-/*G***del; there's really no way to find the document base through DOM, and we probably don't want to
-	protected static void tidyImageElement(final Element element)
-	{
-//G***check the properties to see if we should tidy image dimensions
-			//get the reference to the image G***fix for namespace; currently this takes any namespace
-		final String href=XHTMLUtilities.getImageElementHRef(element.getNamespaceURI(), element);
-		if(href!=null)  //if there is a reference to an image
-		{
-			final Toolkit toolkit=Toolkit.getDefaultToolkit(); //get the default toolkit
-			final Image image=toolkit.createImage(resourceURL);  //G***testing
-//G***del when works				ImageUtilities.loadImage(image);  //load the image
-		  ImageUtilities.loadImage()
-						gatherReference(publication, href);  //gather a reference to this image
-						continue; //continue with the next item
-					}
-*/
-
-//G***comment calls to enclosing characters tidying, and how splitting results in more nodes to the right that will eventually get processed
+//TODO comment calls to enclosing characters tidying, and how splitting results in more nodes to the right that will eventually get processed
 
 	/**Tidies a text node.
 	@param textNode The text node to be tidied. The node should have a valid
@@ -1702,33 +1495,33 @@ Debug.trace("new style: "+newStyle.getCssText());  //G***del
 	{
 		boolean modified=false; //show that we haven't yet modified the text
 		String data=textNode.getData(); //get the data from the text node
-/*G***fix or del
+/*TODO fix or del
 		final Node parentNode=textNode.getParentNode();  //get the parent node
 		if(parentNode.getNodeType()==parentNode.ELEMENT_NODE) //if the parent node is an element (it always should be)
 		{
-			final Element parentElement=(Element)parentNode;  //cast the parent node to an element G***fix all of this with methods that query a style up the chain
+			final Element parentElement=(Element)parentNode;  //cast the parent node to an element TODO fix all of this with methods that query a style up the chain
 			final String styleValue=parentElement.getAttributeNS(null, ATTRIBUTE_STYLE); //get the value of the style attribute
 			if(styleValue!=null)  //if the parent element has a style attribute
 			{
 				try
 				{
-					final XMLCSSProcessor cssProcessor=new XMLCSSProcessor();	//create a new CSS processor G***make one for the entire tidier object -- don't create it locally
+					final XMLCSSProcessor cssProcessor=new XMLCSSProcessor();	//create a new CSS processor TODO make one for the entire tidier object -- don't create it locally
 					final XMLCSSStyleDeclaration style=new XMLCSSStyleDeclaration(); //create a new style declaration
-					final ParseReader styleReader=new ParseReader(styleValue, "Element "+parentElement.getNodeName()+" Local Style");	//create a string reader from the value of this local style attribute G***i18n
+					final ParseReader styleReader=new ParseReader(styleValue, "Element "+parentElement.getNodeName()+" Local Style");	//create a string reader from the value of this local style attribute TODO i18n
 					cssProcessor.parseRuleSet(styleReader, style); //read the style into our style declaration
 					final String textTransform=style.getTextTransform(); //see if there is a text transform request
 					if(textTransform.length()>0)  //if a text transformation was requested
 					{
 						if(CSS_TEXT_TRANSFORM_UPPERCASE.equals(textTransform)); //if we should transform the text to uppercase
 						{
-							data=data.toUpperCase();  //convert the text to uppercase G***fix for locale
+							data=data.toUpperCase();  //convert the text to uppercase TODO fix for locale
 							modified=true;  //show that we modified the text
 						}
 					}
 				}
 				catch(IOException e)
 				{
-					Debug.error(e); //G***do something better here
+					Debug.error(e); //TODO do something better here
 				}
 			}
 		}
@@ -1738,39 +1531,29 @@ Debug.trace("new style: "+newStyle.getCssText());  //G***del
 		{
 			modified=true;  //show that we modified the text
 		}
-		if(modified)  //if we modified the text //G***tidy; combine blocks
+		if(modified)  //if we modified the text //TODO tidy; combine blocks
 		{
 			data=dataStringBuffer.toString(); //convert the text back to a string
 			textNode.setData(data);  //update the text node's data
 		}
-//G***del Debug.trace("ready to tidy enclosing delimiters for text: ", textNode.getData()); //G***del
-//G***del Debug.trace("text node has parent: ", textNode.getParentNode()); //G***del
-//G***del XMLUtilities.printTree(textNode.getParentNode(), Debug.getOutput()); //G***del
 			//turn "_..._" into an emphasized element
-		textNode=tidyEnclosingDelimiters(textNode, '_', textNode.getParentNode().getNamespaceURI(), "em");  //G***use a constant
+		textNode=tidyEnclosingDelimiters(textNode, '_', textNode.getParentNode().getNamespaceURI(), "em");  //TODO use a constant
 			//turn "^...^" into an emphasized element
-		textNode=tidyEnclosingDelimiters(textNode, '^', textNode.getParentNode().getNamespaceURI(), "em");  //G***testing; eventually change to small caps; use a constant
+		textNode=tidyEnclosingDelimiters(textNode, '^', textNode.getParentNode().getNamespaceURI(), "em");  //TODO testing; eventually change to small caps; use a constant
 			//turn "~...~" into an emphasized element
-		textNode=tidyEnclosingDelimiters(textNode, '~', textNode.getParentNode().getNamespaceURI(), "em");  //G***use a constant
+		textNode=tidyEnclosingDelimiters(textNode, '~', textNode.getParentNode().getNamespaceURI(), "em");  //TODO use a constant
 	}
 
-
-	//G***comment
+	//TODO comment
 	protected static Text tidyEnclosingDelimiters(final Text textNode, final char delimiter, final String namespaceURI, final String qname)
 	{
 		final String data=textNode.getData(); //get the text data
-//G***del Debug.trace("tidying enclosing delimiters for text: ", data); //G***del
 		int startIndex=0; //we'll start looking at the first of the text
 		while(startIndex>=0)  //while we haven't ran out of characters
 		{
 			startIndex=data.indexOf(delimiter, startIndex); //find the next possible starting location
 			if(startIndex>=0)  //if we found the delimiter
 			{
-/*G***del
-Debug.trace("possibly matches: ", startIndex);  //G***del
-if(startIndex<data.length()-1)  //G***del
-	Debug.trace("character after is whitespace: "+CharacterUtilities.isWhitespace(data.charAt(startIndex+1)));  //G***del
-*/
 					//if it's either at the start of the string or preceded by whitespace or punctuation
 				if((startIndex==0 ||
 							(Characters.isWordDelimiter(data.charAt(startIndex-1))
@@ -1779,29 +1562,21 @@ if(startIndex<data.length()-1)  //G***del
 						&& !Characters.isWhitespace(data.charAt(startIndex+1))  //that is not whitespace
 						&& data.charAt(startIndex+1)!=delimiter)  //or the delimiter itself
 				{
-Debug.trace("found enclosing start inside: ", data);  //G***del
-Debug.trace("found enclosing start at index: ", startIndex);  //G***del
 					int endIndex=data.indexOf(delimiter, startIndex+1); //try to find the rightmost character
-//G***del Debug.trace("start matches, endIndex: ", endIndex);  //G***del
 					if(endIndex>startIndex+1  //if there is at least one character between the delimiters
 								//and the rightmost delimiter does not come after whitespace
 						 && !Characters.isWhitespace(data.charAt(endIndex-1)))
 					{
-//G***del Debug.trace("ready to split text from: ", startIndex);  //G***del
-//G***del Debug.trace("ready to split text to: ", endIndex);  //G***del
 						textNode.deleteData(endIndex, 1); //remove the ending delimiter, leaving the ending index directly after the string
 						textNode.deleteData(startIndex, 1); //remove the starting delimiter, leaving the starting index at the start of the string
 						--endIndex; //decrement the ending index to compensate for removing the starting delimiter
 						final Element parentElement=(Element)textNode.getParentNode();  //get the parent of the text node
 							//split the selected text into a separate text node
 						final Text splitTextNode=splitText(textNode, startIndex, endIndex);
-//G***del Debug.trace("finished splitting node: ", splitTextNode.getData());
 							//create an element to wrap the characters
 						final Element element=textNode.getOwnerDocument().createElementNS(namespaceURI, qname);
 						parentElement.replaceChild(element, splitTextNode); //replace the split text node with the new element
 						element.appendChild(splitTextNode); //set the child node as a child of the new element
-//G***del XMLUtilities.printTree(parentElement, Debug.getOutput()); //G***del
-
 						final Text firstTextNode; //we'll determine the first text node in our new split
 						if(startIndex>0)  //if the split resulted in a text node being created before the split text
 							firstTextNode=(Text)element.getPreviousSibling();  //there's a text node that appears before the split text node; return it
@@ -1823,7 +1598,7 @@ Debug.trace("found enclosing start at index: ", startIndex);  //G***del
 			<li>The runs "--", "---", and "----" are each replaced with an em-dash.</li>
 		  <li>The run "''" (subsequent apostrophes) is replaced with a quote character.</li>
 		  <li>The run "``" (subsequent grave accents) is replaced with a quote character.</li>
-//G***fix		  <li>Grave accents following spaces are converted to apostrophes.</li>
+//TODO fix		  <li>Grave accents following spaces are converted to apostrophes.</li>
 		</ul>
 	@param stringBuffer The buffer containing the text data to tidy.
 	@return <code>true</code> if the data was changed, <code>false</code> if the
@@ -1833,7 +1608,7 @@ Debug.trace("found enclosing start at index: ", startIndex);  //G***del
 	{
 			//make the necessary replacements and make a note of how many replacements were made
 		final int replacementCount=StringBuffers.replace(stringBuffer, CHARACTER_MATCH_REPLACE_SET_ARRAY);
-/*G***fix
+/*TODO fix
 					final String textTransform=oldStyle.getTextTransform(); //see if there is a text transform request
 					if(textTransform.length()>0)  //if a text transformation was requested
 					{
@@ -1851,16 +1626,16 @@ Debug.trace("found enclosing start at index: ", startIndex);  //G***del
 		StringBuffers.replaceRuns(stringBuffer, GRAVE_ACCENT_CHAR, 2, 2, QUOTATION_MARK_CHAR);
 		if(stringBuffer.length()!=originalLength) //if replacing runs changed the length of the string buffer
 			modified=true;  //something was modified
-/*G***this needs to be thought through more---what about at the end of a word? should we replace all of them?
-				//convert grave accents following whitespace to apostrophes G***use a common routine to do this
+/*TODO this needs to be thought through more---what about at the end of a word? should we replace all of them?
+				//convert grave accents following whitespace to apostrophes TODO use a common routine to do this
 		for(int i=stringBuffer.lengt()-1; i>=0; --i)  //look at each character in the string buffer
 */
-/*G***fix for option only
+/*TODO fix for option only
 		if(tidyUnicode) //if we should convert some Unicode characters to their plain equivalents
 		{
-			//G***optimize; make static somewhere else; make more readable representation
+			//TODO optimize; make static somewhere else; make more readable representation
 			final String unicodeCharacters=""+LEFT_SINGLE_QUOTE+RIGHT_SINGLE_QUOTE+LEFT_DOUBLE_QUOTE+RIGHT_DOUBLE_QUOTE+N_DASH+M_DASH+TRADEMARK;  //characters which will be replaced
-			final String[] replacementStrings=new String[]{"'", "'", "\"", "\"", "-", "--", "(TM)"};  //replacement strings for the Unicode characters G***use constants here
+			final String[] replacementStrings=new String[]{"'", "'", "\"", "\"", "-", "--", "(TM)"};  //replacement strings for the Unicode characters TODO use constants here
 			final StringBuffer tidyStringBuffer=new StringBuffer(stringBuffer.toString());  //create a new string buffer with the contents of the first
 			stringBuffer.delete(0, length);  //remove all the characters in the original string buffer
 			for(int i=0; i<length; ++i) //look at each character in the string buffer
@@ -1878,7 +1653,7 @@ Debug.trace("found enclosing start at index: ", startIndex);  //G***del
 		}
 */
 		return modified;  //return whether or not we modified characters in the string buffer
-//G***fix		return replacementCount>0;  //return whether or not we modified characters in the string buffer
+//TODO fix		return replacementCount>0;  //return whether or not we modified characters in the string buffer
 	}
 
 	/**Converts text data from the Adobe Symbol font encoding to Unicode.
@@ -1886,18 +1661,15 @@ Debug.trace("found enclosing start at index: ", startIndex);  //G***del
 	*/
 	protected static void convertSymbolToUnicode(final StringBuffer stringBuffer)
 	{
-			//G***shouldn't we have a function that transforms this automatically?
-//G***del Debug.trace("Converting symbol string: ", stringBuffer);  //G***del
+			//TODO shouldn't we have a function that transforms this automatically?
 		StringBuffers.replace(stringBuffer, SYMBOL_FONT_TO_UNICODE_TABLE);  //convert all symbol characters to Unicode
-/*G***del when works
+/*TODO del when works
 		final int converstionTableLength=SYMBOL_FONT_TO_UNICODE_TABLE.length; //find out how many characters we recognize
 		final int stringBufferLength=stringBuffer.length(); //find out how many characters there are to convert
 		for(int i=0; i<stringBufferLength; ++i) //look at each character to convert
 		{
-//G***del Debug.trace("Symbol character: "+Integer.toHexString(stringBuffer.charAt(i)));
 			//look up the Unicode character at the index of the character we're looking at, and replace the character with the new one
 			stringBuffer.setCharAt(i, SYMBOL_FONT_TO_UNICODE_TABLE[stringBuffer.charAt(i)]);
-//G***del Debug.trace("Converted symbol character (Unicode): "+Integer.toHexString(stringBuffer.charAt(i)));
 		}
 */
 	}
@@ -1914,7 +1686,7 @@ Debug.trace("found enclosing start at index: ", startIndex);  //G***del
 			//get the href attribute, or null if not present
 		final String src=element.hasAttributeNS(null, ELEMENT_IMG_ATTRIBUTE_SRC) ? element.getAttributeNS(null, ELEMENT_IMG_ATTRIBUTE_SRC) : null;
 			//get the alt attribute, or "Image" if not present
-		final String alt=element.hasAttributeNS(null, ELEMENT_IMG_ATTRIBUTE_ALT) ? element.getAttributeNS(null, ELEMENT_IMG_ATTRIBUTE_ALT) : "Image"; //G***i18n
+		final String alt=element.hasAttributeNS(null, ELEMENT_IMG_ATTRIBUTE_ALT) ? element.getAttributeNS(null, ELEMENT_IMG_ATTRIBUTE_ALT) : "Image"; //TODO i18n
 			//get the height attribute, or null if not present
 		final String height=element.hasAttributeNS(null, ELEMENT_IMG_ATTRIBUTE_HEIGHT) ? element.getAttributeNS(null, ELEMENT_IMG_ATTRIBUTE_HEIGHT) : null;
 			//get the width attribute, or null if not present
@@ -1926,13 +1698,7 @@ Debug.trace("found enclosing start at index: ", startIndex);  //G***del
 			objectElement.setAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_HEIGHT, height); //set the object height attribute
 		if(width!=null)  //if there is a width attribute
 			objectElement.setAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_WIDTH, width); //set the object width attribute
-/*G***del
-		if(alt==null) //if there is no alternate text
-			alt="Image";  //G***fix
-*/
-//G***del		if(alt!=null) //if there is alternate text
 			appendText(objectElement, alt);  //add the alternate text as child text to the object element
-//G***del		addClonedChildren(objectElement, element, true); //clone the applet element's child nodes and add them to the new object node
 		return objectElement; //return the element we created
 	}
 
@@ -1952,33 +1718,28 @@ Debug.trace("found enclosing start at index: ", startIndex);  //G***del
 		final String width=element.hasAttributeNS(null, ELEMENT_APPLET_ATTRIBUTE_WIDTH) ? element.getAttributeNS(null, ELEMENT_APPLET_ATTRIBUTE_WIDTH) : null;
 		final Element objectElement=element.getOwnerDocument().createElementNS(elementNamespace, ELEMENT_OBJECT); //create the element object in the same namespace as the applet object
 		if(code!=null)  //if there is a code attribute
-			objectElement.setAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_CLASSID, code); //set the object classid attribute G***correctly add needed "java:" and ".class"
+			objectElement.setAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_CLASSID, code); //set the object classid attribute TODO correctly add needed "java:" and ".class"
 		objectElement.setAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_CODETYPE, ContentTypes.toString(ContentTypes.APPLICATION_PRIMARY_TYPE, JAVA_SUBTYPE)); //set the object codetype attribute to "application/java"
 		if(height!=null)  //if there is a height attribute
 			objectElement.setAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_HEIGHT, height); //set the object height attribute
 		if(width!=null)  //if there is a width attribute
 			objectElement.setAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_WIDTH, width); //set the object width attribute
 		appendClonedChildNodes(objectElement, element, true); //clone the applet element's child nodes and add them to the new object node
-		appendText(objectElement, "This OEB reading system does not support Java.");  //add alternate text as child text to the object element G***i18n; fix
+		appendText(objectElement, "This OEB reading system does not support Java.");  //add alternate text as child text to the object element TODO i18n; fix
 		return objectElement; //return the element we created
 	}
 
-
-
-
-	//G***comment, rename removeUntidyChildNodes
+	//TODO comment, rename removeUntidyChildNodes
 	/**Removes any child nodes that are determined to be untidy.
 	@param element The element the children of which should be examined for removal.
 	@return The number of child nodes removed.
 	*/
-	protected static int removeUnknownElements(final Element element)  //G***probably rename this
+	protected static int removeUnknownElements(final Element element)  //TODO probably rename this
 	{
-//G***del Debug.trace("Ready to remove unknown elements from element: ", element.getNodeName());
 		int removedChildCount=0;  //show that we've not removed any child notes, so far
 		Node childNode=element.getFirstChild();	//get the first child
 		while(childNode!=null)	//while the element has child nodes
 		{
-//G***del Debug.trace("Looking at child node: "+childNode.getNodeName());
 		  Node nextNode=childNode.getNextSibling();	//get a reference to the next sibling so we'll have it when we need it
 		  if(shouldRemove(childNode)) //if we should remove this node
 			{
@@ -1986,7 +1747,7 @@ Debug.trace("found enclosing start at index: ", startIndex);  //G***del
 			  element.removeChild(childNode);	//remove the node
 				removedChildCount++;  //show that we removed another child node
 			}
-			else if(shouldPrune(childNode)) //if this child should be pruned G***put this in a separate method
+			else if(shouldPrune(childNode)) //if this child should be pruned TODO put this in a separate method
 			{
 				final Node previousNode=childNode.getPreviousSibling(); //pruning a node may promote its children; we'll have to recalculate the next node in that case
 				prepareNodeForRemoval(childNode); //do whatever we need to do before removing the node, such as promoting attributes if this is an element
@@ -2015,7 +1776,7 @@ Debug.trace("found enclosing start at index: ", startIndex);  //G***del
 		if(node.getNodeType()==Node.ELEMENT_NODE) //if this node is an element
 		{
 			final Element element=(Element)node;  //cast the node to an element
-				//G***maybe put this in some utilities function -- get closest node or something
+				//TODO maybe put this in some utilities function -- get closest node or something
 			Node promotionNode=element.getNextSibling();  //get the element's next sibling
 				//keep looking forwards until we find another element or we run out of nodes
 			while(promotionNode!=null && promotionNode.getNodeType()!=Node.ELEMENT_NODE)
@@ -2035,21 +1796,21 @@ Debug.trace("found enclosing start at index: ", startIndex);  //G***del
 			{
 				final Element promotionElement=(Element)promotionNode;  //cast the node to an element
 					//promote "id" and "name" attributes
-//G***del when works				copyAttributeValue(promotionElement, element, null, ATTRIBUTE_CLASS);
+//TODO del when works				copyAttributeValue(promotionElement, element, null, ATTRIBUTE_CLASS);
 				copyAttributeValue(promotionElement, element, null, ATTRIBUTE_ID);
 				copyAttributeValue(promotionElement, element, null, ATTRIBUTE_NAME);
-//G***del when works				copyAttributeValue(promotionElement, element, null, ATTRIBUTE_STYLE);
+//TODO del when works				copyAttributeValue(promotionElement, element, null, ATTRIBUTE_STYLE);
 			}
 				//if there is an element to which to promote styles from this element
 			if(stylePromotionNode!=null && stylePromotionNode.getNodeType()==Node.ELEMENT_NODE)
 			{
 				final Element stylePromotionElement=(Element)promotionNode;  //cast the node to an element
-				if(stylePromotionElement.getChildNodes().getLength()==1) //if we're removing the only child G***is this even useful?
+				if(stylePromotionElement.getChildNodes().getLength()==1) //if we're removing the only child TODO is this even useful?
 				{
 						//promote "xml:lang", "class", and "style" attributes
-					copyAttributeValue(stylePromotionElement, element, XML_NAMESPACE_URI.toString(), "lang");  //G***use a constant here
+					copyAttributeValue(stylePromotionElement, element, XML_NAMESPACE_URI.toString(), "lang");  //TODO use a constant here
 					copyAttributeValue(stylePromotionElement, element, null, ATTRIBUTE_CLASS);
-//G***del; this is not useful, and can cause harm (by moving up the symbol font property, for example)					copyAttributeValue(stylePromotionElement, element, null, ATTRIBUTE_STYLE);
+//TODO del; this is not useful, and can cause harm (by moving up the symbol font property, for example)					copyAttributeValue(stylePromotionElement, element, null, ATTRIBUTE_STYLE);
 				}
 			}
 		}
@@ -2071,7 +1832,6 @@ Debug.trace("found enclosing start at index: ", startIndex);  //G***del
 			if(!destElement.hasAttributeNS(namespaceURI, localName)) //if the attribute does not exist in the destination element
 			{
 				destElement.setAttributeNS(namespaceURI, localName, value);  //create the attribute with the value in the destination element
-//G***del				element.removeAttributeNS(null, ATTRIBUTE_NAME);  //remove the name attribute
 			}
 		}
 	}
@@ -2082,17 +1842,15 @@ Debug.trace("found enclosing start at index: ", startIndex);  //G***del
 		pruning.
 	@return The number of child nodes pruned.
 	*/
-/*G***fix, maybe
+/*TODO fix, maybe
 	protected static int pruneUntidyChildNodes(final Element element)
 	{
-//G***del Debug.trace("Ready to remove unknown elements from element: "+element.getNodeName());
 		int prunedChildCount=0;  //show that we've not pruned any child notes, so far
 		Node childNode=element.getFirstChild();	//get the first child
 		while(childNode!=null)	//while the element has child nodes
 		{
-//G***del Debug.trace("Looking at child node: "+childNode.getNodeName());
 		  Node nextNode=childNode.getNextSibling();	//get a reference to the next sibling so we'll have it when we need it
-			if(shouldPrune(childNode)) //if this child should be pruned G***put this in a separate method
+			if(shouldPrune(childNode)) //if this child should be pruned TODO put this in a separate method
 			{
 				pruneChild(element, childNode);  //prune the child, promoting the child's children
 				removedChildCount++;  //show that we removed another child node
@@ -2103,12 +1861,6 @@ Debug.trace("found enclosing start at index: ", startIndex);  //G***del
 	}
 */
 
-
-
-
-
-
-
 	/**Determines if a particular node should be removed, along with all its children.
 	@param node The node to examine.
 	@return <code>true</code> if the node being examined should be removed, along
@@ -2116,44 +1868,37 @@ Debug.trace("found enclosing start at index: ", startIndex);  //G***del
 	*/
 	protected static boolean shouldRemove(final Node node)
 	{
-//G***del Debug.trace("Checking should remove: ", node.getNodeName());  //G***del
 		final Node parentNode=node.getParentNode(); //get the node's parent
 		final short nodeType=node.getNodeType();  //get the type of node this is
 		final String nodeName=node.getNodeName();  //get the name of the node
 	  if(nodeType==Node.ELEMENT_NODE)  //if node is an element
 		{
 			final Element element=(Element)node;  //cast the node to an element
-			if(nodeName.indexOf(':')!=-1) //if this is from another namespace G***use a constant G***make this really namespace aware or something
+			if(nodeName.indexOf(':')!=-1) //if this is from another namespace TODO use a constant TODO make this really namespace aware or something
 			  return true;  //show that we should remove this node
 		  if(nodeName.equals(ELEMENT_STYLE))    //if this is a style element
 				return true;  //remove all style elements
 			if(node.getChildNodes().getLength()==0) //if there are no child nodes
 			{
-//G***del Debug.trace("Child: "+nodeName+" has no children");  //G***del
-				if(!nodeName.equals(ELEMENT_APPLET) //if this is not one of the elements we expect to be empty G***get the list of these from somewhere else
+				if(!nodeName.equals(ELEMENT_APPLET) //if this is not one of the elements we expect to be empty TODO get the list of these from somewhere else
 					  && !nodeName.equals(ELEMENT_BR)
 					  && !nodeName.equals(ELEMENT_HR)
 						&& !nodeName.equals(ELEMENT_IMG)
 					  && !nodeName.equals(ELEMENT_PARAM)
 					  && !nodeName.equals(ELEMENT_OBJECT))
 				{
-//G***del Debug.trace("removing child");
 					return true;  //show that we should remove the empty node (such as a paragraph or span)
 				}
 			}
-//G***del Debug.trace("checking for block element: ", nodeName);
 				//see if this is an empty (except for whitespace) block element
 			if(isBlockElement(element)) //if this is a block element such as <h1> or <p>
 			{
-//G***del Debug.trace("block element has number of children: ", element.getChildNodes().getLength());
-				if(element.getChildNodes().getLength()==1) //if the element has just one child node G***should we look at all text children, or should we assume that the previous normalization has already taken care of this?
+				if(element.getChildNodes().getLength()==1) //if the element has just one child node TODO should we look at all text children, or should we assume that the previous normalization has already taken care of this?
 				{
 				  final Node childNode=element.getFirstChild(); //get the first child
 				  if(childNode.getNodeType()==childNode.TEXT_NODE)  //if the child node is a text node
 				  {
 						final Text textNode=(Text)childNode;  //cast the node to a text node
-//G***del Debug.trace("text node child has text: ("+textNode.getData()+")");  //G***del
-//G***del Debug.trace("after trim: ("+StringUtilities.trimWhitespaceNoBreak(textNode.getData())+")");  //G***del
 							//trim all beginning whitespace from the text node;
 							//  if the text was only whitespace or non-breaking spaces
 						if(Strings.trimWhitespaceNoBreak(textNode.getData()).length()==0)
@@ -2166,28 +1911,15 @@ Debug.trace("found enclosing start at index: ", startIndex);  //G***del
 		{
 			final Text text=(Text)node;  //cast the node to a text node
 			final String data=text.getData();    //get the text data
-//G***del Debug.trace("Found text with data: "+data); //G***del
-//G***del Debug.trace("Parent node: "+parentNode.getNodeName());  //G***del
-//G***del Debug.trace("Parent node:");  //***del
-/*G***del
-if(Debug.isDebug() && parentNode.getNodeType()==Node.ELEMENT_NODE) //G***del
-	XMLUtilities.printTree((Element)parentNode);
-*/
 		  if(parentNode!=null && parentNode.getChildNodes().getLength()==1)  //if this is the only child of the parent (i.e. don't remove empty text nodes when there are other sibling nodes)
 		  {
 				if(isTextContainer(parentNode))  //if this text is inside a text container (i.e. <p>, <span>, etc. and not not <ul> or something similar)
 				{
-	/*G***del
-	if(data.indexOf(StringUtilities.NON_BREAKING_SPACE)!=-1)
-		Debug.trace("Found non-breaking space in: \""+data+"\""); //G***del
-	*/
-
-/*G***fix; probably change to pruning; change class comments
+/*TODO fix; probably change to pruning; change class comments
 					final String trimmedData=data.replace(StringUtilities.NON_BREAKING_SPACE, ' ').trim();  //trim the string, after replacing all non-breaking spaces with normal spaces
 					if(trimmedData.length()==0)	//if this text node has only whitespace
 					{
-	//G***del Debug.trace("********** Ready to trim");
-						return true;  //we'll remove empty text children G***only do this for <p>, <span>, etc. -- not <ul> and such
+						return true;  //we'll remove empty text children TODO only do this for <p>, <span>, etc. -- not <ul> and such
 					}
 */
 				}
@@ -2206,7 +1938,6 @@ if(Debug.isDebug() && parentNode.getNodeType()==Node.ELEMENT_NODE) //G***del
 		return false; //if we can't find a reason to remove the node, show that we shouldn't remove it
 	}
 
-
 	/**Determines if a particular node should be prumed, promoting its children
 		to be children of the node's parent.
 	@param node The node to examine.
@@ -2215,19 +1946,15 @@ if(Debug.isDebug() && parentNode.getNodeType()==Node.ELEMENT_NODE) //G***del
 	*/
 	protected static boolean shouldPrune(final Node node)
 	{
-//G***del Debug.trace("Checking should prune: ", node.getNodeName());  //G***del
 		final short nodeType=node.getNodeType();  //get the type of node this is
 		final String nodeName=node.getNodeName();  //get the name of the node
 		final Node parentNode=node.getParentNode(); //get the node's parent node, which may be null
 		final NodeList childNodeList=node.getChildNodes();  //get a reference to the child node list
 		if(parentNode!=null)  //only nodes with non-null parents can be pruned
 		{
-//G***del Debug.trace("node has parent");
-			final String parentNodeName=parentNode.getNodeName(); //get the name of the parent node G***should we check for null here?
-//G***del Debug.trace("Should prune: "+parentNodeName+"-"+nodeName);
+			final String parentNodeName=parentNode.getNodeName(); //get the name of the parent node TODO should we check for null here?
 			if(nodeType==Node.ELEMENT_NODE)  //if node is an element
 			{
-//G***del Debug.trace("node is an element");
 				final Element element=(Element)node; //cast the node to an element
 				if(nodeName.equals(ELEMENT_DIV))  //if this is the div element
 				{
@@ -2236,7 +1963,7 @@ if(Debug.isDebug() && parentNode.getNodeType()==Node.ELEMENT_NODE) //G***del
 						//if the div element has only one attribute, "class", and its value contains "section" in any case
 					if(element.getAttributes().getLength()==1 && Strings.indexOfIgnoreCase(element.getAttributeNS(null, ATTRIBUTE_CLASS), "section")>=0)
 						return true;  //<div class="*section*> should be pruned
-/*G***decide if we want this or not -- after all, <object> an <img> should be inside a block
+/*TODO decide if we want this or not -- after all, <object> an <img> should be inside a block
 					boolean onlyWhitespace=true;  //we'll see if there is any non-text whitespace
 					boolean onlyEmptyElements=true; //we'll see if there are any non-empty child elements
 				  for(int childIndex=childNodeList.getLength()-1; childIndex>=0; --childIndex)  //look at each of the child nodes
@@ -2244,11 +1971,9 @@ if(Debug.isDebug() && parentNode.getNodeType()==Node.ELEMENT_NODE) //G***del
 						final Node childNode=childNodeList.item(childIndex); //get a reference to this child
 						if(childNode.getNodeType()==childNode.TEXT_NODE)  //if the child is a text node
 						{
-//G***del Debug.trace("text node");
 							final Text text=(Text)childNode;  //cast the child node to a text node
 							final String data=text.getData();    //get the text data
 							final int dataLength=data.length(); //find out how much text data there is
-//G***del							boolean onlyWhitespace=true;  //without looking at the data, we don't know if this is just whitespace or not; assume it is to begin with
 						  for(int i=0; i<dataLength; ++i) //look at each character in the data
 							{
 								final char c=data.charAt(i);  //get a reference to this character
@@ -2282,7 +2007,6 @@ if(Debug.isDebug() && parentNode.getNodeType()==Node.ELEMENT_NODE) //G***del
 				}
 				else if(nodeName.equals(ELEMENT_SPAN))  //if this is a span element
 				{
-//G***del Debug.trace("node is a span");
 					if(node.getAttributes().getLength()==0)  //if there are no attributes
 						return true;  //show that we should prune empty spans
 					else if(parentNode.getChildNodes().getLength()==1)  //if the span encloses all the content of the parent element
@@ -2312,20 +2036,14 @@ if(Debug.isDebug() && parentNode.getNodeType()==Node.ELEMENT_NODE) //G***del
 				{
 					return true;  //always prune font elements
 				}
-//G***del Debug.trace("checking for text container");
-
-
-						//G***testing; fix, comment class
+						//TODO testing; fix, comment class
 				if(isTextContainer(node))  //if this is a text container (i.e. <p>, <span>, etc. and not not <ul> or something similar)
 				{
-//G***del Debug.trace("Found text container");
 					if(node.getChildNodes().getLength()==1) //if there is only one child node
 					{
-//G***del Debug.trace("one child");
 						final Node childNode=node.getFirstChild();  //get the child node
 						if(childNode.getNodeType()==childNode.TEXT_NODE)  //if the child is a text node
 						{
-//G***del Debug.trace("text node");
 							final Text text=(Text)childNode;  //cast the child node to a text node
 							final String data=text.getData();    //get the text data
 							final int dataLength=data.length(); //find out how much text data there is
@@ -2360,7 +2078,6 @@ if(Debug.isDebug() && parentNode.getNodeType()==Node.ELEMENT_NODE) //G***del
 	{
 		final NodeList childNodeList=element.getChildNodes(); //get a list of child nodes
 		int childCount=0; //we'll use this to keep track of the number of children of the specified type
-//G***del		final int childCount=childNodeList.getLength(); //find out how many child nodes there are
 		for(int i=childNodeList.getLength()-1; i>=0; --i) //look at each of the child elements
 		{
 			if(childNodeList.item(i).getNodeType()==nodeType) //if this node is of the specified type
@@ -2399,7 +2116,6 @@ if(Debug.isDebug() && parentNode.getNodeType()==Node.ELEMENT_NODE) //G***del
 	{
 		final NodeList childNodeList=element.getChildNodes(); //get a list of child nodes
 		int childElementCount=0; //we'll use this to keep track of the number of child elements with the specified name
-//G***del		final int childCount=childNodeList.getLength(); //find out how many child nodes there are
 		for(int i=childNodeList.getLength()-1; i>=0; --i) //look at each of the child elements
 		{
 			final Node node=childNodeList.item(i);  //get a reference to this node
@@ -2421,8 +2137,8 @@ if(Debug.isDebug() && parentNode.getNodeType()==Node.ELEMENT_NODE) //G***del
 	*/
 	protected static boolean isBlockElement(final Element element)
 	{
-		final String elementName=element.getNodeName();  //get the element name G***use namespaces
-		//G***add others here
+		final String elementName=element.getNodeName();  //get the element name TODO use namespaces
+		//TODO add others here
 		return elementName.equals(ELEMENT_P)
 			  || elementName.equals(ELEMENT_BODY)
 			  || elementName.equals(ELEMENT_BLOCKQUOTE)
@@ -2443,7 +2159,7 @@ if(Debug.isDebug() && parentNode.getNodeType()==Node.ELEMENT_NODE) //G***del
 	*/
 	protected static boolean isListElement(final Element element)
 	{
-		final String elementName=element.getNodeName();  //get the element name G***use namespaces
+		final String elementName=element.getNodeName();  //get the element name TODO use namespaces
 		return elementName.equals(ELEMENT_OL) || elementName.equals(ELEMENT_UL);
 	}
 
@@ -2459,7 +2175,7 @@ if(Debug.isDebug() && parentNode.getNodeType()==Node.ELEMENT_NODE) //G***del
 		final String nodeName=node.getNodeName(); //get the name of the node
 		if(node.getNodeType()==Node.ELEMENT_NODE && //if this is an element and the name matches one of our text container elements
 			  (
-//G***fix					nodeName.equals(ELEMENT_DIV)  //G***add others, like <em>, <code>, etc.
+//TODO fix					nodeName.equals(ELEMENT_DIV)  //TODO add others, like <em>, <code>, etc.
 					nodeName.equals(ELEMENT_P)
 					|| nodeName.equals(ELEMENT_SPAN)
 					|| nodeName.equals(ELEMENT_B)

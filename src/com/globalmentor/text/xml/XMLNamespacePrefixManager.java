@@ -34,9 +34,9 @@ import com.garretwilson.rdf.version.VersionConstants;
 import com.garretwilson.rdf.xeb.XEBConstants;
 import com.garretwilson.rdf.xpackage.XPackageConstants;
 import com.globalmentor.text.xml.oeb.OEB;
-import com.globalmentor.text.xml.schema.XMLSchemaConstants;
+import com.globalmentor.text.xml.schema.XMLSchema;
 import com.globalmentor.text.xml.xhtml.XHTML;
-import com.globalmentor.text.xml.xlink.XLinkConstants;
+import com.globalmentor.text.xml.xlink.XLink;
 
 import static com.globalmentor.java.Java.*;
 
@@ -98,11 +98,11 @@ public class XMLNamespacePrefixManager	//TODO replace with XMLNamespaceLabelMana
 //TODO add SOAP
 		registerNamespacePrefix(VCard.VCARD_NAMESPACE_URI.toString(), VCard.VCARD_NAMESPACE_PREFIX); //vCard
 		registerNamespacePrefix(VersionConstants.VERSION_NAMESPACE_URI.toString(), VersionConstants.VERSION_NAMESPACE_PREFIX); //version
-		registerNamespacePrefix(XMLSchemaConstants.XML_SCHEMA_NAMESPACE_URI.toString(), XMLSchemaConstants.XML_SCHEMA_NAMESPACE_PREFIX); //XML Schema
+		registerNamespacePrefix(XMLSchema.XML_SCHEMA_NAMESPACE_URI.toString(), XMLSchema.XML_SCHEMA_NAMESPACE_PREFIX); //XML Schema
 		registerNamespacePrefix(XHTML.XHTML_NAMESPACE_URI.toString(), XHTML.XHTML_NAMESPACE_PREFIX); //XHTML
-		registerNamespacePrefix(XLinkConstants.XLINK_NAMESPACE_URI.toString(), XLinkConstants.XLINK_NAMESPACE_PREFIX); //XLink
-		registerNamespacePrefix(XMLUtilities.XML_NAMESPACE_URI.toString(), XMLUtilities.XML_NAMESPACE_PREFIX); //XML
-		registerNamespacePrefix(XMLUtilities.XMLNS_NAMESPACE_URI.toString(), XMLUtilities.XMLNS_NAMESPACE_PREFIX); //XML namespaces
+		registerNamespacePrefix(XLink.XLINK_NAMESPACE_URI.toString(), XLink.XLINK_NAMESPACE_PREFIX); //XLink
+		registerNamespacePrefix(XML.XML_NAMESPACE_URI.toString(), XML.XML_NAMESPACE_PREFIX); //XML
+		registerNamespacePrefix(XML.XMLNS_NAMESPACE_URI.toString(), XML.XMLNS_NAMESPACE_PREFIX); //XML namespaces
 		registerNamespacePrefix(XEBConstants.XEB_NAMESPACE_URI.toString(), XEBConstants.XEB_NAMESPACE_PREFIX); //XEbook
 		registerNamespacePrefix(XPackageConstants.XPACKAGE_NAMESPACE_URI.toString(), XPackageConstants.XPACKAGE_NAMESPACE_PREFIX); //XPackage
 		registerNamespacePrefix(XPackageConstants.XML_ONTOLOGY_NAMESPACE_URI.toString(), XPackageConstants.XML_ONTOLOGY_NAMESPACE_PREFIX); //XPackage XML ontology

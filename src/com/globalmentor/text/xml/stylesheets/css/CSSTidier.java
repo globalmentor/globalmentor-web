@@ -1,17 +1,28 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml.stylesheets.css;
 
-import java.io.*;
 import java.util.*;
 
-import static com.globalmentor.text.xml.stylesheets.css.XMLCSSConstants.*;
+import static com.globalmentor.text.xml.stylesheets.css.XMLCSS.*;
 
-import com.globalmentor.java.Characters;
-import com.globalmentor.java.Maths;
-import com.globalmentor.java.StringBuffers;
 import com.globalmentor.java.Strings;
 import com.globalmentor.text.xml.oeb.css.OEBCSS;
-import com.globalmentor.util.Debug;
-import com.globalmentor.util.PropertiesUtilities;
+import com.globalmentor.util.*;
 
 import org.w3c.dom.css.*;
 
@@ -28,8 +39,7 @@ import org.w3c.dom.css.*;
 </ul>
 @author Garret Wilson
 */
-//G***add a feature to remove empty style declarations
-public class CSSTidier
+public class CSSTidier	//TODO add a feature to remove empty style declarations
 {
 
 	/**Whether font sizes should be made relative to a base font size.*/
@@ -78,9 +88,9 @@ public class CSSTidier
 	}
 
 	/**The base font size, if we've found one, in its original CSS value.*/
-//G***fix	protected CSSPrimitiveValue baseFontSizeCSSValue=null;
+//TODO fix	protected CSSPrimitiveValue baseFontSizeCSSValue=null;
 
-	  //G***comment
+	  //TODO comment
 	protected short baseFontSizeCssValueType;
 	protected float baseFontSizeValue;
 
@@ -89,7 +99,6 @@ public class CSSTidier
 	/**Default constructor initialized with the default options.*/
   public CSSTidier()
   {
-//G***del		this(new Properties()); //do the default construction with default properties
   }
 
 	/**Constructs a CSS tidier with a list of options.
@@ -98,7 +107,6 @@ public class CSSTidier
 	public CSSTidier(final Properties options)
 	{
 		setOptions(options);  //set the options from the properties
-//G***del		options=tidyOptions;  //store the options
 	}
 
 	/**Tidies a CSS stylesheet.
@@ -124,7 +132,7 @@ public class CSSTidier
 		  final CSSRule cssRule=cssRuleList.item(ruleIndex);  //get this CSS rule
 			tidy(cssRule); //tidy the CSS rule
 		}
-//G***del if not needed		baseFontSizeCSSValue=null;  //release our base font size CSS value, if we've referenced one
+//TODO del if not needed		baseFontSizeCSSValue=null;  //release our base font size CSS value, if we've referenced one
 	}
 
 	/**Tidies the specified CSS rule.
@@ -132,9 +140,9 @@ public class CSSTidier
 	*/
 	protected void tidy(final CSSRule cssRule)
 	{
-		if(cssRule instanceof CSSStyleRule) //G***fix
+		if(cssRule instanceof CSSStyleRule) //TODO fix
 		{
-			final CSSStyleRule cssStyleRule=(CSSStyleRule)cssRule;  //G***fix
+			final CSSStyleRule cssStyleRule=(CSSStyleRule)cssRule;  //TODO fix
 		  tidy(cssStyleRule.getStyle());  //tidy the style declaration
 		}
 	}
@@ -144,51 +152,33 @@ public class CSSTidier
 	*/
 	protected void tidy(final CSSStyleDeclaration cssStyleDeclaration)
 	{
-//G***del		final int propertyCount=cssStyleDeclaration.getLength();  //get the number of properties
 		for(int propertyIndex=0; propertyIndex<cssStyleDeclaration.getLength();)	//look at each property, checking the number of properties each time because we might delete one, thereby decreasing the number of properties
 		{
 			final String propertyName=cssStyleDeclaration.item(propertyIndex);	//get the name of this property
-Debug.trace("Checking to see if we should remove property: ", propertyName);  //G***del
 		  if(shouldRemoveProperty(cssStyleDeclaration, propertyName))  //if we should remove this property
 		  {
 Debug.trace("we should remove property");
-/*G***del
-				//if we should remove MS Office properties, and this is an MS Office property
-		  if(isRemoveMSOfficeProperties() && propertyName.startsWith("mso-")) //G***use a constant here
-		  {
-*/
 			  cssStyleDeclaration.removeProperty(propertyName); //remove this property
 				continue; //continue without increasing the index, since the next property is now at this index
 		  }
 				//if we should make font sizes relative, and this is a font size
 			else if(isMakeFontSizesRelative() && CSS_PROP_FONT_SIZE.equals(propertyName))
 			{
-//G***del Debug.trace("Found a font size"); //G***del
-
-//G***del if not needed				if(baseFontSizeCSSValue!=null)  //if we know the base font size
-				if(baseFontSizeValue!=-1)  //if we know the base font size G***use a constant or something more robust, maybe
+//TODO del if not needed				if(baseFontSizeCSSValue!=null)  //if we know the base font size
+				if(baseFontSizeValue!=-1)  //if we know the base font size TODO use a constant or something more robust, maybe
 				{
-//G***del Debug.trace("we already know a base size"); //G***del
-					final CSSPrimitiveValue propertyCSSValue=(CSSPrimitiveValue)cssStyleDeclaration.getPropertyCSSValue(propertyName);  //get the property with this name G***we shouldn't really assume this is a primitive value
-//G***del Debug.trace("got property value: ", propertyCSSValue); //G***del
-///G***del when works				  if(baseFontSizeCSSValue.getCssValueType()==propertyCSSValue.getCssValueType())  //if both value types are the same
+					final CSSPrimitiveValue propertyCSSValue=(CSSPrimitiveValue)cssStyleDeclaration.getPropertyCSSValue(propertyName);  //get the property with this name TODO we shouldn't really assume this is a primitive value
+///TODO del when works				  if(baseFontSizeCSSValue.getCssValueType()==propertyCSSValue.getCssValueType())  //if both value types are the same
 				  if(baseFontSizeCssValueType==propertyCSSValue.getCssValueType())  //if both value types are the same
 				  {
-//G***del Debug.trace("both sizes have the same value type"); //G***del
-//G***del when works						final float baseFontSize=baseFontSizeCSSValue.getFloatValue(baseFontSizeCSSValue.getCssValueType());  //get the base font size
+//TODO del when works						final float baseFontSize=baseFontSizeCSSValue.getFloatValue(baseFontSizeCSSValue.getCssValueType());  //get the base font size
 						final float fontSizeValue=propertyCSSValue.getFloatValue(propertyCSSValue.getCssValueType());  //get the current font size
-//G***del Debug.trace("font size: "+fontSizeValue);  //G***del
-//G***del Debug.trace("base font size: "+baseFontSizeValue);  //G***del
-//G***del						final float relativeSize=MathUtilities.round(fontSizeValue/baseFontSizeValue, -2)*100;  //get the relative size rounded to the second decimal position, and convert it to a percentage by multiplying by 100 G***use a constant here
-						final float relativeSize=Math.round(fontSizeValue/baseFontSizeValue*100);  //get the relative size convert it to a percentage by multiplying by 100, rounding the value G***use a constant here
+						final float relativeSize=Math.round(fontSizeValue/baseFontSizeValue*100);  //get the relative size convert it to a percentage by multiplying by 100, rounding the value TODO use a constant here
 						propertyCSSValue.setFloatValue(propertyCSSValue.CSS_PERCENTAGE, relativeSize);  //change the value to a relative size
 				  }
 				}
 			}
-//G***del			else  //if we didn't remove anything
-			{
-				++propertyIndex;  //look at the next property
-			}
+			++propertyIndex;  //look at the next property
 		}
 	}
 
@@ -203,11 +193,11 @@ Debug.trace("we should remove property");
 		for(int ruleIndex=0; ruleIndex<ruleCount; ++ruleIndex)	//look at each of the rules
 		{
 		  final CSSRule cssRule=cssRuleList.item(ruleIndex);  //get this CSS rule
-			if(cssRule instanceof CSSStyleRule) //G***fix
+			if(cssRule instanceof CSSStyleRule) //TODO fix
 			{
-				final CSSStyleRule cssStyleRule=(CSSStyleRule)cssRule;  //G***fix
+				final CSSStyleRule cssStyleRule=(CSSStyleRule)cssRule;  //TODO fix
 				final String selectorText=cssStyleRule.getSelectorText(); //get the selector text
-					//if this selects a normal paragraph G***fix this; this is highly dependent on HTML and MSWord
+					//if this selects a normal paragraph TODO fix this; this is highly dependent on HTML and MSWord
 				if(selectorText.indexOf("p.")>=0 && Strings.indexOfIgnoreCase(selectorText, "normal")>=0)
 				{
 					final CSSStyleDeclaration cssStyleDeclaration=cssStyleRule.getStyle();  //get the style declaration
@@ -220,7 +210,6 @@ Debug.trace("we should remove property");
 							final CSSValue propertyCSSValue=cssStyleDeclaration.getPropertyCSSValue(propertyName);  //get the property with this name
 							if(propertyCSSValue.getCssValueType()==propertyCSSValue.CSS_PRIMITIVE_VALUE)  //if this is a primitive value
 							{
-//G***del Debug.trace("Found base font size CSS value: ", propertyCSSValue);  //G***del
 								return (CSSPrimitiveValue)propertyCSSValue;  //return this primitive value property as the base font size
 							}
 						}
@@ -238,9 +227,9 @@ Debug.trace("we should remove property");
 	protected boolean shouldRemoveProperty(final CSSStyleDeclaration cssStyleDeclaration, final String propertyName)
 	{
 				//if we should remove MS Office properties, and this is an MS Office property
-		if(isRemoveMSOfficeProperties() && propertyName.startsWith("mso-")) //G***use a constant here
+		if(isRemoveMSOfficeProperties() && propertyName.startsWith("mso-")) //TODO use a constant here
 			return true;  //show that we should remove this property
-		if(!OEBCSS.isOEB1CSSProperty(propertyName))  //if this is not an OEB 1.0 CSS property G***move this to an OEBCSSTidier
+		if(!OEBCSS.isOEB1CSSProperty(propertyName))  //if this is not an OEB 1.0 CSS property TODO move this to an OEBCSSTidier
 			return true;  //remove non-OEB CSS properties
 		return false; //since we didn't find a reason to, don't remove this property
 	}

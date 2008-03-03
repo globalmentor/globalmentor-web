@@ -1,0 +1,42 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.globalmentor.text.xml.stylesheets;
+
+/**Constants for linking an XML documents to a stylesheet according to
+ <a href="http://www.w3.org/TR/xml-stylesheet">http://www.w3.org/TR/xml-stylesheet</a>.
+@author Garret Wilson
+@see <a href="http://www.w3.org/TR/xml-stylesheet">Associating Style Sheets with XML documents</a>
+*/
+public class XMLStyleSheets
+{
+		//stylesheet processing instruction
+	/**The processing instruction for linking an XML document to a stylesheet according to
+		<a href="http://www.w3.org/TR/xml-stylesheet">Associating Style Sheets with XML documents</a>.*/
+	public final static String XML_STYLESHEET_PROCESSING_INSTRUCTION="xml-stylesheet";
+
+		//pseudo attributes
+	public final static String HREF_ATTRIBUTE="href";
+	public final static String TYPE_ATTRIBUTE="type";
+	public final static String TITLE_ATTRIBUTE="title";
+	public final static String MEDIA_ATTRIBUTE="media";
+	public final static String CHARSET_ATTRIBUTE="charset";
+	public final static String ALTERNATE_ATTRIBUTE="alternate";
+		//values for the "alternate" attribute
+		public final static String ALTERNATE_YES="yes";
+		public final static String ALTERNATE_NO="no";
+
+}

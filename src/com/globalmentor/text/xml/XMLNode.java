@@ -828,7 +828,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 				//TODO check for read-only status
 				//TODO check to see if the prefix is malformed
 				checkNamespace(getNamespaceURI(), prefix);  //make sure the namespace URI and prefix are compatible
-				final String localName=XMLUtilities.getLocalName(getNodeName()); //get the current local name from the qualified node name (we can't use getLocalName(), because it may return null if this node was created with a DOM Level 1 method)
+				final String localName=XML.getLocalName(getNodeName()); //get the current local name from the qualified node name (we can't use getLocalName(), because it may return null if this node was created with a DOM Level 1 method)
 				setNodeName(prefix, localName); //set the prefix and the local name, and update the node name itself
 			}
 		}
@@ -867,14 +867,14 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 			if(namespaceURI!=null && prefix!=null)  //if the namespace URI and prefix are not null
 			{
 				boolean mismatchedPrefix=false; //we'll set this to true if the prefix doesn't go with the URI
-				if(prefix.equals(XMLUtilities.XML_NAMESPACE_PREFIX)) //if this is the prefix, "xml"
+				if(prefix.equals(XML.XML_NAMESPACE_PREFIX)) //if this is the prefix, "xml"
 				{
-					if(!namespaceURI.equals(XMLUtilities.XML_NAMESPACE_URI)) //if the correct URI is not assigned
+					if(!namespaceURI.equals(XML.XML_NAMESPACE_URI)) //if the correct URI is not assigned
 						mismatchedPrefix=true;  //show that this namespace prefix doesn't go with the namespace URI
 				}
-				else if(getNodeType()==ATTRIBUTE_NODE && prefix.equals(XMLUtilities.XMLNS_NAMESPACE_PREFIX)) //if this is the prefix, "xmlns" for an attribute
+				else if(getNodeType()==ATTRIBUTE_NODE && prefix.equals(XML.XMLNS_NAMESPACE_PREFIX)) //if this is the prefix, "xmlns" for an attribute
 				{
-					if(!namespaceURI.equals(XMLUtilities.XMLNS_NAMESPACE_URI)) //if the correct URI is not assigned
+					if(!namespaceURI.equals(XML.XMLNS_NAMESPACE_URI)) //if the correct URI is not assigned
 						mismatchedPrefix=true;  //show that this namespace prefix doesn't go with the namespace URI
 				}
 				if(!mismatchedPrefix)  //if the prefix matches the URI

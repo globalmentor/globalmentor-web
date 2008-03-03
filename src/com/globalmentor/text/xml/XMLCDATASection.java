@@ -16,7 +16,7 @@
 
 package com.globalmentor.text.xml;
 
-import static com.globalmentor.text.xml.XMLUtilities.*;
+import static com.globalmentor.text.xml.XML.*;
 
 /**A CDATA section in an XML document.
 @author Garret Wilson

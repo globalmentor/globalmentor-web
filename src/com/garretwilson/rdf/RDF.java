@@ -11,7 +11,7 @@ import static com.garretwilson.rdf.RDFConstants.*;
 import static com.garretwilson.rdf.RDFUtilities.*;
 import com.garretwilson.rdf.rdfs.RDFSUtilities;
 import com.garretwilson.rdf.xmlschema.XMLSchemaTypedLiteralFactory;
-import com.globalmentor.text.xml.schema.XMLSchemaConstants;
+import com.globalmentor.text.xml.schema.XMLSchema;
 import com.globalmentor.util.*;
 
 /**An RDF data model.
@@ -634,7 +634,7 @@ public class RDF	//TODO special-case rdf:nil list resources so that they are not
 	{
 //TODO del if not needed		this.baseURI=baseURI;	//save the base URI
 				//register typed literal factories for certain default namespaces
-		registerTypedLiteralFactory(XMLSchemaConstants.XML_SCHEMA_NAMESPACE_URI, new XMLSchemaTypedLiteralFactory());	//XML Schema
+		registerTypedLiteralFactory(XMLSchema.XML_SCHEMA_NAMESPACE_URI, new XMLSchemaTypedLiteralFactory());	//XML Schema
 	}
 
 	/**Looks at all the resources in the RDF data model and recursively gathers

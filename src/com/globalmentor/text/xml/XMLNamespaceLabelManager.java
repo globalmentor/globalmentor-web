@@ -48,11 +48,11 @@ public class XMLNamespaceLabelManager extends AbstractNamespaceLabelManager
 	@param string The string to check for being a label.
 	@return <code>true</code> if the given string represents a valid label.
 	@exception NullPointerException if the given string is <code>null</code>.
-	@see XMLUtilities#isName(String)
+	@see XML#isName(String)
 	*/
 	protected boolean isLabel(final String string)
 	{
-		return XMLUtilities.isName(string);	//return whether the given string is a valid XML name
+		return XML.isName(string);	//return whether the given string is a valid XML name
 	}
 
 }

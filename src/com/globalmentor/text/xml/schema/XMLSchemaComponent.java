@@ -1,13 +1,29 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml.schema;
 
 /**The abstract class which serves as the parent to all schema components.
 @author Garret Wilson
+@deprecated
 */
 public abstract class XMLSchemaComponent
 {
 
 	//schema component types
-//G***del	public final static short UNDEFINED_COMPONENT=0;
 		//primary component types
 	/**Simple type definition.*/
 	public final static short SIMPLE_TYPE_COMPONENT=1;
@@ -23,18 +39,18 @@ public abstract class XMLSchemaComponent
 	/**Identity-constraint definition.*/
 	public final static short IDENTITY_CONSTRAINT_COMPONENT=6;
 	/**Model group definition.*/
-	public final static short MODEL_GROUP_COMPONENT=7;  //G***fix; this is really a model group definition; a model group is a helper component
+	public final static short MODEL_GROUP_COMPONENT=7;  //TODO fix; this is really a model group definition; a model group is a helper component
 	/**Notation declaration.*/
 	public final static short NOTATION_COMPONENT=8;
 	  //helper component types
 	/**Annotation.*/
 	public final static short ANNOTATION_COMPONENT=9;
 	/**Model group.*/
-//G***fix	public final static short MODEL_GROUP_COMPONENT=10;
+//TODO fix	public final static short MODEL_GROUP_COMPONENT=10;
 	/**Particle.*/
-//G***fix	public final static short PARTICLE_COMPONENT=11;
+//TODO fix	public final static short PARTICLE_COMPONENT=11;
 	/**Wildcard.*/
-//G***fix	public final static short WILDCARD_COMPONENT=12;
+//TODO fix	public final static short WILDCARD_COMPONENT=12;
 
 	/**The type of XML schema component this is.*/
 	private short componentType;
@@ -45,19 +61,17 @@ public abstract class XMLSchemaComponent
 		public short getComponentType() {return componentType;}
 
 	/**The schema to which this schema component belongs.*/
-//G***fix if needed	private XMLSchema schema;
+//TODO fix if needed	private XMLSchema schema;
 
 		/**@return The schema to which this schema component belongs.*/
-//G***fix if needed		public XMLSchema getSchema() {return schema;}
+//TODO fix if needed		public XMLSchema getSchema() {return schema;}
 
-//G***fix if needed	public XMLSchemaComponent
+//TODO fix if needed	public XMLSchemaComponent
 
 	/**Constructs an XML schema object.
 	@param newComponentType The type of XML schema component this is.
-//G***del if not needed	@param ownerDocument The document which owns this node.
-//G***del if not needed	@see XMLDocument
 	*/
-	public XMLSchemaComponent(final short newComponentType/*G***del if not needed, final XMLDocument ownerDocument*/)
+	public XMLSchemaComponent(final short newComponentType)
 	{
 		componentType=newComponentType;	//set the type of component this is
 	}

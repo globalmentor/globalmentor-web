@@ -1,55 +1,39 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml.stylesheets.css;
 
-//G***del import java.util.Iterator;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
-import static com.globalmentor.text.xml.stylesheets.css.XMLCSSConstants.*;
+import static com.globalmentor.text.xml.stylesheets.css.XMLCSS.*;
 
 import com.globalmentor.text.xml.XMLDOMException;
-import com.globalmentor.util.Debug;
 
 import org.w3c.dom.DOMException;
 import org.w3c.dom.css.*;
 
 /**A class representing a single CSS declaration block containing style properties.
+@author Garret Wilson
 @see org.w3c.dom.css.CSSStyleDeclaration
 @see org.w3c.dom.css.CSS2Properties
+@deprecated
 */
-public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements CSSStyleDeclaration	//G***fix, org.w3c.dom.css.CSS2Properties
+public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements CSSStyleDeclaration	//TODO fix, org.w3c.dom.css.CSS2Properties
 {
-
-	/**Creates and returns a duplicate copy of this node list with no values.
-	@return A duplicate "shallow clone" copy of this node list.
-	@see XMLNode#cloneXMLNode
-	@see XMLNode#cloneNode
-	@see XMLNodeList#cloneDeep
-	@see Object#clone
-	*/
-/*G***del if we don't need
-	public Object clone()
-	{
-		return new XMLNodeList();	//create a new node list and return it
-	}
-*/
-
-	/**Creates and returns a duplicate copy of this node list containing clones of all its children.
-	@return A duplicate "deep clone" copy of this node list.
-	@see XMLNode#cloneXMLNode
-	@see XMLNode#cloneNode
-	@see XMLNodeList#clone
-	*/
-/*G***del if we don't ned
-	public XMLNodeList cloneDeep()
-	{
-		final XMLNodeList clone=(XMLNodeList)clone();	//create a new node list
-		for(int i=0; i<size(); ++i)	//look at each node in our list
-			clone.add(((XMLNode)get(i)).cloneXMLNode(true));	//deep clone this node and store it in our node list clone
-		return clone;	//return our cloned node list
-	}
-
-*/
-
 
 	/**@return A parsable string representation of this style declaration block,
 		excluding the surrounding curly braces.
@@ -66,7 +50,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 	*/
 	public String getCssText()
 	{
-/*G***del or fix all this
+/*TODO del or fix all this
 		String rulePostfix,
 		if(size()>1)	//if we have more than one rule in this style declaration
 		{
@@ -75,7 +59,6 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 			rulePostfix=
 		String cssText=getSelectorText();	//get the text of the selectors
 */
-//G***del; not in spec		String cssText=XMLCSSConstants.RULE_GROUP_START_CHAR+" ";	//start with the group start character
 		final StringBuffer stringBuffer=new StringBuffer(); //create a new string buffer to collect our data
 		for(int i=0; i<size(); ++i)	//look at each rule
 		{
@@ -88,12 +71,9 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 			stringBuffer.append(getPropertyValue(propertyName)); //add the property value
 			stringBuffer.append(DECLARATION_SEPARATOR_CHAR); //separate the declarations
 			stringBuffer.append('\n');  //add a newline
-//G***del			cssText+=propertyName+": "+getPropertyValue(propertyName)+"; ";	//add this property name and value to our string G***use constants here
-//G***add the priority somewhere here
+//TODO add the priority somewhere here
 		}
 		return stringBuffer.toString();	//return the string we constructed
-//G***del; not in spec		cssText+=XMLCSSConstants.RULE_GROUP_END_CHAR;	//end with the group end character
-//G***del		return cssText;	//return the string we constructed
 	}
 
 
@@ -112,9 +92,9 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 	*/
 	public void setCssText(String cssText) throws DOMException
 	{
-		//G***check the string for a syntax error
-		//G***check for read-only status
-//G***fix		return CssText;	//return the text
+		//TODO check the string for a syntax error
+		//TODO check for read-only status
+//TODO fix		return CssText;	//return the text
 	}
 
 	/**Returns the number of properties that have been explicitly set in this declaration block.
@@ -138,7 +118,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 	{
 		try
 		{
-			return (String)keySet().toArray()[index];	//return the object at the index G***see if there's a more efficient way of doing this
+			return (String)keySet().toArray()[index];	//return the object at the index TODO see if there's a more efficient way of doing this
 		}
 		catch(IndexOutOfBoundsException e)	//if they don't give a valid index
 		{
@@ -153,13 +133,10 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 	*/
 	public void importStyle(final XMLCSSStyleDeclaration styleDeclaration)
 	{
-//G***del		final String[] propertyNameArray=styleDeclaration.keySet().toArray();	//get an array of all the key values (i.e. property names)
-//G***del		for(int i=0; i<propertyNameArray; ++i)	//look at each of the styles in the style to import
-//G***del		final String[] propertyNameArray=styleDeclaration.keySet().toArray();	//get an array of all the key values (i.e. property names)
 		for(int i=0; i<styleDeclaration.getLength(); ++i)	//look at each of the properties in the style to import
 		{
 			final String propertyName=styleDeclaration.item(i);	//get the name of this property
-			setPropertyCSSValue(propertyName, styleDeclaration.getPropertyCSSValue(propertyName));	//get this property value from the style declaration, and set it in our style declaration, replacing any value(s) already set G***do a clone() here before we set the value
+			setPropertyCSSValue(propertyName, styleDeclaration.getPropertyCSSValue(propertyName));	//get this property value from the style declaration, and set it in our style declaration, replacing any value(s) already set TODO do a clone() here before we set the value
 		}
 	}
 
@@ -216,8 +193,8 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 	*/
 	public String removeProperty(String propertyName) throws DOMException
 	{
-		//G***check read-only status here
-		//G***what about checking the propertyName to make sure it's a valid CSS property
+		//TODO check read-only status here
+		//TODO what about checking the propertyName to make sure it's a valid CSS property
 		final CSSValue oldCSSValue=(CSSValue)remove(propertyName);	//remove the specified value and store it
 		if(oldCSSValue!=null)	//if there was already a value with this name already
 			return oldCSSValue.getCssText();	//return the text of the value
@@ -256,26 +233,18 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 	@version DOM Level 2
 	@since DOM Level 2
 	*/
-//G***right now, all string values passed will be interpreted as idents -- how can we determine if they are strings? should we examine whether they could be an ident or not, or should we allow quotes to be passed here?
+//TODO right now, all string values passed will be interpreted as idents -- how can we determine if they are strings? should we examine whether they could be an ident or not, or should we allow quotes to be passed here?
 	public void setProperty(String propertyName, String value, String priority) throws DOMException
 	{
-		//G***check for read-only status here
-		//G***fix; make this parse the value string
-
-/*G***del
-		XMLCSSPrimitiveValue primitiveValue=(XMLCSSPrimitiveValue)getPropertyCSSValue(propertyName);	//see if there's already a property with this name in the attribute set
-		if(primitiveValue==null)	//G***testing
-*/
-			//G***what if this isn't a primitive value?
-//G***del System.out.println("Inside XMLCSSStyleDeclaration.setProperty with string: "+value);	//G***del
+		//TODO check for read-only status here
+		//TODO fix; make this parse the value string
+			//TODO what if this isn't a primitive value?
 
 			//check for shorthand properties
 /*TODO redo
-		if(propertyName.equals(CSS_PROP_BACKGROUND))  //if this is the background shorthand property G***fix for other types
+		if(propertyName.equals(CSS_PROP_BACKGROUND))  //if this is the background shorthand property TODO fix for other types
 		{
-//G***del Debug.trace("Found background property; setting shorthand background");
 		  setBackgroundProperty(value, priority);  //set the background property
-//G***del Debug.trace("background property returning");
 			return;
 		}
 		else
@@ -287,33 +256,33 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 			setPropertyCSSValue(propertyName, new XMLCSSPrimitiveValue(CSSPrimitiveValue.CSS_UNKNOWN, value));	//create a general XML CSS primitive value
 			return;
 		}
-/*G***fix
-		if(propertyName.equals(CSS_PROP_BORDER))  //if this is the border shorthand property G***fix for other types
+/*TODO fix
+		if(propertyName.equals(CSS_PROP_BORDER))  //if this is the border shorthand property TODO fix for other types
 		{
 			final XMLCSSValueList borderValueList=XMLCSSValueList.createValueList(value); //create a list of the shorthand values
-				//G***check for "inherit"
+				//TODO check for "inherit"
 
 		}
 */
 
 		final XMLCSSValue cssValue=parseValue(propertyName, value); //parse the incoming value
 
-/*G***fix
-		XMLCSSValue cssValue=null;	//we'll assign a value to this variable based upon which type of CSS value should be created G***is this the right way to do this? make sure the identical code in XMLCSSProcessor is in sync
-		if(propertyName.equals(CSS_PROP_TEXT_DECORATION))	//if this is the text decoration property G***fix for other types
+/*TODO fix
+		XMLCSSValue cssValue=null;	//we'll assign a value to this variable based upon which type of CSS value should be created TODO is this the right way to do this? make sure the identical code in XMLCSSProcessor is in sync
+		if(propertyName.equals(CSS_PROP_TEXT_DECORATION))	//if this is the text decoration property TODO fix for other types
 		{
 			cssValue=XMLCSSValueList.createValueList(value);	//create a new list of values
 		}
 		else
 			cssValue=XMLCSSPrimitiveValue.createPrimitiveValue(propertyName, value);	//create a new primitive value
 */
-//G***del if not needed		if(cssValue!=null)	//if we were able to construct a valid value object
+//TODO del if not needed		if(cssValue!=null)	//if we were able to construct a valid value object
 		{
 			cssValue.setPriority(priority);	//set the priority of the property
 			setPropertyCSSValue(propertyName, cssValue);  //set the property, which places the value in the map
-//G***del when works			put(propertyName, cssValue);	//put the property in our map, replacing any existing value
+//TODO del when works			put(propertyName, cssValue);	//put the property in our map, replacing any existing value
 		}
-/*G***del if not needed
+/*TODO del if not needed
 		else	//if we couldn't parse the value
 			throw new XMLDOMException(XMLDOMException.SYNTAX_ERR, new Object[]{value});	//show that this property value has a syntax error
 */
@@ -323,23 +292,23 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 	For the DOM version see setPropertyValue().
 	@param propertyName  The name of the CSS property. See the CSS property index.
 	@param cssValue  The new value of the property.
-//G***del or fix	@param priority  The new priority of the property (e.g. "important").
+//TODO del or fix	@param priority  The new priority of the property (e.g. "important").
 	@exception DOMException
 	<ul>
 		<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this declaration is readonly.</li>
 	</ul>
 	@see XMLCSSStyleDeclaration setPropertyCSSValue
 	*/
-	public void setPropertyCSSValue(String propertyName, final CSSValue cssValue/*G***del or fix, String priority*/) throws DOMException
+	public void setPropertyCSSValue(String propertyName, final CSSValue cssValue/*TODO del or fix, String priority*/) throws DOMException
 	{
-		//G***check for read-only status here
-		//G***fix
-/*G***del when works
+		//TODO check for read-only status here
+		//TODO fix
+/*TODO del when works
 		XMLCSSValue oldValue=(XMLCSSValue)getPropertyCSSValue(propertyName);	//get the current value, if any
 		if(oldValue==null)	//if there isn't a value already
-			oldValue=new XMLCSSPrimitiveValue(XMLCSSPrimitiveValue.CSS_IDENT);	//G***testing
-		primitiveValue.setStringValue(XMLCSSPrimitiveValue.CSS_IDENT, value);	//G***testing
-		primitiveValue.setPriority(priority);	//G***testing
+			oldValue=new XMLCSSPrimitiveValue(XMLCSSPrimitiveValue.CSS_IDENT);	//TODO testing
+		primitiveValue.setStringValue(XMLCSSPrimitiveValue.CSS_IDENT, value);	//TODO testing
+		primitiveValue.setPriority(priority);	//TODO testing
 */
 		put(propertyName, cssValue);	//store the value
 	}
@@ -365,24 +334,22 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 		object.
 	@param propertyName The name of the CSS property. See the CSS property index.
 	@param valueString The new value of the property.
-//G***fix	@param priority The new priority of the property (e.g. "important").
-//G***fix, decide which to use	@exception DOMException
+//TODO fix	@param priority The new priority of the property (e.g. "important").
+//TODO fix, decide which to use	@exception DOMException
 	<ul>
 		<li>SYNTAX_ERR: Raised if the specified value has a syntax error and is unparsable.</li>
-//G***del		<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this declaration is readonly.</li>
 	</ul>
 	*/
 	protected static XMLCSSValue parseValue(final String propertyName, final String valueString) throws DOMException
 	{
-//G***del Debug.trace("ready to parse value from value string: ", valueString); //G***del
-		XMLCSSValue value=null;	//we'll assign a value to this variable based upon which type of CSS value should be created G***is this the right way to do this? make sure the identical code in XMLCSSSTyleDeclaration is in sync
-//TODO fix; this is incorrect		if(propertyName.equals(CSS_PROP_TEXT_DECORATION)	//if this is the text decoration property G***fix for other types
+		XMLCSSValue value=null;	//we'll assign a value to this variable based upon which type of CSS value should be created TODO is this the right way to do this? make sure the identical code in XMLCSSSTyleDeclaration is in sync
+//TODO fix; this is incorrect		if(propertyName.equals(CSS_PROP_TEXT_DECORATION)	//if this is the text decoration property TODO fix for other types
 		if(CSS_PROP_FONT_FAMILY.equals(propertyName))    //if this is a font-family property
 		{
 			value=XMLCSSValueList.createValueList(valueString);	//create a new list of values
 		}
 		else
-			value=XMLCSSPrimitiveValue.createPrimitiveValue(/*G***del if not needed propertyName, */valueString);	//create a new primitive value
+			value=XMLCSSPrimitiveValue.createPrimitiveValue(/*TODO del if not needed propertyName, */valueString);	//create a new primitive value
 		if(value!=null)	//if we were able to construct a valid value object
 			return value;	//return the value
 		else	//if there was an error processing the value string
@@ -403,25 +370,25 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 	protected void setBackgroundProperty(String value, String priority) throws DOMException
 	{
 	  final StringTokenizer stringTokenizer=new StringTokenizer(value, WHITESPACE_CHARS); //create a string tokenizer to look at the individual values, which can apparently be in any order
-	  while(stringTokenizer.hasMoreTokens())  //while there are more tokens G***this currently will not work with quoted strings with spaces
+	  while(stringTokenizer.hasMoreTokens())  //while there are more tokens TODO this currently will not work with quoted strings with spaces
 		{
 			final String token=stringTokenizer.nextToken(); //get the next token
 			final XMLCSSPrimitiveValue primitiveValue=XMLCSSPrimitiveValue.createPrimitiveValue(token); //create a primitive value from this value
-		  if(primitiveValue!=null)  //if we were able to parse this primitive value G***fix exception handling here, and what to do on error
+		  if(primitiveValue!=null)  //if we were able to parse this primitive value TODO fix exception handling here, and what to do on error
 		  {
 				primitiveValue.setPriority(priority);	//set the priority of the property
 					//if the value is an RGB color or a color identifier value, it's the background color
 				if(primitiveValue.getPrimitiveType()==primitiveValue.CSS_RGBCOLOR ||
-					(primitiveValue.getPrimitiveType()==primitiveValue.CSS_IDENT && XMLCSSUtilities.getColor(primitiveValue.getStringValue())!=null))
+					(primitiveValue.getPrimitiveType()==primitiveValue.CSS_IDENT && XMLCSS.getColor(primitiveValue.getStringValue())!=null))
 				{
 				  setPropertyCSSValue(CSS_PROP_BACKGROUND_COLOR, primitiveValue); //set the background color property
 				}
 		  }
-/*G***del when works
+/*TODO del when works
 			if(XMLCSSUtilities.getColor(token)!=null) //if this is a color
 				setProperty(CSS_PROP_BACKGROUND_COLOR, token, priority);  //set the background color property
 */
-			//G***check for "inherit"
+			//TODO check for "inherit"
 		}
 //	public static Color getColor(final String colorString)
 	}
@@ -442,11 +409,11 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 		if(values.length)
 		
 	  final StringTokenizer stringTokenizer=new StringTokenizer(value, WHITESPACE_CHARS); //create a string tokenizer to look at the individual values
-	  while(stringTokenizer.hasMoreTokens())  //while there are more tokens G***this currently will not work with quoted strings with spaces
+	  while(stringTokenizer.hasMoreTokens())  //while there are more tokens TODO this currently will not work with quoted strings with spaces
 		{
 			final String token=stringTokenizer.nextToken(); //get the next token
 			final XMLCSSPrimitiveValue primitiveValue=XMLCSSPrimitiveValue.createPrimitiveValue(token); //create a primitive value from this value
-		  if(primitiveValue!=null)  //if we were able to parse this primitive value G***fix exception handling here, and what to do on error
+		  if(primitiveValue!=null)  //if we were able to parse this primitive value TODO fix exception handling here, and what to do on error
 		  {
 				primitiveValue.setPriority(priority);	//set the priority of the property
 					//if the value is an RGB color or a color identifier value, it's the background color
@@ -456,7 +423,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 				  setPropertyCSSValue(CSS_PROP_BACKGROUND_COLOR, primitiveValue); //set the background color property
 				}
 		  }
-			//G***check for "inherit"
+			//TODO check for "inherit"
 		}
 	//public static Color getColor(final String colorString)
 	}
@@ -474,13 +441,10 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 	@since DOM Level 2
 	*/
 
-	//G***fix it so that whenever a StyleRule adds a CSSSStyleDeclaration, this value gets set
-
+	//TODO fix it so that whenever a StyleRule adds a CSSSStyleDeclaration, this value gets set
 	public CSSRule getParentRule() {return ParentRule;}
 
-
-//G***add other properties here
-
+//TODO add other properties here
 
     /**
      *  See the background property definition in CSS2.
@@ -489,12 +453,11 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
      */
-/*G***fix
+/*TODO fix
     public String getBackground();
     public void setBackground(String background)
                                              throws DOMException;
 */
-
 
 	/**@return The value of the CSS border property.*/
 	public String getBorder() {return getPropertyValue(CSS_PROP_BORDER);}
@@ -519,7 +482,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
      */
-/*G***fix
+/*TODO fix
     public String getBorderCollapse();
     public void setBorderCollapse(String borderCollapse) throws DOMException;
 */
@@ -531,7 +494,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
      */
-/*G***fix
+/*TODO fix
     public String getBorderColor();
     public void setBorderColor(String borderColor) throws DOMException;
 */
@@ -543,7 +506,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
      */
-/*G***fix
+/*TODO fix
     public String getBorderSpacing();
     public void setBorderSpacing(String borderSpacing) throws DOMException;
 */
@@ -555,7 +518,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
      */
-/*G***fix
+/*TODO fix
     public String getBorderStyle();
     public void setBorderStyle(String borderStyle) throws DOMException;
 */
@@ -567,7 +530,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
      */
-/*G***fix
+/*TODO fix
     public String getBorderTop();
     public void setBorderTop(String borderTop) throws DOMException;
 */
@@ -579,7 +542,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
      */
-/*G***fix
+/*TODO fix
     public String getBorderRight();
     public void setBorderRight(String borderRight) throws DOMException;
 */
@@ -591,7 +554,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
      */
-/*G***fix
+/*TODO fix
     public String getBorderBottom();
     public void setBorderBottom(String borderBottom) throws DOMException;
 */
@@ -603,7 +566,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
      */
-/*G***fix
+/*TODO fix
     public String getBorderLeft();
     public void setBorderLeft(String borderLeft) throws DOMException;
 */
@@ -615,7 +578,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
      */
-/*G***fix
+/*TODO fix
     public String getBorderTopColor();
     public void setBorderTopColor(String borderTopColor) throws DOMException;
 */
@@ -627,7 +590,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
      */
-/*G***fix
+/*TODO fix
     public String getBorderRightColor();
     public void setBorderRightColor(String borderRightColor) throws DOMException;
 */
@@ -639,7 +602,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
      */
-/*G***fix
+/*TODO fix
     public String getBorderBottomColor();
     public void setBorderBottomColor(String borderBottomColor) throws DOMException;
 */
@@ -651,7 +614,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
      */
-/*G***fix
+/*TODO fix
     public String getBorderLeftColor();
     public void setBorderLeftColor(String borderLeftColor) throws DOMException;
 */
@@ -663,7 +626,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
      */
-/*G***fix
+/*TODO fix
     public String getBorderTopStyle();
     public void setBorderTopStyle(String borderTopStyle) throws DOMException;
 */
@@ -675,7 +638,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
      */
-/*G***fix
+/*TODO fix
     public String getBorderRightStyle();
     public void setBorderRightStyle(String borderRightStyle) throws DOMException;
 */
@@ -687,7 +650,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
      */
-/*G***fix
+/*TODO fix
     public String getBorderBottomStyle();
     public void setBorderBottomStyle(String borderBottomStyle) throws DOMException;
 */
@@ -699,7 +662,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
      */
-/*G***fix
+/*TODO fix
     public String getBorderLeftStyle();
     public void setBorderLeftStyle(String borderLeftStyle) throws DOMException;
 */
@@ -711,7 +674,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
      */
-/*G***fix
+/*TODO fix
     public String getBorderTopWidth();
     public void setBorderTopWidth(String borderTopWidth) throws DOMException;
 */
@@ -723,7 +686,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
      */
-/*G***fix
+/*TODO fix
     public String getBorderRightWidth();
     public void setBorderRightWidth(String borderRightWidth) throws DOMException;
 */
@@ -735,7 +698,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
      */
-/*G***fix
+/*TODO fix
     public String getBorderBottomWidth();
     public void setBorderBottomWidth(String borderBottomWidth) throws DOMException;
 */
@@ -747,7 +710,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
      */
-/*G***fix
+/*TODO fix
     public String getBorderLeftWidth();
     public void setBorderLeftWidth(String borderLeftWidth) throws DOMException;
 */
@@ -759,26 +722,10 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
      */
-/*G***fix
+/*TODO fix
     public String getBorderWidth();
     public void setBorderWidth(String borderWidth) throws DOMException;
 */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	/**@return The CSS2 "color" property.
 	@version DOM Level 2
@@ -981,7 +928,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 	@version DOM Level 2
 	@since DOM Level 2
 	*/
-//G***fix	public String getListStyle() {return getPropertyValue(CSS_PROP_LIST_STYLE);
+//TODO fix	public String getListStyle() {return getPropertyValue(CSS_PROP_LIST_STYLE);
 
 	/**Sets the CSS2 "list-style" property.
 	@param listStyle The new style value
@@ -991,7 +938,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
      */
-//G***fix    public void setListStyle(String listStyle) throws DOMException;
+//TODO fix    public void setListStyle(String listStyle) throws DOMException;
 
     /**
      *  See the list-style-image property definition in CSS2.
@@ -1000,7 +947,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
      */
-/*G***fix
+/*TODO fix
     public String getListStyleImage();
     public void setListStyleImage(String listStyleImage)
                                              throws DOMException;
@@ -1013,7 +960,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
      */
-/*G***fix
+/*TODO fix
     public String getListStylePosition();
     public void setListStylePosition(String listStylePosition)
                                              throws DOMException;
@@ -1043,7 +990,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
      */
-/*G***fix
+/*TODO fix
     public String getMargin();
     public void setMargin(String margin)
                                              throws DOMException;
@@ -1154,8 +1101,8 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
      */
-//G***fix    public String getPageBreakInside();
-//G***fix    public void setPageBreakInside(String pageBreakInside) throws DOMException;
+//TODO fix    public String getPageBreakInside();
+//TODO fix    public void setPageBreakInside(String pageBreakInside) throws DOMException;
 
     /**
      *  See the  text-decoration property definition in CSS2.
@@ -1165,7 +1112,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
      *   <br> NO_MODIFICATION_ALLOWED_ERR: Raised if this property is
      *   readonly.
      */
-/*G***fix
+/*TODO fix
 	public String getTextDecoration()
 	{
 
@@ -1185,7 +1132,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 		setProperty(CSS_PROP_TEXT_DECORATION, textDecoration);	//set the property
 	}
 
-//G***add other properties here
+//TODO add other properties here
 
 	/**@return The CSS2 "text-indent" property.
 	@version DOM Level 2
@@ -1206,7 +1153,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 		setProperty(CSS_PROP_TEXT_INDENT, textIndent);	//set the property
 	}
 
-//G***add other properties here
+//TODO add other properties here
 
 	/**@return The <code>text-transform</code> property value of CSS2.*/
 	public String getTextTransform() {return getPropertyValue(CSS_PROP_TEXT_TRANSFORM);}

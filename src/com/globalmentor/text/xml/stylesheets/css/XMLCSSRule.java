@@ -1,3 +1,19 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml.stylesheets.css;
 
 import org.w3c.dom.DOMException;
@@ -5,13 +21,15 @@ import org.w3c.dom.css.*;
 
 /**The class which forms a basis for all CSS rules, including rule sets and
 at-rules.
+@author Garret Wilson
 @version DOM Level 2
 @since DOM Level 2
 @see org.w3c.dom.css.CSSRule
+@deprecated
 */
-public abstract class XMLCSSRule implements CSSRule//G***fix, Cloneable
+public abstract class XMLCSSRule implements CSSRule//TODO fix, Cloneable
 {
-	/*Constructor which requires a parent stylesheet to be specified.
+	/**Constructor which requires a parent stylesheet to be specified.
 	@param type The type of this CSS rule.
 	@param parentStyleSheet The parent of this stylesheet.
 	@see XMLDocument
@@ -33,16 +51,8 @@ public abstract class XMLCSSRule implements CSSRule//G***fix, Cloneable
 	*/
 	public short getType() {return Type;}
 
-	/**Sets the node type of this object. This is not a DOM function, but a
-	protected function that allows derived objects to set the node type.
-	@param nodeType The new node type.
-	G***do we want to delete this, and make this have to be specified when the node is created?
-	*/
-//G***del		protected void setNodeType(final short nodeType) {NodeType=nodeType;}
-
-
 	/**The parsable textual representation of the rule.*/
-//G***fix	private String CssText="";
+//TODO fix	private String CssText="";
 
 	/**Returns the parsable textual representation of the rule. This reflects the
 	current state of the rule and not its initial value.
@@ -50,7 +60,7 @@ public abstract class XMLCSSRule implements CSSRule//G***fix, Cloneable
 	@version DOM Level 2
 	@since DOM Level 2
 	*/
-//G***fix	public abstract String getCssText();
+//TODO fix	public abstract String getCssText();
 
 	/**Sets the parsable textual representation of the rule. This reflects the
 	current state of the rule and not its initial value.
@@ -69,15 +79,14 @@ public abstract class XMLCSSRule implements CSSRule//G***fix, Cloneable
 	*/
 	public void setCssText(String cssText) throws DOMException
 	{
-			//G***we need to just parse the text here, probably
+			//TODO we need to just parse the text here, probably
 
-		//G***check for syntax error
-		//G***check for invalid modification
-		//G***check for hierarchy request error
-		//G***check for read-only status
-//G***fix		CssText=cssText;	//set the text
+		//TODO check for syntax error
+		//TODO check for invalid modification
+		//TODO check for hierarchy request error
+		//TODO check for read-only status
+//TODO fix		CssText=cssText;	//set the text
 	}
-
 
 	/**The stylesheet which contains this rule.*/
 	private XMLCSSStyleSheet ParentStyleSheet=null;
@@ -90,14 +99,13 @@ public abstract class XMLCSSRule implements CSSRule//G***fix, Cloneable
 	*/
 	public CSSStyleSheet getParentStyleSheet() {return ParentStyleSheet;}
 
-
 	/**Specifies which XML document owns this node. Can only be accessed from
 	within this package.
 	@param ownerDocument The document which owns this node.
 	@see XMLDocument
 	@see XMLNode#getOwnerXMLDocument
 	*/
-//G***fix	void setOwnerXMLDocument(final XMLDocument ownerDocument) {OwnerDocument=ownerDocument;}
+//TODO fix	void setOwnerXMLDocument(final XMLDocument ownerDocument) {OwnerDocument=ownerDocument;}
 
 	/**Returns the document associated with this node, which was also in most
 	circumstances the document which created this node. This will be <code>null</code>
@@ -107,7 +115,7 @@ public abstract class XMLCSSRule implements CSSRule//G***fix, Cloneable
 	@see XMLNode#getOwnerXMLDocument
 	@version DOM Level 2
 	*/
-//G***fix	public Document getOwnerDocument() {return OwnerDocument;}
+//TODO fix	public Document getOwnerDocument() {return OwnerDocument;}
 
 	/**The rule which contains this rule.*/
 	private XMLCSSRule ParentRule=null;

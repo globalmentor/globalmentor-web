@@ -29,7 +29,7 @@ import org.w3c.dom.NodeList;
 import com.garretwilson.net.URIs;
 
 import static com.globalmentor.text.CharacterEncoding.*;
-import static com.globalmentor.text.xml.XMLUtilities.*;
+import static com.globalmentor.text.xml.XML.*;
 
 import com.globalmentor.io.Files;
 import com.globalmentor.io.ParseEOFException;
@@ -71,7 +71,6 @@ TODO make tidy fix things like <li>All rights reserved.</p></li>; right now it t
 	<p>If possible, each instance of this class caches any DTDs loaded. This means
 		performance increases can be achieved if the same XML processor is used for
 		loading multiple documents which reference the same external DTD subset.</p>
-@see XML
 @author Garret Wilson
 @deprecated
 */

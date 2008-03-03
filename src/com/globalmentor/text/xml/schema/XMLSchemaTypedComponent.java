@@ -1,3 +1,19 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml.schema;
 
 /**Represents one of the schema components that can be assigned a type:
@@ -9,6 +25,7 @@ This should not be confused with <code>XMLSchemaTypeComponent</code>, which
 actually represents a one of the types this component can be assigned.
 @see XMLSchemaTypeComponent
 @author Garret Wilson
+@deprecated
 */
 public abstract class XMLSchemaTypedComponent extends XMLSchemaPrimaryComponent
 {
@@ -17,7 +34,7 @@ public abstract class XMLSchemaTypedComponent extends XMLSchemaPrimaryComponent
 	private String typeName=null;
 
 		/**@return The name of the component type, which will be the same as the
-		  name of the type component if one has been assigned. G***is that how we want to do this?
+		  name of the type component if one has been assigned. TODO is that how we want to do this?
 		@see @getType
 		*/
 		public String getTypeName() {return typeName;}
@@ -37,7 +54,7 @@ public abstract class XMLSchemaTypedComponent extends XMLSchemaPrimaryComponent
 		*/
 		public XMLSchemaTypeComponent getType() {return type;}
 
-		/**Sets data type of this component. G***what about updating the type name
+		/**Sets data type of this component. TODO what about updating the type name
 		@param newType The new data type for this component.
 		*/
 		public void setType(final XMLSchemaTypeComponent newType) {type=newType;}
@@ -63,10 +80,8 @@ public abstract class XMLSchemaTypedComponent extends XMLSchemaPrimaryComponent
 
 	/**Constructs a schema typed component.
 	@param newComponentType The type of XML schema component this is.
-//G***del if not needed	@param ownerDocument The document which owns this node.
-//G***del if not needed	@see XMLDocument
 	*/
-	public XMLSchemaTypedComponent(final short newComponentType/*G***del if not needed, final XMLDocument ownerDocument*/)
+	public XMLSchemaTypedComponent(final short newComponentType)
 	{
 		super(newComponentType);  //construct the parent class
 	}
@@ -75,9 +90,7 @@ public abstract class XMLSchemaTypedComponent extends XMLSchemaPrimaryComponent
 		This method determines order based upon the combination of the target
 		namespace, scope name (if present), and the component name. Global scopes
 		and <code>null</code> namespaces are sorted appear earliest in the list.
-//G***fix		 If
-//G***fix		the object being compared is not an XMLSchemaTypedComponent, the parent
-//G***fix		compare class is used
+//TODO fix		 If the object being compared is not an XMLSchemaTypedComponent, the parent compare class is used
 		If the scope of either object is <code>null</code>, scope will not be
 		considered for comparing. The complex type scopes of locally scoped
 		components should have names for sorting to occur correctly.
@@ -90,7 +103,7 @@ public abstract class XMLSchemaTypedComponent extends XMLSchemaPrimaryComponent
 	@see #getScope
 	@see #getCompareName
 	*/
-	public int compareTo(Object object) throws ClassCastException //G***do we want to allow comparing with a normal XMLSchemaNamedComponent?
+	public int compareTo(Object object) throws ClassCastException //TODO do we want to allow comparing with a normal XMLSchemaNamedComponent?
 	{
 		final XMLSchemaTypedComponent typedComponent=(XMLSchemaTypedComponent)object; //cast the object to the correct type
 		//if our target namespace is null and the other target namespace is not null
@@ -108,7 +121,7 @@ public abstract class XMLSchemaTypedComponent extends XMLSchemaPrimaryComponent
 			if(getScope()!=null && typedComponent.getScope()!=null)  //make sure neither has a null scope
 			{
 				//if our scope is global and the other target namespace is not global
-				if((getScope() instanceof XMLSchema) && !(typedComponent.getScope() instanceof XMLSchema))  //G***do we want to simply compare this to getOwnerSchema(), if we add that later?
+				if((getScope() instanceof XMLSchema) && !(typedComponent.getScope() instanceof XMLSchema))  //TODO do we want to simply compare this to getOwnerSchema(), if we add that later?
 				{
 					return -1;  //a global scope is always less than a local scope
 				}

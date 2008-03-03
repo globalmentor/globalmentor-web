@@ -24,7 +24,7 @@ import javax.xml.validation.Schema;
 
 import com.globalmentor.io.IO;
 
-import static com.globalmentor.text.xml.XMLUtilities.*;
+import static com.globalmentor.text.xml.XML.*;
 
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;

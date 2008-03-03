@@ -444,12 +444,12 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
 	{
 		//TODO check for valid name characters here
 		//TODO check for read-only status here
-		final String localName=XMLUtilities.getLocalName(qualifiedName); //get the local name of the qualified name
+		final String localName=XML.getLocalName(qualifiedName); //get the local name of the qualified name
 		XMLAttribute attribute;	//we'll use this to either find an existing attribute or create a new one
 		if(getAttributeXMLNamedNodeMap().containsKeyNS(namespaceURI, localName))	//if an attribute with this name already exists
 		{
 			attribute=(XMLAttribute)getAttributeXMLNamedNodeMap().getNamedItemNS(namespaceURI, localName);  //get a reference to that attribute
-		  final String prefix=XMLUtilities.getPrefix(qualifiedName); //get the prefix of the qualified name
+		  final String prefix=XML.getPrefix(qualifiedName); //get the prefix of the qualified name
 		  attribute.setPrefix(prefix);  //update the prefix
 		  attribute.setValue(value);  //update the attribute's value
 		}
@@ -649,7 +649,7 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
 
     public String getTextContent() throws DOMException	//TODO fix for DOM 3 in XMLNode
       {
-      	return XMLUtilities.getText(this, true);
+      	return XML.getText(this, true);
       }
 
 }

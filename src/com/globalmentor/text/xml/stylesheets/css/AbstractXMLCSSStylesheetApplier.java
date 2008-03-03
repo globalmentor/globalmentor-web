@@ -1,3 +1,19 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml.stylesheets.css;
 
 import java.io.BufferedInputStream;
@@ -8,18 +24,15 @@ import java.net.URISyntaxException;
 import java.util.*;
 import javax.mail.internet.ContentType;
 import com.garretwilson.net.URIs;
-import com.garretwilson.rdf.RDFObject;
 import com.garretwilson.rdf.RDFResource;
 import static com.garretwilson.rdf.xpackage.XMLOntologyUtilities.*;
 
-import static com.garretwilson.rdf.RDFUtilities.*;
 import static com.garretwilson.rdf.xpackage.XPackageUtilities.*;
-import static com.globalmentor.text.xml.stylesheets.XMLStyleSheetConstants.*;
+import static com.globalmentor.text.xml.stylesheets.XMLStyleSheets.*;
 import static com.globalmentor.text.xml.xhtml.XHTML.*;
 
-//G***del import com.garretwilson.text.xml.xhtml.XHTMLUtilities;  //G***del
 import com.globalmentor.io.*;
-import com.globalmentor.text.xml.XMLUtilities;
+import com.globalmentor.text.xml.XML;
 import com.globalmentor.text.xml.stylesheets.XMLStyleSheetDescriptor;
 import com.globalmentor.text.xml.xhtml.XHTML;
 import com.globalmentor.util.Debug;
@@ -31,6 +44,7 @@ import org.w3c.dom.css.*;
 @param <D> The document type.
 @param <E> The element type.
 @author Garret Wilson
+@deprecated
 */
 public abstract class AbstractXMLCSSStylesheetApplier<D, E> implements URIInputStreamable
 {
@@ -40,7 +54,7 @@ public abstract class AbstractXMLCSSStylesheetApplier<D, E> implements URIInputS
 	@return The base URI of the document, or <code>null</code> if the base URI
 		of the document is not known.
 	*/
-//G***del if not needed	protected abstract URI getDocumentBaseURI(final Object document);
+//TODO del if not needed	protected abstract URI getDocumentBaseURI(final Object document);
 
 	/**Returns the object that represents the root element of the given document.
 	@param document The object representing the XML document.
@@ -130,7 +144,7 @@ public abstract class AbstractXMLCSSStylesheetApplier<D, E> implements URIInputS
 			final CSSValue cssValue=importStyleDeclaration.getPropertyCSSValue(proprtyName);	//get the value for this property
 			styleDeclaration.setProperty(propertyName, cssValue.getCssText(), );			
 */
-			((XMLCSSStyleDeclaration)styleDeclaration).setPropertyCSSValue(propertyName, importStyleDeclaration.getPropertyCSSValue(propertyName));	//get this property value from the style declaration, and set it in our style declaration, replacing any value(s) already set G***do a clone() here before we set the value
+			((XMLCSSStyleDeclaration)styleDeclaration).setPropertyCSSValue(propertyName, importStyleDeclaration.getPropertyCSSValue(propertyName));	//get this property value from the style declaration, and set it in our style declaration, replacing any value(s) already set TODO do a clone() here before we set the value
 		}
 	}
 
@@ -157,12 +171,9 @@ public abstract class AbstractXMLCSSStylesheetApplier<D, E> implements URIInputS
 		for(int i=0; i<namespaceURIArray.length; ++i) //look at each namespace
 		{
 			final String namespaceURI=namespaceURIArray[i]; //get this namespace
-Debug.trace("getting default stylesheet for namespace: ", namespaceURI);  //G***del
-			final CSSStyleSheet cssStyleSheet=XMLCSSUtilities.getDefaultStyleSheet(namespaceURI);  //get the default stylesheet for the given namespace
+			final CSSStyleSheet cssStyleSheet=XMLCSS.getDefaultStyleSheet(namespaceURI);  //get the default stylesheet for the given namespace
 			if(cssStyleSheet!=null) //if we know about a default stylesheet for this namespace
 			{
-Debug.trace("Found default stylesheet for namespace: ", namespaceURI);  //G***del
-//G***del Debug.trace("Default stylesheet: ", cssStyleSheet);  //G***testing; del
 				styleSheetList.add(cssStyleSheet);  //add the default stylesheet to the list
 			}
 		}
@@ -175,9 +186,8 @@ Debug.trace("Found default stylesheet for namespace: ", namespaceURI);  //G***de
 			for(int i=0; i<styleSheetDescriptorArray.length; ++i) //look at each stylesheet descriptor
 			{
 				final XMLStyleSheetDescriptor styleSheetDescriptor=styleSheetDescriptorArray[i];  //get the next descriptor
-				assert styleSheetDescriptor.getHRef()!=null : "Stylesheet processing instruction has null href";  //G***fix
-				//G***do whatever we need to do for the media type, title, etc.
-//		G***del Debug.trace("Looking at stylesheet descriptor: ", styleSheetDescriptor.getHRef());  //G***del
+				assert styleSheetDescriptor.getHRef()!=null : "Stylesheet processing instruction has null href";  //TODO fix
+				//TODO do whatever we need to do for the media type, title, etc.
 				try
 				{
 						//create a URI from the original URI of the XML document and the stylesheet href
@@ -187,7 +197,6 @@ Debug.trace("Found default stylesheet for namespace: ", namespaceURI);  //G***de
 					try
 					{
 						final CSSStyleSheet cssStyleSheet=cssProcessor.parseStyleSheet(styleSheetReader, styleSheetURI); //parse the stylesheet
-//		G***del Debug.trace("parsed stylesheet: ", cssStyleSheet);  //G***testing; del
 						styleSheetList.add(cssStyleSheet);  //add this stylesheet to our list
 					}
 					finally
@@ -197,15 +206,15 @@ Debug.trace("Found default stylesheet for namespace: ", namespaceURI);  //G***de
 				}
 				catch(IOException ioException)  //if there are any I/O exceptions
 				{
-					Debug.warn(ioException);  //G***fix better
+					Debug.warn(ioException);  //TODO fix better
 				}
 				catch(URISyntaxException uriSyntaxException)  //if there are any URI syntax errors
 				{
-					Debug.warn(uriSyntaxException);  //G***fix better
+					Debug.warn(uriSyntaxException);  //TODO fix better
 				}
 			}
 		}
-			//process and gather any internal stylesheets G***right now, this is very HTML/OEB specific; fix to check the namespace or something
+			//process and gather any internal stylesheets TODO right now, this is very HTML/OEB specific; fix to check the namespace or something
 		final E documentElement=getDocumentElement(document);	//get the document element
 		final int childCount=getChildCount(documentElement);  //find out how many direct children are in the document
 		for(int childIndex=0; childIndex<childCount; ++childIndex)  //look at the direct children of the document element
@@ -242,13 +251,13 @@ Debug.trace("Found default stylesheet for namespace: ", namespaceURI);  //G***de
 			try
 			{
 				final String styleText=getElementText(element);  //get the text of the style element
-				final String descriptionString="Internal Style Sheet"; //create a string to describe the internal style sheet G***i18n
+				final String descriptionString="Internal Style Sheet"; //create a string to describe the internal style sheet TODO i18n
 				final CSSStyleSheet stylesheet=cssProcessor.parseStyleSheet(styleText, descriptionString); //parse the stylesheet
 				styleSheetList.add(stylesheet); //add this stylesheet to the list
 			}
 			catch(IOException ioException)  //if there are any I/O exceptions
 			{
-				Debug.warn(ioException);  //G***fix better
+				Debug.warn(ioException);  //TODO fix better
 			}
 		}
 		else  //if this is not a style element
@@ -279,7 +288,7 @@ Debug.trace("Found default stylesheet for namespace: ", namespaceURI);  //G***de
 	@param description An XPackage-compliant description of the document, or <code>null</code> if no description is available.
 	@return A non-<code>null</code> array of namespace URIs.
 	*/
-	protected String[] getNamespaceURIs(final D document, final ContentType mediaType, final RDFResource description)  //G***fix to actually look through all the namespaces, maybe, but that could be intensive -- on the other hand, a subclass could get that information from the OEB package, overriding the intensive part
+	protected String[] getNamespaceURIs(final D document, final ContentType mediaType, final RDFResource description)  //TODO fix to actually look through all the namespaces, maybe, but that could be intensive -- on the other hand, a subclass could get that information from the OEB package, overriding the intensive part
 	{
 		final Set<String> namespaceURISet=new HashSet<String>();	//create a set of namespaces
 		final E documentElement=getDocumentElement(document);	//get the root element of the document
@@ -288,7 +297,7 @@ Debug.trace("Found default stylesheet for namespace: ", namespaceURI);  //G***de
 		{
 			namespaceURISet.add(documentElementNamespaceURI);	//add the document element namespace to the namespace set
 		}
-		final URI mediaTypeNamespaceURI=XMLUtilities.getDefaultNamespaceURI(mediaType);	//see if we can find a default namespace for the media type
+		final URI mediaTypeNamespaceURI=XML.getDefaultNamespaceURI(mediaType);	//see if we can find a default namespace for the media type
 		if(mediaTypeNamespaceURI!=null)	//if we found a namespace for the media type
 		{
 			namespaceURISet.add(mediaTypeNamespaceURI.toString());	//add the content type namespace to the namespace set
@@ -329,7 +338,7 @@ Debug.trace("Found default stylesheet for namespace: ", namespaceURI);  //G***de
 				final String href=getLocationHRef(style);	//get the style location TODO fix; this incorrectly will resolve the location href against the document base URI rather than the publication base URI
 				if(href!=null)	//if there is an href
 				{
-					final XMLStyleSheetDescriptor styleSheetDescriptor=new XMLStyleSheetDescriptor(href); //create a new descriptor for this stylesheet G***fix for media type, title, etc.
+					final XMLStyleSheetDescriptor styleSheetDescriptor=new XMLStyleSheetDescriptor(href); //create a new descriptor for this stylesheet TODO fix for media type, title, etc.
 					styleSheetDescriptorList.add(styleSheetDescriptor); //add the stylesheet descriptor to our list
 				}
 			}
@@ -345,10 +354,10 @@ Debug.trace("Found default stylesheet for namespace: ", namespaceURI);  //G***de
 				final String processingInstructionData=(String)processingInstruction.getValue();  //get the processing instruction's data, assuming it's a string
 				//TODO check the media type, etc. here
 					//get the href pseudo-attribute, if it is defined
-				final String href=XMLUtilities.getProcessingInstructionPseudoAttributeValue(processingInstructionData, HREF_ATTRIBUTE);
+				final String href=XML.getProcessingInstructionPseudoAttributeValue(processingInstructionData, HREF_ATTRIBUTE);
 				if(href!=null)	//if there is an href
 				{
-					final XMLStyleSheetDescriptor styleSheetDescriptor=new XMLStyleSheetDescriptor(href); //create a new descriptor for this stylesheet G***fix for media type, title, etc.
+					final XMLStyleSheetDescriptor styleSheetDescriptor=new XMLStyleSheetDescriptor(href); //create a new descriptor for this stylesheet TODO fix for media type, title, etc.
 					styleSheetDescriptorList.add(styleSheetDescriptor); //add the stylesheet descriptor to our list
 				}
 			}
@@ -376,7 +385,7 @@ Debug.trace("Found default stylesheet for namespace: ", namespaceURI);  //G***de
 									final String href=getElementAttributeValue(headElement, null, ELEMENT_LINK_ATTRIBUTE_HREF);
 									if(href!=null)	//if there is an href
 									{
-										final XMLStyleSheetDescriptor styleSheetDescriptor=new XMLStyleSheetDescriptor(href); //create a new descriptor for this stylesheet G***fix for media type, title, etc.
+										final XMLStyleSheetDescriptor styleSheetDescriptor=new XMLStyleSheetDescriptor(href); //create a new descriptor for this stylesheet TODO fix for media type, title, etc.
 										styleSheetDescriptorList.add(styleSheetDescriptor); //add the stylesheet descriptor to our list
 									}
 								}
@@ -397,11 +406,10 @@ Debug.trace("Found default stylesheet for namespace: ", namespaceURI);  //G***de
 	public void applyStyleSheet(final CSSStyleSheet styleSheet, final E element)
 	{
 		final String elementLocalName=getElementLocalName(element);  //get the element's local name for quick lookup
-//G***del Debug.trace("applying stylesheet to element: ", elementLocalName);  //G***del
 		final CSSRuleList cssRuleList=styleSheet.getCssRules(); //get the list of CSS rules
 		for(int ruleIndex=0; ruleIndex<cssRuleList.getLength(); ++ruleIndex)	//look at each of our rules
 		{
-			if(cssRuleList.item(ruleIndex).getType()==CSSRule.STYLE_RULE)	//if this is a style rule G***fix for other rule types
+			if(cssRuleList.item(ruleIndex).getType()==CSSRule.STYLE_RULE)	//if this is a style rule TODO fix for other rule types
 			{
 				final CSSStyleRule cssStyleRule=(CSSStyleRule)cssRuleList.item(ruleIndex);	//get a reference to this style rule in the stylesheet
 				if(isApplicable(cssStyleRule, element, elementLocalName)) //if this style rule applies to this element
@@ -449,7 +457,7 @@ Debug.trace("Found default stylesheet for namespace: ", namespaceURI);  //G***de
 			final XMLCSSStyleDeclaration style=new XMLCSSStyleDeclaration(); //create a new style declaration
 			try
 			{
-				final ParseReader styleReader=new ParseReader(styleValue, "Element "+getElementLocalName(element)+" Local Style");	//create a string reader from the value of this local style attribute G***i18n
+				final ParseReader styleReader=new ParseReader(styleValue, "Element "+getElementLocalName(element)+" Local Style");	//create a string reader from the value of this local style attribute TODO i18n
 				XMLCSSProcessor.parseRuleSet(styleReader, style); //read the style into our style declaration
 				importCSSStyle(element, style);	//import this style into whatever style we've collected so far for this element, if any
 			}
@@ -475,37 +483,14 @@ Debug.trace("Found default stylesheet for namespace: ", namespaceURI);  //G***de
 	@param element The element this style might apply to.
 	@param elementLocalName The element's local name for quick lookup.
 	*/
-/*G***del if not needed
-	protected boolean isApplicable(final CSSStyleRule cssStyleRule, final Object element)
-	{
-		return isApplicable(cssStyleRule, element, getElementLocalName(element));	//pass along the local name of the element for quick lookup
-	}
-*/
-
-	/**Determines whether, based upon this style rule's selectors, the given style
-		applies to the specified element.
-	@param cssStyleRule The style rule to check against.
-	@param element The element this style might apply to.
-	@param elementLocalName The element's local name for quick lookup.
-	*/
 	protected boolean isApplicable(final CSSStyleRule cssStyleRule, final E element, final String elementLocalName)
 	{
-//G***del Debug.trace("Checking to see if: "+getSelectorText()+" applies to: "+element.getNodeName());
-		final XMLCSSStyleRule xmlCSSStyleRule=(XMLCSSStyleRule)cssStyleRule;  //G***fix; right now we use special features of our CSS DOM implementation -- fix to use just the normal CSS DOM
+		final XMLCSSStyleRule xmlCSSStyleRule=(XMLCSSStyleRule)cssStyleRule;  //TODO fix; right now we use special features of our CSS DOM implementation -- fix to use just the normal CSS DOM
 		for(int selectorIndex=0; selectorIndex<xmlCSSStyleRule.getSelectorArrayList().size(); ++selectorIndex)	//look at each selector array
 		{
 			final XMLCSSSelector[] contextArray=(XMLCSSSelector[])xmlCSSStyleRule.getSelectorArrayList().get(selectorIndex);	//get a reference to this array of selectors
-/*G***del
-Debug.trace("Checking against the following context, right-to-left:");
-		for(int contextIndex=contextArray.length-1; contextIndex>=0; --contextIndex)	//G***del; testing
-		{
-			final XMLCSSSelector selectorContext=contextArray[contextIndex];	//
-Debug.trace("Context "+contextIndex+": "+selectorContext.getTagName());	//G***del
-		}
-*/
 			if(isApplicable(contextArray, element, elementLocalName))	//if this context array applies to the element
 			{
-//G***del Debug.trace("Context array applies to element "+element.getNodeName());	//G***del
 				return true;	//we don't need to check the others; we've found a match
 			}
 		}
@@ -519,28 +504,23 @@ Debug.trace("Context "+contextIndex+": "+selectorContext.getTagName());	//G***de
 	@param element The element this context array might apply to.
 	@param elementLocalName The element's local name for quick lookup.
 	*/
-	protected boolean isApplicable(final XMLCSSSelector[] contextArray, E element, String elementLocalName) //G***this method may be modified or go away when we fully switch to the DOM
+	protected boolean isApplicable(final XMLCSSSelector[] contextArray, E element, String elementLocalName) //TODO this method may be modified or go away when we fully switch to the DOM
 	{
 		//first see if we can do a quick comparison on the most common type of selector: name-based selectors
 		if(contextArray.length==1)  //if there is only one context in the array
 		{
 			final XMLCSSSelector selectorContext=contextArray[0];	//get the only context of the selector
 				//if this context only looks at the tag name
-			if(selectorContext.getTagName().length()>0 && selectorContext.getTagClass().length()==0)  //G***fix for CSS2 and CSS3
+			if(selectorContext.getTagName().length()>0 && selectorContext.getTagClass().length()==0)  //TODO fix for CSS2 and CSS3
 			{
-//G***del Debug.trace("we can do a quick CSS selection for element: ", elementLocalName);  //G***del
 				return selectorContext.getTagName().equals(elementLocalName); //compare tag names here without going on to anything more complicated
 			}
 		}
-//G***del Debug.trace("we *cannot* do a quick CSS selection for element: ", elementLocalName);  //G***del
 		for(int contextIndex=contextArray.length-1; contextIndex>=0; --contextIndex)	//look at each context for this selector, working from the last one (applying to this element) to the first one (applying to an ancestor of this element)
 		{
-//G***del Debug.trace("Checking element: "+element.getNodeName());
 			final XMLCSSSelector selectorContext=contextArray[contextIndex];	//get this context of the selector
-//G***del Debug.trace("against: "+selectorContext.getCssText());
 			if(!isApplicable(selectorContext, element, elementLocalName))	//if this selector context does not apply to this element
 				return false;	//this entire contextual selector does not apply
-//G***del Debug.trace("matches");
 			if(contextIndex>0)	//if we're still working our way up the chain
 			{
 				element=getParentElement(element); //get this element's parent
@@ -566,15 +546,13 @@ Debug.trace("Context "+contextIndex+": "+selectorContext.getTagName());	//G***de
 		contained in this selector.
 	@param elementLocalName The element's local name for quick lookup.
 	*/
-	protected boolean isApplicable(final XMLCSSSelector selectorContext, final E element, final String elementLocalName)  //G***this method may be modified or go away when we fully switch to the DOM
+	protected boolean isApplicable(final XMLCSSSelector selectorContext, final E element, final String elementLocalName)  //TODO this method may be modified or go away when we fully switch to the DOM
 	{
-//G***del Debug.trace("XMLCSSSelector checking to see if "+element.getNodeName()+" matches "+getCssText()); //G***del
-			//G***later, add the CSS ID checking
-			//G**later make this more robust for CSS 2 and CSS 3
+			//TODO later, add the CSS ID checking
+			//TODO later make this more robust for CSS 2 and CSS 3
 		if(selectorContext.getTagName().length()==0 || selectorContext.getTagName().equals(elementLocalName))  //if the tag names match, or we don't have a tag name to match with (which means we'll be matching class only)
 		{
-//G***del Debug.trace("Element "+element.getNodeName()+" matched, now checking to see if class: "+element.getAttributeNS(null, "class")+" equals the tag we expect: "+getTagClass());	//G***del
-					//G***right now this is XHTML-specific---make more generic if possible
+					//TODO right now this is XHTML-specific---make more generic if possible
 			if(selectorContext.getTagClass().length()==0 || selectorContext.getTagClass().equals(getElementAttributeValue(element, null, XHTML.ATTRIBUTE_CLASS)))	//if the class names match as well (or there isn't a specified class in this selector)
 				return true;
 		}

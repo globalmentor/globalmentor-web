@@ -1,68 +1,47 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml.stylesheets;
 
-//G***del import java.util.Iterator;
 import java.util.ArrayList;
-import org.w3c.dom.DOMException;
-import org.w3c.dom.stylesheets.StyleSheet;
 
 import com.globalmentor.text.xml.XMLDOMException;
+
+import org.w3c.dom.DOMException;
 
 /**An ordered collection of media. An empty list is the same as a list that
 contains the medium <code>"all"</code>.
 @see org.w3c.dom.stylesheets.MediaList
+@deprecated
 */
 public class XMLMediaList extends ArrayList implements org.w3c.dom.stylesheets.MediaList
 {
 
-	/**Creates and returns a duplicate copy of this node list with no values.
-	@return A duplicate "shallow clone" copy of this node list.
-	@see XMLNode#cloneXMLNode
-	@see XMLNode#cloneNode
-	@see XMLNodeList#cloneDeep
-	@see Object#clone
-	*/
-/*G***del if we don't need
-	public Object clone()
-	{
-		return new XMLNodeList();	//create a new node list and return it
-	}
-*/
-
-	/**Creates and returns a duplicate copy of this node list containing clones of all its children.
-	@return A duplicate "deep clone" copy of this node list.
-	@see XMLNode#cloneXMLNode
-	@see XMLNode#cloneNode
-	@see XMLNodeList#clone
-	*/
-/*G***del if we don't ned
-	public XMLNodeList cloneDeep()
-	{
-		final XMLNodeList clone=(XMLNodeList)clone();	//create a new node list
-		for(int i=0; i<size(); ++i)	//look at each node in our list
-			clone.add(((XMLNode)get(i)).cloneXMLNode(true));	//deep clone this node and store it in our node list clone
-		return clone;	//return our cloned node list
-	}
-
-*/
-
-
 	/**The parsable textual representation of the media list in comma-separated
-
 	format.
-
 	*/
-
 	private String CssText="";
 
-
 	/**Returns the parsable textual representation of the media list in comma-separated
-
 	format.
 	@return The parsable comma-separated textual representation of the media list.
 	@version DOM Level 2
 	@since DOM Level 2
 	*/
-	//G***change this to actually go through the list of media and return them as a string
+	//TODO change this to actually go through the list of media and return them as a string
 	public String getMediaText() {return CssText;}
 
 	/**Sets the parsable textual representation of the media list.
@@ -76,9 +55,9 @@ public class XMLMediaList extends ArrayList implements org.w3c.dom.stylesheets.M
 	*/
 	public void setMediaText(String cssText) throws DOMException
 	{
-		//G***check the string for a syntax error
-		//G***check for read-only status
-//G***fix		return CssText;	//return the text
+		//TODO check the string for a syntax error
+		//TODO check for read-only status
+//TODO fix		return CssText;	//return the text
 	}
 
 	/**Returns the number of media in the list.
@@ -122,7 +101,7 @@ public class XMLMediaList extends ArrayList implements org.w3c.dom.stylesheets.M
 	*/
 	public void deleteMedium(String oldMedium) throws DOMException
 	{
-		//G***check for read-only status here
+		//TODO check for read-only status here
 		final int oldIndex=indexOf(oldMedium);	//find the index of the medium
 		if(oldIndex!=-1)	//if that medium exists in our list
 			remove(oldIndex);	//remove the medium
@@ -140,7 +119,7 @@ public class XMLMediaList extends ArrayList implements org.w3c.dom.stylesheets.M
 	*/
 	public void appendMedium(String newMedium) throws DOMException
 	{
-		//G***check for read-only status here
+		//TODO check for read-only status here
 		final int oldIndex=indexOf(newMedium);	//see if this medium already exists in our list
 		if(oldIndex!=-1)	//if that medium exists in our list
 			remove(oldIndex);	//remove the medium from our list

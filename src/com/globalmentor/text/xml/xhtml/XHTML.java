@@ -1,49 +1,67 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml.xhtml;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import javax.mail.internet.ContentType;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.ParserConfigurationException;
 
-import org.w3c.dom.DOMException;
-import org.w3c.dom.DOMImplementation;
-import org.w3c.dom.Document;
-import org.w3c.dom.DocumentType;
-import org.w3c.dom.Element;
+import javax.mail.internet.ContentType;
+import javax.xml.parsers.*;
+
+import org.w3c.dom.*;
 import org.w3c.dom.css.CSSStyleDeclaration;
 
-import com.globalmentor.io.ContentTypes;
-import com.globalmentor.io.Files;
-import com.globalmentor.io.ParseReader;
+import com.globalmentor.io.*;
+import static com.globalmentor.io.ContentTypes.*;
 import com.globalmentor.java.Objects;
 import com.globalmentor.text.xml.oeb.OEB;
-import com.globalmentor.text.xml.stylesheets.css.XMLCSSProcessor;
-import com.globalmentor.text.xml.stylesheets.css.XMLCSSStyleDeclaration;
-import com.globalmentor.text.xml.xpath.XPath;
-import com.globalmentor.text.xml.xpath.XPathConstants;
+import com.globalmentor.text.xml.stylesheets.css.*;
+import static com.globalmentor.text.xml.xpath.XPath.*;
 import com.globalmentor.util.Arrays;
-
 import static com.globalmentor.io.ContentTypeConstants.*;
-import static com.globalmentor.text.xml.XMLUtilities.*;
+import static com.globalmentor.text.xml.XML.*;
 
 /**Constants to work with an XHTML and DOM document representing XHTML.
 @author Garret Wilson
 @see <a href="http://www.w3.org/QA/2002/04/valid-dtd-list.html">W3C QA - Recommended list of DTDs</a>
 @see <a href="http://www.pibil.org/technology/writing/xhtml-media-type.html">XHTML: An XML Application</a>
+@see <a href="http://www.w3.org/TR/xhtml-media-types/">XHTML Media Types</a>
 */
 public class XHTML
 {
 
+	/**HTML MIME subtype.*/
+	public final static String HTML_SUBTYPE="html";
+
+	/**An XHTML application.*/
+	public final static String XHTML_XML_SUBTYPE="xhtml"+SUBTYPE_SUFFIX_DELIMITER_CHAR+XML_SUBTYPE_SUFFIX;
+
+	/**An XHTML fragment (not yet formally defined).*/
+	public final static String XHTML_XML_EXTERNAL_PARSED_ENTITY_SUBTYPE="xhtml"+SUBTYPE_SUFFIX_DELIMITER_CHAR+XML_EXTERNAL_PARSED_ENTITY_SUBTYPE_SUFFIX;
+
 	/**The content type for HTML: <code>text/html</code>.*/
-	public static final ContentType HTML_CONTENT_TYPE=new ContentType(ContentTypes.TEXT_PRIMARY_TYPE, HTML_SUBTYPE, null);
+	public static final ContentType HTML_CONTENT_TYPE=new ContentType(TEXT_PRIMARY_TYPE, HTML_SUBTYPE, null);
 
 	/**The content type for XHTML: <code>application/xhtml+xml</code>.*/
-	public static final ContentType XHTML_CONTENT_TYPE=new ContentType(ContentTypes.APPLICATION_PRIMARY_TYPE, XHTML_XML_SUBTYPE, null);
+	public static final ContentType XHTML_CONTENT_TYPE=new ContentType(APPLICATION_PRIMARY_TYPE, XHTML_XML_SUBTYPE, null);
 
 	/**The content type for an XHTML fragment: <code>application/xhtml+xml-external-parsed-entity</code>.*/
-	public static final ContentType XHTML_FRAGMENT_CONTENT_TYPE=new ContentType(ContentTypes.APPLICATION_PRIMARY_TYPE, XHTML_XML_EXTERNAL_PARSED_ENTITY_SUBTYPE, null);
+	public static final ContentType XHTML_FRAGMENT_CONTENT_TYPE=new ContentType(APPLICATION_PRIMARY_TYPE, XHTML_XML_EXTERNAL_PARSED_ENTITY_SUBTYPE, null);
 
 	/**The old extension for HTML resource names.*/
 	public final static String HTM_NAME_EXTENSION="htm";
@@ -107,7 +125,7 @@ public class XHTML
 	public final static String XHTML_MATHML_SVG_SYSTEM_ID="http://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd";
 
 	//The XHTML 1.0 document element names.
-//G***fix; some are missing since these were copied from the OEB 1.0
+//TODO fix; some are missing since these were copied from the OEB 1.0
 	public final static String ELEMENT_A="a";
 	public final static String ELEMENT_APPLET="applet";
 	public final static String ELEMENT_AREA="area";
@@ -228,9 +246,9 @@ public class XHTML
 	public final static String ELEMENT_FORM_ATTRIBUTE_ACTION="action";
 	public final static String ELEMENT_FORM_ATTRIBUTE_ENCTYPE="enctype";
 		/**The "application/x-www-form-urlencoded" encoding type; see <a href="http://www.rfc-editor.org/rfc/rfc1867.txt">RFC 1867</a>.*/
-		public final static ContentType APPLICATION_X_WWW_FORM_URLENCODED_CONTENT_TYPE=new ContentType(ContentTypes.APPLICATION_PRIMARY_TYPE, X_WWW_FORM_URLENCODED, null);
+		public final static ContentType APPLICATION_X_WWW_FORM_URLENCODED_CONTENT_TYPE=new ContentType(APPLICATION_PRIMARY_TYPE, X_WWW_FORM_URLENCODED, null);
 		/**The "multipart/form-data" encoding type; see <a href="http://www.rfc-editor.org/rfc/rfc1867.txt">RFC 1867</a>.*/
-		public final static ContentType MULTIPART_FORM_DATA_CONTENT_TYPE=new ContentType(ContentTypes.MULTIPART_PRIMARY_TYPE, FORM_DATA_SUBTYPE, null);
+		public final static ContentType MULTIPART_FORM_DATA_CONTENT_TYPE=new ContentType(MULTIPART_PRIMARY_TYPE, FORM_DATA_SUBTYPE, null);
 
 	public final static String ELEMENT_FORM_ATTRIBUTE_METHOD="method";
 		public final static String FORM_METHOD_GET="get";
@@ -429,7 +447,7 @@ public class XHTML
 			documentType=null;	//don't use a document type
 		}
 		final Document document=domImplementation.createDocument(XHTML_NAMESPACE_URI.toString(), ELEMENT_HTML, documentType);	//create an XHTML document
-			//G***check about whether we need to add a <head> and <title>
+			//TODO check about whether we need to add a <head> and <title>
 		final Element htmlElement=document.getDocumentElement();	//get the html element
 		if(formatted)	//if we should format the document
 		{
@@ -460,7 +478,7 @@ public class XHTML
 	*/
 	public static Element getBodyElement(final Document document)
 	{
-		return (Element)XPath.getNode(document, XPathConstants.LOCATION_STEP_SEPARATOR_CHAR+ELEMENT_BODY);
+		return (Element)getNode(document, LOCATION_STEP_SEPARATOR_CHAR+ELEMENT_BODY);
 	}
 	/**Finds the XHTML <code>&lt;head&gt;</code> element.
 	@param document The XHTML document tree.
@@ -469,7 +487,7 @@ public class XHTML
 	*/
 	public static Element getHeadElement(final Document document)
 	{
-		return (Element)XPath.getNode(document, XPathConstants.LOCATION_STEP_SEPARATOR_CHAR+ELEMENT_HEAD);
+		return (Element)getNode(document, LOCATION_STEP_SEPARATOR_CHAR+ELEMENT_HEAD);
 	}
 	/**Determines the reference to the image file represented by the element,
 		assuming the element (an "img" or "object" element) does in fact represent
@@ -512,7 +530,7 @@ public class XHTML
 	@return The reference of the link, or <code>null</code> if the specified
 		element does not represent a link or has no reference.
 	*/
-	public static String getLinkElementHRef(final String xhtmlNamespaceURI, final Element element)  //G***fix to call XLink and see if this is an XLink link
+	public static String getLinkElementHRef(final String xhtmlNamespaceURI, final Element element)  //TODO fix to call XLink and see if this is an XLink link
 	{
 		if(element!=null) //if a valid element was passed
 		{
@@ -534,17 +552,18 @@ public class XHTML
 	@param element The element to check for a style
 	@return A style declaration representing the style in the style attribute, or
 		<code>null</code> if there is no style in the style attribute.
+	@deprecated
 	*/
 	public static CSSStyleDeclaration getLocalStyle(final Element element)
 	{
 		final String styleValue=element.getAttributeNS(null, ATTRIBUTE_STYLE); //get the value of the style attribute
 		if(styleValue.length()!=0)  //if there is a style value
 		{
-			final XMLCSSProcessor cssProcessor=new XMLCSSProcessor();	//create a new CSS processor G***make one for the entire tidier object, if we can -- don't create it locally
+			final XMLCSSProcessor cssProcessor=new XMLCSSProcessor();	//create a new CSS processor TODO make one for the entire tidier object, if we can -- don't create it locally
 			final XMLCSSStyleDeclaration style=new XMLCSSStyleDeclaration(); //create a new style declaration
 			try
 			{
-				final ParseReader styleReader=new ParseReader(styleValue, "Element "+element.getNodeName()+" Local Style");	//create a string reader from the value of this local style attribute G***i18n
+				final ParseReader styleReader=new ParseReader(styleValue, "Element "+element.getNodeName()+" Local Style");	//create a string reader from the value of this local style attribute TODO i18n
 				cssProcessor.parseRuleSet(styleReader, style); //read the style into our style declaration
 				return style; //return the style
 			}
@@ -574,7 +593,7 @@ public class XHTML
 		{
 			final String primaryType=contentType.getPrimaryType();	//get the primary type
 			final String subType=contentType.getSubType();	//get the sub type
-			if(ContentTypes.TEXT_PRIMARY_TYPE.equals(primaryType))	//if this is "text/?"
+			if(TEXT_PRIMARY_TYPE.equals(primaryType))	//if this is "text/?"
 			{
 				if(HTML_SUBTYPE.equals(subType)		//if this is "text/html"
 						|| OEB.X_OEB1_DOCUMENT_SUBTYPE.equals(subType))	//if this is "text/x-oeb1-document"
@@ -582,7 +601,7 @@ public class XHTML
 					return true;	//show that this is HTML
 				}
 			}
-			if(ContentTypes.APPLICATION_PRIMARY_TYPE.equals(primaryType))	//if this is "application/?"
+			if(APPLICATION_PRIMARY_TYPE.equals(primaryType))	//if this is "application/?"
 			{
 					//TODO probably add a parameter to specify whether we should allow fragments to qualify as XHTML---right now this behavior is not consistent with XMLUtilities.isXML(), which doesn't recognize fragments as XML
 				if(XHTML_XML_SUBTYPE.equals(subType) || XHTML_XML_EXTERNAL_PARSED_ENTITY_SUBTYPE.equals(subType))		//if this is "application/xhtml+xml" or "application/xhtml+xml-external-parsed-entity"
@@ -631,12 +650,7 @@ public class XHTML
 				//if this element is in the correct namespace
 			if(Objects.equals(xhtmlNamespaceURI, namespaceURI))
 			{
-	//G***del Debug.trace("XHTMLUtilities.isImageElement() looking at element: "+element.getNodeName()+" namespace: "+element.getNamespaceURI());  //G**del
-	//G***del if(element.getNodeName().equals("param")) //G***del; testing
-	//G***del 	XMLUtilities.printTree(element, Debug.getOutput());
-
-
-	//G***fix				final String elementName=element.getLocalName();  //get the element's name
+	//TODO fix				final String elementName=element.getLocalName();  //get the element's name
 				final String elementName=element.getLocalName();  //get the element's name
 				if(elementName.equals(ELEMENT_IMG))	//if this is an <img> element
 					return true;  //show that this is an image object
@@ -646,8 +660,8 @@ public class XHTML
 					if(element.hasAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_TYPE)) //if there is a type attribute
 					{
 						final String type=element.getAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_TYPE);  //get the type
-						final ContentType mediaType=ContentTypes.createContentType(type); //create a media type from the given type
-						if(mediaType.getPrimaryType().equals(ContentTypes.IMAGE_PRIMARY_TYPE)) //if this is an image
+						final ContentType mediaType=createContentType(type); //create a media type from the given type
+						if(mediaType.getPrimaryType().equals(IMAGE_PRIMARY_TYPE)) //if this is an image
 							return true;  //show that this is an image object
 					}
 						//see if there is a data attribute, since there is no type specified
@@ -655,7 +669,7 @@ public class XHTML
 					{
 						final String data=element.getAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_DATA);  //get the data
 						final ContentType mediaType=Files.getContentType(new File(data)); //try to get a media type from the file
-						if(mediaType!=null && mediaType.getPrimaryType().equals(ContentTypes.IMAGE_PRIMARY_TYPE)) //if this is an image
+						if(mediaType!=null && mediaType.getPrimaryType().equals(IMAGE_PRIMARY_TYPE)) //if this is an image
 							return true;  //show that this is an image object
 					}
 				}
@@ -669,7 +683,7 @@ public class XHTML
 	@param element The element which might represent a link.
 	@return <code>true</code> if the specified element represents a link.
 	*/
-	public static boolean isLinkElement(final String xhtmlNamespaceURI, final Element element)  //G***fix to call XLink and see if this is an XLink link
+	public static boolean isLinkElement(final String xhtmlNamespaceURI, final Element element)  //TODO fix to call XLink and see if this is an XLink link
 	{
 		if(element!=null) //if a valid element was passed
 		{
@@ -706,7 +720,7 @@ public class XHTML
 	@param element The element which represents a link.
 	@param href The new reference to add to the link.
 	*/
-	public static void setLinkElementHRef(final String xhtmlNamespaceURI, final Element element, final String href)  //G***fix to call XLink and see if this is an XLink link
+	public static void setLinkElementHRef(final String xhtmlNamespaceURI, final Element element, final String href)  //TODO fix to call XLink and see if this is an XLink link
 	{
 		if(element!=null) //if a valid element was passed
 		{
@@ -717,7 +731,7 @@ public class XHTML
 				final String elementName=element.getLocalName();  //get the element's name
 				if(elementName.equals(ELEMENT_A))	//if this is an <a> element
 				{
-					element.setAttributeNS(null, ELEMENT_A_ATTRIBUTE_HREF, href);  //set the href attribute G***what if they were using an attribute prefix?
+					element.setAttributeNS(null, ELEMENT_A_ATTRIBUTE_HREF, href);  //set the href attribute TODO what if they were using an attribute prefix?
 				}
 			}
 		}

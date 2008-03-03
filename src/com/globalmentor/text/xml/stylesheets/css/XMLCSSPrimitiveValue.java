@@ -1,13 +1,25 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml.stylesheets.css;
 
-import java.awt.Color;
-import java.text.NumberFormat;
-
-import static com.globalmentor.text.xml.stylesheets.css.XMLCSSConstants.*;
+import static com.globalmentor.text.xml.stylesheets.css.XMLCSS.*;
 
 import com.globalmentor.java.CharSequences;
 import com.globalmentor.java.Strings;
-import com.globalmentor.util.Debug;
 
 import org.w3c.dom.DOMException;
 import org.w3c.dom.css.*;
@@ -15,15 +27,17 @@ import org.w3c.dom.css.*;
 /**The class which represents a single CSS value and is used to determine or set
 a specific style property in a block. This class is returned from the
 getPropertyCSSValue() of the XMLCSSStyleDeclaration class.
+@author Garret Wilson
 @version DOM Level 2
 @since DOM Level 2
 @see XMLCSSStyleDeclaration#getPropertyCSSValue()
 @see org.w3c.dom.css.CSSValue
+@deprecated
 */
-public class XMLCSSPrimitiveValue extends XMLCSSValue implements org.w3c.dom.css.CSSPrimitiveValue//G***fix, Cloneable
+public class XMLCSSPrimitiveValue extends XMLCSSValue implements org.w3c.dom.css.CSSPrimitiveValue//TODO fix, Cloneable
 {
-	//Strings that specify the various accepted unit types. G***perhaps later give these more appropriate names
-		//G***put these in a constants file
+	//Strings that specify the various accepted unit types. TODO perhaps later give these more appropriate names
+		//TODO put these in a constants file
 	public final static String UNIT_EMS_STRING="em";
 	public final static String UNIT_EXS_STRING="ex";
 	public final static String UNIT_PX_STRING="px";
@@ -105,7 +119,7 @@ public class XMLCSSPrimitiveValue extends XMLCSSValue implements org.w3c.dom.css
 	}
 
 
-//G***perhaps create other constructors which will automatically select a type
+//TODO perhaps create other constructors which will automatically select a type
 
 	/**The primitive type of this primitive CSS value..*/
 	private short PrimitiveType;
@@ -133,48 +147,33 @@ public class XMLCSSPrimitiveValue extends XMLCSSValue implements org.w3c.dom.css
 	public String getCssText()
 	{
 		if(isFloatType(getPrimitiveType()))	//if our value is a floating-point type
-			return String.valueOf(FloatValue)+primitiveTypeToString(getPrimitiveType());	//return a string representation of our float value, along with the notation; we don't use getFloatValue() because it does redundant checking and can thrown an error G***what about returning units as well?
-/*G***del; none of this works
-		{
-			final NumberFormat numberFormat=NumberFormat.getNumberInstance(); //G***testing
-			numberFormat.setMaximumFractionDigits(Integer.MAX_VALUE); //G***testing
-Debug.trace("Float value: "+FloatValue); //G***del
-Debug.trace("Number format value: "+numberFormat.format(FloatValue)); //G***del
-Debug.trace("Decimal format value: "+new java.text.DecimalFormat().format(FloatValue)); //G***del
-		  return numberFormat.format(FloatValue)+primitiveTypeToString(getPrimitiveType());	//return a string representation of our float value, along with the notation; we don't use getFloatValue() because it does redundant checking and can thrown an error G***what about returning units as well?
-		}
-*/
-/*G***fix
-
-
-
-
-G***fix
-			return String.valueOf(FloatValue)+primitiveTypeToString(getPrimitiveType());	//return a string representation of our float value, along with the notation; we don't use getFloatValue() because it does redundant checking and can thrown an error G***what about returning units as well?
-			return String.valueOf(FloatValue)+primitiveTypeToString(getPrimitiveType());	//return a string representation of our float value, along with the notation; we don't use getFloatValue() because it does redundant checking and can thrown an error G***what about returning units as well?
+			return String.valueOf(FloatValue)+primitiveTypeToString(getPrimitiveType());	//return a string representation of our float value, along with the notation; we don't use getFloatValue() because it does redundant checking and can thrown an error TODO what about returning units as well?
+/*TODO fix
+			return String.valueOf(FloatValue)+primitiveTypeToString(getPrimitiveType());	//return a string representation of our float value, along with the notation; we don't use getFloatValue() because it does redundant checking and can thrown an error TODO what about returning units as well?
+			return String.valueOf(FloatValue)+primitiveTypeToString(getPrimitiveType());	//return a string representation of our float value, along with the notation; we don't use getFloatValue() because it does redundant checking and can thrown an error TODO what about returning units as well?
 */
 		else if(getPrimitiveType()==CSS_RGBCOLOR)	//if the type we contain is an RGB color
 		{
 			final RGBColor rgbColor=getRGBColorValue(); //get the RGB color value
-			//G***what if this is a color value which can only be stored in a rgb() format? is there even such a value, or can everything be stored in #XXXXXX format?
+			//TODO what if this is a color value which can only be stored in a rgb() format? is there even such a value, or can everything be stored in #XXXXXX format?
 			return RGB_NUMBER_CHAR+ //return a string in the format #RRGGBB
 				Strings.makeStringLength(Integer.toHexString((int)rgbColor.getRed().getFloatValue(CSSPrimitiveValue.CSS_NUMBER)).toUpperCase(), 2, '0', 0)+  //get the red value
 				Strings.makeStringLength(Integer.toHexString((int)rgbColor.getGreen().getFloatValue(CSSPrimitiveValue.CSS_NUMBER)).toUpperCase(), 2, '0', 0)+  //get the red value
 				Strings.makeStringLength(Integer.toHexString((int)rgbColor.getBlue().getFloatValue(CSSPrimitiveValue.CSS_NUMBER)).toUpperCase(), 2, '0', 0);  //get the red value
 		}
 		else if(getPrimitiveType()==CSS_STRING) //if this is a string
-		  return '"'+StringValue+'"'; //return the value as a string inside quotes G***make sure there aren't quotes inside the quotes
-		else //if it's anything else, assume it's a string G***fix for other types, and don't assume here; perhaps return "" for unknown types
+		  return '"'+StringValue+'"'; //return the value as a string inside quotes TODO make sure there aren't quotes inside the quotes
+		else //if it's anything else, assume it's a string TODO fix for other types, and don't assume here; perhaps return "" for unknown types
 			return StringValue;	//return our string value
 	}
 
-	/**The primitive value if this is a float-compatible value.*/	//G***check about how best to store several types here
+	/**The primitive value if this is a float-compatible value.*/	//TODO check about how best to store several types here
 	private float FloatValue;
 
-	/**The primitive value if this is a string-compatible value.*/	//G***check about how best to store several types here
+	/**The primitive value if this is a string-compatible value.*/	//TODO check about how best to store several types here
 	private String StringValue=null;
 
-	/**The primitive value if this is an RGB color value.*/	//G***check about how best to store several types here
+	/**The primitive value if this is an RGB color value.*/	//TODO check about how best to store several types here
 	private XMLCSSRGBColor rgbValue=null;
 
 	/**Sets the float value with a specified unit. If the property attached with
@@ -201,14 +200,14 @@ G***fix
 	*/
 	public void setFloatValue(short unitType, float floatValue) throws DOMException
 	{
-		//G***check for read-only status here
+		//TODO check for read-only status here
 		if(isFloatType(unitType))	//if the type they specified is compatible with a float
 		{
 			setPrimitiveType(unitType);	//set the unit type
 			FloatValue=floatValue;	//save the float value
 		}
 		else	//if this type isn't compatible with float
-;//G***throw an INVALID_ACCESS_ERR when we find out how to do so			throw new XMLDOMException(DOMException.INDEX_SIZE_ERR, new Object[]{new Integer(index)});	//use our own type of exception to show that this index is out of bounds
+;//TODO throw an INVALID_ACCESS_ERR when we find out how to do so			throw new XMLDOMException(DOMException.INDEX_SIZE_ERR, new Object[]{new Integer(index)});	//use our own type of exception to show that this index is out of bounds
 	}
 
 	/**Returns a float value in a specified unit. If this CSS value doesn't
@@ -235,11 +234,11 @@ G***fix
 	{
 		if(isFloatType(unitType))	//if the type they specified is compatible with a float
 		{
-			//G***do the necessary conversions here, or throw an exception if we can't
+			//TODO do the necessary conversions here, or throw an exception if we can't
 			return FloatValue;	//return the float value
 		}
 		else	//if this type isn't compatible with float
-return 0;//G***throw an INVALID_ACCESS_ERR when we find out how to do so			throw new XMLDOMException(DOMException.INDEX_SIZE_ERR, new Object[]{new Integer(index)});	//use our own type of exception to show that this index is out of bounds
+return 0;//TODO throw an INVALID_ACCESS_ERR when we find out how to do so			throw new XMLDOMException(DOMException.INDEX_SIZE_ERR, new Object[]{new Integer(index)});	//use our own type of exception to show that this index is out of bounds
 	}
 
 	/**Sets the string value with a specified unit. If the property
@@ -264,18 +263,15 @@ return 0;//G***throw an INVALID_ACCESS_ERR when we find out how to do so			throw
 	*/
 	public void setStringValue(short stringType, String stringValue) throws DOMException
 	{
-		//G***check for read-only status here
+		//TODO check for read-only status here
 		if(CSS_UNKNOWN==stringType || isStringType(stringType))	//if the type they specified is compatible with a string
 		{
-			//G***check about this inherit business
+			//TODO check about this inherit business
 			setPrimitiveType(stringType);	//set the unit type
 			StringValue=stringValue;	//save the string value
-
-//G***del System.out.println("Set string value to: "+StringValue);	//G***del
-
 		}
 		else	//if this type isn't compatible with a string
-;//G***throw an INVALID_ACCESS_ERR when we find out how to do so			throw new XMLDOMException(DOMException.INDEX_SIZE_ERR, new Object[]{new Integer(index)});	//use our own type of exception to show that this index is out of bounds
+;//TODO throw an INVALID_ACCESS_ERR when we find out how to do so			throw new XMLDOMException(DOMException.INDEX_SIZE_ERR, new Object[]{new Integer(index)});	//use our own type of exception to show that this index is out of bounds
 	}
 
 	/**Returns the string value in a specified unit. If the CSS value doesn't
@@ -295,7 +291,7 @@ return 0;//G***throw an INVALID_ACCESS_ERR when we find out how to do so			throw
 		if(isStringType(getPrimitiveType()))	//if the type we contain is compatible with a string
 			return StringValue;	//return the string value
 		else	//if this type isn't compatible with string
-return "";//G***throw an INVALID_ACCESS_ERR when we find out how to do so			throw new XMLDOMException(DOMException.INDEX_SIZE_ERR, new Object[]{new Integer(index)});	//use our own type of exception to show that this index is out of bounds
+return "";//TODO throw an INVALID_ACCESS_ERR when we find out how to do so			throw new XMLDOMException(DOMException.INDEX_SIZE_ERR, new Object[]{new Integer(index)});	//use our own type of exception to show that this index is out of bounds
 	}
 
 	/**
@@ -308,7 +304,7 @@ return "";//G***throw an INVALID_ACCESS_ERR when we find out how to do so			thro
 	 *    INVALID_ACCESS_ERR: Raises if the CSS value doesn't contain a Counter
 	 *   value.
 	 */
-	public Counter            getCounterValue() throws DOMException {return null;}	//G***fix
+	public Counter            getCounterValue() throws DOMException {return null;}	//TODO fix
 
 	/**
 	 *  This method is used to get the Rect value. If this CSS value doesn't
@@ -320,7 +316,7 @@ return "";//G***throw an INVALID_ACCESS_ERR when we find out how to do so			thro
 	 *    INVALID_ACCESS_ERR: Raises if the CSS value doesn't contain a Rect
 	 *   value.
 	 */
-	public Rect               getRectValue() throws DOMException {return null;}	//G***fix
+	public Rect               getRectValue() throws DOMException {return null;}	//TODO fix
 
 	/**Returns the RGB color. If this CSS value doesn't contain an RGB color
 		value, a <code>DOMException</code> is raised.
@@ -338,7 +334,7 @@ return "";//G***throw an INVALID_ACCESS_ERR when we find out how to do so			thro
 		if(getPrimitiveType()==CSS_RGBCOLOR)	//if the type we contain is an RGB color
 			return rgbValue;	//return the rgb value
 		else	//if this isn't an RGB value
-return null;//G***throw an INVALID_ACCESS_ERR when we find out how to do so			throw new XMLDOMException(DOMException.INDEX_SIZE_ERR, new Object[]{new Integer(index)});	//use our own type of exception to show that this index is out of bounds
+return null;//TODO throw an INVALID_ACCESS_ERR when we find out how to do so			throw new XMLDOMException(DOMException.INDEX_SIZE_ERR, new Object[]{new Integer(index)});	//use our own type of exception to show that this index is out of bounds
 	}
 
 	/*Determines whether or not this value is a floating point number.
@@ -471,7 +467,7 @@ return null;//G***throw an INVALID_ACCESS_ERR when we find out how to do so			th
 			case CSS_STRING:			//these are acceptable string types
 			case CSS_URI:
 			case CSS_IDENT:
-			case CSS_INHERIT:	//G***can we even have an inherit primitive type?
+			case CSS_INHERIT:	//TODO can we even have an inherit primitive type?
 			case CSS_ATTR:
 				return true;		//show that this value can accept a string
 			default:		//if it's not an acceptable string type
@@ -517,16 +513,15 @@ return null;//G***throw an INVALID_ACCESS_ERR when we find out how to do so			th
 		}
 	}
 
-	/**Creates a primitive value from a value string. G***decide if we want this in XMLCSSPrimitiveValue or XMLCSSValue.createValue()
+	/**Creates a primitive value from a value string. TODO decide if we want this in XMLCSSPrimitiveValue or XMLCSSValue.createValue()
 //G**del if not needed	@propertyName The name of the property to which the value will be assigned, or
-//G***del if not needed		<code>null</code> if the property name is not known.
+//TODO del if not needed		<code>null</code> if the property name is not known.
 	@valueString The string which contains the parsable CSS primitive value.
-	@return The new primitive value, or <code>null</code> if the value string was not parsable. G***do we want to instead throw an exception?
+	@return The new primitive value, or <code>null</code> if the value string was not parsable. TODO do we want to instead throw an exception?
 	*/
-//G***after figuring out the difference between ident and string, do we really need the property name passed here?
-	public static XMLCSSPrimitiveValue createPrimitiveValue(/*G***del if not needed final String propertyName, */String valueString)
+//TODO after figuring out the difference between ident and string, do we really need the property name passed here?
+	public static XMLCSSPrimitiveValue createPrimitiveValue(/*TODO del if not needed final String propertyName, */String valueString)
 	{
-//G***del Debug.trace("Creating primitive value from value string: ", valueString); //G***del
 		final XMLCSSPrimitiveValue value=new XMLCSSPrimitiveValue();	//create a new primitive value
 		short primitiveType=XMLCSSPrimitiveValue.CSS_UNKNOWN;	//show that we don't know what type of primitive value this is, yet (indeed, we don't even know if it is a primitive value)
 		valueString=valueString.trim();	//trim the value string of whitespace
@@ -535,12 +530,10 @@ return null;//G***throw an INVALID_ACCESS_ERR when we find out how to do so			th
 			final char firstChar=valueString.charAt(0);	//get the first character in the string
 			if(NUMBER_CHARS.indexOf(firstChar)!=-1)	//if the first character is a digit or a decimal, we'll assume this is a number; now we'll need to determine what kind of units this represents
 			{
-//G***del System.out.println("XMLPrimitiveValue.createPrimitiveValue() starts with a digit");	//G***del
-				final int typeCharIndex=CharSequences.notCharIndexOf(valueString, NUMBER_CHARS, 0);	//find the first character that isn't a digit or a decimal point G***use a constant here
+				final int typeCharIndex=CharSequences.notCharIndexOf(valueString, NUMBER_CHARS, 0);	//find the first character that isn't a digit or a decimal point TODO use a constant here
 				if(typeCharIndex!=-1)	//if we found a non-digit character int the string
 				{
 					final String typeString=valueString.substring(typeCharIndex, valueString.length());	//get a string representing the type of unit
-//G***del System.out.println("XMLPrimitiveValue.createPrimitiveValue() has a non-digit character at index: "+typeCharIndex+" which is: "+typeString);	//G***del
 					valueString=valueString.substring(0, typeCharIndex);	//chop the unit type part off of the value string
 					if(typeString.equals(XMLCSSPrimitiveValue.UNIT_EMS_STRING))	//if this specifies the font size of the font
 						primitiveType=XMLCSSPrimitiveValue.CSS_EMS;	//record the type
@@ -582,12 +575,11 @@ return null;//G***throw an INVALID_ACCESS_ERR when we find out how to do so			th
 			}
 			else if(firstChar==SINGLE_QUOTE_CHAR || firstChar==DOUBLE_QUOTE_CHAR)	//if the first character is a quote
 			{
-//G***del Debug.trace("First character: "+firstChar);
 				primitiveType=XMLCSSPrimitiveValue.CSS_STRING;	//the value is a string
 				if(valueString.charAt(valueString.length()-1)==firstChar)	//if the last character is a quote, as we expect
 					valueString=valueString.substring(1, valueString.length()-1);	//remove the quotes from the value
 				else	//if there is no ending quote
-					valueString=valueString.substring(1, valueString.length());	//G***throw an exception here regarding the missing ending quote
+					valueString=valueString.substring(1, valueString.length());	//TODO throw an exception here regarding the missing ending quote
 			}
 			else if(firstChar==RGB_NUMBER_CHAR)	//if the first character is a quote
 			{
@@ -597,17 +589,17 @@ return null;//G***throw an INVALID_ACCESS_ERR when we find out how to do so			th
 			else	//if the first character isn't a digit or a quote
 			{
 				primitiveType=XMLCSSPrimitiveValue.CSS_IDENT;	//the value is an identifier
-				//G***actually, in a font-family list, this would still be a filename -- how do we rectify this?
-					//G***validate that this is a valid identifierfs
-				//G***fix for other types, if there are any
-				//G***fix for RGB()
-				//G***fix for rectangles
+				//TODO actually, in a font-family list, this would still be a filename -- how do we rectify this?
+					//TODO validate that this is a valid identifierfs
+				//TODO fix for other types, if there are any
+				//TODO fix for RGB()
+				//TODO fix for rectangles
 			}
-			switch(primitiveType)	//see what type we determined it was G***what if we didn't determine a type?
+			switch(primitiveType)	//see what type we determined it was TODO what if we didn't determine a type?
 			{
-				case XMLCSSPrimitiveValue.CSS_STRING:	//if this is one of the string types G***why not use isStringType()?
-				case XMLCSSPrimitiveValue.CSS_IDENT:	//if this is one of the string types G***why not use isStringType()?
-				//G***add other string types here
+				case XMLCSSPrimitiveValue.CSS_STRING:	//if this is one of the string types TODO why not use isStringType()?
+				case XMLCSSPrimitiveValue.CSS_IDENT:	//if this is one of the string types TODO why not use isStringType()?
+				//TODO add other string types here
 					value.setStringValue(primitiveType, valueString);	//set the string value of this type
 					break;
 				case XMLCSSPrimitiveValue.CSS_RGBCOLOR: //if this is an RGB color
@@ -631,12 +623,9 @@ return null;//G***throw an INVALID_ACCESS_ERR when we find out how to do so			th
 					}
 				  break;
 				default:	//if this is one of the float types
-//G***del Debug.trace("Value is float: ", valueString); //G***del
-//G***del System.out.println("XMLPrimitiveValue.createPrimitiveValue() setting float value: "+valueString);	//G***del
 					value.setFloatValue(primitiveType, Float.valueOf(valueString).floatValue());	//set the string value of this type
 					break;
 			}
-//G***del Debug.trace("XMLCSSPrimitiveValue.createPrimitiveValue() result value: ", valueString);
 			return value;	//return the value we constructed
 		}
 		return null;	//if the value string was invalid in some way, we'll wind up here; we'll report our problems by returning null

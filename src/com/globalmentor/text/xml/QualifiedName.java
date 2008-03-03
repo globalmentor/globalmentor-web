@@ -65,7 +65,7 @@ public class QualifiedName extends DefaultResource implements IDed<URI>
 	*/	
 	public QualifiedName(final String namespaceURI, final String qname)
 	{
-		this(namespaceURI, XMLUtilities.getPrefix(qname), XMLUtilities.getLocalName(qname));	//split out the prefix and local name and call the full constructor
+		this(namespaceURI, XML.getPrefix(qname), XML.getLocalName(qname));	//split out the prefix and local name and call the full constructor
 	}
 	
 	/**Full constructor.
@@ -85,7 +85,7 @@ public class QualifiedName extends DefaultResource implements IDed<URI>
 	/**@return The qualified name in <code><var>prefix</var>:<var>localName</var></code> form.*/
 	public String getQName()
 	{
-		return XMLUtilities.createQualifiedName(getPrefix(), getLocalName());	//create and return a qualified name
+		return XML.createQualifiedName(getPrefix(), getLocalName());	//create and return a qualified name
 	}
 
 	/**Creates a reference URI from an XML namespace URI and a local name.

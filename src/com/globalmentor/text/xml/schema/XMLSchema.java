@@ -1,16 +1,115 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml.schema;
 
+import java.net.URI;
 import java.util.*;
 
-import com.globalmentor.util.Debug;
+import com.garretwilson.net.URIs;
 
 /**The class which represents an XML schema by holding a collection of schema
 	components.
 @author Garret Wilson
-@see XMLSchemaComponent
 */
 public class XMLSchema
 {
+
+	/**The Default XML schema namespace prefix.*/
+	public final static String XML_SCHEMA_NAMESPACE_PREFIX="xsd";
+	/**The URI to the XML schema namespace.*/
+	public final static URI XML_SCHEMA_NAMESPACE_URI=URI.create("http://www.w3.org/2001/XMLSchema");
+
+		//XML schema elements
+	public final static String ELEMENT_ANNOTATION="annotation";
+	public final static String ELEMENT_APPINFO="appinfo";
+	public final static String ELEMENT_ATTRIBUTE_GROUP="attributeGroup";
+	public final static String ELEMENT_DOCUMENTATION="documentation";
+	public final static String ELEMENT_ELEMENT="element";
+
+		//XML schema attributes
+	public final static String ATTRIBUTE_TARGET_NAMESPACE="targetNamespace";
+	public final static String ATTRIBUTE_NAME="name";
+
+		//XML schema datatype names TODO maybe put these in a separate datatype class
+	/**The name for the base64 binary datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#base64Binary</code>.*/
+	public final static String BASE64_BINARY_DATATYPE_NAME="base64Binary";
+	/**The name for the boolean datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#boolean</code>.*/
+	public final static String BOOLEAN_DATATYPE_NAME="boolean";
+	/**The name for the byte datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#byte</code>.*/
+	public final static String BYTE_DATATYPE_NAME="byte";
+	/**The name for the date datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#date</code>.*/
+	public final static String DATE_DATATYPE_NAME="date";
+	/**The name for the date time datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#dateTime</code>.*/
+	public final static String DATE_TIME_DATATYPE_NAME="dateTime";
+	/**The name for the decimal datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#decimal</code>.*/
+	public final static String DECIMAL_DATATYPE_NAME="decimal";
+	/**The name for the double datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#double</code>.*/
+	public final static String DOUBLE_DATATYPE_NAME="double";
+	/**The name for the duration datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#duration</code>.*/
+	public final static String DURATION_DATATYPE_NAME="duration";
+	/**The name for the float datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#float</code>.*/
+	public final static String FLOAT_DATATYPE_NAME="float";
+	/**The name for the int datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#int</code>.*/
+	public final static String INT_DATATYPE_NAME="int";
+	/**The name for the integer datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#integer</code>.*/
+	public final static String INTEGER_DATATYPE_NAME="integer";
+	/**The name for the long datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#long</code>.*/
+	public final static String LONG_DATATYPE_NAME="long";
+	/**The name for the short datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#short</code>.*/
+	public final static String SHORT_DATATYPE_NAME="short";
+	/**The name for the string datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#string</code>.*/
+	public final static String STRING_DATATYPE_NAME="string";
+	/**The name for the time datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#time</code>.*/
+	public final static String TIME_DATATYPE_NAME="time";
+	/**The name for the URI datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#anyURI</code>.*/
+	public final static String URI_DATATYPE_NAME="anyURI";
+	//XML schema datatypes
+	/**The base 64 binary datatype.*/
+	public final static URI BASE64_BINARY_DATATYPE_URI=URIs.resolveFragment(XML_SCHEMA_NAMESPACE_URI, BASE64_BINARY_DATATYPE_NAME);
+	/**The boolean datatype.*/
+	public final static URI BOOLEAN_DATATYPE_URI=URIs.resolveFragment(XML_SCHEMA_NAMESPACE_URI, BOOLEAN_DATATYPE_NAME);
+	/**The byte datatype.*/
+	public final static URI BYTE_DATATYPE_URI=URIs.resolveFragment(XML_SCHEMA_NAMESPACE_URI, BYTE_DATATYPE_NAME);
+	/**The date datatype.*/
+	public final static URI DATE_DATATYPE_URI=URIs.resolveFragment(XML_SCHEMA_NAMESPACE_URI, DATE_DATATYPE_NAME);
+	/**The date time datatype.*/
+	public final static URI DATE_TIME_DATATYPE_URI=URIs.resolveFragment(XML_SCHEMA_NAMESPACE_URI, DATE_TIME_DATATYPE_NAME);
+	/**The decimal datatype.*/
+	public final static URI DECIMAL_DATATYPE_URI=URIs.resolveFragment(XML_SCHEMA_NAMESPACE_URI, DECIMAL_DATATYPE_NAME);
+	/**The 64-bit double datatype.*/
+	public final static URI DOUBLE_DATATYPE_URI=URIs.resolveFragment(XML_SCHEMA_NAMESPACE_URI, DOUBLE_DATATYPE_NAME);
+	/**The duration datatype.*/
+	public final static URI DURATION_DATATYPE_URI=URIs.resolveFragment(XML_SCHEMA_NAMESPACE_URI, DURATION_DATATYPE_NAME);
+	/**The 32-bit float datatype.*/
+	public final static URI FLOAT_DATATYPE_URI=URIs.resolveFragment(XML_SCHEMA_NAMESPACE_URI, FLOAT_DATATYPE_NAME);
+	/**The int datatype.*/
+	public final static URI INT_DATATYPE_URI=URIs.resolveFragment(XML_SCHEMA_NAMESPACE_URI, INT_DATATYPE_NAME);
+	/**The integer datatype.*/
+	public final static URI INTEGER_DATATYPE_URI=URIs.resolveFragment(XML_SCHEMA_NAMESPACE_URI, INTEGER_DATATYPE_NAME);
+	/**The long datatype.*/
+	public final static URI LONG_DATATYPE_URI=URIs.resolveFragment(XML_SCHEMA_NAMESPACE_URI, LONG_DATATYPE_NAME);
+	/**The short datatype.*/
+	public final static URI SHORT_DATATYPE_URI=URIs.resolveFragment(XML_SCHEMA_NAMESPACE_URI, SHORT_DATATYPE_NAME);
+	/**The string datatype.*/
+	public final static URI STRING_DATATYPE_URI=URIs.resolveFragment(XML_SCHEMA_NAMESPACE_URI, STRING_DATATYPE_NAME);
+	/**The time datatype.*/
+	public final static URI TIME_DATATYPE_URI=URIs.resolveFragment(XML_SCHEMA_NAMESPACE_URI, TIME_DATATYPE_NAME);
+	/**The URI datatype.*/
+	public final static URI URI_DATATYPE_URI=URIs.resolveFragment(XML_SCHEMA_NAMESPACE_URI, URI_DATATYPE_NAME);
 
 	/**The global symbol table for this schema.*/
 	private final XMLSchemaSymbolTable symbolTable=new XMLSchemaSymbolTable();
@@ -25,7 +124,7 @@ public class XMLSchema
 	private final List componentList=new ArrayList();
 
 		/**@return The list of top-level schema components.*/
-		public List getComponentList() {return componentList;}  //G***this probably shouldn't be public
+		public List getComponentList() {return componentList;}  //TODO this probably shouldn't be public
 
 	/**The schema target namespace.*/
 	private String targetNamespace=null;
@@ -48,7 +147,7 @@ public class XMLSchema
 		component is a typed component, its scope will be set to the schema,
 		indicating global scope.
 	@param schemaComponent The component to add to the schema.
-//G***what about errors for duplicate symbol names?
+//TODO what about errors for duplicate symbol names?
 	@see XMLSchemaNamedComponent
 	@see XMLSchemaTypedComponent
 	*/
@@ -74,14 +173,11 @@ public class XMLSchema
 
 	/**Returns a list of all global components in the schema of the specified type
 		in the given namespace. The returned list cannot modified.
-//G***del if we don't need	@param targetNamespace The URI of the requested namespace.
 	@param componentType The type of component to return
 	@return An unmodifiable list of schema components of the requested type.
 	*/
-	public List getComponentList(/*G***del if we don't need final String namespace, */final short componentType)
+	public List getComponentList(final short componentType)
 	{
-//G***del Debug.trace("Looking for components with type: "+componentType+" out of list of components: "+getComponentList().size());
-
 		final List componentList=new ArrayList(); //create a new list to hold the components
 		final Iterator iterator=getComponentList().iterator();  //get an iterator of all components
 		while(iterator.hasNext()) //while there are more components
@@ -93,32 +189,18 @@ public class XMLSchema
 		return Collections.unmodifiableList(componentList); //return the list we created
 	}
 
-
-
-
-
-
-
-
-
-
-
-
 	/**Returns a collection of all components in the schema from the specified
 		symbol space. The collection is backed by the symbol space, so modifications
 		to the symbol space will cause the collection to be modified. The returned
 		collection is read-only.
 	@param targetNamespace The URI of the requested namespace.
 	@param symbolSpaceName The name of the symbol space from which to return
-//G***del if not needed	@param componentType The type of component to return.
 	@return An unmodifiable collection of schema components from the specified
 		symbol space.
 	*/
 	public Collection getComponents(final String namespace, final String symbolSpaceName)
 	{
-//G***del if not needed Debug.trace("Looking for components from symbol space: "+symbolSpaceName+" out of list of components: "+getComponentList().size());
 	  //get the name of the symbol space for this type of component
-//G***del if not needed		final String symbolSpaceName=XMLSchemaSymbolTable.getSymbolSpaceName(componentType);
 		return getSymbolTable().getComponents(namespace, symbolSpaceName);  //return all components from this symbol space inside this namespace
 	}
 

@@ -1,14 +1,28 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml.stylesheets;
 
-//G***del if we don't need import java.io.*;
-//G***del import java.util.Vector;
 import org.w3c.dom.Node;
 import org.w3c.dom.stylesheets.*;
-//G***del if we don't need import com.garretwilson.text.xml.XMLNode;
 
 /**A single stylesheet within XML.
 @see XMLNode
 @see org.w3c.dom.stylesheets.StyleSheet
+@deprecated
 */
 public abstract class XMLStyleSheet implements org.w3c.dom.stylesheets.StyleSheet
 {
@@ -39,7 +53,7 @@ public abstract class XMLStyleSheet implements org.w3c.dom.stylesheets.StyleShee
 	 * and the type pseudo-attribute for the XML style sheet processing
 	 * instruction.
 	 */
-	public String             getType() {return "text/css";}	//G***fix
+	public String             getType() {return "text/css";}	//TODO fix
 
 	/**
 	 *  <code>false</code> if the style sheet is applied to the document.
@@ -49,8 +63,8 @@ public abstract class XMLStyleSheet implements org.w3c.dom.stylesheets.StyleShee
 	 * doesn't apply to the current user agent, the <code>disabled</code>
 	 * attribute is ignored.
 	 */
-	public boolean            getDisabled() {return false;} //G***fix
-	public void               setDisabled(boolean disabled) {}	//G***fix
+	public boolean            getDisabled() {return false;} //TODO fix
+	public void               setDisabled(boolean disabled) {}	//TODO fix
 
 	/**
 	 *  The node that associates this style sheet with the document. For HTML,
@@ -98,7 +112,7 @@ public abstract class XMLStyleSheet implements org.w3c.dom.stylesheets.StyleShee
 	 * <code>LINK</code> element in HTML 4.0, and the href pseudo-attribute for
 	 * the XML style sheet processing instruction.
 	 */
-	public String             getHref() {return null;}	//G***fix
+	public String             getHref() {return null;}	//TODO fix
 
 	/**
 	 *  The advisory title.  The title is often specified in the
@@ -106,7 +120,7 @@ public abstract class XMLStyleSheet implements org.w3c.dom.stylesheets.StyleShee
 	 * <code>LINK</code> element in HTML 4.0, and the title pseudo-attribute
 	 * for the XML style sheet processing instruction.
 	 */
-	public String             getTitle() {return "";}	//G***fix
+	public String             getTitle() {return "";}	//TODO fix
 
 
 	/**
@@ -117,7 +131,7 @@ public abstract class XMLStyleSheet implements org.w3c.dom.stylesheets.StyleShee
 	 * the media pseudo-attribute for the XML style sheet processing
 	 * instruction .
 	 */
-	public MediaList          getMedia() {return null;}	//G***fix
+	public MediaList          getMedia() {return null;}	//TODO fix
 
 
 }

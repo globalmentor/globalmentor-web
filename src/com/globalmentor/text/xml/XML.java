@@ -36,15 +36,15 @@ import org.w3c.dom.traversal.*;
 import static com.globalmentor.io.ContentTypeConstants.*;
 import static com.globalmentor.io.ContentTypes.*;
 import static com.globalmentor.java.Integers.*;
-import static com.globalmentor.text.xml.mathml.MathMLConstants.*;
-import static com.globalmentor.text.xml.stylesheets.XMLStyleSheetConstants.*;
-import static com.globalmentor.text.xml.svg.SVGConstants.*;
+import static com.globalmentor.text.xml.mathml.MathML.*;
+import static com.globalmentor.text.xml.stylesheets.XMLStyleSheets.*;
+import static com.globalmentor.text.xml.svg.SVG.*;
 import static com.globalmentor.text.xml.xhtml.XHTML.*;
 
 /**Various XML constants and manipulation functions.
 @author Garret Wilson
 */
-public class XMLUtilities
+public class XML
 {
 
 	/**The latest XML version supported.*/
@@ -526,10 +526,10 @@ public class XMLUtilities
 	 */
 	public static String createCharacterReference(final char character)
 	{
-		final StringBuilder stringBuilder=new StringBuilder(XMLUtilities.CHARACTER_REF_START);	//create a string builder with the start of a character reference
-		stringBuilder.append(XMLUtilities.CHARACTER_REF_HEX_FLAG);	//indicate that the character reference is in hex
+		final StringBuilder stringBuilder=new StringBuilder(XML.CHARACTER_REF_START);	//create a string builder with the start of a character reference
+		stringBuilder.append(XML.CHARACTER_REF_HEX_FLAG);	//indicate that the character reference is in hex
 		stringBuilder.append(toHexString(character, 4));	//write the hex value of the character
-		stringBuilder.append(XMLUtilities.CHARACTER_REF_END);	//end the character reference
+		stringBuilder.append(XML.CHARACTER_REF_END);	//end the character reference
 		return stringBuilder.toString();	//return the constructed character reference
 	}
 
@@ -573,7 +573,7 @@ public class XMLUtilities
 	*/
 	public static String getPrefix(final String qualifiedName)
 	{
-		final int prefixDividerIndex=qualifiedName.indexOf(XMLUtilities.NAMESPACE_DIVIDER);  //see if there is a prefix
+		final int prefixDividerIndex=qualifiedName.indexOf(XML.NAMESPACE_DIVIDER);  //see if there is a prefix
 		if(prefixDividerIndex>=0)  //if there is a prefix
 			return qualifiedName.substring(0, prefixDividerIndex);  //return the prefix
 		else  //if there is no prefix
@@ -587,7 +587,7 @@ public class XMLUtilities
 	*/
 	public static String getLocalName(final String qualifiedName)
 	{
-		final int namespaceDividerIndex=qualifiedName.indexOf(XMLUtilities.NAMESPACE_DIVIDER); //find where the namespace divider is in the name
+		final int namespaceDividerIndex=qualifiedName.indexOf(XML.NAMESPACE_DIVIDER); //find where the namespace divider is in the name
 		return namespaceDividerIndex>=0 ? //if there is a namespace prefix
 			  qualifiedName.substring(namespaceDividerIndex+1) :  //remove the namespace prefix
 				qualifiedName;  //otherwise, just return the qualified name since it didn't have a prefix to begin with
@@ -616,7 +616,7 @@ public class XMLUtilities
 	*/
 	public static boolean isChar(final char c)
 	{
-		return Characters.isCharInRange(c, XMLUtilities.CHAR_RANGES);	//see if the character is a legal XML character
+		return Characters.isCharInRange(c, XML.CHAR_RANGES);	//see if the character is a legal XML character
 	}
 
 	/**Checks to see if the specified character is XML whitespace.
@@ -625,7 +625,7 @@ public class XMLUtilities
 	*/
 	public static boolean isWhitespace(final char c)
 	{
-		return XMLUtilities.WHITESPACE_CHARS.indexOf(c)!=-1;	//if the character matches any characters in our whitespace string, the character is whitespace
+		return XML.WHITESPACE_CHARS.indexOf(c)!=-1;	//if the character matches any characters in our whitespace string, the character is whitespace
 	}
 
 	/**Checks to see if the specified character is a letter.
@@ -634,7 +634,7 @@ public class XMLUtilities
 	*/
 	public static boolean isLetter(final char c)
 	{
-		return Characters.isCharInRange(c, XMLUtilities.BASE_CHAR_RANGES) || Characters.isCharInRange(c, XMLUtilities.IDEOGRAPHIC_RANGES);	//see if the character is a base character or an ideographic character
+		return Characters.isCharInRange(c, XML.BASE_CHAR_RANGES) || Characters.isCharInRange(c, XML.IDEOGRAPHIC_RANGES);	//see if the character is a base character or an ideographic character
 	}
 
 	/**Checks to see if the specified character is a digit.
@@ -643,7 +643,7 @@ public class XMLUtilities
 	*/
 	public static boolean isDigit(final char c)
 	{
-		return Characters.isCharInRange(c, XMLUtilities.DIGIT_RANGES);	//see if the character is a digit
+		return Characters.isCharInRange(c, XML.DIGIT_RANGES);	//see if the character is a digit
 	}
 
 	/**Checks to see if the specified character is a combining character.
@@ -652,7 +652,7 @@ public class XMLUtilities
 	*/
 	public static boolean isCombiningChar(final char c)
 	{
-		return Characters.isCharInRange(c, XMLUtilities.COMBINING_CHAR_RANGES);	//see if the character is a combining character
+		return Characters.isCharInRange(c, XML.COMBINING_CHAR_RANGES);	//see if the character is a combining character
 	}
 
 	/**Checks to see if the specified character is an extender.
@@ -661,7 +661,7 @@ public class XMLUtilities
 	*/
 	public static boolean isExtender(final char c)
 	{
-		return Characters.isCharInRange(c, XMLUtilities.EXTENDER_RANGES);	//see if the character is an extender
+		return Characters.isCharInRange(c, XML.EXTENDER_RANGES);	//see if the character is an extender
 	}
 
 	/**Checks to see if the specified character is a name character.
@@ -730,7 +730,7 @@ public class XMLUtilities
 			if(ContentTypes.APPLICATION_PRIMARY_TYPE.equals(contentType.getPrimaryType()))	//if this is "application/*"
 			{
 				return XML_SUBTYPE.equals(contentType.getSubType())	//see if the subtype is "xml"
-						|| hasSubTypeSuffix(contentType, XMLUtilities.XML_SUBTYPE_SUFFIX);	//see if the subtype has an XML suffix
+						|| hasSubTypeSuffix(contentType, XML.XML_SUBTYPE_SUFFIX);	//see if the subtype has an XML suffix
 			}
 		}
 		return false;	//this is not a media type we recognize as being XML
@@ -756,7 +756,7 @@ public class XMLUtilities
 			{
 				final String subType=contentType.getSubType();	//get the subtype
 				return XML_EXTERNAL_PARSED_ENTITY_SUBTYPE.equals(subType)	//if the subtype is /xml-external-parsed-entity
-						|| hasSubTypeSuffix(contentType, XMLUtilities.XML_EXTERNAL_PARSED_ENTITY_SUBTYPE_SUFFIX);	//or if the subtype has an XML external parsed entity suffix
+						|| hasSubTypeSuffix(contentType, XML.XML_EXTERNAL_PARSED_ENTITY_SUBTYPE_SUFFIX);	//or if the subtype has an XML external parsed entity suffix
 			}
 		}
 		return false;	//this is not a media type we recognize as being an XML external parsed entity
@@ -801,7 +801,7 @@ public class XMLUtilities
 			{
 				if(stringBuffer==null)  //if we haven't create a string buffer, yet
 					stringBuffer=new StringBuffer(string);  //create a string buffer to hold our replacements
-				stringBuffer.setCharAt(i, XMLUtilities.SPACE_CHAR); //replace this character with a space
+				stringBuffer.setCharAt(i, XML.SPACE_CHAR); //replace this character with a space
 			}
 		}
 		return stringBuffer!=null ? stringBuffer.toString() : string; //return the original string unless we've actually modified something
@@ -842,7 +842,7 @@ public class XMLUtilities
 	public static String createQualifiedName(final String prefix, final String localName)
 	{
 		if(prefix!=null)  //if there is a prefix defined
-		  return prefix+XMLUtilities.NAMESPACE_DIVIDER+localName;  //construct a qualified name from prefix and local name
+		  return prefix+XML.NAMESPACE_DIVIDER+localName;  //construct a qualified name from prefix and local name
 		else  //if there is no prefix
 			return localName; //return the local name without the prefix
 	}
@@ -877,10 +877,10 @@ public class XMLUtilities
 		final String target=XML_STYLESHEET_PROCESSING_INSTRUCTION;  //the PI target will be the name of the stylesheet processing instruction
 		final StringBuffer dataStringBuffer=new StringBuffer(); //create a string buffer to construct the data parameter (with its pseudo attributes)
 		//add: href="href"
-		dataStringBuffer.append(HREF_ATTRIBUTE).append(XMLUtilities.EQUAL_CHAR).append(XMLUtilities.DOUBLE_QUOTE_CHAR).append(href).append(XMLUtilities.DOUBLE_QUOTE_CHAR);
-		dataStringBuffer.append(XMLUtilities.SPACE_CHAR);  //add a space between the pseudo attributes
+		dataStringBuffer.append(HREF_ATTRIBUTE).append(XML.EQUAL_CHAR).append(XML.DOUBLE_QUOTE_CHAR).append(href).append(XML.DOUBLE_QUOTE_CHAR);
+		dataStringBuffer.append(XML.SPACE_CHAR);  //add a space between the pseudo attributes
 		//add: type="type"
-		dataStringBuffer.append(TYPE_ATTRIBUTE).append(XMLUtilities.EQUAL_CHAR).append(XMLUtilities.DOUBLE_QUOTE_CHAR).append(mediaType).append(XMLUtilities.DOUBLE_QUOTE_CHAR);
+		dataStringBuffer.append(TYPE_ATTRIBUTE).append(XML.EQUAL_CHAR).append(XML.DOUBLE_QUOTE_CHAR).append(mediaType).append(XML.DOUBLE_QUOTE_CHAR);
 		final String data=dataStringBuffer.toString();  //convert the data string buffer to a string
 		final ProcessingInstruction processingInstruction=document.createProcessingInstruction(target, data); //create a processing instruction with the correct information
 		document.appendChild(processingInstruction);  //append the processing instruction to the document
@@ -1345,16 +1345,16 @@ public class XMLUtilities
 	*/
 	public static String getProcessingInstructionPseudoAttributeValue(final String processingInstructionData, final String pseudoAttributeName)
 	{
-		final StringTokenizer tokenizer=new StringTokenizer(processingInstructionData, XMLUtilities.WHITESPACE_CHARS);	//create a tokenizer that separates tokens based on XML whitespace
+		final StringTokenizer tokenizer=new StringTokenizer(processingInstructionData, XML.WHITESPACE_CHARS);	//create a tokenizer that separates tokens based on XML whitespace
 		while(tokenizer.hasMoreTokens())	//while there are more tokens
 		{
 			final String token=tokenizer.nextToken();	//get the next token
-			final int equalsIndex=token.indexOf(XMLUtilities.EQUAL_CHAR);	//get the index of the equal sign, if there is one
+			final int equalsIndex=token.indexOf(XML.EQUAL_CHAR);	//get the index of the equal sign, if there is one
 			if(equalsIndex!=-1 && equalsIndex>0 && token.length()>=equalsIndex+2)	//if there is an equal sign, it's not the first character, and there's enough room for at least the quotes
 			{
 				final char quoteChar=token.charAt(equalsIndex+1);	//get the character after the equals sign
 				//if the character after the equals sign is one of the quote characters, and it matches the last character in the token
-				if((quoteChar==XMLUtilities.SINGLE_QUOTE_CHAR || quoteChar==XMLUtilities.DOUBLE_QUOTE_CHAR) && token.charAt(token.length()-1)==quoteChar)
+				if((quoteChar==XML.SINGLE_QUOTE_CHAR || quoteChar==XML.DOUBLE_QUOTE_CHAR) && token.charAt(token.length()-1)==quoteChar)
 				{
 					final String currentPseudoAttributeName=token.substring(0, equalsIndex);	//get the name of the attribute
 					if(currentPseudoAttributeName.equals(pseudoAttributeName))  //if this is the requested name
@@ -1753,21 +1753,21 @@ public class XMLUtilities
 			String namespaceURI=null; //assume we won't find a matching namespace
 			if(prefix!=null)  //if they specified a prefix
 			{
-				if(prefix.equals(XMLUtilities.XMLNS_NAMESPACE_PREFIX))  //if this is the "xmlns" prefix
-					return XMLUtilities.XMLNS_NAMESPACE_URI.toString();  //return the namespace URI for "xmlns:"
-				else if(prefix.equals(XMLUtilities.XML_NAMESPACE_PREFIX))  //if this is the "xml" prefix
-					return XMLUtilities.XML_NAMESPACE_URI.toString();  //return the namespace URI for "xml:"
+				if(prefix.equals(XML.XMLNS_NAMESPACE_PREFIX))  //if this is the "xmlns" prefix
+					return XML.XMLNS_NAMESPACE_URI.toString();  //return the namespace URI for "xmlns:"
+				else if(prefix.equals(XML.XML_NAMESPACE_PREFIX))  //if this is the "xml" prefix
+					return XML.XML_NAMESPACE_URI.toString();  //return the namespace URI for "xml:"
 					//see if this element has "xmlns:prefix" defined, and if so, retrieve it
 	//G***del Debug.trace("(searching for attribute with namespace URI: "+XMLNS_NAMESPACE_URI+" and a local name of: "+prefix+")");
-			  if(element.hasAttributeNS(XMLUtilities.XMLNS_NAMESPACE_URI.toString(), prefix))  //G***fix for empty namespace strings
-					namespaceURI=element.getAttributeNS(XMLUtilities.XMLNS_NAMESPACE_URI.toString(), prefix);
+			  if(element.hasAttributeNS(XML.XMLNS_NAMESPACE_URI.toString(), prefix))  //G***fix for empty namespace strings
+					namespaceURI=element.getAttributeNS(XML.XMLNS_NAMESPACE_URI.toString(), prefix);
 			}
 			else  //if no prefix was specified
 			{
 	//G***del Debug.trace("(no prefix supplied; searching for an attribute with the local name: "+XMLNS_NAMESPACE_PREFIX+" in namespace: "+XMLNS_NAMESPACE_URI+")");  //G***del
 			  //see if there is an "xmlns" attribute defined in the "http://www.w3.org/2000/xmlns/" namespace
-			  if(element.hasAttributeNS(XMLUtilities.XMLNS_NAMESPACE_URI.toString(), XMLUtilities.XMLNS_NAMESPACE_PREFIX))
-					namespaceURI=element.getAttributeNS(XMLUtilities.XMLNS_NAMESPACE_URI.toString(), XMLUtilities.XMLNS_NAMESPACE_PREFIX);
+			  if(element.hasAttributeNS(XML.XMLNS_NAMESPACE_URI.toString(), XML.XMLNS_NAMESPACE_PREFIX))
+					namespaceURI=element.getAttributeNS(XML.XMLNS_NAMESPACE_URI.toString(), XML.XMLNS_NAMESPACE_PREFIX);
 	/*G***del when works
 			  //see if there is an "xmlns" attribute defined; this assumes that "xmlns" attributes are *not* ever resolved
 			  if(xmlElement.hasAttribute(XMLNS_NAMESPACE_PREFIX))
@@ -1964,11 +1964,11 @@ public class XMLUtilities
 	*/
 	public static boolean isNamespaceDeclared(final Element element, final String prefix, final String namespaceURI)
 	{
-		if(XMLUtilities.XMLNS_NAMESPACE_PREFIX.equals(prefix) && XMLUtilities.XMLNS_NAMESPACE_URI.toString().equals(namespaceURI)) //we don't need to define the "xmlns:" prefix
+		if(XML.XMLNS_NAMESPACE_PREFIX.equals(prefix) && XML.XMLNS_NAMESPACE_URI.toString().equals(namespaceURI)) //we don't need to define the "xmlns:" prefix
 			return true;
-		if(prefix==null && XMLUtilities.XMLNS_NAMESPACE_URI.toString().equals(namespaceURI)) //we don't need to define the "xmlns" name
+		if(prefix==null && XML.XMLNS_NAMESPACE_URI.toString().equals(namespaceURI)) //we don't need to define the "xmlns" name
 			return true;
-		if(XMLUtilities.XML_NAMESPACE_PREFIX.equals(prefix) && XMLUtilities.XML_NAMESPACE_URI.toString().equals(namespaceURI)) //we don't need to define the "xml" prefix
+		if(XML.XML_NAMESPACE_PREFIX.equals(prefix) && XML.XML_NAMESPACE_URI.toString().equals(namespaceURI)) //we don't need to define the "xml" prefix
 			return true;
 			//find out what namespace is defined for the prefix anywhere up the hierarchy
 		final String declaredNamespaceURI=getDeclaredNamespaceURI(element, prefix, true);
@@ -2018,23 +2018,23 @@ public class XMLUtilities
 	*/
 	public static void declareNamespace(final Element declarationElement, final String prefix, String namespaceURI)
 	{
-		if(XMLUtilities.XMLNS_NAMESPACE_PREFIX.equals(prefix) && XMLUtilities.XMLNS_NAMESPACE_URI.toString().equals(namespaceURI)) //we don't need to define the "xmlns" prefix
+		if(XML.XMLNS_NAMESPACE_PREFIX.equals(prefix) && XML.XMLNS_NAMESPACE_URI.toString().equals(namespaceURI)) //we don't need to define the "xmlns" prefix
 		  return;
-		if(prefix==null && XMLUtilities.XMLNS_NAMESPACE_URI.toString().equals(namespaceURI)) //we don't need to define the "xmlns" name
+		if(prefix==null && XML.XMLNS_NAMESPACE_URI.toString().equals(namespaceURI)) //we don't need to define the "xmlns" name
 		  return;
-		if(XMLUtilities.XML_NAMESPACE_PREFIX.equals(prefix) && XMLUtilities.XML_NAMESPACE_URI.toString().equals(namespaceURI)) //we don't need to define the "xml" prefix
+		if(XML.XML_NAMESPACE_PREFIX.equals(prefix) && XML.XML_NAMESPACE_URI.toString().equals(namespaceURI)) //we don't need to define the "xml" prefix
 		  return;
 		if(namespaceURI==null)  //if no namespace URI was given
 			namespaceURI="";  //we'll declare an empty namespace URI
 		if(prefix!=null)  //if we were given a prefix
 		{
 				//create an attribute in the form, xmlns:prefix="namespaceURI" TODO fix for attributes that may use the same prefix for different namespace URIs
-			declarationElement.setAttributeNS(XMLUtilities.XMLNS_NAMESPACE_URI.toString(), createQualifiedName(XMLUtilities.XMLNS_NAMESPACE_PREFIX, prefix), namespaceURI);
+			declarationElement.setAttributeNS(XML.XMLNS_NAMESPACE_URI.toString(), createQualifiedName(XML.XMLNS_NAMESPACE_PREFIX, prefix), namespaceURI);
 		}
 		else  //if we weren't given a prefix
 		{
 				//create an attribute in the form, xmlns="namespaceURI" TODO fix for attributes that may use the same prefix for different namesapce URIs
-			declarationElement.setAttributeNS(XMLUtilities.XMLNS_NAMESPACE_URI.toString(), XMLUtilities.XMLNS_NAMESPACE_PREFIX, namespaceURI);
+			declarationElement.setAttributeNS(XML.XMLNS_NAMESPACE_URI.toString(), XML.XMLNS_NAMESPACE_PREFIX, namespaceURI);
 		}
 	}
 

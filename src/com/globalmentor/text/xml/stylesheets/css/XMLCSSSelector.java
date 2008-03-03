@@ -1,18 +1,30 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml.stylesheets.css;
 
-import com.globalmentor.util.Debug;
-
-import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
-import org.w3c.dom.css.*;
-
-//G***should we make this an inner class of XMLCSSSelector
 
 /**A single selector with an optional name and an optional class, although one
 of the two should be specified.
+@author Garret Wilson
 @see XMLCSSStyleRule
+@deprecated
 */
-public class XMLCSSSelector//G***fix, Cloneable
+public class XMLCSSSelector//TODO fix, Cloneable
 {
 	/*Constructor which requires a tag name and a class.
 	@param tagName The name of the tag this selector matches,
@@ -40,14 +52,10 @@ public class XMLCSSSelector//G***fix, Cloneable
 	*/
 	public boolean appliesTo(Element element)
 	{
-//G***del Debug.trace("XMLCSSSelector checking to see if "+element.getNodeName()+" matches "+getCssText()); //G***del
-			//G***later, add the CSS ID checking
+			//TODO later, add the CSS ID checking
 		if(getTagName().length()==0 || element.getNodeName().equals(getTagName()))	//if the tag names match, or we don't have a tag name to match with (which means we'll be matching class only)
 		{
-
-//G***del Debug.trace("Element "+element.getNodeName()+" matched, now checking to see if class: "+element.getAttributeNS(null, "class")+" equals the tag we expect: "+getTagClass());	//G***del
-
-			if(getTagClass().length()==0 || element.getAttributeNS(null, "class").equals(getTagClass()))	//if the class names match as well (or there isn't a specified class in this selector) G***use a constant here
+			if(getTagClass().length()==0 || element.getAttributeNS(null, "class").equals(getTagClass()))	//if the class names match as well (or there isn't a specified class in this selector) TODO use a constant here
 				return true;
 		}
 		return false;	//if we get to this point, this selector doesn't apply to this element

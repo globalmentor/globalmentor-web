@@ -1,18 +1,33 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml.stylesheets.css;
 
-//G***del if we don't need import java.io.*;
 import com.globalmentor.text.xml.XMLDOMException;
 import com.globalmentor.text.xml.stylesheets.*;
 
-import org.w3c.dom.DOMException;
-import org.w3c.dom.Node;
+import org.w3c.dom.*;
 import org.w3c.dom.css.*;
 import org.w3c.dom.stylesheets.StyleSheet;
 
 /**A CSS stylesheet (i.e. a stylesheet whose content type is "text/css").
+@author Garret Wilson
 @see CSSRule
 @see org.w3c.dom.css.CSSStyleSheet
-@see XMLCSSConstants
+@deprecated
 */
 public class XMLCSSStyleSheet extends XMLStyleSheet implements CSSStyleSheet
 {
@@ -33,45 +48,23 @@ public class XMLCSSStyleSheet extends XMLStyleSheet implements CSSStyleSheet
 		super(parentStyleSheet);	//construct the parent class
 	}
 
-	/**Creates and returns a duplicate copy of this node. The clone has no parent.
-	This function creates a "shallow" clone which does not contain clones of all
-	child nodes. For the DOM version, see cloneNode().
-	@return A duplicate copy of this node.
-	@see XMLNode#cloneXMLNode
-	@see XMLNode#cloneNode
-	@see XMLNode#getParentXMLNode
-	*/
-/*G***fix or del
-	public Object clone()
-	{
-		return new XMLDocument();	//create a new document G***do we clone the document type and stuff as well?
-	}
-
-*/
-
-
-	//G***perhaps have another constructer which specifies an owner rule
-
+	//TODO perhaps have another constructer which specifies an owner rule
 
 	/**@return A parsable string representation of the stylesheet.*/
-	//G***probably put this in a CssText property and call it from here
+	//TODO probably put this in a CssText property and call it from here
 	public String toString()
 	{
 		final StringBuilder stringBuilder=new StringBuilder(); //create a new string builder to collect our data
-		//G***return whatever header stuff is needed
+		//TODO return whatever header stuff is needed
 		for(int ruleIndex=0; ruleIndex<((XMLCSSRuleList)getCssRules()).size(); ++ruleIndex)	//look at each of the rules
 		{
-//G***del			stringBuffer.append(RULE_GROUP_START_CHAR); //append the rule group start character
 			stringBuilder.append((XMLCSSRule)((XMLCSSRuleList)getCssRules()).get(ruleIndex)).toString();	//return a string representation of this rule, with a linefeed at the end to make it look nice
-//G***del			stringBuffer.append(RULE_GROUP_END_CHAR); //append the rule group end character
 			stringBuilder.append('\n'); //append a linefeed at the end to make it look nice
 		}
 		return stringBuilder.toString();	//return the string we constructed
 	}
 
-
 	/**The rule which owns this stylesheet, if this stylesheet comes from an @import rule.*/
-
 	private XMLCSSRule OwnerRule=null;
 
 	/**Returns the CSS import rule which owns this stylesheet if this stylesheet
@@ -86,11 +79,8 @@ public class XMLCSSStyleSheet extends XMLStyleSheet implements CSSStyleSheet
 	*/
 	public CSSRule getOwnerRule() {return OwnerRule;}
 
-
 	/**The list of all CSS rules, including both rule sets and at-rules.*/
-
 	private XMLCSSRuleList CssRules=new XMLCSSRuleList();
-
 
 	/**Returns the list of all CSS rules contained within the stylesheet. This
 	includes both rule sets and at-rules.
@@ -99,7 +89,6 @@ public class XMLCSSStyleSheet extends XMLStyleSheet implements CSSStyleSheet
 	@since DOM Level 2
 	*/
 	public CSSRuleList getCssRules() {return CssRules;}
-
 
 	/**Inserts a new rule into the style sheet. The new rule now becomes part of
 		the cascade.
@@ -127,9 +116,8 @@ public class XMLCSSStyleSheet extends XMLStyleSheet implements CSSStyleSheet
 	*/
 	public int insertRule(String rule, int index) throws DOMException
 	{
-		return 0;	//G***fix
+		return 0;	//TODO fix
 	}
-
 
 	/**Delete a rule from the stylesheet.
 	@param index The index within the style sheet's rule list of the rule to remove.
@@ -144,7 +132,7 @@ public class XMLCSSStyleSheet extends XMLStyleSheet implements CSSStyleSheet
 	*/
 	public void deleteRule(int index) throws DOMException
 	{
-		//G***check for read-only status
+		//TODO check for read-only status
 		try
 		{
 			((XMLCSSRuleList)getCssRules()).remove(index);	//remove the item at the specified index

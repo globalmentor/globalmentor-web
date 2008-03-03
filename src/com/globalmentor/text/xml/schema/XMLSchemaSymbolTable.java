@@ -1,3 +1,19 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml.schema;
 
 import java.util.Collection;
@@ -18,6 +34,7 @@ A complex type, on the other hand, will only contain elements and attributes.</p
 @see XMLSchema
 @see XMLSchemaComplexTypeComponent
 @author Garret Wilson
+@deprecated
 */
 public class XMLSchemaSymbolTable
 {
@@ -95,22 +112,6 @@ public class XMLSchemaSymbolTable
 			return Collections.unmodifiableCollection(getSymbolSpace(namespace, symbolSpaceName).values());
 		}
 
-		/**Returns an iterator of all symbols in a symbol space. If a symbol space
-			for this symbol category does not exist, it will be created and added to
-			the map.
-		@param namespace The URI of the namespace for which a symbol space will be returned.
-		@param symbolSpaceName A name representing the category of symbols (such as
-			attributes or types) the returned map will represent.
-		@return An iterator of all symbols in the symbol space.
-		@see #getSymbolSpace
-		*/
-/*G***del if not needed
-		public Iterator getComponentIterator(final String namespace, final String symbolSpaceName)
-		{
-			return getSymbolSpace(namespace, symbolSpaceName).values().iterator();  //return an iterator of all the values in the symbol space
-		}
-*/
-
 		/**Returns a named schema component from the table. The component resides
 		  inside a particular symbol space which in turn resides inside a particular
 			namespace.
@@ -141,12 +142,10 @@ public class XMLSchemaSymbolTable
 		  inside a particular symbol space which in turn resides inside a particular
 			namespace.
 		@param namespace The URI of the namespace of the component.
-//G***del if not needed		@param symbolSpaceName A name representing the category of symbols (such as
-//G***del if not needed			attributes or types) the component is in.
 		@param namedComponent The component to store in the table.
 		@see #getSymbolSpace
 		*/
-		public void putComponent(final String namespace, /*G***del if not needed final String symbolSpaceName, */final XMLSchemaNamedComponent namedComponent)
+		public void putComponent(final String namespace, final XMLSchemaNamedComponent namedComponent)
 		{
 			final String symbolSpaceName=getSymbolSpaceName(namedComponent);  //get the name of the symbol space to use for this component
 			final Map symbolSpace=getSymbolSpace(namespace, symbolSpaceName);  //get the symbol space for this component
@@ -185,8 +184,8 @@ public class XMLSchemaSymbolTable
 			case XMLSchemaNamedComponent.COMPLEX_TYPE_COMPONENT: //complex types
 				return TYPE_SYMBOL_SPACE_NAME;
 			default:
-				Debug.error("Cannot find symbol space for component: "+componentType); //G***fix for other types
-				return null;  //G***fix
+				Debug.error("Cannot find symbol space for component: "+componentType); //TODO fix for other types
+				return null;  //TODO fix
 		}
 	}
 

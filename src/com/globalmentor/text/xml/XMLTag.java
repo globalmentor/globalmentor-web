@@ -16,7 +16,7 @@
 
 package com.globalmentor.text.xml;
 
-import static com.globalmentor.text.xml.XMLUtilities.*;
+import static com.globalmentor.text.xml.XML.*;
 
 import org.w3c.dom.*;
 

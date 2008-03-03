@@ -1,12 +1,26 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml.schema;
 
 import java.util.*;
 
-import static com.globalmentor.text.xml.schema.XMLSchemaConstants.*;
-
 import com.globalmentor.text.xml.XMLSerializer;
-import com.globalmentor.util.Debug;
-import com.globalmentor.util.Iterators;
+import static com.globalmentor.text.xml.schema.XMLSchema.*;
+import com.globalmentor.util.*;
 
 import org.w3c.dom.*;
 
@@ -18,13 +32,14 @@ Each schema processor instance keeps a map of other schemas keyed to their
 	of the predefined schemas, and adds that schema to the map of schemas for
 	cached retrieval.
 @author Garret Wilson
+@deprecated
 */
 public class XMLSchemaProcessor
 {
 
 	/**The serializer used to serialize annotations, shared across schema
 		processors.
-//G***do we want to have a lazy creation here?
+//TODO do we want to have a lazy creation here?
 	*/
 	protected final static XMLSerializer xmlSerializer=new XMLSerializer();
 
@@ -33,7 +48,7 @@ public class XMLSchemaProcessor
 
 	/**Stores a schema keyed to a particular namespace for later retrieval and
 		use by the schema processor.
-	@param targetNamespace The namespace the schema is for. G***perhaps get this directly from the schema
+	@param targetNamespace The namespace the schema is for. TODO perhaps get this directly from the schema
 	@param schema The schema to store in the map.
 	*/
 	public void putSchema(final String targetNamespace, final XMLSchema schema)
@@ -55,7 +70,7 @@ public class XMLSchemaProcessor
 		XMLSchema schema=(XMLSchema)schemaMap.get(targetNamespace);  //get a schema for the namespace
 		if(schema==null)  //if there is no schema stored in the map
 		{
-		  //G***process a default schema and add it to the map
+		  //TODO process a default schema and add it to the map
 		}
 		return schema;  //return the schema we found, or null if one could not be found
 	}
@@ -70,8 +85,7 @@ public class XMLSchemaProcessor
 	*/
 	public static XMLSchema processSchema(final Element element)
 	{
-//G***del Debug.trace("ready to process schema for element: "+element.getNodeName()); //G***del
-		//G***make sure this is a schema object in the schema namespace
+		//TODO make sure this is a schema object in the schema namespace
 		final XMLSchema schema=new XMLSchema(); //create a new schema
 		schema.setTargetNamespace(element.hasAttributeNS(null, ATTRIBUTE_TARGET_NAMESPACE) ?
 		    element.getAttributeNS(null, ATTRIBUTE_TARGET_NAMESPACE):
@@ -79,16 +93,16 @@ public class XMLSchemaProcessor
 		final Iterator schemaComponentIterator=processSchemaComponents(schema, element).iterator();  //get a list of child schema components, and get an iterator to look through them
 			//get the next element, or null if there is no next element
 	  XMLSchemaComponent schemaComponent=(XMLSchemaComponent)Iterators.getNext(schemaComponentIterator);
-			//check for an annotation G***also check for an include, import, or a redefine
-		while(schemaComponent!=null && schemaComponent.getComponentType()==schemaComponent.ANNOTATION_COMPONENT) //if there is a schema component, and it's an annotation G***change other instances to reflect the new ComponentType property
+			//check for an annotation TODO also check for an include, import, or a redefine
+		while(schemaComponent!=null && schemaComponent.getComponentType()==schemaComponent.ANNOTATION_COMPONENT) //if there is a schema component, and it's an annotation TODO change other instances to reflect the new ComponentType property
 		{
-			//G***process the schema component
+			//TODO process the schema component
 			schemaComponent=(XMLSchemaComponent)Iterators.getNext(schemaComponentIterator);  //get the next schema component, or null if there is no other one
 		}
 		  //check for body components
 		while(schemaComponent!=null)  //while there are schema components left
 		{
-//G***del if needed			final short componentType=schemaComponent.getComponentType(); //see which type of component this is
+//TOD del if needed			final short componentType=schemaComponent.getComponentType(); //see which type of component this is
 			switch(schemaComponent.getComponentType())  //see which type of component this is
 			{
 				case XMLSchemaComponent.ATTRIBUTE_COMPONENT:
@@ -103,14 +117,14 @@ public class XMLSchemaProcessor
 				case XMLSchemaComponent.ANNOTATION_COMPONENT:
 					break;  //annotations can come at any time after normal components, but they will be the last components of the schema
 				default:
-					Debug.error("Unrecognized component: "+schemaComponent);  //G***fix
+					Debug.error("Unrecognized component: "+schemaComponent);  //TODO fix
 				  break;
 			}
 			if(schemaComponent!=null && schemaComponent.getComponentType()==schemaComponent.ANNOTATION_COMPONENT) //if this is an annotation
 				break;  //we're finished with the body components
 		  schemaComponent=(XMLSchemaComponent)Iterators.getNext(schemaComponentIterator);  //get the next schema component, or null if there is no other one
 		}
-		//G***read the rest of the annotations
+		//TODO read the rest of the annotations
 		return schema;  //return the schema we created
 	}
 
@@ -124,7 +138,7 @@ public class XMLSchemaProcessor
 	{
 		final List schemaComponentList=new ArrayList(); //create a list in which to store child schema components
 		final NodeList childNodeList=element.getChildNodes(); //get a list of the direct children
-		for(int childIndex=0; childIndex<childNodeList.getLength(); ++childIndex) //look at each schema child node G***eventually replace this with an iterator
+		for(int childIndex=0; childIndex<childNodeList.getLength(); ++childIndex) //look at each schema child node TODO eventually replace this with an iterator
 		{
 			final Node node=childNodeList.item(childIndex); //get a reference to this child node
 			if(node.getNodeType()==node.ELEMENT_NODE)  //if this is an element
@@ -135,12 +149,11 @@ public class XMLSchemaProcessor
 				if(childNamespaceURI!=null && childNamespaceURI.equals(XML_SCHEMA_NAMESPACE_URI.toString()))
 				{
 						//process the element which contains the schema component
-//G***del Debug.trace("ready to process schema component: "+childElement.getNodeName());
 				  final XMLSchemaComponent schemaComponent=processSchemaComponent(ownerSchema, childElement);
 					if(schemaComponent!=null) //if we received a valid schema component
 					  schemaComponentList.add(schemaComponent); //add this schema component to the list
-					else  //G***fix
-						Debug.trace("Did not recognize element: ", childElement.getLocalName()); //G***fix
+					else  //TODO fix
+						Debug.trace("Did not recognize element: ", childElement.getLocalName()); //TODO fix
 				}
 			}
  		}
@@ -156,7 +169,7 @@ public class XMLSchemaProcessor
 	*/
 	protected static XMLSchemaComponent processSchemaComponent(final XMLSchema ownerSchema, final Element element)
 	{
-		//G***make sure this is a schema object in the schema namespace
+		//TODO make sure this is a schema object in the schema namespace
 		final String localName=element.getLocalName();  //get the element's local name
 		if(localName.equals(ELEMENT_ANNOTATION)) //<annotation>
 			return processAnnotation(ownerSchema, element);  //process the schema component
@@ -177,12 +190,10 @@ public class XMLSchemaProcessor
 	*/
 	protected static void processSchemaNamedComponent(final XMLSchema ownerSchema, final Element element, final XMLSchemaNamedComponent namedComponent)
 	{
-//G***del Debug.trace("ready to process named schema component.");
 		namedComponent.setName(element.hasAttributeNS(null, ATTRIBUTE_NAME) ?
 		    element.getAttributeNS(null, ATTRIBUTE_NAME):
 			  null); //get the name attribute, or null if there is no name attribute (one isn't required)
 		namedComponent.setTargetNamespace(ownerSchema.getTargetNamespace());  //in XML schema documents, all components have the same target namespace as the schema itself
-//G***del Debug.trace("name: "+namedComponent.getName()+" target namespace: "+namedComponent.getTargetNamespace());
 	}
 
 	/**Processes an XML element in a schema that represents an attribute group. No
@@ -205,9 +216,9 @@ public class XMLSchemaProcessor
 			{
 				attributeGroup.getChildComponentList().add(schemaComponent);  //add this schema component as a child element
 			}
-//G***check to see if this is anyAttribute			else if
+//TODO check to see if this is anyAttribute			else if
 		  else  //if we don't recognize the component
-				Debug.error("Unrecognized component: "+schemaComponent);  //G***fix, even for annotations out of order
+				Debug.error("Unrecognized component: "+schemaComponent);  //TODO fix, even for annotations out of order
 		  schemaComponent=(XMLSchemaComponent)Iterators.getNext(schemaComponentIterator);  //get the next schema component, or null if there is no other one
 		}
 		return attributeGroup;  //return the schema component we created
@@ -241,42 +252,23 @@ public class XMLSchemaProcessor
 			}
 		}
 
-
-/*G***fix
+/*TODO fix
 		while(schemaComponent!=null)  //while there are schema components left
 		{
-
-
-
-
 
 				//attribute groups can only hold attributes or other attribute groups
 			if(schemaComponent instanceof XMLSchemaAttribute || schemaComponent instanceof XMLSchemaAttributeGroup)
 			{
 				attributeGroup.getChildComponentList().add(schemaComponent);  //add this schema component as a child element
 			}
-//G***check to see if this is anyAttribute			else if
+//TODO check to see if this is anyAttribute			else if
 		  else  //if we don't recognize the component
-				Debug.error("Unrecognized component: "+schemaComponent);  //G***fix, even for annotations out of order
+				Debug.error("Unrecognized component: "+schemaComponent);  //TODO fix, even for annotations out of order
 		  schemaComponent=(XMLSchemaComponent)IteratorUtilities.getNext(schemaComponentIterator);  //get the next schema component, or null if there is no other one
 		}
 */
 		return schemaElement;  //return the schema component we created
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -290,7 +282,7 @@ public class XMLSchemaProcessor
 	{
 		final XMLSchemaAnnotation annotation=new XMLSchemaAnnotation(); //create a new annotation
 		final NodeList childNodeList=element.getChildNodes(); //get a list of the direct children
-		for(int childIndex=0; childIndex<childNodeList.getLength(); ++childIndex) //look at each schema child node G***eventually replace this with an iterator
+		for(int childIndex=0; childIndex<childNodeList.getLength(); ++childIndex) //look at each schema child node TODO eventually replace this with an iterator
 		{
 			final Node node=childNodeList.item(childIndex); //get a reference to this child node
 			if(node.getNodeType()==node.ELEMENT_NODE)  //if this is an element
@@ -305,14 +297,13 @@ public class XMLSchemaProcessor
 					if(childLocalName.equals(ELEMENT_APPINFO) || childLocalName.equals(ELEMENT_DOCUMENTATION))
 				  {
 						final String informationString=xmlSerializer.serializeContent(childElement); //serialize the content of the information element to a string
-//G***del Debug.trace("information: "+informationString); //G***fix
 						if(childLocalName.equals(ELEMENT_APPINFO))  //if this is application information
 						  annotation.addApplicationInformation(informationString);  //add the application information
 						else if(childLocalName.equals(ELEMENT_DOCUMENTATION)) //if this is user information
 						  annotation.addUserInformation(informationString); //add the user information
 				  }
 					else  //if this is not <appinfo> or <documentation>
-						Debug.error("Illegal annotation element: "+childLocalName); //G***fix
+						Debug.error("Illegal annotation element: "+childLocalName); //TODO fix
 				}
 			}
 		}

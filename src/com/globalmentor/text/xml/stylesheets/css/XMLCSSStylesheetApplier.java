@@ -1,20 +1,36 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml.stylesheets.css;
 
 import java.net.URI;
 import java.io.*;
 import java.util.*;
 import com.globalmentor.io.*;
-import com.globalmentor.text.xml.XMLUtilities;
+import com.globalmentor.text.xml.XML;
 import com.globalmentor.util.NameValuePair;
 
 import org.w3c.dom.*;
 import org.w3c.dom.css.*;
-import org.w3c.dom.stylesheets.*;
 
 /**Applies styles to XML elements.
 @author Garret Wilson
+@deprecated
 */
-public class XMLCSSStylesheetApplier extends AbstractXMLCSSStylesheetApplier<Document, Element> implements CSSStyleManager //G***do we really need this style manager interaface 
+public class XMLCSSStylesheetApplier extends AbstractXMLCSSStylesheetApplier<Document, Element> implements CSSStyleManager //TODO do we really need this style manager interface? 
 {
 	
 		//TODO maybe move all the map storage stuff to the abstract version
@@ -22,12 +38,12 @@ public class XMLCSSStylesheetApplier extends AbstractXMLCSSStylesheetApplier<Doc
 	/**The map of styles, each keyed to an element. The weak map allows the styles
 		to be garbage-collected once the corresponding element is no longer used.
 	*/
-	protected final Map<Element, CSSStyleDeclaration> cssStyleMap=new WeakHashMap<Element, CSSStyleDeclaration>();  //G***fix entire pattern to be much more general and robust
+	protected final Map<Element, CSSStyleDeclaration> cssStyleMap=new WeakHashMap<Element, CSSStyleDeclaration>();  //TODO fix entire pattern to be much more general and robust
 
 		/**@return The map of styles, each keyed to an element.*/
 		protected Map<Element, CSSStyleDeclaration> getCSSStyleMap() {return cssStyleMap;}
 
-//G***maybe delete this comment
+//TODO maybe delete this comment
 		/**Retrieves the style of the given element.
 			The returned style object is guaranteed to be non-<code>null</code>&mdash;
 			if the requested element has no style in the map, a default empty style is
@@ -101,7 +117,7 @@ public class XMLCSSStylesheetApplier extends AbstractXMLCSSStylesheetApplier<Doc
 	*/
 	protected NameValuePair[] getDocumentProcessingInstructions(final Document document)
 	{
-		final List processingInstructionList=XMLUtilities.getNodesByName(document, Node.PROCESSING_INSTRUCTION_NODE, "*", false);	//get a list of all the processing instructions in the document TODO use a constant for the wildcard
+		final List processingInstructionList=XML.getNodesByName(document, Node.PROCESSING_INSTRUCTION_NODE, "*", false);	//get a list of all the processing instructions in the document TODO use a constant for the wildcard
 		final NameValuePair[] processingInstructions=new NameValuePair[processingInstructionList.size()];	//create an array large enough to hold all the processing instructions
 		for(int i=0; i<processingInstructionList.size(); ++i)	//look at each of the nodes representing a style sheet link
 		{
@@ -127,7 +143,7 @@ public class XMLCSSStylesheetApplier extends AbstractXMLCSSStylesheetApplier<Doc
 	protected String getElementLocalName(final Element element)
 	{
 			//TODO fix all this---we don't properly distinguish between elements and nodes
-		return element instanceof Element ? element.getLocalName() : null;	//return the element's local name	//G***fix
+		return element instanceof Element ? element.getLocalName() : null;	//return the element's local name	//TODO fix
 	}
 	
 	/**Retrieves the value of one of the element's attributes.
@@ -139,7 +155,7 @@ public class XMLCSSStylesheetApplier extends AbstractXMLCSSStylesheetApplier<Doc
 	*/
 	protected String getElementAttributeValue(final Element element, final String attributeNamespaceURI, final String attributeLocalName)
 	{
-		return element instanceof Element ? XMLUtilities.getDefinedAttributeNS(element, attributeNamespaceURI, attributeLocalName) : null;	//return the attribute value only if it is defined
+		return element instanceof Element ? XML.getDefinedAttributeNS(element, attributeNamespaceURI, attributeLocalName) : null;	//return the attribute value only if it is defined
 	}
 	
 	/**Retrieves the parent element for the given element.
@@ -194,7 +210,7 @@ public class XMLCSSStylesheetApplier extends AbstractXMLCSSStylesheetApplier<Doc
 	*/
 	protected String getElementText(final Element element)
 	{
-		return XMLUtilities.getText(element, true);	//return all the child text of the element
+		return XML.getText(element, true);	//return all the child text of the element
 	}
 	
 	/**Imports style information into that already gathered for the given element.
@@ -209,7 +225,6 @@ public class XMLCSSStylesheetApplier extends AbstractXMLCSSStylesheetApplier<Doc
 			elementStyle=new XMLCSSStyleDeclaration();  //create an empty default style TODO use standard DOM classes if we can
 			setStyle(element, elementStyle); //set the element style to the new one we created
 		}
-//G***del					Debug.trace("style rule is of type: ", cssStyleRule.getClass().getName());  //G***del
 		importStyle(elementStyle, cssStyle);	//import the style
 	}
 }

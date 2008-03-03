@@ -92,8 +92,8 @@ public class XMLNamedObject	//TODO implement NamedObject or extend DefaultNamedO
 	public void setQName(final String qname)
 	{
 		this.qname=qname;	//save the qualified name
-		prefix=XMLUtilities.getPrefix(qname);	//determine and set the prefix
-		localName=XMLUtilities.getLocalName(qname);	//determine and set the local name		
+		prefix=XML.getPrefix(qname);	//determine and set the prefix
+		localName=XML.getLocalName(qname);	//determine and set the local name		
 	}
 
 	/**Sets the prefix and local name of this object, updating the qualified
@@ -107,7 +107,7 @@ public class XMLNamedObject	//TODO implement NamedObject or extend DefaultNamedO
 	{
 		prefix=newPrefix;  //set the prefix
 		localName=newLocalName;	//set the local name
-		qname=XMLUtilities.createQualifiedName(newPrefix, newLocalName);	//create a qualified name and store it (don't call setQName(), which will needlessly reset the prefix and local name)
+		qname=XML.createQualifiedName(newPrefix, newLocalName);	//create a qualified name and store it (don't call setQName(), which will needlessly reset the prefix and local name)
 	}
 
 	/**Constructor specifying the namespace and qname of the object.
@@ -120,8 +120,8 @@ public class XMLNamedObject	//TODO implement NamedObject or extend DefaultNamedO
 //TODO fix		super(qname);	//construct the parent class
 		setNamespaceURI(namespaceURI);	//set the namespace URI
 		this.qname=qname;	//save the qualified name
-		prefix=qname!=null ? XMLUtilities.getPrefix(qname) : null;	//determine and set the prefix
-		localName=qname!=null ? XMLUtilities.getLocalName(qname) : null;	//determine and set the local name		
+		prefix=qname!=null ? XML.getPrefix(qname) : null;	//determine and set the prefix
+		localName=qname!=null ? XML.getLocalName(qname) : null;	//determine and set the local name		
 	}
 	
 }

@@ -1,78 +1,47 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml.stylesheets.css;
 
 import java.io.*;
 import java.util.*;
-//G***del if not needed import org.w3c.dom.*;
-import org.w3c.dom.DOMException;
 import org.w3c.dom.css.*;
 
 import static com.globalmentor.text.CharacterEncoding.*;
-import static com.globalmentor.text.xml.stylesheets.css.XMLCSSConstants.*;
-
-import com.globalmentor.java.Integers;
-import com.globalmentor.java.StringBuffers;
-import com.globalmentor.text.CharacterEncoding;
-import com.globalmentor.util.Debug;
-import com.globalmentor.util.PropertiesUtilities;
-
-//G***del all the XMLUndefinedEntityReferenceException throws when we don't need them anymore, in favor of XMLWellFormednessException
+import static com.globalmentor.text.xml.stylesheets.css.XMLCSS.*;
 
 /**Class which serializes a CSS stylesheet to a byte-oriented output stream.
 	Has the option of automatically formatting the output in a hierarchical
 	structure with tabs or other strings.
-@see XMLCSSProcessor
 @author Garret Wilson
+@see XMLCSSProcessor
 */
-public class CSSSerializer
+public class CSSSerializer	//TODO del all the XMLUndefinedEntityReferenceException throws when we don't need them anymore, in favor of XMLWellFormednessException
 {
-
-	/**Whether the output should be formatted.*/
-//G***del	public final static String FORMAT_OUTPUT_OPTION="formatOutput"; //G***we need to get this from a single source
-
-		/**Default to unformatted output.*/
-//G***del		public final static boolean FORMAT_OUTPUT_OPTION_DEFAULT=true;
-
-	/**Whether the output should be formatted.*/
-//G***del	private boolean formatted=FORMAT_OUTPUT_OPTION_DEFAULT;
-
-		/**@return Whether the output should be formatted.*/
-//G***del		public boolean isFormatted() {return formatted;}
-
-		/**Sets whether the output should be formatted.
-		@param newFormatted <code>true</code> if the output should be formatted, else <code>false</code>.
-		*/
-//G***del		public void setFormatted(final boolean newFormatted) {formatted=newFormatted;}
 
 	/**Sets the options based on the contents of the option properties.
 	@param options The properties which contain the options.
 	*/
 	public void setOptions(final Properties options)
 	{
-//G***del Debug.notify("XMLCSSSerializer: "+options);  //G***del
-//G***del		setFormatted(PropertyUtilities.getBooleanProperty(options, FORMAT_OUTPUT_OPTION, FORMAT_OUTPUT_OPTION_DEFAULT));
 	}
-
-	/**The string to use for horizontally aligning the elements if formatting is
-		turned on. Defaults to a single tab character.
-	*/
-//G***del	private String horizontalAlignString="\t";
-
-		/**@return The string to use for horizontally aligning the elements if formatting is turned on.
-		@see #isFormatted
-		*/
-//G***del		public String getHorizontalAlignString() {return horizontalAlignString;}
-
-		/**Sets the string to use for horizontally aligning the elements if formatting is turned on..
-		@param newHorizontalAlignString The horizontal alignment string.
-		@see #setFormatted
-		*/
-//G***del		public void setHorizontalAlignString(final String newHorizontalAlignString) {horizontalAlignString=newHorizontalAlignString;}
 
 	/**Default constructor for formatted output.*/
 	public CSSSerializer()
 	{
-//G***del		this(new Properties()); //do the default construction with default properties
-//G***del	  this(false);  //default to unformatted output
 	}
 
 	/**Constructor that specifies serialize options.
@@ -82,16 +51,6 @@ public class CSSSerializer
 	{
 		setOptions(options);  //set the options from the properties
 	}
-
-	/**Constructor for an optionally formatted serializer.
-	@param Whether the serializer should be formatted.
-	*/
-/*G***del
-	public CSSSerializer(final boolean formatted)
-	{
-		setFormatted(formatted);	//set whether the output should be formatted
-	}
-*/
 
 	/**Serializes the specified stylesheet to the given output stream using the
 		UTF-8 encoding.
@@ -116,20 +75,16 @@ public class CSSSerializer
 	public void serialize(final CSSStyleSheet stylesheet, final OutputStream outputStream, final String encoding) throws IOException, UnsupportedEncodingException
 	{
 		final BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(outputStream, encoding));	//create a new writer based on our encoding
-//G***fix		writeProlog(document, writer, encoding);	//write the prolog
-		//G***return whatever header stuff is needed
+//TODO fix		writeProlog(document, writer, encoding);	//write the prolog
+		//TODO return whatever header stuff is needed
 		final CSSRuleList cssRuleList=stylesheet.getCssRules(); //get the list of CSS rules
 		final int stylesheetRuleCount=cssRuleList.getLength(); //find out how many rules there are
-Debug.trace("Number of stylesheet rules: ", stylesheetRuleCount); //G***del
 		for(int ruleIndex=0; ruleIndex<stylesheetRuleCount; ++ruleIndex)	//look at each of the rules
 		{
 		  final CSSRule cssRule=cssRuleList.item(ruleIndex);  //get this CSS rule
-Debug.trace("Writing cssRule: ", cssRule);
 			write(cssRule, writer); //write the CSS rule
-//G***del			if(isFormatted()) //if we're formatting the output
 		  writer.newLine();	//add a newline in the default format
 		}
-//G***del		return stringBuffer.toString();	//return the string we constructed
 		writer.newLine();	//add a newline in the default format
 		writer.flush();	//flush any data we've buffered
 	}
@@ -141,11 +96,9 @@ Debug.trace("Writing cssRule: ", cssRule);
 	*/
 	protected void write(final CSSRule cssRule, final BufferedWriter writer) throws IOException
 	{
-Debug.trace("CSS rule: ", cssRule.getClass().getName()); //G***del
-		if(cssRule instanceof CSSStyleRule) //G***fix
+		if(cssRule instanceof CSSStyleRule) //TODO fix
 		{
-Debug.trace("It's a CSS style rule"); //G***del
-			final CSSStyleRule cssStyleRule=(CSSStyleRule)cssRule;  //G***fix
+			final CSSStyleRule cssStyleRule=(CSSStyleRule)cssRule;  //TODO fix
 			writer.write(cssStyleRule.getSelectorText());  //write the selector text
 			writer.newLine(); //write a newline
 			writer.write(RULE_GROUP_START_CHAR);  //start the rule group

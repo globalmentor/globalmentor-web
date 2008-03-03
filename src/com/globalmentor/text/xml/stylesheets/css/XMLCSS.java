@@ -1,20 +1,47 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml.stylesheets.css;
 
 import java.awt.Color;
+import java.io.*;
+import java.net.URL;
 import java.util.regex.Pattern;
 
 import javax.mail.internet.ContentType;
 
-import com.globalmentor.io.ContentTypeConstants;
-import com.globalmentor.io.ContentTypes;
+import org.w3c.dom.*;
+import org.w3c.dom.css.*;
+
+import com.globalmentor.io.*;
+import static com.globalmentor.io.ContentTypes.*;
+import com.globalmentor.text.xml.XMLNode;
+import com.globalmentor.util.Debug;
 
 import static com.globalmentor.java.Characters.*;
 
-/**Several constants for CSS.*/
-public class XMLCSSConstants
+/**Constants and utilities for CSS.*/
+public class XMLCSS
 {
+
+	/**A Cascading Style Sheet document MIME subtype.*/
+	public final static String CSS_SUBTYPE="css";
+
 	/**The content type for CSS: <code>text/css</code>.*/ 
-	public static final ContentType TEXT_CSS_CONTENT_TYPE=new ContentType(ContentTypes.TEXT_PRIMARY_TYPE, ContentTypeConstants.CSS_SUBTYPE, null);
+	public static final ContentType TEXT_CSS_CONTENT_TYPE=new ContentType(TEXT_PRIMARY_TYPE, CSS_SUBTYPE, null);
 
 	/**A space character.*/
 	public final static char SPACE_CHAR=' ';
@@ -460,5 +487,355 @@ public class XMLCSSConstants
 	public final static String CSS_VISIBILITY_HIDDEN="hidden";
 	public final static String CSS_VISIBILITY_INHERIT="inherit";
 	public final static String CSS_VISIBILITY_VISIBLE="visible";
+
+	/**The default text indent.*/	//TODO should this go elsewhere?
+	private final static int DEFAULT_TEXT_INDENT=0;
+
+	/**Gets a color from a CSS primitive value.
+	@param colorValue The CSS primitive value that holds the color. If
+		<code>null</code> is passed, <code>null</code> will be returned..
+	@return The specified CSS color, or <code>null</code> if the specified color
+		value is null.
+	*/
+	public static Color getColor(final CSSPrimitiveValue colorValue)
+	{
+		if(colorValue!=null)	//if we have a color value
+		{
+			if(colorValue.getPrimitiveType()==CSSPrimitiveValue.CSS_IDENT)	//if the color is specified by an identifier
+			{
+	
+				final String colorString=colorValue.getStringValue();	//get the string representing the color
+				return getColor(colorString); //return a color based upon the string
+			}
+			else if(colorValue.getPrimitiveType()==CSSPrimitiveValue.CSS_RGBCOLOR)	//if the color is specified by an RGB color value
+		  {
+				return getColor(colorValue.getRGBColorValue()); //convert the color value to a color
+		  }
+		}
+		return null;	//default to not returning a color
+	}
+
+	/**Gets a color object from a string.
+	@param colorString The string (possibly <code>null</code>) which represents
+		one of the 16 HTML colors.
+	@return A color object representing the color, or <code>null</code> if the
+		specified string is <code>null</code> or does not represent a color.
+	*/
+	public static Color getColor(final String colorString)
+	{
+		if(colorString!=null)	//if we have a color string
+		{
+				//TODO in the future, maybe put this in XMLCSSPrimitiveValue or, better yet, in a ColorManipulator class or something -- maybe even in an XHTML-related class
+			if(colorString.equalsIgnoreCase(CSS_COLOR_BLACK))	//see if we recognize any of the colors
+				return COLOR_BLACK;
+			else if(colorString.equalsIgnoreCase(CSS_COLOR_GREEN))
+				return COLOR_GREEN;
+			else if(colorString.equalsIgnoreCase(CSS_COLOR_SILVER))
+				return COLOR_SILVER;
+			else if(colorString.equalsIgnoreCase(CSS_COLOR_LIME))
+				return COLOR_LIME;
+			else if(colorString.equalsIgnoreCase(CSS_COLOR_GRAY))
+				return COLOR_GRAY;
+			else if(colorString.equalsIgnoreCase(CSS_COLOR_OLIVE))
+				return COLOR_OLIVE;
+			else if(colorString.equalsIgnoreCase(CSS_COLOR_WHITE))
+				return COLOR_WHITE;
+			else if(colorString.equalsIgnoreCase(CSS_COLOR_YELLOW))
+				return COLOR_YELLOW;
+			else if(colorString.equalsIgnoreCase(CSS_COLOR_MAROON))
+				return COLOR_MAROON;
+			else if(colorString.equalsIgnoreCase(CSS_COLOR_NAVY))
+				return COLOR_NAVY;
+			else if(colorString.equalsIgnoreCase(CSS_COLOR_RED))
+				return COLOR_RED;
+			else if(colorString.equalsIgnoreCase(CSS_COLOR_BLUE))
+				return COLOR_BLUE;
+			else if(colorString.equalsIgnoreCase(CSS_COLOR_PURPLE))
+				return COLOR_PURPLE;
+			else if(colorString.equalsIgnoreCase(CSS_COLOR_TEAL))
+				return COLOR_TEAL;
+			else if(colorString.equalsIgnoreCase(CSS_COLOR_FUCHSIA))
+				return COLOR_FUCHSIA;
+			else if(colorString.equalsIgnoreCase(CSS_COLOR_AQUA))
+				return COLOR_AQUA;
+		}
+		return null;	//default to not returning a color
+	}
+
+	/**Gets a color object from a DOM <code>RGBColor</code> object.
+	@param rgbColor The object which contains a DOM representation of the RGB
+		color.
+	@return A color object representing the color.
+	*/
+	public static Color getColor(final RGBColor rgbColor)
+	{
+		return new Color( //create a new color object from the components of the RGBColor
+			  (int)rgbColor.getRed().getFloatValue(CSSPrimitiveValue.CSS_NUMBER),  //get the red value
+			  (int)rgbColor.getGreen().getFloatValue(CSSPrimitiveValue.CSS_NUMBER),  //get the green value
+			  (int)rgbColor.getBlue().getFloatValue(CSSPrimitiveValue.CSS_NUMBER));  //get the blue value
+	}
+
+	/**Gets the CSS value object of a particular CSS property.
+	@param styleManager The object that allows style lookups for elements.
+	@param element The element with which style is associated.
+	@param propertyName The name of the CSS property to search for.
+	@param resolve Whether the element's parent hierarchy should be searched
+		to find this CSS value if not found associated with this element.
+	@return The CSS value object for the given property, or <code>null</code> if
+		that property cannot be found.
+	*/
+	public static CSSValue getCSSPropertyCSSValue(final CSSStyleManager styleManager, final Element element, final String propertyName, final boolean resolve)
+	{
+		final CSSStyleDeclaration cssStyle=styleManager.getStyle(element);	//get the CSS style associated with the element
+		if(cssStyle!=null)	//if there is a CSS style declaration object associated with the element
+		{
+			final CSSValue cssValue=cssStyle.getPropertyCSSValue(propertyName);	//get the property as a CSSValue object
+		  if(cssValue!=null)  //if the style contains the given CSS property
+			{
+				return cssValue;    //return the value
+			}
+		}
+		if(resolve)	//since the property isn't associated with this element, see if we should resolve up the chain; if so
+		{
+			final Node parentNode=element.getParentNode(); //get the parent to use to resolve
+			if(parentNode!=null && parentNode.getNodeType()==Node.ELEMENT_NODE)	//if we have a resolve parent element
+				return getCSSPropertyCSSValue(styleManager, (Element)parentNode, propertyName, resolve);	//try to get the value from the resolving parent
+		}
+		return null;	//show that we couldn't find the CSS property value anywhere
+	}
+
+	/**Returns a string to display on a marker for the given list item.
+		@param listStyleType The type of list marker to use, one of the
+			<code>XMLCSS.CSS_LIST_STYLE_TYPE_</code> constants.
+		@param listItemIndex The index of the list item for which text should be generated
+		@return The string to be rendered for the given list item, or
+			<code>null</code> if a string rendering is not appropriate for the given
+			list style type.
+		*/
+		public static String getMarkerString(final String listStyleType, final int listItemIndex)  //TODO maybe make sure none of these wrap around
+		{
+			if(CSS_LIST_STYLE_TYPE_DECIMAL.equals(listStyleType)) //decimal
+				return String.valueOf(1+listItemIndex); //return the ordinal position as a decimal number
+	//TODO fix	public final static String CSS_LIST_STYLE_TYPE_DECIMAL_LEADING_ZERO="decimal-leading-zero";
+			else if(CSS_LIST_STYLE_TYPE_LOWER_ROMAN.equals(listStyleType)) //lower-roman
+			{
+				switch(listItemIndex) //see which index this is TODO fix with a better algorithm
+				{
+					case 0: return "i"; //TODO fix
+					case 1: return "ii"; //TODO fix
+					case 2: return "iii"; //TODO fix
+					case 3: return "iv"; //TODO fix
+					case 4: return "v"; //TODO fix
+					case 5: return "vi"; //TODO fix
+					case 6: return "vii"; //TODO fix
+					case 7: return "viii"; //TODO fix
+					case 8: return "ix"; //TODO fix
+					case 9: return "x"; //TODO fix
+					default: return ""; //TODO fix
+				}
+			}
+	//TODO fix	public final static String CSS_LIST_STYLE_TYPE_UPPER_ROMAN="upper-roman";
+	//TODO fix	public final static String CSS_LIST_STYLE_TYPE_LOWER_GREEK="lower-greek";
+			else if(CSS_LIST_STYLE_TYPE_LOWER_GREEK.equals(listStyleType)) //lower-greek
+			  return String.valueOf((char)('\u03B1'+listItemIndex)); //return the correct lowercase greek character as a string
+			else if(CSS_LIST_STYLE_TYPE_LOWER_ALPHA.equals(listStyleType) //lower-alpha
+				  || CSS_LIST_STYLE_TYPE_LOWER_LATIN.equals(listStyleType)) //lower-latin
+			  return String.valueOf((char)('a'+listItemIndex)); //return the correct lowercase character as a string
+			else if(CSS_LIST_STYLE_TYPE_UPPER_ALPHA.equals(listStyleType) //upper-alpha
+				  || CSS_LIST_STYLE_TYPE_UPPER_LATIN.equals(listStyleType)) //upper-latin
+			  return String.valueOf((char)('A'+listItemIndex)); //return the correct lowercase character as a string
+	//TODO fix	public final static String CSS_LIST_STYLE_TYPE_HEBREW="hebrew";
+	//TODO fix	public final static String CSS_LIST_STYLE_TYPE_ARMENIAN="armenian";
+	//TODO fix	public final static String CSS_LIST_STYLE_TYPE_GEORGIAN="georgian";
+	//TODO fix	public final static String CSS_LIST_STYLE_TYPE_CJK_IDEOGRAPHIC="cjk-ideographic";
+	//TODO fix	public final static String CSS_LIST_STYLE_TYPE_HIRAGANA="hiragana";
+	//TODO fix	public final static String CSS_LIST_STYLE_TYPE_KATAKANA="katakana";
+	//TODO fix	public final static String CSS_LIST_STYLE_TYPE_HIRAGANA_IROHA="hiragana-iroha";
+	//TODO fix	public final static String CSS_LIST_STYLE_TYPE_KATAKANA_IROHA="katakana-iroha";
+	//TODO fix	public final static String CSS_LIST_STYLE_TYPE_NONE="none";
+			return null;  //show that we couldn't find an appropriate market string
+		}
+	/**Loads a default stylesheet resource if one is available for the given
+		XML namespace. A stylesheet will be found for the given namespace if it
+		is stored as a file in the directory corresponding to this class package,
+		with the same name as the namespace, with all invalid filename characters
+		replaced with underscores, with an extension of "css".
+	@param namespaceURI The namespace for which to locate a default stylsheet.
+	@return A W3C CSS DOM tree representing the stylesheet, or <code>null</code>
+		if no stylesheet was found or <code>namespaceURI</code> is <code>null</code>.
+	@deprecated
+	*/
+	public static CSSStyleSheet getDefaultStyleSheet(final String namespaceURI)	//TODO add a URIInputStreamable argument which can get local input streams as well as external ones
+	{
+			//TODO do we want to cache stylesheets? probably not
+		if(namespaceURI!=null)  //if a valid namespace was passed
+		{
+			//convert the namespace URI to a valid filaname and add a "css" extension
+			final String cssFilename=Files.encodeCrossPlatformFilename(namespaceURI)+FileConstants.EXTENSION_SEPARATOR+FileConstants.CSS_EXTENSION;
+			final URL styleSheetURL=XMLCSS.class.getResource(cssFilename);  //see if we can load this resource locally
+			if(styleSheetURL!=null) //if we were able to find a stylesheet stored as a resource
+			{
+				final XMLCSSStyleSheet styleSheet=new XMLCSSStyleSheet((com.globalmentor.text.xml.XMLNode)null);	//create a new CSS stylesheet that has no owner TODO make this cast use a generic Node, or make a default constructor
+				try
+				{
+					//TODO XMLCSSProcessor has been updated -- see if we need to modify this code
+					final InputStream inputStream=styleSheetURL.openConnection().getInputStream();  //open a connection to the URL and get an input stream from that
+					final InputStreamReader inputStreamReader=new InputStreamReader(inputStream);	//get an input stream reader to the stylesheet TODO what about encoding?
+					final ParseReader styleSheetReader=new ParseReader(inputStreamReader, styleSheetURL);	//create a parse reader reader to use to read the stylesheet
+					try
+					{
+		//TODO fix			entityReader.setCurrentLineIndex(entity.getLineIndex());	//pretend we're reading where the entity was located in that file, so any errors will show the correct information
+		//TODO fix			entityReader.setCurrentCharIndex(entity.getCharIndex());	//pretend we're reading where the entity was located in that file, so any errors will show the correct information
+						final XMLCSSProcessor cssProcessor=new XMLCSSProcessor();	//create a new CSS processor
+						cssProcessor.parseStyleSheetContent(styleSheetReader, styleSheet);	//parse the stylesheet content
+						return styleSheet;  //return the stylesheet we parsed
+					}
+					finally
+					{
+						styleSheetReader.close();	//always close the stylesheet reader
+					}
+				}
+				catch(IOException ioException)  //if anything goes wrong reading the stylesheet, that's bad but shouldn't keep the program from continuing
+				{
+					Debug.warn(ioException);  //warn that there's was an IO problem
+				}
+			}
+		}
+		return null;  //show that for some reason we couldn't load a default stylesheet for the given namespace
+	}
+
+	/**Gets a particular value from the style that should be a length,
+		returning the length in pixels. TODO fix; right now it returns points
+	@param styleManager The object that allows style lookups for elements.
+	@param element The element with which style is associated.
+	@param cssProperty The name of the CSS property for which a color value should
+		be retrieved.
+	@param resolve Whether the attribute set's parent hierarchy should be searched
+		to find this CSS value if not found in this attribute set.
+	@param defaultValue The default value to use if the property does not exist.
+	@param font The font to be used when calculating relative lengths, such as
+		<code>ems</code>.
+	@return The length in pixels.
+//TODO what happens if the value is not a length? probably just return the default
+	*/
+	protected static float getPixelLength(final CSSStyleManager styleManager, final Element element, final String cssProperty, final boolean resolve, final float defaultValue/*TODO fix, final Font font*/)
+	{
+		final CSSPrimitiveValue primitiveValue=(CSSPrimitiveValue)getCSSPropertyCSSValue(styleManager, element, cssProperty, resolve);	//get CSS value for this property, resolving up the hierarchy if we should
+		if(primitiveValue!=null)	//if we have a value
+		{
+			switch(primitiveValue.getPrimitiveType())  //see which type of primitive type we have
+			{
+				case CSSPrimitiveValue.CSS_EMS: //if this is the ems property
+				  return primitiveValue.getFloatValue(CSSPrimitiveValue.CSS_EMS);  //TODO fix; hack for just returning any value
+/*TODO fix
+					if(font!=null)  //if we have a font
+						return font.getSize()*primitiveValue.getFloatValue(XMLCSSPrimitiveValue.CSS_EMS);  //TODO fix; this probably isn't the same as the defined font size, which is what CSS calls for for EMS
+					break;
+*/
+				case CSSPrimitiveValue.CSS_PT: //if they want the size in points
+					return primitiveValue.getFloatValue(primitiveValue.CSS_PT);	//get the value in pixels and round to the nearest integer pixel length TODO fix to use pixels instead of points, as it does now
+			}
+		}
+		return defaultValue;  //if we couldn't determine the value, return the default value
+	}
+
+	/**Gets the CSS <code>margin-left</code> setting from the style in pixels. TODO actually, right now it returns the value in points; fix this
+	@param styleManager The object that allows style lookups for elements.
+	@param element The element with which style is associated.
+	@param font The font to be used when calculating relative lengths, such as
+		<code>ems</code>.
+	@return The left margin size in pixels or, if the property is not specified, the default amount of 0.
+	*/
+	public static float getMarginLeft(final CSSStyleManager styleManager, final Element element/*TODO fix , final Font font*/)
+	{
+		return getPixelLength(styleManager, element, CSS_PROP_MARGIN_LEFT, false, 0/*G**fix, font*/);  //return the length in pixels without resolving
+	}
+	/**Gets the CSS <code>text-indent</code> setting from the style in pixels. TODO actually, right now it returns the value in points; fix this
+		@param styleManager The object that allows style lookups for elements.
+		@param element The element with which style is associated.
+		@return The text indent amount in pixels or, if text indent is not specified,
+			the default amount, which is 0.
+	//TODO testing font; comment
+		*/
+		public static float getTextIndent(final CSSStyleManager styleManager, final Element element/*TODO fix, final Font font*/)	//TODO we'll probably need to pass a length here or something
+		{
+			final CSSPrimitiveValue textIndentValue=(CSSPrimitiveValue)getCSSPropertyCSSValue(styleManager, element, CSS_PROP_TEXT_INDENT, true);	//get CSS value for this property, resolving up the hierarchy if necessary
+			if(textIndentValue!=null)	//if we have a value
+			{
+	//TODO del if not needed			if(textIndentValue.isAbsoluteLength())	//if this is an absolute length
+				{
+					switch(textIndentValue.getPrimitiveType())  //see which type of primitive type we have
+					{
+	/*TODO fix
+					  case CSSPrimitiveValue.CSS_EMS: //TODO testing
+							return font.getSize()*textIndentValue.getFloatValue(XMLCSSPrimitiveValue.CSS_EMS);  //TODO fix; this probably isn't the same as the defined font size, which is what CSS calls for for EMS
+	*/
+	/*TODO fix
+							{
+		Debug.trace("They want ems.");
+										// As a practical matter, this FRC will almost always
+										// be the right one.
+										AffineTransform xf
+												= GraphicsEnvironment.getLocalGraphicsEnvironment()
+												.getDefaultScreenDevice().getDefaultConfiguration()
+												.getDefaultTransform(); //TODO testing
+								final FontRenderContext fontRenderContext=new FontRenderContext(xf, false, false);  //TODO we should really get the font render context from somewhere else; for now, this should get close
+								final float emSize=(float)font.getStringBounds("m", fontRenderContext).getWidth(); //get the size of an em
+			Debug.trace("each em is: ", new Float(emSize)); //TODO del
+								return emSize*textIndentValue.getFloatValue(XMLCSSPrimitiveValue.CSS_EMS);  //TODO testing
+							}
+	*/
+						case XMLCSSPrimitiveValue.CSS_PT: //TODO testing
+							return textIndentValue.getFloatValue(CSSPrimitiveValue.CSS_PT);	//get the value in pixels and round to the nearest integer pixel length TODO fix to use pixels instead of points, as it does now
+					}
+				}
+	//TODO del if not needed			else	//if this is not an absolute length, it could be a relative length or a percentage
+				{
+	/*TODO fix
+						float percentageValue=1;	//if we find a percentage value, we'll store it here (we won't really store a percentage, but the actual float number; that is, percentage/100) (we're defaulting to 1 because the compiler will complain without some value, even though this always gets changed by the logic of the code)
+						boolean isPercentage=;	//see if this is a percentage value
+						if(isPercentage)	//if this is an explicit percentage value
+							percentageValue=fontSizeValue.getFloatValue(XMLCSSPrimitiveValue.CSS_PERCENTAGE)/100;	//store the percentage value as a scaling value
+							//if this isn't an explicit percentage value, it might be a relative value, an absolute string value, or a relative string value that is the same as a percentage
+						if(textIndentValue.getPrimitiveType()==XMLCSSPrimitiveValue.CSS_PERCENTAGE)	//if this is a percentage value
+						{
+							final AttributeSet resolveParent=attributeSet.getResolveParent();	//get the parent to use to resolve this attribute
+							if(resolveParent!=null)	//if we have a resolve parent
+								return Math.round(percentageValue*getFontSize(resolveParent));	//multiply the percentage with the font size from the parent
+							else	//if we don't have a resolve parent
+								return Math.round(percentageValue*DEFAULT_FONT_SIZE);	//multiply the percentage with the default font size
+						}
+						//TODO add support for relative sizes (ems, exs, etc.) here: else
+	*/
+				}
+			}
+			return DEFAULT_TEXT_INDENT;	//return the default value, since we couldn't find an alternative
+		}
+
+	/**Returns whether or not this style declaration has an inline display style.
+		This is implemented to only return <code>true</code> if the display is
+		specifically set to <code>CSS_DISPLAY_INLINE</code> or if there is no
+		display property.
+	@param cssStyle The CSS DOM syle declaration, which is expected to implement
+		<code>CSS2Properties</code>, although this parameter may be <code>null</code>.
+	@return <code>true</code> if this style declaration has an inline display style,
+		has no display style, or the style declaration is <code>null</code>.
+	@see CSS2Properties#getDisplay()
+	@deprecated
+	*/
+	public static boolean isDisplayInline(final CSSStyleDeclaration cssStyle)
+	{
+		if(cssStyle!=null)  //if a valid style is passed
+		{
+/*TODO fix when our XMLCSSStyleDeclaration implements CSS2Properties
+			Debug.assert(cssStyle instanceof CSS2Properties, "DOM implementation does not support CSS2Properties interface for CSSStyleDeclaration"); //TODO do we want to take action if the style does not implement CSS2Properties?
+			final CSS2Properties cssProperties=(CSS2Properties)cssStyle;  //get the CSS2Properties interface, which is expected to be implemented by the DOM CSSStyleDeclaration
+*/
+			final XMLCSSStyleDeclaration cssProperties=(XMLCSSStyleDeclaration)cssStyle;  //get the CSS2Properties interface, which is expected to be implemented by the DOM CSSStyleDeclaration TODO fix
+			final String displayString=cssProperties.getDisplay();	//get the display property
+			return displayString.length()==0 || displayString.equals(CSS_DISPLAY_INLINE);	//return true if there is no display string or it is equal to "inline"
+		}
+		return true;  //if there is no style, we assume inline
+	}
 
 }

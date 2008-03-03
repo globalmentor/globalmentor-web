@@ -1,13 +1,24 @@
+/*
+ * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.text.xml.xpath;
 
 import java.util.*;
+
 import org.w3c.dom.*;
-
-import static com.globalmentor.text.xml.xpath.XPathConstants.*;
-
-import com.globalmentor.java.Strings;
-import com.globalmentor.text.xml.XMLNodeList;
-import com.globalmentor.util.Debug;
 
 /**Parses XPath expressions and performs XPath operations on an XML document.
 The current implementation only interprets location paths.
@@ -17,15 +28,56 @@ The current implementation only interprets location paths.
 	<li><code>/html/body/img/@src</code> Selects the <code>src</code> attribute
 		of the first <code>img</code> element in <code>body</code>.</li>
 </li>
-@see http://www.w3.org/TR/xpath
+@see <a href="http://www.w3.org/TR/xpath">XML Path Language (XPath)</a>
 @author Garret Wilson
 */
 public class XPath
 {
 
-  public XPath()
-  {
-  }
+	/**The character used to separate a location path into location steps.*/
+	public final static char LOCATION_STEP_SEPARATOR_CHAR='/';
+	/**The character used as a wildcard matching character.*/
+	public final static char WILDCARD_CHAR='*';
+	/**The string form of the wildcard matching character.*/
+	public final static String WILDCARD_STRING=String.valueOf(WILDCARD_CHAR);
+	/**The string used to separate an axis from a node test in a location step.*/
+	public final static String AXIS_SEPARATOR_STRING="::";
+	public final static char LEFT_PARENTHESIS='(';
+	public final static char RIGHT_PARENTHESIS=')';
+		//axes
+	/**<code>ROOT</code> is not defined as an axis in XPath, but here represents
+		the root of the document.*/
+	public final static String ROOT=String.valueOf(LOCATION_STEP_SEPARATOR_CHAR);
+	public final static String ANCESTOR="ancestor";
+	public final static String ANCESTOR_OR_SELF="ancestor-or-self";
+	public final static String ATTRIBUTE="attribute";
+	public final static String CHILD="child";
+	public final static String DESCENDANT="descendant";
+	public final static String DESCENDANT_OR_SELF="descendant-or-self";
+	public final static String FOLLOWING="following";
+	public final static String FOLLOWING_SIBLING="following-sibling";
+	public final static String NAMESPACE="namespace";
+	public final static String PARENT="parent";
+	public final static String PRECEDING="preceding";
+	public final static String PRECEDING_SIBLING="preceding-sibling";
+	public final static String SELF="self";
+		//node tests
+			//node types
+	public final static String COMMENT="comment";
+	public final static String TEXT="text";
+	public final static String PROCESSING_INSTRUCTION="processing-instruction";
+	public final static String NODE="node";
+	public final static String COMMENT_NODE_TEST=COMMENT+LEFT_PARENTHESIS+RIGHT_PARENTHESIS;
+	public final static String TEXT_NODE_TEST=TEXT+LEFT_PARENTHESIS+RIGHT_PARENTHESIS;
+	public final static String PROCESSING_INSTRUCTION_NODE_TEST=PROCESSING_INSTRUCTION+LEFT_PARENTHESIS+RIGHT_PARENTHESIS;
+	public final static String NODE_NODE_TEST=NODE+LEFT_PARENTHESIS+RIGHT_PARENTHESIS;
+
+	/**The abbreviation for self::node().*/
+	public final static String SELF_NODE_ABBREVIATION=".";
+	/**The abbreviation for parent::node().*/
+	public final static String PARENT_NODE_ABBREVIATION="..";
+	/**The abbreviation for attribute::.*/
+	public final static String ATTRIBUTE_ABBREVIATION="@";
 
 	/**Convenience function to retrieve a node from the root element of the
 		specified document, based on the specified XPath expression. If multiple
@@ -54,7 +106,7 @@ public class XPath
 	{
 		final List<Node> nodeList=(List<Node>)evaluatePathExpression(node, expression); //get the list of matching nodes
 		return nodeList.size()>0 ? nodeList.get(0) : null;  //return the first node in the list, or null if there are no matches
-		//G***catch a class cast exception and throw another exception that's more descriptive
+		//TODO catch a class cast exception and throw another exception that's more descriptive
 	}
 
 	/**Convenience function to retrieve a node from the root element of the
@@ -86,7 +138,7 @@ public class XPath
 	{
 		final List<Node> nodeList=(List<Node>)evaluatePathExpression(node, pathExpression); //get the list of matching nodes
 		return nodeList.size()>0 ? nodeList.get(0) : null;  //return the first node in the list, or null if there are no matches
-		//G***catch a class cast exception and throw another exception that's more descriptive
+		//TODO catch a class cast exception and throw another exception that's more descriptive
 	}
 
 	/**Evaluates an XPath path expression on a document and returns the appropriate result of the evaluation.
@@ -140,7 +192,7 @@ public class XPath
 	*/
 	public static Object evaluatePathExpression(final Node node, final String expression)
 	{
-		final PathExpression pathExpression=new PathExpression(expression);	//G***testing
+		final PathExpression pathExpression=new PathExpression(expression);	//TODO testing
 		return evaluatePathExpression(node, pathExpression, 0);	//evaluate the array of location steps and return the list of nodes we receive
 	}
 
@@ -159,21 +211,12 @@ public class XPath
 		assert step instanceof AxisStep : "Non-axis steps not yet supported";
 		final AxisStep axisStep=(AxisStep)step;	//get the step as an axis step
 		final String nodeTest=axisStep.getNodeTest();	//get a reference to the node test
-//G***del Debug.trace("nodeTest: "+nodeTest);
 		if(axisStep.getAxis().equals(ROOT))	//if this node indicates we should start from the root
 		{
-/*TODO del
-Debug.setDebug(true);
-Debug.trace("ready to add root.");
-Debug.trace("node", node);
-Debug.trace("owner document", node.getOwnerDocument());
-Debug.trace("document element", node.getOwnerDocument().getDocumentElement());
-*/
 			nodeList.add(node.getOwnerDocument().getDocumentElement());	//add the document root to our list of matching objects
 		}
 		else	//if this isn't the root location step
 		{
-//G***del			final ArrayList searchObjectList=new ArrayList();	//we'll keep everything that we'll search (but we don't know yet if matches) in this list
 				//if this location step should include this node
 			if(axisStep.getAxis().equals(SELF) || axisStep.getAxis().equals(ANCESTOR_OR_SELF) || axisStep.getAxis().equals(DESCENDANT_OR_SELF))
 			{
@@ -191,7 +234,7 @@ Debug.trace("document element", node.getOwnerDocument().getDocumentElement());
 			else if(axisStep.getAxis().equals(ATTRIBUTE))	//if we should search attributes
 				nodeList.addAll(getMatchingNodes(node.getAttributes(), nodeTest, false, Node.ATTRIBUTE_NODE));	//add all matching attributes to our list (indicating that we shouldn't search child nodes, since attributes have no child nodes)
 		}
-/*G***fix
+/*TODO fix
 	public final static String FOLLOWING="following";
 	public final static String FOLLOWING_SIBLING="following-sibling";
 	public final static String NAMESPACE="namespace";
@@ -220,14 +263,10 @@ Debug.trace("document element", node.getOwnerDocument().getDocumentElement());
 	*/
 	protected static List<Node> getMatchingChildren(final Node node, final String nodeTest, final boolean includeDescendants)
 	{
-//G***del Debug.trace("XPath.getMatchingChildren() nodeTest: "+nodeTest+" includeDescendants: "+includeDescendants);
 		final List<Node> nodeList=new ArrayList<Node>();	//create a new node list to return
-//G***del Debug.trace("looking at children: ", node.getChildNodes().getLength()); //G***del
 		for(int childIndex=0; childIndex<node.getChildNodes().getLength(); childIndex++)	//look at each child node
 		{
-//G***del Debug.trace("looking at child: ", childIndex); //G***del
 			final Node childNode=node.getChildNodes().item(childIndex);	//get a reference to this node
-//G***del Debug.trace("looking at child: ", childNode); //G***del
 			if(isMatch(childNode, nodeTest, Node.ELEMENT_NODE))	//if this child node matches (specifying that, if a wildcard is present, only elements should be chosen)
 				nodeList.add(childNode);	//add this child node to the list
 			if(includeDescendants)	//if each of the children should check for matching tags as well
@@ -289,16 +328,9 @@ Debug.trace("document element", node.getOwnerDocument().getDocumentElement());
 	*/
 	protected static boolean isMatch(final Node node, final String nodeTest, final short wildcardType)
 	{
-//TODO del Debug.trace("XPath.isMatch() node: "+node.getNodeName()+" nodeTest: "+nodeTest);
 		if(nodeTest.equals(WILDCARD_STRING))	//if this is a test for a wildcard
 		{
 			return node.getNodeType()==wildcardType;  //return whether or not the node is of the correct type for a wildcard match
-/*G***del
-		  if(attributeWildcard) //if this wildcard is for attributes
-				return node.getNodeType()==ATTRIBUTE_NODE;  //return whether or not this is an attribute
-			else  //if this wildcard is not for an attribute, it is for an element
-				return node.getNodeType()==ELEMENT_NODE;  //return whether this is an element
-*/
 		}
 		if(nodeTest.equals(NODE_NODE_TEST))	//if this is a test for "node()"
 			return true;	//every node matches this test
@@ -308,7 +340,7 @@ Debug.trace("document element", node.getOwnerDocument().getDocumentElement());
 			return node.getNodeType()==Node.COMMENT_NODE;	//return whether this is a comment node
 		if(nodeTest.equals(PROCESSING_INSTRUCTION_NODE_TEST))
 			return node.getNodeType()==Node.PROCESSING_INSTRUCTION_NODE;	//return whether this is a processing instruction node
-		//G***check for arguments to the processing instruction
+		//TODO check for arguments to the processing instruction
 		//if this isn't one of the specific tests, this is just a simple name test
 		return node.getNodeName().equals(nodeTest);	//return whether or not the name matches the node test
 	}

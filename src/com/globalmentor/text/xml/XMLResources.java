@@ -35,23 +35,23 @@ public class XMLResources extends ListResourceBundle
 	static final Object[][] contents=
 	{
 		//Names of XML objects
-		{XMLResources.RESOURCE_PREFIX+XMLUtilities.ATTRIBUTE_RESOURCE_ID, "attribute"},
-		{XMLResources.RESOURCE_PREFIX+XMLUtilities.DOCUMENT_TYPE_RESOURCE_ID, "document type"},
-		{XMLResources.RESOURCE_PREFIX+XMLUtilities.ENTITY_DECLARATION_RESOURCE_ID, "entity declaration"},
-		{XMLResources.RESOURCE_PREFIX+XMLUtilities.ELEMENT_RESOURCE_ID, "element"},
-		{XMLResources.RESOURCE_PREFIX+XMLUtilities.CHARACTER_REFERENCE_RESOURCE_ID, "character reference"},
-		{XMLResources.RESOURCE_PREFIX+XMLUtilities.UNKNOWN_RESOURCE_ID, "unknown"},
-		{XMLResources.RESOURCE_PREFIX+XMLUtilities.ENTITY_REFERENCE_RESOURCE_ID, "entity reference"},
-		{XMLResources.RESOURCE_PREFIX+XMLUtilities.PARAMETER_ENTITY_REFERENCE_RESOURCE_ID, "parameter entity reference"},
-		{XMLResources.RESOURCE_PREFIX+XMLUtilities.EXTERNAL_ID_RESOURCE_ID, "external ID"},
-		{XMLResources.RESOURCE_PREFIX+XMLUtilities.ENTITY_RESOURCE_ID, "entity"},
-		{XMLResources.RESOURCE_PREFIX+XMLUtilities.MARKUP_RESOURCE_ID, "markup"},
-		{XMLResources.RESOURCE_PREFIX+XMLUtilities.TAG_RESOURCE_ID, "tag"},
-		{XMLResources.RESOURCE_PREFIX+XMLUtilities.XML_DECLARATION_RESOURCE_ID, "XML declaration"},
-		{XMLResources.RESOURCE_PREFIX+XMLUtilities.CDATA_RESOURCE_ID, "CDATA"},
-		{XMLResources.RESOURCE_PREFIX+XMLUtilities.COMMENT_RESOURCE_ID, "comment"},
-		{XMLResources.RESOURCE_PREFIX+XMLUtilities.DOCUMENT_RESOURCE_ID, "document"},
-		{XMLResources.RESOURCE_PREFIX+XMLUtilities.PROCESSING_INSTRUCTION_RESOURCE_ID, "processing instruction"}
+		{XMLResources.RESOURCE_PREFIX+XML.ATTRIBUTE_RESOURCE_ID, "attribute"},
+		{XMLResources.RESOURCE_PREFIX+XML.DOCUMENT_TYPE_RESOURCE_ID, "document type"},
+		{XMLResources.RESOURCE_PREFIX+XML.ENTITY_DECLARATION_RESOURCE_ID, "entity declaration"},
+		{XMLResources.RESOURCE_PREFIX+XML.ELEMENT_RESOURCE_ID, "element"},
+		{XMLResources.RESOURCE_PREFIX+XML.CHARACTER_REFERENCE_RESOURCE_ID, "character reference"},
+		{XMLResources.RESOURCE_PREFIX+XML.UNKNOWN_RESOURCE_ID, "unknown"},
+		{XMLResources.RESOURCE_PREFIX+XML.ENTITY_REFERENCE_RESOURCE_ID, "entity reference"},
+		{XMLResources.RESOURCE_PREFIX+XML.PARAMETER_ENTITY_REFERENCE_RESOURCE_ID, "parameter entity reference"},
+		{XMLResources.RESOURCE_PREFIX+XML.EXTERNAL_ID_RESOURCE_ID, "external ID"},
+		{XMLResources.RESOURCE_PREFIX+XML.ENTITY_RESOURCE_ID, "entity"},
+		{XMLResources.RESOURCE_PREFIX+XML.MARKUP_RESOURCE_ID, "markup"},
+		{XMLResources.RESOURCE_PREFIX+XML.TAG_RESOURCE_ID, "tag"},
+		{XMLResources.RESOURCE_PREFIX+XML.XML_DECLARATION_RESOURCE_ID, "XML declaration"},
+		{XMLResources.RESOURCE_PREFIX+XML.CDATA_RESOURCE_ID, "CDATA"},
+		{XMLResources.RESOURCE_PREFIX+XML.COMMENT_RESOURCE_ID, "comment"},
+		{XMLResources.RESOURCE_PREFIX+XML.DOCUMENT_RESOURCE_ID, "document"},
+		{XMLResources.RESOURCE_PREFIX+XML.PROCESSING_INSTRUCTION_RESOURCE_ID, "processing instruction"}
 	};
 }
 
