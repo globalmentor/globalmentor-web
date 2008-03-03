@@ -19,7 +19,7 @@ package com.globalmentor.text.xml;
 import java.net.URI;
 import java.util.*;
 
-import com.garretwilson.net.AbstractNamespaceLabelManager;
+import com.globalmentor.net.AbstractNamespaceLabelManager;
 
 /**Map managing namespace URIs and labels for XML.
 <p>This class is not thread safe.</p>

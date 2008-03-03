@@ -254,7 +254,7 @@ public class JSON
 	}
 
 	/**Encodes a string value.
-	The characters {@value JavaScriptConstants#STRING_ENCODE_CHARS} will be replaced with {@value JavaScriptConstants#STRING_ENCODE_REPLACEMENT_STRINGS}, respectively. 
+	The characters {@value JavaScript#STRING_ENCODE_CHARS} will be replaced with {@value JavaScript#STRING_ENCODE_REPLACEMENT_STRINGS}, respectively. 
 	@param charSequence The characters to encode.
 	@return A string containing encoded characters.
 	@exception NullPointerException if the given character sequence is <code>null</code>.
@@ -262,12 +262,12 @@ public class JSON
 	public static String encodeStringValue(final CharSequence charSequence)
 	{
 		final StringBuilder stringBuilder=new StringBuilder(checkInstance(charSequence, "Character sequence cannot be null."));	//create a new string builder with the contents of the character sequence
-		replace(stringBuilder, JavaScriptConstants.STRING_ENCODE_CHARS, JavaScriptConstants.STRING_ENCODE_REPLACEMENT_STRINGS);	//replace the encode characters with their encoded replacements
+		replace(stringBuilder, JavaScript.STRING_ENCODE_CHARS, JavaScript.STRING_ENCODE_REPLACEMENT_STRINGS);	//replace the encode characters with their encoded replacements
 		return stringBuilder.toString();	//return the encoded string
 	}
 
 	/**Decodes a string value.
-	Every instance of {@value JavaScriptConstants#ESCAPE} will be removed if followed by another character and the subsequent character will be ignored. 
+	Every instance of {@value JavaScript#ESCAPE} will be removed if followed by another character and the subsequent character will be ignored. 
 	@param charSequence The characters to encode.
 	@return A string containing encoded characters.
 	@exception NullPointerException if the given character sequence is <code>null</code>.

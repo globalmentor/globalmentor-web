@@ -20,7 +20,7 @@ import java.net.URI;
 
 import static com.globalmentor.java.Objects.*;
 
-import com.garretwilson.net.DefaultResource;
+import com.globalmentor.net.DefaultResource;
 import com.globalmentor.util.IDed;
 
 /**Represents a qualified name (QName) of an XML element, including the namespace URI, the prefix, and the local name.

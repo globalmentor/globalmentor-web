@@ -27,7 +27,7 @@ import static com.globalmentor.java.StringBuilders.*;
 @author Garret Wilson
 @see <a href="http://www.ietf.org/rfc/rfc4329.txt">RFC 4329: Scripting Media Types</a>
 */
-public class JavaScriptConstants
+public class JavaScript
 {
 
 	/**The JavaScript MIME subtype.*/

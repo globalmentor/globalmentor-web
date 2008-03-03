@@ -26,7 +26,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.garretwilson.net.URIs;
 
 import static com.globalmentor.text.CharacterEncoding.*;
 import static com.globalmentor.text.xml.XML.*;
@@ -36,6 +35,7 @@ import com.globalmentor.io.ParseEOFException;
 import com.globalmentor.io.ParseUnexpectedDataException;
 import com.globalmentor.io.URIInputStreamable;
 import com.globalmentor.java.CharSequences;
+import com.globalmentor.net.URIs;
 import com.globalmentor.text.CharacterEncoding;
 import com.globalmentor.text.xml.schema.*;
 import com.globalmentor.util.Debug;

@@ -19,7 +19,7 @@ package com.globalmentor.text.xml.schema;
 import java.net.URI;
 import java.util.*;
 
-import com.garretwilson.net.URIs;
+import com.globalmentor.net.URIs;
 
 /**The class which represents an XML schema by holding a collection of schema
 	components.

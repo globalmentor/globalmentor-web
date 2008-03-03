@@ -23,7 +23,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
 import javax.mail.internet.ContentType;
-import com.garretwilson.net.URIs;
 import com.garretwilson.rdf.RDFResource;
 import static com.garretwilson.rdf.xpackage.XMLOntologyUtilities.*;
 
@@ -32,6 +31,7 @@ import static com.globalmentor.text.xml.stylesheets.XMLStyleSheets.*;
 import static com.globalmentor.text.xml.xhtml.XHTML.*;
 
 import com.globalmentor.io.*;
+import com.globalmentor.net.URIs;
 import com.globalmentor.text.xml.XML;
 import com.globalmentor.text.xml.stylesheets.XMLStyleSheetDescriptor;
 import com.globalmentor.text.xml.xhtml.XHTML;

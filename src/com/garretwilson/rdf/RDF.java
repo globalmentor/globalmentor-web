@@ -6,11 +6,11 @@ import java.net.URISyntaxException;
 import java.util.*;
 import static java.util.Collections.*;
 
-import com.garretwilson.net.URIConstants;
 import static com.garretwilson.rdf.RDFConstants.*;
 import static com.garretwilson.rdf.RDFUtilities.*;
 import com.garretwilson.rdf.rdfs.RDFSUtilities;
 import com.garretwilson.rdf.xmlschema.XMLSchemaTypedLiteralFactory;
+import com.globalmentor.net.URIs;
 import com.globalmentor.text.xml.schema.XMLSchema;
 import com.globalmentor.util.*;
 
@@ -203,7 +203,7 @@ public class RDF	//TODO special-case rdf:nil list resources so that they are not
 			{
 				final String datatypeNamespaceURIString=datatypeNamespaceURI.toString();	//get the string form of the datatype namespace URI 
 					//if this URI ends with '#' and has data before that character
-				if(datatypeNamespaceURIString.length()>1 && datatypeNamespaceURIString.charAt(datatypeNamespaceURIString.length()-1)==URIConstants.FRAGMENT_SEPARATOR)
+				if(datatypeNamespaceURIString.length()>1 && datatypeNamespaceURIString.charAt(datatypeNamespaceURIString.length()-1)==URIs.FRAGMENT_SEPARATOR)
 				{
 					try	//see if we recognize the URI without the ending '#'
 					{

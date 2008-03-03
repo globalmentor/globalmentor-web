@@ -19,10 +19,7 @@ package com.globalmentor.text.xml;
 import java.util.*;
 
 import com.garretwilson.assess.qti.QTIConstants;
-import static com.garretwilson.net.URIConstants.*;
 
-import com.garretwilson.net.http.webdav.ApacheWebDAV;
-import com.garretwilson.net.http.webdav.WebDAVConstants;
 import com.garretwilson.rdf.RDFConstants;
 import com.garretwilson.rdf.dicto.DictoConstants;
 import com.garretwilson.rdf.directory.vcard.VCard;
@@ -33,12 +30,14 @@ import com.garretwilson.rdf.rdfs.RDFSConstants;
 import com.garretwilson.rdf.version.VersionConstants;
 import com.garretwilson.rdf.xeb.XEBConstants;
 import com.garretwilson.rdf.xpackage.XPackageConstants;
+
+import static com.globalmentor.java.Java.*;
+import com.globalmentor.net.http.webdav.*;
+import static com.globalmentor.net.URIs.*;
 import com.globalmentor.text.xml.oeb.OEB;
 import com.globalmentor.text.xml.schema.XMLSchema;
 import com.globalmentor.text.xml.xhtml.XHTML;
 import com.globalmentor.text.xml.xlink.XLink;
-
-import static com.globalmentor.java.Java.*;
 
 /**Manages XML namespaces and prefixes for serialization.
 This class is initialized with a default set of known namespace prefix mappings. 
