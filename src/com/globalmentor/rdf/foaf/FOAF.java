@@ -1,4 +1,4 @@
-package com.garretwilson.rdf.foaf;
+package com.globalmentor.rdf.foaf;
 
 import java.net.URI;
 
