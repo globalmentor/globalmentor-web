@@ -21,7 +21,6 @@ import java.util.*;
 import static com.globalmentor.java.Java.*;
 import com.globalmentor.net.http.webdav.*;
 import static com.globalmentor.net.URIs.*;
-
 import com.globalmentor.rdf.RDF;
 import com.globalmentor.rdf.dicto.Dicto;
 import com.globalmentor.rdf.directory.vcard.RDFVCard;
@@ -111,7 +110,7 @@ public class XMLNamespacePrefixManager	//TODO replace with XMLNamespaceLabelMana
 	}
 
 	/**The prefix, "java:", of a Java package namespace URI.*/
-	private final static String JAVA_PACKAGE_NAMESPACE_URI_PREFIX=JAVA_SCHEME+SCHEME_SEPARATOR;
+	private final static String JAVA_PACKAGE_NAMESPACE_URI_PREFIX=JAVA_URI_SCHEME+SCHEME_SEPARATOR;
 
 	/**The suffix, ".", of a Java package namespace URI.*/
 	private final static String JAVA_PACKAGE_NAMESPACE_URI_SUFFIX=String.valueOf(PACKAGE_SEPARATOR);
