@@ -34,7 +34,6 @@ This class is a {@link DocumentBuilder}, and can be configured to produced appro
 Instances of {@link DocumentBuilder} are intialized with an {@link XMLEntityResolver} entity resolver.
 This class is thread-safe.
 @author Garret Wilson
-@deprecated
 */
 public class XMLIO extends DocumentBuilderFactory implements IO<Document>
 {

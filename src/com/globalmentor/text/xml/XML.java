@@ -1088,6 +1088,7 @@ public class XML
 	}
 
 	/**Extracts a single node from its parent and places it in a document fragment.
+	The node is removed from its parent.
 	@param node The node to be extracted. This node must have a valid parent and owner document.
 	@return A new document fragment containing the extracted node.
 	@exception DOMException
@@ -1100,24 +1101,45 @@ public class XML
 	*/
 	public static DocumentFragment extractNode(final Node node) throws DOMException
 	{
+		return extractNode(node, true);	//extract the node by removing it
+	}
+
+	/**Extracts a single node from its parent and places it in a document fragment.
+	@param node The node to be extracted. This node must have a valid parent and owner document.
+	@param remove Whether the node will be removed from its parent; if <code>false</code>, it will remain the child of its parent.
+	@return A new document fragment containing the extracted node.
+	@exception DOMException
+	<ul>
+		<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
+	</ul>
+	@exception IllegalArgumentException if the given node has no owner document.
+	@exception IllegalArgumentException if the given node has no parent node.
+	@see #removeChildren(Node, int, int)
+	*/
+	public static DocumentFragment extractNode(final Node node, final boolean remove) throws DOMException
+	{
 		final Document ownerDocument=node.getOwnerDocument();	//get the node owner document
 		if(ownerDocument==null)	//if there is no owner document
 		{
-			throw new IllegalArgumentException("Node "+node+"has no owner document.");
+			throw new IllegalArgumentException("Node "+node+" has no owner document.");
 		}
 		final Node parentNode=node.getParentNode();	//get the node's parent
 		if(parentNode==null)	//if there is no parent node
 		{
-			throw new IllegalArgumentException("Node "+node+"has no parent node.");
+			throw new IllegalArgumentException("Node "+node+" has no parent node.");
 		}
 		final DocumentFragment documentFragment=ownerDocument.createDocumentFragment(); //create a document fragment to hold the nodes
-	  parentNode.removeChild(node); //remove the node from its parent
+		if(remove)	//if we should remove the node
+		{
+			parentNode.removeChild(node); //remove the node from its parent
+		}
 	  documentFragment.appendChild(node);  //append the removed child to the document fragment
 		return documentFragment;	//return the document fragment
 	}
 
 	/**Extracts all the child nodes from the given node and places them in a
 		document fragment.
+	The children are removed from their parents.
 	@param node The node from which child nodes should be extracted. This node
 		must have a valid owner document.
 	@return A new document fragment containing the extracted children.
@@ -1129,11 +1151,29 @@ public class XML
 	*/
 	public static DocumentFragment extractChildren(final Node node) throws DOMException
 	{
-		return extractChildren(node, 0, node.getChildNodes().getLength());	//extract all the children and return the new document fragment 
+		return extractChildren(node, true);	//extract the childen by removing them
+	}
+	
+	/**Extracts all the child nodes from the given node and places them in a
+		document fragment.
+	@param node The node from which child nodes should be extracted. This node
+		must have a valid owner document.
+	@param remove Whether the nodes will be removed from the parentnode ; if <code>false</code>, they will remain the child of the parent node.
+	@return A new document fragment containing the extracted children.
+	@exception DOMException
+	<ul>
+		<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
+	</ul>
+	@see #removeChildren
+	*/
+	public static DocumentFragment extractChildren(final Node node, final boolean remove) throws DOMException
+	{
+		return extractChildren(node, 0, node.getChildNodes().getLength(), remove);	//extract all the children and return the new document fragment 
 	}
 
 	/**Extracts the indexed nodes starting at <code>startChildIndex</code> up to
 		but not including <code>endChildIndex</code>.
+	The children are removed from their parents.
 	@param node The node from which child nodes should be extracted. This node
 		must have a valid owner document.
 	@param startChildIndex The index of the first child to extract.
@@ -1155,10 +1195,37 @@ public class XML
 	*/
 	public static DocumentFragment extractChildren(final Node node, final int startChildIndex, final int endChildIndex) throws ArrayIndexOutOfBoundsException, DOMException
 	{
+		return extractChildren(node, startChildIndex, endChildIndex, true);	//extract the childen by removing them
+	}
+
+	/**Extracts the indexed nodes starting at <code>startChildIndex</code> up to
+		but not including <code>endChildIndex</code>.
+	@param node The node from which child nodes should be extracted. This node
+		must have a valid owner document.
+	@param startChildIndex The index of the first child to extract.
+	@param endChildIndex The index directly after the last child to extract. Must
+		be greater than <code>startChildIndex</code> or no action will occur.
+	@param remove Whether the nodes will be removed from the parentnode ; if <code>false</code>, they will remain the child of the parent node.
+	@return A new document fragment containing the extracted children.
+	@exception ArrayIndexOutOfBoundsException Thrown if either index is negative,
+		if the start index is greater than or equal to the number of children,
+		or if the ending index is greater than the number of children (unless
+		the ending index is not greater than the starting index).
+	TODO should we throw an exception is startChildIndex>endChildIndex, like String.substring()?
+	@exception IllegalArgumentException if the given node has no owner document.
+	@exception ArrayIndexOutOfBoundsException if the given range is invalid for the given node's children.
+	@exception DOMException
+	<ul>
+		<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
+	</ul>
+	@see #removeChildren(Node, int, int)
+	*/
+	public static DocumentFragment extractChildren(final Node node, final int startChildIndex, final int endChildIndex, final boolean remove) throws ArrayIndexOutOfBoundsException, DOMException
+	{
 		final Document ownerDocument=node.getOwnerDocument();	//get the node owner document
 		if(ownerDocument==null)	//if there is no owner document
 		{
-			throw new IllegalArgumentException("Node "+node+"has no owner document.");
+			throw new IllegalArgumentException("Node "+node+" has no owner document.");
 		}
 		final NodeList childNodeList=node.getChildNodes();  //get a reference to the child nodes
 		final int childNodeCount=childNodeList.getLength(); //find out how many child nodes there are
@@ -1170,7 +1237,11 @@ public class XML
 		Node lastAddedNode=null; //show that we haven't added any nodes, yet
 		for(int i=endChildIndex-1; i>=startChildIndex; --i)  //starting from the end, look at all the indexes before the ending index
 		{
-		  final Node childNode=node.removeChild(childNodeList.item(i)); //find the item at the given index and remove it
+		  final Node childNode=childNodeList.item(i); //find the item at the given index
+			if(remove)	//if we should remove the node
+			{
+				node.removeChild(childNode); //remove the child node
+			}
 			if(lastAddedNode==null)  //for the first node we add
 			  documentFragment.appendChild(childNode);  //append the removed child to the document fragment
 			else  //for all other nodes
