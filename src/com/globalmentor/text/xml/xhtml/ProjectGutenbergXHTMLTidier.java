@@ -1303,7 +1303,7 @@ Debug.trace("found small print end");
 		  stringBuffer.delete(stringBuffer.length()-2, stringBuffer.length());  //remove the ending control character
 		}
 		/**The characters we'll trim from the front and back of the string.*/
-		final String TRIM_CHARS=Characters.TRIM_CHARS+WHITESPACE_CHARS+DEPENDENT_PUNCTUATION_CHARS+/*TODO bring back if needed QUOTE_CHARS+*/'*'+'.';  //G**use constants
+		final String TRIM_CHARS=Characters.TRIM_CHARS+WHITESPACE_CHAR_STRING+DEPENDENT_PUNCTUATION_CHARS+/*TODO bring back if needed QUOTE_CHARS+*/'*'+'.';  //G**use constants
 		  //trim the string of whitespace, dashes, and asterisks
 		StringBuffers.trim(stringBuffer, TRIM_CHARS);
 			//see if there is any group punctuation at the end (e.g. "XXX (XXX)")
@@ -1325,7 +1325,7 @@ Debug.trace("found small print end");
 		  //trim the string of whitespace, dashes, and asterisks again
 		StringBuffers.trim(stringBuffer, TRIM_CHARS);
 		  //collapse all whitespace into spaces
-		StringBuffers.collapse(stringBuffer, WHITESPACE_CHARS, " ");
+		StringBuffers.collapse(stringBuffer, WHITESPACE_CHAR_STRING, " ");
 		return stringBuffer; //return the string we tidied
 	}
 
