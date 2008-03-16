@@ -16,6 +16,7 @@ written by Garret Wilson &lt;http://www.garretwilson.com/&gt; and Copyright © 2
 Any redistribution of this source code or derived source code must include these comments unmodified.</p>
 @author Garret Wilson
 @see <a href="http://dublincore.org/documents/dcmi-namespace/">DCMI Namespace Policy</a>
+@see <a href="http://dublincore.org/documents/dces/">Dublin Core Metadata Element Set, Version 1.1</a>
 */
 public class DCMI
 {
@@ -91,6 +92,37 @@ public class DCMI
 	/**The rights of a resource.*/
 	public final static URI RIGHTS_PROPERTY_URI=DCMI11_ELEMENTS_NAMESPACE_URI.resolve(RIGHTS_PROPERTY_NAME);
 
+	/**Returns the date of the resource.
+	@param resource The resource for which the date should be returned.
+	@return The date of the resource, or <code>null</code> if there is no date or the property does not contain an <code>urf.Date</code> or <code>urf.DateTime</code>.
+	@see #DATE_PROPERTY_URI
+	*/
+	public static AbstractURFDateTime getDate(final URFResource resource)
+	{
+		return asAbstractDateTime(resource.getPropertyValue(DATE_PROPERTY_URI));	//return the dc.date as a date or date time
+	}
+
+	/**Sets the date of the resource
+	@param resource The resource the date to set.
+	@param date The new date.
+	@see #DATE_PROPERTY_URI
+	*/
+	public static void setDate(final URFResource resource, final AbstractURFDateTime date)
+	{
+		if(date instanceof URFDate)	//if this is a date
+		{
+			resource.setPropertyValue(DATE_PROPERTY_URI, (URFDate)date);	//create a date resource and set the resource's dc.date
+		}
+		else if(date instanceof URFDateTime)	//if this is a date time
+		{
+			resource.setPropertyValue(DATE_PROPERTY_URI, (URFDateTime)date);	//create a date time resource and set the resource's dc.date
+		}
+		else	//if we don't recognize the type of abstract date time
+		{
+			throw new AssertionError("Unrecognized abstract date time type: "+date.getClass());
+		}
+	}
+	
 	/**Returns the description of the resource
 	@param resource The resource the property of which should be located.
 	@return The string value of the property, or <code>null</code> if there is no such property or the property value is not a string.
