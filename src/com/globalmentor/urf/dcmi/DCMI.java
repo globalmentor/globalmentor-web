@@ -102,6 +102,26 @@ public class DCMI
 		return asAbstractDateTime(resource.getPropertyValue(DATE_PROPERTY_URI));	//return the dc.date as a date or date time
 	}
 
+	/**Returns the creator of the resource
+	@param resource The resource the property of which should be located.
+	@return The string value of the property, or <code>null</code> if there is no such property or the property value is not a string.
+	@see #CREATOR_PROPERTY_URI
+	*/
+	public static String getCreator(final URFResource resource)
+	{
+		return asString(resource.getPropertyValue(CREATOR_PROPERTY_URI));
+	}
+
+	/**Sets the creator of the resource.
+	@param resource The resource of which the property should be set.
+	@param value The property value to set.
+	@see #CREATOR_PROPERTY_URI
+	*/
+	public static void setCreator(final URFResource resource, final String value)
+	{
+		resource.setPropertyValue(CREATOR_PROPERTY_URI, value);
+	}
+
 	/**Sets the date of the resource
 	@param resource The resource the date to set.
 	@param date The new date.
@@ -122,7 +142,7 @@ public class DCMI
 			throw new AssertionError("Unrecognized abstract date time type: "+date.getClass());
 		}
 	}
-	
+
 	/**Returns the description of the resource
 	@param resource The resource the property of which should be located.
 	@return The string value of the property, or <code>null</code> if there is no such property or the property value is not a string.
@@ -164,6 +184,66 @@ public class DCMI
 		resource.setPropertyValue(DCMI11_ELEMENTS_NAMESPACE_URI, DEFAULT_URF_RESOURCE_FACTORY.createLanguageResource(locale));	//create a resource for the given locale and add it as the property
 	}
 
+	/**Returns the rights of the resource
+	@param resource The resource the property of which should be located.
+	@return The string value of the property, or <code>null</code> if there is no such property or the property value is not a string.
+	@see #RIGHTS_PROPERTY_URI
+	*/
+	public static String getRights(final URFResource resource)
+	{
+		return asString(resource.getPropertyValue(RIGHTS_PROPERTY_URI));
+	}
+
+	/**Sets the rights of the resource.
+	@param resource The resource of which the property should be set.
+	@param value The property value to set.
+	@see #RIGHTS_PROPERTY_URI
+	*/
+	public static void setRights(final URFResource resource, final String value)
+	{
+		resource.setPropertyValue(RIGHTS_PROPERTY_URI, value);
+	}
+	
+	/**Returns the subject of the resource
+	@param resource The resource the property of which should be located.
+	@return The string value of the property, or <code>null</code> if there is no such property or the property value is not a string.
+	@see #SUBJECT_PROPERTY_URI
+	*/
+	public static String getSubject(final URFResource resource)
+	{
+		return asString(resource.getPropertyValue(SUBJECT_PROPERTY_URI));
+	}
+
+	/**Returns the subjects of the resource
+	@param resource The resource the property of which should be located.
+	@return The string values of the property.
+	@see #SUBJECT_PROPERTY_URI
+	*/
+	public static String[] getSubjects(final URFResource resource)
+	{
+		return asStrings(resource.getPropertyValues(SUBJECT_PROPERTY_URI));
+	}
+
+	/**Sets the subject of the resource.
+	@param resource The resource of which the property should be set.
+	@param value The property value to set.
+	@see #SUBJECT_PROPERTY_URI
+	*/
+	public static void setSubject(final URFResource resource, final String value)
+	{
+		resource.setPropertyValue(SUBJECT_PROPERTY_URI, value);
+	}
+	
+	/**Sets the subjects of the resource.
+	@param resource The resource of which the property should be set.
+	@param values The property values to set.
+	@see #SUBJECT_PROPERTY_URI
+	*/
+	public static void setSubjects(final URFResource resource, final String... values)
+	{
+		resource.setPropertyValues(SUBJECT_PROPERTY_URI, values);
+	}
+	
 	/**Returns the title of the resource
 	@param resource The resource the property of which should be located.
 	@return The string value of the property, or <code>null</code> if there is no such property or the property value is not a string.
