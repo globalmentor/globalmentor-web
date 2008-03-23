@@ -228,7 +228,7 @@ public class ProjectGutenbergXHTMLTidier	//TODO move to different package
 			//  which uses single spacing for the header but double spacing for the
 			//  rest), might result in multiple lines in one paragraph, with multiple
 			//  occurences of "end"
-		final StringTokenizer lineTokenizer=new StringTokenizer(text, EOL_CHARS); //tokenize the lines of the string
+		final StringTokenizer lineTokenizer=new StringTokenizer(text, EOL_CHAR_STRING); //tokenize the lines of the string
 		while(lineTokenizer.hasMoreTokens())  //while there are more lines
 		{
 			final String line=lineTokenizer.nextToken();  //get the next line
@@ -312,7 +312,7 @@ public class ProjectGutenbergXHTMLTidier	//TODO move to different package
 	{
 		boolean foundEnd=false; //this will keep track of whether we've found a line beginning with "end"
 		boolean foundPG=false;  //this will keep track of whether we've found a line containing "Project Gutenberg"
-		final StringTokenizer lineTokenizer=new StringTokenizer(text, EOL_CHARS); //tokenize the lines of the string
+		final StringTokenizer lineTokenizer=new StringTokenizer(text, EOL_CHAR_STRING); //tokenize the lines of the string
 		while(lineTokenizer.hasMoreTokens())  //while there are more lines
 		{
 				//get the next line and trim it of whitespace and asterisks
@@ -352,7 +352,7 @@ public class ProjectGutenbergXHTMLTidier	//TODO move to different package
 					final String text=XML.getText(childElement, true); //get the text of the header
 					if(isPGHeaderElement(childElement))  //if this is a header element
 					{
-						final StringTokenizer lineTokenizer=new StringTokenizer(text, EOL_CHARS); //create a tokenizer to look at each line
+						final StringTokenizer lineTokenizer=new StringTokenizer(text, EOL_CHAR_STRING); //create a tokenizer to look at each line
 						while(lineTokenizer.hasMoreTokens())  //while there are more lines
 						{
 							final String line=lineTokenizer.nextToken();  //get the next line
@@ -499,7 +499,7 @@ public class ProjectGutenbergXHTMLTidier	//TODO move to different package
 							break;  //stop looking at elements
 						}
 					}
-					final StringTokenizer lineTokenizer=new StringTokenizer(text, EOL_CHARS); //create a tokenizer to look at each line
+					final StringTokenizer lineTokenizer=new StringTokenizer(text, EOL_CHAR_STRING); //create a tokenizer to look at each line
 					while(lineTokenizer.hasMoreTokens())  //while there are more lines
 					{
 						final String line=lineTokenizer.nextToken();  //get the next line
@@ -570,7 +570,7 @@ public class ProjectGutenbergXHTMLTidier	//TODO move to different package
 					boolean isNextLineByAuthor=false; //we don't know yet if the author is on the next line
 					if(isPGHeaderElement(childElement))  //if this is a header element
 					{
-						final StringTokenizer lineTokenizer=new StringTokenizer(text, EOL_CHARS); //create a tokenizer to look at each line
+						final StringTokenizer lineTokenizer=new StringTokenizer(text, EOL_CHAR_STRING); //create a tokenizer to look at each line
 						while(lineTokenizer.hasMoreTokens())  //while there are more lines
 						{
 							final String line=lineTokenizer.nextToken();  //get the next line
@@ -665,7 +665,7 @@ public class ProjectGutenbergXHTMLTidier	//TODO move to different package
 					{
 						if(Strings.indexOfIgnoreCase(text, PROJECT_GUTENB)<0) //the author paragraph should *not* have "Project Gutenberg" in it (e.g. 22gbl10.txt)
 						{
-							final StringTokenizer lineTokenizer=new StringTokenizer(text, EOL_CHARS); //create a tokenizer to look at each line
+							final StringTokenizer lineTokenizer=new StringTokenizer(text, EOL_CHAR_STRING); //create a tokenizer to look at each line
 							while(lineTokenizer.hasMoreTokens())  //while there are more lines
 							{
 								final String line=lineTokenizer.nextToken();  //get the next line
@@ -742,7 +742,7 @@ public class ProjectGutenbergXHTMLTidier	//TODO move to different package
 		{
 			final StringBuffer descriptionStringBuffer=new StringBuffer();  //create a new string buffer to hold the description we consruct
 			final String headerText=XML.getText(headerElement, true); //get the text of the header
-			final StringTokenizer lineTokenizer=new StringTokenizer(headerText, EOL_CHARS); //create a tokenizer to look at each line
+			final StringTokenizer lineTokenizer=new StringTokenizer(headerText, EOL_CHAR_STRING); //create a tokenizer to look at each line
 			while(lineTokenizer.hasMoreTokens())  //while there are more lines
 			{
 				final String line=lineTokenizer.nextToken();  //get the next line
@@ -802,7 +802,7 @@ public class ProjectGutenbergXHTMLTidier	//TODO move to different package
 	public static boolean isPGHeaderElement(final Element element)
 	{
 		final String text=XML.getText(element, true); //get the text of the element
-		final StringTokenizer lineTokenizer=new StringTokenizer(text, EOL_CHARS); //create a tokenizer to look at each line
+		final StringTokenizer lineTokenizer=new StringTokenizer(text, EOL_CHAR_STRING); //create a tokenizer to look at each line
 		final int lineCount=lineTokenizer.countTokens();  //see how many lines we have
 			//if this paragraph is four lines or less
 		if(lineCount<=4
@@ -1295,7 +1295,7 @@ Debug.trace("found small print end");
 	{
 			//see if "contents" is part of the property (e.g. tbroa10.txt)
 		final int contentsIndex=Strings.indexOfIgnoreCase(stringBuffer.toString(), "contents");  //TODO use a constant; use StringBufferUtilities
-		if(contentsIndex>0 && EOL_CHARS.indexOf(stringBuffer.charAt(contentsIndex-1))>=0) //if contents appears after a linebreak
+		if(contentsIndex>0 && EOL_CHAR_STRING.indexOf(stringBuffer.charAt(contentsIndex-1))>=0) //if contents appears after a linebreak
 			stringBuffer.delete(contentsIndex, stringBuffer.length());  //remove that line break and everything after
 		  //some works (e.g. valen10.txt) for some reason end in "^M"
 		if(stringBuffer.length()>1 && stringBuffer.charAt(stringBuffer.length()-2)=='^')
