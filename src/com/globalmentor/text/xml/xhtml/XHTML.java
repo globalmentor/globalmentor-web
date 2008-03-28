@@ -400,6 +400,21 @@ public class XHTML
 	}
 
 	/**Creates a new unformatted default XHTML document with the required minimal structure,
+	{@code <html><head><title></title<head><body></html>}, with an optional document type but no public ID or system ID.
+	@param title The title of the document.
+	@param includeDocumentType Whether a document type should be added to the document.
+	@param formatted <code>true</code> if the sections of the document should be formatted.
+	@return A newly created default generic XHTML document with the required minimal structure.
+	@throws NullPointerException if the given title is <code>null</code>.
+	@throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	@throws DOMException if there is an error creating the XHTML document.
+	*/
+	public static Document createXHTMLDocument(final String title, final boolean includeDocumentType, final boolean formatted) throws DOMException
+	{
+		return createXHTMLDocument(title, includeDocumentType, null, null, formatted);	//create an XHTML document with optional doctype		
+	}
+
+	/**Creates a new unformatted default XHTML document with the required minimal structure,
 	{@code <html><head><title></title<head><body></html>}, with an optional document type.
 	@param title The title of the document.
 	@param includeDocumentType Whether a document type should be added to the document.
@@ -457,11 +472,16 @@ public class XHTML
 		final Element titleElement=document.createElementNS(XHTML_NAMESPACE_URI.toString(), ELEMENT_TITLE);	//create the title element
 		headElement.appendChild(titleElement);	//add the title element to the head element
 		appendText(titleElement, title);	//append the title text to the title element 
+		if(formatted)	//if we should format the document
+		{
+			appendText(headElement, "\n");	//append a newline to separate the informtaion after the title
+		}
 		final Element bodyElement=document.createElementNS(XHTML_NAMESPACE_URI.toString(), ELEMENT_BODY);	//create the body element
 		htmlElement.appendChild(bodyElement);	//add the body element to the html element
 		if(formatted)	//if we should format the document
 		{
 			appendText(bodyElement, "\n");	//append a newline to separate the information in the body
+			appendText(htmlElement, "\n");	//append a newline to separate the information after the body
 		}
 		return document;  //return the document we created
 	}

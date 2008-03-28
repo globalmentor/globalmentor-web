@@ -602,13 +602,23 @@ public class XMLSerializer
 	*/
 	protected void write(final DocumentType documentType, final BufferedWriter writer) throws IOException
 	{
-		writer.write(DOCTYPE_DECL_START+SPACE_CHAR+documentType.getName()+SPACE_CHAR);	//write the beginning of the document type declaration
+		writer.write(DOCTYPE_DECL_START+SPACE_CHAR+documentType.getName());	//write the beginning of the document type declaration
 		final String publicID=documentType.getPublicId();	//get the public ID, if there is one
-		if(publicID!=null)	//if there is a public ID
-			writer.write(PUBLIC_ID_NAME+SPACE_CHAR+DOUBLE_QUOTE_CHAR+publicID+DOUBLE_QUOTE_CHAR+SPACE_CHAR);	//write the public ID name and its public literal
-		else	//if there is no public ID
-			writer.write(SYSTEM_ID_NAME+SPACE_CHAR);	//write the system ID name
-		writer.write(DOUBLE_QUOTE_CHAR+documentType.getSystemId()+DOUBLE_QUOTE_CHAR);	//always write the system literal
+		final String systemID=documentType.getSystemId();	//get the system ID, if there is one 
+		if(publicID!=null || systemID!=null)	//if there is a public ID or a system ID
+		{
+			writer.write(SPACE_CHAR);	//separate the identifiers from the doctype introduction
+			if(publicID!=null)	//if there is a public ID
+			{
+				writer.write(PUBLIC_ID_NAME+SPACE_CHAR+DOUBLE_QUOTE_CHAR+publicID+DOUBLE_QUOTE_CHAR+SPACE_CHAR);	//write the public ID name and its public literal
+				assert systemID!=null : "A system ID is expected following a public ID.";
+			}
+			else	//if there is no public ID
+			{
+				writer.write(SYSTEM_ID_NAME+SPACE_CHAR);	//write the system ID name
+			}
+			writer.write(DOUBLE_QUOTE_CHAR+documentType.getSystemId()+DOUBLE_QUOTE_CHAR);	//always write the system literal
+		}
 		writer.write(DOCTYPE_DECL_END);	//write the end of the document type declaration
 		if(isFormatted())	//if we should write formatted output
 		{

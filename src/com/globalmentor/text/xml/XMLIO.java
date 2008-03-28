@@ -222,7 +222,7 @@ public class XMLIO extends DocumentBuilderFactory implements IO<Document>
 	{
 		final XMLSerializer xmlSerializer=new XMLSerializer(formatted);	//create a new XML serializer
 		xmlSerializer.setBOMWritten(bomWritten);	//indicate whether the BOM shoudl be written
-		xmlSerializer.serialize(document);	//serialize the document
+		xmlSerializer.serialize(document, outputStream);	//serialize the document to the output stream 
 	}
 
   /**
