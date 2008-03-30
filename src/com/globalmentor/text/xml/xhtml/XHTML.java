@@ -296,6 +296,8 @@ public class XHTML
 	public final static String ELEMENT_LINK_ATTRIBUTE_REL="rel";
 		public final static String LINK_REL_STYLESHEET="stylesheet";
 	public final static String ELEMENT_LINK_ATTRIBUTE_TYPE="type";
+	public final static String ELEMENT_LINK_ATTRIBUTE_MEDIA="media";
+		public final static String LINK_MEDIA_SCREEN="screen";
 
 		//attributes for <object>
 	public final static String ELEMENT_OBJECT_ATTRIBUTE_CLASSID="classid";
