@@ -25,6 +25,7 @@ import javax.mail.internet.ContentType;
 import javax.xml.parsers.*;
 
 import com.globalmentor.io.*;
+import static com.globalmentor.io.Charsets.*;
 import com.globalmentor.java.*;
 import com.globalmentor.text.xml.oeb.OEB;
 import com.globalmentor.text.xml.xhtml.XHTML;
@@ -33,6 +34,7 @@ import com.globalmentor.util.NameValuePair;
 
 import org.w3c.dom.*;
 import org.w3c.dom.traversal.*;
+import org.xml.sax.SAXException;
 
 import static com.globalmentor.io.ContentTypeConstants.*;
 import static com.globalmentor.io.ContentTypes.*;
@@ -1385,7 +1387,24 @@ public class XML
 	*/
 	public static List<Node> getNodesByNameNS(final Node node, final int nodeType, final String namespaceURI, final String localName, final boolean deep)
 	{
-		final List<Node> nodeList=new ArrayList<Node>();	//create a new node list to return
+		return getNodesByNameNS(node, nodeType, namespaceURI, localName, deep, new ArrayList<Node>());	//gather the nodes into a list and return the list
+	}
+
+	/**Gathers child nodes with a given type, namespace URI, and local
+		name. The special wildcard name "*" returns nodes of all local names.
+		If <code>deep</code> is set to <code>true</code>, returns a list of all
+		descendant nodes with a given name, in the order	in which they would be
+		encountered in a preorder traversal of the node tree.
+	@param node The node the child nodes of which will be searched.
+	@param nodeType The type of nodes to include.
+	@param namespaceURI The URI of the namespace of nodes to return. The special value "*" matches all namespaces.
+	@param localName The local name of the node to match on. The special value "*" matches all local names.
+	@param deep Whether or not matching child nodes of each matching child node, etc. should be included.
+	@param nodes The collection into which the nodes will be gathered.
+	@return A new list containing all the matching nodes.
+	*/
+	public static <C extends Collection<Node>> C getNodesByNameNS(final Node node, final int nodeType, final String namespaceURI, final String localName, final boolean deep, final C nodes)
+	{
 		final boolean matchAllNamespaces="*".equals(namespaceURI);	//see if they passed us the wildcard character for the namespace URI TODO use a constant here
 		final boolean matchAllLocalNames="*".equals(localName);	//see if they passed us the wildcard character for the local name TODO use a constant here
 		final NodeList childNodeList=node.getChildNodes();  //get the list of child nodes
@@ -1397,23 +1416,21 @@ public class XML
 			{
 				final String nodeNamespaceURI=childNode.getNamespaceURI(); //get the node's namespace URI
 				final String nodeLocalName=childNode.getLocalName(); //get the node's local name
-				if(matchAllNamespaces ||  //if we should match all namespaces
-						((namespaceURI==null && nodeNamespaceURI==null) ||  //if both namespaces are null
-					  (namespaceURI!=null && namespaceURI.equals(nodeNamespaceURI))) //if the namespace URI's match
-				  ) //if we should match all namespaces, or the namespaces match
+				if(matchAllNamespaces || Objects.equals(namespaceURI, nodeNamespaceURI))  //if we should match all namespaces, or the namespaces match
 				{
 					if(matchAllLocalNames || localName.equals(nodeLocalName)) //if we should match all local names, or the local names match
 					{
-						nodeList.add(childNode);	//add this node to the list
+						nodes.add(childNode);	//add this node to the list
 					}
 				}
 				if(deep)	//if each of the children should check for matching nodes as well
-					nodeList.addAll(getNodesByNameNS(childNode, nodeType, namespaceURI, localName, deep));	//get this node's matching child nodes by name and add them to our list
+				{
+					getNodesByNameNS(childNode, nodeType, namespaceURI, localName, deep, nodes);	//get this node's matching child nodes by name and add them to our collection
+				}
 			}
 		}
-		return nodeList;	//return the list we created and filled
+		return nodes;	//return the collection we filled
 	}
-
 
 	/**Retrieves the value of a processing instruction's pseudo attribute.
 	@param processingInstructionData The data of a processing instruction.
@@ -2114,6 +2131,33 @@ public class XML
 		{
 				//create an attribute in the form, xmlns="namespaceURI" TODO fix for attributes that may use the same prefix for different namesapce URIs
 			declarationElement.setAttributeNS(XML.XMLNS_NAMESPACE_URI.toString(), XML.XMLNS_NAMESPACE_PREFIX, namespaceURI);
+		}
+	}
+
+	/**Parses the given text as an XML fragment using the given document builder as a parser.
+	@param fragmentText The text of the XML fragment.
+	@param documentBuilder The document builder to use to parse the fragment.
+	@param defaultNamespaceURI The default namespace URI of the fragment, or <code>null</code> if there is no default namespace
+	@return A document fragment containing the parsed contents of the given fragment text.
+	@throws SAXException if there was an error parsing the fragment.
+	*/
+	public static DocumentFragment parseFragment(final String fragmentText, final DocumentBuilder documentBuilder, final String defaultNamespaceURI) throws SAXException
+	{
+		final StringBuilder stringBuilder=new StringBuilder("<?xml version='1.0' encoding='UTF-8'?>");	//TODO use constants if we can
+		stringBuilder.append("<fragment");
+		if(defaultNamespaceURI!=null)	//if a default namespace was given
+		{
+			stringBuilder.append(" xmlns='").append(defaultNamespaceURI).append("'");	//xmlns="defaultNamespaceURI"
+		}
+		stringBuilder.append(">").append(fragmentText).append("</fragment>");
+		try
+		{
+			final Document document=documentBuilder.parse(new ByteArrayInputStream(stringBuilder.toString().getBytes(UTF_8_CHARSET)));	//parse the bytes of the string
+			return extractChildren(document.getDocumentElement());	//extract the children of the fragment document element and return them as a document fragment
+		}
+		catch(final IOException ioException)	//we should never get an I/O exception reading from a string
+		{
+			throw new AssertionError(ioException);
 		}
 	}
 

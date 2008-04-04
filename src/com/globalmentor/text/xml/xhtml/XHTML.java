@@ -131,6 +131,7 @@ public class XHTML
 	public final static String ELEMENT_A="a";
 	public final static String ELEMENT_APPLET="applet";
 	public final static String ELEMENT_AREA="area";
+	public final static String ELEMENT_ASIDE="aside";
 	public final static String ELEMENT_B="b";
 	public final static String ELEMENT_BASE="base";
 	public final static String ELEMENT_BIG="big";
@@ -151,6 +152,7 @@ public class XHTML
 	public final static String ELEMENT_EM="em";
 	public final static String ELEMENT_FIELDSET="fieldset";
 	public final static String ELEMENT_FONT="font";
+	public final static String ELEMENT_FOOTER="footer";
 	public final static String ELEMENT_FORM="form";
 	public final static String ELEMENT_H1="h1";
 	public final static String ELEMENT_H2="h2";
@@ -159,6 +161,7 @@ public class XHTML
 	public final static String ELEMENT_H5="h5";
 	public final static String ELEMENT_H6="h6";
 	public final static String ELEMENT_HEAD="head";
+	public final static String ELEMENT_HEADER="header";
 	public final static String ELEMENT_HR="hr";
 	public final static String ELEMENT_HTML="html";
 	public final static String ELEMENT_I="i";
@@ -487,6 +490,7 @@ public class XHTML
 		}
 		return document;  //return the document we created
 	}
+
 	/**Finds the XHTML <code>&lt;body&gt;</code> element.
 	@param document The XHTML document tree.
 	@return A reference to the <code>&lt;body&gt;</code> element, or
@@ -496,6 +500,7 @@ public class XHTML
 	{
 		return (Element)getNode(document, LOCATION_STEP_SEPARATOR_CHAR+ELEMENT_BODY);
 	}
+
 	/**Finds the XHTML <code>&lt;head&gt;</code> element.
 	@param document The XHTML document tree.
 	@return A reference to the <code>&lt;head&gt;</code> element, or
@@ -505,6 +510,7 @@ public class XHTML
 	{
 		return (Element)getNode(document, LOCATION_STEP_SEPARATOR_CHAR+ELEMENT_HEAD);
 	}
+
 	/**Determines the reference to the image file represented by the element,
 		assuming the element (an "img" or "object" element) does in fact represent
 		an image.
@@ -539,6 +545,7 @@ public class XHTML
 		}
 		return null;  //show that we couldn't find an image reference
 	}
+
 	/**Determines if the specified element represents a link, and if so attempts
 		to find the link element's reference.
 	@param xhtmlNamespaceURI The XHTML namespace.
@@ -563,6 +570,7 @@ public class XHTML
 		}
 		return null; //show that we couldn't find an href or this wasn't even a link
 	}
+
 	/**Checks to see if the given element contains a <code>style</code> attribute,
 		and if so returns a style declaration containing the given style properties.
 	@param element The element to check for a style
@@ -590,6 +598,7 @@ public class XHTML
 		}
 		return null;  //show that we couldn't find a style
 	}
+
 	/**Determines if the given content type is one representing HTML in some form.
 	<p>HTML content types include:</p>
 	<ul>
@@ -628,6 +637,7 @@ public class XHTML
 		}
 		return false;	//this is not a media type we recognize as being HTML
 	}
+
 	/**Determines if the given URI represents one of the HTML XML namespaces.
 	<p>HTML namespaces include:</p>
 	<ul>
@@ -650,6 +660,7 @@ public class XHTML
 		}
 		return false;	//show that we didn't recognize the namespace as HTML
 	}
+
 	/**Determines if the specified element represents an image. Specifically, this
 		returns <code>true</code> if the element's name is "img"; or if the
 		element's name is "object" and the type attribute is an image or the data
@@ -693,6 +704,7 @@ public class XHTML
 		}
 		return false; //this does not appear to be an image element
 	}
+
 	/**Determines if the specified element represents a link. Specifically, this
 		returns <code>true</code> if the element's name is "a".
 	@param xhtmlNamespaceURI The XHTML namespace.
@@ -714,6 +726,7 @@ public class XHTML
 		}
 		return false; //this does not appear to be a link element
 	}
+
 	/**Determines if the specified element represents an empty element&mdash;an
 		element that might be declared as <code>EMPTY</code> in a DTD.
 	@param namespaceURI The element namespace.
@@ -730,6 +743,7 @@ public class XHTML
 		}
 		return false; //this does not appear to be an empty element
 	}
+
 	/**Determines if the specified element represents a link, and if so sets the
 		link element's reference.
 	@param xhtmlNamespaceURI The XHTML namespace.
