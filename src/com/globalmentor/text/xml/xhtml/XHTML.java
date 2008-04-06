@@ -57,13 +57,13 @@ public class XHTML
 	public final static String XHTML_XML_EXTERNAL_PARSED_ENTITY_SUBTYPE="xhtml"+SUBTYPE_SUFFIX_DELIMITER_CHAR+XML_EXTERNAL_PARSED_ENTITY_SUBTYPE_SUFFIX;
 
 	/**The content type for HTML: <code>text/html</code>.*/
-	public static final ContentType HTML_CONTENT_TYPE=new ContentType(TEXT_PRIMARY_TYPE, HTML_SUBTYPE, null);
+	public static final ContentType HTML_CONTENT_TYPE=getContentTypeInstance(TEXT_PRIMARY_TYPE, HTML_SUBTYPE);
 
 	/**The content type for XHTML: <code>application/xhtml+xml</code>.*/
-	public static final ContentType XHTML_CONTENT_TYPE=new ContentType(APPLICATION_PRIMARY_TYPE, XHTML_XML_SUBTYPE, null);
+	public static final ContentType XHTML_CONTENT_TYPE=getContentTypeInstance(APPLICATION_PRIMARY_TYPE, XHTML_XML_SUBTYPE);
 
 	/**The content type for an XHTML fragment: <code>application/xhtml+xml-external-parsed-entity</code>.*/
-	public static final ContentType XHTML_FRAGMENT_CONTENT_TYPE=new ContentType(APPLICATION_PRIMARY_TYPE, XHTML_XML_EXTERNAL_PARSED_ENTITY_SUBTYPE, null);
+	public static final ContentType XHTML_FRAGMENT_CONTENT_TYPE=getContentTypeInstance(APPLICATION_PRIMARY_TYPE, XHTML_XML_EXTERNAL_PARSED_ENTITY_SUBTYPE);
 
 	/**The old extension for HTML resource names.*/
 	public final static String HTM_NAME_EXTENSION="htm";
@@ -251,9 +251,9 @@ public class XHTML
 	public final static String ELEMENT_FORM_ATTRIBUTE_ACTION="action";
 	public final static String ELEMENT_FORM_ATTRIBUTE_ENCTYPE="enctype";
 		/**The "application/x-www-form-urlencoded" encoding type; see <a href="http://www.rfc-editor.org/rfc/rfc1867.txt">RFC 1867</a>.*/
-		public final static ContentType APPLICATION_X_WWW_FORM_URLENCODED_CONTENT_TYPE=new ContentType(APPLICATION_PRIMARY_TYPE, X_WWW_FORM_URLENCODED, null);
+		public final static ContentType APPLICATION_X_WWW_FORM_URLENCODED_CONTENT_TYPE=getContentTypeInstance(APPLICATION_PRIMARY_TYPE, X_WWW_FORM_URLENCODED);
 		/**The "multipart/form-data" encoding type; see <a href="http://www.rfc-editor.org/rfc/rfc1867.txt">RFC 1867</a>.*/
-		public final static ContentType MULTIPART_FORM_DATA_CONTENT_TYPE=new ContentType(MULTIPART_PRIMARY_TYPE, FORM_DATA_SUBTYPE, null);
+		public final static ContentType MULTIPART_FORM_DATA_CONTENT_TYPE=getContentTypeInstance(MULTIPART_PRIMARY_TYPE, FORM_DATA_SUBTYPE);
 
 	public final static String ELEMENT_FORM_ATTRIBUTE_METHOD="method";
 		public final static String FORM_METHOD_GET="get";
@@ -687,7 +687,7 @@ public class XHTML
 					if(element.hasAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_TYPE)) //if there is a type attribute
 					{
 						final String type=element.getAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_TYPE);  //get the type
-						final ContentType mediaType=createContentType(type); //create a media type from the given type
+						final ContentType mediaType=getContentTypeInstance(type); //create a media type from the given type
 						if(mediaType.getPrimaryType().equals(IMAGE_PRIMARY_TYPE)) //if this is an image
 							return true;  //show that this is an image object
 					}

@@ -34,10 +34,10 @@ public class JavaScript
 	public final static String JAVASCRIPT_SUBTYPE="javascript";
 
 	/**The content type for JavaScript: <code>application/javascript</code>.*/ 
-	public static final ContentType JAVASCRIPT_CONTENT_TYPE=new ContentType(APPLICATION_PRIMARY_TYPE, JAVASCRIPT_SUBTYPE, null);
+	public static final ContentType JAVASCRIPT_CONTENT_TYPE=getContentTypeInstance(APPLICATION_PRIMARY_TYPE, JAVASCRIPT_SUBTYPE);
 
 	/**The obsolete content type for JavaScript: <code>text/javascript</code>.*/ 
-	public static final ContentType JAVASCRIPT_OBSOLETE_CONTENT_TYPE=new ContentType(TEXT_PRIMARY_TYPE, JAVASCRIPT_SUBTYPE, null);
+	public static final ContentType JAVASCRIPT_OBSOLETE_CONTENT_TYPE=getContentTypeInstance(TEXT_PRIMARY_TYPE, JAVASCRIPT_SUBTYPE);
 
 	/**The delimiter '.' for object properties.*/
 	public final static char PROPERTY_DELIMITER='.';

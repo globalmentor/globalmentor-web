@@ -35,7 +35,7 @@ public class SVG
 	public final static String SVG_XML_SUBTYPE="svg"+SUBTYPE_SUFFIX_DELIMITER_CHAR+XML.XML_SUBTYPE_SUFFIX;
 
 	/**The content type for SVG: <code>application/svg+xml</code>.*/ 
-	public static final ContentType SVG_CONTENT_TYPE=new ContentType(APPLICATION_PRIMARY_TYPE, SVG_XML_SUBTYPE, null);
+	public static final ContentType SVG_CONTENT_TYPE=getContentTypeInstance(APPLICATION_PRIMARY_TYPE, SVG_XML_SUBTYPE);
 
 	/**The recommended prefix to the SVG namespace.*/
 	public static final String SVG_NAMESPACE_PREFIX="svg";

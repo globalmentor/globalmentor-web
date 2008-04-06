@@ -41,7 +41,7 @@ public class XMLCSS
 	public final static String CSS_SUBTYPE="css";
 
 	/**The content type for CSS: <code>text/css</code>.*/ 
-	public static final ContentType TEXT_CSS_CONTENT_TYPE=new ContentType(TEXT_PRIMARY_TYPE, CSS_SUBTYPE, null);
+	public static final ContentType TEXT_CSS_CONTENT_TYPE=getContentTypeInstance(TEXT_PRIMARY_TYPE, CSS_SUBTYPE);
 
 	/**A space character.*/
 	public final static char SPACE_CHAR=' ';

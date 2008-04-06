@@ -59,10 +59,10 @@ public class XML
 	public final static String XML_EXTERNAL_PARSED_ENTITY_SUBTYPE_SUFFIX="xml-external-parsed-entity";
 
 	/**The content type for generic XML: <code>text/xml</code>.*/ 
-	public static final ContentType XML_CONTENT_TYPE=new ContentType(ContentTypes.TEXT_PRIMARY_TYPE, XML_SUBTYPE, null);
+	public static final ContentType XML_CONTENT_TYPE=getContentTypeInstance(TEXT_PRIMARY_TYPE, XML_SUBTYPE);
 
 	/**The content type for a generic XML fragment: <code>text/xml-external-parsed-entity</code>.*/ 
-	public static final ContentType XML_EXTERNAL_PARSED_ENTITY_CONTENT_TYPE=new ContentType(ContentTypes.TEXT_PRIMARY_TYPE, XML_EXTERNAL_PARSED_ENTITY_SUBTYPE, null);
+	public static final ContentType XML_EXTERNAL_PARSED_ENTITY_CONTENT_TYPE=getContentTypeInstance(TEXT_PRIMARY_TYPE, XML_EXTERNAL_PARSED_ENTITY_SUBTYPE);
 
 	/**The prefix to the "xml" namespace, for use with "xml:lang", for example.*/
 	public static final String XML_NAMESPACE_PREFIX="xml";
@@ -1794,7 +1794,7 @@ public class XML
 		{
 			if(XHTML.isHTML(mediaType))	//if this is one of the HTML media types
 				return XHTML.XHTML_NAMESPACE_URI; //return the XHTML media type
-			else if(mediaType.match(new ContentType(ContentTypes.TEXT_PRIMARY_TYPE, OEB.X_OEB1_DOCUMENT_SUBTYPE, null)))	//if this is an OEB 1.x document
+			else if(match(mediaType, TEXT_PRIMARY_TYPE, OEB.X_OEB1_DOCUMENT_SUBTYPE))	//if this is an OEB 1.x document
 				return OEB.OEB1_DOCUMENT_NAMESPACE_URI; //return the OEB 1.x document namespace
 		}
 		return null;	//show that we can't find a default namespace URI
