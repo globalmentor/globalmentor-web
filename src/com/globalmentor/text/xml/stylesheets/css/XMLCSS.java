@@ -342,9 +342,15 @@ public class XMLCSS
  	public final static Color COLOR_AQUA=new Color(CSS_COLOR_AQUA_VALUE);
 
 
-//G***add other properties here
+//TODO add other properties here
 
-	//**Property "display"
+	//Property <code>clear</code>
+	public final static String CSS_CLEAR_BOTH="both";
+	public final static String CSS_CLEAR_LEFT="left";
+	public final static String CSS_CLEAR_NONE="none";
+	public final static String CSS_CLEAR_RIGHT="right";
+
+	//Property <code>display</code>
 	public final static String CSS_DISPLAY_BLOCK="block";
 	public final static String CSS_DISPLAY_INLINE="inline";
 	public final static String CSS_DISPLAY_INLINE_BLOCK="inline-block";
@@ -363,12 +369,12 @@ public class XMLCSS
 	public final static String CSS_DISPLAY_TABLE_CAPTION="table-caption";
 	public final static String CSS_DISPLAY_NONE="none";
 
-	//**Property <code>float</code>
+	//Property <code>float</code>
 	public final static String CSS_FLOAT_LEFT="left";
 	public final static String CSS_FLOAT_NONE="none";
 	public final static String CSS_FLOAT_RIGHT="right";
 
-	//**Property "font-family"
+	//Property "font-family"
 	public final static String CSS_FONT_FAMILY_SERIF="serif";
 	public final static String CSS_FONT_FAMILY_SANS_SERIF="sans-serif";
 	public final static String CSS_FONT_FAMILY_CURSIVE="cursive";
@@ -377,7 +383,7 @@ public class XMLCSS
 	/**The CSS2 recommended scaling factor between absolute font size strings.*/
 	public final static float FONT_SIZE_SCALING_FACTOR=1.2f;
 
-	//**Property "font-size"
+	//Property "font-size"
 	public final static String CSS_FONT_SIZE_XX_SMALL="xx-small";
 	public final static String CSS_FONT_SIZE_X_SMALL="x-small";
 	public final static String CSS_FONT_SIZE_SMALL="small";
@@ -388,21 +394,21 @@ public class XMLCSS
 	public final static String CSS_FONT_SIZE_SMALLER="smaller";
 	public final static String CSS_FONT_SIZE_LARGER="larger";
 
-	//**Property "font-style"
+	//Property "font-style"
 	public final static String CSS_FONT_STYLE_NORMAL="normal";
 	public final static String CSS_FONT_STYLE_ITALIC="italic";
 	public final static String CSS_FONT_STYLE_OBLIQUE="oblique";
 
-	//**Property "font-weight"
+	//Property "font-weight"
 	public final static String CSS_FONT_WEIGHT_NORMAL="normal";
 	public final static String CSS_FONT_WEIGHT_BOLD="bold";
 	public final static String CSS_FONT_WEIGHT_BOLDER="bolder";
 	public final static String CSS_FONT_WEIGHT_LIGHTER="lighter";
 
-	//**Property "line-height"
+	//Property "line-height"
 	public final static String CSS_LINE_HEIGHT_NORMAL="normal";
 
-	//**Property <code>list-style-type</code>
+	//Property <code>list-style-type</code>
 	public final static String CSS_LIST_STYLE_TYPE_DISC="disc";
 	public final static String CSS_LIST_STYLE_TYPE_CIRCLE="circle";
 	public final static String CSS_LIST_STYLE_TYPE_SQUARE="square";
