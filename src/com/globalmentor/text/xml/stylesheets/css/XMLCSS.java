@@ -131,6 +131,10 @@ public class XMLCSS
 	/**Picas---1 pica is equal to 12 points.*/
 	public final static String PC_UNITS="pc";
 
+		//general CSS properties
+	public final static String CSS_VALUE_AUTO="auto";
+	public final static String CSS_VALUE_INHERIT="inherit";
+	
 	//Property names for CSS2
 	public final static String CSS_PROP_AZIMUTH="azimuth";
 	public final static String CSS_PROP_BACKGROUND="background";
@@ -288,7 +292,8 @@ public class XMLCSS
 	public final static String CSS_BORDER_WIDTH_MEDIUM="medium";
 	public final static String CSS_BORDER_WIDTH_THICK="thick";
 
-	//**Property "color" G***fix
+	//property <code>color<code>
+	public final static String CSS_COLOR_TRANSPARENT="transparent";
 		//colors as defined by HTML; used with several properties, such as background-color
 	public final static String CSS_COLOR_BLACK="black";
 	public final static int CSS_COLOR_BLACK_VALUE=0x000000;
