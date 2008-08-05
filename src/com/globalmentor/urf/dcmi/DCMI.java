@@ -102,7 +102,7 @@ public class DCMI
 		return asAbstractDateTime(resource.getPropertyValue(DATE_PROPERTY_URI));	//return the dc.date as a date or date time
 	}
 
-	/**Returns the creator of the resource
+	/**Returns the creator of the resource.
 	@param resource The resource the property of which should be located.
 	@return The string value of the property, or <code>null</code> if there is no such property or the property value is not a string.
 	@see #CREATOR_PROPERTY_URI
@@ -122,7 +122,7 @@ public class DCMI
 		resource.setPropertyValue(CREATOR_PROPERTY_URI, value);
 	}
 
-	/**Sets the date of the resource
+	/**Sets the date of the resource.
 	@param resource The resource the date to set.
 	@param date The new date.
 	@see #DATE_PROPERTY_URI
@@ -143,7 +143,7 @@ public class DCMI
 		}
 	}
 
-	/**Returns the description of the resource
+	/**Returns the description of the resource.
 	@param resource The resource the property of which should be located.
 	@return The string value of the property, or <code>null</code> if there is no such property or the property value is not a string.
 	@see #DESCRIPTION_PROPERTY_URI
