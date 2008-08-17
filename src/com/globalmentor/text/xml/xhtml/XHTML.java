@@ -472,7 +472,7 @@ public class XHTML
 		if(formatted)	//if we should format the document
 		{
 			appendText(headElement, "\n");	//append a newline to start the content in the head
-			appendText(htmlElement, "\n");	//append a newline to seaprate the content of the html element
+			appendText(htmlElement, "\n");	//append a newline to separate the content of the html element
 		}
 		final Element titleElement=document.createElementNS(XHTML_NAMESPACE_URI.toString(), ELEMENT_TITLE);	//create the title element
 		headElement.appendChild(titleElement);	//add the title element to the head element

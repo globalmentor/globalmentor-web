@@ -150,6 +150,17 @@ public class XMLSerializer
 		*/
 		public void setUseEntities(final boolean newUseEntities) {useEntities=newUseEntities;}
 
+	/**Whether missing namespaces declarations should be added.*/
+	private boolean namespacesDeclarationsEnsured=true;
+
+		/**@return Whether missing namespaces declarations should be added.*/
+		public boolean isNamespacesDeclarationsEnsured() {return namespacesDeclarationsEnsured;}
+
+		/**Sets whether missing namespace declarations are added.
+		@param namespacesDeclarationsEnsured Whether missing namespaces declarations should be added.
+		*/
+		public void setNamespacesDeclarationsEnsured(final boolean namespacesDeclarationsEnsured) {this.namespacesDeclarationsEnsured=namespacesDeclarationsEnsured;}
+
 	/**Whether missing namespaces declarations should be added to the document element if possible, rather than the top-level element needing the declaration.*/
 	private boolean namespacesDocumentElementDeclarations=true;
 
@@ -367,9 +378,12 @@ public class XMLSerializer
 		  initializeEntityLookup(null); //always initialize the entity lookup, so that at least the five XML entities will be included in the table
 	  writeProcessingInstructions(document, writer);  //write any processing instructions
 	  final Element documentElement=document.getDocumentElement();	//get the document element
-	  if(isNamespacesDocumentElementDeclarations())	//if missing namespaces should be declared on the document element, process the entire document before writing
+	  if(isNamespacesDeclarationsEnsured())	//if we should ensure namespaces
 	  {
-	  	ensureNamespaceDeclarations(documentElement, documentElement, true);	//make sure all namespaces are declared that all elements need (i.e. deep), declaring any missing elements on the document element
+		  if(isNamespacesDocumentElementDeclarations())	//if missing namespaces should be declared on the document element, process the entire document before writing
+		  {
+		  	ensureNamespaceDeclarations(documentElement, documentElement, true);	//make sure all namespaces are declared that all elements need (i.e. deep), declaring any missing elements on the document element
+		  }
 	  }
 	  write(documentElement, writer);	//write the document element and all elements below it
 		if(isFormatted())	//if we should write formatted output
@@ -666,7 +680,10 @@ public class XMLSerializer
 		if(formatted)	//if we should write formatted output
 			writeHorizontalAlignment(writer, nestLevel);		//horizontally align the element
 		writer.write(TAG_START+element.getNodeName());	//write the beginning of the start tag
-		ensureNamespaceDeclarations(element, null, false);	//make sure all namespaces are declared that just this element needs; if any are missing, we can't declare up the tree, as those nodes have already been serialized
+	  if(isNamespacesDeclarationsEnsured())	//if we should ensure namespaces
+	  {
+	  	ensureNamespaceDeclarations(element, null, false);	//make sure all namespaces are declared that just this element needs; if any are missing, we can't declare up the tree, as those nodes have already been serialized
+	  }
 /*TODO fix; this correctly doesn't add namespaces, to the tree itself, but not doing so means that the namespaces will just get added again lower down in the hierarchy
 			//get the undeclared namespaces for this element and write them before the normal attributes are written
 		final NameValuePair[] prefixNamespacePairs=XMLNamespaceProcessor.getUndeclaredNamespaces(element);
