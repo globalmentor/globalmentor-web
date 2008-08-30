@@ -24,7 +24,6 @@ import static com.globalmentor.net.URIs.*;
 import com.globalmentor.rdf.RDF;
 import com.globalmentor.rdf.dicto.Dicto;
 import com.globalmentor.rdf.directory.vcard.RDFVCard;
-import com.globalmentor.rdf.maqro.MAQRO;
 import com.globalmentor.rdf.rdfs.RDFS;
 import com.globalmentor.rdf.version.RDFVersion;
 import com.globalmentor.rdf.xeb.RDFXEB;
@@ -36,6 +35,7 @@ import com.globalmentor.text.xml.xhtml.XHTML;
 import com.globalmentor.text.xml.xlink.XLink;
 import com.globalmentor.urf.dcmi.DCMI;
 import com.globalmentor.urf.foaf.FOAF;
+import com.globalmentor.urf.maqro.MAQRO;
 
 /**Manages XML namespaces and prefixes for serialization.
 This class is initialized with a default set of known namespace prefix mappings. 
@@ -84,7 +84,7 @@ public class XMLNamespacePrefixManager	//TODO replace with XMLNamespaceLabelMana
 		registerNamespacePrefix(Dicto.DICTO_NAMESPACE_URI.toString(), Dicto.DICTO_NAMESPACE_PREFIX); //Dicto
 		registerNamespacePrefix(DCMI.DCMI11_ELEMENTS_NAMESPACE_URI.toString(), DCMI.DCMI_ELEMENTS_NAMESPACE_PREFIX); //Dublin Core
 		registerNamespacePrefix(FOAF.FOAF_NAMESPACE_URI.toString(), FOAF.FOAF_NAMESPACE_PREFIX); //FOAF
-		registerNamespacePrefix(MAQRO.MAQRO_NAMESPACE_URI.toString(), MAQRO.MAQRO_NAMESPACE_PREFIX); //MAQRO
+//TODO convert to URF		registerNamespacePrefix(MAQRO.MAQRO_NAMESPACE_URI.toString(), MAQRO.MAQRO_NAMESPACE_PREFIX); //MAQRO
 		registerNamespacePrefix(OEB.OEB1_DOCUMENT_NAMESPACE_URI.toString(), OEB.OEB1_DOCUMENT_NAMESPACE_PREFIX); //OEB 1
 		registerNamespacePrefix("http://globalmentor.com/namespaces/marmot#", "marmot"); //Marmot TODO link to Marmot constants when Marmot is included in normal libraries
 		registerNamespacePrefix("http://marmox.net/namespaces/content#", "content"); //Marmox content
