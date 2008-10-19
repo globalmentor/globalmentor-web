@@ -20,9 +20,9 @@ import java.io.*;
 import java.util.*;
 import java.util.Arrays;
 
-import com.globalmentor.io.ContentTypes;
 import com.globalmentor.io.Files;
 import com.globalmentor.java.*;
+import com.globalmentor.net.ContentType;
 import com.globalmentor.text.Prose;
 import com.globalmentor.text.xml.XML;
 import com.globalmentor.text.xml.oeb.OEB;
@@ -30,8 +30,8 @@ import com.globalmentor.text.xml.stylesheets.css.*;
 import com.globalmentor.text.xml.xpath.XPath;
 import com.globalmentor.util.*;
 
-import static com.globalmentor.io.ContentTypeConstants.*;
 import static com.globalmentor.java.Characters.*;
+import static com.globalmentor.net.ContentTypeConstants.*;
 import static com.globalmentor.text.xml.XML.*;
 import static com.globalmentor.text.unicode.SymbolEncodingConstants.*;
 import static com.globalmentor.text.xml.stylesheets.css.XMLCSS.*;
@@ -1719,7 +1719,7 @@ styleValue="";  //TODO fix
 		final Element objectElement=element.getOwnerDocument().createElementNS(elementNamespace, ELEMENT_OBJECT); //create the element object in the same namespace as the applet object
 		if(code!=null)  //if there is a code attribute
 			objectElement.setAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_CLASSID, code); //set the object classid attribute TODO correctly add needed "java:" and ".class"
-		objectElement.setAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_CODETYPE, ContentTypes.toString(ContentTypes.APPLICATION_PRIMARY_TYPE, JAVA_SUBTYPE)); //set the object codetype attribute to "application/java"
+		objectElement.setAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_CODETYPE, ContentType.toString(ContentType.APPLICATION_PRIMARY_TYPE, JAVA_SUBTYPE)); //set the object codetype attribute to "application/java"
 		if(height!=null)  //if there is a height attribute
 			objectElement.setAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_HEIGHT, height); //set the object height attribute
 		if(width!=null)  //if there is a width attribute

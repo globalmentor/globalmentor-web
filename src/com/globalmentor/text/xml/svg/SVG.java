@@ -18,9 +18,7 @@ package com.globalmentor.text.xml.svg;
 
 import java.net.URI;
 
-import javax.mail.internet.ContentType;
-
-import static com.globalmentor.io.ContentTypes.*;
+import com.globalmentor.net.ContentType;
 import com.globalmentor.text.xml.XML;
 
 /**Constants for SVG.
@@ -32,10 +30,10 @@ public class SVG
 {
 
 	/**The SVG image MIME subtype.*/
-	public final static String SVG_XML_SUBTYPE="svg"+SUBTYPE_SUFFIX_DELIMITER_CHAR+XML.XML_SUBTYPE_SUFFIX;
+	public final static String SVG_XML_SUBTYPE="svg"+ContentType.SUBTYPE_SUFFIX_DELIMITER_CHAR+XML.XML_SUBTYPE_SUFFIX;
 
 	/**The content type for SVG: <code>application/svg+xml</code>.*/ 
-	public static final ContentType SVG_CONTENT_TYPE=getContentTypeInstance(APPLICATION_PRIMARY_TYPE, SVG_XML_SUBTYPE);
+	public static final ContentType SVG_CONTENT_TYPE=ContentType.getInstance(ContentType.APPLICATION_PRIMARY_TYPE, SVG_XML_SUBTYPE);
 
 	/**The recommended prefix to the SVG namespace.*/
 	public static final String SVG_NAMESPACE_PREFIX="svg";

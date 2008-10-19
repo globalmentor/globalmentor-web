@@ -18,9 +18,8 @@ package com.globalmentor.javascript;
 
 import java.net.URI;
 
-import javax.mail.internet.ContentType;
+import com.globalmentor.net.ContentType;
 
-import static com.globalmentor.io.ContentTypes.*;
 import static com.globalmentor.java.StringBuilders.*;
 
 /**Constants for working with JavaScript.
@@ -34,10 +33,10 @@ public class JavaScript
 	public final static String JAVASCRIPT_SUBTYPE="javascript";
 
 	/**The content type for JavaScript: <code>application/javascript</code>.*/ 
-	public static final ContentType JAVASCRIPT_CONTENT_TYPE=getContentTypeInstance(APPLICATION_PRIMARY_TYPE, JAVASCRIPT_SUBTYPE);
+	public static final ContentType JAVASCRIPT_CONTENT_TYPE=ContentType.getInstance(ContentType.APPLICATION_PRIMARY_TYPE, JAVASCRIPT_SUBTYPE);
 
 	/**The obsolete content type for JavaScript: <code>text/javascript</code>.*/ 
-	public static final ContentType JAVASCRIPT_OBSOLETE_CONTENT_TYPE=getContentTypeInstance(TEXT_PRIMARY_TYPE, JAVASCRIPT_SUBTYPE);
+	public static final ContentType JAVASCRIPT_OBSOLETE_CONTENT_TYPE=ContentType.getInstance(ContentType.TEXT_PRIMARY_TYPE, JAVASCRIPT_SUBTYPE);
 
 	/**The delimiter '.' for object properties.*/
 	public final static char PROPERTY_DELIMITER='.';

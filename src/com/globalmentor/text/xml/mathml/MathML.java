@@ -18,9 +18,8 @@ package com.globalmentor.text.xml.mathml;
 
 import java.net.URI;
 
-import javax.mail.internet.ContentType;
+import com.globalmentor.net.ContentType;
 
-import static com.globalmentor.io.ContentTypes.*;
 import static com.globalmentor.text.xml.XML.*;
 
 /**Constants for MathML.
@@ -32,10 +31,10 @@ public class MathML
 {
 
 	/**A  MathML application.*/
-	public final static String MATHML_XML_SUBTYPE="mathml"+SUBTYPE_SUFFIX_DELIMITER_CHAR+XML_SUBTYPE_SUFFIX;
+	public final static String MATHML_XML_SUBTYPE="mathml"+ContentType.SUBTYPE_SUFFIX_DELIMITER_CHAR+XML_SUBTYPE_SUFFIX;
 
 	/**The content type for MathML: <code>application/mathml+xml</code>.*/ 
-	public static final ContentType MATHML_CONTENT_TYPE=getContentTypeInstance(APPLICATION_PRIMARY_TYPE, MATHML_XML_SUBTYPE);
+	public static final ContentType MATHML_CONTENT_TYPE=ContentType.getInstance(ContentType.APPLICATION_PRIMARY_TYPE, MATHML_XML_SUBTYPE);
 
 	/**The recommended prefix to the MathML namespace.*/
 	public static final String MATHML_NAMESPACE_PREFIX="mathml";

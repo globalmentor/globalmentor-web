@@ -22,7 +22,6 @@ import java.io.Reader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
-import javax.mail.internet.ContentType;
 
 import static com.globalmentor.rdf.xpackage.XMLOntology.*;
 import static com.globalmentor.rdf.xpackage.XPackage.*;
@@ -30,6 +29,7 @@ import static com.globalmentor.text.xml.stylesheets.XMLStyleSheets.*;
 import static com.globalmentor.text.xml.xhtml.XHTML.*;
 
 import com.globalmentor.io.*;
+import com.globalmentor.net.ContentType;
 import com.globalmentor.net.URIs;
 import com.globalmentor.rdf.RDFResource;
 import com.globalmentor.text.xml.XML;

@@ -21,12 +21,13 @@ import java.lang.ref.*;
 import java.net.URI;
 import java.util.*;
 
-import javax.mail.internet.ContentType;
 import javax.xml.parsers.*;
 
 import com.globalmentor.io.*;
+
 import static com.globalmentor.io.Charsets.*;
 import com.globalmentor.java.*;
+import com.globalmentor.net.ContentType;
 import com.globalmentor.text.xml.oeb.OEB;
 import com.globalmentor.text.xml.xhtml.XHTML;
 import com.globalmentor.util.ConfigurationException;
@@ -36,9 +37,8 @@ import org.w3c.dom.*;
 import org.w3c.dom.traversal.*;
 import org.xml.sax.SAXException;
 
-import static com.globalmentor.io.ContentTypeConstants.*;
-import static com.globalmentor.io.ContentTypes.*;
 import static com.globalmentor.java.Integers.*;
+import static com.globalmentor.net.ContentTypeConstants.*;
 import static com.globalmentor.text.xml.mathml.MathML.*;
 import static com.globalmentor.text.xml.stylesheets.XMLStyleSheets.*;
 import static com.globalmentor.text.xml.svg.SVG.*;
@@ -59,10 +59,10 @@ public class XML
 	public final static String XML_EXTERNAL_PARSED_ENTITY_SUBTYPE_SUFFIX="xml-external-parsed-entity";
 
 	/**The content type for generic XML: <code>text/xml</code>.*/ 
-	public static final ContentType XML_CONTENT_TYPE=getContentTypeInstance(TEXT_PRIMARY_TYPE, XML_SUBTYPE);
+	public static final ContentType XML_CONTENT_TYPE=ContentType.getInstance(ContentType.TEXT_PRIMARY_TYPE, XML_SUBTYPE);
 
 	/**The content type for a generic XML fragment: <code>text/xml-external-parsed-entity</code>.*/ 
-	public static final ContentType XML_EXTERNAL_PARSED_ENTITY_CONTENT_TYPE=getContentTypeInstance(TEXT_PRIMARY_TYPE, XML_EXTERNAL_PARSED_ENTITY_SUBTYPE);
+	public static final ContentType XML_EXTERNAL_PARSED_ENTITY_CONTENT_TYPE=ContentType.getInstance(ContentType.TEXT_PRIMARY_TYPE, XML_EXTERNAL_PARSED_ENTITY_SUBTYPE);
 
 	/**The prefix to the "xml" namespace, for use with "xml:lang", for example.*/
 	public static final String XML_NAMESPACE_PREFIX="xml";
@@ -733,14 +733,14 @@ public class XML
 	{
 		if(contentType!=null)	//if a content type is given
 		{
-			if(ContentTypes.TEXT_PRIMARY_TYPE.equals(contentType.getPrimaryType()) && XML_SUBTYPE.equals(contentType.getSubType()))	//if this is "text/xml"
+			if(ContentType.TEXT_PRIMARY_TYPE.equals(contentType.getPrimaryType()) && XML_SUBTYPE.equals(contentType.getSubType()))	//if this is "text/xml"
 			{
 				return true;	//text/xml is an XML content type
 			}
-			if(ContentTypes.APPLICATION_PRIMARY_TYPE.equals(contentType.getPrimaryType()))	//if this is "application/*"
+			if(ContentType.APPLICATION_PRIMARY_TYPE.equals(contentType.getPrimaryType()))	//if this is "application/*"
 			{
 				return XML_SUBTYPE.equals(contentType.getSubType())	//see if the subtype is "xml"
-						|| hasSubTypeSuffix(contentType, XML.XML_SUBTYPE_SUFFIX);	//see if the subtype has an XML suffix
+						|| contentType.hasSubTypeSuffix(XML.XML_SUBTYPE_SUFFIX);	//see if the subtype has an XML suffix
 			}
 		}
 		return false;	//this is not a media type we recognize as being XML
@@ -762,11 +762,11 @@ public class XML
 		if(contentType!=null)	//if a content type is given
 		{
 			final String primaryType=contentType.getPrimaryType();	//get the primary type
-			if(ContentTypes.TEXT_PRIMARY_TYPE.equals(primaryType) || ContentTypes.APPLICATION_PRIMARY_TYPE.equals(primaryType))	//if this is "text/*" or "application/*"
+			if(ContentType.TEXT_PRIMARY_TYPE.equals(primaryType) || ContentType.APPLICATION_PRIMARY_TYPE.equals(primaryType))	//if this is "text/*" or "application/*"
 			{
 				final String subType=contentType.getSubType();	//get the subtype
 				return XML_EXTERNAL_PARSED_ENTITY_SUBTYPE.equals(subType)	//if the subtype is /xml-external-parsed-entity
-						|| hasSubTypeSuffix(contentType, XML.XML_EXTERNAL_PARSED_ENTITY_SUBTYPE_SUFFIX);	//or if the subtype has an XML external parsed entity suffix
+						|| contentType.hasSubTypeSuffix(XML.XML_EXTERNAL_PARSED_ENTITY_SUBTYPE_SUFFIX);	//or if the subtype has an XML external parsed entity suffix
 			}
 		}
 		return false;	//this is not a media type we recognize as being an XML external parsed entity
@@ -1794,7 +1794,7 @@ public class XML
 		{
 			if(XHTML.isHTML(mediaType))	//if this is one of the HTML media types
 				return XHTML.XHTML_NAMESPACE_URI; //return the XHTML media type
-			else if(match(mediaType, TEXT_PRIMARY_TYPE, OEB.X_OEB1_DOCUMENT_SUBTYPE))	//if this is an OEB 1.x document
+			else if(mediaType.match(ContentType.TEXT_PRIMARY_TYPE, OEB.X_OEB1_DOCUMENT_SUBTYPE))	//if this is an OEB 1.x document
 				return OEB.OEB1_DOCUMENT_NAMESPACE_URI; //return the OEB 1.x document namespace
 		}
 		return null;	//show that we can't find a default namespace URI

@@ -20,22 +20,22 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 
-import javax.mail.internet.ContentType;
 import javax.xml.parsers.*;
 
 import org.w3c.dom.*;
 import org.w3c.dom.css.CSSStyleDeclaration;
 
 import com.globalmentor.io.*;
-import static com.globalmentor.io.ContentTypes.*;
+
 import com.globalmentor.java.Objects;
+import com.globalmentor.net.ContentType;
 import com.globalmentor.text.xml.oeb.OEB;
 import com.globalmentor.text.xml.stylesheets.css.*;
 import static com.globalmentor.text.xml.xpath.XPath.*;
 import com.globalmentor.util.Arrays;
 import com.globalmentor.util.ConfigurationException;
 
-import static com.globalmentor.io.ContentTypeConstants.*;
+import static com.globalmentor.net.ContentTypeConstants.*;
 import static com.globalmentor.text.xml.XML.*;
 
 /**Constants to work with an XHTML and DOM document representing XHTML.
@@ -51,19 +51,19 @@ public class XHTML
 	public final static String HTML_SUBTYPE="html";
 
 	/**An XHTML application.*/
-	public final static String XHTML_XML_SUBTYPE="xhtml"+SUBTYPE_SUFFIX_DELIMITER_CHAR+XML_SUBTYPE_SUFFIX;
+	public final static String XHTML_XML_SUBTYPE="xhtml"+ContentType.SUBTYPE_SUFFIX_DELIMITER_CHAR+XML_SUBTYPE_SUFFIX;
 
 	/**An XHTML fragment (not yet formally defined).*/
-	public final static String XHTML_XML_EXTERNAL_PARSED_ENTITY_SUBTYPE="xhtml"+SUBTYPE_SUFFIX_DELIMITER_CHAR+XML_EXTERNAL_PARSED_ENTITY_SUBTYPE_SUFFIX;
+	public final static String XHTML_XML_EXTERNAL_PARSED_ENTITY_SUBTYPE="xhtml"+ContentType.SUBTYPE_SUFFIX_DELIMITER_CHAR+XML_EXTERNAL_PARSED_ENTITY_SUBTYPE_SUFFIX;
 
 	/**The content type for HTML: <code>text/html</code>.*/
-	public static final ContentType HTML_CONTENT_TYPE=getContentTypeInstance(TEXT_PRIMARY_TYPE, HTML_SUBTYPE);
+	public static final ContentType HTML_CONTENT_TYPE=ContentType.getInstance(ContentType.TEXT_PRIMARY_TYPE, HTML_SUBTYPE);
 
 	/**The content type for XHTML: <code>application/xhtml+xml</code>.*/
-	public static final ContentType XHTML_CONTENT_TYPE=getContentTypeInstance(APPLICATION_PRIMARY_TYPE, XHTML_XML_SUBTYPE);
+	public static final ContentType XHTML_CONTENT_TYPE=ContentType.getInstance(ContentType.APPLICATION_PRIMARY_TYPE, XHTML_XML_SUBTYPE);
 
 	/**The content type for an XHTML fragment: <code>application/xhtml+xml-external-parsed-entity</code>.*/
-	public static final ContentType XHTML_FRAGMENT_CONTENT_TYPE=getContentTypeInstance(APPLICATION_PRIMARY_TYPE, XHTML_XML_EXTERNAL_PARSED_ENTITY_SUBTYPE);
+	public static final ContentType XHTML_FRAGMENT_CONTENT_TYPE=ContentType.getInstance(ContentType.APPLICATION_PRIMARY_TYPE, XHTML_XML_EXTERNAL_PARSED_ENTITY_SUBTYPE);
 
 	/**The old extension for HTML resource names.*/
 	public final static String HTM_NAME_EXTENSION="htm";
@@ -251,9 +251,9 @@ public class XHTML
 	public final static String ELEMENT_FORM_ATTRIBUTE_ACTION="action";
 	public final static String ELEMENT_FORM_ATTRIBUTE_ENCTYPE="enctype";
 		/**The "application/x-www-form-urlencoded" encoding type; see <a href="http://www.rfc-editor.org/rfc/rfc1867.txt">RFC 1867</a>.*/
-		public final static ContentType APPLICATION_X_WWW_FORM_URLENCODED_CONTENT_TYPE=getContentTypeInstance(APPLICATION_PRIMARY_TYPE, X_WWW_FORM_URLENCODED);
+		public final static ContentType APPLICATION_X_WWW_FORM_URLENCODED_CONTENT_TYPE=ContentType.getInstance(ContentType.APPLICATION_PRIMARY_TYPE, X_WWW_FORM_URLENCODED);
 		/**The "multipart/form-data" encoding type; see <a href="http://www.rfc-editor.org/rfc/rfc1867.txt">RFC 1867</a>.*/
-		public final static ContentType MULTIPART_FORM_DATA_CONTENT_TYPE=getContentTypeInstance(MULTIPART_PRIMARY_TYPE, FORM_DATA_SUBTYPE);
+		public final static ContentType MULTIPART_FORM_DATA_CONTENT_TYPE=ContentType.getInstance(ContentType.MULTIPART_PRIMARY_TYPE, FORM_DATA_SUBTYPE);
 
 	public final static String ELEMENT_FORM_ATTRIBUTE_METHOD="method";
 		public final static String FORM_METHOD_GET="get";
@@ -618,7 +618,7 @@ public class XHTML
 		{
 			final String primaryType=contentType.getPrimaryType();	//get the primary type
 			final String subType=contentType.getSubType();	//get the sub type
-			if(TEXT_PRIMARY_TYPE.equals(primaryType))	//if this is "text/?"
+			if(ContentType.TEXT_PRIMARY_TYPE.equals(primaryType))	//if this is "text/?"
 			{
 				if(HTML_SUBTYPE.equals(subType)		//if this is "text/html"
 						|| OEB.X_OEB1_DOCUMENT_SUBTYPE.equals(subType))	//if this is "text/x-oeb1-document"
@@ -626,7 +626,7 @@ public class XHTML
 					return true;	//show that this is HTML
 				}
 			}
-			if(APPLICATION_PRIMARY_TYPE.equals(primaryType))	//if this is "application/?"
+			if(ContentType.APPLICATION_PRIMARY_TYPE.equals(primaryType))	//if this is "application/?"
 			{
 					//TODO probably add a parameter to specify whether we should allow fragments to qualify as XHTML---right now this behavior is not consistent with XMLUtilities.isXML(), which doesn't recognize fragments as XML
 				if(XHTML_XML_SUBTYPE.equals(subType) || XHTML_XML_EXTERNAL_PARSED_ENTITY_SUBTYPE.equals(subType))		//if this is "application/xhtml+xml" or "application/xhtml+xml-external-parsed-entity"
@@ -687,8 +687,8 @@ public class XHTML
 					if(element.hasAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_TYPE)) //if there is a type attribute
 					{
 						final String type=element.getAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_TYPE);  //get the type
-						final ContentType mediaType=getContentTypeInstance(type); //create a media type from the given type
-						if(mediaType.getPrimaryType().equals(IMAGE_PRIMARY_TYPE)) //if this is an image
+						final ContentType mediaType=ContentType.getInstance(type); //create a media type from the given type
+						if(mediaType.getPrimaryType().equals(ContentType.IMAGE_PRIMARY_TYPE)) //if this is an image
 							return true;  //show that this is an image object
 					}
 						//see if there is a data attribute, since there is no type specified
@@ -696,7 +696,7 @@ public class XHTML
 					{
 						final String data=element.getAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_DATA);  //get the data
 						final ContentType mediaType=Files.getContentType(new File(data)); //try to get a media type from the file
-						if(mediaType!=null && mediaType.getPrimaryType().equals(IMAGE_PRIMARY_TYPE)) //if this is an image
+						if(mediaType!=null && mediaType.getPrimaryType().equals(ContentType.IMAGE_PRIMARY_TYPE)) //if this is an image
 							return true;  //show that this is an image object
 					}
 				}

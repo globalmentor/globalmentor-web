@@ -21,13 +21,12 @@ import java.io.*;
 import java.net.URL;
 import java.util.regex.Pattern;
 
-import javax.mail.internet.ContentType;
-
 import org.w3c.dom.*;
 import org.w3c.dom.css.*;
 
 import com.globalmentor.io.*;
-import static com.globalmentor.io.ContentTypes.*;
+import com.globalmentor.net.ContentType;
+
 import com.globalmentor.text.xml.XMLNode;
 import com.globalmentor.util.Debug;
 
@@ -41,7 +40,7 @@ public class XMLCSS
 	public final static String CSS_SUBTYPE="css";
 
 	/**The content type for CSS: <code>text/css</code>.*/ 
-	public static final ContentType TEXT_CSS_CONTENT_TYPE=getContentTypeInstance(TEXT_PRIMARY_TYPE, CSS_SUBTYPE);
+	public static final ContentType TEXT_CSS_CONTENT_TYPE=ContentType.getInstance(ContentType.TEXT_PRIMARY_TYPE, CSS_SUBTYPE);
 
 	/**A space character.*/
 	public final static char SPACE_CHAR=' ';
