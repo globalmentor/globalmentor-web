@@ -64,6 +64,9 @@ public class XML
 	/**The content type for a generic XML fragment: <code>text/xml-external-parsed-entity</code>.*/ 
 	public static final ContentType XML_EXTERNAL_PARSED_ENTITY_CONTENT_TYPE=ContentType.getInstance(ContentType.TEXT_PRIMARY_TYPE, XML_EXTERNAL_PARSED_ENTITY_SUBTYPE);
 
+	/**The name extension for eXtensible Markup Language.*/
+	public final static String XML_NAME_EXTENSION="xml";
+
 	/**The prefix to the "xml" namespace, for use with "xml:lang", for example.*/
 	public static final String XML_NAMESPACE_PREFIX="xml";
 

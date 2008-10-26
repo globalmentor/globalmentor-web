@@ -38,6 +38,9 @@ public class JavaScript
 	/**The obsolete content type for JavaScript: <code>text/javascript</code>.*/ 
 	public static final ContentType JAVASCRIPT_OBSOLETE_CONTENT_TYPE=ContentType.getInstance(ContentType.TEXT_PRIMARY_TYPE, JAVASCRIPT_SUBTYPE);
 
+	/**The name extension for JavaScript files.*/
+	public final static String JS_NAME_EXTENSION="js";
+
 	/**The delimiter '.' for object properties.*/
 	public final static char PROPERTY_DELIMITER='.';
 

@@ -36,6 +36,9 @@ import static com.globalmentor.java.Characters.*;
 public class XMLCSS
 {
 
+	/**The name extension for CSS stylesheets.*/
+	public final static String CSS_NAME_EXTENSION="css";
+
 	/**A Cascading Style Sheet document MIME subtype.*/
 	public final static String CSS_SUBTYPE="css";
 
@@ -681,7 +684,7 @@ public class XMLCSS
 		if(namespaceURI!=null)  //if a valid namespace was passed
 		{
 			//convert the namespace URI to a valid filaname and add a "css" extension
-			final String cssFilename=Files.encodeCrossPlatformFilename(namespaceURI)+FileConstants.EXTENSION_SEPARATOR+FileConstants.CSS_EXTENSION;
+			final String cssFilename=Files.encodeCrossPlatformFilename(namespaceURI)+Files.FILENAME_EXTENSION_SEPARATOR+CSS_NAME_EXTENSION;
 			final URL styleSheetURL=XMLCSS.class.getResource(cssFilename);  //see if we can load this resource locally
 			if(styleSheetURL!=null) //if we were able to find a stylesheet stored as a resource
 			{

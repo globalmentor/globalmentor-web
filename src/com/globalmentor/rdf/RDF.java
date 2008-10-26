@@ -53,6 +53,8 @@ public class RDF	//TODO special-case rdf:nil list resources so that they are not
 	/**The URI to the RDF namespace.*/
 	public final static URI RDF_NAMESPACE_URI=URI.create("http://www.w3.org/1999/02/22-rdf-syntax-ns#");
 
+	/**The name extension for Resource Description Framework (RDF) files.*/
+	public final static String RDF_NAME_EXTENSION="rdf";
 	
 	  //RDF property names
 	/**The pseudo-property name of a member container used only for serialization. The local name of rdf:li.*/
