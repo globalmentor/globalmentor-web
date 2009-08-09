@@ -22,9 +22,9 @@ import java.net.*;
 import javax.xml.parsers.*;
 import javax.xml.validation.Schema;
 
+import com.globalmentor.config.ConfigurationException;
 import com.globalmentor.io.IO;
 import static com.globalmentor.text.xml.XML.*;
-import com.globalmentor.util.ConfigurationException;
 
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
