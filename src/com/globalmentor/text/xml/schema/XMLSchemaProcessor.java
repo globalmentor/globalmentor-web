@@ -18,6 +18,7 @@ package com.globalmentor.text.xml.schema;
 
 import java.util.*;
 
+import com.globalmentor.collections.iterators.Iterators;
 import com.globalmentor.text.xml.XMLSerializer;
 import static com.globalmentor.text.xml.schema.XMLSchema.*;
 import com.globalmentor.util.*;

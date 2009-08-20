@@ -25,6 +25,7 @@ import javax.xml.parsers.*;
 import org.w3c.dom.*;
 import org.w3c.dom.css.CSSStyleDeclaration;
 
+import com.globalmentor.collections.Arrays;
 import com.globalmentor.config.ConfigurationException;
 import com.globalmentor.io.*;
 
@@ -33,7 +34,6 @@ import com.globalmentor.net.ContentType;
 import com.globalmentor.text.xml.oeb.OEB;
 import com.globalmentor.text.xml.stylesheets.css.*;
 import static com.globalmentor.text.xml.xpath.XPath.*;
-import com.globalmentor.util.Arrays;
 
 import static com.globalmentor.net.ContentTypeConstants.*;
 import static com.globalmentor.text.xml.XML.*;

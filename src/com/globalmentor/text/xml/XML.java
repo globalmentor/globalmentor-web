@@ -28,10 +28,10 @@ import com.globalmentor.io.*;
 
 import static com.globalmentor.io.Charsets.*;
 import com.globalmentor.java.*;
+import com.globalmentor.model.NameValuePair;
 import com.globalmentor.net.ContentType;
 import com.globalmentor.text.xml.oeb.OEB;
 import com.globalmentor.text.xml.xhtml.XHTML;
-import com.globalmentor.util.NameValuePair;
 
 import org.w3c.dom.*;
 import org.w3c.dom.traversal.*;

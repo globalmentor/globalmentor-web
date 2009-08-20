@@ -20,8 +20,8 @@ import java.net.URI;
 
 import static com.globalmentor.java.Objects.*;
 
+import com.globalmentor.model.IDed;
 import com.globalmentor.net.DefaultResource;
-import com.globalmentor.util.IDed;
 
 /**Represents a qualified name (QName) of an XML element, including the namespace URI, the prefix, and the local name.
 The reference URI indicates the concatenation of the namespace URI and the local name.

@@ -20,8 +20,8 @@ import java.net.URI;
 import java.io.*;
 import java.util.*;
 import com.globalmentor.io.*;
+import com.globalmentor.model.NameValuePair;
 import com.globalmentor.text.xml.XML;
-import com.globalmentor.util.NameValuePair;
 
 import org.w3c.dom.*;
 import org.w3c.dom.css.*;

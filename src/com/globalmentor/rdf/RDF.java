@@ -21,6 +21,7 @@ import java.net.URISyntaxException;
 import java.util.*;
 import static java.util.Collections.*;
 
+import com.globalmentor.collections.IdentityHashSet;
 import com.globalmentor.net.URIs;
 import static com.globalmentor.rdf.RDFResources.*;
 import com.globalmentor.rdf.rdfs.RDFS;

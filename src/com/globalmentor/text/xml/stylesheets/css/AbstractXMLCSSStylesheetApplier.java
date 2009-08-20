@@ -29,6 +29,7 @@ import static com.globalmentor.text.xml.stylesheets.XMLStyleSheets.*;
 import static com.globalmentor.text.xml.xhtml.XHTML.*;
 
 import com.globalmentor.io.*;
+import com.globalmentor.model.NameValuePair;
 import com.globalmentor.net.ContentType;
 import com.globalmentor.net.URIs;
 import com.globalmentor.rdf.RDFResource;
@@ -36,7 +37,6 @@ import com.globalmentor.text.xml.XML;
 import com.globalmentor.text.xml.stylesheets.XMLStyleSheetDescriptor;
 import com.globalmentor.text.xml.xhtml.XHTML;
 import com.globalmentor.util.Debug;
-import com.globalmentor.util.NameValuePair;
 
 import org.w3c.dom.css.*;
 
