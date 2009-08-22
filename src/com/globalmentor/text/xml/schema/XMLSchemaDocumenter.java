@@ -18,10 +18,9 @@ package com.globalmentor.text.xml.schema;
 
 import java.util.*;
 
+import com.globalmentor.log.Log;
 import static com.globalmentor.text.xml.xhtml.XHTML.*;
-
 import com.globalmentor.text.xml.*;
-import com.globalmentor.util.Debug;
 
 import org.w3c.dom.*;
 
@@ -76,17 +75,17 @@ public class XMLSchemaDocumenter
 	*/
 	protected static void generateAnnotationDocumentation(final Element bodyElement, final XMLSchemaNamedComponent namedComponent)
 	{
-Debug.trace("ready to generate annotation doc");
+Log.trace("ready to generate annotation doc");
 		final XMLSchemaAnnotation annotation=namedComponent.getAnnotation();  //get the annotation for this component
 		if(annotation!=null)  //if there is annotation information
 		{
-Debug.trace("found annotation");
+Log.trace("found annotation");
 		  final Iterator userInfoIterator=annotation.getUserInformation().iterator(); //get an iterator for the user information from the annotation
 		  while(userInfoIterator.hasNext()) //while there is more user information
 			{
 					//get the next user information
 				final XMLSchemaAnnotation.UserInformation userInfo=(XMLSchemaAnnotation.UserInformation)userInfoIterator.next();
-Debug.trace("found user info: ", userInfo.toString());
+Log.trace("found user info: ", userInfo.toString());
 				final Element userInfoParagraphElement=XML.appendElementNS(bodyElement, XHTML_NAMESPACE_URI.toString(),
 						ELEMENT_P, null); //create the annotation documentation paragraph, but do not add any content
 				  //TODO do something besides creating a new XML parser from scratch
@@ -98,7 +97,7 @@ Debug.trace("found user info: ", userInfo.toString());
 				}
 				catch(Exception e)  //TODO fix these exceptions; let them bubble up
 				{
-					Debug.error(e);
+					Log.error(e);
 				}
 				XML.appendText(bodyElement, "\n");	//append a newline to separate the information in the body
 			}

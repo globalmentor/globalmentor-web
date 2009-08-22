@@ -27,7 +27,6 @@ import org.w3c.dom.events.*;
 
 import com.globalmentor.java.Objects;
 import com.globalmentor.text.xml.events.*;
-import com.globalmentor.util.Debug;
 
 /**The class which forms a basis for all other XML document classes.
 @author Garret Wilson

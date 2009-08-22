@@ -29,6 +29,7 @@ import static com.globalmentor.text.xml.stylesheets.XMLStyleSheets.*;
 import static com.globalmentor.text.xml.xhtml.XHTML.*;
 
 import com.globalmentor.io.*;
+import com.globalmentor.log.Log;
 import com.globalmentor.model.NameValuePair;
 import com.globalmentor.net.ContentType;
 import com.globalmentor.net.URIs;
@@ -36,7 +37,6 @@ import com.globalmentor.rdf.RDFResource;
 import com.globalmentor.text.xml.XML;
 import com.globalmentor.text.xml.stylesheets.XMLStyleSheetDescriptor;
 import com.globalmentor.text.xml.xhtml.XHTML;
-import com.globalmentor.util.Debug;
 
 import org.w3c.dom.css.*;
 
@@ -206,11 +206,11 @@ public abstract class AbstractXMLCSSStylesheetApplier<D, E> implements URIInputS
 				}
 				catch(IOException ioException)  //if there are any I/O exceptions
 				{
-					Debug.warn(ioException);  //TODO fix better
+					Log.warn(ioException);  //TODO fix better
 				}
 				catch(URISyntaxException uriSyntaxException)  //if there are any URI syntax errors
 				{
-					Debug.warn(uriSyntaxException);  //TODO fix better
+					Log.warn(uriSyntaxException);  //TODO fix better
 				}
 			}
 		}
@@ -257,7 +257,7 @@ public abstract class AbstractXMLCSSStylesheetApplier<D, E> implements URIInputS
 			}
 			catch(IOException ioException)  //if there are any I/O exceptions
 			{
-				Debug.warn(ioException);  //TODO fix better
+				Log.warn(ioException);  //TODO fix better
 			}
 		}
 		else  //if this is not a style element
@@ -463,7 +463,7 @@ public abstract class AbstractXMLCSSStylesheetApplier<D, E> implements URIInputS
 			}
 			catch(final IOException ioException)  //if we have any errors reading the style
 			{
-			  Debug.warn(ioException);	//warn that we don't understand the style
+			  Log.warn(ioException);	//warn that we don't understand the style
 			}
 		}
 			//apply local stylesheets to the child elements

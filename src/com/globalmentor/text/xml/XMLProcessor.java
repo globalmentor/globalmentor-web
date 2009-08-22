@@ -35,10 +35,10 @@ import com.globalmentor.io.ParseEOFException;
 import com.globalmentor.io.ParseUnexpectedDataException;
 import com.globalmentor.io.URIInputStreamable;
 import com.globalmentor.java.CharSequences;
+import com.globalmentor.log.Log;
 import com.globalmentor.net.URIs;
 import com.globalmentor.text.CharacterEncoding;
 import com.globalmentor.text.xml.schema.*;
-import com.globalmentor.util.Debug;
 
 //TODO del all the XMLUndefinedEntityReferenceException throws when we don't need them anymore, in favor of XMLWellFormednessException
 
@@ -466,7 +466,7 @@ public class XMLProcessor implements URIInputStreamable
 		XMLReader entityReader=null;	//the reader which we will construct and return; we don't know what it will be, yet
 		if(entity.getSystemID()!=null)	//if there is a system identifier for this entity, it's an external entity
 		{
-Debug.trace("Before creating reader for entity public ID", entity.getPublicId(), "system ID", entity.getSystemId());			
+Log.trace("Before creating reader for entity public ID", entity.getPublicId(), "system ID", entity.getSystemId());			
 			return createReader(context, entity.getPublicID(), entity.getSystemID());	//TODO testing; comment
 		}
 		else	//if this is an internal entity reference
@@ -1413,7 +1413,7 @@ attributeListDeclarationReader.tidy=isTidy();  //TODO fix
 					while(attributeListDeclarationReader.readChar()=='|');	//keep reading more nmtokens while we find the or symbol; once we drop out of the loop, we won't need to read the end of the enumeration; we'll have already read it TODO use a constant here
 					break;
 				default:	//if this is on the the standard tokenized types
-//TODO del Debug.trace("Found attribute default.");
+//TODO del Log.trace("Found attribute default.");
 					attributeType=ATTTYPE_STRINGS[attributeTypeIndex];	//store this attribute type with no modification
 					break;
 			}
@@ -2233,7 +2233,7 @@ reader.tidy=isTidy();  //TODO fix
 	*/
 	protected static void processNamespaces(final XMLElement xmlElement) throws DOMException
 	{
-//G***del Debug.trace("Processing namespaces for element: "+xmlElement.getNodeName());
+//G***del Log.trace("Processing namespaces for element: "+xmlElement.getNodeName());
 		final XMLNamedNodeMap attributeXMLNamedNodeMap=(XMLNamedNodeMap)xmlElement.getAttributes(); //get the attributes
 		final XMLNamedNodeMap newAttributeNamedNodeMap=new XMLNamedNodeMap(); //create a new named node map that will contain the new namespace-aware values
 //G***del when works		xmlElement.setAttributeXMLNamedNodeMap(newAttributeNamedNodeMap); //now that we've processed the attributes, replace the old non-namespace-aware attrites with our new ones that recognize namespaces
@@ -2283,11 +2283,11 @@ reader.tidy=isTidy();  //TODO fix
 		final String nodePrefix=getPrefix(nodeName);  //get the prefix, or null if there is no prefix
 	  final String nodeLocalName=getLocalName(nodeName);  //get the local name encoded in the name
 
-//G***del Debug.trace("(ready to find namespace for node: "+nodeName+" with prefix: "+nodePrefix+" and local name: "+nodeLocalName+")");  //G***del
+//G***del Log.trace("(ready to find namespace for node: "+nodeName+" with prefix: "+nodePrefix+" and local name: "+nodeLocalName+")");  //G***del
 
 		//get the namespace URI; if there is no prefix, this attempts to find a default namespace URI
 	  final String nodeNamespaceURI=getNamespaceURI(xmlElement, nodePrefix, true);
-//G***del Debug.trace("Found namespace URI: "+nodeNamespaceURI);  //G***del
+//G***del Log.trace("Found namespace URI: "+nodeNamespaceURI);  //G***del
 //G***del; we want to do this for all nodes, so they will give correct namespace values		if(nodeNamespaceURI!=null) //if there is a namespace URI found G***is this what we want to do for null namespace URIs?
 		xmlElement.setNamespaceURI(nodeNamespaceURI);  //set whatever namespace we found
 		xmlElement.setNodeName(nodePrefix, nodeLocalName);  //set the prefix and the local name

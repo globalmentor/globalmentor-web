@@ -22,6 +22,7 @@ import java.util.Arrays;
 
 import com.globalmentor.io.Files;
 import com.globalmentor.java.*;
+import com.globalmentor.log.Log;
 import com.globalmentor.net.ContentType;
 import com.globalmentor.text.Prose;
 import com.globalmentor.text.xml.XML;
@@ -425,7 +426,7 @@ public class XHTMLTidier
 			}
 			catch(Exception exception)  //if any exception occurs
 			{
-				Debug.warn(exception);  //warn and move on
+				Log.warn(exception);  //warn and move on
 			}
 		}
 		final Element documentElement=document.getDocumentElement();  //get the root element
@@ -1228,7 +1229,7 @@ public class XHTMLTidier
 	*/
 	protected Element checkBreakElement(Element element)
 	{
-Debug.trace("Checking break element: ", element.getNodeName());
+Log.trace("Checking break element: ", element.getNodeName());
 		final NodeList childNodeList=element.getChildNodes(); //get a reference to the child nodes
 		final int childNodeCount=childNodeList.getLength(); //see how many child nodes there are
 		if(childNodeCount>0)  //if there are child nodes
@@ -1421,7 +1422,7 @@ styleValue="";  //TODO fix
 /*TODO del
 			catch(IOException e)
 			{
-				Debug.error(e); //TODO do something better here
+				Log.error(e); //TODO do something better here
 			}
 */
 //TODO del when works			element.removeAttributeNS(null, ATTRIBUTE_STYLE); //remove the style attribute
@@ -1521,7 +1522,7 @@ styleValue="";  //TODO fix
 				}
 				catch(IOException e)
 				{
-					Debug.error(e); //TODO do something better here
+					Log.error(e); //TODO do something better here
 				}
 			}
 		}

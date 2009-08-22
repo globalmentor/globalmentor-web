@@ -21,7 +21,6 @@ import java.text.MessageFormat;
 
 import com.globalmentor.io.ParseEOFException;
 import com.globalmentor.io.ParseUnexpectedDataException;
-import com.globalmentor.util.Debug;
 
 /**A well-formedness constraint error.
 @author Garret Wilson

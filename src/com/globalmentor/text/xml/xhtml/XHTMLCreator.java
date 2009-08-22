@@ -21,9 +21,9 @@ import java.util.*;
 
 import com.globalmentor.io.*;
 import com.globalmentor.java.CharSequences;
+import com.globalmentor.log.Log;
 import com.globalmentor.text.*;
 import com.globalmentor.text.xml.XML;
-import com.globalmentor.util.Debug;
 
 import org.w3c.dom.*;
 
@@ -354,7 +354,7 @@ public class XHTMLCreator
 			getLineBuffer().addLast(line);  //add the line to the end of our buffer
 		  line=bufferedReader.readLine();  //read another line from the buffer
 		}
-Debug.trace("primed buffer, number of lines: ", getLineBuffer().size());
+Log.trace("primed buffer, number of lines: ", getLineBuffer().size());
 	}
 
 	/**Calculates the line spacing used by the file. Paragraph sensing is turned

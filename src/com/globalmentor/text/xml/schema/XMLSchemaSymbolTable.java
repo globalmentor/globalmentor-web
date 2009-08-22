@@ -21,7 +21,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.globalmentor.util.Debug;
+import com.globalmentor.log.Log;
 
 /**A table which provides mappings from names to schema components, based upon
 the component type category (e.g. simple and complex type components fall into
@@ -184,7 +184,7 @@ public class XMLSchemaSymbolTable
 			case XMLSchemaNamedComponent.COMPLEX_TYPE_COMPONENT: //complex types
 				return TYPE_SYMBOL_SPACE_NAME;
 			default:
-				Debug.error("Cannot find symbol space for component: "+componentType); //TODO fix for other types
+				Log.error("Cannot find symbol space for component: "+componentType); //TODO fix for other types
 				return null;  //TODO fix
 		}
 	}

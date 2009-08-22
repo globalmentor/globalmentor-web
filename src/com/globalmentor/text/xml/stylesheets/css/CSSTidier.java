@@ -21,6 +21,7 @@ import java.util.*;
 import static com.globalmentor.text.xml.stylesheets.css.XMLCSS.*;
 
 import com.globalmentor.java.Strings;
+import com.globalmentor.log.Log;
 import com.globalmentor.text.xml.oeb.css.OEBCSS;
 import com.globalmentor.util.*;
 
@@ -157,7 +158,7 @@ public class CSSTidier	//TODO add a feature to remove empty style declarations
 			final String propertyName=cssStyleDeclaration.item(propertyIndex);	//get the name of this property
 		  if(shouldRemoveProperty(cssStyleDeclaration, propertyName))  //if we should remove this property
 		  {
-Debug.trace("we should remove property");
+Log.trace("we should remove property");
 			  cssStyleDeclaration.removeProperty(propertyName); //remove this property
 				continue; //continue without increasing the index, since the next property is now at this index
 		  }

@@ -22,10 +22,10 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.globalmentor.log.Log;
+
 import org.w3c.dom.css.CSSValue;
 import org.w3c.dom.css.CSSValueList;
-
-import com.globalmentor.util.Debug;
 
 /**An ordered collection of CSS vlaues. An empty list is the same as a list that
 contains the medium <code>"all"</code>.
@@ -145,7 +145,7 @@ public class XMLCSSValueList extends XMLCSSValue implements CSSValueList
 			}
 			catch(IOException ioException)  //if we have a problem reading from the string
 			{
-				Debug.warn(ioException);  //warn than an error has occurred
+				Log.warn(ioException);  //warn than an error has occurred
 				return valueList; //stop processing the list and return it
 			}
 		}

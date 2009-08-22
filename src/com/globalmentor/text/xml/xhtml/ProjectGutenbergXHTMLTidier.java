@@ -994,12 +994,12 @@ public class ProjectGutenbergXHTMLTidier	//TODO move to different package
 				{
 					final Element childElement=(Element)childNode;  //get a reference to this element
 					final String text=XMLUtilities.getText(childElement, true); //get the text of the element
-Debug.trace("Checking first indicator: etext string: ", getETextString(text));
+Log.trace("Checking first indicator: etext string: ", getETextString(text));
 						//if the text contains both "Project Gutenberg" and "EText", "Edition", or "EBook"
 					if(StringUtilities.indexOfIgnoreCase(text, PROJECT_GUTENB)>=0
 							&& getETextString(text)!=null)
 					{
-Debug.trace("found project gutenberg string");
+Log.trace("found project gutenberg string");
 						hasProjectGutenberg=true; //show that we found "Project Gutenberg"
 					}
 						//if this text contains "small print"
@@ -1010,7 +1010,7 @@ Debug.trace("found project gutenberg string");
 								(StringUtilities.indexOfIgnoreCase(text, SMALL_PRINT_START)>=0
 								|| text.indexOf("***")>=0))  //TODO use a constant
 						{
-Debug.trace("found small print start");
+Log.trace("found small print start");
 							hasSmallPrintStart=true;  //show that we found the start of the small print
 						}
 							//if the text also contains "end" or "V." or "Ver." or "Version"
@@ -1019,7 +1019,7 @@ Debug.trace("found small print start");
 								|| StringUtilities.indexOfIgnoreCase(text, "Ver.")>=0
 								|| StringUtilities.indexOfIgnoreCase(text, "Version")>=0)
 						{
-Debug.trace("found small print end");
+Log.trace("found small print end");
 						  hasSmallPrintEnd=true;  //show that we found the end of the small print
 
 						}

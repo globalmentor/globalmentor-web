@@ -25,10 +25,10 @@ import org.w3c.dom.*;
 import org.w3c.dom.css.*;
 
 import com.globalmentor.io.*;
+import com.globalmentor.log.Log;
 import com.globalmentor.net.ContentType;
 
 import com.globalmentor.text.xml.XMLNode;
-import com.globalmentor.util.Debug;
 
 import static com.globalmentor.java.Characters.*;
 
@@ -710,7 +710,7 @@ public class XMLCSS
 				}
 				catch(IOException ioException)  //if anything goes wrong reading the stylesheet, that's bad but shouldn't keep the program from continuing
 				{
-					Debug.warn(ioException);  //warn that there's was an IO problem
+					Log.warn(ioException);  //warn that there's was an IO problem
 				}
 			}
 		}
@@ -785,7 +785,7 @@ public class XMLCSS
 	*/
 	/*TODO fix
 							{
-		Debug.trace("They want ems.");
+		Log.trace("They want ems.");
 										// As a practical matter, this FRC will almost always
 										// be the right one.
 										AffineTransform xf
@@ -794,7 +794,7 @@ public class XMLCSS
 												.getDefaultTransform(); //TODO testing
 								final FontRenderContext fontRenderContext=new FontRenderContext(xf, false, false);  //TODO we should really get the font render context from somewhere else; for now, this should get close
 								final float emSize=(float)font.getStringBounds("m", fontRenderContext).getWidth(); //get the size of an em
-			Debug.trace("each em is: ", new Float(emSize)); //TODO del
+			Log.trace("each em is: ", new Float(emSize)); //TODO del
 								return emSize*textIndentValue.getFloatValue(XMLCSSPrimitiveValue.CSS_EMS);  //TODO testing
 							}
 	*/

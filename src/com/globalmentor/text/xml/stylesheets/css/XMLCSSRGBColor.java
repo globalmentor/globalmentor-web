@@ -18,7 +18,7 @@ package com.globalmentor.text.xml.stylesheets.css;
 
 import java.awt.Color;
 
-import com.globalmentor.util.Debug;
+import com.globalmentor.log.Log;
 
 import org.w3c.dom.DOMException;
 import org.w3c.dom.css.*;
@@ -76,7 +76,7 @@ public class XMLCSSRGBColor implements RGBColor
 		}
 		catch(DOMException e) //there should never be a DOM exception here, because we know what values to set
 		{
-		  Debug.error(e); //this should never occur
+		  Log.error(e); //this should never occur
 			throw e;  //rethrow the exception
 		}
 	}
