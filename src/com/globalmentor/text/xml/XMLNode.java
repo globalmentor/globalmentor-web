@@ -118,7 +118,13 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 		@see #setNodeName
 		@see #getNodeType
 		*/	//TODO we now set the qname, which has side effects of updating the prefix and local name---make sure this doesn't cause problems
-		protected void setNodeName(final String newName) {setQName(newName);}
+		protected void setNodeName(final String newName)
+		{
+			if(newName!=null)	//TODO fix to make sure the qname is null if newName is null
+			{
+				setQName(newName);
+			}
+		}
 
 
 		/**Sets the prefix and local name of this this node, updating the node name
