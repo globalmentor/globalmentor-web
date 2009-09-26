@@ -93,7 +93,7 @@ Log.trace("found user info: ", userInfo.toString());
 				try
 				{
 					//parse the element content from the user info string, preserving the entire XML sub-tree
-					new XMLProcessor().parseElementContent((XMLElement)userInfoParagraphElement, userInfo.toString());
+//TODO fix					new XMLProcessor().parseElementContent((XMLElement)userInfoParagraphElement, userInfo.toString());
 				}
 				catch(Exception e)  //TODO fix these exceptions; let them bubble up
 				{

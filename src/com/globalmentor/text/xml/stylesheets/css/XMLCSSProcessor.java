@@ -30,7 +30,6 @@ import org.w3c.dom.css.*;
 
 /**Class which processes an XML document and parses and applies stylesheets.
 @author Garret Wilson
-@see com.globalmentor.text.xml.XMLProcessor
 @deprecated
 */
 public class XMLCSSProcessor implements URIInputStreamable
@@ -70,15 +69,6 @@ public class XMLCSSProcessor implements URIInputStreamable
 	public XMLCSSProcessor(final URIInputStreamable newURIInputStreamable)
 	{
 		setURIInputStreamable(newURIInputStreamable);	//show which file locator we'll use
-	}
-
-	/**Constroctor that uses an existing <code>XMLProcessor</code> to find out
-		where files are located.
-	@param xmlProcessor An XML processor which will be used to locate files.
-	*/
-	public XMLCSSProcessor(final XMLProcessor xmlProcessor)
-	{
-		this(xmlProcessor.getURIInputStreamable());	//use the XML processor's input stream locator for locating files
 	}
 
 	/**Skips all CSS whitespace characters, and returns the number of characters skipped.

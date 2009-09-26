@@ -24,8 +24,6 @@ import java.util.*;
 import javax.xml.parsers.*;
 
 import com.globalmentor.config.ConfigurationException;
-import com.globalmentor.io.*;
-
 import static com.globalmentor.io.Charsets.*;
 import com.globalmentor.java.*;
 import com.globalmentor.model.NameValuePair;
@@ -35,6 +33,7 @@ import com.globalmentor.text.xml.xhtml.XHTML;
 
 import org.w3c.dom.*;
 import org.w3c.dom.traversal.*;
+import org.xml.sax.EntityResolver;
 import org.xml.sax.SAXException;
 
 import static com.globalmentor.java.Integers.*;
@@ -482,7 +481,214 @@ public class XML
 			return getRootElementLocalNameMap().get(contentType.getBaseType());	//return the root element corresponding to the given content type base type, if we have one
 		}
 
-	/**Creates and returns a default document builder without namespace awareness with no validation.
+		
+	/**Creates a document builder and parses an input stream without namespace awareness with no validation.
+	An entity resolver is installed to load requested resources from local resources if possible.
+	This allows quick local lookup of the XHTML DTDs, for example.
+	The Sun JDK 1.5 document builder handles the BOM correctly.
+	<p>Any {@link SAXException} is converted to an {@link IOException}.</p>
+	@param inputStream The input stream containing the content to be parsed.
+	@return The parsed XML document.
+	@throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	@throws IOException If there is an error reading or parsing the information.
+	*/
+	public static Document parse(final InputStream inputStream) throws IOException
+	{
+		return parse(inputStream, XMLEntityResolver.getInstance());
+	}
+		
+	/**Creates a document builder and parses an input stream without namespace awareness with no validation.
+	The Sun JDK 1.5 document builder handles the BOM correctly.
+	<p>Any {@link SAXException} is converted to an {@link IOException}.</p>
+	@param inputStream The input stream containing the content to be parsed.
+	@param entityResolver The strategy to use for resolving entities, or <code>null</code> if no entity resolver should be installed.
+	@return The parsed XML document.
+	@throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	@throws IOException If there is an error reading or parsing the information.
+	*/
+	public static Document parse(final InputStream inputStream, final EntityResolver entityResolver) throws IOException
+	{
+		return parse(inputStream, false, entityResolver);
+	}
+
+	/**Creates a document builder and parses an input stream without namespace awareness with no validation.
+	An entity resolver is installed to load requested resources from local resources if possible.
+	This allows quick local lookup of the XHTML DTDs, for example.
+	The Sun JDK 1.5 document builder handles the BOM correctly.
+	<p>Any {@link SAXException} is converted to an {@link IOException}.</p>
+	@param inputStream The input stream containing the content to be parsed.
+	@param systemID Provide a base for resolving relative URIs.
+	@return The parsed XML document.
+	@throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	@throws IOException If there is an error reading or parsing the information.
+	*/
+	public static Document parse(final InputStream inputStream, final URI systemID) throws IOException
+	{
+		return parse(inputStream, systemID, XMLEntityResolver.getInstance());
+	}
+
+	/**Creates a document builder and parses an input stream without namespace awareness with no validation.
+	The Sun JDK 1.5 document builder handles the BOM correctly.
+	<p>Any {@link SAXException} is converted to an {@link IOException}.</p>
+	@param inputStream The input stream containing the content to be parsed.
+	@param systemID Provide a base for resolving relative URIs.
+	@param entityResolver The strategy to use for resolving entities, or <code>null</code> if no entity resolver should be installed.
+	@return The parsed XML document.
+	@throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	@throws IOException If there is an error reading or parsing the information.
+	*/
+	public static Document parse(final InputStream inputStream, final URI systemID, final EntityResolver entityResolver) throws IOException
+	{
+		return parse(inputStream, systemID, false, entityResolver);
+	}
+
+	/**Creates a document builder and parses an input stream, specifying namespace awareness with no validation.
+	An entity resolver is installed to load requested resources from local resources if possible.
+	This allows quick local lookup of the XHTML DTDs, for example.
+	The Sun JDK 1.5 document builder handles the BOM correctly.
+	<p>Any {@link SAXException} is converted to an {@link IOException}.</p>
+	@param inputStream The input stream containing the content to be parsed.
+	@param namespaceAware <code>true</code> if the parser produced will provide support for XML namespaces, else <code>false</code>.
+	@return The parsed XML document.
+	@throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	@throws IOException If there is an error reading or parsing the information.
+	*/
+	public static Document parse(final InputStream inputStream, final boolean namespaceAware) throws IOException
+	{
+		return parse(inputStream, namespaceAware, XMLEntityResolver.getInstance());
+	}
+	
+	/**Creates a document builder and parses an input stream, specifying namespace awareness with no validation.
+	The Sun JDK 1.5 document builder handles the BOM correctly.
+	<p>Any {@link SAXException} is converted to an {@link IOException}.</p>
+	@param inputStream The input stream containing the content to be parsed.
+	@param namespaceAware <code>true</code> if the parser produced will provide support for XML namespaces, else <code>false</code>.
+	@param entityResolver The strategy to use for resolving entities, or <code>null</code> if no entity resolver should be installed.
+	@return The parsed XML document.
+	@throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	@throws IOException If there is an error reading or parsing the information.
+	*/
+	public static Document parse(final InputStream inputStream, final boolean namespaceAware, final EntityResolver entityResolver) throws IOException
+	{
+		return parse(inputStream, namespaceAware, false, entityResolver);
+	}
+
+	/**Creates a document builder and parses an input stream, specifying namespace awareness with no validation.
+	An entity resolver is installed to load requested resources from local resources if possible.
+	This allows quick local lookup of the XHTML DTDs, for example.
+	The Sun JDK 1.5 document builder handles the BOM correctly.
+	<p>Any {@link SAXException} is converted to an {@link IOException}.</p>
+	@param inputStream The input stream containing the content to be parsed.
+	@param systemID Provide a base for resolving relative URIs.
+	@param namespaceAware <code>true</code> if the parser produced will provide support for XML namespaces, else <code>false</code>.
+	@return The parsed XML document.
+	@throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	@throws IOException If there is an error reading or parsing the information.
+	*/
+	public static Document parse(final InputStream inputStream, final URI systemID, final boolean namespaceAware) throws IOException
+	{
+		return parse(inputStream, systemID, namespaceAware, XMLEntityResolver.getInstance());
+	}
+	
+	/**Creates a document builder and parses an input stream, specifying namespace awareness with no validation.
+	The Sun JDK 1.5 document builder handles the BOM correctly.
+	<p>Any {@link SAXException} is converted to an {@link IOException}.</p>
+	@param inputStream The input stream containing the content to be parsed.
+	@param systemID Provide a base for resolving relative URIs.
+	@param namespaceAware <code>true</code> if the parser produced will provide support for XML namespaces, else <code>false</code>.
+	@param entityResolver The strategy to use for resolving entities, or <code>null</code> if no entity resolver should be installed.
+	@return The parsed XML document.
+	@throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	@throws IOException If there is an error reading or parsing the information.
+	*/
+	public static Document parse(final InputStream inputStream, final URI systemID, final boolean namespaceAware, final EntityResolver entityResolver) throws IOException
+	{
+		return parse(inputStream, systemID, namespaceAware, false, entityResolver);
+	}
+
+	/**Creates a document builder and parses an input stream, specifying namespace awareness and validation.
+	An entity resolver is installed to load requested resources from local resources if possible.
+	This allows quick local lookup of the XHTML DTDs, for example.
+	The Sun JDK 1.5 document builder handles the BOM correctly.
+	<p>Any {@link SAXException} is converted to an {@link IOException}.</p>
+	@param inputStream The input stream containing the content to be parsed.
+	@param namespaceAware <code>true</code> if the parser produced will provide support for XML namespaces, else <code>false</code>.
+	@param validating <code>true</code> if the parser produced will validate documents as they are parsed, else <code>false</code>.
+	@return The parsed XML document.
+	@throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	@throws IOException If there is an error reading or parsing the information.
+	*/
+	public static Document parse(final InputStream inputStream, final boolean namespaceAware, final boolean validating) throws IOException
+	{
+		return parse(inputStream, namespaceAware, validating, XMLEntityResolver.getInstance());
+	}
+	
+	/**Creates a document builder and parses an input stream, specifying namespace awareness and validation.
+	The Sun JDK 1.5 document builder handles the BOM correctly.
+	<p>Any {@link SAXException} is converted to an {@link IOException}.</p>
+	@param inputStream The input stream containing the content to be parsed.
+	@param namespaceAware <code>true</code> if the parser produced will provide support for XML namespaces, else <code>false</code>.
+	@param validating <code>true</code> if the parser produced will validate documents as they are parsed, else <code>false</code>.
+	@param entityResolver The strategy to use for resolving entities, or <code>null</code> if no entity resolver should be installed.
+	@return The parsed XML document.
+	@throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	@throws IOException If there is an error reading or parsing the information.
+	*/
+	public static Document parse(final InputStream inputStream, final boolean namespaceAware, final boolean validating, final EntityResolver entityResolver) throws IOException
+	{
+		try
+		{
+			return createDocumentBuilder(namespaceAware, validating, entityResolver).parse(inputStream);
+		}
+		catch(final SAXException saxException)
+		{
+			throw new IOException(saxException.getMessage(), saxException);
+		}
+	}
+
+	/**Creates a document builder and parses an input stream, specifying namespace awareness and validation.
+	An entity resolver is installed to load requested resources from local resources if possible.
+	This allows quick local lookup of the XHTML DTDs, for example.
+	The Sun JDK 1.5 document builder handles the BOM correctly.
+	<p>Any {@link SAXException} is converted to an {@link IOException}.</p>
+	@param inputStream The input stream containing the content to be parsed.
+	@param systemID Provide a base for resolving relative URIs.
+	@param namespaceAware <code>true</code> if the parser produced will provide support for XML namespaces, else <code>false</code>.
+	@param validating <code>true</code> if the parser produced will validate documents as they are parsed, else <code>false</code>.
+	@return The parsed XML document.
+	@throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	@throws IOException If there is an error reading or parsing the information.
+	*/
+	public static Document parse(final InputStream inputStream, final URI systemID, final boolean namespaceAware, final boolean validating) throws IOException
+	{
+		return parse(inputStream, systemID, namespaceAware, validating, XMLEntityResolver.getInstance());
+	}
+
+	/**Creates a document builder and parses an input stream, specifying namespace awareness and validation.
+	The Sun JDK 1.5 document builder handles the BOM correctly.
+	<p>Any {@link SAXException} is converted to an {@link IOException}.</p>
+	@param inputStream The input stream containing the content to be parsed.
+	@param systemID Provide a base for resolving relative URIs.
+	@param namespaceAware <code>true</code> if the parser produced will provide support for XML namespaces, else <code>false</code>.
+	@param validating <code>true</code> if the parser produced will validate documents as they are parsed, else <code>false</code>.
+	@param entityResolver The strategy to use for resolving entities, or <code>null</code> if no entity resolver should be installed.
+	@return The parsed XML document.
+	@throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	@throws IOException If there is an error reading or parsing the information.
+	*/
+	public static Document parse(final InputStream inputStream, final URI systemID, final boolean namespaceAware, final boolean validating, final EntityResolver entityResolver) throws IOException
+	{
+		try
+		{
+			return createDocumentBuilder(namespaceAware, validating, entityResolver).parse(inputStream, systemID.toString());
+		}
+		catch(final SAXException saxException)
+		{
+			throw new IOException(saxException.getMessage(), saxException);
+		}
+	}
+
+	/**Creates and returns a document builder without namespace awareness with no validation.
 	An entity resolver is installed to load requested resources from local resources if possible.
 	This allows quick local lookup of the XHTML DTDs, for example.
 	The Sun JDK 1.5 document builder handles the BOM correctly.
@@ -491,10 +697,21 @@ public class XML
 	*/
 	public static DocumentBuilder createDocumentBuilder()
 	{
-		return createDocumentBuilder(false);	//create a document builder with no namespace awareness
+		return createDocumentBuilder(XMLEntityResolver.getInstance());
 	}
 
-	/**Creates and returns a default document builder, specifying namespace awareness with no validation.
+	/**Creates and returns a document builder without namespace awareness with no validation.
+	The Sun JDK 1.5 document builder handles the BOM correctly.
+	@param entityResolver The strategy to use for resolving entities, or <code>null</code> if no entity resolver should be installed.
+	@return A new XML document builder.
+	@throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	*/
+	public static DocumentBuilder createDocumentBuilder(final EntityResolver entityResolver)
+	{
+		return createDocumentBuilder(false, entityResolver);	//create a document builder with no namespace awareness
+	}
+
+	/**Creates and returns a document builder, specifying namespace awareness with no validation.
 	An entity resolver is installed to load requested resources from local resources if possible.
 	This allows quick local lookup of the XHTML DTDs, for example.
 	The Sun JDK 1.5 document builder handles the BOM correctly.
@@ -504,10 +721,22 @@ public class XML
 	*/
 	public static DocumentBuilder createDocumentBuilder(final boolean namespaceAware)
 	{
-		return createDocumentBuilder(namespaceAware, false);	//create a document builder with no validation
+		return createDocumentBuilder(namespaceAware, XMLEntityResolver.getInstance());
 	}
 
-	/**Creates and returns a default document builder, specifying namespace awareness and validation.
+	/**Creates and returns a document builder, specifying namespace awareness with no validation.
+	The Sun JDK 1.5 document builder handles the BOM correctly.
+	@param namespaceAware <code>true</code> if the parser produced will provide support for XML namespaces, else <code>false</code>.
+	@param entityResolver The strategy to use for resolving entities, or <code>null</code> if no entity resolver should be installed.
+	@return A new XML document builder.
+	@throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	*/
+	public static DocumentBuilder createDocumentBuilder(final boolean namespaceAware, final EntityResolver entityResolver)
+	{
+		return createDocumentBuilder(namespaceAware, false, entityResolver);	//create a document builder with no validation
+	}
+
+	/**Creates and returns a document builder, specifying namespace awareness and validation.
 	An entity resolver is installed to load requested resources from local resources if possible.
 	This allows quick local lookup of the XHTML DTDs, for example.
 	The Sun JDK 1.5 document builder handles the BOM correctly.
@@ -518,13 +747,29 @@ public class XML
 	*/
 	public static DocumentBuilder createDocumentBuilder(final boolean namespaceAware, final boolean validating)
 	{
+		return createDocumentBuilder(namespaceAware, validating, XMLEntityResolver.getInstance());
+	}
+
+	/**Creates and returns a document builder, specifying namespace awareness and validation.
+	The Sun JDK 1.5 document builder handles the BOM correctly.
+	@param namespaceAware <code>true</code> if the parser produced will provide support for XML namespaces, else <code>false</code>.
+	@param validating <code>true</code> if the parser produced will validate documents as they are parsed, else <code>false</code>.
+	@param entityResolver The strategy to use for resolving entities, or <code>null</code> if no entity resolver should be installed.
+	@return A new XML document builder.
+	@throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	*/
+	public static DocumentBuilder createDocumentBuilder(final boolean namespaceAware, final boolean validating, final EntityResolver entityResolver)
+	{
 		try
 		{
 			final DocumentBuilderFactory documentBuilderFactory=DocumentBuilderFactory.newInstance();	//create a document builder factory			
 			documentBuilderFactory.setNamespaceAware(namespaceAware);	//set namespace awareness appropriately
 			documentBuilderFactory.setValidating(validating);	//set validating appropriately
 			final DocumentBuilder documentBuilder=documentBuilderFactory.newDocumentBuilder();	//create a new document builder
-			documentBuilder.setEntityResolver(XMLEntityResolver.getInstance());	//set its entity resolver to automatically look up XML entities from local resources
+			if(entityResolver!=null)	//if an entity resolver was given
+			{
+				documentBuilder.setEntityResolver(entityResolver);	//install the given entity resolver
+			}
 			return documentBuilder;	//return the configured document builder
 		}
 		catch(final ParserConfigurationException parserConfigurationException)	//if the requested parser is not supported

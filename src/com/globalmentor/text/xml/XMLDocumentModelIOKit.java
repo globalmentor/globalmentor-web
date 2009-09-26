@@ -20,7 +20,6 @@ import java.io.*;
 import java.net.*;
 
 import com.globalmentor.io.*;
-import com.globalmentor.text.CharacterEncoding;
 
 import org.w3c.dom.Document;
 
@@ -76,8 +75,7 @@ public class XMLDocumentModelIOKit extends AbstractIOKit<XMLNodeModel<Document>>
 	public XMLNodeModel<Document> load(final InputStream inputStream, final URI baseURI) throws IOException
 	{
 		inputStream.mark(Integer.MAX_VALUE);	//TODO testing
-		final XMLProcessor xmlProcessor=new XMLProcessor(this);	//create a new XML processor that knows how to access streams from URIs
-		final Document xml=xmlProcessor.parseDocument(inputStream, baseURI);	//parse the XML
+		final Document xml=XML.parse(inputStream, baseURI, true, new URIInputStreamableXMLEntityResolver(this));	//create a new XML processor that knows how to access streams from URIs and parse the XML
 		return new XMLNodeModel<Document>(xml, baseURI, this);	//return a new XML document model
 			//TODO check for XML DOM exceptions---not just here, but throughout the code; update the XMLProcessor, too
 	}
@@ -89,7 +87,7 @@ public class XMLDocumentModelIOKit extends AbstractIOKit<XMLNodeModel<Document>>
 	*/
 	public void save(final XMLNodeModel<Document> model, final OutputStream outputStream) throws IOException
 	{
-		final Writer writer=new OutputStreamWriter(outputStream, CharacterEncoding.UTF_8);	//create a UTF-8 writer
+		final Writer writer=new OutputStreamWriter(outputStream, Charsets.UTF_8_CHARSET);	//create a UTF-8 writer
 		new XMLSerializer(true).serialize(model.getXML(), outputStream);	//serialize the XML document
 		writer.flush();	//flush the data to the output stream
 	}

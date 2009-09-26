@@ -84,7 +84,6 @@ class XMLTag extends XMLNode
 		/**Sets the attributes for this element. This has package access so helper
 		  classes such as <code>XMLProcessor</code> can access this method.
 		@param attributeMap The <code>XMLNamedNodeMap</code> with the attributes for this element.
-		@see XMLProcessor
 		*/
 		void setAttributeXMLNamedNodeMap(final XMLNamedNodeMap attributeMap) {AttributeMap=attributeMap;}
 

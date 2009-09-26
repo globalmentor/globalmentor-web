@@ -51,7 +51,7 @@ public class XMLEntityResolver implements EntityResolver
 			return instanceReference.get();	//return the singleton instance
 		}
 
-	private XMLEntityResolver()
+	protected XMLEntityResolver()
 	{
 	}
 

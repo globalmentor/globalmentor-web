@@ -20,7 +20,6 @@ package com.globalmentor.text.xml;
 represent a node in the XML document tree; it is only used internally for
 parsing. It can only accessed by classes in its own package.
 @author Garret Wilson
-@see XMLProcessor
 @see XMLDocumentType
 @deprecated
 */
