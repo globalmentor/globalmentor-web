@@ -17,7 +17,8 @@
 package com.globalmentor.text.xml;
 
 import java.net.URI;
-import com.garretwilson.model.URIAccessibleModel;
+
+import com.globalmentor.io.URIAccessibleModel;
 import com.globalmentor.io.URIInputStreamable;
 import com.globalmentor.java.Java;
 
