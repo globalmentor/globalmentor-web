@@ -765,6 +765,15 @@ public class XML
 			final DocumentBuilderFactory documentBuilderFactory=DocumentBuilderFactory.newInstance();	//create a document builder factory			
 			documentBuilderFactory.setNamespaceAware(namespaceAware);	//set namespace awareness appropriately
 			documentBuilderFactory.setValidating(validating);	//set validating appropriately
+				//prevent a NullPointerException in some cases when using the com.sun.org.apache.xerces.internal parser
+				//see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6181020
+				//see http://issues.apache.org/jira/browse/XERCESJ-977
+				//http://forums.sun.com/thread.jspa?threadID=5390848
+			try
+			{
+				documentBuilderFactory.setFeature("http://apache.org/xml/features/dom/defer-node-expansion", false);
+			}
+			catch(final ParserConfigurationException parserConfigurationException) {}	//if the parser doesn't support this feature, it's probably not the buggy Xerces parser, so we're in an even better situation
 			final DocumentBuilder documentBuilder=documentBuilderFactory.newDocumentBuilder();	//create a new document builder
 			if(entityResolver!=null)	//if an entity resolver was given
 			{
