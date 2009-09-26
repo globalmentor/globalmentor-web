@@ -20,17 +20,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.xml.sax.EntityResolver;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
+import org.xml.sax.*;
 
-import static com.globalmentor.io.Files.*;
+import com.globalmentor.io.Files;
 
 /**An entity resolver that looks up and returns special predefined entities, such as XHTML DTDs.
 This implementation searches for resource files within this package that have the same name as the public ID, with illegal characters replaced with "^XX", where "XX" is a hex code.
 For example, the entity public ID "-//W3C//DTD XHTML 1.1//EN" would be stored in this package under the filename "-^2F^2FW3C^2F^2FDTD XHTML 1.1^2F^2FEN".
-This is a singleton class that cannot be publicly instantiated.
+<p>This is a singleton class that cannot be publicly instantiated.</p>
 @author Garret Wilson
+@see Files#encodeCrossPlatformFilename(String)
 */
 public class XMLEntityResolver implements EntityResolver
 {
@@ -64,7 +63,7 @@ public class XMLEntityResolver implements EntityResolver
 	{
 		if(publicID!=null)	//if there is a public ID
 		{
-			final String localFilename=encodeCrossPlatformFilename(publicID);	//get the name of the file if it were to be stored locally
+			final String localFilename=Files.encodeCrossPlatformFilename(publicID);	//get the name of the file if it were to be stored locally
 			final InputStream localResourceInputStream=getClass().getResourceAsStream(localFilename);	//see if we can get an input stream to the entity
 			if(localResourceInputStream!=null)	//if we found the resource locally
 			{
