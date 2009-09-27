@@ -1,5 +1,5 @@
 /*
- * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ * Copyright © 1996-2009 GlobalMentor, Inc. <http://www.globalmentor.com/>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -773,7 +773,7 @@ public class XML
 			{
 				documentBuilderFactory.setFeature("http://apache.org/xml/features/dom/defer-node-expansion", false);
 			}
-			catch(final ParserConfigurationException parserConfigurationException) {}	//if the parser doesn't support this feature, it's probably not the buggy Xerces parser, so we're in an even better situation
+			catch(final Throwable throwable) {}	//if the parser doesn't support this feature, it's probably not the buggy Xerces parser, so we're in an even better situation; normally we'd expect a ParserConfigurationException, but sometimes a java.lang.AbstractMethodError is thrown by javax.xml.parsers.DocumentBuilderFactory.setFeature(Ljava/lang/String;Z)V
 			final DocumentBuilder documentBuilder=documentBuilderFactory.newDocumentBuilder();	//create a new document builder
 			if(entityResolver!=null)	//if an entity resolver was given
 			{
