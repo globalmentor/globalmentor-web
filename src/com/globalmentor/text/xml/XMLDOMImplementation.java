@@ -24,7 +24,7 @@ instance of the document object model.
 @see org.w3c.dom.DOMImplementation
 @deprecated
 */
-public class XMLDOMImplementation implements DOMImplementation
+class XMLDOMImplementation implements DOMImplementation
 {
 
 	/**Tests to see if the DOM implementation implements a specific feature.

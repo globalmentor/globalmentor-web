@@ -40,7 +40,7 @@ public class XMLSchemaDocumenter
 	*/
 	public static Document generateDocumentation(final XMLSchema schema)
 	{
-		final XMLDOMImplementation domImplementation=new XMLDOMImplementation();	//create a new DOM implementation
+		final DOMImplementation domImplementation=XML.createDocumentBuilder(true).getDOMImplementation();
 		final DocumentType documentType=domImplementation.createDocumentType(ELEMENT_HTML, XHTML_1_0_STRICT_PUBLIC_ID, XHTML_1_0_STRICT_SYSTEM_ID);	//create an XHTML document type TODO perhaps put this in an OEB class
 		final Document document=domImplementation.createDocument(XHTML_NAMESPACE_URI.toString(), ELEMENT_HTML, documentType);	//create an XHTML document TODO perhaps put this in an OEB class
 			//TODO check about whether we need to add a <head> and <title>
