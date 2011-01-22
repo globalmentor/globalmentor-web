@@ -19,6 +19,7 @@ package com.globalmentor.text.xml;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import static com.globalmentor.net.URIs.*;
 import static com.globalmentor.text.xml.XML.*;
 
 import org.w3c.dom.*;
@@ -80,7 +81,7 @@ public class XMLBase
 			parentBaseURI=documentBaseURI;  //use the provided document base URI
 		if(xmlBaseValue!=null)  //if the element has an xml:base attribute value
 		{
-			return parentBaseURI!=null ? parentBaseURI.resolve(xmlBaseValue) : new URI(xmlBaseValue);	//create a URI relative to the parent's base URI	
+			return parentBaseURI!=null ? resolve(parentBaseURI, xmlBaseValue) : new URI(xmlBaseValue);	//create a URI relative to the parent's base URI	
 		}
 		else  //if there is no xml:base attribute value
 		{
@@ -113,7 +114,7 @@ public class XMLBase
 	{
 		final URI baseURI=getBaseURI(element, documentBaseURI);  //get the base URI of the element
 		  //resolve the given URI to the base URI we determine
-		return baseURI!=null ? baseURI.resolve(uri) : uri;
+		return baseURI!=null ? resolve(baseURI, uri) : uri;
 	}
 
 	/**Creates a URI by resolving the given string relative to the base URI of the
@@ -141,7 +142,7 @@ public class XMLBase
 	{
 		final URI baseURI=getBaseURI(element, documentBaseURI);  //get the base URI of the element
 			//resolve the given URI to the base URI we determine
-		return baseURI!=null ? baseURI.resolve(string) : new URI(string);
+		return baseURI!=null ? resolve(baseURI, string) : new URI(string);
 	}
 
 }
