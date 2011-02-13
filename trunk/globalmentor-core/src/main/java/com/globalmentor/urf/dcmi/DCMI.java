@@ -1,3 +1,19 @@
+/*
+ * Copyright © 2007 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.globalmentor.urf.dcmi;
 
 import java.net.URI;
@@ -8,12 +24,6 @@ import com.globalmentor.urf.*;
 import static com.globalmentor.urf.URF.*;
 
 /**Constants and methods used for Dublin Core as stored in URF.
-<p>Copyright © 2007 GlobalMentor, Inc.
-This source code can be freely used for any purpose, as long as the following conditions are met.
-Any object code derived from this source code must include the following text to users using along with other "about" notifications:
-"Uniform Resource Framework (URF) &lt;http://www.urf.name/&gt; specification and processing
-written by Garret Wilson &lt;http://www.garretwilson.com/&gt; and Copyright © 2007 GlobalMentor, Inc. &lt;http://www.globalmentor.com/&gt;."
-Any redistribution of this source code or derived source code must include these comments unmodified.</p>
 @author Garret Wilson
 @see <a href="http://dublincore.org/documents/dcmi-namespace/">DCMI Namespace Policy</a>
 @see <a href="http://dublincore.org/documents/dces/">Dublin Core Metadata Element Set, Version 1.1</a>
