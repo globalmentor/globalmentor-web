@@ -79,37 +79,37 @@ public class XMLSchema
 	public final static String URI_DATATYPE_NAME="anyURI";
 	//XML schema datatypes
 	/**The base 64 binary datatype.*/
-	public final static URI BASE64_BINARY_DATATYPE_URI=URIs.resolveFragment(XML_SCHEMA_NAMESPACE_URI, BASE64_BINARY_DATATYPE_NAME);
+	public final static URI BASE64_BINARY_DATATYPE_URI=URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, BASE64_BINARY_DATATYPE_NAME);
 	/**The boolean datatype.*/
-	public final static URI BOOLEAN_DATATYPE_URI=URIs.resolveFragment(XML_SCHEMA_NAMESPACE_URI, BOOLEAN_DATATYPE_NAME);
+	public final static URI BOOLEAN_DATATYPE_URI=URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, BOOLEAN_DATATYPE_NAME);
 	/**The byte datatype.*/
-	public final static URI BYTE_DATATYPE_URI=URIs.resolveFragment(XML_SCHEMA_NAMESPACE_URI, BYTE_DATATYPE_NAME);
+	public final static URI BYTE_DATATYPE_URI=URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, BYTE_DATATYPE_NAME);
 	/**The date datatype.*/
-	public final static URI DATE_DATATYPE_URI=URIs.resolveFragment(XML_SCHEMA_NAMESPACE_URI, DATE_DATATYPE_NAME);
+	public final static URI DATE_DATATYPE_URI=URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, DATE_DATATYPE_NAME);
 	/**The date time datatype.*/
-	public final static URI DATE_TIME_DATATYPE_URI=URIs.resolveFragment(XML_SCHEMA_NAMESPACE_URI, DATE_TIME_DATATYPE_NAME);
+	public final static URI DATE_TIME_DATATYPE_URI=URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, DATE_TIME_DATATYPE_NAME);
 	/**The decimal datatype.*/
-	public final static URI DECIMAL_DATATYPE_URI=URIs.resolveFragment(XML_SCHEMA_NAMESPACE_URI, DECIMAL_DATATYPE_NAME);
+	public final static URI DECIMAL_DATATYPE_URI=URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, DECIMAL_DATATYPE_NAME);
 	/**The 64-bit double datatype.*/
-	public final static URI DOUBLE_DATATYPE_URI=URIs.resolveFragment(XML_SCHEMA_NAMESPACE_URI, DOUBLE_DATATYPE_NAME);
+	public final static URI DOUBLE_DATATYPE_URI=URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, DOUBLE_DATATYPE_NAME);
 	/**The duration datatype.*/
-	public final static URI DURATION_DATATYPE_URI=URIs.resolveFragment(XML_SCHEMA_NAMESPACE_URI, DURATION_DATATYPE_NAME);
+	public final static URI DURATION_DATATYPE_URI=URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, DURATION_DATATYPE_NAME);
 	/**The 32-bit float datatype.*/
-	public final static URI FLOAT_DATATYPE_URI=URIs.resolveFragment(XML_SCHEMA_NAMESPACE_URI, FLOAT_DATATYPE_NAME);
+	public final static URI FLOAT_DATATYPE_URI=URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, FLOAT_DATATYPE_NAME);
 	/**The int datatype.*/
-	public final static URI INT_DATATYPE_URI=URIs.resolveFragment(XML_SCHEMA_NAMESPACE_URI, INT_DATATYPE_NAME);
+	public final static URI INT_DATATYPE_URI=URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, INT_DATATYPE_NAME);
 	/**The integer datatype.*/
-	public final static URI INTEGER_DATATYPE_URI=URIs.resolveFragment(XML_SCHEMA_NAMESPACE_URI, INTEGER_DATATYPE_NAME);
+	public final static URI INTEGER_DATATYPE_URI=URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, INTEGER_DATATYPE_NAME);
 	/**The long datatype.*/
-	public final static URI LONG_DATATYPE_URI=URIs.resolveFragment(XML_SCHEMA_NAMESPACE_URI, LONG_DATATYPE_NAME);
+	public final static URI LONG_DATATYPE_URI=URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, LONG_DATATYPE_NAME);
 	/**The short datatype.*/
-	public final static URI SHORT_DATATYPE_URI=URIs.resolveFragment(XML_SCHEMA_NAMESPACE_URI, SHORT_DATATYPE_NAME);
+	public final static URI SHORT_DATATYPE_URI=URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, SHORT_DATATYPE_NAME);
 	/**The string datatype.*/
-	public final static URI STRING_DATATYPE_URI=URIs.resolveFragment(XML_SCHEMA_NAMESPACE_URI, STRING_DATATYPE_NAME);
+	public final static URI STRING_DATATYPE_URI=URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, STRING_DATATYPE_NAME);
 	/**The time datatype.*/
-	public final static URI TIME_DATATYPE_URI=URIs.resolveFragment(XML_SCHEMA_NAMESPACE_URI, TIME_DATATYPE_NAME);
+	public final static URI TIME_DATATYPE_URI=URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, TIME_DATATYPE_NAME);
 	/**The URI datatype.*/
-	public final static URI URI_DATATYPE_URI=URIs.resolveFragment(XML_SCHEMA_NAMESPACE_URI, URI_DATATYPE_NAME);
+	public final static URI URI_DATATYPE_URI=URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, URI_DATATYPE_NAME);
 
 	/**The global symbol table for this schema.*/
 	private final XMLSchemaSymbolTable symbolTable=new XMLSchemaSymbolTable();
