@@ -113,7 +113,7 @@ public class XMLReader extends ParseReader
 		be processed next time.
 	@param newDataBeginIndex The starting index of the newly fetched data.
 	@except IOException Thrown when an I/O error occurs.
-	@see BufferedPushbackReader#getFetchBufferIndex
+	@see ProcessingBufferedReader#getFetchBufferIndex
 	*/
 	protected void processBufferedData(final int newDataBeginIndex) throws IOException
 	{

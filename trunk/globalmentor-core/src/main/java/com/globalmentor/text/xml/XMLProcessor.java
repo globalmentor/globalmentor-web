@@ -705,7 +705,7 @@ entityReader.tidy=isTidy();  //TODO fix
 			{
 						//TODO fix for parameter entities here
 				attributeValueStringBuffer.append(reader.readStringUntilCharEOF("&<"+attributeValueDelimiters));	//read character content until we find a reference, an illegal less-than character, the end of the attribute, or until we reach the end of the file TODO make these constants
-				if(reader.isEOF())	//if we run out of characters looking for the end of the entity, this may not be an error; we may have just been parsing an entity reader for another entity
+				if(reader.isEnd())	//if we run out of characters looking for the end of the entity, this may not be an error; we may have just been parsing an entity reader for another entity
 				{
 					attribute.setNodeValue(attribute.getNodeValue()+attributeValueStringBuffer.toString());	//append whatever text we've collected so far to the attribute
 					return false;	//return, showing that we have not yet found the end of the attribute
@@ -1081,7 +1081,7 @@ final XMLDocument ownerDocument, final XMLDocumentType documentType
 		while(true)	//keep reading content; when we find the end of the data we'll return from there
 		{
 			skipWhitespaceCharactersEOF(reader);	//skip any whitespace characters, but don't throw an exception if we reach the end of the stream
-			if(reader.isEOF())	//if we run out of characters looking for the start of the next document type markup, this may not be an error; we may be processing an external DTD
+			if(reader.isEnd())	//if we run out of characters looking for the start of the next document type markup, this may not be an error; we may be processing an external DTD
 				return false;	//return, showing that we have not yet found the ending character marker of an internal DTD
 			switch(reader.peekExpectedStrings(EXPECTED_DTD_MARKUP_STRINGS))	//see what sort of DTD declaration markup this is TODO add other types of declarations
 			{
@@ -1262,7 +1262,7 @@ final XMLDocument ownerDocument, final XMLDocumentType documentType
 		{
 					//TODO fix for parameter entities here
 			entityValueStringBuffer.append(reader.readStringUntilCharEOF("&"+entityValueDelimiter));	//read character content until we find a reference, the end of the entity declaration, or until we reach the end of the file TODO make these constants
-			if(reader.isEOF())	//if we run out of characters looking for the end of the entity, this may not be an error; we may have just been parsing an entity reader for another entity
+			if(reader.isEnd())	//if we run out of characters looking for the end of the entity, this may not be an error; we may have just been parsing an entity reader for another entity
 			{
 				entity.appendText(entityValueStringBuffer.toString());	//append whatever text we've collected so far to the entity
 				return false;	//return, showing that we have not yet found the end of the entity
@@ -1382,7 +1382,7 @@ attributeListDeclarationReader.tidy=isTidy();  //TODO fix
 		while(true)	//read all the attribute definitions until we get to the end of the attribute list declaration
 		{
 			skipWhitespaceCharactersEOF(attributeListDeclarationReader);	//skip any whitespace characters, but don't throw an exception if we reach the end of the stream
-			if(attributeListDeclarationReader.isEOF())	//if we run out of characters skipping whitespace, we've finished reading the attribute definitions
+			if(attributeListDeclarationReader.isEnd())	//if we run out of characters skipping whitespace, we've finished reading the attribute definitions
 				break;	//we're finished reading the attribute list
 			final XMLElement attributeElement=new XMLElement(ownerDocument, "attribute");	//create a new XML element which will hold the rules for this attribute TODO use constant
 			//TODO check for a valid name here
@@ -1486,7 +1486,7 @@ attributeListDeclarationReader.tidy=isTidy();  //TODO fix
 		while(true)	//keep looking at charactes from the reader until we reach the end of file (which will kick us out from inside the loop)
 		{
 			expandedText.append(reader.readStringUntilCharEOF('%'));	//read character content until we find an entity reference or the end of the stream TODO use a constant here
-			if(reader.isEOF())	//if we're reached the end of the file
+			if(reader.isEnd())	//if we're reached the end of the file
 			{
 				return; //return, sending back all the characters we've collected
 			}
@@ -1840,7 +1840,7 @@ attributeListDeclarationReader.tidy=isTidy();  //TODO fix
 		{
 				//TODO we *might* be able to improve this characterContent somewhat by using a string buffer
 			characterContent+=reader.readStringUntilCharEOF("<&");	//read character content until we find non-character data markup, such as a tag or comment or a reference, or until we reach the end of the file TODO make these constants
-			if(reader.isEOF())	//if we run out of characters looking for the end of the tag, this may not be an error; we may have just been parsing a general entity reader
+			if(reader.isEnd())	//if we run out of characters looking for the end of the tag, this may not be an error; we may have just been parsing a general entity reader
 			{
 				element.appendText(characterContent);	//append whatever text we've collected so far to the element
 				return false;	//return, showing that we have not yet found the ending tag

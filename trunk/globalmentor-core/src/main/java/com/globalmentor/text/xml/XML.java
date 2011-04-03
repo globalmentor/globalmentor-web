@@ -54,7 +54,7 @@ public class XML
 
 	/**The suffix for XML application types, as defined in <a href="http://www.ietf.org/rfc/rfc3023.txt">RFC 3023</a>, "XML Media Types".*/
 	public final static String XML_SUBTYPE_SUFFIX="xml";
-	/**The suffix for XML external parsed entity subtyes (not yet formally defined).*/
+	/**The suffix for XML external parsed entity subtypes (not yet formally defined).*/
 	public final static String XML_EXTERNAL_PARSED_ENTITY_SUBTYPE_SUFFIX="xml-external-parsed-entity";
 
 	/**The content type for generic XML: <code>text/xml</code>.*/ 

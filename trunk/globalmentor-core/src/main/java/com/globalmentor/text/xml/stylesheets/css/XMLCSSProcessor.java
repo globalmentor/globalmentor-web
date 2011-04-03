@@ -297,7 +297,7 @@ return value;	//TODO throw the correct error here
 		do	//keep reading declarations until there aren't any more
 		{
 			skipWhitespaceCharactersEOF(reader);	//skip over any whitespace characters, but do not throw an error for the end of the stream
-			if(reader.isEOF())	//if we've hit the end of the stream of characters
+			if(reader.isEnd())	//if we've hit the end of the stream of characters
 				return false;	//show that we hit the end of the stream without finding the end-of-rule-group character
 			skipWhitespaceCharacters(reader);	//skip any whitespace characters
 			if((char)reader.peek()==RULE_GROUP_END_CHAR)  //if we're at the end of the rule group (which will happen if the rule group is empty, for instance) TODO what if this is just an empty string being passed, from an XHTML style="" attribute?
@@ -311,7 +311,7 @@ return value;	//TODO throw the correct error here
 			if((char)reader.peek()=='/')
 			{
 				reader.readExpectedString(COMMENT_START);
-				while(!reader.isEOF())  //TODO fix parsing comments; this is a hack
+				while(!reader.isEnd())  //TODO fix parsing comments; this is a hack
 				{
 					reader.readStringUntilChar('*');  //TODO fix parsing comments; this is a hack
 					reader.readExpectedChar('*'); //TODO fix parsing comments; this is a hack
@@ -366,7 +366,7 @@ return value;	//TODO throw the correct error here
 		while(true)	//we'll keep processing rulesets and such until we run out of characters looking for whitespace
 		{
 			skipWhitespaceCharactersEOF(reader);	//skip over any whitespace
-			if(reader.isEOF())	//if we've hit the end of the stream of characters
+			if(reader.isEnd())	//if we've hit the end of the stream of characters
 				return;	//we're finished processing the stylesheet
 			reader.resetPeek();	//reset peeking so that the next character peeked will reflect the next character to be read
 
@@ -390,7 +390,7 @@ return value;	//TODO throw the correct error here
 					reader.readExpectedChar('}'); //TODO fix parsing at rules
 					break;	//TODO fix
 				case COMMENT:	//if this is a CSS comment
-					while(!reader.isEOF())  //TODO fix parsing comments; this is a hack
+					while(!reader.isEnd())  //TODO fix parsing comments; this is a hack
 					{
 						reader.readStringUntilChar('*');  //TODO fix parsing comments; this is a hack
 						reader.readExpectedChar('*'); //TODO fix parsing comments; this is a hack
