@@ -456,7 +456,7 @@ public class XHTMLTidier
 				final Text text=(Text)childNode;  //cast the child to a text element
 				final String data=text.getData(); //get the text data
 				  //TODO testing; comment; use StringBufferUtilities version, maybe
-				final String collapsedData=Strings.collapseEveryChar(data, Characters.TRIM_CHARS, "\n\n");
+				final String collapsedData=Strings.collapseEveryChar(data, Characters.TRIM_CHARACTERS, "\n\n");
 				text.setData(collapsedData);  //replace the text data with the collapsed data
 			}
 		}
@@ -578,7 +578,7 @@ public class XHTMLTidier
 	}
 
 	/**Characters which could conceivably be appended to a list marker.*/ //TODO move this to the beginning, probably
-	protected final static String LIST_ITEM_MARKER_DELIMITER_CHARS=".)-"+EM_DASH_CHAR+EN_DASH_CHAR;
+	protected final static Characters LIST_ITEM_MARKER_DELIMITER_CHARS=new Characters('.', ')', '-', EM_DASH_CHAR, EN_DASH_CHAR);
 	/**A string representation of the bullet character which will be converted to a list item marker.*/ //TODO move this to the beginning, probably
 	protected final static String BULLET_STRING=String.valueOf(BULLET_CHAR);
 
@@ -642,7 +642,7 @@ public class XHTMLTidier
 					{
 						final String data=textNode.getData(); //get the text node data
 							//create a tokenizer to extract the list item marker
-						final StringTokenizer stringTokenizer=new StringTokenizer(data, Characters.TRIM_CHARS);
+						final StringTokenizer stringTokenizer=new StringTokenizer(data, Characters.TRIM_CHARACTERS.toString());
 						if(stringTokenizer.hasMoreTokens()) //if there is a token, check to see if it's a list marker
 						{
 							markerString=stringTokenizer.nextToken();  //get the text which may be a marker
@@ -749,7 +749,7 @@ public class XHTMLTidier
 							{
 								final String data=textNode.getData(); //get the text node data
 									//see where the first whitespace is
-								final int whitespaceIndex=CharSequences.charIndexOf(data, Characters.TRIM_CHARS);
+								final int whitespaceIndex=CharSequences.charIndexOf(data, Characters.TRIM_CHARACTERS);
 								if(whitespaceIndex>=0)  //if there is whitespace (there always should be, or we could not have determined that this is a list item
 								{
 									textNode.setData(data.substring(whitespaceIndex+1)); //remove the marker and update the text node
@@ -1074,7 +1074,7 @@ public class XHTMLTidier
 								{
 									final char lastChar=lastElementText.charAt(lastElementText.length()-1); //get the last character in the last element's text
 										  //check for a heading appearing after a dependent character such as a colon
-									if(DEPENDENT_PUNCTUATION_CHARS.indexOf(lastChar)>=0)  //if this "heading" appears after element ending characters such as a colon, it isn't an independent heading
+									if(DEPENDENT_PUNCTUATION_CHARACTERS.contains(lastChar))  //if this "heading" appears after element ending characters such as a colon, it isn't an independent heading
 										isIndependent=false;  //this heading doesn't stand alone, so discount it as a heading
 										  //check for a quoted heading appearing after another quote
 									if(lastChar==QUOTATION_MARK_CHAR || lastChar==LEFT_DOUBLE_QUOTATION_MARK_CHAR) //if this "heading" appears after an element ending with a quote

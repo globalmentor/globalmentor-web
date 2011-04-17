@@ -528,7 +528,7 @@ return null;//TODO throw an INVALID_ACCESS_ERR when we find out how to do so			t
 		if(valueString.length()>0)	//if we have at least one character in the value string
 		{
 			final char firstChar=valueString.charAt(0);	//get the first character in the string
-			if(NUMBER_CHARS.indexOf(firstChar)!=-1)	//if the first character is a digit or a decimal, we'll assume this is a number; now we'll need to determine what kind of units this represents
+			if(NUMBER_CHARS.contains(firstChar))	//if the first character is a digit or a decimal, we'll assume this is a number; now we'll need to determine what kind of units this represents
 			{
 				final int typeCharIndex=CharSequences.notCharIndexOf(valueString, NUMBER_CHARS, 0);	//find the first character that isn't a digit or a decimal point TODO use a constant here
 				if(typeCharIndex!=-1)	//if we found a non-digit character int the string

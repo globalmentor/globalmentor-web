@@ -152,7 +152,7 @@ public class XHTMLCreator
 		String line=getLine(bufferedReader);	//read the first line of text
 		while(line!=null)	//read all the blank lines until we find one with text (or until we read the end of the data)
 		{
-			if(CharSequences.notCharIndexOf(line, TRIM_CHARS)>=0)		//if there is text for this line
+			if(CharSequences.notCharIndexOf(line, TRIM_CHARACTERS)>=0)		//if there is text for this line
 				break;	//we're ready to start storing the text
 		  line=getLine(bufferedReader);	//read the next line of text
 		}
@@ -165,7 +165,7 @@ public class XHTMLCreator
 		{
 				//make sure all the characters are valid XML characters
 			line=XML.createValidString(line);
-			if(CharSequences.notCharIndexOf(line, TRIM_CHARS)>=0)		//if there is text for this line
+			if(CharSequences.notCharIndexOf(line, TRIM_CHARACTERS)>=0)		//if there is text for this line
 			{
 				if(Prose.isBreak(line) && line.length()>10) //if the line we want to append is a break
 				{
@@ -224,10 +224,10 @@ public class XHTMLCreator
 					else if(lineCount>0) //if we have lines in the paragraph
 					{
 							//get the index of the first non-whitespace character
-						final int firstCharIndex=CharSequences.notCharIndexOf(line, TRIM_CHARS);
+						final int firstCharIndex=CharSequences.notCharIndexOf(line, TRIM_CHARACTERS);
 						final char firstChar=line.charAt(firstCharIndex);  //get the first character
 							//get the index of the last non-whitespace character
-						final int lastCharIndex=CharSequences.notCharLastIndexOf(line, TRIM_CHARS);
+						final int lastCharIndex=CharSequences.notCharLastIndexOf(line, TRIM_CHARACTERS);
 						final char lastChar=line.charAt(lastCharIndex);  //get the last character
 						if(headingType==Prose.NO_HEADING) //if this is not a heading, we still need to sense the start of a new heading within the paragraph (if the paragraph started with a heading, we've already checked to see if it has changed types)
 						{
@@ -237,8 +237,8 @@ public class XHTMLCreator
 									//we have to be extra careful when breaking a paragraph apart for supposed headings
 									//don't break for title headings that start or end with phrase punctuation
 								if(lineHeadingType!=Prose.TITLE_HEADING ||
-									  (PHRASE_PUNCTUATION_CHARS.indexOf(firstChar)<0
-											  && PHRASE_PUNCTUATION_CHARS.indexOf(lastChar)<0))
+									  (!PHRASE_PUNCTUATION_CHARACTERS.contains(firstChar)
+											  && !PHRASE_PUNCTUATION_CHARACTERS.contains(lastChar)))
 								{
 									ungetLine(line);  //put the line back in the buffer
 									break;  //return what we have so far, and come back later for the heading text
@@ -258,8 +258,8 @@ public class XHTMLCreator
 						final int textLength=lastCharIndex-firstCharIndex+1;
 						if(textLength<expectedLength //if there aren't enough characters in this line
 											//or if the line is almost as long as the average, but ends in non-dependent phrase punctuation (such as '.')
-							  || (textLength<probablyLength && PHRASE_PUNCTUATION_CHARS.indexOf(lastChar)>=0
-											&& DEPENDENT_PUNCTUATION_CHARS.indexOf(lastChar)<0))
+							  || (textLength<probablyLength && PHRASE_PUNCTUATION_CHARACTERS.contains(lastChar)
+											&& !DEPENDENT_PUNCTUATION_CHARACTERS.contains(lastChar)))
 						{
 								//get the next line to make sure it's not a page number
 							String nextLine=getLine(bufferedReader);  //get the next line
@@ -380,13 +380,13 @@ Log.trace("primed buffer, number of lines: ", getLineBuffer().size());
 		  final String line=(String)getLineBuffer().get(i); //get another line
 			++lineCount;  //show that we've found another line
 			  //get the index of the last character in the string that isn't whitespace
-			final int lastNonWhitespaceCharIndex=CharSequences.notCharLastIndexOf(line, TRIM_CHARS);
+			final int lastNonWhitespaceCharIndex=CharSequences.notCharLastIndexOf(line, TRIM_CHARACTERS);
 			if(lastNonWhitespaceCharIndex>=0) //if this is not a blank line
 			{
 				++nonBlankLineCount;  //show that we've found another non-blank line
 				final char lastChar=line.charAt(lastNonWhitespaceCharIndex); //get the last character on the line
 					//if there is independent punctuation at the end of this line
-				if(PUNCTUATION_CHARS.indexOf(lastChar)>=0 && DEPENDENT_PUNCTUATION_CHARS.indexOf(lastChar)<0)
+				if(PUNCTUATION_CHARS.contains(lastChar) && !DEPENDENT_PUNCTUATION_CHARACTERS.contains(lastChar))
 				  ++endingPunctuationSum; //show that we found another line with ending punctuation
 			}
 		}
@@ -427,7 +427,7 @@ Log.trace("primed buffer, number of lines: ", getLineBuffer().size());
 		{
 		  final String line=(String)getLineBuffer().get(i); //get another line
 			++lineCount;  //show that we've found another line
-			final boolean isBlankLine=CharSequences.notCharIndexOf(line, TRIM_CHARS)<0; //see if this is a blank line
+			final boolean isBlankLine=CharSequences.notCharIndexOf(line, TRIM_CHARACTERS)<0; //see if this is a blank line
 			if(!isBlankLine)  //if this isn't a blank line
 				++nonBlankLineCount;  //show that we've found another non-blank line
 			if(blankLineRunStartIndex<0)  //if we haven't started a run, yet

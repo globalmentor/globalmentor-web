@@ -1,5 +1,5 @@
 /*
- * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ * Copyright © 1996-2011 GlobalMentor, Inc. <http://www.globalmentor.com/>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -228,7 +228,7 @@ public class ProjectGutenbergXHTMLTidier	//TODO move to different package
 			//  which uses single spacing for the header but double spacing for the
 			//  rest), might result in multiple lines in one paragraph, with multiple
 			//  occurences of "end"
-		final StringTokenizer lineTokenizer=new StringTokenizer(text, EOL_CHAR_STRING); //tokenize the lines of the string
+		final StringTokenizer lineTokenizer=new StringTokenizer(text, EOL_CHARACTERS.toString()); //tokenize the lines of the string
 		while(lineTokenizer.hasMoreTokens())  //while there are more lines
 		{
 			final String line=lineTokenizer.nextToken();  //get the next line
@@ -312,11 +312,11 @@ public class ProjectGutenbergXHTMLTidier	//TODO move to different package
 	{
 		boolean foundEnd=false; //this will keep track of whether we've found a line beginning with "end"
 		boolean foundPG=false;  //this will keep track of whether we've found a line containing "Project Gutenberg"
-		final StringTokenizer lineTokenizer=new StringTokenizer(text, EOL_CHAR_STRING); //tokenize the lines of the string
+		final StringTokenizer lineTokenizer=new StringTokenizer(text, EOL_CHARACTERS.toString()); //tokenize the lines of the string
 		while(lineTokenizer.hasMoreTokens())  //while there are more lines
 		{
 				//get the next line and trim it of whitespace and asterisks
-			final String line=Strings.trim(lineTokenizer.nextToken(), TRIM_CHARS+'*'); //TODO use a constant
+			final String line=Strings.trim(lineTokenizer.nextToken(), TRIM_CHARACTERS.add('*')); //TODO use a constant
 			if(Strings.startsWithIgnoreCase(line, "end")) //if the line starts with "end" TODO use a constant
 				foundEnd=true;  //show that we found the "end" line
 			if(Strings.indexOfIgnoreCase(text, PROJECT_GUTENB)>=0) //if this line contains "Project Gutenberg" in it
@@ -352,7 +352,7 @@ public class ProjectGutenbergXHTMLTidier	//TODO move to different package
 					final String text=XML.getText(childElement, true); //get the text of the header
 					if(isPGHeaderElement(childElement))  //if this is a header element
 					{
-						final StringTokenizer lineTokenizer=new StringTokenizer(text, EOL_CHAR_STRING); //create a tokenizer to look at each line
+						final StringTokenizer lineTokenizer=new StringTokenizer(text, EOL_CHARACTERS.toString()); //create a tokenizer to look at each line
 						while(lineTokenizer.hasMoreTokens())  //while there are more lines
 						{
 							final String line=lineTokenizer.nextToken();  //get the next line
@@ -402,13 +402,13 @@ public class ProjectGutenbergXHTMLTidier	//TODO move to different package
 									}
 								}
 									//get the first non-whitespace character
-								final char firstChar=line.charAt(CharSequences.notCharIndexOf(line, TRIM_CHARS));
+								final char firstChar=line.charAt(CharSequences.notCharIndexOf(line, TRIM_CHARACTERS));
 									//if this is the correct line, and there's whitespace or dependent punctuation after the etext string
 								if(eTextStringIndex>=0 && eTextStringIndex+eTextString.length()<line.length()
 										&& (firstChar=='*'  //TODO test with original problem etext, use constant
 											|| isSpecialFirstPGHeader //we don't need to check for etext for the special header that has no etext
 											|| Characters.isWhitespace(line.charAt(eTextStringIndex+eTextString.length()))
-										  || DEPENDENT_PUNCTUATION_CHARS.indexOf(line.charAt(eTextStringIndex+eTextString.length()))>=0))
+										  || DEPENDENT_PUNCTUATION_CHARACTERS.contains(line.charAt(eTextStringIndex+eTextString.length()))))
 								{
 										//remove the header string and everything before it, and tidy the title
 									String remainingText=tidyTitle(line.substring(eTextStringIndex+eTextString.length()));
@@ -448,7 +448,7 @@ public class ProjectGutenbergXHTMLTidier	//TODO move to different package
 												//  add the next line to our title (but only if the
 												//  author doesn't appear on this line)
 											if(lineTokenizer.hasMoreTokens() && byIndex<0 &&
-												  (DEPENDENT_PUNCTUATION_CHARS.indexOf(originalLastChar)>=0
+												  (DEPENDENT_PUNCTUATION_CHARACTERS.contains(originalLastChar)
 												  || (originalFirstChar=='*' && originalLastChar!=originalFirstChar)
 													|| title.endsWith(" "+OF)
 													|| title.endsWith(" in")  //(e.g. frnrd10.txt) //TODO use a constant
@@ -458,7 +458,7 @@ public class ProjectGutenbergXHTMLTidier	//TODO move to different package
 												final String nextLine=lineTokenizer.nextToken();  //get the next line
 												if(!isFileLine(nextLine)) //if this is not the file line
 												{
-													if(DEPENDENT_PUNCTUATION_CHARS.indexOf(originalLastChar)>=0)  //if the line ended with dependent punctuation
+													if(DEPENDENT_PUNCTUATION_CHARACTERS.contains(originalLastChar))  //if the line ended with dependent punctuation
 														title+=originalLastChar;  //add the puncutation back
 														//add the tidied next line, and tidy everything again
 													title=tidyTitle(title+" "+tidyTitle(nextLine));
@@ -499,7 +499,7 @@ public class ProjectGutenbergXHTMLTidier	//TODO move to different package
 							break;  //stop looking at elements
 						}
 					}
-					final StringTokenizer lineTokenizer=new StringTokenizer(text, EOL_CHAR_STRING); //create a tokenizer to look at each line
+					final StringTokenizer lineTokenizer=new StringTokenizer(text, EOL_CHARACTERS.toString()); //create a tokenizer to look at each line
 					while(lineTokenizer.hasMoreTokens())  //while there are more lines
 					{
 						final String line=lineTokenizer.nextToken();  //get the next line
@@ -570,7 +570,7 @@ public class ProjectGutenbergXHTMLTidier	//TODO move to different package
 					boolean isNextLineByAuthor=false; //we don't know yet if the author is on the next line
 					if(isPGHeaderElement(childElement))  //if this is a header element
 					{
-						final StringTokenizer lineTokenizer=new StringTokenizer(text, EOL_CHAR_STRING); //create a tokenizer to look at each line
+						final StringTokenizer lineTokenizer=new StringTokenizer(text, EOL_CHARACTERS.toString()); //create a tokenizer to look at each line
 						while(lineTokenizer.hasMoreTokens())  //while there are more lines
 						{
 							final String line=lineTokenizer.nextToken();  //get the next line
@@ -583,7 +583,7 @@ public class ProjectGutenbergXHTMLTidier	//TODO move to different package
 									//if this is the correct line, and there's whitespace after the etext string
 								if(eTextStringIndex>=0 && eTextStringIndex+eTextString.length()<line.length()
 										&& (Characters.isWhitespace(line.charAt(eTextStringIndex+eTextString.length()))
-										  || DEPENDENT_PUNCTUATION_CHARS.indexOf(line.charAt(eTextStringIndex+eTextString.length()))>=0))
+										  || DEPENDENT_PUNCTUATION_CHARACTERS.contains(line.charAt(eTextStringIndex+eTextString.length()))))
 								{
 										//remove the header string and everything before it
 									String remainingText=line.substring(eTextStringIndex+eTextString.length());
@@ -609,7 +609,7 @@ public class ProjectGutenbergXHTMLTidier	//TODO move to different package
 									if(possessionIndex>0) //if there is possession in the title
 									{
 											//try to find the start of the word showing possession
-										final int wordBeginIndex=CharSequences.charLastIndexOf(remainingText, TRIM_CHARS, possessionIndex-1)+1;
+										final int wordBeginIndex=CharSequences.charLastIndexOf(remainingText, TRIM_CHARACTERS, possessionIndex-1)+1;
 										if(wordBeginIndex<possessionIndex)  //if this is a valid index
 										{
 											remainingText=remainingText.substring(wordBeginIndex, possessionIndex); //get the word showing possession
@@ -665,7 +665,7 @@ public class ProjectGutenbergXHTMLTidier	//TODO move to different package
 					{
 						if(Strings.indexOfIgnoreCase(text, PROJECT_GUTENB)<0) //the author paragraph should *not* have "Project Gutenberg" in it (e.g. 22gbl10.txt)
 						{
-							final StringTokenizer lineTokenizer=new StringTokenizer(text, EOL_CHAR_STRING); //create a tokenizer to look at each line
+							final StringTokenizer lineTokenizer=new StringTokenizer(text, EOL_CHARACTERS.toString()); //create a tokenizer to look at each line
 							while(lineTokenizer.hasMoreTokens())  //while there are more lines
 							{
 								final String line=lineTokenizer.nextToken();  //get the next line
@@ -740,23 +740,23 @@ public class ProjectGutenbergXHTMLTidier	//TODO move to different package
 		final Element headerElement=getHeaderElement(headerFragment); //get the header element
 		if(headerElement!=null)  //if we found the header element
 		{
-			final StringBuffer descriptionStringBuffer=new StringBuffer();  //create a new string buffer to hold the description we consruct
+			final StringBuilder descriptionStringBuilder=new StringBuilder();  //create a new string buffer to hold the description we consruct
 			final String headerText=XML.getText(headerElement, true); //get the text of the header
-			final StringTokenizer lineTokenizer=new StringTokenizer(headerText, EOL_CHAR_STRING); //create a tokenizer to look at each line
+			final StringTokenizer lineTokenizer=new StringTokenizer(headerText, EOL_CHARACTERS.toString()); //create a tokenizer to look at each line
 			while(lineTokenizer.hasMoreTokens())  //while there are more lines
 			{
 				final String line=lineTokenizer.nextToken();  //get the next line
 					//if this isn't the filename line, and it's not the "copyright laws are changing all over the world..." line
 				if(!isFileLine(line) && Strings.indexOfIgnoreCase(line, "copyright laws")<0)  //TODO use a constant
 				{
-					if(descriptionStringBuffer.length()>0)  //if there is already part of a description
-						descriptionStringBuffer.append(' ');    //separate the description components with spaces
+					if(descriptionStringBuilder.length()>0)  //if there is already part of a description
+						descriptionStringBuilder.append(' ');    //separate the description components with spaces
 							//trim both ends of "*" and whitespace and add the line to the description
-					descriptionStringBuffer.append(Strings.trim(line, TRIM_CHARS+'*')); //TODO use a constant here
+					descriptionStringBuilder.append(Strings.trim(line, TRIM_CHARACTERS.add('*'))); //TODO use a constant here
 				}
 			}
-			if(descriptionStringBuffer.length()>0)  //if we have a description
-				return descriptionStringBuffer.toString();  //return the description string we constructed
+			if(descriptionStringBuilder.length()>0)  //if we have a description
+				return descriptionStringBuilder.toString();  //return the description string we constructed
 		}
 		return null;  //show that we couldn't find a description
 	}
@@ -802,7 +802,7 @@ public class ProjectGutenbergXHTMLTidier	//TODO move to different package
 	public static boolean isPGHeaderElement(final Element element)
 	{
 		final String text=XML.getText(element, true); //get the text of the element
-		final StringTokenizer lineTokenizer=new StringTokenizer(text, EOL_CHAR_STRING); //create a tokenizer to look at each line
+		final StringTokenizer lineTokenizer=new StringTokenizer(text, EOL_CHARACTERS.toString()); //create a tokenizer to look at each line
 		final int lineCount=lineTokenizer.countTokens();  //see how many lines we have
 			//if this paragraph is four lines or less
 		if(lineCount<=4
@@ -837,14 +837,14 @@ public class ProjectGutenbergXHTMLTidier	//TODO move to different package
 //TODO del if not needed						if(StringUtilities.startsWithIgnoreCase(line.substring(projectGutenbergIndex), "PROJECT GUTENBERG-tm"))
 						{
 								//get the first non-whitespace character
-							final char firstChar=line.charAt(CharSequences.notCharIndexOf(line, TRIM_CHARS));
+							final char firstChar=line.charAt(CharSequences.notCharIndexOf(line, TRIM_CHARACTERS));
 								//if the line doesn't start with '*', make sure there's whitespace or
 								//  dependent punctuation after "etext" (e.g. it's not "...the first
 								//  nine Project Gutenberg Etexts...")
 							if(eTextStringIndex+eTextString.length()<line.length()
 								&& (firstChar=='*'  //TODO check with original problem etext; use constant
 										|| Characters.isWhitespace(line.charAt(eTextStringIndex+eTextString.length()))
-										|| DEPENDENT_PUNCTUATION_CHARS.indexOf(text.charAt(eTextStringIndex+eTextString.length()))>=0))
+										|| DEPENDENT_PUNCTUATION_CHARACTERS.contains(text.charAt(eTextStringIndex+eTextString.length()))))
 
 							{
 								return true;  //this is a header element
@@ -1043,134 +1043,134 @@ Log.trace("found small print end");
 	*/
 	public static String tidyTitle(final String string)  //TODO eventually put in some common class
 	{
-		final StringBuffer stringBuffer=new StringBuffer(string); //create a new string buffer with the string
-		tidyProperty(stringBuffer); //do default tidying
+		final StringBuilder stringBuilder=new StringBuilder(string); //create a new string buffer with the string
+		tidyProperty(stringBuilder); //do default tidying
 			//if the string starts with "release of:" (but only in lowercase), remove it (e.g. duglas11.txt)
-		if(StringBuffers.startsWith(stringBuffer, "release of:")) //if the string starts with "'s " (but only in lowercase) TODO use a constant
+		if(StringBuilders.startsWith(stringBuilder, "release of:")) //if the string starts with "'s " (but only in lowercase) TODO use a constant
 		{
-			tidyProperty(stringBuffer.delete(0, "release of:".length())); //remove the beginning Project Gutenberg string and tidy the string TODO use a constant
+			tidyProperty(stringBuilder.delete(0, "release of:".length())); //remove the beginning Project Gutenberg string and tidy the string TODO use a constant
 		}
 			//if the string contains with "title:" in any case (e.g. wacia10.txt)
-		final int titlePropertyIndex=Strings.indexOfIgnoreCase(stringBuffer.toString(), "title:"); //TODO use a constant TODO use StringBufferUtiliites
+		final int titlePropertyIndex=Strings.indexOfIgnoreCase(stringBuilder.toString(), "title:"); //TODO use a constant TODO use StringBuilders
 		if(titlePropertyIndex>=0) //TODO this should probably go in getProperty(), as that's where the value comes from
 		{
-			tidyProperty(stringBuffer.delete(titlePropertyIndex, stringBuffer.length())); //remove that text and tidy the string TODO use a constant
+			tidyProperty(stringBuilder.delete(titlePropertyIndex, stringBuilder.length())); //remove that text and tidy the string TODO use a constant
 		}
 
 		  //see if "Project Gutenberg" or a variation is in the string
-		final String projectGutenbergString=getProjectGutenbergString(stringBuffer.toString()); //TODO do something more efficient than creating a string
+		final String projectGutenbergString=getProjectGutenbergString(stringBuilder.toString()); //TODO do something more efficient than creating a string
 			//get the index of the string if it exists
-		final int projectGutenbergIndex=projectGutenbergString!=null ? Strings.indexOfIgnoreCase(stringBuffer.toString(), projectGutenbergString) : -1;  //TODO do something more efficient than creating a string
+		final int projectGutenbergIndex=projectGutenbergString!=null ? Strings.indexOfIgnoreCase(stringBuilder.toString(), projectGutenbergString) : -1;  //TODO do something more efficient than creating a string
 			//if the string starts with a variant of "Project Gutenberg" or "The Project Gutenberg"
 		if(projectGutenbergString!=null
-			&& (StringBuffers.startsWith(stringBuffer, projectGutenbergString)
-				  || StringBuffers.startsWith(stringBuffer, "The "+projectGutenbergString) //TODO use a constant
-				  || StringBuffers.startsWith(stringBuffer, "This is the "+projectGutenbergString) //TODO use a constant
+			&& (StringBuilders.startsWith(stringBuilder, projectGutenbergString)
+				  || StringBuilders.startsWith(stringBuilder, "The "+projectGutenbergString) //TODO use a constant
+				  || StringBuilders.startsWith(stringBuilder, "This is the "+projectGutenbergString) //TODO use a constant
 					))
 		{
-			tidyProperty(stringBuffer.delete(0, projectGutenbergIndex+projectGutenbergString.length())); //remove the beginning "'s " and tidy the string TODO use a constant
-			final String eTextString=getETextString(stringBuffer.toString());  //get the etext string in the string
+			tidyProperty(stringBuilder.delete(0, projectGutenbergIndex+projectGutenbergString.length())); //remove the beginning "'s " and tidy the string TODO use a constant
+			final String eTextString=getETextString(stringBuilder.toString());  //get the etext string in the string
 				//if the string starts with "'s " (but only in lowercase), remove it (e.g. "PG's...")
-			if(StringBuffers.startsWith(stringBuffer, "'s ")) //if the string starts with "'s " (but only in lowercase) TODO use a constant
+			if(StringBuilders.startsWith(stringBuilder, "'s ")) //if the string starts with "'s " (but only in lowercase) TODO use a constant
 			{
-				tidyProperty(stringBuffer.delete(0, "'s ".length())); //remove the beginning Project Gutenberg string and tidy the string TODO use a constant
+				tidyProperty(stringBuilder.delete(0, "'s ".length())); //remove the beginning Project Gutenberg string and tidy the string TODO use a constant
 			}
 				//if the string starts with a variant of "EText"
-			if(eTextString!=null && StringBuffers.startsWith(stringBuffer, eTextString))
+			if(eTextString!=null && StringBuilders.startsWith(stringBuilder, eTextString))
 			{
-				tidyProperty(stringBuffer.delete(0, eTextString.length())); //remove the beginning etext string and tidy the string
+				tidyProperty(stringBuilder.delete(0, eTextString.length())); //remove the beginning etext string and tidy the string
 			}
 		}
 			//if the string starts with "s" (but only in lowercase), remove it (e.g. "Project Gutenberg ETexts from...")
-		if(StringBuffers.startsWith(stringBuffer, "s ")) //if the string starts with "s " (but only in lowercase) TODO use a constant
+		if(StringBuilders.startsWith(stringBuilder, "s ")) //if the string starts with "s " (but only in lowercase) TODO use a constant
 		{
-			tidyProperty(stringBuffer.delete(0, "s ".length())); //remove the beginning "s " and tidy the string TODO use a constant
+			tidyProperty(stringBuilder.delete(0, "s ".length())); //remove the beginning "s " and tidy the string TODO use a constant
 		}
 			//if the string starts with "in" (but only in lowercase), remove it (e.g. "in French of...", 8plno07.txt)
-		if(StringBuffers.startsWith(stringBuffer, "in"))  //TODO use a constant
+		if(StringBuilders.startsWith(stringBuilder, "in"))  //TODO use a constant
 		{
-			if(stringBuffer.indexOf("French")>=0 //TODO use a constant; do stricter order checking
-				  || stringBuffer.indexOf("Spanish")>=0
-				  || stringBuffer.indexOf("German")>=0
-				  || stringBuffer.indexOf("Italian")>=0
-				  || stringBuffer.indexOf("Latin")>=0)
+			if(stringBuilder.indexOf("French")>=0 //TODO use a constant; do stricter order checking
+				  || stringBuilder.indexOf("Spanish")>=0
+				  || stringBuilder.indexOf("German")>=0
+				  || stringBuilder.indexOf("Italian")>=0
+				  || stringBuilder.indexOf("Latin")>=0)
 			{
-				final int ofIndex=stringBuffer.indexOf(OF);  //find out where "of" appears
+				final int ofIndex=stringBuilder.indexOf(OF);  //find out where "of" appears
 				if(ofIndex>=0)  //if "of" is present, we think the string begins with something line "in French of"
 				{
 						//remove everything up to and including "OF" and retidy
-					tidyProperty(stringBuffer.delete(0, ofIndex+OF.length()));
+					tidyProperty(stringBuilder.delete(0, ofIndex+OF.length()));
 				}
 			}
 		}
 			//if the string starts with "of" (but only in lowercase), remove it (e.g. "The Project Gutenberg ETExt of...")
-		if(StringBuffers.startsWith(stringBuffer, OF)) //if the string starts with "of" (but only in lowercase) TODO use a constant
+		if(StringBuilders.startsWith(stringBuilder, OF)) //if the string starts with "of" (but only in lowercase) TODO use a constant
 		{
-			tidyProperty(stringBuffer.delete(0, OF.length())); //remove the beginning "of" and tidy the string TODO use a constant
+			tidyProperty(stringBuilder.delete(0, OF.length())); //remove the beginning "of" and tidy the string TODO use a constant
 		}
 			//if the string starts with "from" (but only in lowercase), remove it (e.g. "Project Gutenberg ETexts from...")
-		if(StringBuffers.startsWith(stringBuffer, "from")) //if the string starts with "from" (but only in lowercase) TODO use a constant
+		if(StringBuilders.startsWith(stringBuilder, "from")) //if the string starts with "from" (but only in lowercase) TODO use a constant
 		{
-			tidyProperty(stringBuffer.delete(0, "from".length())); //remove the beginning "from" and tidy the string TODO use a constant
+			tidyProperty(stringBuilder.delete(0, "from".length())); //remove the beginning "from" and tidy the string TODO use a constant
 		}
 			//if the string starts with "the" (but only in lowercase), remove it
-		if(StringBuffers.startsWith(stringBuffer, THE)) //if the string starts with "the" (but only in lowercase)
+		if(StringBuilders.startsWith(stringBuilder, THE)) //if the string starts with "the" (but only in lowercase)
 		{
-			tidyProperty(stringBuffer.delete(0, THE.length())); //remove the beginning "the" and tidy the string
+			tidyProperty(stringBuilder.delete(0, THE.length())); //remove the beginning "the" and tidy the string
 		}
 			//if the string ends with ", or" (e.g. 03tcb10.txt)
-		if(CharSequences.endsWithIgnoreCase(stringBuffer, ", or")) //if the string ends with ", or" TODO use a constnat
+		if(CharSequences.endsWithIgnoreCase(stringBuilder, ", or")) //if the string ends with ", or" TODO use a constnat
 		{
-			tidyProperty(stringBuffer.delete(stringBuffer.length()-", or".length(), stringBuffer.length())); //remove the beginning ", or" and tidy the string TODO use a constant
+			tidyProperty(stringBuilder.delete(stringBuilder.length()-", or".length(), stringBuilder.length())); //remove the beginning ", or" and tidy the string TODO use a constant
 		}
 			//if the string starts with "book", "etext", or something similar
-		final String eTextString=getETextString(stringBuffer.toString()); //see if "book" or "etext" or something appears in the string
+		final String eTextString=getETextString(stringBuilder.toString()); //see if "book" or "etext" or something appears in the string
 		if(eTextString!=null) //if there is an etext string in the title
 		{
 				//see where the etext string appeared
-	//TODO fix; the current way is a hack and very inefficient; add a StringBuffer.indexOf(StringBuffer, String)		  final int eTextStringIndex=StringBufferUtilities.indexOf(stringBuffer, eTextString);
-			final int eTextStringIndex=stringBuffer.toString().indexOf(eTextString);
+	//TODO fix; the current way is a hack and very inefficient; add a StringBuilder.indexOf(StringBUilder, String)		  final int eTextStringIndex=StringBuilder.indexOf(stringBuilder, eTextString);
+			final int eTextStringIndex=stringBuilder.toString().indexOf(eTextString);
 			if(eTextStringIndex==0) //if the string appeared at the beginning TODO this can cause problems if the title is "Ebook 101" or something
 			{
-				tidyProperty(stringBuffer.delete(0, eTextString.length())); //remove the beginning etext word and tidy the string
+				tidyProperty(stringBuilder.delete(0, eTextString.length())); //remove the beginning etext word and tidy the string
 					//if the string starts with "of" (but only in lowercase)
-				if(StringBuffers.startsWith(stringBuffer, OF)) //if the string starts with "of" (but only in lowercase)
+				if(StringBuilders.startsWith(stringBuilder, OF)) //if the string starts with "of" (but only in lowercase)
 				{
-					tidyProperty(stringBuffer.delete(0, OF.length())); //remove the beginning "of" and tidy the string
+					tidyProperty(stringBuilder.delete(0, OF.length())); //remove the beginning "of" and tidy the string
 				}
 			}
 		}
 			//if the string contains with "author:" in any case (e.g. ffnt110.txt)
-		final int authorPropertyIndex=Strings.indexOfIgnoreCase(stringBuffer.toString(), "author:"); //TODO use a constant TODO use StringBufferUtiliites
+		final int authorPropertyIndex=Strings.indexOfIgnoreCase(stringBuilder.toString(), "author:"); //TODO use a constant TODO use StringBuilders
 		if(authorPropertyIndex>=0)  //TODO this should probably go in getProperty(), as that's where the value comes from
 		{
-			tidyProperty(stringBuffer.delete(authorPropertyIndex, stringBuffer.length())); //remove that text and tidy the string TODO use a constant
+			tidyProperty(stringBuilder.delete(authorPropertyIndex, stringBuilder.length())); //remove that text and tidy the string TODO use a constant
 		}
-		final int byIndex=getByIndex(stringBuffer.toString());  //get the index of "by" TODO if we didn't have to convert to a string, this would be more efficient
-		if(byIndex>=0 && Character.isLowerCase(stringBuffer.charAt(byIndex)))  //if we found "by" (only in lowercase)
+		final int byIndex=getByIndex(stringBuilder.toString());  //get the index of "by" TODO if we didn't have to convert to a string, this would be more efficient
+		if(byIndex>=0 && Character.isLowerCase(stringBuilder.charAt(byIndex)))  //if we found "by" (only in lowercase)
 		{
-		  tidyProperty(stringBuffer.delete(byIndex, stringBuffer.length()));  //remove "by" and everything after it TODO add a convenience routine like the one for strings
+		  tidyProperty(stringBuilder.delete(byIndex, stringBuilder.length()));  //remove "by" and everything after it TODO add a convenience routine like the one for strings
 		}
 			//see if "copyright" appears in the string
-		final int copyrightIndex=Strings.indexOfIgnoreCase(stringBuffer.toString(), COPYRIGHT);  //TODO use a StringBufferUtilities method
+		final int copyrightIndex=Strings.indexOfIgnoreCase(stringBuilder.toString(), COPYRIGHT);  //TODO use a StringBuilders method
 		if(copyrightIndex>=0) //if "copyright" appears in the title
 		{
 				//if "copyright" is followed by a copyright character
-			if(CharSequences.charIndexOf(stringBuffer, "@"+COPYRIGHT_SIGN, copyrightIndex+1)>=0
-				  || stringBuffer.indexOf("(c)", copyrightIndex+1)>=0
-					|| stringBuffer.indexOf("(C)", copyrightIndex+1)>=0)
+			if(CharSequences.charIndexOf(stringBuilder, new Characters('@', COPYRIGHT_SIGN), copyrightIndex+1)>=0
+				  || stringBuilder.indexOf("(c)", copyrightIndex+1)>=0
+					|| stringBuilder.indexOf("(C)", copyrightIndex+1)>=0)
 			{
-			  tidyProperty(stringBuffer.delete(copyrightIndex, stringBuffer.length()));  //remove "copyright" and everything after it TODO add a convenience routine like the one for strings
+			  tidyProperty(stringBuilder.delete(copyrightIndex, stringBuilder.length()));  //remove "copyright" and everything after it TODO add a convenience routine like the one for strings
 			}
 		}
 			//see if "(c)" appears in the string (e.g. truth10.txt)
-		final int copyrightCIndex=Strings.indexOfIgnoreCase(stringBuffer.toString(), "(c)");  //TODO use a StringBufferUtilities method; TODO use a constant
+		final int copyrightCIndex=Strings.indexOfIgnoreCase(stringBuilder.toString(), "(c)");  //TODO use a StringBuilders method; TODO use a constant
 		if(copyrightCIndex>=0) //if "(c)" appears in the title
 		{
-			tidyProperty(stringBuffer.delete(copyrightCIndex, stringBuffer.length()));  //remove "(c)" and everything after it TODO add a convenience routine like the one for strings
+			tidyProperty(stringBuilder.delete(copyrightCIndex, stringBuilder.length()));  //remove "(c)" and everything after it TODO add a convenience routine like the one for strings
 		}
-		tidyProperty(stringBuffer); //tidy the title once more (it might have a comma before "by", for example)
-		return stringBuffer.toString(); //return the string we tidied
+		tidyProperty(stringBuilder); //tidy the title once more (it might have a comma before "by", for example)
+		return stringBuilder.toString(); //return the string we tidied
 	}
 
 	/**Gets the index of "by", making sure it's surrounded by whitespace.
@@ -1214,64 +1214,64 @@ Log.trace("found small print end");
 	*/
 	public static String tidyAuthor(final String string)  //TODO eventually put in some common class
 	{
-		final StringBuffer stringBuffer=new StringBuffer(string); //create a new string buffer with the string
-		tidyProperty(stringBuffer); //do default tidying
+		final StringBuilder stringBuilder=new StringBuilder(string); //create a new string buffer with the string
+		tidyProperty(stringBuilder); //do default tidying
 			//trim the string of all punctuation
 			//trim the string of all punctuation (except quotes and group punctuation) and whitespace
-		StringBuffers.trim(stringBuffer, PHRASE_PUNCTUATION_CHARS+HYPHEN_MINUS_CHAR+EM_DASH_CHAR+EN_DASH_CHAR+TRIM_CHARS);
+		StringBuilders.trim(stringBuilder, PHRASE_PUNCTUATION_CHARACTERS.add(HYPHEN_MINUS_CHAR).add(EM_DASH_CHAR).add(EN_DASH_CHAR).add(TRIM_CHARACTERS));
 			//if the string starts with "the" (but only in lowercase), remove it
-		if(StringBuffers.startsWith(stringBuffer, THE)) //if the string starts with "the" (but only in lowercase)
+		if(StringBuilders.startsWith(stringBuilder, THE)) //if the string starts with "the" (but only in lowercase)
 		{
-			tidyProperty(stringBuffer.delete(0, THE.length())); //remove the beginning "the" and tidy the string
+			tidyProperty(stringBuilder.delete(0, THE.length())); //remove the beginning "the" and tidy the string
 		}
 			//if the string contains with "author:" in any case (e.g. idiot10.txt)
-		final int authorPropertyIndex=Strings.indexOfIgnoreCase(stringBuffer.toString(), "author:"); //TODO use a constant TODO use StringBufferUtiliites
+		final int authorPropertyIndex=Strings.indexOfIgnoreCase(stringBuilder.toString(), "author:"); //TODO use a constant TODO use StringBuilders
 		if(authorPropertyIndex>=0)  //TODO this should probably go in getProperty(), as that's where the value comes from
 		{
-			tidyProperty(stringBuffer.delete(authorPropertyIndex, stringBuffer.length())); //remove that text and tidy the string TODO use a constant
+			tidyProperty(stringBuilder.delete(authorPropertyIndex, stringBuilder.length())); //remove that text and tidy the string TODO use a constant
 		}
 			//if the string ends with "all rights reserved" in any case TODO use a constant
-		if(CharSequences.endsWithIgnoreCase(stringBuffer, "all rights reserved"))
+		if(CharSequences.endsWithIgnoreCase(stringBuilder, "all rights reserved"))
 		{
-			tidyProperty(stringBuffer.delete(stringBuffer.length()-"all rights reserved".length(), stringBuffer.length())); //remove that text and tidy the string TODO use a constant
+			tidyProperty(stringBuilder.delete(stringBuilder.length()-"all rights reserved".length(), stringBuilder.length())); //remove that text and tidy the string TODO use a constant
 		}
 		  //see if "copyright 19" or "copyright 20" or "copyrihgt (", etc. appears in the string (e.g. efpap10.txt)
-		int copyrightIndex=Strings.indexOfIgnoreCase(stringBuffer.toString(), COPYRIGHT); //see if "copyright" appears in the string TODO change to StringBufferUtilities
+		int copyrightIndex=Strings.indexOfIgnoreCase(stringBuilder.toString(), COPYRIGHT); //see if "copyright" appears in the string TODO change to StringBuilders
 		if(copyrightIndex>=0 &&
 			(
-		CharSequences.charIndexOf(stringBuffer, "@"+COPYRIGHT_SIGN)>=0 //if "copyright" is followed by a copyright sign
-			  || stringBuffer.indexOf("(c)")>=0 //if "copyright" is followed by (c) TODO use a constant
-			  || stringBuffer.indexOf("19")>=0 //if "copyright" is followed by 19 TODO use a constant
-			  || stringBuffer.indexOf("20")>=0 //if "copyright" is followed by 19 TODO use a constant
+		CharSequences.charIndexOf(stringBuilder, new Characters('@', COPYRIGHT_SIGN))>=0 //if "copyright" is followed by a copyright sign TODO use a constant
+			  || stringBuilder.indexOf("(c)")>=0 //if "copyright" is followed by (c) TODO use a constant
+			  || stringBuilder.indexOf("19")>=0 //if "copyright" is followed by 19 TODO use a constant
+			  || stringBuilder.indexOf("20")>=0 //if "copyright" is followed by 19 TODO use a constant
 			))
 		{
-			tidyProperty(stringBuffer.delete(copyrightIndex, stringBuffer.length())); //remove that text and tidy the string
+			tidyProperty(stringBuilder.delete(copyrightIndex, stringBuilder.length())); //remove that text and tidy the string
 		}
 			//if the author contains ", this is..." (e.g. email025.txt) TODO use a constant
-		final int thisIsIndex=stringBuffer.indexOf(", this is");
+		final int thisIsIndex=stringBuilder.indexOf(", this is");
 		if(thisIsIndex>=0)
 		{
-			tidyProperty(stringBuffer.delete(thisIsIndex, stringBuffer.length())); //remove that text and tidy the string TODO use a constant
+			tidyProperty(stringBuilder.delete(thisIsIndex, stringBuilder.length())); //remove that text and tidy the string TODO use a constant
 		}
-		final int byIndex=getByIndex(stringBuffer.toString());  //get the index of "by" TODO if we didn't have to convert to a string, this would be more efficient
-		if(byIndex>=0 && Character.isLowerCase(stringBuffer.charAt(byIndex)))  //if we found "by" (only in lowercase)
+		final int byIndex=getByIndex(stringBuilder.toString());  //get the index of "by" TODO if we didn't have to convert to a string, this would be more efficient
+		if(byIndex>=0 && Character.isLowerCase(stringBuilder.charAt(byIndex)))  //if we found "by" (only in lowercase)
 		{
 				//see if we can find punctuation before "by"
-			final int punctuationIndex=CharSequences.charLastIndexOf(stringBuffer, PUNCTUATION_CHARS, byIndex-1);
+			final int punctuationIndex=CharSequences.charLastIndexOf(stringBuilder, PUNCTUATION_CHARS, byIndex-1);
 				//if by is not at the first of the string and has punctuation before it
 			if(punctuationIndex>=0) //if we can find punctuation before "by" (e.g. efpap10.txt)
 			{
-			  tidyProperty(stringBuffer.delete(punctuationIndex, stringBuffer.length()));  //remove the punctuation and everything else, because we assume it's talking about somebody else
+			  tidyProperty(stringBuilder.delete(punctuationIndex, stringBuilder.length()));  //remove the punctuation and everything else, because we assume it's talking about somebody else
 			}
 			else //if "by" is at the first of the string, assume it's talking about the author
 			{
-			  tidyProperty(stringBuffer.delete(0, byIndex+BY.length()));  //remove everything up to and including "by" TODO add a convenience routine like the one for strings
+			  tidyProperty(stringBuilder.delete(0, byIndex+BY.length()));  //remove everything up to and including "by" TODO add a convenience routine like the one for strings
 			}
 		}
 			//if this string doesn't have group punctuation as its first character
-		if(stringBuffer.length()>0 && LEFT_GROUP_PUNCTUATION_CHARS.indexOf(stringBuffer.charAt(0))<0)
-		  StringBuffers.trimEnd(stringBuffer, RIGHT_GROUP_PUNCTUATION_CHARS); //trim any right group punctuation that's been left on the author for some reason (e.g. huxbr10.txt)
-		return stringBuffer.toString(); //return the string we tidied
+		if(stringBuilder.length()>0 && !LEFT_GROUP_PUNCTUATION_CHARACTERS.contains(stringBuilder.charAt(0)))
+		  StringBuilders.trimEnd(stringBuilder, RIGHT_GROUP_PUNCTUATION_CHARACTERS); //trim any right group punctuation that's been left on the author for some reason (e.g. huxbr10.txt)
+		return stringBuilder.toString(); //return the string we tidied
 	}
 
 	/**Tidies a property, such as the title or the author, of the etext.
@@ -1282,51 +1282,51 @@ Log.trace("found small print end");
 	 */
 	public static String tidyProperty(final String string)  //TODO eventually put in some common class
 	{
-		return tidyProperty(new StringBuffer(string)).toString(); //tidy the string from a string buffer
+		return tidyProperty(new StringBuilder(string)).toString(); //tidy the string from a string buffer
 	}
 
 	/**Tidies a property, such as the title or the author, of the etext.
 		Parenthetical postfixes are removed, and the string is trimmed if
 		whitespace and other characters.
-	@param stringBuffer The characters to tidy.
+	@param stringBuilder The characters to tidy.
 	@return The string buffer with extra characters removed.
 	 */
-	protected static StringBuffer tidyProperty(final StringBuffer stringBuffer)  //TODO eventually put in some common class
+	protected static StringBuilder tidyProperty(final StringBuilder stringBuilder)  //TODO eventually put in some common class
 	{
 			//see if "contents" is part of the property (e.g. tbroa10.txt)
-		final int contentsIndex=Strings.indexOfIgnoreCase(stringBuffer.toString(), "contents");  //TODO use a constant; use StringBufferUtilities
-		if(contentsIndex>0 && EOL_CHAR_STRING.indexOf(stringBuffer.charAt(contentsIndex-1))>=0) //if contents appears after a linebreak
-			stringBuffer.delete(contentsIndex, stringBuffer.length());  //remove that line break and everything after
+		final int contentsIndex=Strings.indexOfIgnoreCase(stringBuilder.toString(), "contents");  //TODO use a constant; use StringBuilders
+		if(contentsIndex>0 && EOL_CHARACTERS.contains(stringBuilder.charAt(contentsIndex-1))) //if contents appears after a linebreak
+			stringBuilder.delete(contentsIndex, stringBuilder.length());  //remove that line break and everything after
 		  //some works (e.g. valen10.txt) for some reason end in "^M"
-		if(stringBuffer.length()>1 && stringBuffer.charAt(stringBuffer.length()-2)=='^')
+		if(stringBuilder.length()>1 && stringBuilder.charAt(stringBuilder.length()-2)=='^')
 		{
-		  stringBuffer.delete(stringBuffer.length()-2, stringBuffer.length());  //remove the ending control character
+		  stringBuilder.delete(stringBuilder.length()-2, stringBuilder.length());  //remove the ending control character
 		}
 		/**The characters we'll trim from the front and back of the string.*/
-		final String TRIM_CHARS=Characters.TRIM_CHARS+WHITESPACE_CHAR_STRING+DEPENDENT_PUNCTUATION_CHARS+/*TODO bring back if needed QUOTE_CHARS+*/'*'+'.';  //G**use constants
+		final Characters TRIM_CHARS=Characters.TRIM_CHARACTERS.add(WHITESPACE_CHARACTERS).add(DEPENDENT_PUNCTUATION_CHARACTERS).add(/*TODO bring back if needed QUOTE_CHARS+*/'*', '.');  //TODO use constants
 		  //trim the string of whitespace, dashes, and asterisks
-		StringBuffers.trim(stringBuffer, TRIM_CHARS);
+		StringBuilders.trim(stringBuilder, TRIM_CHARS);
 			//see if there is any group punctuation at the end (e.g. "XXX (XXX)")
-		final int rightGroupIndex=CharSequences.charLastIndexOf(stringBuffer, RIGHT_GROUP_PUNCTUATION_CHARS);
+		final int rightGroupIndex=CharSequences.charLastIndexOf(stringBuilder, RIGHT_GROUP_PUNCTUATION_CHARACTERS);
 		if(rightGroupIndex>=0)  //if the string ends with a right group characters
 		{
 		    //if there's nothing but whitespace after the right group, we'll remove the entire group
-			if(StringBuffers.notCharIndexOf(stringBuffer, Characters.TRIM_CHARS, rightGroupIndex+1)<0)
+			if(StringBuilders.notCharIndexOf(stringBuilder, Characters.TRIM_CHARACTERS, rightGroupIndex+1)<0)
 			{
 					//remove evertying from the start of the group onward
 					//see if there is any left punctuation at the end (e.g. "XXX (XXX)") (don't just grab the first left group punctuation, because there could be several sets of them)
-				final int leftGroupIndex=CharSequences.charLastIndexOf(stringBuffer, LEFT_GROUP_PUNCTUATION_CHARS, rightGroupIndex-1);
+				final int leftGroupIndex=CharSequences.charLastIndexOf(stringBuilder, LEFT_GROUP_PUNCTUATION_CHARACTERS, rightGroupIndex-1);
 				if(leftGroupIndex>=0) //if we found a matching left group punctuation character
 				{
-					stringBuffer.delete(leftGroupIndex, stringBuffer.length()); //remove the left punctuation and everything after it
+					stringBuilder.delete(leftGroupIndex, stringBuilder.length()); //remove the left punctuation and everything after it
 				}
 			}
 		}
 		  //trim the string of whitespace, dashes, and asterisks again
-		StringBuffers.trim(stringBuffer, TRIM_CHARS);
+		StringBuilders.trim(stringBuilder, TRIM_CHARS);
 		  //collapse all whitespace into spaces
-		StringBuffers.collapse(stringBuffer, WHITESPACE_CHAR_STRING, " ");
-		return stringBuffer; //return the string we tidied
+		StringBuilders.collapse(stringBuilder, WHITESPACE_CHARACTERS, " ");
+		return stringBuilder; //return the string we tidied
 	}
 
 	/**Determines if the given lines is the Project Gutenberg line indicating the
@@ -1390,7 +1390,7 @@ Log.trace("found small print end");
 							//or the string comes before whitespace
 					|| Character.isWhitespace(text.charAt(eTextStringIndex+eTextString.length()))
 						  //or if the string comes before dependent punctuation
-					|| DEPENDENT_PUNCTUATION_CHARS.indexOf(text.charAt(eTextStringIndex+eTextString.length()))>=0)
+					|| DEPENDENT_PUNCTUATION_CHARACTERS.contains(text.charAt(eTextStringIndex+eTextString.length())))
 				{
 						//return the real string we found
 					return text.substring(eTextStringIndex, eTextStringIndex+eTextString.length());
@@ -1412,12 +1412,12 @@ Log.trace("found small print end");
 	public static String getID(final String filename)
 	{
 			//get the name of the file and remove its extension
-		final StringBuffer stringBuffer=new StringBuffer(Files.removeExtension(filename));
-		int versionEndIndex=stringBuffer.length();  //start assuming the version is at the end of the name
+		final StringBuilder stringBuilder=new StringBuilder(Files.removeExtension(filename));
+		int versionEndIndex=stringBuilder.length();  //start assuming the version is at the end of the name
 		  //find the first digit on the right
 		while(versionEndIndex>0)  //while we haven't ran out of characters
 		{
-		  if(Character.isDigit(stringBuffer.charAt(versionEndIndex-1)))  //if the previous character is a digit
+		  if(Character.isDigit(stringBuilder.charAt(versionEndIndex-1)))  //if the previous character is a digit
 			{
 				break;  //we've found the end of the version
 			}
@@ -1431,17 +1431,17 @@ Log.trace("found small print end");
 		{
 		  int versionBeginIndex=versionEndIndex-1;  //we'll get at least one digit---maybe two
 				//if the previous character is a digit as well
-			if(versionBeginIndex>0 && Character.isDigit(stringBuffer.charAt(versionBeginIndex-1)))
+			if(versionBeginIndex>0 && Character.isDigit(stringBuilder.charAt(versionBeginIndex-1)))
 		  {
 				--versionBeginIndex;  //use two digits
 		  }
-			if(versionEndIndex<stringBuffer.length()) //if there are characters after the digits we're going to delete
+			if(versionEndIndex<stringBuilder.length()) //if there are characters after the digits we're going to delete
 			{
-				stringBuffer.insert(versionEndIndex, '-');  //insert a hyphen to separate the name from the other characters
+				stringBuilder.insert(versionEndIndex, '-');  //insert a hyphen to separate the name from the other characters
 			}
-			stringBuffer.delete(versionBeginIndex, versionEndIndex);  //remove the version from the string
+			stringBuilder.delete(versionBeginIndex, versionEndIndex);  //remove the version from the string
 		}
-		return stringBuffer.toString(); //return the ID we constructed
+		return stringBuilder.toString(); //return the ID we constructed
 	}
 
 }

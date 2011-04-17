@@ -25,6 +25,7 @@ import org.w3c.dom.*;
 import org.w3c.dom.css.*;
 
 import com.globalmentor.io.*;
+import com.globalmentor.java.Characters;
 import com.globalmentor.log.Log;
 import com.globalmentor.net.ContentType;
 
@@ -62,11 +63,11 @@ public class XMLCSS
 	/**A double quotation character.*/
 	public final static char DOUBLE_QUOTE_CHAR='"';
 	/**The characters considered by CSS to be digits.*/
-	public final static String DIGIT_CHARS="0123456789";	//digits are the digits 0-9
+	public final static Characters DIGIT_CHARS=Characters.range('0', '9');	//digits are the digits 0-9
 	/**The decimal character that separates a number from its fraction.*/
 	public final static char DECIMAL_CHAR='.';
 	/**The characters considered by CSS to be part of a number.*/
-	public final static String NUMBER_CHARS=DIGIT_CHARS+DECIMAL_CHAR;	//numbers are composed of digits and an optional decimal
+	public final static Characters NUMBER_CHARS=DIGIT_CHARS.add(DECIMAL_CHAR);	//numbers are composed of digits and an optional decimal
 	/**The characters considered by CSS to be whitespace.*/
 	public final static String WHITESPACE_CHARS=""+SPACE_CHAR+TAB_CHAR+CR_CHAR+LF_CHAR+FF_CHAR;	//whitespace characters in CSS are space, tab, CR, LF, and FF
 	/**The characters considered by CSS to be whitespace.*/
