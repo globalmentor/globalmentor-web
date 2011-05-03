@@ -260,8 +260,13 @@ public class XHTML
 		public final static String FORM_METHOD_POST="post";
 
 		//attributes for <iframe>
+	public final static String ELEMENT_IFRAME_ATTRIBUTE_ALLOW_TRANSPARENCY="allowTransparency";	//IE-specific; see http://msdn.microsoft.com/en-us/library/ms533072.aspx
 	public final static String ELEMENT_IFRAME_ATTRIBUTE_SRC="src";
 	public final static String ELEMENT_IFRAME_ATTRIBUTE_FRAMEBORDER="frameborder";
+	public final static String ELEMENT_IFRAME_ATTRIBUTE_SCROLLING="scrolling";
+		public final static String IFRAME_SCROLLING_NO="no";
+		public final static String IFRAME_SCROLLING_YES="yes";
+		public final static String IFRAME_SCROLLING_AUTO="auto";
 
 		//attributes for <img>
 	public final static String ELEMENT_IMG_ATTRIBUTE_ALT="alt";
