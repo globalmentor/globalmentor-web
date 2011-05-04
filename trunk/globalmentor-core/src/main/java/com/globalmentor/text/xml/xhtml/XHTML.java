@@ -307,6 +307,10 @@ public class XHTML
 	public final static String ELEMENT_LINK_ATTRIBUTE_MEDIA="media";
 		public final static String LINK_MEDIA_SCREEN="screen";
 
+		//attributes for <link>
+	public final static String ELEMENT_META_ATTRIBUTE_PROPERTY="property";
+	public final static String ELEMENT_META_ATTRIBUTE_CONTENT="content";
+
 		//attributes for <object>
 	public final static String ELEMENT_OBJECT_ATTRIBUTE_CLASSID="classid";
 	public final static String ELEMENT_OBJECT_ATTRIBUTE_CODEBASE="codebase";
