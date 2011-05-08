@@ -41,7 +41,7 @@ public class OpenGraph
 	/**The URL of an image to represent the object. (required)*/
 	public final static String IMAGE_LOCAL_NAME="image";
 	/**The canonical URL of the object to be used as its permanent. (required)*/
-	public final static String URL_LOCAL_NAME="type";
+	public final static String URL_LOCAL_NAME="url";
 	/**A short description of the object. (optional)*/
 	public final static String DESCRIPTION_LOCAL_NAME="description";
 	/**The name of the overall site, if this object is part of a larger web site. (optional)*/
