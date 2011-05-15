@@ -30,7 +30,6 @@ public class OpenGraph
 
 	/**The Open Graph namespace.*/
 	public final static URI NAMESPACE_URI=URI.create("http://ogp.me/ns#");
-
 	/**The default prefix for the Open Graph namespace, e.g. in XML documents.*/
 	public final static String NAMESPACE_PREFIX="og";
 
