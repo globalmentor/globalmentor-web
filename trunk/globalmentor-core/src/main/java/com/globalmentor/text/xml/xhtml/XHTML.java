@@ -36,7 +36,7 @@ import com.globalmentor.text.xml.oeb.OEB;
 import com.globalmentor.text.xml.stylesheets.css.*;
 import static com.globalmentor.text.xml.xpath.XPath.*;
 
-import static com.globalmentor.collections.Sets.immutableSetOf;
+import static com.globalmentor.collections.Sets.*;
 import static com.globalmentor.net.ContentTypeConstants.*;
 import static com.globalmentor.text.xml.XML.*;
 
