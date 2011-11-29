@@ -21,7 +21,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 
-import static com.globalmentor.collections.Arrays.*;
+import static com.globalmentor.java.Arrays.*;
 import static com.globalmentor.java.CharSequences.*;
 import static com.globalmentor.java.Objects.*;
 import static com.globalmentor.java.StringBuilders.*;

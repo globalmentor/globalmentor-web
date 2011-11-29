@@ -25,10 +25,10 @@ import javax.xml.parsers.*;
 import org.w3c.dom.*;
 import org.w3c.dom.css.CSSStyleDeclaration;
 
-import com.globalmentor.collections.Arrays;
 import com.globalmentor.config.ConfigurationException;
 import com.globalmentor.io.*;
 
+import com.globalmentor.java.Arrays;
 import com.globalmentor.java.Objects;
 import com.globalmentor.net.ContentType;
 import com.globalmentor.text.xml.XML;
