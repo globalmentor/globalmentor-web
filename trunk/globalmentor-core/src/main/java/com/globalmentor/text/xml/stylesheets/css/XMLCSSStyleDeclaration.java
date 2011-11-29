@@ -1,5 +1,5 @@
 /*
- * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ * Copyright © 1996-2011 GlobalMentor, Inc. <http://www.globalmentor.com/>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -379,7 +379,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 				primitiveValue.setPriority(priority);	//set the priority of the property
 					//if the value is an RGB color or a color identifier value, it's the background color
 				if(primitiveValue.getPrimitiveType()==primitiveValue.CSS_RGBCOLOR ||
-					(primitiveValue.getPrimitiveType()==primitiveValue.CSS_IDENT && XMLCSS.getColor(primitiveValue.getStringValue())!=null))
+					(primitiveValue.getPrimitiveType()==primitiveValue.CSS_IDENT && XMLCSS.CSS_COLOR_NAME_VALUES.containsKey(primitiveValue.getStringValue().toLowerCase())))
 				{
 				  setPropertyCSSValue(CSS_PROP_BACKGROUND_COLOR, primitiveValue); //set the background color property
 				}

@@ -1,5 +1,5 @@
 /*
- * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ * Copyright © 1996-2011 GlobalMentor, Inc. <http://www.globalmentor.com/>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 package com.globalmentor.text.xml.stylesheets.css;
 
-import java.awt.Color;
 import java.io.*;
 import java.net.URL;
+import java.util.*;
 import java.util.regex.Pattern;
 
 import org.w3c.dom.*;
@@ -32,6 +32,7 @@ import com.globalmentor.net.ContentType;
 import com.globalmentor.text.xml.XMLNode;
 
 import static com.globalmentor.java.Characters.*;
+import static java.util.Collections.unmodifiableMap;
 
 /**Constants and utilities for CSS.*/
 public class XMLCSS
@@ -331,24 +332,30 @@ public class XMLCSS
 	public final static String CSS_COLOR_AQUA="aqua";
 	public final static int CSS_COLOR_AQUA_VALUE=0x00FFFF;
 
-	//predefined colors
-	public final static Color COLOR_BLACK=new Color(CSS_COLOR_BLACK_VALUE);
-	public final static Color COLOR_GREEN=new Color(CSS_COLOR_GREEN_VALUE);
- 	public final static Color COLOR_SILVER=new Color(CSS_COLOR_SILVER_VALUE);
- 	public final static Color COLOR_LIME=new Color(CSS_COLOR_LIME_VALUE);
- 	public final static Color COLOR_GRAY=new Color(CSS_COLOR_GRAY_VALUE);
- 	public final static Color COLOR_OLIVE=new Color(CSS_COLOR_OLIVE_VALUE);
- 	public final static Color COLOR_WHITE=new Color(CSS_COLOR_WHITE_VALUE);
- 	public final static Color COLOR_YELLOW=new Color(CSS_COLOR_YELLOW_VALUE);
- 	public final static Color COLOR_MAROON=new Color(CSS_COLOR_MAROON_VALUE);
- 	public final static Color COLOR_NAVY=new Color(CSS_COLOR_NAVY_VALUE);
- 	public final static Color COLOR_RED=new Color(CSS_COLOR_RED_VALUE);
- 	public final static Color COLOR_BLUE=new Color(CSS_COLOR_BLUE_VALUE);
- 	public final static Color COLOR_PURPLE=new Color(CSS_COLOR_PURPLE_VALUE);
- 	public final static Color COLOR_TEAL=new Color(CSS_COLOR_TEAL_VALUE);
- 	public final static Color COLOR_FUCHSIA=new Color(CSS_COLOR_FUCHSIA_VALUE);
- 	public final static Color COLOR_AQUA=new Color(CSS_COLOR_AQUA_VALUE);
-
+	/**The standard CSS color names, in lowercase, and their associated values.*/
+	public final static Map<String, Integer> CSS_COLOR_NAME_VALUES;
+	
+	static
+	{
+		final Map<String, Integer> cssColorNameValues=new HashMap<String, Integer>();
+		cssColorNameValues.put(CSS_COLOR_BLACK, Integer.valueOf(CSS_COLOR_BLACK_VALUE));
+		cssColorNameValues.put(CSS_COLOR_GREEN, Integer.valueOf(CSS_COLOR_GREEN_VALUE));
+		cssColorNameValues.put(CSS_COLOR_SILVER, Integer.valueOf(CSS_COLOR_SILVER_VALUE));
+		cssColorNameValues.put(CSS_COLOR_LIME, Integer.valueOf(CSS_COLOR_LIME_VALUE));
+		cssColorNameValues.put(CSS_COLOR_GRAY, Integer.valueOf(CSS_COLOR_GRAY_VALUE));
+		cssColorNameValues.put(CSS_COLOR_OLIVE, Integer.valueOf(CSS_COLOR_OLIVE_VALUE));
+		cssColorNameValues.put(CSS_COLOR_WHITE, Integer.valueOf(CSS_COLOR_WHITE_VALUE));
+		cssColorNameValues.put(CSS_COLOR_YELLOW, Integer.valueOf(CSS_COLOR_YELLOW_VALUE));
+		cssColorNameValues.put(CSS_COLOR_MAROON, Integer.valueOf(CSS_COLOR_MAROON_VALUE));
+		cssColorNameValues.put(CSS_COLOR_NAVY, Integer.valueOf(CSS_COLOR_NAVY_VALUE));
+		cssColorNameValues.put(CSS_COLOR_RED, Integer.valueOf(CSS_COLOR_RED_VALUE));
+		cssColorNameValues.put(CSS_COLOR_BLUE, Integer.valueOf(CSS_COLOR_BLUE_VALUE));
+		cssColorNameValues.put(CSS_COLOR_PURPLE, Integer.valueOf(CSS_COLOR_PURPLE_VALUE));
+		cssColorNameValues.put(CSS_COLOR_TEAL, Integer.valueOf(CSS_COLOR_TEAL_VALUE));
+		cssColorNameValues.put(CSS_COLOR_FUCHSIA, Integer.valueOf(CSS_COLOR_FUCHSIA_VALUE));
+		cssColorNameValues.put(CSS_COLOR_AQUA, Integer.valueOf(CSS_COLOR_AQUA_VALUE));
+		CSS_COLOR_NAME_VALUES=unmodifiableMap(cssColorNameValues);
+	}
 
 //TODO add other properties here
 
@@ -505,89 +512,6 @@ public class XMLCSS
 	/**The default text indent.*/	//TODO should this go elsewhere?
 	private final static int DEFAULT_TEXT_INDENT=0;
 
-	/**Gets a color from a CSS primitive value.
-	@param colorValue The CSS primitive value that holds the color. If
-		<code>null</code> is passed, <code>null</code> will be returned..
-	@return The specified CSS color, or <code>null</code> if the specified color
-		value is null.
-	*/
-	public static Color getColor(final CSSPrimitiveValue colorValue)
-	{
-		if(colorValue!=null)	//if we have a color value
-		{
-			if(colorValue.getPrimitiveType()==CSSPrimitiveValue.CSS_IDENT)	//if the color is specified by an identifier
-			{
-	
-				final String colorString=colorValue.getStringValue();	//get the string representing the color
-				return getColor(colorString); //return a color based upon the string
-			}
-			else if(colorValue.getPrimitiveType()==CSSPrimitiveValue.CSS_RGBCOLOR)	//if the color is specified by an RGB color value
-		  {
-				return getColor(colorValue.getRGBColorValue()); //convert the color value to a color
-		  }
-		}
-		return null;	//default to not returning a color
-	}
-
-	/**Gets a color object from a string.
-	@param colorString The string (possibly <code>null</code>) which represents
-		one of the 16 HTML colors.
-	@return A color object representing the color, or <code>null</code> if the
-		specified string is <code>null</code> or does not represent a color.
-	*/
-	public static Color getColor(final String colorString)
-	{
-		if(colorString!=null)	//if we have a color string
-		{
-				//TODO in the future, maybe put this in XMLCSSPrimitiveValue or, better yet, in a ColorManipulator class or something -- maybe even in an XHTML-related class
-			if(colorString.equalsIgnoreCase(CSS_COLOR_BLACK))	//see if we recognize any of the colors
-				return COLOR_BLACK;
-			else if(colorString.equalsIgnoreCase(CSS_COLOR_GREEN))
-				return COLOR_GREEN;
-			else if(colorString.equalsIgnoreCase(CSS_COLOR_SILVER))
-				return COLOR_SILVER;
-			else if(colorString.equalsIgnoreCase(CSS_COLOR_LIME))
-				return COLOR_LIME;
-			else if(colorString.equalsIgnoreCase(CSS_COLOR_GRAY))
-				return COLOR_GRAY;
-			else if(colorString.equalsIgnoreCase(CSS_COLOR_OLIVE))
-				return COLOR_OLIVE;
-			else if(colorString.equalsIgnoreCase(CSS_COLOR_WHITE))
-				return COLOR_WHITE;
-			else if(colorString.equalsIgnoreCase(CSS_COLOR_YELLOW))
-				return COLOR_YELLOW;
-			else if(colorString.equalsIgnoreCase(CSS_COLOR_MAROON))
-				return COLOR_MAROON;
-			else if(colorString.equalsIgnoreCase(CSS_COLOR_NAVY))
-				return COLOR_NAVY;
-			else if(colorString.equalsIgnoreCase(CSS_COLOR_RED))
-				return COLOR_RED;
-			else if(colorString.equalsIgnoreCase(CSS_COLOR_BLUE))
-				return COLOR_BLUE;
-			else if(colorString.equalsIgnoreCase(CSS_COLOR_PURPLE))
-				return COLOR_PURPLE;
-			else if(colorString.equalsIgnoreCase(CSS_COLOR_TEAL))
-				return COLOR_TEAL;
-			else if(colorString.equalsIgnoreCase(CSS_COLOR_FUCHSIA))
-				return COLOR_FUCHSIA;
-			else if(colorString.equalsIgnoreCase(CSS_COLOR_AQUA))
-				return COLOR_AQUA;
-		}
-		return null;	//default to not returning a color
-	}
-
-	/**Gets a color object from a DOM <code>RGBColor</code> object.
-	@param rgbColor The object which contains a DOM representation of the RGB
-		color.
-	@return A color object representing the color.
-	*/
-	public static Color getColor(final RGBColor rgbColor)
-	{
-		return new Color( //create a new color object from the components of the RGBColor
-			  (int)rgbColor.getRed().getFloatValue(CSSPrimitiveValue.CSS_NUMBER),  //get the red value
-			  (int)rgbColor.getGreen().getFloatValue(CSSPrimitiveValue.CSS_NUMBER),  //get the green value
-			  (int)rgbColor.getBlue().getFloatValue(CSSPrimitiveValue.CSS_NUMBER));  //get the blue value
-	}
 
 	/**Gets the CSS value object of a particular CSS property.
 	@param styleManager The object that allows style lookups for elements.

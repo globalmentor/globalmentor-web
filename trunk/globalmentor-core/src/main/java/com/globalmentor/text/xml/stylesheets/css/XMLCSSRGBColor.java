@@ -16,8 +16,6 @@
 
 package com.globalmentor.text.xml.stylesheets.css;
 
-import java.awt.Color;
-
 import com.globalmentor.log.Log;
 
 import org.w3c.dom.DOMException;
@@ -79,14 +77,6 @@ public class XMLCSSRGBColor implements RGBColor
 		  Log.error(e); //this should never occur
 			throw e;  //rethrow the exception
 		}
-	}
-
-	/**Creates an RGB color value based upon a color object.
-	@param color The color object which contains the color information.
-	*/
-	public XMLCSSRGBColor(final Color color)
-	{
-		this(color.getRed(), color.getGreen(), color.getBlue());
 	}
 
 	/**@return This red value of the RGB color as a primitive value.*/
