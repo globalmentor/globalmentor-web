@@ -456,7 +456,7 @@ public class XHTMLTidier
 				final Text text=(Text)childNode;  //cast the child to a text element
 				final String data=text.getData(); //get the text data
 				  //TODO testing; comment; use StringBufferUtilities version, maybe
-				final String collapsedData=Strings.collapseEveryChar(data, Characters.TRIM_CHARACTERS, "\n\n");
+				final String collapsedData=Strings.collapse(data, Characters.TRIM_CHARACTERS, "\n\n");
 				text.setData(collapsedData);  //replace the text data with the collapsed data
 			}
 		}
