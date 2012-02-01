@@ -36,6 +36,7 @@ import org.w3c.dom.traversal.*;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.SAXException;
 
+import static com.globalmentor.java.Characters.SPACE_CHAR;
 import static com.globalmentor.java.Integers.*;
 import static com.globalmentor.net.ContentTypeConstants.*;
 import static com.globalmentor.text.xml.mathml.MathML.*;
@@ -146,8 +147,6 @@ public class XML
 	/** An unknown identifier in the resources. */
 	public static final short UNKNOWN_RESOURCE_ID = 99;
 
-	/** A space character. */
-	public final static char SPACE_CHAR = ' ';
 	/** A tab character. */
 	public final static char TAB_CHAR = '\t';
 	/** A carriage return character. */
@@ -161,7 +160,7 @@ public class XML
 	/** A double quote character. */
 	public final static char DOUBLE_QUOTE_CHAR = '"';
 	/** The characters considered by XML to be whitespace. */
-	public final static String WHITESPACE_CHARS = "" + SPACE_CHAR + TAB_CHAR + CR_CHAR + LF_CHAR; //whitespace characters in XML are space, tab, CR, and LF
+	public final static String WHITESPACE_CHARS = "" + SPACE_CHAR + TAB_CHAR + CR_CHAR + LF_CHAR; //whitespace characters in XML are space, tab, CR, and LF TODO upgrade to use Characters
 	/** Public ID characters. */
 	public final static String PUBLIC_ID_CHARS = SPACE_CHAR + CR_CHAR + LF_CHAR
 			+ "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-'()+,./:=?;!*#@$_%";
@@ -1145,7 +1144,7 @@ public class XML
 			{
 				if(stringBuffer == null) //if we haven't create a string buffer, yet
 					stringBuffer = new StringBuffer(string); //create a string buffer to hold our replacements
-				stringBuffer.setCharAt(i, XML.SPACE_CHAR); //replace this character with a space
+				stringBuffer.setCharAt(i, SPACE_CHAR); //replace this character with a space
 			}
 		}
 		return stringBuffer != null ? stringBuffer.toString() : string; //return the original string unless we've actually modified something
@@ -1225,7 +1224,7 @@ public class XML
 		final StringBuffer dataStringBuffer = new StringBuffer(); //create a string buffer to construct the data parameter (with its pseudo attributes)
 		//add: href="href"
 		dataStringBuffer.append(HREF_ATTRIBUTE).append(XML.EQUAL_CHAR).append(XML.DOUBLE_QUOTE_CHAR).append(href).append(XML.DOUBLE_QUOTE_CHAR);
-		dataStringBuffer.append(XML.SPACE_CHAR); //add a space between the pseudo attributes
+		dataStringBuffer.append(SPACE_CHAR); //add a space between the pseudo attributes
 		//add: type="type"
 		dataStringBuffer.append(TYPE_ATTRIBUTE).append(XML.EQUAL_CHAR).append(XML.DOUBLE_QUOTE_CHAR).append(mediaType).append(XML.DOUBLE_QUOTE_CHAR);
 		final String data = dataStringBuffer.toString(); //convert the data string buffer to a string

@@ -27,6 +27,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 
+import static com.globalmentor.java.Characters.SPACE_CHAR;
 import static com.globalmentor.text.CharacterEncoding.*;
 import static com.globalmentor.text.xml.XML.*;
 

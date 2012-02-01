@@ -29,7 +29,11 @@ import com.globalmentor.config.ConfigurationException;
 import com.globalmentor.io.*;
 
 import com.globalmentor.java.Arrays;
+import com.globalmentor.java.CharSequences;
+import com.globalmentor.java.Characters;
 import com.globalmentor.java.Objects;
+import com.globalmentor.log.Log;
+import com.globalmentor.model.IDed;
 import com.globalmentor.net.ContentType;
 import com.globalmentor.text.xml.XML;
 import com.globalmentor.text.xml.oeb.OEB;
@@ -37,6 +41,8 @@ import com.globalmentor.text.xml.stylesheets.css.*;
 import static com.globalmentor.text.xml.xpath.XPath.*;
 
 import static com.globalmentor.collections.Sets.*;
+import static com.globalmentor.java.Characters.*;
+import static com.globalmentor.java.Objects.*;
 import static com.globalmentor.net.ContentTypeConstants.*;
 import static com.globalmentor.text.xml.XML.*;
 
@@ -130,6 +136,12 @@ public class XHTML
 	public final static String XHTML_MATHML_SVG_PUBLIC_ID = "-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN";
 	/** The system ID for the XHTML+MathML+SVG DTD. */
 	public final static String XHTML_MATHML_SVG_SYSTEM_ID = "http://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd";
+
+	/**
+	 * Characters considered <dfn>space characters</dfn> in HTML.
+	 * @see <a href="http://www.w3.org/TR/html5/common-microsyntaxes.html#space-character">HTML5 space characters</a>
+	 */
+	public final static Characters SPACE_CHARACTERS = new Characters(SPACE_CHAR, CHARACTER_TABULATION_CHAR, LINE_FEED_CHAR, FORM_FEED_CHAR, CARRIAGE_RETURN_CHAR);
 
 	//The XHTML 1.0 document element names.
 	//TODO fix; some are missing since these were copied from the OEB 1.0
@@ -240,9 +252,70 @@ public class XHTML
 	public final static String ATTRIBUTE_ONCLICK = "onclick";
 	public final static String ATTRIBUTE_ONLOAD = "onload";
 
+	public final static String LINK_ATTRIBUTE_REL = "rel"; //the link type attribute for <a>, <area>, and <link>; see http://www.w3.org/TR/html5/links.html#linkTypes
+	public final static String LINK_ATTRIBUTE_TYPE = "type"; //the link MIME type attribute for <a>, <area>, and <link>; see http://www.w3.org/TR/html5/links.html#attr-hyperlink-type
+	//link types for <a>, <area>, and <link>; see http://www.w3.org/TR/html5/links.html#linkTypes 
+	public final static String LINK_REL_ALTERNATE = "alternate"; //<link>, <a>/<area>
+	public final static String LINK_REL_AUTHOR = "author"; //<link>, <a>/<area>
+	public final static String LINK_REL_BOOKMARK = "bookmark"; //<a>/<area>
+	public final static String LINK_REL_EXTERNAL = "external"; //<a>/<area>
+	public final static String LINK_REL_HELP = "help"; //<link>, <a>/<area>
+	public final static String LINK_REL_ICON = "icon"; //<link>
+	public final static String LINK_REL_LICENSE = "license"; //<link>, <a>/<area>
+	public final static String LINK_REL_NEXT = "next"; //<link>, <a>/<area>
+	public final static String LINK_REL_NOFOLLOW = "nofollow"; //<a>/<area>
+	public final static String LINK_REL_NOREFERRER = "noreferrer"; //<a>/<area>
+	public final static String LINK_REL_PINGBACK = "pingback"; //<link>
+	public final static String LINK_REL_PREFETCH = "prefetch"; //<link>, <a>/<area>
+	public final static String LINK_REL_PREV = "prev"; //<link>, <a>/<area>
+	public final static String LINK_REL_SEARCH = "search"; //<link>, <a>/<area>
+	public final static String LINK_REL_SIDEBAR = "sidebar"; //<link>, <a>/<area>
+	public final static String LINK_REL_STYLESHEET = "stylesheet"; //<link>
+	public final static String LINK_REL_TAG = "tag"; //<link>, <a>/<area>
+
 	//attributes for <a>
 	public final static String ELEMENT_A_ATTRIBUTE_HREF = "href";
 	public final static String ELEMENT_A_ATTRIBUTE_TARGET = "target";
+	public final static String ELEMENT_A_ATTRIBUTE_REL = LINK_ATTRIBUTE_REL;
+
+	/**
+	 * Link types for {@code<a>}, {@code<area>}, and {@code<link>}.
+	 * @author Garret Wilson
+	 * @see <a href="http://www.w3.org/TR/html5/links.html#linkTypes">HTML5 Link Types</a>
+	 */
+	public enum LinkType implements IDed<String>
+	{
+		ALTERNATE(LINK_REL_ALTERNATE), //<link>, <a>/<area>
+		AUTHOR(LINK_REL_AUTHOR), //<link>, <a>/<area>
+		BOOKMARK(LINK_REL_BOOKMARK), //<a>/<area>
+		EXTERNAL(LINK_REL_EXTERNAL), //<a>/<area>
+		HELP(LINK_REL_HELP), //<link>, <a>/<area>
+		ICON(LINK_REL_ICON), //<link>
+		LICENSE(LINK_REL_LICENSE), //<link>, <a>/<area>
+		NEXT(LINK_REL_NEXT), //<link>, <a>/<area>
+		NOFOLLOW(LINK_REL_NOFOLLOW), //<a>/<area>
+		NOREFERRER(LINK_REL_NOREFERRER), //<a>/<area>
+		PINGBACK(LINK_REL_PINGBACK), //<link>
+		PREFETCH(LINK_REL_PREFETCH), //<link>, <a>/<area>
+		PREV(LINK_REL_PREV), //<link>, <a>/<area>
+		SEARCH(LINK_REL_SEARCH), //<link>, <a>/<area>
+		SIDEBAR(LINK_REL_SIDEBAR), //<link>, <a>/<area>
+		STYLESHEET(LINK_REL_STYLESHEET), //<link>
+		TAG(LINK_REL_TAG); //<link>, <a>/<area>
+
+		private final String id;
+
+		private LinkType(final String id)
+		{
+			this.id = checkInstance(id);
+		}
+
+		@Override
+		public String getID()
+		{
+			return id;
+		}
+	}
 
 	//attributes for <applet>
 	public final static String ELEMENT_APPLET_ATTRIBUTE_CODE = "code";
@@ -310,8 +383,7 @@ public class XHTML
 
 	//attributes for <link>
 	public final static String ELEMENT_LINK_ATTRIBUTE_HREF = "href";
-	public final static String ELEMENT_LINK_ATTRIBUTE_REL = "rel";
-	public final static String LINK_REL_STYLESHEET = "stylesheet";
+	public final static String ELEMENT_LINK_ATTRIBUTE_REL = LINK_ATTRIBUTE_REL;
 	public final static String ELEMENT_LINK_ATTRIBUTE_TYPE = "type";
 	public final static String ELEMENT_LINK_ATTRIBUTE_MEDIA = "media";
 	public final static String LINK_MEDIA_SCREEN = "screen";
@@ -658,6 +730,44 @@ public class XHTML
 			}
 		}
 		return null; //show that we couldn't find an href or this wasn't even a link
+	}
+
+	/**
+	 * Determines the content type indicated by the given link element.
+	 * @param element The element, presumably a link ({@code<a>}, {@code<area>}, or {@code<link>}).
+	 * @return The content type specified by the link element, or <code>null</code> if no content type was specified or the content type was not syntactically
+	 *         correct.
+	 * @see #LINK_ATTRIBUTE_TYPE
+	 * @see <a href="http://www.w3.org/TR/html5/links.html#attr-hyperlink-type">HTML5 Link MIME type</a>
+	 */
+	public static ContentType getLinkContentType(final Element element)
+	{
+		final String typeString = element.getAttributeNS(null, LINK_ATTRIBUTE_TYPE); //get the value of the type attribute
+		if(!typeString.isEmpty()) //if there is a type specified
+		{
+			try
+			{
+				return ContentType.getInstance(typeString); //parse the content type and return it
+			}
+			catch(final IllegalArgumentException illegalArgumentException) //if the content type isn't valid
+			{
+				Log.debug(illegalArgumentException);
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Checks to see if the given link's {@value #LINK_ATTRIBUTE_REL} attribute contains the given link type.
+	 * @param element The element, presumably a link ({@code<a>}, {@code<area>}, or {@code<link>}).
+	 * @param linkType The type of link to look for.
+	 * @return <code>true</code> if the given element has a {@value #LINK_ATTRIBUTE_REL} attribute with one of the given link types.
+	 * @see #LINK_ATTRIBUTE_REL
+	 * @see <a href="http://www.w3.org/TR/html5/links.html#linkTypes">HTML5 Link Types</a>
+	 */
+	public static boolean hasLinkType(final Element element, final LinkType linkType)
+	{
+		return CharSequences.containsToken(element.getAttributeNS(null, LINK_ATTRIBUTE_REL), SPACE_CHARACTERS, linkType.getID()); //see if the given link type ID is one of the tokens in the "rel" attribute value
 	}
 
 	/**

@@ -23,6 +23,8 @@ import java.nio.charset.Charset;
 
 import com.globalmentor.io.ByteOrderMark;
 import static com.globalmentor.io.Charsets.*;
+import static com.globalmentor.java.Characters.SPACE_CHAR;
+
 import com.globalmentor.java.Characters;
 import com.globalmentor.java.StringBuffers;
 import static com.globalmentor.text.xml.XML.*;
