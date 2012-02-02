@@ -29,7 +29,6 @@ import com.globalmentor.config.ConfigurationException;
 import com.globalmentor.io.*;
 
 import com.globalmentor.java.Arrays;
-import com.globalmentor.java.CharSequences;
 import com.globalmentor.java.Characters;
 import com.globalmentor.java.Objects;
 import com.globalmentor.log.Log;
@@ -38,6 +37,8 @@ import com.globalmentor.net.ContentType;
 import com.globalmentor.text.xml.XML;
 import com.globalmentor.text.xml.oeb.OEB;
 import com.globalmentor.text.xml.stylesheets.css.*;
+
+import static com.globalmentor.text.ASCII.*;
 import static com.globalmentor.text.xml.xpath.XPath.*;
 
 import static com.globalmentor.collections.Sets.*;
@@ -758,7 +759,7 @@ public class XHTML
 	}
 
 	/**
-	 * Checks to see if the given link's {@value #LINK_ATTRIBUTE_REL} attribute contains the given link type.
+	 * Checks to see if the given link's {@value #LINK_ATTRIBUTE_REL} attribute contains the given link type with ASCII case insensitivity.
 	 * @param element The element, presumably a link ({@code<a>}, {@code<area>}, or {@code<link>}).
 	 * @param linkType The type of link to look for.
 	 * @return <code>true</code> if the given element has a {@value #LINK_ATTRIBUTE_REL} attribute with one of the given link types.
@@ -767,7 +768,19 @@ public class XHTML
 	 */
 	public static boolean hasLinkType(final Element element, final LinkType linkType)
 	{
-		return CharSequences.containsToken(element.getAttributeNS(null, LINK_ATTRIBUTE_REL), SPACE_CHARACTERS, linkType.getID()); //see if the given link type ID is one of the tokens in the "rel" attribute value
+		return hasLinkType(element, linkType.getID());
+	}
+
+	/**
+	 * Checks to see if the given link's {@value #LINK_ATTRIBUTE_REL} attribute contains the given link type with ASCII case insensitivity.
+	 * @param element The element, presumably a link ({@code<a>}, {@code<area>}, or {@code<link>}).
+	 * @param linkType The type of link to look for.
+	 * @return <code>true</code> if the given element has a {@value #LINK_ATTRIBUTE_REL} attribute with one of the given link types.
+	 * @see #LINK_ATTRIBUTE_REL
+	 */
+	public static boolean hasLinkType(final Element element, final String linkType)
+	{
+		return containsTokenIgnoreCase(element.getAttributeNS(null, LINK_ATTRIBUTE_REL), SPACE_CHARACTERS, linkType); //see if the given link type ID is one of the tokens in the "rel" attribute value
 	}
 
 	/**
