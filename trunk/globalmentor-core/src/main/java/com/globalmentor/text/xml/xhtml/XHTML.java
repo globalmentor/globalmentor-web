@@ -1,5 +1,5 @@
 /*
- * Copyright © 1996-2011 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ * Copyright © 1996-2012 GlobalMentor, Inc. <http://www.globalmentor.com/>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -171,6 +171,8 @@ public class XHTML
 	public final static String ELEMENT_DT = "dt";
 	public final static String ELEMENT_EM = "em";
 	public final static String ELEMENT_FIELDSET = "fieldset";
+	public final static String ELEMENT_FIGCAPTION = "figcaption";
+	public final static String ELEMENT_FIGURE = "figure";
 	public final static String ELEMENT_FONT = "font";
 	public final static String ELEMENT_FOOTER = "footer";
 	public final static String ELEMENT_FORM = "form";

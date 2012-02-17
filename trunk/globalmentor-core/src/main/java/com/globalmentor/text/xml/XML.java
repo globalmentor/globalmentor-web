@@ -1,5 +1,5 @@
 /*
- * Copyright © 1996-2011 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ * Copyright © 1996-2012 GlobalMentor, Inc. <http://www.globalmentor.com/>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,8 +36,9 @@ import org.w3c.dom.traversal.*;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.SAXException;
 
-import static com.globalmentor.java.Characters.SPACE_CHAR;
+import static com.globalmentor.java.Characters.*;
 import static com.globalmentor.java.Integers.*;
+import static com.globalmentor.java.Objects.*;
 import static com.globalmentor.net.ContentTypeConstants.*;
 import static com.globalmentor.text.xml.mathml.MathML.*;
 import static com.globalmentor.text.xml.stylesheets.XMLStyleSheets.*;
@@ -1880,6 +1881,25 @@ public class XML
 			}
 		}
 		return stringBuilder;
+	}
+
+	/**
+	 * Determines whether the given element has an ancestor with the given namespace and name.
+	 * @param element The element the ancestors of which to check.
+	 * @param ancestorElementNamespaceURI The namespace URI of the ancestor element to check for.
+	 * @param ancestorElementName The name of the ancestor element to check for.
+	 * @return <code>true</code> if an ancestor element with the given namespace URI and name was found.
+	 */
+	public static boolean hasAncestorElementNS(Element element, final String ancestorElementNamespaceURI, final String ancestorElementName)
+	{
+		while((element = asInstance(element.getParentNode(), Element.class)) != null) //keep looking at parents until we run out of elements and hit the document
+		{
+			if(Objects.equals(element.getNamespaceURI(), ancestorElementNamespaceURI) && element.getNodeName().equals(ancestorElementName))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
