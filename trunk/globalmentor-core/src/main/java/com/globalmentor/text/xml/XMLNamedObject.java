@@ -107,7 +107,7 @@ public class XMLNamedObject	//TODO implement NamedObject or extend DefaultNamedO
 	{
 		prefix=newPrefix;  //set the prefix
 		localName=newLocalName;	//set the local name
-		qname=XML.createQualifiedName(newPrefix, newLocalName);	//create a qualified name and store it (don't call setQName(), which will needlessly reset the prefix and local name)
+		qname=XML.createQName(newPrefix, newLocalName);	//create a qualified name and store it (don't call setQName(), which will needlessly reset the prefix and local name)
 	}
 
 	/**Constructor specifying the namespace and qname of the object.

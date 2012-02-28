@@ -28,6 +28,7 @@ import static com.globalmentor.io.Charsets.*;
 import com.globalmentor.java.*;
 import com.globalmentor.model.NameValuePair;
 import com.globalmentor.net.ContentType;
+import com.globalmentor.net.URIs;
 import com.globalmentor.text.xml.oeb.OEB;
 import com.globalmentor.text.xml.xhtml.XHTML;
 
@@ -40,6 +41,7 @@ import static com.globalmentor.java.Characters.*;
 import static com.globalmentor.java.Integers.*;
 import static com.globalmentor.java.Objects.*;
 import static com.globalmentor.net.ContentTypeConstants.*;
+import static com.globalmentor.net.URIs.SCHEME_SEPARATOR;
 import static com.globalmentor.text.xml.mathml.MathML.*;
 import static com.globalmentor.text.xml.stylesheets.XMLStyleSheets.*;
 import static com.globalmentor.text.xml.svg.SVG.*;
@@ -1184,19 +1186,25 @@ public class XML
 	 * @param localName The XML local name.
 	 * @return The XML qualified name.
 	 */
-	public static String createQualifiedName(final String prefix, final String localName)
+	public static String createQName(final String prefix, final String localName)
 	{
+		final StringBuilder stringBuilder = new StringBuilder();
 		if(prefix != null) //if there is a prefix defined
-			return prefix + XML.NAMESPACE_DIVIDER + localName; //construct a qualified name from prefix and local name
-		else
-			//if there is no prefix
-			return localName; //return the local name without the prefix
+		{
+			stringBuilder.append(prefix).append(NAMESPACE_DIVIDER); //prepend the prefix and the namespace delimiter
+		}
+		return stringBuilder.append(localName).toString(); //always append the local name
 	}
 
 	/**
 	 * Creates a qualified name object from an XML node.
+	 * <p>
+	 * If the node namespace is not a valid URI (e.g. "DAV:"), it will be converted to a valid URI (e.g. "DAV:/") if possible.
+	 * </p>
 	 * @param node The XML node from which a qualified name is to be created.
 	 * @return A qualified name object representing the given XML node
+	 * @throws IllegalArgumentException if the namespace is not <code>null</code> and cannot be converted to a valid URI.
+	 * @see #toNamespaceURI(String)
 	 */
 	public static QualifiedName createQualifiedName(final Node node)
 	{
@@ -1204,9 +1212,33 @@ public class XML
 	}
 
 	/**
+	 * Creates a namespace URI from the given namespace string.
+	 * <p>
+	 * This method attempts to compensate for XML documents that include a namespace string that is not a true URI, notably the <code>DAV:</code> namespace "URI"
+	 * used by WebDAV. In such a case as <code>DAV:</code>, the URI <code>DAV:/</code> would be returned.
+	 * </p>
+	 * @param namespace The namespace string, or <code>null</code> if there is no namespace.
+	 * @return A URI representing the namespace, or <code>null</code> if no namespace was given.
+	 * @throws IllegalArgumentException if the namespace is not <code>null</code> and cannot be converted to a valid URI.
+	 */
+	public static URI toNamespaceURI(String namespace)
+	{
+		if(namespace == null)
+		{
+			return null;
+		}
+		final int schemeSeparatorIndex = namespace.indexOf(SCHEME_SEPARATOR); //find out where the scheme ends
+		if(schemeSeparatorIndex == namespace.length() - 1) //if the scheme separator is at the end of the string (i.e. there is no scheme-specific part, e.g. "DAV:")
+		{
+			namespace += URIs.PATH_SEPARATOR; //append a path separator (e.g. "DAV:/")
+		}
+		return URI.create(namespace); //create a URI from the namespace
+	}
+
+	/**
 	 * Checks to make sure the given identifier is a valid target for a processing instruction.
 	 * @param piTarget The identifier to check for validity.
-	 * @return <code>true</code> if the name is a valid processing instructin target, else <code>false</code>.
+	 * @return <code>true</code> if the name is a valid processing instruction target, else <code>false</code>.
 	 */
 	public static boolean isPITarget(final String piTarget)
 	{
@@ -2524,7 +2556,7 @@ public class XML
 		if(prefix != null) //if we were given a prefix
 		{
 			//create an attribute in the form, xmlns:prefix="namespaceURI" TODO fix for attributes that may use the same prefix for different namespace URIs
-			declarationElement.setAttributeNS(XML.XMLNS_NAMESPACE_URI.toString(), createQualifiedName(XML.XMLNS_NAMESPACE_PREFIX, prefix), namespaceURI);
+			declarationElement.setAttributeNS(XML.XMLNS_NAMESPACE_URI.toString(), createQName(XML.XMLNS_NAMESPACE_PREFIX, prefix), namespaceURI);
 		}
 		else
 		//if we weren't given a prefix

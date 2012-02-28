@@ -65,7 +65,7 @@ public class XLink
 	*/
 	public static void setXLinkType(final Element element, final String type)
 	{
-		element.setAttributeNS(XLINK_NAMESPACE_URI.toString(), createQualifiedName(XLINK_NAMESPACE_PREFIX, ATTRIBUTE_TYPE), type);	//set xlink:type=type		
+		element.setAttributeNS(XLINK_NAMESPACE_URI.toString(), createQName(XLINK_NAMESPACE_PREFIX, ATTRIBUTE_TYPE), type);	//set xlink:type=type		
 	}
 
 	/**Sets the <code>xlink:href</code> attribute of the given element.
@@ -74,7 +74,7 @@ public class XLink
 	*/
 	public static void setXLinkHRef(final Element element, final String href)
 	{
-		element.setAttributeNS(XLINK_NAMESPACE_URI.toString(), createQualifiedName(XLINK_NAMESPACE_PREFIX, ATTRIBUTE_HREF), href);	//set xlink:href=href		
+		element.setAttributeNS(XLINK_NAMESPACE_URI.toString(), createQName(XLINK_NAMESPACE_PREFIX, ATTRIBUTE_HREF), href);	//set xlink:href=href		
 	}
 
 	/**Sets the <code>xlink:type</code> and <code>xlink:href</code> attributes

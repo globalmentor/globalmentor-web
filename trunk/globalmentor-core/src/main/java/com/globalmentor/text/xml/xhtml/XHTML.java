@@ -230,7 +230,20 @@ public class XHTML
 	public final static String ELEMENT_UL = "ul";
 	public final static String ELEMENT_VAR = "var";
 
-	//attribute names
+	//attributes
+
+	/**
+	 * The delimiter character for separating parts of an attribute string (e.g. for HTML5 data- attributes). This is distinct from the namespace prefix
+	 * delimiter.
+	 */
+	public final static char ATTRIBUTE_DELIMITER_CHAR = '-';
+
+	/**
+	 * The identifier, with no delimiter, indicating that an attribute is an HTML5 data attribute
+	 * @see <a href="http://www.w3.org/TR/html5/elements.html#embedding-custom-non-visible-data-with-the-data-attributes">HTML 5 Data Attributes</a>
+	 */
+	public final static String DATA_ATTRIBUTE_ID = "data";
+
 	/** The attribute for class. */
 	public final static String ATTRIBUTE_CLASS = "class";
 	/** The attribute for direction. */

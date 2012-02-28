@@ -1306,7 +1306,7 @@ Log.trace("Checking break element: ", element.getNodeName());
 			if(!element.hasAttributeNS(XML_NAMESPACE_URI.toString(), XML.ATTRIBUTE_LANG)) //if there is no xml:lang attribute TODO use a constant, use namespaces
 			{
 					//create an xml:lang attribute with the value of the lang attribute TODO use a constant here, use namespaces
-				element.setAttributeNS(XML_NAMESPACE_URI.toString(), createQualifiedName(XML_NAMESPACE_PREFIX, XML.ATTRIBUTE_LANG), langValue);  
+				element.setAttributeNS(XML_NAMESPACE_URI.toString(), createQName(XML_NAMESPACE_PREFIX, XML.ATTRIBUTE_LANG), langValue);  
 				element.removeAttributeNS(null, XHTML.ATTRIBUTE_LANG);  //remove the lang attribute
 			}
 		}
