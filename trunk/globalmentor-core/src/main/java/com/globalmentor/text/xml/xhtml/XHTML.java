@@ -150,6 +150,7 @@ public class XHTML
 	public final static String ELEMENT_ADDRESS = "address";
 	public final static String ELEMENT_APPLET = "applet";
 	public final static String ELEMENT_AREA = "area";
+	public final static String ELEMENT_ARTICLE = "article";
 	public final static String ELEMENT_ASIDE = "aside";
 	public final static String ELEMENT_B = "b";
 	public final static String ELEMENT_BASE = "base";
@@ -197,6 +198,7 @@ public class XHTML
 	public final static String ELEMENT_LINK = "link";
 	public final static String ELEMENT_MAP = "map";
 	public final static String ELEMENT_META = "meta";
+	public final static String ELEMENT_NAV = "nav";
 	public final static String ELEMENT_OBJECT = "object";
 	public final static String ELEMENT_OL = "ol";
 	public final static String ELEMENT_OPTION = "option";
