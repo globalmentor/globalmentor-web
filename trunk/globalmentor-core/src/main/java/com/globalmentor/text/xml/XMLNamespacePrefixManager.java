@@ -18,6 +18,10 @@ package com.globalmentor.text.xml;
 
 import java.util.*;
 
+import org.urframework.dcmi.DCMI;
+import org.urframework.foaf.FOAF;
+import org.urframework.maqro.MAQRO;
+
 import static com.globalmentor.java.Java.*;
 import com.globalmentor.net.http.webdav.*;
 import static com.globalmentor.net.URIs.*;
@@ -33,9 +37,6 @@ import com.globalmentor.text.xml.oeb.OEB;
 import com.globalmentor.text.xml.schema.XMLSchema;
 import com.globalmentor.text.xml.xhtml.XHTML;
 import com.globalmentor.text.xml.xlink.XLink;
-import com.globalmentor.urf.dcmi.DCMI;
-import com.globalmentor.urf.foaf.FOAF;
-import com.globalmentor.urf.maqro.MAQRO;
 
 /**Manages XML namespaces and prefixes for serialization.
 This class is initialized with a default set of known namespace prefix mappings. 
