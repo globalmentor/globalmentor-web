@@ -26,6 +26,7 @@ import javax.xml.parsers.*;
 import com.globalmentor.config.ConfigurationException;
 import static com.globalmentor.io.Charsets.*;
 import com.globalmentor.java.*;
+import com.globalmentor.java.Objects;
 import com.globalmentor.model.NameValuePair;
 import com.globalmentor.net.ContentType;
 import com.globalmentor.net.URIs;
