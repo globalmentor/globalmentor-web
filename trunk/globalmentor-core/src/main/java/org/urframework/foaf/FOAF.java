@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.globalmentor.urf.foaf;
+package org.urframework.foaf;
 
 import java.net.URI;
 

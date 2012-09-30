@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-package com.globalmentor.urf.dcmi;
+package org.urframework.dcmi;
 
 import java.net.URI;
 import java.util.Locale;
 
-import com.globalmentor.urf.*;
+import org.urframework.*;
 
-import static com.globalmentor.urf.URF.*;
+
+import static org.urframework.URF.*;
 
 /**
  * Constants and methods used for Dublin Core as stored in URF.
