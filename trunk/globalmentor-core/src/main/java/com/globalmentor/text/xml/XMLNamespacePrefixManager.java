@@ -18,11 +18,12 @@ package com.globalmentor.text.xml;
 
 import java.util.*;
 
-import org.urframework.dcmi.DCMI;
 import org.urframework.foaf.FOAF;
 import org.urframework.maqro.MAQRO;
 
 import static com.globalmentor.java.Java.*;
+
+import com.globalmentor.dcmi.DCMI;
 import com.globalmentor.net.http.webdav.*;
 import static com.globalmentor.net.URIs.*;
 import com.globalmentor.rdf.RDF;
