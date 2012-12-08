@@ -171,6 +171,7 @@ public class XHTML
 	public final static String ELEMENT_DL = "dl";
 	public final static String ELEMENT_DT = "dt";
 	public final static String ELEMENT_EM = "em";
+	public final static String ELEMENT_EMBED = "embed";
 	public final static String ELEMENT_FIELDSET = "fieldset";
 	public final static String ELEMENT_FIGCAPTION = "figcaption";
 	public final static String ELEMENT_FIGURE = "figure";
@@ -358,6 +359,12 @@ public class XHTML
 	public final static String ELEMENT_FORM_ATTRIBUTE_METHOD = "method";
 	public final static String FORM_METHOD_GET = "get";
 	public final static String FORM_METHOD_POST = "post";
+
+	//attributes for <embed>
+	public final static String ELEMENT_EMBED_ATTRIBUTE_SRC = "src";
+	public final static String ELEMENT_EMBED_ATTRIBUTE_HEIGHT = "height";
+	public final static String ELEMENT_EMBED_ATTRIBUTE_WIDTH = "width";
+	public final static String ELEMENT_EMBED_ATTRIBUTE_TYPE = "type";
 
 	//attributes for <iframe>
 	public final static String ELEMENT_IFRAME_ATTRIBUTE_ALLOW_TRANSPARENCY = "allowTransparency"; //IE-specific; see http://msdn.microsoft.com/en-us/library/ms533072.aspx
