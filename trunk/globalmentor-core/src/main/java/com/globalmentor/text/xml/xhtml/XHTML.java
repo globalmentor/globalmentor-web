@@ -140,7 +140,7 @@ public class XHTML
 
 	/**
 	 * Characters considered <dfn>space characters</dfn> in HTML.
-	 * @see <a href="http://www.w3.org/TR/html5/common-microsyntaxes.html#space-character">HTML5 space characters</a>
+	 * @see <a href="http://www.w3.org/TR/html5/infrastructure.html#space-character">HTML5 space characters</a>
 	 */
 	public final static Characters SPACE_CHARACTERS = new Characters(SPACE_CHAR, CHARACTER_TABULATION_CHAR, LINE_FEED_CHAR, FORM_FEED_CHAR, CARRIAGE_RETURN_CHAR);
 
@@ -1033,6 +1033,34 @@ public class XHTML
 	public static void getText(final Node node, final StringBuilder stringBuilder)
 	{
 		XML.getText(node, BLOCK_ELEMENTS, true, stringBuilder);
+	}
+
+	/**
+	 * Parses out the HTML CSS class IDs from the given classes character sequence.
+	 * @param htmlClass The classes character sequence to split.
+	 * @return The HTML CSS class identifiers, if any.
+	 * @see #ATTRIBUTE_CLASS
+	 * @see #splitSpaces(CharSequence)
+	 * @see <a href="http://www.w3.org/TR/html5/dom.html#classes>The <code>class</code> attribute</a>
+	 */
+	public static Set<CharSequence> getClasses(final CharSequence htmlClass)
+	{
+		return immutableSetOf(splitSpaces(htmlClass)); //remove duplicates
+	}
+
+	/**
+	 * Splits a string on spaces according to the HTML specification. Essentially this involves trimming the string of Unicode whitespace characters and then
+	 * splitting the resulting string on HTML {@link #SPACE_CHARACTERS}, although Unicode whitespace is not allowed to begin the resulting tokens.
+	 * <p>
+	 * TODO This implementation does not yet support full splitting on Unicode whitespace.
+	 * </p>
+	 * @param charSequence The character sequence to split.
+	 * @return The tokens resulting from the split-string-on-spaces operation.
+	 * @see <a href="http://www.w3.org/TR/html5/infrastructure.html#split-a-string-on-spaces">split a string on spaces</a>
+	 */
+	public static List<CharSequence> splitSpaces(final CharSequence charSequence)
+	{
+		return SPACE_CHARACTERS.split(charSequence); //split on character
 	}
 
 }
