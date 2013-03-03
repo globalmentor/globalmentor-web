@@ -17,6 +17,7 @@
 package com.globalmentor.text.xml.xhtml;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.*;
 
 import com.globalmentor.io.*;
@@ -27,6 +28,7 @@ import com.globalmentor.text.xml.XML;
 
 import org.w3c.dom.*;
 
+import static com.globalmentor.io.Charsets.*;
 import static com.globalmentor.java.Characters.*;
 import static com.globalmentor.text.xml.xhtml.XHTML.*;
 
@@ -84,7 +86,7 @@ public class XHTMLCreator
 	}
 
 	/**Creates an XHTML document from the text retrieved from the given input
-		stream, using ISO 8859-1 as the default encoding.
+		stream, using ISO 8859-1 as the default charset.
 	@param document The XHTML document already containing a <code>&lt;body&gt;</code>
 		element in which the converted text content will be stored.
 	@param inputStream The input stream that contains the text document.
@@ -92,7 +94,7 @@ public class XHTMLCreator
 	*/
 	public void createXHTMLFromText(final Document document, final InputStream inputStream) throws IOException
 	{
-		createXHTMLFromText(document, inputStream, CharacterEncoding.ISO_8859_1);  //create the XHTML using the default encoding
+		createXHTMLFromText(document, inputStream, ISO_8859_1_CHARSET);  //create the XHTML using the default encoding
 	}
 
 	/**Creates an XHTML document from the text retrieved from the given input
@@ -100,17 +102,16 @@ public class XHTMLCreator
 	@param document The XHTML document already containing a <code>&lt;body&gt;</code>
 		element in which the converted text content will be stored.
 	@param inputStream The input stream that contains the text document.
-	@param encoding The encoding to use when interpreting the text contents.
+	@param defaultCharset The charset to use when interpreting the text contents if there is no byte order mark.
 	@exception IOException Thrown if there is an I/O error.
 	*/
-	public void createXHTMLFromText(final Document document, final InputStream inputStream, final String encoding) throws IOException
+	public void createXHTMLFromText(final Document document, final InputStream inputStream, final Charset defaultCharset) throws IOException
 	{
-			//see if we can detect an encoding from a byte order mark
-		final CharacterEncoding detectedEncoding=InputStreams.getBOMEncoding(inputStream);
+		final Charset detectedCharset=InputStreams.detectCharset(inputStream);	//see if we can detect an encoding from a byte order mark
 		getLineBuffer().clear();  //clear our list of lines
 		  //create a reader to read the information in using the correct input encoding TODO change the encoding to what Java understands
 		final BufferedReader bufferedReader=new BufferedReader(
-			  new InputStreamReader(inputStream, detectedEncoding!=null ? detectedEncoding.toString() : encoding));
+			  new InputStreamReader(inputStream, detectedCharset!=null ? detectedCharset : defaultCharset));
 		autodetectSettings(bufferedReader);  //calculate the line spacing used
 		parseText(document, bufferedReader);  //parse the text
 	}
