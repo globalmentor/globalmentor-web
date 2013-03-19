@@ -47,7 +47,7 @@ public class JSON
 {
 
 	/** The content type for JSON: <code>application/json</code>. */
-	public static final ContentType CONTENT_TYPE = ContentType.getInstance(ContentType.APPLICATION_PRIMARY_TYPE, "json");
+	public static final ContentType CONTENT_TYPE = ContentType.create(ContentType.APPLICATION_PRIMARY_TYPE, "json");
 
 	public final static char BEGIN_ARRAY = 0x5B; //[ left square bracket
 	public final static char BEGIN_OBJECT = 0x7B; //[ left square bracket

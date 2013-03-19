@@ -34,7 +34,7 @@ public class MathML
 	public final static String MATHML_XML_SUBTYPE="mathml"+ContentType.SUBTYPE_SUFFIX_DELIMITER_CHAR+XML_SUBTYPE_SUFFIX;
 
 	/**The content type for MathML: <code>application/mathml+xml</code>.*/ 
-	public static final ContentType MATHML_CONTENT_TYPE=ContentType.getInstance(ContentType.APPLICATION_PRIMARY_TYPE, MATHML_XML_SUBTYPE);
+	public static final ContentType MATHML_CONTENT_TYPE=ContentType.create(ContentType.APPLICATION_PRIMARY_TYPE, MATHML_XML_SUBTYPE);
 
 	/**The recommended prefix to the MathML namespace.*/
 	public static final String MATHML_NAMESPACE_PREFIX="mathml";

@@ -64,10 +64,10 @@ public class XML
 	public final static String XML_EXTERNAL_PARSED_ENTITY_SUBTYPE_SUFFIX = "xml-external-parsed-entity";
 
 	/** The content type for generic XML: <code>text/xml</code>. */
-	public static final ContentType CONTENT_TYPE = ContentType.getInstance(ContentType.TEXT_PRIMARY_TYPE, XML_SUBTYPE);
+	public static final ContentType CONTENT_TYPE = ContentType.create(ContentType.TEXT_PRIMARY_TYPE, XML_SUBTYPE);
 
 	/** The content type for a generic XML fragment: <code>text/xml-external-parsed-entity</code>. */
-	public static final ContentType EXTERNAL_PARSED_ENTITY_CONTENT_TYPE = ContentType.getInstance(ContentType.TEXT_PRIMARY_TYPE,
+	public static final ContentType EXTERNAL_PARSED_ENTITY_CONTENT_TYPE = ContentType.create(ContentType.TEXT_PRIMARY_TYPE,
 			XML_EXTERNAL_PARSED_ENTITY_SUBTYPE);
 
 	/** The name extension for eXtensible Markup Language. */

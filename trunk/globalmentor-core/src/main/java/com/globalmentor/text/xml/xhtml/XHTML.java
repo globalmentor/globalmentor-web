@@ -68,13 +68,13 @@ public class XHTML
 			+ XML_EXTERNAL_PARSED_ENTITY_SUBTYPE_SUFFIX;
 
 	/** The content type for HTML: <code>text/html</code>. */
-	public static final ContentType HTML_CONTENT_TYPE = ContentType.getInstance(ContentType.TEXT_PRIMARY_TYPE, HTML_SUBTYPE);
+	public static final ContentType HTML_CONTENT_TYPE = ContentType.create(ContentType.TEXT_PRIMARY_TYPE, HTML_SUBTYPE);
 
 	/** The content type for XHTML: <code>application/xhtml+xml</code>. */
-	public static final ContentType XHTML_CONTENT_TYPE = ContentType.getInstance(ContentType.APPLICATION_PRIMARY_TYPE, XHTML_XML_SUBTYPE);
+	public static final ContentType XHTML_CONTENT_TYPE = ContentType.create(ContentType.APPLICATION_PRIMARY_TYPE, XHTML_XML_SUBTYPE);
 
 	/** The content type for an XHTML fragment: <code>application/xhtml+xml-external-parsed-entity</code>. */
-	public static final ContentType XHTML_FRAGMENT_CONTENT_TYPE = ContentType.getInstance(ContentType.APPLICATION_PRIMARY_TYPE,
+	public static final ContentType XHTML_FRAGMENT_CONTENT_TYPE = ContentType.create(ContentType.APPLICATION_PRIMARY_TYPE,
 			XHTML_XML_EXTERNAL_PARSED_ENTITY_SUBTYPE);
 
 	/** The old extension for HTML resource names. */
@@ -351,10 +351,10 @@ public class XHTML
 	public final static String ELEMENT_FORM_ATTRIBUTE_ACTION = "action";
 	public final static String ELEMENT_FORM_ATTRIBUTE_ENCTYPE = "enctype";
 	/** The "application/x-www-form-urlencoded" encoding type; see <a href="http://www.rfc-editor.org/rfc/rfc1867.txt">RFC 1867</a>. */
-	public final static ContentType APPLICATION_X_WWW_FORM_URLENCODED_CONTENT_TYPE = ContentType.getInstance(ContentType.APPLICATION_PRIMARY_TYPE,
+	public final static ContentType APPLICATION_X_WWW_FORM_URLENCODED_CONTENT_TYPE = ContentType.create(ContentType.APPLICATION_PRIMARY_TYPE,
 			X_WWW_FORM_URLENCODED);
 	/** The "multipart/form-data" encoding type; see <a href="http://www.rfc-editor.org/rfc/rfc1867.txt">RFC 1867</a>. */
-	public final static ContentType MULTIPART_FORM_DATA_CONTENT_TYPE = ContentType.getInstance(ContentType.MULTIPART_PRIMARY_TYPE, FORM_DATA_SUBTYPE);
+	public final static ContentType MULTIPART_FORM_DATA_CONTENT_TYPE = ContentType.create(ContentType.MULTIPART_PRIMARY_TYPE, FORM_DATA_SUBTYPE);
 
 	public final static String ELEMENT_FORM_ATTRIBUTE_METHOD = "method";
 	public final static String FORM_METHOD_GET = "get";
@@ -772,7 +772,7 @@ public class XHTML
 		{
 			try
 			{
-				return ContentType.getInstance(typeString); //parse the content type and return it
+				return ContentType.create(typeString); //parse the content type and return it
 			}
 			catch(final IllegalArgumentException illegalArgumentException) //if the content type isn't valid
 			{
@@ -922,7 +922,7 @@ public class XHTML
 					if(element.hasAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_TYPE)) //if there is a type attribute
 					{
 						final String type = element.getAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_TYPE); //get the type
-						final ContentType mediaType = ContentType.getInstance(type); //create a media type from the given type
+						final ContentType mediaType = ContentType.create(type); //create a media type from the given type
 						if(mediaType.getPrimaryType().equals(ContentType.IMAGE_PRIMARY_TYPE)) //if this is an image
 							return true; //show that this is an image object
 					}

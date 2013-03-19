@@ -33,10 +33,10 @@ public class JavaScript
 	public final static String JAVASCRIPT_SUBTYPE="javascript";
 
 	/**The content type for JavaScript: <code>application/javascript</code>.*/ 
-	public static final ContentType JAVASCRIPT_CONTENT_TYPE=ContentType.getInstance(ContentType.APPLICATION_PRIMARY_TYPE, JAVASCRIPT_SUBTYPE);
+	public static final ContentType JAVASCRIPT_CONTENT_TYPE=ContentType.create(ContentType.APPLICATION_PRIMARY_TYPE, JAVASCRIPT_SUBTYPE);
 
 	/**The obsolete content type for JavaScript: <code>text/javascript</code>.*/ 
-	public static final ContentType JAVASCRIPT_OBSOLETE_CONTENT_TYPE=ContentType.getInstance(ContentType.TEXT_PRIMARY_TYPE, JAVASCRIPT_SUBTYPE);
+	public static final ContentType JAVASCRIPT_OBSOLETE_CONTENT_TYPE=ContentType.create(ContentType.TEXT_PRIMARY_TYPE, JAVASCRIPT_SUBTYPE);
 
 	/**The name extension for JavaScript files.*/
 	public final static String JS_NAME_EXTENSION="js";
