@@ -74,8 +74,8 @@ public class XMLCSSProcessor implements URIInputStreamable
 	/**Skips all CSS whitespace characters, and returns the number of characters skipped.
 	Resets peeking.
 	@param reader The reader from which to retrieve characters.
-	@except IOException Thrown when an i/o error occurs.
-	@except ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
+	@throws IOException Thrown when an i/o error occurs.
+	@throws ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
 	@return The number of characters skipped.
 	*/
 	public static long skipWhitespaceCharacters(final ParseReader reader) throws IOException, ParseEOFException
@@ -87,7 +87,7 @@ public class XMLCSSProcessor implements URIInputStreamable
 	No exception is thrown if the end of the file is reached.
 	Resets peeking.
 	@param reader The reader from which to retrieve characters.
-	@except IOException Thrown when an i/o error occurs.
+	@throws IOException Thrown when an i/o error occurs.
 	@return The number of characters skipped.
 	*/
 	public static long skipWhitespaceCharactersEOF(final ParseReader reader) throws IOException
@@ -99,8 +99,8 @@ public class XMLCSSProcessor implements URIInputStreamable
 		and returns the number of characters skipped.
 	Resets peeking.
 	@param reader The reader from which to retrieve characters.
-	@except IOException Thrown when an i/o error occurs.
-	@except ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
+	@throws IOException Thrown when an i/o error occurs.
+	@throws ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
 	@return The number of characters skipped.
 	*/
 /*TODO del if we don't need
@@ -115,7 +115,7 @@ public class XMLCSSProcessor implements URIInputStreamable
 	No exception is thrown if the end of the file is reached.
 	Resets peeking.
 	@param reader The reader from which to retrieve characters.
-	@except IOException Thrown when an i/o error occurs.
+	@throws IOException Thrown when an i/o error occurs.
 	@return The number of characters skipped.
 	*/
 /*TODO del if we don't need
@@ -145,12 +145,12 @@ public class XMLCSSProcessor implements URIInputStreamable
 	@param reader The reader from which to retrieve characters.
 	@param propertyName The name of the property for which the value is being parsed
 //TODO fix all the exception stuff
-	@except IOException Thrown when an i/o error occurs.
-//TODO fix	@except XMLSyntaxException Thrown when there is a syntax error in the XML file.
-//TODO fix	@except XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
-	@except ParseUnexpectedDataException Thrown when an unexpected character is found.
-	@except ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
-//TODO fix	@except XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
+	@throws IOException Thrown when an i/o error occurs.
+//TODO fix	@throws XMLSyntaxException Thrown when there is a syntax error in the XML file.
+//TODO fix	@throws XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
+	@throws ParseUnexpectedDataException Thrown when an unexpected character is found.
+	@throws ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
+//TODO fix	@throws XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
 	@return The value of the CSS property, in string form.
 	*/
 //TODO throw DOM syntax error exception, maybe
@@ -210,12 +210,12 @@ return value;	//TODO throw the correct error here
 	@param reader The reader from which to retrieve characters.
 	@param parentStyleSheet The stylesheet which will hold the selectors and properties encountered.
 //TODO fix all the exception stuff
-	@except IOException Thrown when an i/o error occurs.
-//TODO fix	@except XMLSyntaxException Thrown when there is a syntax error in the XML file.
-//TODO fix	@except XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
-	@except ParseUnexpectedDataException Thrown when an unexpected character is found.
-	@except ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
-//TODO fix	@except XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
+	@throws IOException Thrown when an i/o error occurs.
+//TODO fix	@throws XMLSyntaxException Thrown when there is a syntax error in the XML file.
+//TODO fix	@throws XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
+	@throws ParseUnexpectedDataException Thrown when an unexpected character is found.
+	@throws ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
+//TODO fix	@throws XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
 	@return A new XML tag constructed from the reader.
 	*/
 	protected static XMLCSSStyleRule parseRuleSet(final ParseReader reader, final XMLCSSStyleSheet parentStyleSheet) throws IOException,/*TODO fix, XMLSyntaxException, XMLWellFormednessException, */ParseUnexpectedDataException, ParseEOFException//TODO fix, XMLUndefinedEntityReferenceException
@@ -260,12 +260,12 @@ return value;	//TODO throw the correct error here
 	/**Parses a CSS style from a string.
 	@param styleValue The set of rules to parse.
 	//TODO fix all the exception stuff
-	@except IOException Thrown when an i/o error occurs.
-	//TODO fix	@except XMLSyntaxException Thrown when there is a syntax error in the XML file.
-	//TODO fix	@except XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
-	@except ParseUnexpectedDataException Thrown when an unexpected character is found.
-	@except ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
-	//TODO fix	@except XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
+	@throws IOException Thrown when an i/o error occurs.
+	//TODO fix	@throws XMLSyntaxException Thrown when there is a syntax error in the XML file.
+	//TODO fix	@throws XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
+	@throws ParseUnexpectedDataException Thrown when an unexpected character is found.
+	@throws ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
+	//TODO fix	@throws XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
 	@return <code>true</code> if the end-of-rule-group character was found,
 		<code>false</code> if the end of the stream was reached.
 	*/
@@ -283,12 +283,12 @@ return value;	//TODO throw the correct error here
 	@param styleDeclaration The style declaration which will hold the style declaration elements.
 	@param endChar
 //TODO fix all the exception stuff
-	@except IOException Thrown when an i/o error occurs.
-//TODO fix	@except XMLSyntaxException Thrown when there is a syntax error in the XML file.
-//TODO fix	@except XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
-	@except ParseUnexpectedDataException Thrown when an unexpected character is found.
-	@except ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
-//TODO fix	@except XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
+	@throws IOException Thrown when an i/o error occurs.
+//TODO fix	@throws XMLSyntaxException Thrown when there is a syntax error in the XML file.
+//TODO fix	@throws XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
+	@throws ParseUnexpectedDataException Thrown when an unexpected character is found.
+	@throws ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
+//TODO fix	@throws XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
 	@return <code>true</code> if the end-of-rule-group character was found,
 		<code>false</code> if the end of the stream was reached.
 	*/
@@ -348,13 +348,13 @@ return value;	//TODO throw the correct error here
 	@param parentStyleSheet The stylesheet which will hold the nodes encountered.
 
 //TODO fix all this exception stuff
-	@except IOException Thrown when an i/o error occurs.
-	@except XMLSyntaxException Thrown when there is a syntax error in the XML file.
-	@except XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
-	@except XMLValidityException Thrown when there is a validity error in the XML file.
-	@except XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
-	@except ParseUnexpectedDataException Thrown when an unexpected character is found.
-	@except ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
+	@throws IOException Thrown when an i/o error occurs.
+	@throws XMLSyntaxException Thrown when there is a syntax error in the XML file.
+	@throws XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
+	@throws XMLValidityException Thrown when there is a validity error in the XML file.
+	@throws XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
+	@throws ParseUnexpectedDataException Thrown when an unexpected character is found.
+	@throws ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
 //TODO fix	@return A new XML object constructed from the markup.
 	*/
 	protected void parseStyleSheetContent(final ParseReader reader, final XMLCSSStyleSheet parentStyleSheet) throws IOException, /*TODO fix XMLSyntaxException, XMLWellFormednessException, XMLValidityException, XMLUndefinedEntityReferenceException,*/ ParseUnexpectedDataException, ParseEOFException
@@ -417,9 +417,9 @@ return value;	//TODO throw the correct error here
 	/**Parses any internal stylesheets contained in an XML document.
 	@param document The XML document that that contains stylesheet information.
 //TODO fix all this exception stuff
-	@except IOException Thrown when an i/o error occurs.
-	@except ParseUnexpectedDataException Thrown when an unexpected character is found.
-	@except ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
+	@throws IOException Thrown when an i/o error occurs.
+	@throws ParseUnexpectedDataException Thrown when an unexpected character is found.
+	@throws ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
 	*/
 	public void parseInternalStyleSheets(final XMLDocument document) throws IOException, ParseUnexpectedDataException, ParseEOFException
 	{
@@ -459,9 +459,9 @@ return value;	//TODO throw the correct error here
 	@param sourceObject The source of the data (e.g. a String, File, or URL).
 	@param The node that associates this stylesheet with the document.
 	@return A new stylesheet contructed from the reader.
-	@except IOException Thrown when an i/o error occurs.
-	@except ParseUnexpectedDataException Thrown when an unexpected character is found.
-	@except ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
+	@throws IOException Thrown when an i/o error occurs.
+	@throws ParseUnexpectedDataException Thrown when an unexpected character is found.
+	@throws ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
 	*/
 	public CSSStyleSheet parseStyleSheet(final Reader reader, final Object sourceObject, final Node ownerNode) throws IOException, ParseUnexpectedDataException, ParseEOFException
 	{
@@ -476,9 +476,9 @@ return value;	//TODO throw the correct error here
 	@param sourceObject The source of the data (e.g. a String, File, or URL).
 	@param parentStyleSheet The stylesheet that included this stylesheet.
 	@return A new stylesheet contructed from the reader.
-	@except IOException Thrown when an i/o error occurs.
-	@except ParseUnexpectedDataException Thrown when an unexpected character is found.
-	@except ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
+	@throws IOException Thrown when an i/o error occurs.
+	@throws ParseUnexpectedDataException Thrown when an unexpected character is found.
+	@throws ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
 	*/
 	public CSSStyleSheet parseStyleSheet(final Reader reader, final Object sourceObject, final StyleSheet parentStyleSheet) throws IOException, ParseUnexpectedDataException, ParseEOFException
 	{
@@ -492,9 +492,9 @@ return value;	//TODO throw the correct error here
 	@param reader The source from which the information will be read.
 	@param sourceObject The source of the data (e.g. a String, File, or URL).
 	@return A new stylesheet contructed from the reader.
-	@except IOException Thrown when an i/o error occurs.
-	@except ParseUnexpectedDataException Thrown when an unexpected character is found.
-	@except ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
+	@throws IOException Thrown when an i/o error occurs.
+	@throws ParseUnexpectedDataException Thrown when an unexpected character is found.
+	@throws ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
 	*/
 	public CSSStyleSheet parseStyleSheet(final Reader reader, final Object sourceObject) throws IOException, ParseUnexpectedDataException, ParseEOFException
 	{
@@ -507,9 +507,9 @@ return value;	//TODO throw the correct error here
 	@param styleText The string containing the style information.
 	@param name The name of the style information (e.g. "Internal Style Sheet").
 	@return A new stylesheet contructed from the string.
-	@except IOException Thrown when an i/o error occurs.
-	@except ParseUnexpectedDataException Thrown when an unexpected character is found.
-	@except ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
+	@throws IOException Thrown when an i/o error occurs.
+	@throws ParseUnexpectedDataException Thrown when an unexpected character is found.
+	@throws ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
 	*/
 	public CSSStyleSheet parseStyleSheet(final String styleText, final String name) throws IOException, ParseUnexpectedDataException, ParseEOFException
 	{
@@ -524,9 +524,9 @@ return value;	//TODO throw the correct error here
 	@param styleSheet The stylesheet already constructed, ready for information.
 	@param reader The source of the stylesheet information.
 	@param sourceObject The source of the data (e.g. a String, File, or URL).
-	@except IOException Thrown when an i/o error occurs.
-	@except ParseUnexpectedDataException Thrown when an unexpected character is found.
-	@except ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
+	@throws IOException Thrown when an i/o error occurs.
+	@throws ParseUnexpectedDataException Thrown when an unexpected character is found.
+	@throws ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
 	*/
 	protected void parse(final XMLCSSStyleSheet styleSheet, final Reader reader, final Object sourceObject) throws IOException, ParseUnexpectedDataException, ParseEOFException
 	{

@@ -277,7 +277,7 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
 		of that attribute.
 	@param name The name of the attribute to create or alter.
 	@param value Value to set in string form.
-	@except DOMException
+	@throws DOMException
 	<ul>
 		<li>INVALID_CHARACTER_ERR: Raised if the specified name contains an
 			invalid character.</li>

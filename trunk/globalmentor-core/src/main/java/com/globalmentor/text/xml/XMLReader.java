@@ -112,7 +112,7 @@ public class XMLReader extends ParseReader
 		it with an LF, so we'll move the fetch buffer back one so that it can
 		be processed next time.
 	@param newDataBeginIndex The starting index of the newly fetched data.
-	@except IOException Thrown when an I/O error occurs.
+	@throws IOException Thrown when an I/O error occurs.
 	@see ProcessingBufferedReader#getFetchBufferIndex
 	*/
 	protected void processBufferedData(final int newDataBeginIndex) throws IOException
