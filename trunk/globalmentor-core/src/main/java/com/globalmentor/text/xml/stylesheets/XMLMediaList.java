@@ -47,7 +47,7 @@ public class XMLMediaList extends ArrayList implements org.w3c.dom.stylesheets.M
 	/**Sets the parsable textual representation of the media list.
 	@param cssText The textual representation of the media list in comma-separated
 		format.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this media list is readonly.</li>
 		<li>SYNTAX_ERR: Raised if the specified CSS string value has a syntax
@@ -93,7 +93,7 @@ public class XMLMediaList extends ArrayList implements org.w3c.dom.stylesheets.M
 
 	/**Deletes the medium indicated by <code>oldMedium</code> from the list.
 	@param oldMedium The medium to delete in the media list.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this list is readonly.</li>
 		<li>NOT_FOUND_ERR: Raised if <code>oldMedium</code> is not in the list.</li>
@@ -112,7 +112,7 @@ public class XMLMediaList extends ArrayList implements org.w3c.dom.stylesheets.M
 	/**Adds the medium <code>newMedium</code> to the end of the list. It the
 	<code>newMedium</code> is already used, it is first removed.
 	@param newMedium The new medium to add.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this list is readonly.</li>
 	</ul>

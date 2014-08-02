@@ -55,7 +55,7 @@ public class XMLReader extends ParseReader
 	/**Constructor to create a reader from the contents of a string.
 	@param inString The string that should be used for input.
 	@param name The name of the reader.
-	@exception IOException Thrown when an I/O error occurs.
+	@throws IOException Thrown when an I/O error occurs.
 	*/
 	public XMLReader(final String inString, final String name) throws IOException
 	{
@@ -68,7 +68,7 @@ public class XMLReader extends ParseReader
 		the buffer.
 	@param inReader The reader that contains the data.
 	@param prereadCharacters The characters that have already been read.
-	@exception IOException Thrown if <code>prereadCharacters</code> is too long for the buffer.
+	@throws IOException Thrown if <code>prereadCharacters</code> is too long for the buffer.
 	@see BufferedPushbackReader
 	*/
 	public XMLReader(final Reader inReader, final StringBuffer prereadCharacters) throws IOException
@@ -82,7 +82,7 @@ public class XMLReader extends ParseReader
 		the buffer.
 	@param inReader The reader that contains the data.
 	@param sourceObject The source of the data (e.g. a String, File, or URL).
-	@exception IOException Thrown if <code>prereadCharacters</code> is too long for the buffer.
+	@throws IOException Thrown if <code>prereadCharacters</code> is too long for the buffer.
 	@see BufferedPushbackReader
 	*/
 	public XMLReader(final Reader inReader, final Object sourceObject) throws IOException
@@ -98,7 +98,7 @@ public class XMLReader extends ParseReader
 	@param inReader The reader that contains the data.
 	@param prereadCharacters The characters that have already been read.
 	@param sourceObject The source of the data (e.g. a String, File, or URL).
-	@exception IOException Thrown if <code>prereadCharacters</code> is too long for the buffer.
+	@throws IOException Thrown if <code>prereadCharacters</code> is too long for the buffer.
 	@see BufferedPushbackReader
 	*/
 	public XMLReader(final Reader inReader, final StringBuffer prereadCharacters, final Object sourceObject) throws IOException

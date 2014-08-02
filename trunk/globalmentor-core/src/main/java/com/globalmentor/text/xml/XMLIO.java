@@ -92,9 +92,9 @@ public class XMLIO extends DocumentBuilderFactory implements IO<Document>
 	@param inputStream The input stream from which to read the data.
 	@param baseURI The base URI of the data, or <code>null</code> if no base URI is available.
 	@return The XML document read from the input stream.
-	@exception NullPointerException if the given input stream is <code>null</code>.
-	@exception IOException if there is an error reading the data.
-	@exception IllegalStateException if there is no available parser to match the configuration.
+	@throws NullPointerException if the given input stream is <code>null</code>.
+	@throws IOException if there is an error reading the data.
+	@throws IllegalStateException if there is no available parser to match the configuration.
 	*/ 
 	public final Document read(final InputStream inputStream, final URI baseURI) throws IOException
 	{
@@ -120,9 +120,9 @@ public class XMLIO extends DocumentBuilderFactory implements IO<Document>
 	@param inputStream The input stream from which to read the data.
 	@param baseURI The base URI of the data, or <code>null</code> if no base URI is available.
 	@return The XML document representing the data read.
-	@exception NullPointerException if the given input stream is <code>null</code>.
-	@exception IOException if there is an error reading the data.
-	@exception IllegalStateException if there is no available parser to match the configuration.
+	@throws NullPointerException if the given input stream is <code>null</code>.
+	@throws IOException if there is an error reading the data.
+	@throws IllegalStateException if there is no available parser to match the configuration.
 	*/
 	public static Document readXML(final InputStream inputStream, final URI baseURI) throws IOException
 	{
@@ -137,9 +137,9 @@ public class XMLIO extends DocumentBuilderFactory implements IO<Document>
 	@param baseURI The base URI of the data, or <code>null</code> if no base URI is available.
 	@param namespaceAware <code>true</code> if the parser produced will provide support for XML namespaces, else <code>false</code>.
 	@return The XML document representing the data read.
-	@exception NullPointerException if the given input stream is <code>null</code>.
-	@exception IOException if there is an error reading the data.
-	@exception IllegalStateException if there is no available parser to match the configuration.
+	@throws NullPointerException if the given input stream is <code>null</code>.
+	@throws IOException if there is an error reading the data.
+	@throws IllegalStateException if there is no available parser to match the configuration.
 	*/
 	public static Document readXML(final InputStream inputStream, final URI baseURI, final boolean namespaceAware) throws IOException
 	{
@@ -155,9 +155,9 @@ public class XMLIO extends DocumentBuilderFactory implements IO<Document>
 	@param namespaceAware <code>true</code> if the parser produced will provide support for XML namespaces, else <code>false</code>.
 	@param validating <code>true</code> if the parser produced will validate documents as they are parsed, else <code>false</code>.
 	@return The XML document representing the data read.
-	@exception NullPointerException if the given input stream is <code>null</code>.
-	@exception ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
-	@exception IOException if there is an error reading the data.
+	@throws NullPointerException if the given input stream is <code>null</code>.
+	@throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	@throws IOException if there is an error reading the data.
 	*/
 	public static Document readXML(final InputStream inputStream, final URI baseURI, final boolean namespaceAware, final boolean validating) throws IOException
 	{
@@ -169,8 +169,8 @@ public class XMLIO extends DocumentBuilderFactory implements IO<Document>
 	@param baseURI The base URI of the data, or <code>null</code> if no base URI is available.
 	@param documentBuilder The document builder to use for parsing the XML.
 	@return The XML document representing the data read.
-	@exception NullPointerException if the given input stream and/or document builder is <code>null</code>.
-	@exception IOException if there is an error reading the data.
+	@throws NullPointerException if the given input stream and/or document builder is <code>null</code>.
+	@throws IOException if there is an error reading the data.
 	*/
 	public static Document readXML(final InputStream inputStream, final URI baseURI, final DocumentBuilder documentBuilder) throws IOException
 	{
@@ -188,7 +188,7 @@ public class XMLIO extends DocumentBuilderFactory implements IO<Document>
 	@param outputStream The output stream to which to write the data.
 	@param baseURI The base URI of the data, or <code>null</code> if no base URI is available.
 	@param document The XML Mdocument to write to the given output stream.
-	@exception NullPointerException if the given output stream and/or document is <code>null</code>.
+	@throws NullPointerException if the given output stream and/or document is <code>null</code>.
 	@throws IOException Thrown if there is an error writing the data.
 	*/
 	public void write(final OutputStream outputStream, final URI baseURI, final Document document) throws IOException

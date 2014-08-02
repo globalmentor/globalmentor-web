@@ -904,7 +904,7 @@ public class XML
 	 * Returns the prefix from the qualified name.
 	 * @param qualifiedName The fully qualified name, with an optional namespace prefix.
 	 * @return The namespace prefix, or <code>null</code> if no prefix is present.
-	 * @exception NullPointerException if the given qualified name is <code>null</code>.
+	 * @throws NullPointerException if the given qualified name is <code>null</code>.
 	 */
 	public static String getPrefix(final String qualifiedName)
 	{
@@ -920,7 +920,7 @@ public class XML
 	 * Retrieves the local name from a qualified name, removing the prefix, if any.
 	 * @param qualifiedName The XML qualified name.
 	 * @return The local name without a prefix.
-	 * @exception NullPointerException if the given qualified name is <code>null</code>.
+	 * @throws NullPointerException if the given qualified name is <code>null</code>.
 	 */
 	public static String getLocalName(final String qualifiedName)
 	{
@@ -1465,11 +1465,11 @@ public class XML
 	 * Extracts a single node from its parent and places it in a document fragment. The node is removed from its parent.
 	 * @param node The node to be extracted. This node must have a valid parent and owner document.
 	 * @return A new document fragment containing the extracted node.
-	 * @exception DOMException <ul>
+	 * @throws DOMException <ul>
 	 *              <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
 	 *              </ul>
-	 * @exception IllegalArgumentException if the given node has no owner document.
-	 * @exception IllegalArgumentException if the given node has no parent node.
+	 * @throws IllegalArgumentException if the given node has no owner document.
+	 * @throws IllegalArgumentException if the given node has no parent node.
 	 * @see #removeChildren(Node, int, int)
 	 */
 	public static DocumentFragment extractNode(final Node node) throws DOMException
@@ -1482,11 +1482,11 @@ public class XML
 	 * @param node The node to be extracted. This node must have a valid parent and owner document.
 	 * @param remove Whether the node will be removed from its parent; if <code>false</code>, it will remain the child of its parent.
 	 * @return A new document fragment containing the extracted node.
-	 * @exception DOMException <ul>
+	 * @throws DOMException <ul>
 	 *              <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
 	 *              </ul>
-	 * @exception IllegalArgumentException if the given node has no owner document.
-	 * @exception IllegalArgumentException if the given node has no parent node.
+	 * @throws IllegalArgumentException if the given node has no owner document.
+	 * @throws IllegalArgumentException if the given node has no parent node.
 	 * @see #removeChildren(Node, int, int)
 	 */
 	public static DocumentFragment extractNode(final Node node, final boolean remove) throws DOMException
@@ -1514,7 +1514,7 @@ public class XML
 	 * Extracts all the child nodes from the given node and places them in a document fragment. The children are removed from their parents.
 	 * @param node The node from which child nodes should be extracted. This node must have a valid owner document.
 	 * @return A new document fragment containing the extracted children.
-	 * @exception DOMException <ul>
+	 * @throws DOMException <ul>
 	 *              <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
 	 *              </ul>
 	 * @see #removeChildren
@@ -1529,7 +1529,7 @@ public class XML
 	 * @param node The node from which child nodes should be extracted. This node must have a valid owner document.
 	 * @param remove Whether the nodes will be removed from the parentnode ; if <code>false</code>, they will remain the child of the parent node.
 	 * @return A new document fragment containing the extracted children.
-	 * @exception DOMException <ul>
+	 * @throws DOMException <ul>
 	 *              <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
 	 *              </ul>
 	 * @see #removeChildren
@@ -1546,12 +1546,12 @@ public class XML
 	 * @param startChildIndex The index of the first child to extract.
 	 * @param endChildIndex The index directly after the last child to extract. Must be greater than <code>startChildIndex</code> or no action will occur.
 	 * @return A new document fragment containing the extracted children.
-	 * @exception ArrayIndexOutOfBoundsException Thrown if either index is negative, if the start index is greater than or equal to the number of children, or if
+	 * @throws ArrayIndexOutOfBoundsException Thrown if either index is negative, if the start index is greater than or equal to the number of children, or if
 	 *              the ending index is greater than the number of children (unless the ending index is not greater than the starting index). TODO should we throw
 	 *              an exception is startChildIndex>endChildIndex, like String.substring()?
-	 * @exception IllegalArgumentException if the given node has no owner document.
-	 * @exception ArrayIndexOutOfBoundsException if the given range is invalid for the given node's children.
-	 * @exception DOMException <ul>
+	 * @throws IllegalArgumentException if the given node has no owner document.
+	 * @throws ArrayIndexOutOfBoundsException if the given range is invalid for the given node's children.
+	 * @throws DOMException <ul>
 	 *              <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
 	 *              </ul>
 	 * @see #removeChildren(Node, int, int)
@@ -1569,12 +1569,12 @@ public class XML
 	 * @param endChildIndex The index directly after the last child to extract. Must be greater than <code>startChildIndex</code> or no action will occur.
 	 * @param remove Whether the nodes will be removed from the parentnode ; if <code>false</code>, they will remain the child of the parent node.
 	 * @return A new document fragment containing the extracted children.
-	 * @exception ArrayIndexOutOfBoundsException Thrown if either index is negative, if the start index is greater than or equal to the number of children, or if
+	 * @throws ArrayIndexOutOfBoundsException Thrown if either index is negative, if the start index is greater than or equal to the number of children, or if
 	 *              the ending index is greater than the number of children (unless the ending index is not greater than the starting index). TODO should we throw
 	 *              an exception is startChildIndex>endChildIndex, like String.substring()?
-	 * @exception IllegalArgumentException if the given node has no owner document.
-	 * @exception ArrayIndexOutOfBoundsException if the given range is invalid for the given node's children.
-	 * @exception DOMException <ul>
+	 * @throws IllegalArgumentException if the given node has no owner document.
+	 * @throws ArrayIndexOutOfBoundsException if the given range is invalid for the given node's children.
+	 * @throws DOMException <ul>
 	 *              <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
 	 *              </ul>
 	 * @see #removeChildren(Node, int, int)
@@ -1942,7 +1942,7 @@ public class XML
 	 * @param startIndex The index of the first character to include in the element.
 	 * @param endIndex The index immediately after the last character to include in the element.
 	 * @return The inserted element.
-	 * @exception DOMException <ul>
+	 * @throws DOMException <ul>
 	 *              <li>INDEX_SIZE_ERR: Raised if the specified offset is negative or greater than the number of 16-bit units in <code>data</code>.</li>
 	 *              <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
 	 *              </ul>
@@ -1962,7 +1962,7 @@ public class XML
 	 * @param startIndex The index of the first character to be split.
 	 * @param endIndex The index immediately after the last character to split.
 	 * @return The new text node that contains the text selected by the start and ending indexes.
-	 * @exception DOMException <ul>
+	 * @throws DOMException <ul>
 	 *              <li>INDEX_SIZE_ERR: Raised if the specified offset is negative or greater than the number of 16-bit units in <code>data</code>.</li>
 	 *              <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
 	 *              </ul>
@@ -2004,10 +2004,10 @@ public class XML
 	 * @param node The node from which child nodes should be removed.
 	 * @param startChildIndex The index of the first child to remove.
 	 * @param endChildIndex The index directly after the last child to remove. Must be greater than <code>startChildIndex</code> or no action will occur.
-	 * @exception ArrayIndexOutOfBoundsException Thrown if either index is negative, if the start index is greater than or equal to the number of children, or if
+	 * @throws ArrayIndexOutOfBoundsException Thrown if either index is negative, if the start index is greater than or equal to the number of children, or if
 	 *              the ending index is greater than the number of children. TODO should we throw an exception is startChildIndex>endChildIndex, like
 	 *              String.substring()?
-	 * @exception DOMException <ul>
+	 * @throws DOMException <ul>
 	 *              <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
 	 *              </ul>
 	 */

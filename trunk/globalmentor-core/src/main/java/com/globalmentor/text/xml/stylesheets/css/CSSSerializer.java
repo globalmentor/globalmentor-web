@@ -56,8 +56,8 @@ public class CSSSerializer	//TODO del all the XMLUndefinedEntityReferenceExcepti
 		UTF-8 encoding.
 	@param document The CSS stylesheet to serialize.
 	@param outputStream The stream into which the document should be serialized.
-	@exception IOException Thrown if an I/O error occurred.
-	@exception UnsupportedEncodingException Thrown if the UTF-8 encoding not recognized.
+	@throws IOException Thrown if an I/O error occurred.
+	@throws UnsupportedEncodingException Thrown if the UTF-8 encoding not recognized.
 	*/
 	public void serialize(final CSSStyleSheet stylesheet, final OutputStream outputStream) throws UnsupportedEncodingException, IOException
 	{
@@ -69,8 +69,8 @@ public class CSSSerializer	//TODO del all the XMLUndefinedEntityReferenceExcepti
 	@param document The CSS stylesheet to serialize.
 	@param outputStream The stream into which the document should be serialized.
 	@param encoding The encoding format to use when serializing.
-	@exception IOException Thrown if an I/O error occurred.
-	@exception UnsupportedEncodingException Thrown if the specified encoding is not recognized.
+	@throws IOException Thrown if an I/O error occurred.
+	@throws UnsupportedEncodingException Thrown if the specified encoding is not recognized.
 	*/
 	public void serialize(final CSSStyleSheet stylesheet, final OutputStream outputStream, final String encoding) throws IOException, UnsupportedEncodingException
 	{
@@ -92,7 +92,7 @@ public class CSSSerializer	//TODO del all the XMLUndefinedEntityReferenceExcepti
 	/**Serializes the specified CSS rule to the given writer.
 	@param cssRule The CSS rule to serialize.
 	@param writer The writer into which the style rule should be written.
-	@exception IOException Thrown if an I/O error occurred.
+	@throws IOException Thrown if an I/O error occurred.
 	*/
 	protected void write(final CSSRule cssRule, final BufferedWriter writer) throws IOException
 	{
@@ -112,7 +112,7 @@ public class CSSSerializer	//TODO del all the XMLUndefinedEntityReferenceExcepti
 	/**Serializes the specified CSS style declaration to the given writer.
 	@param cssStyleDeclaration The CSS style declaration to serialize.
 	@param writer The writer into which the style declaration should be written.
-	@exception IOException Thrown if an I/O error occurred.
+	@throws IOException Thrown if an I/O error occurred.
 	*/
 	protected void write(final CSSStyleDeclaration cssStyleDeclaration, final BufferedWriter writer) throws IOException
 	{

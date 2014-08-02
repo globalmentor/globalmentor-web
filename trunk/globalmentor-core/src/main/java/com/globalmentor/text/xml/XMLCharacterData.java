@@ -65,7 +65,7 @@ public abstract class XMLCharacterData extends XMLNode implements org.w3c.dom.Ch
 		public void setNodeValue(String nodeValue) throws DOMException {Value=nodeValue;}
 
 	/**Returns the character data of this node.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>NO_MODIFICATION_ALLOWED_ERR: Raised when the node is readonly.<li>
 		<li>DOMSTRING_SIZE_ERR: Raised when the number of characters returned would
@@ -111,7 +111,7 @@ public abstract class XMLCharacterData extends XMLNode implements org.w3c.dom.Ch
 	@return The specified substring. If the sum of <code>offset</code> and
 	<code>count</code> exceeds the <code>length</code>, then all 16-bit
 	units to the end of the data are returned.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>INDEX_SIZE_ERR: Raised if the specified <code>offset</code> is
 			negative or greater than the number of 16-bit units in this node's
@@ -131,7 +131,7 @@ public abstract class XMLCharacterData extends XMLNode implements org.w3c.dom.Ch
 
 	/**Appends the specified string to the end of this node's character data.
 	@param arg The character data to append.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
 	</ul>
@@ -145,7 +145,7 @@ public abstract class XMLCharacterData extends XMLNode implements org.w3c.dom.Ch
 	/**Inserts character data at the specified offset.
 	@param offset The character offset at which to insert.
 	@param arg The character data to insert.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>INDEX_SIZE_ERR: Raised if the specified <code>offset</code> is
 			negative or greater than the number of 16-bit units in this node's
@@ -167,7 +167,7 @@ public abstract class XMLCharacterData extends XMLNode implements org.w3c.dom.Ch
 	<code>offset</code> and <code>count</code> exceeds <code>length</code>
 	then all 16-bit units from <code>offset</code> to the end of the data
 	are deleted.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>INDEX_SIZE_ERR: Raised if the specified <code>offset</code> is
 			negative or greater than the number of 16-bit units in the node's
@@ -193,7 +193,7 @@ public abstract class XMLCharacterData extends XMLNode implements org.w3c.dom.Ch
 		effect is the same as a remove method call with the same
 		range, followed by an append method invocation).
 	@param arg The character data with which the range must be replaced.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>INDEX_SIZE_ERR: Raised if the specified <code>offset</code> is
 			negative or greater than the number of 16-bit units in the node's

@@ -81,7 +81,7 @@ public class XMLCSSPrimitiveValue extends XMLCSSValue implements org.w3c.dom.css
 	@param stringValue  The new string value. If the <code>stringType</code>
 		is equal to <code>CSS_INHERIT</code>, the <code>stringValue</code>
 		should be <code>inherit</code>.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>INVALID_ACCESS_ERR: Raises if the CSS value doesn't contain a string
 			value or if the string value can't be converted into the specified unit.</li>
@@ -105,7 +105,7 @@ public class XMLCSSPrimitiveValue extends XMLCSSValue implements org.w3c.dom.css
 		<code>CSS_S</code>, <code>CSS_HZ</code>, <code>CSS_KHZ</code>,
 		<code>CSS_DIMENSION</code>).
 	@param floatValue  The new float value.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>INVALID_ACCESS_ERR: Raises if the attached property doesn't support the
 			float value or the unit type.</li>
@@ -189,7 +189,7 @@ public class XMLCSSPrimitiveValue extends XMLCSSValue implements org.w3c.dom.css
 		<code>CSS_S</code>, <code>CSS_HZ</code>, <code>CSS_KHZ</code>,
 		<code>CSS_DIMENSION</code>).
 	@param floatValue  The new float value.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>INVALID_ACCESS_ERR: Raises if the attached property doesn't support the
 			float value or the unit type.</li>
@@ -222,7 +222,7 @@ public class XMLCSSPrimitiveValue extends XMLCSSValue implements org.w3c.dom.css
 		<code>CSS_GRAD</code>, <code>CSS_MS</code>, <code>CSS_S</code>,
 		<code>CSS_HZ</code>, <code>CSS_KHZ</code>, <code>CSS_DIMENSION</code>).
 	@return  The float value in the specified unit.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>INVALID_ACCESS_ERR: Raises if the CSS value doesn't contain a float
 			value or if the float value can't be converted into the specified unit.</li>
@@ -252,7 +252,7 @@ return 0;//TODO throw an INVALID_ACCESS_ERR when we find out how to do so			thro
 	@param stringValue  The new string value. If the <code>stringType</code>
 		is equal to <code>CSS_INHERIT</code>, the <code>stringValue</code>
 		should be <code>inherit</code>.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>INVALID_ACCESS_ERR: Raises if the CSS value doesn't contain a string
 			value or if the string value can't be converted into the specified unit.</li>
@@ -279,7 +279,7 @@ return 0;//TODO throw an INVALID_ACCESS_ERR when we find out how to do so			thro
 	@return  The string value in the current unit. The current <code>valueType</code>
 		can only be a string unit type (e.g. <code>CSS_URI</code>,
 		<code>CSS_IDENT</code> and <code>CSS_ATTR</code>).
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>INVALID_ACCESS_ERR: Raises if the CSS value doesn't contain a string value.</li>
 	</ul>
@@ -300,7 +300,7 @@ return "";//TODO throw an INVALID_ACCESS_ERR when we find out how to do so			thr
 	 * Modification to the corresponding style property can be achieved using
 	 * the <code>Counter</code> interface.
 	 * @return The Counter value.
-	 * @exception DOMException
+	 * @throws DOMException
 	 *    INVALID_ACCESS_ERR: Raises if the CSS value doesn't contain a Counter
 	 *   value.
 	 */
@@ -312,7 +312,7 @@ return "";//TODO throw an INVALID_ACCESS_ERR when we find out how to do so			thr
 	 * Modification to the corresponding style property can be achieved using
 	 * the <code>Rect</code> interface.
 	 * @return The Rect value.
-	 * @exception DOMException
+	 * @throws DOMException
 	 *    INVALID_ACCESS_ERR: Raises if the CSS value doesn't contain a Rect
 	 *   value.
 	 */
@@ -323,7 +323,7 @@ return "";//TODO throw an INVALID_ACCESS_ERR when we find out how to do so			thr
 		Modification to the corresponding style property can be achieved using
 		the <code>RGBColor</code> interface.
 	@return The RGB color value.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>INVALID_ACCESS_ERR: Raised if the attached property can't return an RGB
 			color value.</li>

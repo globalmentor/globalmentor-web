@@ -197,7 +197,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 		be provided in any case,  but it must be mapped to the canonical
 		uppercase form by the DOM implementation.
 	@return A new <code>Element</code> object.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		</li>INVALID_CHARACTER_ERR: Raised if the specified name contains an invalid character.</li>
 	</ul>
@@ -247,7 +247,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	/**Creates a CDATA section node whose value is the specified string.
 	@param data The data for the CDATA section contents.
 	@return The new CDATA section node object.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>NOT_SUPPORTED_ERR: Raised if this document is an HTML document.</li>
 	</ul>
@@ -264,7 +264,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	@param target The target part of the processing instruction.
 	@param data The data for the node.
 	@return The new <code>ProcessingInstruction</code> object.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>INVALID_CHARACTER_ERR: Raised if an invalid character is specified.</li>
 		<li>NOT_SUPPORTED_ERR: Raised if this document is an HTML document.</li>
@@ -283,7 +283,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 		the createAttributeNS() method.
 	@param name The name of the attribute.
 	@return A new attribute node object.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>INVALID_CHARACTER_ERR: Raised if the specified name contains an invalid character.</li>
 	</ul>
@@ -302,7 +302,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	 * Creates an EntityReference object.
 	 * @param name The name of the entity to reference.
 	 * @return The new <code>EntityReference</code> object.
-	 * @exception DOMException
+	 * @throws DOMException
 	 *   INVALID_CHARACTER_ERR: Raised if the specified name contains an
 	 *   invalid character.
 	 *   <br>NOT_SUPPORTED_ERR: Raised if this document is an HTML document.
@@ -416,7 +416,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 		itself, as explained above. This does not apply to Attribute, EntityReference,
 		and Notation nodes.
 	@return The imported node that belongs to this document.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>NOT_SUPPORTED_ERR: Raised if the type of node being imported is not supported.</li>
 	</ul>
@@ -445,7 +445,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	@param refChild The reference node, i.e., the node before which the new
 		node must be inserted.
 	@return The node being inserted.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>HIERARCHY_REQUEST_ERR: Raised if this node is of a type that does not
 			allow children of the type of the <code>newChild</code> node, or if
@@ -474,7 +474,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	@param newChild The new node to put in the child list.
 	@param oldChild The node being replaced in the list.
 	@return The node replaced.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>HIERARCHY_REQUEST_ERR: Raised if this node is of a type that does not
 			allow children of the type of the <code>newChild</code> node, or it
@@ -517,7 +517,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 		made to remove the document element.</p> 
 	@param oldChild The node being removed.
 	@return The node removed.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
 		<li>NOT_FOUND_ERR: Raised if <code>oldChild</code> is not a child of
@@ -540,7 +540,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 		object, the entire contents of the document fragment are moved into the
 		child list of this node
 	@return The node added.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>HIERARCHY_REQUEST_ERR: Raised if this node is of a type that does not
 			allow children of the type of the <code>newChild</code> node, or if
@@ -572,7 +572,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 		<tr><td><code>Node.localName</code></td><td>local name, extracted from <code>qualifiedName</code></td></tr>
 		<tr><td><code>Element.tagName</code></td><td><code>qualifiedName</code></td></tr>
 		</table>
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>INVALID_CHARACTER_ERR: Raised if the specified qualified name
 		  contains an illegal character.</li>
@@ -605,7 +605,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 		<tr><td><code>Attr.name</code></td><td><code>qualifiedName</code></td></tr>
 		<tr><td><code>Node.nodeValue</code></td><td>the empty string</td></tr>
 		</table>
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>INVALID_CHARACTER_ERR: Raised if the specified qualified name
 		  contains an illegal character.</li>
@@ -714,7 +714,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
      * <code>Document.normalizeDocument()</code> with the "validate" 
      * parameter to verify if the value matches the <a href='http://www.w3.org/TR/2004/REC-xml-20040204#sec-rmd'>validity 
      * constraint for standalone document declaration</a> as defined in [<a href='http://www.w3.org/TR/2004/REC-xml-20040204'>XML 1.0</a>]. 
-     * @exception DOMException
+     * @throws DOMException
      *    NOT_SUPPORTED_ERR: Raised if this document does not support the 
      *   "XML" feature. 
      * @since DOM Level 3
@@ -769,7 +769,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
      *  objects supporting a version of the "XMLVersion" feature must not 
      * raise a <code>NOT_SUPPORTED_ERR</code> exception for the same version 
      * number when using <code>Document.xmlVersion</code>. 
-     * @exception DOMException
+     * @throws DOMException
      *    NOT_SUPPORTED_ERR: Raised if the version is set to a value that is 
      *   not supported by this <code>Document</code> or if this document 
      *   does not support the "XML" feature. 
@@ -892,7 +892,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
      * @return The adopted node, or <code>null</code> if this operation 
      *   fails, such as when the source node comes from a different 
      *   implementation.
-     * @exception DOMException
+     * @throws DOMException
      *   NOT_SUPPORTED_ERR: Raised if the source node is of type 
      *   <code>DOCUMENT</code>, <code>DOCUMENT_TYPE</code>.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised when the source node is 
@@ -989,7 +989,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
      * @param qualifiedName The new qualified name.
      * @return The renamed node. This is either the specified node or the new 
      *   node that was created to replace the specified node.
-     * @exception DOMException
+     * @throws DOMException
      *   NOT_SUPPORTED_ERR: Raised when the type of the specified node is 
      *   neither <code>ELEMENT_NODE</code> nor <code>ATTRIBUTE_NODE</code>, 
      *   or if the implementation does not support the renaming of the 
@@ -1032,7 +1032,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 		<code>TreeWalker</code>, or <code>null</code> to indicate no filter.
 	@param entityReferenceExpansion Whether entity reference nodes are expanded.
 	@return The newly created <code>NodeIterator</code>.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>NOT_SUPPORTED_ERR: Raised if the specified <code>root</code> is
 		  <code>null</code>.</li>
@@ -1068,7 +1068,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
      *   <code>EntityReference</code> nodes are not presented in the logical
      *   view.
      * @return The newly created <code>TreeWalker</code>.
-     * @exception DOMException
+     * @throws DOMException
      *    NOT_SUPPORTED_ERR: Raised if the specified <code>root</code> is
      *   <code>null</code>.
      */
@@ -1087,7 +1087,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 		method the appropriate event init method must be called after creation in
 		order to initialize the <code>Event</code>'s values.
 	@return The newly created <code>Event</code>.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>NOT_SUPPORTED_ERR: Raised if the implementation does not support the
 		  type of <code>Event</code> interface requested.</li>

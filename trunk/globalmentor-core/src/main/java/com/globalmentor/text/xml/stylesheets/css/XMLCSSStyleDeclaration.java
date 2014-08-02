@@ -83,7 +83,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 		resetting of the properties in the declaration block.
 	@param cssText The textual representation of the declaration block,
 		excluding the surrounding curly braces.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>SYNTAX_ERR: Raised if the specified CSS string value has a syntax
 			error and is unparsable.</li>
@@ -182,7 +182,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 		for this declaration block, or the empty string if the property
 		has not been set or the property name does not correspond to a valid
 		CSS2 property.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this declaration is readonly.</li>
 	</ul>
@@ -225,7 +225,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 	@param propertyName  The name of the CSS property. See the CSS property index.
 	@param value  The new value of the property.
 	@param priority  The new priority of the property (e.g. "important").
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>SYNTAX_ERR: Raised if the specified value has a syntax error  and is unparsable.</li>
 		<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this declaration is readonly.</li>
@@ -293,7 +293,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 	@param propertyName  The name of the CSS property. See the CSS property index.
 	@param cssValue  The new value of the property.
 //TODO del or fix	@param priority  The new priority of the property (e.g. "important").
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this declaration is readonly.</li>
 	</ul>
@@ -318,7 +318,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 	For the DOM version see setProperty(propertyName, value).
 	@param propertyName  The name of the CSS property. See the CSS property index.
 	@param value  The new value of the property.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>SYNTAX_ERR: Raised if the specified value has a syntax error  and is unparsable.</li>
 		<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this declaration is readonly.</li>
@@ -335,7 +335,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 	@param propertyName The name of the CSS property. See the CSS property index.
 	@param valueString The new value of the property.
 //TODO fix	@param priority The new priority of the property (e.g. "important").
-//TODO fix, decide which to use	@exception DOMException
+//TODO fix, decide which to use	@throws DOMException
 	<ul>
 		<li>SYNTAX_ERR: Raised if the specified value has a syntax error and is unparsable.</li>
 	</ul>
@@ -361,7 +361,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 		shorthand property's elements.
 	@param value  The new value of the property.
 	@param priority  The new priority of the property (e.g. "important").
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>SYNTAX_ERR: Raised if the specified value has a syntax error  and is unparsable.</li>
 		<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this declaration is readonly.</li>
@@ -396,7 +396,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 	/**Sets the margin shorthand property value and priority within this declaration block by calling <code>setProperty()</code> for each of the shorthand property's elements.
 	@param value  The new value of the property.
 	@param priority  The new priority of the property (e.g. "important").
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>SYNTAX_ERR: Raised if the specified value has a syntax error  and is unparsable.</li>
 		<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this declaration is readonly.</li>
@@ -448,7 +448,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
     /**
      *  See the background property definition in CSS2.
-     * @exception DOMException
+     * @throws DOMException
      *   SYNTAX_ERR: Raised if the new value has a syntax error and is
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
@@ -464,7 +464,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
 	/**Sets the CSS border property.
 	@param border The option width, border style, and color, or "inherit".
-	@exception DOMException
+	@throws DOMException
 		<ul>
 		  <li>SYNTAX_ERR: Raised if the new value has a syntax error and is unparsable.</li>
 		  <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.</li>
@@ -477,7 +477,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
     /**
      *  See the border-collapse property definition in CSS2.
-     * @exception DOMException
+     * @throws DOMException
      *   SYNTAX_ERR: Raised if the new value has a syntax error and is
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
@@ -489,7 +489,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
     /**
      *  See the border-color property definition in CSS2.
-     * @exception DOMException
+     * @throws DOMException
      *   SYNTAX_ERR: Raised if the new value has a syntax error and is
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
@@ -501,7 +501,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
     /**
      *  See the border-spacing property definition in CSS2.
-     * @exception DOMException
+     * @throws DOMException
      *   SYNTAX_ERR: Raised if the new value has a syntax error and is
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
@@ -513,7 +513,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
     /**
      *  See the border-style property definition in CSS2.
-     * @exception DOMException
+     * @throws DOMException
      *   SYNTAX_ERR: Raised if the new value has a syntax error and is
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
@@ -525,7 +525,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
     /**
      *  See the border-top property definition in CSS2.
-     * @exception DOMException
+     * @throws DOMException
      *   SYNTAX_ERR: Raised if the new value has a syntax error and is
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
@@ -537,7 +537,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
     /**
      *  See the border-right property definition in CSS2.
-     * @exception DOMException
+     * @throws DOMException
      *   SYNTAX_ERR: Raised if the new value has a syntax error and is
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
@@ -549,7 +549,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
     /**
      *  See the border-bottom property definition in CSS2.
-     * @exception DOMException
+     * @throws DOMException
      *   SYNTAX_ERR: Raised if the new value has a syntax error and is
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
@@ -561,7 +561,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
     /**
      *  See the border-left property definition in CSS2.
-     * @exception DOMException
+     * @throws DOMException
      *   SYNTAX_ERR: Raised if the new value has a syntax error and is
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
@@ -573,7 +573,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
     /**
      *  See the border-top-color property definition in CSS2.
-     * @exception DOMException
+     * @throws DOMException
      *   SYNTAX_ERR: Raised if the new value has a syntax error and is
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
@@ -585,7 +585,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
     /**
      *  See the border-right-color property definition in CSS2.
-     * @exception DOMException
+     * @throws DOMException
      *   SYNTAX_ERR: Raised if the new value has a syntax error and is
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
@@ -597,7 +597,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
     /**
      *  See the border-bottom-color property definition in CSS2.
-     * @exception DOMException
+     * @throws DOMException
      *   SYNTAX_ERR: Raised if the new value has a syntax error and is
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
@@ -609,7 +609,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
     /**
      *  See the border-left-color property definition in CSS2.
-     * @exception DOMException
+     * @throws DOMException
      *   SYNTAX_ERR: Raised if the new value has a syntax error and is
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
@@ -621,7 +621,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
     /**
      *  See the border-top-style property definition in CSS2.
-     * @exception DOMException
+     * @throws DOMException
      *   SYNTAX_ERR: Raised if the new value has a syntax error and is
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
@@ -633,7 +633,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
     /**
      *  See the border-right-style property definition in CSS2.
-     * @exception DOMException
+     * @throws DOMException
      *   SYNTAX_ERR: Raised if the new value has a syntax error and is
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
@@ -645,7 +645,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
     /**
      *  See the border-bottom-style property definition in CSS2.
-     * @exception DOMException
+     * @throws DOMException
      *   SYNTAX_ERR: Raised if the new value has a syntax error and is
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
@@ -657,7 +657,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
     /**
      *  See the border-left-style property definition in CSS2.
-     * @exception DOMException
+     * @throws DOMException
      *   SYNTAX_ERR: Raised if the new value has a syntax error and is
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
@@ -669,7 +669,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
     /**
      *  See the border-top-width property definition in CSS2.
-     * @exception DOMException
+     * @throws DOMException
      *   SYNTAX_ERR: Raised if the new value has a syntax error and is
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
@@ -681,7 +681,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
     /**
      *  See the border-right-width property definition in CSS2.
-     * @exception DOMException
+     * @throws DOMException
      *   SYNTAX_ERR: Raised if the new value has a syntax error and is
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
@@ -693,7 +693,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
     /**
      *  See the border-bottom-width property definition in CSS2.
-     * @exception DOMException
+     * @throws DOMException
      *   SYNTAX_ERR: Raised if the new value has a syntax error and is
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
@@ -705,7 +705,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
     /**
      *  See the border-left-width property definition in CSS2.
-     * @exception DOMException
+     * @throws DOMException
      *   SYNTAX_ERR: Raised if the new value has a syntax error and is
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
@@ -717,7 +717,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
     /**
      *  See the border-width property definition in CSS2.
-     * @exception DOMException
+     * @throws DOMException
      *   SYNTAX_ERR: Raised if the new value has a syntax error and is
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
@@ -735,7 +735,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
 	/**Sets the CSS2 "color" property
 	@param color The new value, either a predefined color name or an RGB value.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>SYNTAX_ERR: Raised if the new value has a syntax error and is unparsable.</li>
 		<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.</li>
@@ -772,7 +772,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 		<li>CSS_DISPLAY_BLOCK</li>
 		<li>CSS_DISPLAY_INLINE</li>
 	</ul>
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>SYNTAX_ERR: Raised if the new value has a syntax error and is unparsable.</li>
 		<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.</li>
@@ -801,7 +801,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 		<li>fantasy</li>
 		<li>monospace</li>
 	</ul>
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>SYNTAX_ERR: Raised if the new value has a syntax error and is unparsable.</li>
 		<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.</li>
@@ -834,7 +834,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 		<li>smaller</li>
 		<li>larger</li>
 	</ul>
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>SYNTAX_ERR: Raised if the new value has a syntax error and is unparsable.</li>
 		<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.</li>
@@ -861,7 +861,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 		<li>CSS_FONT_STYLE_ITALIC</li>
 		<li>CSS_FONT_STYLE_OBLIQUE</li>
 	</ul>
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>SYNTAX_ERR: Raised if the new value has a syntax error and is unparsable.</li>
 		<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.</li>
@@ -888,7 +888,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 		<li>CSS_FONT_WEIGHT_BOLDER</li>
 		<li>CSS_FONT_WEIGHT_LIGHTER</li>
 	</ul>
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>SYNTAX_ERR: Raised if the new value has a syntax error and is unparsable.</li>
 		<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.</li>
@@ -910,7 +910,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 	/**Sets the CSS2 "line-height" property.
 	@param textIndent The new value, either a length, a number, a percentage, or
 		<code>XMLCSSConstants.CSS_LINE_HEIGHT_NORMAL</code>.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>SYNTAX_ERR: Raised if the new value has a syntax error and is unparsable.</li>
 		<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.</li>
@@ -933,7 +933,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 	/**Sets the CSS2 "list-style" property.
 	@param listStyle The new style value
      *  See the list-style property definition in CSS2.
-     * @exception DOMException
+     * @throws DOMException
      *   SYNTAX_ERR: Raised if the new value has a syntax error and is
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
@@ -942,7 +942,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
     /**
      *  See the list-style-image property definition in CSS2.
-     * @exception DOMException
+     * @throws DOMException
      *   SYNTAX_ERR: Raised if the new value has a syntax error and is
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
@@ -955,7 +955,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
     /**
      *  See the list-style-position property definition in CSS2.
-     * @exception DOMException
+     * @throws DOMException
      *   SYNTAX_ERR: Raised if the new value has a syntax error and is
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
@@ -972,7 +972,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 	/**Sets the <code>list-style-type</code> property definition in CSS2.
 	@param listStyleType The type of list style, one of the
 		<code>XMLCSSConstants.CSS_LIST_STYLE_TYPE_</code> constants.
-	@exception DOMException
+	@throws DOMException
 		<ul>
 		  <li>SYNTAX_ERR: Raised if the new value has a syntax error and is unparsable.</li>
 		  <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.</li>
@@ -985,7 +985,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
     /**
      *  See the margin property definition in CSS2.
-     * @exception DOMException
+     * @throws DOMException
      *   SYNTAX_ERR: Raised if the new value has a syntax error and is
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
@@ -1001,7 +1001,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
 	/**Sets the <code>margin-top</code> property in CSS.
 	@param marginTop The new top margin value.
-	@exception DOMException
+	@throws DOMException
 		<ul>
 			<li>SYNTAX_ERR: Raised if the new value has a syntax error and is unparsable.</li>
 			<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.</li>
@@ -1017,7 +1017,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
 	/**Sets the <code>margin-right</code> property in CSS.
 	@param marginRight The new right margin value.
-	@exception DOMException
+	@throws DOMException
 		<ul>
 			<li>SYNTAX_ERR: Raised if the new value has a syntax error and is unparsable.</li>
 			<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.</li>
@@ -1033,7 +1033,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
 	/**Sets the <code>margin-bottom</code> property in CSS.
 	@param marginBottom The new bottom margin value.
-	@exception DOMException
+	@throws DOMException
 		<ul>
 			<li>SYNTAX_ERR: Raised if the new value has a syntax error and is unparsable.</li>
 			<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.</li>
@@ -1049,7 +1049,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
 	/**Sets the <code>margin-left</code> property in CSS.
 	@param marginLeft The new left margin value.
-	@exception DOMException
+	@throws DOMException
 		<ul>
 			<li>SYNTAX_ERR: Raised if the new value has a syntax error and is unparsable.</li>
 			<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.</li>
@@ -1066,7 +1066,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 	/**Sets the <code>page-break-after</code> property definition in CSS2.
 	@param pageBreakAfter The page break after value, one of the
 		<code>XMLCSSConstants.CSS_PAGE_BREAK_AFTER_</code> constants.
-	@exception DOMException
+	@throws DOMException
 		<ul>
 			<li>SYNTAX_ERR: Raised if the new value has a syntax error and is unparsable.</li>
 			<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.</li>
@@ -1083,7 +1083,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 	/**Sets the <code>page-break-before</code> property definition in CSS2.
 	@param pageBreakBefore The page break before value, one of the
 		<code>XMLCSSConstants.CSS_PAGE_BREAK_BEFORE_</code> constants.
-	@exception DOMException
+	@throws DOMException
 		<ul>
 			<li>SYNTAX_ERR: Raised if the new value has a syntax error and is unparsable.</li>
 			<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.</li>
@@ -1096,7 +1096,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
     /**
      *  See the page-break-inside property definition in CSS2.
-     * @exception DOMException
+     * @throws DOMException
      *   SYNTAX_ERR: Raised if the new value has a syntax error and is
      *   unparsable.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.
@@ -1106,7 +1106,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
     /**
      *  See the  text-decoration property definition in CSS2.
-     * @exception DOMException
+     * @throws DOMException
      *    SYNTAX_ERR: Raised if the new value has a syntax error  and is
      *   unparsable.
      *   <br> NO_MODIFICATION_ALLOWED_ERR: Raised if this property is
@@ -1121,7 +1121,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
 	/**Gets the CSS "text-decoration" property.
 	@param textIndent The new list of values in string format.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>SYNTAX_ERR: Raised if the new value has a syntax error and is unparsable.</li>
 		<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.</li>
@@ -1142,7 +1142,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
 	/**Gets the CSS2 "text-indent" property
 	@param textIndent The new value, either a length or a percentage.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>SYNTAX_ERR: Raised if the new value has a syntax error and is unparsable.</li>
 		<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.</li>
@@ -1161,7 +1161,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 	/**Sets the <code>text-transform</code> property of CSS2.
 	@param textTransform The text transformation value, one of the
 		<code>XMLCSSConstants.CSS_TEXT_TRANSFORM_</code> constants.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>SYNTAX_ERR: Raised if the new value has a syntax error and is unparsable.</li>
 		<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.</li>
@@ -1178,7 +1178,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 	/**Sets the <code>vertical-align</code> property value in CSS.
 	@param verticalAlign The vertical alignment value, one of the
 		<code>XMLCSSConstants.CSS_VERTICAL_ALIGN_</code> constants.
-	@exception DOMException
+	@throws DOMException
 		<ul>
 		  <li>SYNTAX_ERR: Raised if the new value has a syntax error and is unparsable.</li>
 		  <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.</li>

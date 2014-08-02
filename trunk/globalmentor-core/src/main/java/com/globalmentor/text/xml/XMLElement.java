@@ -47,7 +47,7 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
 		to <code>null</code>.
 	@param ownerDocument The document which owns this node.
 	@param newName The new name for the XML element, or "" to specify no name.
-//TODO fix	@exception XMLInvalidNameException Thrown if the specified name is invalid.
+//TODO fix	@throws XMLInvalidNameException Thrown if the specified name is invalid.
 	*/
 	public XMLElement(final XMLDocument ownerDocument, final String newName)//TODO fix throws XMLInvalidNameException
 	{
@@ -59,7 +59,7 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
 		from the tag will be used.
 	@param ownerDocument The document which owns this node.
 	@param elementTag The tag which begins the element.
-//TODO fix	@exception XMLInvalidNameException Thrown if the specified name is invalid.
+//TODO fix	@throws XMLInvalidNameException Thrown if the specified name is invalid.
 	*/
 	public XMLElement(final XMLDocument ownerDocument, final XMLTag elementTag)//TODO fix throws XMLInvalidNameException
 	{
@@ -81,7 +81,7 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
 	@param ownerDocument The document which owns this node.
 	@param namespaceURI The namespace URI of the element.
 	@param qualifiedName The qualified name of the element.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>NAMESPACE_ERR: Raised if the specified <code>prefix</code> is
 			malformed, if the <code>namespaceURI</code> of is
@@ -307,7 +307,7 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
 	/**Removes an attribute by name. If the removed attribute is known to have a
 		default value, an attribute immediately appears containing the default value.
 	@param name The name of the attribute to remove.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
 	</ul>
@@ -345,7 +345,7 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
 	@return If the new attribute replaces an existing attribute with the same
 		name, the  previously existing attribute node is returned, otherwise
 		<code>null</code> is returned.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>WRONG_DOCUMENT_ERR: Raised if the new attribute was created from a
 			different document than the one that created the element.</li>
@@ -370,7 +370,7 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
 	 *   list. If the removed <code>Attr</code> has a default value it is
 	 *   immediately replaced.
 	 * @return The <code>Attr</code> node that was removed.
-	 * @exception DOMException
+	 * @throws DOMException
 	 *   NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.
 	 *   <br>NOT_FOUND_ERR: Raised if <code>oldAttr</code> is not an attribute
 	 *   of the element.
@@ -425,7 +425,7 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
 	@param namespaceURI The namespace URI of the attribute to create or alter.
 	@param qualifiedName The qualified name of the attribute to create or alter.
 	@param valueThe value to set in string form.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>INVALID_CHARACTER_ERR: Raised if the specified qualified name
 		  contains an illegal character.</li>
@@ -466,7 +466,7 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
 		well as the original prefix.
 	@param namespaceURI The namespace URI of the attribute to remove.
 	@param localNameThe local name of the attribute to remove.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
 	</ul>
@@ -505,7 +505,7 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
 		attribute with the same local name and namespace URI, the replaced
 		<code>Attr</code> node is returned, otherwise <code>null</code> is
 		returned.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>WRONG_DOCUMENT_ERR: Raised if <code>newAttr</code> was created from a
 		  different document than the one that created the element.</li>
@@ -590,7 +590,7 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
      * <code>setIdAttributeNS</code> method. 
      * @param name The name of the attribute.
      * @param isId Whether the attribute is a of type ID.
-     * @exception DOMException
+     * @throws DOMException
      *   NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.
      *   <br>NOT_FOUND_ERR: Raised if the specified node is not an attribute 
      *   of this element.
@@ -613,7 +613,7 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
      * @param namespaceURI The namespace URI of the attribute.
      * @param localName The local name of the attribute.
      * @param isId Whether the attribute is a of type ID.
-     * @exception DOMException
+     * @throws DOMException
      *   NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.
      *   <br>NOT_FOUND_ERR: Raised if the specified node is not an attribute 
      *   of this element.
@@ -636,7 +636,7 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element
      * user-determined ID attribute. 
      * @param idAttr The attribute node.
      * @param isId Whether the attribute is a of type ID.
-     * @exception DOMException
+     * @throws DOMException
      *   NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.
      *   <br>NOT_FOUND_ERR: Raised if the specified node is not an attribute 
      *   of this element.

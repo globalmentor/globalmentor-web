@@ -129,7 +129,7 @@ public class XMLCSSStyleRule extends XMLCSSRule implements CSSStyleRule	//TODO f
 	@param selectorText A selector (which may consist of several context strings)
 		in the "name.class" format; either the name portion or the class portion
 		must be specified.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>SYNTAX_ERR: Raised if the specified CSS string value has a syntax
 			error and is unparsable.</li>
@@ -205,7 +205,7 @@ public class XMLCSSStyleRule extends XMLCSSRule implements CSSStyleRule	//TODO f
 	}
 
 	/**Sets the textual representation of the selector for the rule set.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this rule is readonly.</li>
 		<li>SYNTAX_ERR: Raised if the specified CSS string value has a syntax

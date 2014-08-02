@@ -170,7 +170,7 @@ public class JSON
 	 * @param appendable The appendable object to accept the string.
 	 * @param charSequence The string characters to be appended.
 	 * @return The appendable object
-	 * @exception NullPointerException if the given character sequence is <code>null</code>.
+	 * @throws NullPointerException if the given character sequence is <code>null</code>.
 	 * @throws IOException if there is an error appending the information.
 	 * @see #encodeStringValue(StringBuilder)
 	 */
@@ -185,7 +185,7 @@ public class JSON
 	 * @param appendable The appendable object to accept the string.
 	 * @param bool The boolean value to append.
 	 * @return The appendable object.
-	 * @exception NullPointerException if the given boolean value is <code>null</code>.
+	 * @throws NullPointerException if the given boolean value is <code>null</code>.
 	 * @throws IOException if there is an error appending the information.
 	 */
 	@SuppressWarnings("unchecked")
@@ -199,7 +199,7 @@ public class JSON
 	 * @param appendable The appendable object to accept the string.
 	 * @param number The number to append.
 	 * @return The appendable object.
-	 * @exception NullPointerException if the given number is <code>null</code>.
+	 * @throws NullPointerException if the given number is <code>null</code>.
 	 * @throws IOException if there is an error appending the information.
 	 */
 	@SuppressWarnings("unchecked")
@@ -213,8 +213,8 @@ public class JSON
 	 * @param appendable The appendable object to accept the string.
 	 * @param array The array to append.
 	 * @return The appendable object.
-	 * @exception NullPointerException if the given array is <code>null</code>.
-	 * @exception IllegalArgumentException if the given object is not an array.
+	 * @throws NullPointerException if the given array is <code>null</code>.
+	 * @throws IllegalArgumentException if the given object is not an array.
 	 * @throws IOException if there is an error appending the information.
 	 */
 	public static <A extends Appendable> A appendArrayValue(final A appendable, final Object array) throws IOException
@@ -244,7 +244,7 @@ public class JSON
 	 * @param appendable The appendable object to accept the string.
 	 * @param map The map containing the associative array values.
 	 * @return The appendable object.
-	 * @exception NullPointerException if one of the keys of the given map is is <code>null</code>.
+	 * @throws NullPointerException if one of the keys of the given map is is <code>null</code>.
 	 * @throws IOException if there is an error appending the information.
 	 * @see #appendValue(Appendable, Object)
 	 */
@@ -286,7 +286,7 @@ public class JSON
 	 * respectively.
 	 * @param charSequence The characters to encode.
 	 * @return A string containing encoded characters.
-	 * @exception NullPointerException if the given character sequence is <code>null</code>.
+	 * @throws NullPointerException if the given character sequence is <code>null</code>.
 	 */
 	public static String encodeStringValue(final CharSequence charSequence)
 	{
@@ -300,8 +300,8 @@ public class JSON
 	 * ignored.
 	 * @param charSequence The characters to encode.
 	 * @return A string containing encoded characters.
-	 * @exception NullPointerException if the given character sequence is <code>null</code>.
-	 * @exception IllegalArgumentException if the character sequence ends with the given escape character.
+	 * @throws NullPointerException if the given character sequence is <code>null</code>.
+	 * @throws IllegalArgumentException if the character sequence ends with the given escape character.
 	 */
 	public static String decodeStringValue(final CharSequence charSequence)
 	{
@@ -331,9 +331,9 @@ public class JSON
 	 * @param index The current parse index in the character sequence.
 	 * @param c The character against which the current character should be checked.
 	 * @return The new index at which to continue parsing.
-	 * @exception NullPointerException if the given character sequence is <code>null</code>.
-	 * @exception ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
-	 * @exception ArgumentSyntaxException if the current character in the sequence does not match the specified character.
+	 * @throws NullPointerException if the given character sequence is <code>null</code>.
+	 * @throws ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
+	 * @throws ArgumentSyntaxException if the current character in the sequence does not match the specified character.
 	 */
 	protected static int check(final CharSequence charSequence, final int index, final char c) throws ArgumentSyntaxException
 	{
@@ -351,9 +351,9 @@ public class JSON
 	 * @param lowerBound The lowest character in the range.
 	 * @param upperBound The highest character in the range.
 	 * @return The new index at which to continue parsing.
-	 * @exception NullPointerException if the given character sequence is <code>null</code>.
-	 * @exception ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
-	 * @exception ArgumentSyntaxException if the current character in the sequence does not fall within the given range.
+	 * @throws NullPointerException if the given character sequence is <code>null</code>.
+	 * @throws ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
+	 * @throws ArgumentSyntaxException if the current character in the sequence does not fall within the given range.
 	 */
 	protected static int check(final CharSequence charSequence, int index, final char lowerBound, final char upperBound)
 	{
@@ -371,9 +371,9 @@ public class JSON
 	 * @param index The current parse index in the character sequence.
 	 * @param characters The characters to accept.
 	 * @return The new index at which to continue parsing.
-	 * @exception NullPointerException if the given character sequence and/or the given characters is <code>null</code>.
-	 * @exception ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
-	 * @exception ArgumentSyntaxException if the current character in the sequence does not match one of the specified characters.
+	 * @throws NullPointerException if the given character sequence and/or the given characters is <code>null</code>.
+	 * @throws ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
+	 * @throws ArgumentSyntaxException if the current character in the sequence does not match one of the specified characters.
 	 */
 	protected static int check(final CharSequence charSequence, int index, final char[] characters)
 	{
@@ -390,9 +390,9 @@ public class JSON
 	 * @param index The current parse index in the character sequence.
 	 * @param match The character sequence with which the current characters should be checked.
 	 * @return The new index at which to continue parsing.
-	 * @exception NullPointerException if the given character sequence and/or match character sequence is <code>null</code>.
-	 * @exception ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
-	 * @exception ArgumentSyntaxException if the current character in the sequence does not match the specified character sequence.
+	 * @throws NullPointerException if the given character sequence and/or match character sequence is <code>null</code>.
+	 * @throws ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
+	 * @throws ArgumentSyntaxException if the current character in the sequence does not match the specified character sequence.
 	 */
 	protected static int check(final CharSequence charSequence, int index, final CharSequence match) throws ArgumentSyntaxException
 	{
@@ -410,7 +410,7 @@ public class JSON
 	 * @param index The current parse index in the character sequence.
 	 * @param characters The characters to skip.
 	 * @return The new index at which to continue parsing; either the first character not in the array, or the length of the character sequence.
-	 * @exception NullPointerException if the given character sequence and/or the given characters is <code>null</code>.
+	 * @throws NullPointerException if the given character sequence and/or the given characters is <code>null</code>.
 	 */
 	protected static int skip(final CharSequence charSequence, int index, final char[] characters)
 	{
@@ -463,7 +463,7 @@ public class JSON
 	 * @param lowerBound The lowest character in the range.
 	 * @param upperBound The highest character in the range.
 	 * @return The new index at which to continue parsing; either the first character not in the range, or the length of the character sequence.
-	 * @exception NullPointerException if the given character sequence is <code>null</code>.
+	 * @throws NullPointerException if the given character sequence is <code>null</code>.
 	 */
 	protected static int skip(final CharSequence charSequence, int index, final char lowerBound, final char upperBound)
 	{
@@ -484,7 +484,7 @@ public class JSON
 	 * @param charSequence The character sequence to be parsed.
 	 * @param index The current parse index in the character sequence.
 	 * @return The new index at which to continue parsing; either the first non-whitespace character, or the length of the character sequence.
-	 * @exception NullPointerException if the given character sequence is <code>null</code>.
+	 * @throws NullPointerException if the given character sequence is <code>null</code>.
 	 */
 	protected static int skipWhitespace(final CharSequence charSequence, int index)
 	{
@@ -510,8 +510,8 @@ public class JSON
 	 * @param charSequence The character sequence to be parsed.
 	 * @return A new {@link String}, {@link Boolean}, {@link Number}, {@link List}, {@link Map}, or <code>null</code> representing the value represented by the
 	 *         character sequence.
-	 * @exception NullPointerException if the given character sequence is <code>null</code>.
-	 * @exception ArgumentSyntaxException if the given character sequence does not represent a valid JSON object.
+	 * @throws NullPointerException if the given character sequence is <code>null</code>.
+	 * @throws ArgumentSyntaxException if the given character sequence does not represent a valid JSON object.
 	 */
 	public static Object parseValue(final CharSequence charSequence) throws ArgumentSyntaxException
 	{
@@ -538,9 +538,9 @@ public class JSON
 	 * @param objectHolder The object that will hold the parsed object: {@link String}, {@link Boolean}, {@link Number}, {@link List}, {@link Map}, or
 	 *          <code>null</code> representing the value represented by the character sequence..
 	 * @return The new index at which to continue parsing.
-	 * @exception NullPointerException if the given character sequence is <code>null</code>.
-	 * @exception ArgumentSyntaxException if the given character sequence does not represent a valid JSON object.
-	 * @exception ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
+	 * @throws NullPointerException if the given character sequence is <code>null</code>.
+	 * @throws ArgumentSyntaxException if the given character sequence does not represent a valid JSON object.
+	 * @throws ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
 	 */
 	protected static int parseValue(final CharSequence charSequence, int index, final ObjectHolder<Object> objectHolder) throws ArgumentSyntaxException
 	{
@@ -611,9 +611,9 @@ public class JSON
 	 * @param index The current parse index in the character sequence.
 	 * @param list The list in which the parsed array contents will be placed.
 	 * @return The new index at which to continue parsing after the array.
-	 * @exception NullPointerException if the given character sequence is <code>null</code>.
-	 * @exception ArgumentSyntaxException if the given character sequence does not represent a valid JSON string.
-	 * @exception ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
+	 * @throws NullPointerException if the given character sequence is <code>null</code>.
+	 * @throws ArgumentSyntaxException if the given character sequence does not represent a valid JSON string.
+	 * @throws ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
 	 */
 	protected static int parseArray(final CharSequence charSequence, int index, final List<Object> list) throws ArgumentSyntaxException
 	{
@@ -628,9 +628,9 @@ public class JSON
 	 * @param index The current parse index in the character sequence.
 	 * @param list The list in which the parsed array contents will be placed.
 	 * @return The new index at which to continue parsing after the array contents (usually the character {@value #END_ARRAY}).
-	 * @exception NullPointerException if the given character sequence is <code>null</code>.
-	 * @exception ArgumentSyntaxException if the given character sequence does not represent a valid JSON object.
-	 * @exception ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
+	 * @throws NullPointerException if the given character sequence is <code>null</code>.
+	 * @throws ArgumentSyntaxException if the given character sequence does not represent a valid JSON object.
+	 * @throws ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
 	 */
 	protected static int parseArrayContents(final CharSequence charSequence, int index, final List<Object> list) throws ArgumentSyntaxException
 	{
@@ -668,9 +668,9 @@ public class JSON
 	 * @param index The current parse index in the character sequence.
 	 * @param list The list in which the parsed array contents will be placed.
 	 * @return The new index at which to continue parsing after the object.
-	 * @exception NullPointerException if the given character sequence is <code>null</code>.
-	 * @exception ArgumentSyntaxException if the given character sequence does not represent a valid JSON string.
-	 * @exception ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
+	 * @throws NullPointerException if the given character sequence is <code>null</code>.
+	 * @throws ArgumentSyntaxException if the given character sequence does not represent a valid JSON string.
+	 * @throws ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
 	 */
 	protected static int parseObject(final CharSequence charSequence, int index, final Map<String, Object> map) throws ArgumentSyntaxException
 	{
@@ -685,9 +685,9 @@ public class JSON
 	 * @param index The current parse index in the character sequence.
 	 * @param map The map in which the parsed object contents will be placed.
 	 * @return The new index at which to continue parsing after the object contents (usually the character {@value #END_OBJECT}).
-	 * @exception NullPointerException if the given character sequence is <code>null</code>.
-	 * @exception ArgumentSyntaxException if the given character sequence does not represent a valid JSON object.
-	 * @exception ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
+	 * @throws NullPointerException if the given character sequence is <code>null</code>.
+	 * @throws ArgumentSyntaxException if the given character sequence does not represent a valid JSON object.
+	 * @throws ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
 	 */
 	protected static int parseObjectContents(final CharSequence charSequence, int index, final Map<String, Object> map) throws ArgumentSyntaxException
 	{
@@ -730,9 +730,9 @@ public class JSON
 	 * @param index The current parse index in the character sequence.
 	 * @param stringHolder The string holder in which the parsed string will be placed.
 	 * @return The new index at which to continue parsing after the string.
-	 * @exception NullPointerException if the given character sequence is <code>null</code>.
-	 * @exception ArgumentSyntaxException if the given character sequence does not represent a valid JSON string.
-	 * @exception ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
+	 * @throws NullPointerException if the given character sequence is <code>null</code>.
+	 * @throws ArgumentSyntaxException if the given character sequence does not represent a valid JSON string.
+	 * @throws ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
 	 */
 	protected static int parseString(final CharSequence charSequence, int index, final ObjectHolder<String> stringHolder) throws ArgumentSyntaxException
 	{
@@ -747,9 +747,9 @@ public class JSON
 	 * @param index The current parse index in the character sequence.
 	 * @param stringHolder The string holder in which the parsed string contents will be placed.
 	 * @return The new index at which to continue parsing after the string contents (usually the character {@value #QUOTATION_MARK}).
-	 * @exception NullPointerException if the given character sequence is <code>null</code>.
-	 * @exception ArgumentSyntaxException if the given character sequence does not represent a valid JSON object.
-	 * @exception ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
+	 * @throws NullPointerException if the given character sequence is <code>null</code>.
+	 * @throws ArgumentSyntaxException if the given character sequence does not represent a valid JSON object.
+	 * @throws ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
 	 */
 	protected static int parseStringContents(final CharSequence charSequence, int index, final ObjectHolder<String> stringHolder) throws ArgumentSyntaxException
 	{
@@ -826,10 +826,10 @@ public class JSON
 	 * @param index The current parse index in the character sequence.
 	 * @param numberHolder The number holder in which the parsed number will be placed.
 	 * @return The new index at which to continue parsing after the number.
-	 * @exception NullPointerException if the given character sequence is <code>null</code>.
-	 * @exception ArgumentSyntaxException if the given character sequence does not represent a valid JSON number.
-	 * @exception NumberFormatException if the given character sequence does not contain a parsable JSON number.
-	 * @exception ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
+	 * @throws NullPointerException if the given character sequence is <code>null</code>.
+	 * @throws ArgumentSyntaxException if the given character sequence does not represent a valid JSON number.
+	 * @throws NumberFormatException if the given character sequence does not contain a parsable JSON number.
+	 * @throws ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
 	 */
 	protected static int parseNumber(final CharSequence charSequence, int index, final ObjectHolder<Number> numberHolder) throws ArgumentSyntaxException
 	{

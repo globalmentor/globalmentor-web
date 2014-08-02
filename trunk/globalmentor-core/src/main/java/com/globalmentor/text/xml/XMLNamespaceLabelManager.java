@@ -36,7 +36,7 @@ public class XMLNamespaceLabelManager extends AbstractNamespaceLabelManager
 
 	/**Map constructor.
 	@param map The map this map should decorate.
-	@exception NullPointerException if the provided map is <code>null</code>.
+	@throws NullPointerException if the provided map is <code>null</code>.
 	*/
 	public XMLNamespaceLabelManager(final Map<URI, String> map)
 	{
@@ -47,7 +47,7 @@ public class XMLNamespaceLabelManager extends AbstractNamespaceLabelManager
 	This version determines whether the string is valid XML name.
 	@param string The string to check for being a label.
 	@return <code>true</code> if the given string represents a valid label.
-	@exception NullPointerException if the given string is <code>null</code>.
+	@throws NullPointerException if the given string is <code>null</code>.
 	@see XML#isName(String)
 	*/
 	protected boolean isLabel(final String string)

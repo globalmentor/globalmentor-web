@@ -77,7 +77,7 @@ public abstract class XMLSchemaNamedComponent extends XMLSchemaComponent impleme
 		another <code>XMLSchemaNamedComponent</code> object.
 	@return A negative integer, zero, or a positive integer as this component is
 		less than, equal to, or greater than the specified component, respectively.
-	@exception ClassCastException Thrown if the specified object's type is not
+	@throws ClassCastException Thrown if the specified object's type is not
 		an <code>XMLSchemaNamedComponent</code>.
 	@see #getCompareName
 	@see #getTargetNamespace

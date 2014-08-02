@@ -211,7 +211,7 @@ public class XMLProcessor implements URIInputStreamable
 		autodetection of character encoding.
 	@return The character encoding specified in a byte order mark or the "encoding" attribute,
 		or UTF-8 if there was no encoding attribute specified.
-	@exception IOException Thrown if an I/O error occurred.
+	@throws IOException Thrown if an I/O error occurred.
 	*/
 	public static CharacterEncoding getXMLEncoding(final InputStream inputStream, final StringBuffer encodingAttributeValue, final StringBuffer autodetectPrereadCharacters) throws IOException
 	{
@@ -328,8 +328,8 @@ public class XMLProcessor implements URIInputStreamable
 	/**Skips all XML whitespace characters, and returns the number of characters skipped.
 	Resets peeking.
 	@param reader The reader from which to retrieve characters.
-	@exception IOException Thrown when an i/o error occurs.
-	@exception ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
+	@throws IOException Thrown when an i/o error occurs.
+	@throws ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
 	@return The number of characters skipped.
 	*/
 	public long skipWhitespaceCharacters(final XMLReader reader) throws IOException, ParseEOFException
@@ -341,7 +341,7 @@ public class XMLProcessor implements URIInputStreamable
 	No exception is thrown if the end of the file is reached.
 	Resets peeking.
 	@param reader The reader from which to retrieve characters.
-	@exception IOException Thrown when an i/o error occurs.
+	@throws IOException Thrown when an i/o error occurs.
 	@return The number of characters skipped.
 	*/
 	public long skipWhitespaceCharactersEOF(final XMLReader reader) throws IOException
@@ -354,7 +354,7 @@ public class XMLProcessor implements URIInputStreamable
 		This implementation only works with URLs.
 	@param uri A complete URI to a file.
 	@return An input stream to the contents of the file represented by the given URL.
-	@exception IOException Thrown if an I/O error occurred.
+	@throws IOException Thrown if an I/O error occurred.
 	@see #getURIInputStreamable
 	*/
 	public InputStream getInputStream(final URI uri) throws IOException
@@ -367,7 +367,7 @@ public class XMLProcessor implements URIInputStreamable
 	@param inputStream The input stream from which to get the XML data.
 	@param sourceObject The source of the data (e.g. a String, File, or URL).
 	@return A reader from which the file may be read.
-	@exception IOException Thrown if an I/O error occurred.
+	@throws IOException Thrown if an I/O error occurred.
 	*/
 	protected XMLReader createReader(final InputStream xmlInputStream, final Object sourceObject) throws IOException //TODO comment exceptions
 	{
@@ -407,9 +407,9 @@ public class XMLProcessor implements URIInputStreamable
 	/**Creates a reader to read the specified external file.
 	@param context The context object, usually a URI.
 	@param systemID The relative or absolute filename.
-	@exception IOException Thrown when an i/o error occurs.
+	@throws IOException Thrown when an i/o error occurs.
 	@return A reader from which the file may be read.
-	@exception IOException Thrown if an I/O error occurred.
+	@throws IOException Thrown if an I/O error occurred.
 	*/
 	protected XMLReader createReader(final Object context, final String systemID) throws IOException //TODO comment exceptions
 	{
@@ -429,9 +429,9 @@ public class XMLProcessor implements URIInputStreamable
 		if there is no public ID.
 	@param systemID The relative or absolute filename, which will only be used
 		if there is no public ID or the public ID is not recognized.
-	@exception IOException Thrown when an i/o error occurs.
+	@throws IOException Thrown when an i/o error occurs.
 	@return A reader from which the file may be read.
-	@exception IOException Thrown if an I/O error occurred.
+	@throws IOException Thrown if an I/O error occurred.
 	@see FileConstants#ILLEGAL_FILENAME_CHARACTERS
 	*/
 	protected XMLReader createReader(final Object context, final String publicID, final String systemID) throws IOException //TODO comment exceptions
@@ -459,7 +459,7 @@ public class XMLProcessor implements URIInputStreamable
 	/**Creates a reader to read from the specified entity, regardless of whether
 		this entity is internal or external.
 	@param context The context object, usually a URI.
-	@exception IOException Thrown when an i/o error occurs.
+	@throws IOException Thrown when an i/o error occurs.
 	@return A reader from which the entity may be read.
 	*/
 	protected XMLReader createEntityReader(final Object context, final XMLEntity entity) throws IOException
@@ -484,11 +484,11 @@ entityReader.tidy=isTidy();  //TODO fix
 
 	/**Parses an input stream that supposedly contains a character reference.
 	@param reader The reader from which to retrieve characters.
-	@exception IOException Thrown when an i/o error occurs.
-	@exception XMLSyntaxException Thrown when there is a syntax error in the XML file.
-	@exception XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
-	@exception ParseUnexpectedDataException Thrown when an unexpected character is found.
-//TODO del	@exception ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
+	@throws IOException Thrown when an i/o error occurs.
+	@throws XMLSyntaxException Thrown when there is a syntax error in the XML file.
+	@throws XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
+	@throws ParseUnexpectedDataException Thrown when an unexpected character is found.
+//TODO del	@throws ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
 	@return The character encoded by the character reference.
 	*/
 	protected char parseCharacterReference(final XMLReader reader) throws IOException, XMLSyntaxException, XMLWellFormednessException, ParseUnexpectedDataException//TODO del, ParseEOFException
@@ -522,12 +522,12 @@ entityReader.tidy=isTidy();  //TODO fix
 		well-formedness error, an exception is thrown.
 	@param reader The reader from which to retrieve characters.
 	@param ownerDocument The document which will own the constructed entity.
-	@exception IOException Thrown when an i/o error occurs.
-	@exception XMLSyntaxException Thrown when there is a syntax error in the XML file.
-	@exception XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
-	@exception ParseUnexpectedDataException Thrown when an unexpected character is found.
-//TODO del	@exception ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
-	@exception XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
+	@throws IOException Thrown when an i/o error occurs.
+	@throws XMLSyntaxException Thrown when there is a syntax error in the XML file.
+	@throws XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
+	@throws ParseUnexpectedDataException Thrown when an unexpected character is found.
+//TODO del	@throws ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
+	@throws XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
 	@return The entity referenced by this entity reference or a <code>String</code>
 		containing the entity reference markup if none exists yet none is required
 		for well-formedness.
@@ -566,12 +566,12 @@ entityReader.tidy=isTidy();  //TODO fix
 	@param ownerDocument The document which will own the constructed entity.
 	@param parameterEntityMap Any parameter entities we've collected along the
 		way while parsing this DTD subset. TODO eventually use a DTD subset object
-	@exception IOException Thrown when an i/o error occurs.
-	@exception XMLSyntaxException Thrown when there is a syntax error in the XML file.
-	@exception XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
-	@exception ParseUnexpectedDataException Thrown when an unexpected character is found.
-//TODO del	@exception ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
-	@exception XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
+	@throws IOException Thrown when an i/o error occurs.
+	@throws XMLSyntaxException Thrown when there is a syntax error in the XML file.
+	@throws XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
+	@throws ParseUnexpectedDataException Thrown when an unexpected character is found.
+//TODO del	@throws ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
+	@throws XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
 	@return The entity referenced by this entity reference.
 	*/
 	protected XMLEntity parseParameterEntityReference(final XMLReader reader, final XMLDocument ownerDocument, final XMLNamedNodeMap parameterEntityMap) throws IOException, XMLSyntaxException, XMLWellFormednessException, ParseUnexpectedDataException, XMLUndefinedEntityReferenceException
@@ -602,12 +602,12 @@ entityReader.tidy=isTidy();  //TODO fix
 	/**Parses an attribute-value pair, constructs an XMLAttribute object, and returns it.
 	@param reader The reader from which to retrieve characters.
 	@param ownerDocument The document which will own the nodes encountered.
-	@exception IOException Thrown when an i/o error occurs.
-	@exception XMLSyntaxException Thrown when there is a syntax error in the XML file.
-	@exception XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
-	@exception XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
-	@exception ParseUnexpectedDataException Thrown when an unexpected character is found.
-//TODO del	@exception ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
+	@throws IOException Thrown when an i/o error occurs.
+	@throws XMLSyntaxException Thrown when there is a syntax error in the XML file.
+	@throws XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
+	@throws XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
+	@throws ParseUnexpectedDataException Thrown when an unexpected character is found.
+//TODO del	@throws ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
 	@return An XMLAttribute object with the values of the read attribute-value pair.
 	@see XMLAttribute
 	*/
@@ -688,12 +688,12 @@ entityReader.tidy=isTidy();  //TODO fix
 	@param attribute The attribute that this value belongs to.
 	@param attributeValueDelimiters A string of characters, any one of which can mark the end of this attribute value.
 	This should be a single or double quote character.
-	@exception IOException Thrown when an i/o error occurs.
-	@exception XMLSyntaxException Thrown when there is a syntax error in the XML file.
-	@exception XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
-	@exception XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
-	@exception ParseUnexpectedDataException Thrown when an unexpected character is found.
-//TODO del	@exception ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
+	@throws IOException Thrown when an i/o error occurs.
+	@throws XMLSyntaxException Thrown when there is a syntax error in the XML file.
+	@throws XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
+	@throws XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
+	@throws ParseUnexpectedDataException Thrown when an unexpected character is found.
+//TODO del	@throws ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
 	@return <code>true</code> if the ending character for this entity was found, else <code>false</code>.
 	*/
 	protected boolean parseAttributeValue(final XMLReader reader, final XMLDocument ownerDocument, final XMLAttribute attribute, final String attributeValueDelimiters) throws IOException, XMLSyntaxException, XMLWellFormednessException, XMLUndefinedEntityReferenceException, ParseUnexpectedDataException
@@ -771,9 +771,9 @@ entityReader.tidy=isTidy();  //TODO fix
 
 	/**Parses a stream of characters which supposedly starts with an external ID, constructs an XMLExternalID object, and returns it.
 	@param reader The reader from which to retrieve characters.
-	@exception IOException Thrown when an i/o error occurs.
-	@exception XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
-	@exception ParseUnexpectedDataException Thrown when an unexpected character is found.
+	@throws IOException Thrown when an i/o error occurs.
+	@throws XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
+	@throws ParseUnexpectedDataException Thrown when an unexpected character is found.
 	@return An XMLExternalID object with the appropriate identifiers.
 	@see XMLExternalID
 	*/
@@ -836,12 +836,12 @@ entityReader.tidy=isTidy();  //TODO fix
 	/**Parses an input stream that supposedly begins with a document type declaration ("<!DOCTYPE").
 	@param reader The reader from which to retrieve characters.
 	@param ownerDocument The document which will own the document type.
-	@exception IOException Thrown when an i/o error occurs.
-	@exception XMLSyntaxException Thrown when there is a syntax error in the XML file.
-	@exception XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
-	@exception XMLValidityException Thrown when there is a validity error in the XML file.
-	@exception XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
-	@exception ParseUnexpectedDataException Thrown when an unexpected character is found.
+	@throws IOException Thrown when an i/o error occurs.
+	@throws XMLSyntaxException Thrown when there is a syntax error in the XML file.
+	@throws XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
+	@throws XMLValidityException Thrown when there is a validity error in the XML file.
+	@throws XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
+	@throws ParseUnexpectedDataException Thrown when an unexpected character is found.
 	@return A new XML declaration constructed from the reader.
 	*/
 	protected XMLDocumentType parseDocumentType(final XMLReader reader, final XMLDocument ownerDocument) throws IOException, XMLSyntaxException, XMLWellFormednessException, XMLValidityException, XMLUndefinedEntityReferenceException, ParseUnexpectedDataException
@@ -998,12 +998,12 @@ entityReader.tidy=isTidy();  //TODO fix
 	@param documentType The document type being processed.
 	@param elementDeclarationList The list of elements that will be created to represent element declarations.
 	@param attributeListDeclarationList The list of elements that will be created to represent attribute list declarations.
-	@exception IOException Thrown when an i/o error occurs.
-	@exception XMLSyntaxException Thrown when there is a syntax error in the XML file.
-	@exception XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
-	@exception XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
-	@exception ParseUnexpectedDataException Thrown when an unexpected character is found.
-	@exception ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
+	@throws IOException Thrown when an i/o error occurs.
+	@throws XMLSyntaxException Thrown when there is a syntax error in the XML file.
+	@throws XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
+	@throws XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
+	@throws ParseUnexpectedDataException Thrown when an unexpected character is found.
+	@throws ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
 	*/
 	protected void parseExternalDocumentType(final XMLReader reader, final XMLDocument ownerDocument, final XMLDocumentType documentType, final XMLNodeList elementDeclarationList, final XMLNodeList attributeListDeclarationList) throws IOException, XMLSyntaxException, XMLWellFormednessException, XMLUndefinedEntityReferenceException, ParseUnexpectedDataException, ParseEOFException
 	{
@@ -1064,12 +1064,12 @@ final XMLDocument ownerDocument, final XMLDocumentType documentType
 	@param attributeListDeclarationList The list of elements that will be created
 		to represent attribute list declarations, or <code>null</code> if these
 		attributes need not be returned. TODO fix with new DOM storage of these attributes
-	@exception IOException Thrown when an i/o error occurs.
-	@exception XMLSyntaxException Thrown when there is a syntax error in the XML file.
-	@exception XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
-	@exception XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
-	@exception ParseUnexpectedDataException Thrown when an unexpected character is found.
-	@exception ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
+	@throws IOException Thrown when an i/o error occurs.
+	@throws XMLSyntaxException Thrown when there is a syntax error in the XML file.
+	@throws XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
+	@throws XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
+	@throws ParseUnexpectedDataException Thrown when an unexpected character is found.
+	@throws ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
 //TODO fix	@return <code>true</code> if the ending tag for this element was found, else <code>false</code>.
 	*/
 		//TODO have a variable here that specifies whether a conditional parameter entity existed; if so, we won't be able to cache the result
@@ -1153,11 +1153,11 @@ final XMLDocument ownerDocument, final XMLDocumentType documentType
 	/**Parses an input stream that supposedly begins with an entity declaration.
 	@param reader The reader from which to retrieve characters.
 	@param ownerDocument The document which will own this entity.
-	@exception IOException Thrown when an i/o error occurs.
-	@exception XMLSyntaxException Thrown when there is a syntax error in the XML file.
-	@exception XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
-	@exception XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
-	@exception ParseUnexpectedDataException Thrown when an unexpected character is found.
+	@throws IOException Thrown when an i/o error occurs.
+	@throws XMLSyntaxException Thrown when there is a syntax error in the XML file.
+	@throws XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
+	@throws XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
+	@throws ParseUnexpectedDataException Thrown when an unexpected character is found.
 	@return A new XML entity constructed from the reader.
 	*/
 	protected XMLEntity parseEntityDeclaration(final XMLReader reader, final XMLDocument ownerDocument) throws IOException, XMLSyntaxException, XMLWellFormednessException, XMLUndefinedEntityReferenceException, ParseUnexpectedDataException
@@ -1247,12 +1247,12 @@ final XMLDocument ownerDocument, final XMLDocumentType documentType
 	@param entity The entity that this content belongs to.
 	@param entityValueDelimiter The character which marks the end of this entity value.
 	This should be a single or double quote character.
-	@exception IOException Thrown when an i/o error occurs.
-	@exception XMLSyntaxException Thrown when there is a syntax error in the XML file.
-	@exception XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
-	@exception XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
-	@exception ParseUnexpectedDataException Thrown when an unexpected character is found.
-	@exception ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
+	@throws IOException Thrown when an i/o error occurs.
+	@throws XMLSyntaxException Thrown when there is a syntax error in the XML file.
+	@throws XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
+	@throws XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
+	@throws ParseUnexpectedDataException Thrown when an unexpected character is found.
+	@throws ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
 	@return <code>true</code> if the ending character for this entity was found, else <code>false</code>.
 	*/
 	protected boolean parseEntityContent(final XMLReader reader, final XMLDocument ownerDocument, final XMLEntity entity, final char entityValueDelimiter) throws IOException, XMLSyntaxException, XMLWellFormednessException, XMLUndefinedEntityReferenceException, ParseUnexpectedDataException, ParseEOFException
@@ -1295,12 +1295,12 @@ final XMLDocument ownerDocument, final XMLDocumentType documentType
 	@param reader The reader from which to retrieve characters.
 	@param ownerDocument The document which will own this element type declaration.
 	@param parameterEntityMap The parameter entities we've collected so far.
-	@exception IOException Thrown when an i/o error occurs.
-	@exception XMLSyntaxException Thrown when there is a syntax error in the XML file.
-	@exception XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
-	@exception XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
-	@exception ParseUnexpectedDataException Thrown when an unexpected character is found.
-	@exception ParseEOFException Thrown when the end of the input stream is reached unexpectedly. TODO fix
+	@throws IOException Thrown when an i/o error occurs.
+	@throws XMLSyntaxException Thrown when there is a syntax error in the XML file.
+	@throws XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
+	@throws XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
+	@throws ParseUnexpectedDataException Thrown when an unexpected character is found.
+	@throws ParseEOFException Thrown when the end of the input stream is reached unexpectedly. TODO fix
 	@return A new XML element constructed from the reader containing the declaration information for this element.
 	*/
 	protected XMLElement parseElementTypeDeclaration(final XMLReader reader, final XMLDocument ownerDocument, final XMLNamedNodeMap parameterEntityMap) throws IOException, XMLSyntaxException, XMLWellFormednessException, XMLUndefinedEntityReferenceException, ParseUnexpectedDataException, ParseEOFException
@@ -1341,12 +1341,12 @@ final XMLDocument ownerDocument, final XMLDocumentType documentType
 	@param reader The reader from which to retrieve characters.
 	@param ownerDocument The document which will own this element type declaration.
 	@param parameterEntityMap The parameter entities we've collected so far.
-	@exception IOException Thrown when an i/o error occurs.
-	@exception XMLSyntaxException Thrown when there is a syntax error in the XML file.
-	@exception XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
-	@exception XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
-	@exception ParseUnexpectedDataException Thrown when an unexpected character is found.
-	@exception ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
+	@throws IOException Thrown when an i/o error occurs.
+	@throws XMLSyntaxException Thrown when there is a syntax error in the XML file.
+	@throws XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
+	@throws XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
+	@throws ParseUnexpectedDataException Thrown when an unexpected character is found.
+	@throws ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
 	@return A new XML element constructed from the reader containing the declaration information for this element.
 	*/
 	protected XMLElement parseAttributeListDeclaration(final XMLReader reader, final XMLDocument ownerDocument, final XMLNamedNodeMap parameterEntityMap) throws IOException, XMLSyntaxException, XMLWellFormednessException, XMLUndefinedEntityReferenceException, ParseUnexpectedDataException, ParseEOFException
@@ -1472,12 +1472,12 @@ attributeListDeclarationReader.tidy=isTidy();  //TODO fix
 	@param ownerDocument The document which will own the data.
 	@param parameterEntityMap The parameter entities we've collected so far
 	@param expandedText The string buffer which will collect the expanded information read from the reader.
-	@exception IOException Thrown when an i/o error occurs.
-	@exception XMLSyntaxException Thrown when there is a syntax error in the XML file.
-	@exception XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
-	@exception XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
-	@exception ParseUnexpectedDataException Thrown when an unexpected character is found.
-	@exception ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
+	@throws IOException Thrown when an i/o error occurs.
+	@throws XMLSyntaxException Thrown when there is a syntax error in the XML file.
+	@throws XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
+	@throws XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
+	@throws ParseUnexpectedDataException Thrown when an unexpected character is found.
+	@throws ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
 	@return The characters until the end of the string with any parameter entity
 	references expanded and padded with one beginning and one end space, as the XML
 	specification requires.
@@ -1507,12 +1507,12 @@ attributeListDeclarationReader.tidy=isTidy();  //TODO fix
 	/**Parses an input stream that supposedly begins with XML markup.
 	@param reader The reader from which to retrieve characters.
 	@param ownerDocument The document which will own the nodes encountered.
-	@exception IOException Thrown when an i/o error occurs.
-	@exception XMLSyntaxException Thrown when there is a syntax error in the XML file.
-	@exception XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
-	@exception XMLValidityException Thrown when there is a validity error in the XML file.
-	@exception XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
-	@exception ParseUnexpectedDataException Thrown when an unexpected character is found.
+	@throws IOException Thrown when an i/o error occurs.
+	@throws XMLSyntaxException Thrown when there is a syntax error in the XML file.
+	@throws XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
+	@throws XMLValidityException Thrown when there is a validity error in the XML file.
+	@throws XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
+	@throws ParseUnexpectedDataException Thrown when an unexpected character is found.
 	@return A new XML object constructed from the markup.
 	*/
 	protected XMLNode parseMarkup(final XMLReader reader, final XMLDocument ownerDocument) throws IOException, XMLSyntaxException, XMLWellFormednessException, XMLValidityException, XMLUndefinedEntityReferenceException, ParseUnexpectedDataException
@@ -1569,11 +1569,11 @@ attributeListDeclarationReader.tidy=isTidy();  //TODO fix
 	/**Parses an input stream that supposedly begins with a tag.
 	@param reader The reader from which to retrieve characters.
 	@param ownerDocument The document which will own the tag.
-	@exception IOException Thrown when an i/o error occurs.
-	@exception XMLSyntaxException Thrown when there is a syntax error in the XML file.
-	@exception XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
-	@exception ParseUnexpectedDataException Thrown when an unexpected character is found.
-	@exception XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
+	@throws IOException Thrown when an i/o error occurs.
+	@throws XMLSyntaxException Thrown when there is a syntax error in the XML file.
+	@throws XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
+	@throws ParseUnexpectedDataException Thrown when an unexpected character is found.
+	@throws XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
 	@return A new XML tag constructed from the reader.
 	*/
 	protected XMLTag parseTag(final XMLReader reader, final XMLDocument ownerDocument) throws IOException, XMLSyntaxException, XMLWellFormednessException, ParseUnexpectedDataException, XMLUndefinedEntityReferenceException
@@ -1642,11 +1642,11 @@ attributeListDeclarationReader.tidy=isTidy();  //TODO fix
 	/**Parses an input stream that supposedly begins with an XML declaration ("<?xml").
 	@param reader The reader from which to retrieve characters.
 	@param ownerDocument The document which will own the XML declaration.
-	@exception IOException Thrown when an i/o error occurs.
-	@exception XMLSyntaxException Thrown when there is a syntax error in the XML file.
-	@exception XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
-	@exception ParseUnexpectedDataException Thrown when an unexpected character is found.
-	@exception XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
+	@throws IOException Thrown when an i/o error occurs.
+	@throws XMLSyntaxException Thrown when there is a syntax error in the XML file.
+	@throws XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
+	@throws ParseUnexpectedDataException Thrown when an unexpected character is found.
+	@throws XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
 	@return A new XML declaration constructed from the reader.
 	*/
 	protected XMLDeclaration parseXMLDeclaration(final XMLReader reader, final XMLDocument ownerDocument) throws IOException, XMLSyntaxException, XMLWellFormednessException, ParseUnexpectedDataException, XMLUndefinedEntityReferenceException
@@ -1712,9 +1712,9 @@ attributeListDeclarationReader.tidy=isTidy();  //TODO fix
 	/**Parses an input stream that supposedly begins with an XML processing instruction.
 	@param reader The reader from which to retrieve characters.
 	@param ownerDocument The document which will own the XML declaration.
-	@exception IOException Thrown when an i/o error occurs.
-	@exception XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
-	@exception ParseUnexpectedDataException Thrown when an unexpected character is found.
+	@throws IOException Thrown when an i/o error occurs.
+	@throws XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
+	@throws ParseUnexpectedDataException Thrown when an unexpected character is found.
 	@return A new XML processing instruction constructed from the reader.
 	*/
 	protected XMLProcessingInstruction parseProcessingInstruction(final XMLReader reader, final XMLDocument ownerDocument) throws IOException, XMLSyntaxException, XMLWellFormednessException, ParseUnexpectedDataException
@@ -1740,10 +1740,10 @@ attributeListDeclarationReader.tidy=isTidy();  //TODO fix
 	/**Parses an input stream that supposedly begins with a CDATA section.
 	@param reader The reader from which to retrieve characters.
 	@param ownerDocument The document which will own this CDATA node.
-	@exception IOException Thrown when an i/o error occurs.
-	@exception XMLSyntaxException Thrown when there is a syntax error in the XML file.
-	@exception XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
-	@exception ParseUnexpectedDataException Thrown when an unexpected character is found.
+	@throws IOException Thrown when an i/o error occurs.
+	@throws XMLSyntaxException Thrown when there is a syntax error in the XML file.
+	@throws XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
+	@throws ParseUnexpectedDataException Thrown when an unexpected character is found.
 	@return A new CDATA constructed from the reader.
 	*/
 	protected XMLCDATASection parseCDATASection(final XMLReader reader, final XMLDocument ownerDocument) throws IOException, XMLSyntaxException, XMLWellFormednessException, ParseUnexpectedDataException
@@ -1763,10 +1763,10 @@ attributeListDeclarationReader.tidy=isTidy();  //TODO fix
 	/**Parses an input stream that supposedly begins with a comment.
 	@param reader The reader from which to retrieve characters.
 	@param ownerDocument The document which will own this comment.
-	@exception IOException Thrown when an i/o error occurs.
-	@exception XMLSyntaxException Thrown when there is a syntax error in the XML file.
-	@exception XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
-	@exception ParseUnexpectedDataException Thrown when an unexpected character is found.
+	@throws IOException Thrown when an i/o error occurs.
+	@throws XMLSyntaxException Thrown when there is a syntax error in the XML file.
+	@throws XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
+	@throws ParseUnexpectedDataException Thrown when an unexpected character is found.
 	@return A new comment object constructed from the reader.
 	*/
 	protected XMLComment parseComment(final XMLReader reader, final XMLDocument ownerDocument) throws IOException, XMLSyntaxException, XMLWellFormednessException, ParseUnexpectedDataException
@@ -1788,12 +1788,12 @@ attributeListDeclarationReader.tidy=isTidy();  //TODO fix
 	@param reader The reader from which to retrieve characters.
 	@param ownerDocument The document which will own this element.
 	@param tag The tag that marks the start of this element, which can be a start tag or an empty element tag.
-	@exception IOException Thrown when an i/o error occurs.
-	@exception XMLSyntaxException Thrown when there is a syntax error in the XML file.
-	@exception XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
-	@exception XMLValidityException Thrown when there is a validity error in the XML file.
-	@exception XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
-	@exception ParseUnexpectedDataException Thrown when an unexpected character is found.
+	@throws IOException Thrown when an i/o error occurs.
+	@throws XMLSyntaxException Thrown when there is a syntax error in the XML file.
+	@throws XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
+	@throws XMLValidityException Thrown when there is a validity error in the XML file.
+	@throws XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
+	@throws ParseUnexpectedDataException Thrown when an unexpected character is found.
 	@return A new XML element with the appropriate content.
 	*/
 	protected XMLElement parseElement(final XMLReader reader, final XMLDocument ownerDocument, final XMLTag tag) throws IOException, XMLSyntaxException, XMLWellFormednessException, XMLValidityException, XMLUndefinedEntityReferenceException, ParseUnexpectedDataException
@@ -1826,13 +1826,13 @@ attributeListDeclarationReader.tidy=isTidy();  //TODO fix
 	@param ownerDocument The document which will own the data.
 	@param element The element that this content belongs to.
 	@param characterContent Any character content which has already been accumulated for this element.
-	@exception IOException Thrown when an i/o error occurs.
-	@exception XMLSyntaxException Thrown when there is a syntax error in the XML file.
-	@exception XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
-	@exception XMLValidityException Thrown when there is a validity error in the XML file.
-	@exception XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
-	@exception ParseUnexpectedDataException Thrown when an unexpected character is found.
-	@exception ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
+	@throws IOException Thrown when an i/o error occurs.
+	@throws XMLSyntaxException Thrown when there is a syntax error in the XML file.
+	@throws XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
+	@throws XMLValidityException Thrown when there is a validity error in the XML file.
+	@throws XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
+	@throws ParseUnexpectedDataException Thrown when an unexpected character is found.
+	@throws ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
 	@return <code>true</code> if the ending tag for this element was found, else <code>false</code>.
 	*/
 	protected boolean parseElementContent(final XMLReader reader, final XMLDocument ownerDocument, final XMLElement element, String characterContent) throws IOException, XMLSyntaxException, XMLWellFormednessException, XMLValidityException, XMLUndefinedEntityReferenceException, ParseUnexpectedDataException, ParseEOFException
@@ -2012,11 +2012,11 @@ entityReader.tidy=isTidy();  //TODO fix
 //TODO fix	@param validate Whether the document should be validated against stylesheets, if any.
 //TODO fix	@param processStyleSheets Whether any stylesheets encountered should be recognized and processed as such.
 //TODO fix	@param applyStyleSheets Whether any stylesheets encountered should be applied.
-	@exception IOException Thrown when an i/o error occurs.
-	@exception XMLSyntaxException Thrown when there is a syntax error in the XML file.
-	@exception XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
-	@exception XMLValidityException Thrown when there is a validity error in the XML file.
-	@exception XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
+	@throws IOException Thrown when an i/o error occurs.
+	@throws XMLSyntaxException Thrown when there is a syntax error in the XML file.
+	@throws XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
+	@throws XMLValidityException Thrown when there is a validity error in the XML file.
+	@throws XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
 	@return A new XML document.
 	*/
 	protected XMLDocument parseDocument(final XMLReader reader) throws IOException, XMLSyntaxException, XMLWellFormednessException, XMLValidityException, XMLUndefinedEntityReferenceException
@@ -2124,11 +2124,11 @@ entityReader.tidy=isTidy();  //TODO fix
 	/**Parses an XML document from an input stream.
 	@param inputStream The input stream from which to get the XML data.
 	@param sourceObject The source of the data (e.g. a String, File, or URL).
-	@exception IOException Thrown when an i/o error occurs.
-	@exception XMLSyntaxException Thrown when there is a syntax error in the XML file.
-	@exception XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
-	@exception XMLValidityException Thrown when there is a validity error in the XML file.
-	@exception XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
+	@throws IOException Thrown when an i/o error occurs.
+	@throws XMLSyntaxException Thrown when there is a syntax error in the XML file.
+	@throws XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
+	@throws XMLValidityException Thrown when there is a validity error in the XML file.
+	@throws XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
 	@return A new XML document.
 	*/
 	public XMLDocument parseDocument(final InputStream xmlInputStream, final Object sourceObject) throws IOException, XMLSyntaxException, XMLWellFormednessException, XMLValidityException, XMLUndefinedEntityReferenceException
@@ -2140,11 +2140,11 @@ entityReader.tidy=isTidy();  //TODO fix
 	/**Parses an XML document from a reader.
 	@param reader The input stream from which to get the XML data.
 	@param sourceObject The source of the data (e.g. a String, File, or URL).
-	@exception IOException Thrown when an i/o error occurs.
-	@exception XMLSyntaxException Thrown when there is a syntax error in the XML file.
-	@exception XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
-	@exception XMLValidityException Thrown when there is a validity error in the XML file.
-	@exception XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
+	@throws IOException Thrown when an i/o error occurs.
+	@throws XMLSyntaxException Thrown when there is a syntax error in the XML file.
+	@throws XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
+	@throws XMLValidityException Thrown when there is a validity error in the XML file.
+	@throws XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
 	@return A new XML document.
 	*/
 	public XMLDocument parseDocument(final Reader reader, final Object sourceObject) throws IOException, XMLSyntaxException, XMLWellFormednessException, XMLValidityException, XMLUndefinedEntityReferenceException
@@ -2159,11 +2159,11 @@ entityReader.tidy=isTidy();  //TODO fix
 		present, an <code>XMLWellFormednessException</code> will be thrown.
 	@param element The element to which the parsed XML sub-tree should be appended.
 	@param elementContent The string which contains information to parse.
-	@exception IOException Thrown when an i/o error occurs.
-	@exception XMLSyntaxException Thrown when there is a syntax error in the XML file.
-	@exception XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
-	@exception XMLValidityException Thrown when there is a validity error in the XML file.
-	@exception XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
+	@throws IOException Thrown when an i/o error occurs.
+	@throws XMLSyntaxException Thrown when there is a syntax error in the XML file.
+	@throws XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
+	@throws XMLValidityException Thrown when there is a validity error in the XML file.
+	@throws XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
 	*/
 	public void parseElementContent(final XMLElement element, final String elementContent) throws IOException, XMLSyntaxException, XMLWellFormednessException, XMLValidityException, XMLUndefinedEntityReferenceException
 	{
@@ -2191,11 +2191,11 @@ reader.tidy=isTidy();  //TODO fix
 	}
 
 	/**Parses an XML document, validates it if possible, and processes and applies any stylesheets.
-	@exception IOException Thrown when an i/o error occurs.
-	@exception XMLSyntaxException Thrown when there is a syntax error in the XML file.
-	@exception XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
-	@exception XMLValidityException Thrown when there is a validity error in the XML file.
-	@exception XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
+	@throws IOException Thrown when an i/o error occurs.
+	@throws XMLSyntaxException Thrown when there is a syntax error in the XML file.
+	@throws XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
+	@throws XMLValidityException Thrown when there is a validity error in the XML file.
+	@throws XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
 	@return A new XML document.
 	*/
 /*TODO fix
@@ -2219,7 +2219,7 @@ reader.tidy=isTidy();  //TODO fix
 	/**Resolves the namespace references in this element and its children by setting
 		the namespace URIs and prefixes of the appropriate elements and attributes.
 	@param xmlElement The element for which namespaces should be processed and resolved.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>NAMESPACE_ERR: Raised if the a <code>prefix</code> is
 			malformed, if a <code>namespaceURI</code> is

@@ -50,7 +50,7 @@ public class XMLBase
 	@param element The element for which a base URI should be determined.
 	@return The resolved base URI for the element according to XML Base, or
 		<code>null</code> if a base URI is not specified.
-	@exception URISyntaxException Thrown if the constructed URI is invalid.
+	@throws URISyntaxException Thrown if the constructed URI is invalid.
 	*/
 	public static URI getBaseURI(final Element element) throws URISyntaxException
 	{
@@ -66,7 +66,7 @@ public class XMLBase
 		<code>null</code> if the base URI of the document is not known.
 	@return The resolved base URI for the element according to XML Base, or
 		the document base URI if a base URI is not specified.
-	@exception URISyntaxException Thrown if the constructed URI is invalid.
+	@throws URISyntaxException Thrown if the constructed URI is invalid.
 	*/
 	public static URI getBaseURI(final Element element, final URI documentBaseURI) throws URISyntaxException
 	{
@@ -94,7 +94,7 @@ public class XMLBase
 	@param uri The URI to resolve.
 	@param element The element for which a base URI should be determined.
 	@return A URI resolved to the base URI of the document for the given element.
-	@exception URISyntaxException Thrown if the constructed URI is invalid.
+	@throws URISyntaxException Thrown if the constructed URI is invalid.
 	*/
 	public URI resolveURI(final URI uri, final Element element) throws URISyntaxException
 	{
@@ -108,7 +108,7 @@ public class XMLBase
 	@param documentBaseURI The base URI of the document itself, or
 		<code>null</code> if the base URI of the document is not known.
 	@return A URI resolved to the base URI of the document for the given element.
-	@exception URISyntaxException Thrown if the constructed URI is invalid.
+	@throws URISyntaxException Thrown if the constructed URI is invalid.
 	*/
 	public static URI resolveURI(final URI uri, final Element element, final URI documentBaseURI) throws URISyntaxException
 	{
@@ -122,7 +122,7 @@ public class XMLBase
 	@param string The string to resolve.
 	@param element The element for which a base URI should be determined.
 	@return A URI resolved to the base URI of the document for the given element.
-	@exception URISyntaxException Thrown if the constructed URI is invalid.
+	@throws URISyntaxException Thrown if the constructed URI is invalid.
 	*/
 	public URI resolveURI(final String string, final Element element) throws URISyntaxException
 	{
@@ -136,7 +136,7 @@ public class XMLBase
 	@param documentBaseURI The base URI of the document itself, or
 		<code>null</code> if the base URI of the document is not known.
 	@return A URI resolved to the base URI of the document for the given element.
-	@exception URISyntaxException Thrown if the constructed URI is invalid.
+	@throws URISyntaxException Thrown if the constructed URI is invalid.
 	*/
 	public static URI resolveURI(final String string, final Element element, final URI documentBaseURI) throws URISyntaxException
 	{

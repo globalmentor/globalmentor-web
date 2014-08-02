@@ -101,7 +101,7 @@ public class XMLCSSStyleSheet extends XMLStyleSheet implements CSSStyleSheet
 		will be added to the end of the style sheet.
 	@return  The index within the style sheet's rule collection of the newly
 		inserted rule.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>HIERARCHY_REQUEST_ERR: Raised if the rule cannot be inserted at the
 			specified index e.g. if an <code>@import</code> rule is inserted after
@@ -121,7 +121,7 @@ public class XMLCSSStyleSheet extends XMLStyleSheet implements CSSStyleSheet
 
 	/**Delete a rule from the stylesheet.
 	@param index The index within the style sheet's rule list of the rule to remove.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>INDEX_SIZE_ERR: Raised if the specified index does not correspond to a
 			rule in the style sheet's rule list.</li>

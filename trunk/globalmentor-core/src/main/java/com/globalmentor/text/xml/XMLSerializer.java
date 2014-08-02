@@ -245,8 +245,8 @@ public class XMLSerializer
 	/**Serializes the specified document to a string using the UTF-8 encoding with no byte order mark.
 	@param document The XML document to serialize.
 	@return A string containing the serialized XML data.
-	@exception IOException Thrown if an I/O error occurred.
-	@exception UnsupportedEncodingException Thrown if the UTF-8 encoding not recognized.
+	@throws IOException Thrown if an I/O error occurred.
+	@throws UnsupportedEncodingException Thrown if the UTF-8 encoding not recognized.
 	*/
 	public String serialize(final Document document) throws UnsupportedEncodingException, IOException
 	{
@@ -337,7 +337,7 @@ public class XMLSerializer
 	/**Serializes the specified document to the given output stream using the UTF-8 encoding with the UTF-8 byte order mark.
 	@param document The XML document to serialize.
 	@param outputStream The stream into which the document should be serialized.
-	@exception IOException Thrown if an I/O error occurred.
+	@throws IOException Thrown if an I/O error occurred.
 	*/
 	public void serialize(final Document document, final OutputStream outputStream) throws IOException
 	{
@@ -356,8 +356,8 @@ public class XMLSerializer
 	@param document The XML document to serialize.
 	@param outputStream The stream into which the document should be serialized.
 	@param charset The character set to use when serializing.
-	@exception IOException Thrown if an I/O error occurred.
-	@exception UnsupportedEncodingException Thrown if the specified encoding is not recognized.
+	@throws IOException Thrown if an I/O error occurred.
+	@throws UnsupportedEncodingException Thrown if the specified encoding is not recognized.
 	*/
 	public void serialize(final Document document, final OutputStream outputStream, final Charset charset) throws IOException, UnsupportedEncodingException
 	{
@@ -398,8 +398,8 @@ public class XMLSerializer
 	/**Serializes the specified document fragment to the given output stream using the UTF-8 encoding with the UTF-8 byte order mark.
 	@param documentFragment The XML document fragment to serialize.
 	@param outputStream The stream into which the document fragment should be serialized.
-	@exception IOException Thrown if an I/O error occurred.
-	@exception UnsupportedEncodingException Thrown if the UTF-8 encoding not recognized.
+	@throws IOException Thrown if an I/O error occurred.
+	@throws UnsupportedEncodingException Thrown if the UTF-8 encoding not recognized.
 	*/
 	public void serialize(final DocumentFragment documentFragment, final OutputStream outputStream) throws UnsupportedEncodingException, IOException
 	{
@@ -411,8 +411,8 @@ public class XMLSerializer
 	@param documentFragment The XML document fragment to serialize.
 	@param outputStream The stream into which the document fragment should be serialized.
 	@param charset The charset to use when serializing.
-	@exception IOException Thrown if an I/O error occurred.
-	@exception UnsupportedEncodingException Thrown if the specified encoding is not recognized.
+	@throws IOException Thrown if an I/O error occurred.
+	@throws UnsupportedEncodingException Thrown if the specified encoding is not recognized.
 	*/
 	public void serialize(final DocumentFragment documentFragment, final OutputStream outputStream, final Charset charset) throws IOException, UnsupportedEncodingException
 	{
@@ -422,8 +422,8 @@ public class XMLSerializer
 	/**Serializes the specified element and its children to the given output stream using the UTF-8 encoding with the UTF-8 byte order mark.
 	@param element The XML element to serialize.
 	@param outputStream The stream into which the element should be serialized.
-	@exception IOException Thrown if an I/O error occurred.
-	@exception UnsupportedEncodingException Thrown if the UTF-8 encoding is not recognized.
+	@throws IOException Thrown if an I/O error occurred.
+	@throws UnsupportedEncodingException Thrown if the UTF-8 encoding is not recognized.
 	*/
 	public void serialize(final Element element, final OutputStream outputStream) throws IOException, UnsupportedEncodingException
 	{
@@ -435,8 +435,8 @@ public class XMLSerializer
 	@param element The XML element to serialize.
 	@param outputStream The stream into which the element should be serialized.
 	@param charset The charset to use when serializing.
-	@exception IOException Thrown if an I/O error occurred.
-	@exception UnsupportedEncodingException Thrown if the specified encoding is not recognized.
+	@throws IOException Thrown if an I/O error occurred.
+	@throws UnsupportedEncodingException Thrown if the specified encoding is not recognized.
 	*/
 	public void serialize(final Element element, final OutputStream outputStream, final Charset charset) throws IOException, UnsupportedEncodingException
 	{
@@ -461,8 +461,8 @@ public class XMLSerializer
 	@param node The XML node the content of which to serialize&mdash;usually an
 		element or document fragment.
 	@param outputStream The stream into which the element content should be serialized.
-	@exception IOException Thrown if an I/O error occurred.
-	@exception UnsupportedEncodingException Thrown if the UTF-8 encoding is not recognized.
+	@throws IOException Thrown if an I/O error occurred.
+	@throws UnsupportedEncodingException Thrown if the UTF-8 encoding is not recognized.
 	*/
 	protected void serializeContent(final Node node, final OutputStream outputStream) throws IOException, UnsupportedEncodingException
 	{
@@ -476,8 +476,8 @@ public class XMLSerializer
 		element or document fragment.
 	@param outputStream The stream into which the element content should be serialized.
 	@param charset The charset to use when serializing.
-	@exception IOException Thrown if an I/O error occurred.
-	@exception UnsupportedEncodingException Thrown if the specified encoding is not recognized.
+	@throws IOException Thrown if an I/O error occurred.
+	@throws UnsupportedEncodingException Thrown if the specified encoding is not recognized.
 	*/
 	protected void serializeContent(final Node node, final OutputStream outputStream, final Charset charset) throws IOException, UnsupportedEncodingException
 	{
@@ -580,7 +580,7 @@ public class XMLSerializer
 	@param document The XML document the prolog of which to serialize.
 	@param writer The writer into which the prolog should be written.
 	@param charset The charset in use.
-	@exception IOException Thrown if an I/O error occurred.
+	@throws IOException Thrown if an I/O error occurred.
 	*/
 	protected void writeProlog(final Document document, final BufferedWriter writer, final Charset charset) throws IOException
 	{
@@ -597,7 +597,7 @@ public class XMLSerializer
 	/**Serializes the document's processing instrucitons to the given writer.
 	@param document The XML document the processing instructions of which to serialize.
 	@param writer The writer into which the processing instructions should be written.
-	@exception IOException Thrown if an I/O error occurred.
+	@throws IOException Thrown if an I/O error occurred.
 	*/
 	protected void writeProcessingInstructions(final Document document, final BufferedWriter writer) throws IOException
 	{
@@ -614,7 +614,7 @@ public class XMLSerializer
 	/**Serializes the document type to the given writer.
 	@param documentType The XML document type to serialize.
 	@param writer The writer into which the document type should be written.
-	@exception IOException Thrown if an I/O error occurred.
+	@throws IOException Thrown if an I/O error occurred.
 	*/
 	protected void write(final DocumentType documentType, final BufferedWriter writer) throws IOException
 	{
@@ -645,7 +645,7 @@ public class XMLSerializer
 	/**Serializes the given processing instruction to the given writer.
 	@param processingInstruction The XML processing instruction to serialize.
 	@param writer The writer into which the processing instruction should be written.
-	@exception IOException Thrown if an I/O error occurred.
+	@throws IOException Thrown if an I/O error occurred.
 	*/
 	protected void write(final ProcessingInstruction processingInstruction, final BufferedWriter writer) throws IOException
 	{
@@ -663,7 +663,7 @@ public class XMLSerializer
 		formatting options.
 	@param element The XML element to serialize.
 	@param writer The writer into which the element should be written.
-	@exception IOException Thrown if an I/O error occurred.
+	@throws IOException Thrown if an I/O error occurred.
 	*/
 	protected void write(final Element element, final BufferedWriter writer) throws IOException
 	{
@@ -675,7 +675,7 @@ public class XMLSerializer
 	@param writer The writer into which the element should be written.
 	@param formatted Whether this element and its contents, including any child
 		elements, should be formatted.
-	@exception IOException Thrown if an I/O error occurred.
+	@throws IOException Thrown if an I/O error occurred.
 	*/
 	protected void write(final Element element, final BufferedWriter writer, boolean formatted) throws IOException
 	{
@@ -745,7 +745,7 @@ public class XMLSerializer
 	@param attributeName The name of the XML attribute to serialize.
 	@param attributeValue The name of the XML attribute to serialize.
 	@param writer The writer into which the attribute should be written.
-	@exception IOException Thrown if an I/O error occurred.
+	@throws IOException Thrown if an I/O error occurred.
 	*/
 	protected void writeAttribute(final String attributeName, final String attributeValue, final BufferedWriter writer) throws IOException
 	{
@@ -761,7 +761,7 @@ public class XMLSerializer
 	@param node The XML node the content of which to serialize&mdash;usually an
 		element or document fragment.
 	@param writer The writer into which the element content should be written.
-	@exception IOException Thrown if an I/O error occurred.
+	@throws IOException Thrown if an I/O error occurred.
 	*/
 	protected void writeContent(final Node node, final BufferedWriter writer) throws IOException
 	{
@@ -774,7 +774,7 @@ public class XMLSerializer
 	@param writer The writer into which the element content should be written.
 	@param formatted Whether the contents of this element, including any child
 		elements, should be formatted.
-	@exception IOException Thrown if an I/O error occurred.
+	@throws IOException Thrown if an I/O error occurred.
 	*/
 	protected void writeContent(final Node node, final BufferedWriter writer, final boolean formatted) throws IOException
 	{
@@ -811,7 +811,7 @@ public class XMLSerializer
 	/**Creates the specified number of horizontal alignment strings.
 	@param writer The writer into which the element should be written.
 	@param nestLevel The level of nesting for horizontal alignment.
-	@exception IOException Thrown if an I/O error occurred.
+	@throws IOException Thrown if an I/O error occurred.
 	*/
 	protected void writeHorizontalAlignment(final BufferedWriter writer, int nestLevel) throws IOException
 	{

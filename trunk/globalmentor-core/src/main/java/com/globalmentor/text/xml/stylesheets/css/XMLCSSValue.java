@@ -73,7 +73,7 @@ public abstract class XMLCSSValue implements org.w3c.dom.css.CSSValue//TODO fix,
 	}
 
 	/**Sets the parsable textual representation of the value.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>SYNTAX_ERR: Raised if the specified CSS string value has a syntax error
 			and is unparsable.</li>

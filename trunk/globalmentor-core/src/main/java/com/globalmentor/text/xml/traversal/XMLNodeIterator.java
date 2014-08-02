@@ -166,7 +166,7 @@ public class XMLNodeIterator implements NodeIterator
 		the set. The reference node will be updated.
 	@return The next <code>Node</code> in the set being iterated over, or
 		<code>null</code> if there are no more members in that set.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>INVALID_STATE_ERR: Raised if this method is called after the
 		  <code>detach</code> method was invoked.</li>
@@ -193,7 +193,7 @@ public class XMLNodeIterator implements NodeIterator
 		updated.
 	@return The previous <code>Node</code> in the set being iterated over,
 		or <code>null</code> if there are no more members in that set.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>INVALID_STATE_ERR: Raised if this method is called after the
 		  <code>detach</code> method was invoked.</li>
@@ -222,7 +222,7 @@ public class XMLNodeIterator implements NodeIterator
 		the filter to see	if it should be included. The reference node will be updated.
 	@return The next <code>Node</code> in the set being iterated over, or
 		<code>null</code> if there are no more members in that set.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>INVALID_STATE_ERR: Raised if this method is called after the
 		  <code>detach</code> method was invoked.</li>
@@ -276,7 +276,7 @@ public class XMLNodeIterator implements NodeIterator
 		be included. The reference node will be updated.
 	@return The previous <code>Node</code> in the set being iterated over,
 		or <code>null</code> if there are no more members in that set.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>INVALID_STATE_ERR: Raised if this method is called after the
 		  <code>detach</code> method was invoked.</li>

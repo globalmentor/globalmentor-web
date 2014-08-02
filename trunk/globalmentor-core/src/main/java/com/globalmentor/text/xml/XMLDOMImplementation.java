@@ -72,7 +72,7 @@ class XMLDOMImplementation implements DOMImplementation
 	@param systemId The external subset system identifier.
 	@return  A new <code>DocumentType</code> node with
 		<code>Node.ownerDocument</code> set to <code>null</code> .
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>INVALID_CHARACTER_ERR: Raised if the specified qualified name
 			contains an illegal character.</li>
@@ -96,7 +96,7 @@ class XMLDOMImplementation implements DOMImplementation
 		When <code>doctype</code> is not <code>null</code> , its
 		<code>Node.ownerDocument</code> attribute is set to the document being created.
 	@return A new <code>Document</code> object.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>INVALID_CHARACTER_ERR: Raised if the specified qualified name contains
 			an illegal character.</li>

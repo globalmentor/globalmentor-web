@@ -148,7 +148,7 @@ public class XMLNamedNodeMap extends HashMap implements NamedNodeMap
 	@return If the new <code>Node</code> replaces an existing node with the
 	same name the previously existing <code>Node</code> is returned,
 	otherwise <code>null</code> is returned.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>WRONG_DOCUMENT_ERR: Raised if <code>arg</code> was created from a
 			different document than the one that created the
@@ -178,7 +178,7 @@ public class XMLNamedNodeMap extends HashMap implements NamedNodeMap
 		known to have a default value, an attribute immediately appears containing
 		the default value.
 	@return The node removed from the map if a node with such a name exists.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>NOT_FOUND_ERR: Raised if there is no node named <code>name</code> in the map.</li>
 		<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this map is readonly.</li>
@@ -254,7 +254,7 @@ public class XMLNamedNodeMap extends HashMap implements NamedNodeMap
 	@return If the new <code>Node</code> replaces an existing node the
 		replaced <code>Node</code> is returned, otherwise <code>null</code>
 		is returned.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>WRONG_DOCUMENT_ERR: Raised if <code>arg</code> was created from a
 			different document than the one that created this map.</li>
@@ -285,7 +285,7 @@ public class XMLNamedNodeMap extends HashMap implements NamedNodeMap
 	@param localNameThe local name of the node to remove.
 	@return The node removed from this map if a node with such a local
 		name and namespace URI exists.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>NOT_FOUND_ERR: Raised if there is no node with the specified
 		  <code>namespaceURI</code> and <code>localName</code> in this map.</li>

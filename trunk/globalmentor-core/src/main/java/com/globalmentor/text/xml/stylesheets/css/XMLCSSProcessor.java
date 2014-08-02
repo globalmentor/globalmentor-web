@@ -129,7 +129,7 @@ public class XMLCSSProcessor implements URIInputStreamable
 		acting as our own <code>URIInputStreamable</code>.
 	@param uri A complete URI to a file.
 	@return An input stream to the contents of the file represented by the given URI.
-	@exception IOException Thrown if an I/O error occurred.
+	@throws IOException Thrown if an I/O error occurred.
 	@see #getFileLocator
 	*/
 	public InputStream getInputStream(final URI uri) throws IOException

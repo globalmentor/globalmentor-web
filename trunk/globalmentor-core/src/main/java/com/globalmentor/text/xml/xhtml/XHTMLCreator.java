@@ -90,7 +90,7 @@ public class XHTMLCreator
 	@param document The XHTML document already containing a <code>&lt;body&gt;</code>
 		element in which the converted text content will be stored.
 	@param inputStream The input stream that contains the text document.
-	@exception IOException Thrown if there is an I/O error.
+	@throws IOException Thrown if there is an I/O error.
 	*/
 	public void createXHTMLFromText(final Document document, final InputStream inputStream) throws IOException
 	{
@@ -103,7 +103,7 @@ public class XHTMLCreator
 		element in which the converted text content will be stored.
 	@param inputStream The input stream that contains the text document.
 	@param defaultCharset The charset to use when interpreting the text contents if there is no byte order mark.
-	@exception IOException Thrown if there is an I/O error.
+	@throws IOException Thrown if there is an I/O error.
 	*/
 	public void createXHTMLFromText(final Document document, final InputStream inputStream, final Charset defaultCharset) throws IOException
 	{
@@ -120,7 +120,7 @@ public class XHTMLCreator
 	@param document The XHTML document already containing a <code>&lt;body&gt;</code>
 		element in which the converted text content will be stored.
 	@param bufferedReader The buffered reader which contains the text.
-	@exception IOException Thrown if there is an I/O error.
+	@throws IOException Thrown if there is an I/O error.
 	*/
 	protected void parseText(final Document document, final BufferedReader bufferedReader) throws IOException
 	{
@@ -144,7 +144,7 @@ public class XHTMLCreator
 	@param bufferedReader The buffered reader to be used to read the text.
 	@return A paragraph, or <code>null</code> if the end of the data was reached
 		without finding any text data.
-	@exception IOException Thrown if there is an I/O error.
+	@throws IOException Thrown if there is an I/O error.
 	*/
 	protected Element parseParagraph(final Document document, final String namespaceURI, final BufferedReader bufferedReader) throws IOException
 	{
@@ -321,7 +321,7 @@ public class XHTMLCreator
 		reader.
 	@param bufferedReader The source of the lines if there are none in the buffer.
 	@return The next line, or <code>null</code> if there are no lines left.
-	@exception IOException Thrown if there is an I/O error.
+	@throws IOException Thrown if there is an I/O error.
 	*/
 	protected String getLine(final BufferedReader bufferedReader) throws IOException
 	{
@@ -345,7 +345,7 @@ public class XHTMLCreator
 
 	/**Preloads a number of lines into the buffer.
 	@param bufferedReader The source of the lines.
-	@exception IOException Thrown if there is an I/O error.
+	@throws IOException Thrown if there is an I/O error.
 	*/
 	protected void primeBuffer(final BufferedReader bufferedReader) throws IOException
 	{
@@ -364,7 +364,7 @@ Log.trace("primed buffer, number of lines: ", getLineBuffer().size());
 	@param bufferedReader The source of the lines.
 	@see #setLineSpacing
 	@see #isParagraphSensing
-	@exception IOException Thrown if there is an I/O error.
+	@throws IOException Thrown if there is an I/O error.
 	*/
 	protected void autodetectSettings(final BufferedReader bufferedReader) throws IOException //TODO fix the cases in which each paragraph appears on one line--i.e. check the average line length
 	{
@@ -469,7 +469,7 @@ Log.trace("primed buffer, number of lines: ", getLineBuffer().size());
 	@param bufferedReader The source of the lines.
 	@see #setLineSpacing
 	@see #isParagraphSensing
-	@exception IOException Thrown if there is an I/O error.
+	@throws IOException Thrown if there is an I/O error.
 	*/
 	protected void autodetectEncoding(final BufferedReader bufferedReader) throws IOException //TODO fix the cases in which each paragraph appears on one line--i.e. check the average line length
 	{

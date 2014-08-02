@@ -133,7 +133,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 		@param newPrefix The namespace prefix of the node, or <code>null</code> for no
 			prefix.
 		@param newLocalName The node's local name.
-		@exception DOMException
+		@throws DOMException
 		<ul>
 			<li>NAMESPACE_ERR: Raised if the specified <code>prefix</code> is
 				malformed, if the <code>namespaceURI</code> of is
@@ -167,7 +167,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 			<tr><td><code>Node.localName</code></td><td>local name, extracted from <code>qualifiedName</code></td></tr>
 			</table>
 		@param qualififedName The qualified name of the node.
-		@exception DOMException
+		@throws DOMException
 		<ul>
 			<li>NAMESPACE_ERR: Raised if the specified <code>prefix</code> is
 				malformed, if the <code>namespaceURI</code> of is
@@ -291,7 +291,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	protected boolean isNodeTypeAllowed(final Node node) {return false;}
 
 	/**Checks the specified node to ensure it can be added as a child node.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>HIERARCHY_REQUEST_ERR: Raised if this node is of a type that does not
 			allow children of the type of the <code>newChild</code> node, or if
@@ -464,7 +464,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	@param refChild The reference node, i.e., the node before which the new
 		node must be inserted.
 	@return The node being inserted.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>HIERARCHY_REQUEST_ERR: Raised if this node is of a type that does not
 			allow children of the type of the <code>newChild</code> node, or if
@@ -518,7 +518,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	@param newChild The new node to put in the child list.
 	@param oldChild The node being replaced in the list.
 	@return The node replaced.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>HIERARCHY_REQUEST_ERR: Raised if this node is of a type that does not
 			allow children of the type of the <code>newChild</code> node, or it
@@ -549,7 +549,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 		of children, and returns it.
 	@param oldChild The node being removed.
 	@return The node removed.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
 		<li>NOT_FOUND_ERR: Raised if <code>oldChild</code> is not a child of
@@ -582,7 +582,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 		object, the entire contents of the document fragment are moved into the
 		child list of this node
 	@return The node added.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>HIERARCHY_REQUEST_ERR: Raised if this node is of a type that does not
 			allow children of the type of the <code>newChild</code> node, or if
@@ -632,7 +632,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	and adds it to the list of child nodes.
 	@param characterContent The character content to be added.
 	@return The node added.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>HIERARCHY_REQUEST_ERR: Raised if this node is of a type that does not
 			allow children of the type of the <code>newChild</code> node, or if
@@ -807,7 +807,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 			have a default value, does not make a new attribute with the default
 			value and the original prefix appear, since the
 			<code>namespaceURI</code> and <code>localName</code> do not change.</p>
-		@exception DOMException
+		@throws DOMException
 		<ul>
 			<li>INVALID_CHARACTER_ERR: Raised if the specified prefix contains an
 				illegal character.</li>
@@ -839,7 +839,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 		}
 
 	/**Checks a prefix against a namespace URI to ensure they are compatibile.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>NAMESPACE_ERR: Raised if the <code>qualifiedName</code> is malformed,
 			if the <code>qualifiedName</code> has a prefix and the
@@ -852,7 +852,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 
 	/**Checks a prefix against a namespace URI to ensure they are compatibile.
 		A prefix may be <code>null</code> without causing an error.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>NAMESPACE_ERR: Raised if the specified <code>prefix</code> is
 			malformed, if the <code>namespaceURI</code> of is
@@ -1007,7 +1007,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	@return Whether any of the listeners which handled the event called
 		<code>preventDefault</code>. If <code>preventDefault</code> was
 		called the value is <code>false</code>, else the value is <code>true</code>.
-	@exception EventException
+	@throws EventException
 	<ul>
 		<li>UNSPECIFIED_EVENT_TYPE_ERR: Raised if the <code>Event</code>'s type
 		  was not specified by initializing the event before
@@ -1095,7 +1095,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	@return Whether any of the listeners which handled the event called
 		<code>preventDefault</code>. If <code>preventDefault</code> was
 		called the value is <code>false</code>, else the value is <code>true</code>.
-	@exception EventException
+	@throws EventException
 	<ul>
 		<li>UNSPECIFIED_EVENT_TYPE_ERR: Raised if the <code>Event</code>'s type
 		  was not specified by initializing the event before
@@ -1118,7 +1118,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	@return Whether any of the listeners which handled the event called
 		<code>preventDefault</code>. If <code>preventDefault</code> was
 		called the value is <code>false</code>, else the value is <code>true</code>.
-	@exception EventException
+	@throws EventException
 	<ul>
 		<li>UNSPECIFIED_EVENT_TYPE_ERR: Raised if the <code>Event</code>'s type
 		  was not specified by initializing the event before
@@ -1222,7 +1222,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
      * @param refChild The reference node, i.e., the node before which the 
      *   new node must be inserted.
      * @return The node being inserted.
-     * @exception DOMException
+     * @throws DOMException
      *   HIERARCHY_REQUEST_ERR: Raised if this node is of a type that does not 
      *   allow children of the type of the <code>newChild</code> node, or if 
      *   the node to insert is one of this node's ancestors or this node 
@@ -1256,7 +1256,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
      * @param newChild The new node to put in the child list.
      * @param oldChild The node being replaced in the list.
      * @return The node replaced.
-     * @exception DOMException
+     * @throws DOMException
      *   HIERARCHY_REQUEST_ERR: Raised if this node is of a type that does not 
      *   allow children of the type of the <code>newChild</code> node, or if 
      *   the node to put in is one of this node's ancestors or this node 
@@ -1283,7 +1283,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
      * of children, and returns it.
      * @param oldChild The node being removed.
      * @return The node removed.
-     * @exception DOMException
+     * @throws DOMException
      *   NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.
      *   <br>NOT_FOUND_ERR: Raised if <code>oldChild</code> is not a child of 
      *   this node.
@@ -1303,7 +1303,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
      *   <code>DocumentFragment</code> object, the entire contents of the 
      *   document fragment are moved into the child list of this node
      * @return The node added.
-     * @exception DOMException
+     * @throws DOMException
      *   HIERARCHY_REQUEST_ERR: Raised if this node is of a type that does not 
      *   allow children of the type of the <code>newChild</code> node, or if 
      *   the node to append is one of this node's ancestors or this node 
@@ -1367,7 +1367,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
      * @param other The node to compare against the reference node.
      * @return Returns how the node is positioned relatively to the reference 
      *   node.
-     * @exception DOMException
+     * @throws DOMException
      *   NOT_SUPPORTED_ERR: when the compared nodes are from different DOM 
      *   implementations that do not coordinate to return consistent 
      *   implementation-specific results.
@@ -1417,7 +1417,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
      * <td valign='top' rowspan='1' colspan='1'><em>null</em></td>
      * </tr>
      * </table>
-     * @exception DOMException
+     * @throws DOMException
      *   DOMSTRING_SIZE_ERR: Raised when it would return more characters than 
      *   fit in a <code>DOMString</code> variable on the implementation 
      *   platform.
@@ -1466,7 +1466,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
      * <td valign='top' rowspan='1' colspan='1'><em>null</em></td>
      * </tr>
      * </table>
-     * @exception DOMException
+     * @throws DOMException
      *   NO_MODIFICATION_ALLOWED_ERR: Raised when the node is readonly.
      * @since DOM Level 3
      */

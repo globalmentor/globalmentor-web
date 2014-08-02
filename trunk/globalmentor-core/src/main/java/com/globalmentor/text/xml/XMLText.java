@@ -84,7 +84,7 @@ public class XMLText extends XMLCharacterData implements org.w3c.dom.Text
 	content at and after the <code>offset</code> point.
 	@param offset The 16-bit unit offset at which to split, starting from 0.
 	@return The new <code>XMLText</code> node.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>INDEX_SIZE_ERR: Raised if the specified offset is negative or greater
 			than the number of 16-bit units in <code>data</code>.</li>
@@ -170,7 +170,7 @@ public class XMLText extends XMLCharacterData implements org.w3c.dom.Text
      * "ent" contains an <code>Element</code> node which cannot be removed.
      * @param content The content of the replacing <code>Text</code> node.
      * @return The <code>Text</code> node created with the specified content.
-     * @exception DOMException
+     * @throws DOMException
      *   NO_MODIFICATION_ALLOWED_ERR: Raised if one of the <code>Text</code> 
      *   nodes being replaced is readonly.
      * @since DOM Level 3

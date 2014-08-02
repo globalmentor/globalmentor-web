@@ -39,7 +39,7 @@ public class XMLEntity extends XMLNode implements org.w3c.dom.Entity
 	/**Constructor that specifies an entity name.
 	@param ownerDocument The document which owns this node.
 	@param newName The name of the XML entity.
-//TODO fix	@exception XMLInvalidNameException Thrown if the specified name is invalid.
+//TODO fix	@throws XMLInvalidNameException Thrown if the specified name is invalid.
 	*/
 	public XMLEntity(final XMLDocument ownerDocument, final String newName)	//TODO fix throws XMLInvalidNameException
 	{
@@ -51,7 +51,7 @@ public class XMLEntity extends XMLNode implements org.w3c.dom.Entity
 	@param ownerDocument The document which owns this node.
 	@param newName The name of the XML entity.
 	@param value The value for this entity.
-//TODO fix	@exception XMLInvalidNameException Thrown if the specified name is invalid.
+//TODO fix	@throws XMLInvalidNameException Thrown if the specified name is invalid.
 	*/
 	public XMLEntity(final XMLDocument ownerDocument, final String newName, final String value)	//TODO fix throws XMLInvalidNameException
 	{

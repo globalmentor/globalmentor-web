@@ -86,7 +86,7 @@ public class XMLCSSStylesheetApplier extends AbstractXMLCSSStylesheetApplier<Doc
 		<p>This implementation delegates to the object provided at construction.</p>
 		@param uri A URI to a resource.
 		@return An input stream to the contents of the resource represented by the given URI.
-		@exception IOException Thrown if an I/O error occurred.
+		@throws IOException Thrown if an I/O error occurred.
 		*/
 		public InputStream getInputStream(final URI uri) throws IOException
 		{

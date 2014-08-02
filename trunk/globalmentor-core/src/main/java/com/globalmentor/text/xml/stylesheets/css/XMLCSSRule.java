@@ -64,7 +64,7 @@ public abstract class XMLCSSRule implements CSSRule//TODO fix, Cloneable
 
 	/**Sets the parsable textual representation of the rule. This reflects the
 	current state of the rule and not its initial value.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>HIERARCHY_REQUEST_ERR: Raised if the rule cannot be inserted at this
 			point in the style sheet.</li>

@@ -48,7 +48,7 @@ class XMLTag extends XMLNode
 
 		/**Sets the name of the XML tag.
 		@param newName The new name for the XML tag, or "" to specify no name.
-		@exception XMLInvalidNameException Thrown if the specified name is invalid.
+		@throws XMLInvalidNameException Thrown if the specified name is invalid.
 		*/
 /*TODO fix and reconcile with DOM
 		public void setName(String newName) throws XMLInvalidNameException

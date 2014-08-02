@@ -33,7 +33,7 @@ public class XMLAttribute extends XMLNode implements org.w3c.dom.Attr
 	/**Constructor for an attribute taking a name.
 	@param ownerDocument The document which owns this node.
 	@param newName The new name of the attribute.
-//TODO fix for DOM	@exception XMLInvalidNameException Thrown if the specified name is invalid.
+//TODO fix for DOM	@throws XMLInvalidNameException Thrown if the specified name is invalid.
 	*/
 	public XMLAttribute(final XMLDocument ownerDocument, final String newName) //TODO fix for DOM throws XMLInvalidNameException
 	{
@@ -56,7 +56,7 @@ public class XMLAttribute extends XMLNode implements org.w3c.dom.Attr
 	@param namespaceURI The namespace URI of the attribute.
 	@param qualifiedName The qualified name of the attribute.
 	@param newValue The new value of the attribute.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>NAMESPACE_ERR: Raised if the specified <code>prefix</code> is
 			malformed, if the <code>namespaceURI</code> of is
@@ -81,7 +81,7 @@ public class XMLAttribute extends XMLNode implements org.w3c.dom.Attr
 	@param ownerDocument The document which owns this node.
 	@param newName The new name of the attribute.
 	@param newValue The new value of the attribute.
-//TODO fix for DOM	@exception XMLInvalidNameException Thrown if the specified name is invalid.
+//TODO fix for DOM	@throws XMLInvalidNameException Thrown if the specified name is invalid.
 	*/
 	public XMLAttribute(final XMLDocument ownerDocument, final String newName, final String newValue) //TODO fix for DOM throws XMLInvalidNameException
 	{
@@ -94,7 +94,7 @@ public class XMLAttribute extends XMLNode implements org.w3c.dom.Attr
 	@param newName The new name of the attribute.
 	@param newLineIndex The new line index.
 	@param newCharIndex The new character index.
-	//TODO fix for DOM	@exception XMLInvalidNameException Thrown if the specified name is invalid.
+	//TODO fix for DOM	@throws XMLInvalidNameException Thrown if the specified name is invalid.
 	*/
 	public XMLAttribute(final XMLDocument ownerDocument, final String newName, final long newLineIndex, final long newCharIndex) //TODO fix for DOM throws XMLInvalidNameException
 	{
@@ -109,7 +109,7 @@ public class XMLAttribute extends XMLNode implements org.w3c.dom.Attr
 	@param newValue The new value of the attribute.
 	@param newLineIndex The new line index.
 	@param newCharIndex The new character index.
-	//TODO fix for DOM	@exception XMLInvalidNameException Thrown if the specified name is invalid.
+	//TODO fix for DOM	@throws XMLInvalidNameException Thrown if the specified name is invalid.
 	*/
 	public XMLAttribute(final XMLDocument ownerDocument, final String newName, final String newValue, final long newLineIndex, final long newCharIndex) //TODO fix for DOM throws XMLInvalidNameException
 	{
@@ -121,7 +121,7 @@ public class XMLAttribute extends XMLNode implements org.w3c.dom.Attr
 //TODO maybe make this have package level access or something
 		/**Sets the name of the attribute.
 		@param newName The new name for the attribute, or "" to specify no name.
-//TODO fix for DOM		@exception XMLInvalidNameException Thrown if the specified name is invalid.
+//TODO fix for DOM		@throws XMLInvalidNameException Thrown if the specified name is invalid.
 		*/
 /*TODO fix exceptions and stuff and reconcile with DOM
 		public void setName(String newName) //TODO fix for DOM throws XMLInvalidNameException
@@ -213,7 +213,7 @@ public class XMLAttribute extends XMLNode implements org.w3c.dom.Attr
 		have a default value, does not make a new attribute with the default
 		value and the original prefix appear, since the
 		<code>namespaceURI</code> and <code>localName</code> do not change.</p>
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>INVALID_CHARACTER_ERR: Raised if the specified prefix contains an
 			illegal character.</li>
@@ -321,7 +321,7 @@ public class XMLAttribute extends XMLNode implements org.w3c.dom.Attr
 	TODO fix On setting, this creates a <code>Text</code> node with the unparsed
 	contents of the string.
 	@param value The new value for the attribute.
-	@exception DOMException
+	@throws DOMException
 	<ul>
 		<li>NO_MODIFICATION_ALLOWED_ERR: Raised when the node is readonly.</li>
 	</ul>
