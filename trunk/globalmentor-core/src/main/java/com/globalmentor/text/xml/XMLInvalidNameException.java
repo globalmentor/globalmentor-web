@@ -16,14 +16,16 @@
 
 package com.globalmentor.text.xml;
 
-/**Invalid name error.
-@author Garret Wilson
-@see XMLSyntaxException
-@deprecated
-*/
-public class XMLInvalidNameException extends XMLSyntaxException
-{
-//TODO comment these
-	public XMLInvalidNameException(final String name) {super("Invalid XML name: \""+name+"\".");}
-}
+/**
+ * Invalid name error.
+ * @author Garret Wilson
+ * @see XMLSyntaxException
+ * @deprecated
+ */
+public class XMLInvalidNameException extends XMLSyntaxException {
 
+	//TODO comment these
+	public XMLInvalidNameException(final String name) {
+		super("Invalid XML name: \"" + name + "\".");
+	}
+}

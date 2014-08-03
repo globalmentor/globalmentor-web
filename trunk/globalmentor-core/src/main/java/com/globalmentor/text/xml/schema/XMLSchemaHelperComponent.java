@@ -16,24 +16,25 @@
 
 package com.globalmentor.text.xml.schema;
 
-/**Represents one of the "helper" schema components:
-<ul>
-	<li>Annotations</li>
-	<li>Model groups</li>
-	<li>Particles</li>
-	<li>Wildcards</li>
-</ul>
-@author Garret Wilson
-@deprecated
-*/
-public abstract class XMLSchemaHelperComponent extends XMLSchemaComponent
-{
-	/**Constructs a schema helper component.
-	@param newComponentType The type of XML schema component this is.
-	*/
-	public XMLSchemaHelperComponent(final short newComponentType)
-	{
-		super(newComponentType);  //construct the parent class
+/**
+ * Represents one of the "helper" schema components:
+ * <ul>
+ * <li>Annotations</li>
+ * <li>Model groups</li>
+ * <li>Particles</li>
+ * <li>Wildcards</li>
+ * </ul>
+ * @author Garret Wilson
+ * @deprecated
+ */
+public abstract class XMLSchemaHelperComponent extends XMLSchemaComponent {
+
+	/**
+	 * Constructs a schema helper component.
+	 * @param newComponentType The type of XML schema component this is.
+	 */
+	public XMLSchemaHelperComponent(final short newComponentType) {
+		super(newComponentType); //construct the parent class
 	}
 
 }

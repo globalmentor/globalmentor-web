@@ -18,69 +18,85 @@ package com.globalmentor.text.xml;
 
 import static com.globalmentor.text.CharacterEncoding.*;
 
-/**XML declaration in an XML document.
-@author Garret Wilson
-@see XMLNode
-@deprecated
-*/
-public class XMLDeclaration extends XMLNode
-{
+/**
+ * XML declaration in an XML document.
+ * @author Garret Wilson
+ * @see XMLNode
+ * @deprecated
+ */
+public class XMLDeclaration extends XMLNode {
 
-	/**The XML version of this document.*/
-	private String Version="";
+	/** The XML version of this document. */
+	private String Version = "";
 
-		/**@return The XML version.*/
-		public String getVersion() {return Version;}
+	/** @return The XML version. */
+	public String getVersion() {
+		return Version;
+	}
 
-		/**Sets the XML version.
-		@param newVersion The new XML version.*/
-		public void setVersion(String newVersion) {Version=newVersion;}
+	/**
+	 * Sets the XML version.
+	 * @param newVersion The new XML version.
+	 */
+	public void setVersion(String newVersion) {
+		Version = newVersion;
+	}
 
-	/**The encoding of this document, which defaults to UTF-8.*/
-	private String Encoding=UTF_8;
+	/** The encoding of this document, which defaults to UTF-8. */
+	private String Encoding = UTF_8;
 
-		/**@return The encoding.*/
-		public String getEncoding() {return Encoding;}
+	/** @return The encoding. */
+	public String getEncoding() {
+		return Encoding;
+	}
 
-		/**Sets the encoding.
-		@param newEncoding The new encoding.*/
-		public void setEncoding(String newEncoding) {Encoding=newEncoding;}
+	/**
+	 * Sets the encoding.
+	 * @param newEncoding The new encoding.
+	 */
+	public void setEncoding(String newEncoding) {
+		Encoding = newEncoding;
+	}
 
-	/**Whether the document is standalone. Defaults to <code>false</code>.*/
-	private boolean Standalone=false;
+	/** Whether the document is standalone. Defaults to <code>false</code>. */
+	private boolean Standalone = false;
 
-		/**@return Whether the document is standalone..*/
-		public boolean isStandalone() {return Standalone;}
+	/** @return Whether the document is standalone.. */
+	public boolean isStandalone() {
+		return Standalone;
+	}
 
-		/**Sets the whether the document is standalone.
-		@param newStandalone Whether the document should be standalone.*/
-		public void setStandalone(boolean newStandalone) {Standalone=newStandalone;}
+	/**
+	 * Sets the whether the document is standalone.
+	 * @param newStandalone Whether the document should be standalone.
+	 */
+	public void setStandalone(boolean newStandalone) {
+		Standalone = newStandalone;
+	}
 
 	/*Constructor which requires an owner document to be specified.
 	@param ownerDocument The document which owns this node.
 	*/
-	public XMLDeclaration(final XMLDocument ownerDocument)
-	{
-		super(XMLNode.XMLDECL_NODE, ownerDocument);	//construct the parent class
-//TODO what about specifying a constant name, here?
+	public XMLDeclaration(final XMLDocument ownerDocument) {
+		super(XMLNode.XMLDECL_NODE, ownerDocument); //construct the parent class
+		//TODO what about specifying a constant name, here?
 	}
 
-	/**Creates and returns a duplicate copy of this node. The clone has no parent.
-	This function creates a "shallow" clone which does not contain clones of all
-	child nodes. For the DOM version, see cloneNode().
-	@return A duplicate copy of this node.
-	@see XMLNode#cloneXMLNode
-	@see XMLNode#cloneNode
-	@see XMLNode#getParentXMLNode
+	/**
+	 * Creates and returns a duplicate copy of this node. The clone has no parent. This function creates a "shallow" clone which does not contain clones of all
+	 * child nodes. For the DOM version, see cloneNode().
+	 * @return A duplicate copy of this node.
+	 * @see XMLNode#cloneXMLNode
+	 * @see XMLNode#cloneNode
+	 * @see XMLNode#getParentXMLNode
+	 */
+	/*TODO fix cloning
+		public Object clone()
+		{
+			return new XMLCDATA(getOwnerDocument(), getNodeValue());	//create a new node with the same owner document and the same value
+		}
 	*/
-/*TODO fix cloning
-	public Object clone()
-	{
-		return new XMLCDATA(getOwnerDocument(), getNodeValue());	//create a new node with the same owner document and the same value
-	}
-*/
 
-
-//TODO fix all the DOM stuff
+	//TODO fix all the DOM stuff
 
 }

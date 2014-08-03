@@ -16,21 +16,19 @@
 
 package com.globalmentor.text.xml;
 
-/**Undefined entity reference error.
-@author Garret Wilson
-@see XMLParseException
-@deprecated
-*/
-public class XMLUndefinedEntityReferenceException extends XMLParseException
-{
-//TODO comment these
-	/**
-	@param sourceName The name of the source of the XML document (perhaps a filename).
+/**
+ * Undefined entity reference error.
+ * @author Garret Wilson
+ * @see XMLParseException
+ * @deprecated
+ */
+public class XMLUndefinedEntityReferenceException extends XMLParseException {
 
-	*/
-	public XMLUndefinedEntityReferenceException(final String entityReference, final long lineIndex, final long charIndex, final String sourceName)
-	{
-		super("XML undefined entity reference: \""+entityReference+"\".", lineIndex, charIndex, sourceName);
+	//TODO comment these
+	/**
+	 * @param sourceName The name of the source of the XML document (perhaps a filename).
+	 */
+	public XMLUndefinedEntityReferenceException(final String entityReference, final long lineIndex, final long charIndex, final String sourceName) {
+		super("XML undefined entity reference: \"" + entityReference + "\".", lineIndex, charIndex, sourceName);
 	}
 }
-

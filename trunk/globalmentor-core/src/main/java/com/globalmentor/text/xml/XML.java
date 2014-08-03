@@ -52,8 +52,7 @@ import static com.globalmentor.text.xml.xhtml.XHTML.*;
  * Various XML constants and manipulation functions.
  * @author Garret Wilson
  */
-public class XML
-{
+public class XML {
 
 	/** The latest XML version supported. */
 	public static final String XML_VERSION = "1.0";
@@ -67,8 +66,7 @@ public class XML
 	public static final ContentType CONTENT_TYPE = ContentType.create(ContentType.TEXT_PRIMARY_TYPE, XML_SUBTYPE);
 
 	/** The content type for a generic XML fragment: <code>text/xml-external-parsed-entity</code>. */
-	public static final ContentType EXTERNAL_PARSED_ENTITY_CONTENT_TYPE = ContentType.create(ContentType.TEXT_PRIMARY_TYPE,
-			XML_EXTERNAL_PARSED_ENTITY_SUBTYPE);
+	public static final ContentType EXTERNAL_PARSED_ENTITY_CONTENT_TYPE = ContentType.create(ContentType.TEXT_PRIMARY_TYPE, XML_EXTERNAL_PARSED_ENTITY_SUBTYPE);
 
 	/** The name extension for eXtensible Markup Language. */
 	public final static String XML_NAME_EXTENSION = "xml";
@@ -384,12 +382,10 @@ public class XML
 	private static Reference<Map<String, String>> systemIDMapReference = null;
 
 	/** A lazily-created cache of system IDs keyed to public IDs. */
-	protected static Map<String, String> getSystemIDMap()
-	{
+	protected static Map<String, String> getSystemIDMap() {
 		//get the cache if we have one
 		Map<String, String> systemIDMap = systemIDMapReference != null ? systemIDMapReference.get() : null;
-		if(systemIDMap == null) //if the garbage collector has reclaimed the cache
-		{
+		if(systemIDMap == null) { //if the garbage collector has reclaimed the cache
 			systemIDMap = new HashMap<String, String>(); //create a new map of system IDs, and fill it with the default mappings
 			systemIDMap.put(HTML_4_01_STRICT_PUBLIC_ID, HTML_4_01_STRICT_SYSTEM_ID);
 			systemIDMap.put(HTML_4_01_TRANSITIONAL_PUBLIC_ID, HTML_4_01_TRANSITIONAL_SYSTEM_ID);
@@ -414,8 +410,7 @@ public class XML
 	 * @param publicID The public ID for which a doctype system ID should be retrieved.
 	 * @return The default doctype system ID corresponding to the given public ID, or <code>null</code> if the given public ID is not recognized.
 	 */
-	public static String getDefaultSystemID(final String publicID)
-	{
+	public static String getDefaultSystemID(final String publicID) {
 		return getSystemIDMap().get(publicID); //return the system ID corresponding to the given public ID, if we have one
 	}
 
@@ -423,12 +418,10 @@ public class XML
 	private static Reference<Map<String, ContentType>> contentTypeMapReference = null;
 
 	/** A lazily-created cache of content types keyed to public IDs. */
-	protected static Map<String, ContentType> getContentTypeMap()
-	{
+	protected static Map<String, ContentType> getContentTypeMap() {
 		//get the cache if we have one
 		Map<String, ContentType> contentTypeMap = contentTypeMapReference != null ? contentTypeMapReference.get() : null;
-		if(contentTypeMap == null) //if the garbage collector has reclaimed the cache
-		{
+		if(contentTypeMap == null) { //if the garbage collector has reclaimed the cache
 			contentTypeMap = new HashMap<String, ContentType>(); //create a new map of content types, and fill it with the default mappings
 			contentTypeMap.put("-//Guise//DTD XHTML Guise 1.0//EN", XHTML_CONTENT_TYPE); //Guise XHTML DTD
 			contentTypeMap.put(HTML_4_01_STRICT_PUBLIC_ID, HTML_CONTENT_TYPE);
@@ -454,8 +447,7 @@ public class XML
 	 * @param publicID The public ID for which a content type should be retrieved.
 	 * @return The content type corresponding to the given public ID, or <code>null</code> if the given public ID is not recognized.
 	 */
-	public static ContentType getContentType(final String publicID)
-	{
+	public static ContentType getContentType(final String publicID) {
 		return getContentTypeMap().get(publicID); //return the content type corresponding to the given public ID, if we have one
 	}
 
@@ -463,12 +455,10 @@ public class XML
 	private static Reference<Map<String, String>> rootElementLocalNameMapReference = null;
 
 	/** A lazily-created cache of root element local names keyed to content types. */
-	protected static Map<String, String> getRootElementLocalNameMap()
-	{
+	protected static Map<String, String> getRootElementLocalNameMap() {
 		//get the cache if we have one
 		Map<String, String> rootElementLocalNameMap = rootElementLocalNameMapReference != null ? rootElementLocalNameMapReference.get() : null;
-		if(rootElementLocalNameMap == null) //if the garbage collector has reclaimed the cache
-		{
+		if(rootElementLocalNameMap == null) { //if the garbage collector has reclaimed the cache
 			rootElementLocalNameMap = new HashMap<String, String>(); //create a new map of root element local names, and fill it with the default mappings
 			rootElementLocalNameMap.put(HTML_CONTENT_TYPE.getBaseType(), ELEMENT_HTML);
 			rootElementLocalNameMap.put(XHTML_CONTENT_TYPE.getBaseType(), ELEMENT_HTML);
@@ -484,8 +474,7 @@ public class XML
 	 * @param contentType The content type for which a root element should be retrieved.
 	 * @return The default root element local name corresponding to the given media type, or <code>null</code> if the given content type is not recognized.
 	 */
-	public static String getDefaultRootElementLocalName(final ContentType contentType)
-	{
+	public static String getDefaultRootElementLocalName(final ContentType contentType) {
 		return getRootElementLocalNameMap().get(contentType.getBaseType()); //return the root element corresponding to the given content type base type, if we have one
 	}
 
@@ -501,8 +490,7 @@ public class XML
 	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
 	 * @throws IOException If there is an error reading or parsing the information.
 	 */
-	public static Document parse(final InputStream inputStream) throws IOException
-	{
+	public static Document parse(final InputStream inputStream) throws IOException {
 		return parse(inputStream, XMLEntityResolver.getInstance());
 	}
 
@@ -518,8 +506,7 @@ public class XML
 	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
 	 * @throws IOException If there is an error reading or parsing the information.
 	 */
-	public static Document parse(final InputStream inputStream, final EntityResolver entityResolver) throws IOException
-	{
+	public static Document parse(final InputStream inputStream, final EntityResolver entityResolver) throws IOException {
 		return parse(inputStream, false, entityResolver);
 	}
 
@@ -536,8 +523,7 @@ public class XML
 	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
 	 * @throws IOException If there is an error reading or parsing the information.
 	 */
-	public static Document parse(final InputStream inputStream, final URI systemID) throws IOException
-	{
+	public static Document parse(final InputStream inputStream, final URI systemID) throws IOException {
 		return parse(inputStream, systemID, XMLEntityResolver.getInstance());
 	}
 
@@ -554,8 +540,7 @@ public class XML
 	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
 	 * @throws IOException If there is an error reading or parsing the information.
 	 */
-	public static Document parse(final InputStream inputStream, final URI systemID, final EntityResolver entityResolver) throws IOException
-	{
+	public static Document parse(final InputStream inputStream, final URI systemID, final EntityResolver entityResolver) throws IOException {
 		return parse(inputStream, systemID, false, entityResolver);
 	}
 
@@ -572,8 +557,7 @@ public class XML
 	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
 	 * @throws IOException If there is an error reading or parsing the information.
 	 */
-	public static Document parse(final InputStream inputStream, final boolean namespaceAware) throws IOException
-	{
+	public static Document parse(final InputStream inputStream, final boolean namespaceAware) throws IOException {
 		return parse(inputStream, namespaceAware, XMLEntityResolver.getInstance());
 	}
 
@@ -590,8 +574,7 @@ public class XML
 	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
 	 * @throws IOException If there is an error reading or parsing the information.
 	 */
-	public static Document parse(final InputStream inputStream, final boolean namespaceAware, final EntityResolver entityResolver) throws IOException
-	{
+	public static Document parse(final InputStream inputStream, final boolean namespaceAware, final EntityResolver entityResolver) throws IOException {
 		return parse(inputStream, namespaceAware, false, entityResolver);
 	}
 
@@ -609,8 +592,7 @@ public class XML
 	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
 	 * @throws IOException If there is an error reading or parsing the information.
 	 */
-	public static Document parse(final InputStream inputStream, final URI systemID, final boolean namespaceAware) throws IOException
-	{
+	public static Document parse(final InputStream inputStream, final URI systemID, final boolean namespaceAware) throws IOException {
 		return parse(inputStream, systemID, namespaceAware, XMLEntityResolver.getInstance());
 	}
 
@@ -629,8 +611,7 @@ public class XML
 	 * @throws IOException If there is an error reading or parsing the information.
 	 */
 	public static Document parse(final InputStream inputStream, final URI systemID, final boolean namespaceAware, final EntityResolver entityResolver)
-			throws IOException
-	{
+			throws IOException {
 		return parse(inputStream, systemID, namespaceAware, false, entityResolver);
 	}
 
@@ -648,8 +629,7 @@ public class XML
 	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
 	 * @throws IOException If there is an error reading or parsing the information.
 	 */
-	public static Document parse(final InputStream inputStream, final boolean namespaceAware, final boolean validating) throws IOException
-	{
+	public static Document parse(final InputStream inputStream, final boolean namespaceAware, final boolean validating) throws IOException {
 		return parse(inputStream, namespaceAware, validating, XMLEntityResolver.getInstance());
 	}
 
@@ -668,14 +648,10 @@ public class XML
 	 * @throws IOException If there is an error reading or parsing the information.
 	 */
 	public static Document parse(final InputStream inputStream, final boolean namespaceAware, final boolean validating, final EntityResolver entityResolver)
-			throws IOException
-	{
-		try
-		{
+			throws IOException {
+		try {
 			return createDocumentBuilder(namespaceAware, validating, entityResolver).parse(inputStream);
-		}
-		catch(final SAXException saxException)
-		{
+		} catch(final SAXException saxException) {
 			throw new IOException(saxException.getMessage(), saxException);
 		}
 	}
@@ -695,8 +671,7 @@ public class XML
 	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
 	 * @throws IOException If there is an error reading or parsing the information.
 	 */
-	public static Document parse(final InputStream inputStream, final URI systemID, final boolean namespaceAware, final boolean validating) throws IOException
-	{
+	public static Document parse(final InputStream inputStream, final URI systemID, final boolean namespaceAware, final boolean validating) throws IOException {
 		return parse(inputStream, systemID, namespaceAware, validating, XMLEntityResolver.getInstance());
 	}
 
@@ -716,14 +691,10 @@ public class XML
 	 * @throws IOException If there is an error reading or parsing the information.
 	 */
 	public static Document parse(final InputStream inputStream, final URI systemID, final boolean namespaceAware, final boolean validating,
-			final EntityResolver entityResolver) throws IOException
-	{
-		try
-		{
+			final EntityResolver entityResolver) throws IOException {
+		try {
 			return createDocumentBuilder(namespaceAware, validating, entityResolver).parse(inputStream, systemID.toString());
-		}
-		catch(final SAXException saxException)
-		{
+		} catch(final SAXException saxException) {
 			throw new IOException(saxException.getMessage(), saxException);
 		}
 	}
@@ -734,8 +705,7 @@ public class XML
 	 * @return A new XML document builder.
 	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
 	 */
-	public static DocumentBuilder createDocumentBuilder()
-	{
+	public static DocumentBuilder createDocumentBuilder() {
 		return createDocumentBuilder(XMLEntityResolver.getInstance());
 	}
 
@@ -745,8 +715,7 @@ public class XML
 	 * @return A new XML document builder.
 	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
 	 */
-	public static DocumentBuilder createDocumentBuilder(final EntityResolver entityResolver)
-	{
+	public static DocumentBuilder createDocumentBuilder(final EntityResolver entityResolver) {
 		return createDocumentBuilder(false, entityResolver); //create a document builder with no namespace awareness
 	}
 
@@ -757,8 +726,7 @@ public class XML
 	 * @return A new XML document builder.
 	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
 	 */
-	public static DocumentBuilder createDocumentBuilder(final boolean namespaceAware)
-	{
+	public static DocumentBuilder createDocumentBuilder(final boolean namespaceAware) {
 		return createDocumentBuilder(namespaceAware, XMLEntityResolver.getInstance());
 	}
 
@@ -769,8 +737,7 @@ public class XML
 	 * @return A new XML document builder.
 	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
 	 */
-	public static DocumentBuilder createDocumentBuilder(final boolean namespaceAware, final EntityResolver entityResolver)
-	{
+	public static DocumentBuilder createDocumentBuilder(final boolean namespaceAware, final EntityResolver entityResolver) {
 		return createDocumentBuilder(namespaceAware, false, entityResolver); //create a document builder with no validation
 	}
 
@@ -782,8 +749,7 @@ public class XML
 	 * @return A new XML document builder.
 	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
 	 */
-	public static DocumentBuilder createDocumentBuilder(final boolean namespaceAware, final boolean validating)
-	{
+	public static DocumentBuilder createDocumentBuilder(final boolean namespaceAware, final boolean validating) {
 		return createDocumentBuilder(namespaceAware, validating, XMLEntityResolver.getInstance());
 	}
 
@@ -795,10 +761,8 @@ public class XML
 	 * @return A new XML document builder.
 	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
 	 */
-	public static DocumentBuilder createDocumentBuilder(final boolean namespaceAware, final boolean validating, final EntityResolver entityResolver)
-	{
-		try
-		{
+	public static DocumentBuilder createDocumentBuilder(final boolean namespaceAware, final boolean validating, final EntityResolver entityResolver) {
+		try {
 			final DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance(); //create a document builder factory			
 			documentBuilderFactory.setNamespaceAware(namespaceAware); //set namespace awareness appropriately
 			documentBuilderFactory.setValidating(validating); //set validating appropriately
@@ -806,22 +770,16 @@ public class XML
 			//see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6181020
 			//see http://issues.apache.org/jira/browse/XERCESJ-977
 			//http://forums.sun.com/thread.jspa?threadID=5390848
-			try
-			{
+			try {
 				documentBuilderFactory.setFeature("http://apache.org/xml/features/dom/defer-node-expansion", false);
-			}
-			catch(final Throwable throwable)
-			{
+			} catch(final Throwable throwable) {
 			} //if the parser doesn't support this feature, it's probably not the buggy Xerces parser, so we're in an even better situation; normally we'd expect a ParserConfigurationException, but sometimes a java.lang.AbstractMethodError is thrown by javax.xml.parsers.DocumentBuilderFactory.setFeature(Ljava/lang/String;Z)V
 			final DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder(); //create a new document builder
-			if(entityResolver != null) //if an entity resolver was given
-			{
+			if(entityResolver != null) { //if an entity resolver was given
 				documentBuilder.setEntityResolver(entityResolver); //install the given entity resolver
 			}
 			return documentBuilder; //return the configured document builder
-		}
-		catch(final ParserConfigurationException parserConfigurationException) //if the requested parser is not supported
-		{
+		} catch(final ParserConfigurationException parserConfigurationException) { //if the requested parser is not supported
 			throw new ConfigurationException(parserConfigurationException);
 		}
 	}
@@ -831,8 +789,7 @@ public class XML
 	 * @param character The character to encode.
 	 * @return A character reference in the form <code>&#xXX;</code>.
 	 */
-	public static String createCharacterReference(final char character)
-	{
+	public static String createCharacterReference(final char character) {
 		final StringBuilder stringBuilder = new StringBuilder(XML.CHARACTER_REF_START); //create a string builder with the start of a character reference
 		stringBuilder.append(XML.CHARACTER_REF_HEX_FLAG); //indicate that the character reference is in hex
 		stringBuilder.append(toHexString(character, 4)); //write the hex value of the character
@@ -846,8 +803,7 @@ public class XML
 	 * @return A list of all elements in the given list.
 	 * @throws NullPointerException if the given list is <code>null</code>.
 	 */
-	public static List<Element> getElements(final List<Node> nodes)
-	{
+	public static List<Element> getElements(final List<Node> nodes) {
 		return getElementsAsType(nodes, Node.ELEMENT_NODE, Element.class);
 	}
 
@@ -859,13 +815,10 @@ public class XML
 	 * @throws NullPointerException if the given list is <code>null</code>.
 	 * @throws ClassCastException if the given node type does not correspond to the given node class.
 	 */
-	protected static <N extends Node> List<N> getElementsAsType(final List<Node> nodes, final short nodeType, final Class<N> nodeClass)
-	{
+	protected static <N extends Node> List<N> getElementsAsType(final List<Node> nodes, final short nodeType, final Class<N> nodeClass) {
 		final List<N> nodesAsType = new ArrayList<N>();
-		for(final Node node : nodes) //look at all the nodes
-		{
-			if(node.getNodeType() == nodeType) //if this node is of the correct type
-			{
+		for(final Node node : nodes) { //look at all the nodes
+			if(node.getNodeType() == nodeType) { //if this node is of the correct type
 				nodesAsType.add(nodeClass.cast(node)); //cast and add the node to the list
 			}
 		}
@@ -877,8 +830,7 @@ public class XML
 	 * @param node The node that may be a document or may have an owner document.
 	 * @return The node owner document (which may be <code>null</code> if the node has no owner document) or, if the node is a document, the node itself.
 	 */
-	public static Document getDocument(final Node node)
-	{
+	public static Document getDocument(final Node node) {
 		return node.getNodeType() == Node.DOCUMENT_NODE ? (Document)node : node.getOwnerDocument(); //return the node if it is a document, otherwise return the node's owner document
 	}
 
@@ -893,8 +845,7 @@ public class XML
 	 * @see NodeIterator
 	 * @see NodeFilter
 	 */
-	public static Node getFirstNode(final Node node, final int whatToShow)
-	{
+	public static Node getFirstNode(final Node node, final int whatToShow) {
 		//create a node iterator that will only return the types of nodes we want
 		final NodeIterator nodeIterator = ((DocumentTraversal)node.getOwnerDocument()).createNodeIterator(node, whatToShow, null, false); //TODO should we set expandEntityReferences to true or false? true?
 		return nodeIterator.nextNode(); //get the next node (which will be the first node) and return it
@@ -906,8 +857,7 @@ public class XML
 	 * @return The namespace prefix, or <code>null</code> if no prefix is present.
 	 * @throws NullPointerException if the given qualified name is <code>null</code>.
 	 */
-	public static String getPrefix(final String qualifiedName)
-	{
+	public static String getPrefix(final String qualifiedName) {
 		final int prefixDividerIndex = qualifiedName.indexOf(XML.NAMESPACE_DIVIDER); //see if there is a prefix
 		if(prefixDividerIndex >= 0) //if there is a prefix
 			return qualifiedName.substring(0, prefixDividerIndex); //return the prefix
@@ -922,8 +872,7 @@ public class XML
 	 * @return The local name without a prefix.
 	 * @throws NullPointerException if the given qualified name is <code>null</code>.
 	 */
-	public static String getLocalName(final String qualifiedName)
-	{
+	public static String getLocalName(final String qualifiedName) {
 		final int namespaceDividerIndex = qualifiedName.indexOf(XML.NAMESPACE_DIVIDER); //find where the namespace divider is in the name
 		return namespaceDividerIndex >= 0 ? //if there is a namespace prefix
 		qualifiedName.substring(namespaceDividerIndex + 1)
@@ -937,11 +886,9 @@ public class XML
 	 * @param node The node for which an index should be returned.
 	 * @return The index of the node in the given node list, or -1 if the node does not appear in the node list.
 	 */
-	public static int indexOf(final NodeList nodeList, final Node node)
-	{
+	public static int indexOf(final NodeList nodeList, final Node node) {
 		final int nodeCount = nodeList.getLength(); //see how many nodes there are
-		for(int i = 0; i < nodeCount; ++i) //look at each node
-		{
+		for(int i = 0; i < nodeCount; ++i) { //look at each node
 			if(nodeList.item(i) == node) //if the node at this index matches our node
 				return i; //show the index as which the node occurs
 		}
@@ -953,8 +900,7 @@ public class XML
 	 * @param c The character to check.
 	 * @return true if the character is a legal XML character.
 	 */
-	public static boolean isChar(final char c)
-	{
+	public static boolean isChar(final char c) {
 		return Characters.isCharInRange(c, XML.CHAR_RANGES); //see if the character is a legal XML character
 	}
 
@@ -963,8 +909,7 @@ public class XML
 	 * @param c The character to check.
 	 * @return true if the character is XML whitespace.
 	 */
-	public static boolean isWhitespace(final char c)
-	{
+	public static boolean isWhitespace(final char c) {
 		return XML.WHITESPACE_CHARS.indexOf(c) != -1; //if the character matches any characters in our whitespace string, the character is whitespace
 	}
 
@@ -973,8 +918,7 @@ public class XML
 	 * @param c The character to check.
 	 * @return true if the character is an XML letter.
 	 */
-	public static boolean isLetter(final char c)
-	{
+	public static boolean isLetter(final char c) {
 		return Characters.isCharInRange(c, XML.BASE_CHAR_RANGES) || Characters.isCharInRange(c, XML.IDEOGRAPHIC_RANGES); //see if the character is a base character or an ideographic character
 	}
 
@@ -983,8 +927,7 @@ public class XML
 	 * @param c The character to check.
 	 * @return true if the character is an XML digit.
 	 */
-	public static boolean isDigit(final char c)
-	{
+	public static boolean isDigit(final char c) {
 		return Characters.isCharInRange(c, XML.DIGIT_RANGES); //see if the character is a digit
 	}
 
@@ -993,8 +936,7 @@ public class XML
 	 * @param c The character to check.
 	 * @return true if the character is an XML combining character.
 	 */
-	public static boolean isCombiningChar(final char c)
-	{
+	public static boolean isCombiningChar(final char c) {
 		return Characters.isCharInRange(c, XML.COMBINING_CHAR_RANGES); //see if the character is a combining character
 	}
 
@@ -1003,8 +945,7 @@ public class XML
 	 * @param c The character to check.
 	 * @return true if the character is an XML extender.
 	 */
-	public static boolean isExtender(final char c)
-	{
+	public static boolean isExtender(final char c) {
 		return Characters.isCharInRange(c, XML.EXTENDER_RANGES); //see if the character is an extender
 	}
 
@@ -1013,14 +954,12 @@ public class XML
 	 * @param c The character to check.
 	 * @return <code>true</code> if the character is an XML name character.
 	 */
-	public static boolean isNameChar(final char c)
-	{
+	public static boolean isNameChar(final char c) {
 		//first do a quick check for the most common name characters, because the rigorous search is very inefficient; most name characters will be in the restricted quick-test ranges
 		if((c >= 'a' && c <= 'z') //'a'-'z'
 				|| (c >= 'A' && c <= 'Z') //'A'-'Z'
 				|| (c >= '0' && c <= '9') //'0'-'9'
-				|| c == '.' || c == '-' || c == '_' || c == ':') //'.', '-', '_', ':'
-		{
+				|| c == '.' || c == '-' || c == '_' || c == ':') { //'.', '-', '_', ':'
 			return true; //this is a name character
 		}
 		return isLetter(c) || isDigit(c) || isCombiningChar(c) || isExtender(c); //only do a more rigorous check if the character isn't a common name character
@@ -1031,8 +970,7 @@ public class XML
 	 * @param c The character to check.
 	 * @return <code>true</code> if the character is an XML name first character.
 	 */
-	public static boolean isNameFirstChar(final char c)
-	{
+	public static boolean isNameFirstChar(final char c) {
 		return isLetter(c) || c == '_' || c == ':'; //the first character must be a letter, '_', or ':'
 	}
 
@@ -1041,12 +979,10 @@ public class XML
 	 * @param name The name to check for validity.
 	 * @return <code>true</code> if the name is a valid XML name, else <code>false</code>.
 	 */
-	public static boolean isName(final String name)
-	{
+	public static boolean isName(final String name) {
 		if(name.length() == 0 || !isNameFirstChar(name.charAt(0))) //the first character must be a letter, '_', or ':'
 			return false; //show that the name is invalid
-		for(int i = 1; i < name.length(); ++i) //look at each character in the name, skipping the first one since we already checked it
-		{
+		for(int i = 1; i < name.length(); ++i) { //look at each character in the name, skipping the first one since we already checked it
 			if(!isNameChar(name.charAt(i))) //if one of the other letters is not a name character
 				return false; //show that the name is invalid
 		}
@@ -1066,16 +1002,12 @@ public class XML
 	 * @param contentType The content type of a resource, or <code>null</code> for no content type.
 	 * @return <code>true</code> if the given content type is one of several XML media types.
 	 */
-	public static boolean isXML(final ContentType contentType)
-	{
-		if(contentType != null) //if a content type is given
-		{
-			if(ContentType.TEXT_PRIMARY_TYPE.equals(contentType.getPrimaryType()) && XML_SUBTYPE.equals(contentType.getSubType())) //if this is "text/xml"
-			{
+	public static boolean isXML(final ContentType contentType) {
+		if(contentType != null) { //if a content type is given
+			if(ContentType.TEXT_PRIMARY_TYPE.equals(contentType.getPrimaryType()) && XML_SUBTYPE.equals(contentType.getSubType())) { //if this is "text/xml"
 				return true; //text/xml is an XML content type
 			}
-			if(ContentType.APPLICATION_PRIMARY_TYPE.equals(contentType.getPrimaryType())) //if this is "application/*"
-			{
+			if(ContentType.APPLICATION_PRIMARY_TYPE.equals(contentType.getPrimaryType())) { //if this is "application/*"
 				return XML_SUBTYPE.equals(contentType.getSubType()) //see if the subtype is "xml"
 						|| contentType.hasSubTypeSuffix(XML.XML_SUBTYPE_SUFFIX); //see if the subtype has an XML suffix
 			}
@@ -1097,13 +1029,10 @@ public class XML
 	 * @param contentType The content type of a resource, or <code>null</code> for no content type.
 	 * @return <code>true</code> if the given content type is one of several XML external parsed entity media types.
 	 */
-	public static boolean isXMLExternalParsedEntity(final ContentType contentType)
-	{
-		if(contentType != null) //if a content type is given
-		{
+	public static boolean isXMLExternalParsedEntity(final ContentType contentType) {
+		if(contentType != null) { //if a content type is given
 			final String primaryType = contentType.getPrimaryType(); //get the primary type
-			if(ContentType.TEXT_PRIMARY_TYPE.equals(primaryType) || ContentType.APPLICATION_PRIMARY_TYPE.equals(primaryType)) //if this is "text/*" or "application/*"
-			{
+			if(ContentType.TEXT_PRIMARY_TYPE.equals(primaryType) || ContentType.APPLICATION_PRIMARY_TYPE.equals(primaryType)) { //if this is "text/*" or "application/*"
 				final String subType = contentType.getSubType(); //get the subtype
 				return XML_EXTERNAL_PARSED_ENTITY_SUBTYPE.equals(subType) //if the subtype is /xml-external-parsed-entity
 						|| contentType.hasSubTypeSuffix(XML.XML_EXTERNAL_PARSED_ENTITY_SUBTYPE_SUFFIX); //or if the subtype has an XML external parsed entity suffix
@@ -1129,8 +1058,7 @@ public class XML
 	 * @param string The string to be manipulated.
 	 * @return An XML-friendly string.
 	 */
-	public static String createValidContent(final String string)
-	{
+	public static String createValidContent(final String string) {
 		return Strings.replace(string, XML_ENTITY_CHARS, XML_ENTITY_REPLACMENTS); //do the replacments for the special XML symbols and return the results
 	}
 
@@ -1139,13 +1067,10 @@ public class XML
 	 * @param string The string the characters of which should be checked for XML validity.
 	 * @return A new string with illegal XML characters replaced with spaces, or the original string if no characters were replaced.
 	 */
-	public static String createValidString(final String string)
-	{
+	public static String createValidString(final String string) {
 		StringBuffer stringBuffer = null; //we'll only create a string buffer if there are invalid characters
-		for(int i = string.length() - 1; i >= 0; --i) //look at all the characters in the string
-		{
-			if(!isChar(string.charAt(i))) //if this is not a valid character
-			{
+		for(int i = string.length() - 1; i >= 0; --i) { //look at all the characters in the string
+			if(!isChar(string.charAt(i))) { //if this is not a valid character
 				if(stringBuffer == null) //if we haven't create a string buffer, yet
 					stringBuffer = new StringBuffer(string); //create a string buffer to hold our replacements
 				stringBuffer.setCharAt(i, SPACE_CHAR); //replace this character with a space
@@ -1160,20 +1085,16 @@ public class XML
 	 * @param string The string to be changed to an XML name.
 	 * @return The string modified to be an XML name.
 	 */
-	public static String createName(final String string)
-	{
+	public static String createName(final String string) {
 		if(isName(string)) //if the string is already a name (we'll check all the characters, assuming that most of the time the strings will already be valid names, making this more efficient)
 			return string; //return the string, because it doesn't need to be converted
-		else
-		//if the string isn't a name already (we'll check all the characters, assuming that most of the time the strings will already be valid names, making this more efficient)
-		{
+		else { //if the string isn't a name already (we'll check all the characters, assuming that most of the time the strings will already be valid names, making this more efficient)
 			final StringBuffer stringBuffer = new StringBuffer(string); //create a string buffer from the string, so that we can modify it as necessary
 			if(stringBuffer.length() == 0) //if the string isn't long enough to be a name
 				stringBuffer.append(REPLACEMENT_FIRST_CHAR); //put an 'x' in the first position
 			else if(!isNameFirstChar(stringBuffer.charAt(0))) //if the string does have at least one character, but it's not a valid first character for an XML name
 				stringBuffer.setCharAt(0, REPLACEMENT_FIRST_CHAR); //replace the first character with an 'x'
-			for(int i = 1; i < string.length(); ++i) //look at each character in the string, except the first (which we've already checked)
-			{
+			for(int i = 1; i < string.length(); ++i) { //look at each character in the string, except the first (which we've already checked)
 				if(!isNameChar(stringBuffer.charAt(i))) //if this character isn't a name character
 					stringBuffer.setCharAt(i, REPLACEMENT_CHAR); //replace the character with an underscore
 			}
@@ -1187,11 +1108,9 @@ public class XML
 	 * @param localName The XML local name.
 	 * @return The XML qualified name.
 	 */
-	public static String createQName(final String prefix, final String localName)
-	{
+	public static String createQName(final String prefix, final String localName) {
 		final StringBuilder stringBuilder = new StringBuilder();
-		if(prefix != null) //if there is a prefix defined
-		{
+		if(prefix != null) { //if there is a prefix defined
 			stringBuilder.append(prefix).append(NAMESPACE_DIVIDER); //prepend the prefix and the namespace delimiter
 		}
 		return stringBuilder.append(localName).toString(); //always append the local name
@@ -1207,8 +1126,7 @@ public class XML
 	 * @throws IllegalArgumentException if the namespace is not <code>null</code> and cannot be converted to a valid URI.
 	 * @see #toNamespaceURI(String)
 	 */
-	public static QualifiedName createQualifiedName(final Node node)
-	{
+	public static QualifiedName createQualifiedName(final Node node) {
 		return new QualifiedName(node.getNamespaceURI(), node.getPrefix(), node.getLocalName()); //create a qualified name for this node
 	}
 
@@ -1222,15 +1140,12 @@ public class XML
 	 * @return A URI representing the namespace, or <code>null</code> if no namespace was given.
 	 * @throws IllegalArgumentException if the namespace is not <code>null</code> and cannot be converted to a valid URI.
 	 */
-	public static URI toNamespaceURI(String namespace)
-	{
-		if(namespace == null)
-		{
+	public static URI toNamespaceURI(String namespace) {
+		if(namespace == null) {
 			return null;
 		}
 		final int schemeSeparatorIndex = namespace.indexOf(SCHEME_SEPARATOR); //find out where the scheme ends
-		if(schemeSeparatorIndex == namespace.length() - 1) //if the scheme separator is at the end of the string (i.e. there is no scheme-specific part, e.g. "DAV:")
-		{
+		if(schemeSeparatorIndex == namespace.length() - 1) { //if the scheme separator is at the end of the string (i.e. there is no scheme-specific part, e.g. "DAV:")
 			namespace += URIs.PATH_SEPARATOR; //append a path separator (e.g. "DAV:/")
 		}
 		return URI.create(namespace); //create a URI from the namespace
@@ -1241,8 +1156,7 @@ public class XML
 	 * @param piTarget The identifier to check for validity.
 	 * @return <code>true</code> if the name is a valid processing instruction target, else <code>false</code>.
 	 */
-	public static boolean isPITarget(final String piTarget)
-	{
+	public static boolean isPITarget(final String piTarget) {
 		return isName(piTarget) && !piTarget.equalsIgnoreCase("xml"); //a PI target is a valid name that does not equal "XML" in any case
 	}
 
@@ -1252,8 +1166,7 @@ public class XML
 	 * @param href The reference to the stylesheet.
 	 * @param mediaType The media type of the stylesheet.
 	 */
-	public static void addStyleSheetReference(final Document document, final String href, final ContentType mediaType)
-	{
+	public static void addStyleSheetReference(final Document document, final String href, final ContentType mediaType) {
 		final String target = XML_STYLESHEET_PROCESSING_INSTRUCTION; //the PI target will be the name of the stylesheet processing instruction
 		final StringBuffer dataStringBuffer = new StringBuffer(); //create a string buffer to construct the data parameter (with its pseudo attributes)
 		//add: href="href"
@@ -1273,12 +1186,10 @@ public class XML
 	 * @param deep Whether each child should be deeply cloned.
 	 */
 	//TODO list exceptions
-	public static void appendClonedChildNodes(final Node destinationNode, final Node sourceNode, final boolean deep)
-	{
+	public static void appendClonedChildNodes(final Node destinationNode, final Node sourceNode, final boolean deep) {
 		final NodeList sourceNodeList = sourceNode.getChildNodes(); //get the list of child nodes
 		final int sourceNodeCount = sourceNodeList.getLength(); //find out how many nodes there are
-		for(int i = 0; i < sourceNodeCount; ++i) //look at each of the source nodes
-		{
+		for(int i = 0; i < sourceNodeCount; ++i) { //look at each of the source nodes
 			final Node sourceChildNode = sourceNodeList.item(i); //get a reference to this child node
 			destinationNode.appendChild(sourceChildNode.cloneNode(deep)); //clone the node and add it to the destination node
 		}
@@ -1290,8 +1201,7 @@ public class XML
 	 * @param sourceNode The node from whence the nodes will be imported.
 	 */
 	//TODO list exceptions
-	public static void appendImportedChildNodes(final Node destinationNode, final Node sourceNode)
-	{
+	public static void appendImportedChildNodes(final Node destinationNode, final Node sourceNode) {
 		appendImportedChildNodes(destinationNode, sourceNode, true); //import and append all descendant nodes
 	}
 
@@ -1302,13 +1212,11 @@ public class XML
 	 * @param deep Whether each child should be deeply imported.
 	 */
 	//TODO list exceptions
-	public static void appendImportedChildNodes(final Node destinationNode, final Node sourceNode, final boolean deep)
-	{
+	public static void appendImportedChildNodes(final Node destinationNode, final Node sourceNode, final boolean deep) {
 		final Document destinationDocument = destinationNode.getOwnerDocument(); //get the owner document of the destination node
 		final NodeList sourceNodeList = sourceNode.getChildNodes(); //get the list of child nodes
 		final int sourceNodeCount = sourceNodeList.getLength(); //find out how many nodes there are
-		for(int i = 0; i < sourceNodeCount; ++i) //look at each of the source nodes
-		{
+		for(int i = 0; i < sourceNodeCount; ++i) { //look at each of the source nodes
 			final Node sourceChildNode = sourceNodeList.item(i); //get a reference to this child node
 			destinationNode.appendChild(destinationDocument.importNode(sourceChildNode, deep)); //import the node and add it to the destination node
 		}
@@ -1321,12 +1229,10 @@ public class XML
 	 * @param sourceElement The element that contains the attributes to be cloned.
 	 */
 	//TODO list exceptions
-	public static void appendClonedAttributeNodesNS(final Element destinationElement, final Element sourceElement)
-	{
+	public static void appendClonedAttributeNodesNS(final Element destinationElement, final Element sourceElement) {
 		final NamedNodeMap attributeNodeMap = sourceElement.getAttributes(); //get the source element's attributes
 		final int sourceNodeCount = attributeNodeMap.getLength(); //find out how many nodes there are
-		for(int i = 0; i < sourceNodeCount; ++i) //look at each of the source nodes
-		{
+		for(int i = 0; i < sourceNodeCount; ++i) { //look at each of the source nodes
 			final Node sourceAttributeNode = attributeNodeMap.item(i); //get a reference to this attribute node
 			destinationElement.setAttributeNodeNS((Attr)sourceAttributeNode.cloneNode(true)); //clone the attribute and add it to the destination element
 		}
@@ -1339,8 +1245,7 @@ public class XML
 	 * @return The new text node that was created.
 	 */
 	//TODO list exceptions
-	public static Text appendText(final Element element, final char textCharacter)
-	{
+	public static Text appendText(final Element element, final char textCharacter) {
 		return appendText(element, String.valueOf(textCharacter)); //convert the character to a string and append it to the element
 	}
 
@@ -1352,8 +1257,7 @@ public class XML
 	 * @throws NullPointerException if the given element and/or text string is <code>null</code>.
 	 * @throws DOMException if there was an error appending the text.
 	 */
-	public static Text appendText(final Element element, final String textString) throws DOMException
-	{
+	public static Text appendText(final Element element, final String textString) throws DOMException {
 		final Text textNode = element.getOwnerDocument().createTextNode(textString); //create a new text node with the specified text
 		element.appendChild(textNode); //append the text node to our paragraph
 		return textNode; //return the text node we created
@@ -1367,8 +1271,7 @@ public class XML
 	 * @return The newly created child element.
 	 */
 	//TODO list exceptions
-	public static Element replaceDocumentElement(final Document document, final String elementNamespaceURI, final String elementName)
-	{
+	public static Element replaceDocumentElement(final Document document, final String elementNamespaceURI, final String elementName) {
 		return replaceDocumentElementNS(document, elementNamespaceURI, elementName, null); //append an element with no text
 	}
 
@@ -1383,8 +1286,7 @@ public class XML
 	 * @return The newly created child element.
 	 * @throws DOMException if there was an error creating the element, appending the text, or replacing the child.
 	 */
-	public static Element replaceDocumentElementNS(final Document document, final String elementNamespaceURI, final String elementName, final String textContent)
-	{
+	public static Element replaceDocumentElementNS(final Document document, final String elementNamespaceURI, final String elementName, final String textContent) {
 		final Element childElement = createElementNS(document, elementNamespaceURI, elementName, textContent); //create the new element
 		document.replaceChild(childElement, document.getDocumentElement()); //replace the document element of the document
 		return childElement; //return the element we created
@@ -1398,8 +1300,7 @@ public class XML
 	 * @return The newly created child element.
 	 * @throws DOMException if there was an error creating the element or appending the element to the parent element.
 	 */
-	public static Element appendElementNS(final Element parentElement, final String elementNamespaceURI, final String elementName)
-	{
+	public static Element appendElementNS(final Element parentElement, final String elementNamespaceURI, final String elementName) {
 		return appendElementNS(parentElement, elementNamespaceURI, elementName, null); //append the element with no text
 	}
 
@@ -1414,8 +1315,7 @@ public class XML
 	 * @return The newly created child element.
 	 * @throws DOMException if there was an error creating the element, appending the text, or appending the element to the parent element.
 	 */
-	public static Element appendElementNS(final Element parentElement, final String elementNamespaceURI, final String elementName, final String textContent)
-	{
+	public static Element appendElementNS(final Element parentElement, final String elementNamespaceURI, final String elementName, final String textContent) {
 		final Element childElement = createElementNS(parentElement.getOwnerDocument(), elementNamespaceURI, elementName, textContent); //create the new element
 		parentElement.appendChild(childElement); //add the child element to the parent element
 		return childElement; //return the element we created
@@ -1426,8 +1326,7 @@ public class XML
 	 * @param element The element to become the document element of the new document.
 	 * @return A new document with a clone of the given element as the document element.
 	 */
-	public static Document createDocument(final Element element)
-	{
+	public static Document createDocument(final Element element) {
 		final DOMImplementation domImplementation = element.getOwnerDocument().getImplementation(); //get the DOM implementation used to create the document
 		//create a new document corresponding to the element
 		//TODO bring over the doctype, if needed
@@ -1451,11 +1350,9 @@ public class XML
 	 * @see #appendText(Element, String)
 	 */
 	public static Element createElementNS(final Document document, final String elementNamespaceURI, final String elementName, final String textContent)
-			throws DOMException
-	{
+			throws DOMException {
 		final Element childElement = document.createElementNS(elementNamespaceURI, elementName); //create the new element
-		if(textContent != null) //if we have text content to add
-		{
+		if(textContent != null) { //if we have text content to add
 			appendText(childElement, textContent); //append the text content to the newly created child element
 		}
 		return childElement; //return the element we created
@@ -1466,14 +1363,13 @@ public class XML
 	 * @param node The node to be extracted. This node must have a valid parent and owner document.
 	 * @return A new document fragment containing the extracted node.
 	 * @throws DOMException <ul>
-	 *              <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
-	 *              </ul>
+	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
+	 *           </ul>
 	 * @throws IllegalArgumentException if the given node has no owner document.
 	 * @throws IllegalArgumentException if the given node has no parent node.
 	 * @see #removeChildren(Node, int, int)
 	 */
-	public static DocumentFragment extractNode(final Node node) throws DOMException
-	{
+	public static DocumentFragment extractNode(final Node node) throws DOMException {
 		return extractNode(node, true); //extract the node by removing it
 	}
 
@@ -1483,27 +1379,23 @@ public class XML
 	 * @param remove Whether the node will be removed from its parent; if <code>false</code>, it will remain the child of its parent.
 	 * @return A new document fragment containing the extracted node.
 	 * @throws DOMException <ul>
-	 *              <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
-	 *              </ul>
+	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
+	 *           </ul>
 	 * @throws IllegalArgumentException if the given node has no owner document.
 	 * @throws IllegalArgumentException if the given node has no parent node.
 	 * @see #removeChildren(Node, int, int)
 	 */
-	public static DocumentFragment extractNode(final Node node, final boolean remove) throws DOMException
-	{
+	public static DocumentFragment extractNode(final Node node, final boolean remove) throws DOMException {
 		final Document ownerDocument = node.getOwnerDocument(); //get the node owner document
-		if(ownerDocument == null) //if there is no owner document
-		{
+		if(ownerDocument == null) { //if there is no owner document
 			throw new IllegalArgumentException("Node " + node + " has no owner document.");
 		}
 		final Node parentNode = node.getParentNode(); //get the node's parent
-		if(parentNode == null) //if there is no parent node
-		{
+		if(parentNode == null) { //if there is no parent node
 			throw new IllegalArgumentException("Node " + node + " has no parent node.");
 		}
 		final DocumentFragment documentFragment = ownerDocument.createDocumentFragment(); //create a document fragment to hold the nodes
-		if(remove) //if we should remove the node
-		{
+		if(remove) { //if we should remove the node
 			parentNode.removeChild(node); //remove the node from its parent
 		}
 		documentFragment.appendChild(node); //append the removed child to the document fragment
@@ -1515,12 +1407,11 @@ public class XML
 	 * @param node The node from which child nodes should be extracted. This node must have a valid owner document.
 	 * @return A new document fragment containing the extracted children.
 	 * @throws DOMException <ul>
-	 *              <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
-	 *              </ul>
+	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
+	 *           </ul>
 	 * @see #removeChildren
 	 */
-	public static DocumentFragment extractChildren(final Node node) throws DOMException
-	{
+	public static DocumentFragment extractChildren(final Node node) throws DOMException {
 		return extractChildren(node, true); //extract the childen by removing them
 	}
 
@@ -1530,12 +1421,11 @@ public class XML
 	 * @param remove Whether the nodes will be removed from the parentnode ; if <code>false</code>, they will remain the child of the parent node.
 	 * @return A new document fragment containing the extracted children.
 	 * @throws DOMException <ul>
-	 *              <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
-	 *              </ul>
+	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
+	 *           </ul>
 	 * @see #removeChildren
 	 */
-	public static DocumentFragment extractChildren(final Node node, final boolean remove) throws DOMException
-	{
+	public static DocumentFragment extractChildren(final Node node, final boolean remove) throws DOMException {
 		return extractChildren(node, 0, node.getChildNodes().getLength(), remove); //extract all the children and return the new document fragment 
 	}
 
@@ -1546,19 +1436,18 @@ public class XML
 	 * @param startChildIndex The index of the first child to extract.
 	 * @param endChildIndex The index directly after the last child to extract. Must be greater than <code>startChildIndex</code> or no action will occur.
 	 * @return A new document fragment containing the extracted children.
-	 * @throws ArrayIndexOutOfBoundsException Thrown if either index is negative, if the start index is greater than or equal to the number of children, or if
-	 *              the ending index is greater than the number of children (unless the ending index is not greater than the starting index). TODO should we throw
-	 *              an exception is startChildIndex>endChildIndex, like String.substring()?
+	 * @throws ArrayIndexOutOfBoundsException Thrown if either index is negative, if the start index is greater than or equal to the number of children, or if the
+	 *           ending index is greater than the number of children (unless the ending index is not greater than the starting index). TODO should we throw an
+	 *           exception is startChildIndex>endChildIndex, like String.substring()?
 	 * @throws IllegalArgumentException if the given node has no owner document.
 	 * @throws ArrayIndexOutOfBoundsException if the given range is invalid for the given node's children.
 	 * @throws DOMException <ul>
-	 *              <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
-	 *              </ul>
+	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
+	 *           </ul>
 	 * @see #removeChildren(Node, int, int)
 	 */
 	public static DocumentFragment extractChildren(final Node node, final int startChildIndex, final int endChildIndex) throws ArrayIndexOutOfBoundsException,
-			DOMException
-	{
+			DOMException {
 		return extractChildren(node, startChildIndex, endChildIndex, true); //extract the childen by removing them
 	}
 
@@ -1569,22 +1458,20 @@ public class XML
 	 * @param endChildIndex The index directly after the last child to extract. Must be greater than <code>startChildIndex</code> or no action will occur.
 	 * @param remove Whether the nodes will be removed from the parentnode ; if <code>false</code>, they will remain the child of the parent node.
 	 * @return A new document fragment containing the extracted children.
-	 * @throws ArrayIndexOutOfBoundsException Thrown if either index is negative, if the start index is greater than or equal to the number of children, or if
-	 *              the ending index is greater than the number of children (unless the ending index is not greater than the starting index). TODO should we throw
-	 *              an exception is startChildIndex>endChildIndex, like String.substring()?
+	 * @throws ArrayIndexOutOfBoundsException Thrown if either index is negative, if the start index is greater than or equal to the number of children, or if the
+	 *           ending index is greater than the number of children (unless the ending index is not greater than the starting index). TODO should we throw an
+	 *           exception is startChildIndex>endChildIndex, like String.substring()?
 	 * @throws IllegalArgumentException if the given node has no owner document.
 	 * @throws ArrayIndexOutOfBoundsException if the given range is invalid for the given node's children.
 	 * @throws DOMException <ul>
-	 *              <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
-	 *              </ul>
+	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
+	 *           </ul>
 	 * @see #removeChildren(Node, int, int)
 	 */
 	public static DocumentFragment extractChildren(final Node node, final int startChildIndex, final int endChildIndex, final boolean remove)
-			throws ArrayIndexOutOfBoundsException, DOMException
-	{
+			throws ArrayIndexOutOfBoundsException, DOMException {
 		final Document ownerDocument = node.getOwnerDocument(); //get the node owner document
-		if(ownerDocument == null) //if there is no owner document
-		{
+		if(ownerDocument == null) { //if there is no owner document
 			throw new IllegalArgumentException("Node " + node + " has no owner document.");
 		}
 		final NodeList childNodeList = node.getChildNodes(); //get a reference to the child nodes
@@ -1595,11 +1482,9 @@ public class XML
 			throw new ArrayIndexOutOfBoundsException(endChildIndex); //throw an exception indicating the illegal index
 		final DocumentFragment documentFragment = ownerDocument.createDocumentFragment(); //create a document fragment to hold the nodes
 		Node lastAddedNode = null; //show that we haven't added any nodes, yet
-		for(int i = endChildIndex - 1; i >= startChildIndex; --i) //starting from the end, look at all the indexes before the ending index
-		{
+		for(int i = endChildIndex - 1; i >= startChildIndex; --i) { //starting from the end, look at all the indexes before the ending index
 			final Node childNode = childNodeList.item(i); //find the item at the given index
-			if(remove) //if we should remove the node
-			{
+			if(remove) { //if we should remove the node
 				node.removeChild(childNode); //remove the child node
 			}
 			if(lastAddedNode == null) //for the first node we add
@@ -1620,8 +1505,7 @@ public class XML
 	 * @see Element#hasAttribute(String)
 	 * @see Element#getAttribute(String)
 	 */
-	public static String getDefinedAttribute(final Element element, final String name)
-	{
+	public static String getDefinedAttribute(final Element element, final String name) {
 		//retrieve and return the attribute if it exists, else return null
 		return element.hasAttribute(name) ? element.getAttribute(name) : null;
 	}
@@ -1635,8 +1519,7 @@ public class XML
 	 * @see Element#hasAttributeNS(String, String)
 	 * @see Element#getAttributeNS(String, String)
 	 */
-	public static String getDefinedAttributeNS(final Element element, final String namespaceURI, final String localName)
-	{
+	public static String getDefinedAttributeNS(final Element element, final String namespaceURI, final String localName) {
 		//retrieve and return the attribute if it exists, else return null
 		return element.hasAttributeNS(namespaceURI, localName) ? element.getAttributeNS(namespaceURI, localName) : null;
 	}
@@ -1647,15 +1530,12 @@ public class XML
 	 * @param nodeType The type of node to return.
 	 * @return The first node of the given type, or <code>null</code> if there is no such node of the given type.
 	 */
-	public static Node getChildNode(final Node node, final int nodeType)
-	{
+	public static Node getChildNode(final Node node, final int nodeType) {
 		final NodeList childNodeList = node.getChildNodes(); //get a reference to the child nodes
 		final int childCount = childNodeList.getLength(); //find out how many children there are
-		for(int i = 0; i < childCount; ++i) //look at each of the children
-		{
+		for(int i = 0; i < childCount; ++i) { //look at each of the children
 			final Node childNode = childNodeList.item(i); //get a reference to this node
-			if(childNode.getNodeType() == nodeType) //if this node is of the correct type
-			{
+			if(childNode.getNodeType() == nodeType) { //if this node is of the correct type
 				return childNode; //return this child node
 			}
 		}
@@ -1668,15 +1548,12 @@ public class XML
 	 * @param nodeType The type of node not to return.
 	 * @return The first node not of the given type, or <code>null</code> if there is no node not of the given type.
 	 */
-	public static Node getChildNodeNot(final Node node, final int nodeType)
-	{
+	public static Node getChildNodeNot(final Node node, final int nodeType) {
 		final NodeList childNodeList = node.getChildNodes(); //get a reference to the child nodes
 		final int childCount = childNodeList.getLength(); //find out how many children there are
-		for(int i = 0; i < childCount; ++i) //look at each of the children
-		{
+		for(int i = 0; i < childCount; ++i) { //look at each of the children
 			final Node childNode = childNodeList.item(i); //get a reference to this node
-			if(childNode.getNodeType() != nodeType) //if this node is not of the specified type
-			{
+			if(childNode.getNodeType() != nodeType) { //if this node is not of the specified type
 				return childNode; //return this child node
 			}
 		}
@@ -1688,17 +1565,13 @@ public class XML
 	 * @param node The node from which child elements will be returned.
 	 * @see Node#ELEMENT_NODE
 	 */
-	public static List<Element> getChildElements(final Node node)
-	{
+	public static List<Element> getChildElements(final Node node) {
 		final List<Element> childElements = new ArrayList<Element>(); //create a list to hold the elements
 		final NodeList childNodeList = node.getChildNodes(); //get a reference to the child nodes
 		final int childCount = childNodeList.getLength(); //find out how many children there are
-		for(int i = 0; i < childCount; ++i) //look at each of the children
-		{
+		for(int i = 0; i < childCount; ++i) { //look at each of the children
 			final Node childNode = childNodeList.item(i); //get a reference to this node
-			switch(childNode.getNodeType())
-			//see which type of node this is
-			{
+			switch(childNode.getNodeType()) { //see which type of node this is
 				case Node.ELEMENT_NODE: //if this is an element
 					childElements.add((Element)childNode); //add this child element
 					break;
@@ -1717,17 +1590,14 @@ public class XML
 	 * @param deep Whether or not matching child nodes of each matching child node, etc. should be included.
 	 * @return A new iterator object containing all the matching nodes.
 	 */
-	public static List<Node> getNodesByName(final Node node, final int nodeType, final String nodeName, final boolean deep)
-	{
+	public static List<Node> getNodesByName(final Node node, final int nodeType, final String nodeName, final boolean deep) {
 		final List<Node> nodeList = new ArrayList<Node>(); //crate a new node list to return
 		final boolean matchAllNodes = "*".equals(nodeName); //see if they passed us the wildcard character TODO use a constant here
 		final NodeList childNodeList = node.getChildNodes(); //get the list of child nodes
 		final int childNodeCount = childNodeList.getLength(); //get the number of child nodes
-		for(int childIndex = 0; childIndex < childNodeCount; childIndex++) //look at each child node
-		{
+		for(int childIndex = 0; childIndex < childNodeCount; childIndex++) { //look at each child node
 			final Node childNode = childNodeList.item(childIndex); //get a reference to this node
-			if(childNode.getNodeType() == nodeType) //if this is a node of the correct type
-			{
+			if(childNode.getNodeType() == nodeType) { //if this is a node of the correct type
 				if((matchAllNodes || childNode.getNodeName().equals(nodeName))) //if node has the correct name (or they passed us the wildcard character)
 					nodeList.add(childNode); //add this node to the list
 				if(deep) //if each of the children should check for matching nodes as well
@@ -1748,8 +1618,7 @@ public class XML
 	 * @param deep Whether or not matching child nodes of each matching child node, etc. should be included.
 	 * @return A new list containing all the matching nodes.
 	 */
-	public static List<Node> getNodesByNameNS(final Node node, final int nodeType, final String namespaceURI, final String localName, final boolean deep)
-	{
+	public static List<Node> getNodesByNameNS(final Node node, final int nodeType, final String namespaceURI, final String localName, final boolean deep) {
 		return getNodesByNameNS(node, nodeType, namespaceURI, localName, deep, new ArrayList<Node>()); //gather the nodes into a list and return the list
 	}
 
@@ -1766,28 +1635,22 @@ public class XML
 	 * @return A new list containing all the matching nodes.
 	 */
 	public static <C extends Collection<Node>> C getNodesByNameNS(final Node node, final int nodeType, final String namespaceURI, final String localName,
-			final boolean deep, final C nodes)
-	{
+			final boolean deep, final C nodes) {
 		final boolean matchAllNamespaces = "*".equals(namespaceURI); //see if they passed us the wildcard character for the namespace URI TODO use a constant here
 		final boolean matchAllLocalNames = "*".equals(localName); //see if they passed us the wildcard character for the local name TODO use a constant here
 		final NodeList childNodeList = node.getChildNodes(); //get the list of child nodes
 		final int childNodeCount = childNodeList.getLength(); //get the number of child nodes
-		for(int childIndex = 0; childIndex < childNodeCount; childIndex++) //look at each child node
-		{
+		for(int childIndex = 0; childIndex < childNodeCount; childIndex++) { //look at each child node
 			final Node childNode = childNodeList.item(childIndex); //get a reference to this node
-			if(childNode.getNodeType() == nodeType) //if this is a node of the correct type
-			{
+			if(childNode.getNodeType() == nodeType) { //if this is a node of the correct type
 				final String nodeNamespaceURI = childNode.getNamespaceURI(); //get the node's namespace URI
 				final String nodeLocalName = childNode.getLocalName(); //get the node's local name
-				if(matchAllNamespaces || Objects.equals(namespaceURI, nodeNamespaceURI)) //if we should match all namespaces, or the namespaces match
-				{
-					if(matchAllLocalNames || localName.equals(nodeLocalName)) //if we should match all local names, or the local names match
-					{
+				if(matchAllNamespaces || Objects.equals(namespaceURI, nodeNamespaceURI)) { //if we should match all namespaces, or the namespaces match
+					if(matchAllLocalNames || localName.equals(nodeLocalName)) { //if we should match all local names, or the local names match
 						nodes.add(childNode); //add this node to the list
 					}
 				}
-				if(deep) //if each of the children should check for matching nodes as well
-				{
+				if(deep) { //if each of the children should check for matching nodes as well
 					getNodesByNameNS(childNode, nodeType, namespaceURI, localName, deep, nodes); //get this node's matching child nodes by name and add them to our collection
 				}
 			}
@@ -1801,22 +1664,17 @@ public class XML
 	 * @param pseudoAttributeName The name of the pseudo attribute the value of which to retrieve.
 	 * @return The string value of the given pseudo attribute, or <code>null</code> if that attribute is not defined in the processing instruction's data.
 	 */
-	public static String getProcessingInstructionPseudoAttributeValue(final String processingInstructionData, final String pseudoAttributeName)
-	{
+	public static String getProcessingInstructionPseudoAttributeValue(final String processingInstructionData, final String pseudoAttributeName) {
 		final StringTokenizer tokenizer = new StringTokenizer(processingInstructionData, XML.WHITESPACE_CHARS); //create a tokenizer that separates tokens based on XML whitespace
-		while(tokenizer.hasMoreTokens()) //while there are more tokens
-		{
+		while(tokenizer.hasMoreTokens()) { //while there are more tokens
 			final String token = tokenizer.nextToken(); //get the next token
 			final int equalsIndex = token.indexOf(XML.EQUAL_CHAR); //get the index of the equal sign, if there is one
-			if(equalsIndex != -1 && equalsIndex > 0 && token.length() >= equalsIndex + 2) //if there is an equal sign, it's not the first character, and there's enough room for at least the quotes
-			{
+			if(equalsIndex != -1 && equalsIndex > 0 && token.length() >= equalsIndex + 2) { //if there is an equal sign, it's not the first character, and there's enough room for at least the quotes
 				final char quoteChar = token.charAt(equalsIndex + 1); //get the character after the equals sign
 				//if the character after the equals sign is one of the quote characters, and it matches the last character in the token
-				if((quoteChar == XML.SINGLE_QUOTE_CHAR || quoteChar == XML.DOUBLE_QUOTE_CHAR) && token.charAt(token.length() - 1) == quoteChar)
-				{
+				if((quoteChar == XML.SINGLE_QUOTE_CHAR || quoteChar == XML.DOUBLE_QUOTE_CHAR) && token.charAt(token.length() - 1) == quoteChar) {
 					final String currentPseudoAttributeName = token.substring(0, equalsIndex); //get the name of the attribute
-					if(currentPseudoAttributeName.equals(pseudoAttributeName)) //if this is the requested name
-					{
+					if(currentPseudoAttributeName.equals(pseudoAttributeName)) { //if this is the requested name
 						//TODO this does not correctly interpret embedded entities; does XML require it?
 						return token.substring(equalsIndex + 2, token.length() - 1); //return the value of the attribute
 					}
@@ -1833,8 +1691,7 @@ public class XML
 	 * @see Node#TEXT_NODE
 	 * @see Text#getData()
 	 */
-	public static String getText(final Node node)
-	{
+	public static String getText(final Node node) {
 		return getText(node, true); //get text deeply
 	}
 
@@ -1846,8 +1703,7 @@ public class XML
 	 * @see Node#TEXT_NODE
 	 * @see Text#getData()
 	 */
-	public static String getText(final Node node, final Set<String> blockElementNames)
-	{
+	public static String getText(final Node node, final Set<String> blockElementNames) {
 		final StringBuilder stringBuilder = new StringBuilder(); //create a string buffer to collect the text data
 		getText(node, blockElementNames, true, stringBuilder); //collect the text in the string buffer
 		return stringBuilder.toString(); //convert the string buffer to a string and return it
@@ -1862,8 +1718,7 @@ public class XML
 	 * @see Node#TEXT_NODE
 	 * @see Text#getData()
 	 */
-	public static String getText(final Node node, final boolean deep)
-	{
+	public static String getText(final Node node, final boolean deep) {
 		final StringBuilder stringBuilder = new StringBuilder(); //create a string buffer to collect the text data
 		getText(node, Collections.<String> emptySet(), deep, stringBuilder); //collect the text in the string buffer
 		return stringBuilder.toString(); //convert the string buffer to a string and return it
@@ -1880,16 +1735,12 @@ public class XML
 	 * @see Node#TEXT_NODE
 	 * @see Text#getData()
 	 */
-	public static StringBuilder getText(final Node node, final Set<String> blockElementNames, final boolean deep, final StringBuilder stringBuilder)
-	{
+	public static StringBuilder getText(final Node node, final Set<String> blockElementNames, final boolean deep, final StringBuilder stringBuilder) {
 		final NodeList childNodeList = node.getChildNodes(); //get a reference to the child nodes
 		final int childCount = childNodeList.getLength(); //find out how many children there are
-		for(int i = 0; i < childCount; ++i) //look at each of the children
-		{
+		for(int i = 0; i < childCount; ++i) { //look at each of the children
 			final Node childNode = childNodeList.item(i); //get a reference to this node
-			switch(childNode.getNodeType())
-			//see which type of node this is
-			{
+			switch(childNode.getNodeType()) { //see which type of node this is
 				case Node.TEXT_NODE: //if this is a text node
 					stringBuilder.append(((Text)childNode).getData()); //append this text node data to the string buffer
 					break;
@@ -1897,16 +1748,13 @@ public class XML
 					stringBuilder.append(((Text)childNode).getData()); //append this text node data to the string buffer
 					break;
 				case Node.ELEMENT_NODE: //if this is an element
-					if(deep) //if we should get deep text
-					{
+					if(deep) { //if we should get deep text
 						final boolean isBlockElement = !blockElementNames.isEmpty() && blockElementNames.contains(node.getNodeName()); //separate block elements
-						if(isBlockElement)
-						{
+						if(isBlockElement) {
 							stringBuilder.append(' ');
 						}
 						getText((Element)childNode, blockElementNames, deep, stringBuilder); //append the text of this element
-						if(isBlockElement)
-						{
+						if(isBlockElement) {
 							stringBuilder.append(' ');
 						}
 					}
@@ -1923,12 +1771,9 @@ public class XML
 	 * @param ancestorElementName The name of the ancestor element to check for.
 	 * @return <code>true</code> if an ancestor element with the given namespace URI and name was found.
 	 */
-	public static boolean hasAncestorElementNS(Element element, final String ancestorElementNamespaceURI, final String ancestorElementName)
-	{
-		while((element = asInstance(element.getParentNode(), Element.class)) != null) //keep looking at parents until we run out of elements and hit the document
-		{
-			if(Objects.equals(element.getNamespaceURI(), ancestorElementNamespaceURI) && element.getNodeName().equals(ancestorElementName))
-			{
+	public static boolean hasAncestorElementNS(Element element, final String ancestorElementNamespaceURI, final String ancestorElementName) {
+		while((element = asInstance(element.getParentNode(), Element.class)) != null) { //keep looking at parents until we run out of elements and hit the document
+			if(Objects.equals(element.getNamespaceURI(), ancestorElementNamespaceURI) && element.getNodeName().equals(ancestorElementName)) {
 				return true;
 			}
 		}
@@ -1943,12 +1788,11 @@ public class XML
 	 * @param endIndex The index immediately after the last character to include in the element.
 	 * @return The inserted element.
 	 * @throws DOMException <ul>
-	 *              <li>INDEX_SIZE_ERR: Raised if the specified offset is negative or greater than the number of 16-bit units in <code>data</code>.</li>
-	 *              <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
-	 *              </ul>
+	 *           <li>INDEX_SIZE_ERR: Raised if the specified offset is negative or greater than the number of 16-bit units in <code>data</code>.</li>
+	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
+	 *           </ul>
 	 */
-	public static Element insertElement(final Text textNode, final Element element, final int startIndex, final int endIndex) throws DOMException
-	{
+	public static Element insertElement(final Text textNode, final Element element, final int startIndex, final int endIndex) throws DOMException {
 		final Text splitTextNode = splitText(textNode, startIndex, endIndex); //split the text node into pieces
 		final Element parentElement = (Element)splitTextNode.getParentNode(); //get the text node's parent
 		parentElement.replaceChild(element, splitTextNode); //replace the split text node with the element that will enclose it
@@ -1963,20 +1807,17 @@ public class XML
 	 * @param endIndex The index immediately after the last character to split.
 	 * @return The new text node that contains the text selected by the start and ending indexes.
 	 * @throws DOMException <ul>
-	 *              <li>INDEX_SIZE_ERR: Raised if the specified offset is negative or greater than the number of 16-bit units in <code>data</code>.</li>
-	 *              <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
-	 *              </ul>
+	 *           <li>INDEX_SIZE_ERR: Raised if the specified offset is negative or greater than the number of 16-bit units in <code>data</code>.</li>
+	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
+	 *           </ul>
 	 */
-	public static Text splitText(Text textNode, int startIndex, int endIndex) throws DOMException
-	{
-		if(startIndex > 0) //if the split text doesn't begin at the start of the text
-		{
+	public static Text splitText(Text textNode, int startIndex, int endIndex) throws DOMException {
+		if(startIndex > 0) { //if the split text doesn't begin at the start of the text
 			textNode = textNode.splitText(startIndex); //split off the first part of the text
 			endIndex -= startIndex; //the ending index will now slide back because the start index is sliding back
 			startIndex = 0; //we'll do the next split at the first of this string
 		}
-		if(endIndex < textNode.getLength()) //if there will be text left after the split
-		{
+		if(endIndex < textNode.getLength()) { //if there will be text left after the split
 			textNode.splitText(endIndex); //split off the text after the node
 		}
 		return textNode; //return the node in the middle
@@ -1987,11 +1828,9 @@ public class XML
 	 * @param parentNode The parent of the node to remove.
 	 * @param childNode The node to remove, promoting its children in the process. //TODO list exceptions
 	 */
-	public static void pruneChild(final Node parentNode, final Node childNode) //TODO maybe rename to excise child
-	{
+	public static void pruneChild(final Node parentNode, final Node childNode) { //TODO maybe rename to excise child
 		//promote all the child node's children to be children of the parent node
-		while(childNode.hasChildNodes()) //while the child node has children
-		{
+		while(childNode.hasChildNodes()) { //while the child node has children
 			final Node node = childNode.getFirstChild(); //get the first child of the node
 			childNode.removeChild(node); //remove the child's child
 			parentNode.insertBefore(node, childNode); //insert the child's child before its parent (the parent node's child)
@@ -2004,15 +1843,13 @@ public class XML
 	 * @param node The node from which child nodes should be removed.
 	 * @param startChildIndex The index of the first child to remove.
 	 * @param endChildIndex The index directly after the last child to remove. Must be greater than <code>startChildIndex</code> or no action will occur.
-	 * @throws ArrayIndexOutOfBoundsException Thrown if either index is negative, if the start index is greater than or equal to the number of children, or if
-	 *              the ending index is greater than the number of children. TODO should we throw an exception is startChildIndex>endChildIndex, like
-	 *              String.substring()?
+	 * @throws ArrayIndexOutOfBoundsException Thrown if either index is negative, if the start index is greater than or equal to the number of children, or if the
+	 *           ending index is greater than the number of children. TODO should we throw an exception is startChildIndex>endChildIndex, like String.substring()?
 	 * @throws DOMException <ul>
-	 *              <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
-	 *              </ul>
+	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
+	 *           </ul>
 	 */
-	public static void removeChildren(final Node node, final int startChildIndex, final int endChildIndex) throws ArrayIndexOutOfBoundsException, DOMException
-	{
+	public static void removeChildren(final Node node, final int startChildIndex, final int endChildIndex) throws ArrayIndexOutOfBoundsException, DOMException {
 		final NodeList childNodeList = node.getChildNodes(); //get a reference to the child nodes
 		final int childNodeCount = childNodeList.getLength(); //find out how many child nodes there are
 		if(startChildIndex < 0 || startChildIndex >= childNodeCount) //if the start child index is out of range
@@ -2030,8 +1867,7 @@ public class XML
 	 * @param nodeNames The names of the nodes to remove.
 	 * @throws NullPointerException if the given node and/or node names is <code>null</code>.
 	 */
-	public static void removeChildrenByName(final Node node, final Set<String> nodeNames)
-	{
+	public static void removeChildrenByName(final Node node, final Set<String> nodeNames) {
 		removeChildrenByName(node, nodeNames, true);
 	}
 
@@ -2042,18 +1878,13 @@ public class XML
 	 * @param deep If all descendants should be examined.
 	 * @throws NullPointerException if the given node and/or node names is <code>null</code>.
 	 */
-	public static void removeChildrenByName(final Node node, final Set<String> nodeNames, final boolean deep)
-	{
+	public static void removeChildrenByName(final Node node, final Set<String> nodeNames, final boolean deep) {
 		final NodeList childNodeList = node.getChildNodes(); //get the list of child nodes
-		for(int childIndex = childNodeList.getLength() - 1; childIndex >= 0; childIndex--) //look at each child node in reverse to prevent problems from removal
-		{
+		for(int childIndex = childNodeList.getLength() - 1; childIndex >= 0; childIndex--) { //look at each child node in reverse to prevent problems from removal
 			final Node childNode = childNodeList.item(childIndex); //get a reference to this node
-			if(nodeNames.contains(childNode.getNodeName())) //if this node is to be removed
-			{
+			if(nodeNames.contains(childNode.getNodeName())) { //if this node is to be removed
 				node.removeChild(childNode); //remove it
-			}
-			else if(deep) //if we should remove deeply
-			{
+			} else if(deep) { //if we should remove deeply
 				removeChildrenByName(childNode, nodeNames, deep);
 			}
 		}
@@ -2066,8 +1897,7 @@ public class XML
 	 * @param attributeName The name of the attribute to check.
 	 * @param attributeValue The value of the attribute indicating removal.
 	 */
-	public static void removeChildElementsByNameAttribute(final Node node, final String elementName, final String attributeName, final String attributeValue)
-	{
+	public static void removeChildElementsByNameAttribute(final Node node, final String elementName, final String attributeName, final String attributeValue) {
 		removeChildElementsByNameAttribute(node, elementName, attributeName, attributeValue, true);
 	}
 
@@ -2080,19 +1910,14 @@ public class XML
 	 * @param deep If all descendants should be examined.
 	 */
 	public static void removeChildElementsByNameAttribute(final Node node, final String elementName, final String attributeName, final String attributeValue,
-			final boolean deep)
-	{
+			final boolean deep) {
 		final NodeList childNodeList = node.getChildNodes(); //get the list of child nodes
-		for(int childIndex = childNodeList.getLength() - 1; childIndex >= 0; childIndex--) //look at each child node in reverse to prevent problems from removal
-		{
+		for(int childIndex = childNodeList.getLength() - 1; childIndex >= 0; childIndex--) { //look at each child node in reverse to prevent problems from removal
 			final Node childNode = childNodeList.item(childIndex); //get a reference to this node
 			if(childNode.getNodeType() == Node.ELEMENT_NODE && childNode.getNodeName().equals(elementName)
-					&& ((Element)childNode).getAttribute(attributeName).equals(attributeValue)) //if this node is to be removed
-			{
+					&& ((Element)childNode).getAttribute(attributeName).equals(attributeValue)) { //if this node is to be removed
 				node.removeChild(childNode); //remove it
-			}
-			else if(deep) //if we should remove deeply
-			{
+			} else if(deep) { //if we should remove deeply
 				removeChildElementsByNameAttribute(childNode, elementName, attributeName, attributeValue, deep);
 			}
 		}
@@ -2107,8 +1932,7 @@ public class XML
 	 * @param localName The new element local name.
 	 * @return The new element with the specified name which replaced the old element. //TODO list exceptions
 	 */
-	public static Element replaceElementNS(final Element element, final String namespaceURI, final String localName)
-	{
+	public static Element replaceElementNS(final Element element, final String namespaceURI, final String localName) {
 		final Document document = element.getOwnerDocument(); //get the owner document
 		final Element newElement = document.createElementNS(namespaceURI, localName); //create the new element
 		appendClonedAttributeNodesNS(newElement, element); //clone the attributes TODO testing
@@ -2126,8 +1950,7 @@ public class XML
 	 * @param document The document to print.
 	 * @param printStream The stream (e.g. <code>System.out</code>) to use for printing the tree.
 	 */
-	public static void printTree(final Document document, final PrintStream printStream)
-	{
+	public static void printTree(final Document document, final PrintStream printStream) {
 		if(document != null) //if we have a root element
 			printTree(document.getDocumentElement(), 0, printStream); //dump the contents of the root element
 		else
@@ -2140,8 +1963,7 @@ public class XML
 	 * @param element The element to print.
 	 * @param printStream The stream (e.g. <code>System.out</code>) to use for printing the tree.
 	 */
-	public static void printTree(final Element element, final PrintStream printStream)
-	{
+	public static void printTree(final Element element, final PrintStream printStream) {
 		printTree(element, 0, printStream); //if we're called normally, we'll dump starting at the first tab position
 	}
 
@@ -2151,16 +1973,14 @@ public class XML
 	 * @param tabPos The zero-based tab position to which to align.
 	 * @param printStream The stream (e.g. <code>System.out</code>) to use for printing the tree.
 	 */
-	protected static void printTree(final Element element, int tabPos, final PrintStream printStream)
-	{
+	protected static void printTree(final Element element, int tabPos, final PrintStream printStream) {
 		for(int i = 0; i < tabPos; ++i)
 			printStream.print(tabString); //TODO fix to adjust automatically to tabDelta, comment
 		printStream.print("[Element] "); //TODO fix to adjust automatically to tabDelta, comment
 		printStream.print("<" + element.getNodeName()); //print the element name
 
 		final NamedNodeMap attributeMap = element.getAttributes(); //get the attributes
-		for(int i = attributeMap.getLength() - 1; i >= 0; --i) //look at each attribute
-		{
+		for(int i = attributeMap.getLength() - 1; i >= 0; --i) { //look at each attribute
 			final Attr attribute = (Attr)attributeMap.item(i); //get a reference to this attribute
 			printStream.print(" " + attribute.getName() + "=\"" + attribute.getValue() + "\""); //print the attribute and its value
 			printStream.print(" (" + attribute.getNamespaceURI() + ")"); //print the attribute namespace
@@ -2168,10 +1988,8 @@ public class XML
 		if(element.getChildNodes().getLength() == 0) //if there are no child nodes
 			printStream.print('/'); //show that this is an empty element
 		printStream.println("> (namespace URI=\"" + element.getNamespaceURI() + "\" local name=\"" + element.getLocalName() + "\")");
-		if(element.getChildNodes().getLength() > 0) //if there are child nodes
-		{
-			for(int childIndex = 0; childIndex < element.getChildNodes().getLength(); childIndex++) //look at each child node
-			{
+		if(element.getChildNodes().getLength() > 0) { //if there are child nodes
+			for(int childIndex = 0; childIndex < element.getChildNodes().getLength(); childIndex++) { //look at each child node
 				Node node = element.getChildNodes().item(childIndex); //look at this node
 				printTree(node, tabPos, printStream); //print the node to the stream
 				//TODO process the child elements
@@ -2189,8 +2007,7 @@ public class XML
 	 * @param node The node to print.
 	 * @param printStream The stream (e.g. <code>System.out</code>) to use for printing the tree.
 	 */
-	public static void printTree(final Node node, final PrintStream printStream)
-	{
+	public static void printTree(final Node node, final PrintStream printStream) {
 		printTree(node, 0, printStream); //if we're called normally, we'll dump starting at the first tab position
 	}
 
@@ -2200,11 +2017,8 @@ public class XML
 	 * @param tabPos The zero-based tab position to which to align.
 	 * @param printStream The stream (e.g. <code>System.out</code>) to use for printing the tree.
 	 */
-	protected static void printTree(final Node node, int tabPos, final PrintStream printStream)
-	{
-		switch(node.getNodeType())
-		//see which type of object this is
-		{
+	protected static void printTree(final Node node, int tabPos, final PrintStream printStream) {
+		switch(node.getNodeType()) { //see which type of object this is
 			case Node.ELEMENT_NODE: //if this is an element
 
 				//TODO fix for empty elements
@@ -2233,14 +2047,10 @@ public class XML
 	 * @param document The XML document to convert.
 	 * @return A string representation of the XML document.
 	 */
-	public static String toString(final Document document)
-	{
-		try
-		{
+	public static String toString(final Document document) {
+		try {
 			return new XMLSerializer(true).serialize(document); //serialize the document to a string, formatting the XML output
-		}
-		catch(final IOException ioException) //if an IO exception occurs
-		{
+		} catch(final IOException ioException) { //if an IO exception occurs
 			return ioException.getMessage() + ' ' + document.toString(); //ask the document to convert itself to a string
 		}
 	}
@@ -2250,8 +2060,7 @@ public class XML
 	 * @param element The XML elment to convert.
 	 * @return A string representation of the XML element.
 	 */
-	public static String toString(final Element element)
-	{
+	public static String toString(final Element element) {
 		return new XMLSerializer(true).serialize(element); //serialize the element to a string, formatting the XML output
 	}
 
@@ -2261,10 +2070,8 @@ public class XML
 	 * @return The default XML namespace URI used by resources of the given content type, or <code>null</code> if there is no default namespace URI or the default
 	 *         namespace URI is not known.
 	 */
-	public static URI getDefaultNamespaceURI(final ContentType mediaType)
-	{
-		if(mediaType != null) //if we were given a valid media type
-		{
+	public static URI getDefaultNamespaceURI(final ContentType mediaType) {
+		if(mediaType != null) { //if we were given a valid media type
 			if(XHTML.isHTML(mediaType)) //if this is one of the HTML media types
 				return XHTML.XHTML_NAMESPACE_URI; //return the XHTML media type
 			else if(mediaType.match(ContentType.TEXT_PRIMARY_TYPE, OEB.X_OEB1_DOCUMENT_SUBTYPE)) //if this is an OEB 1.x document
@@ -2282,17 +2089,12 @@ public class XML
 	 * @param resolve Whether the entire tree hierarchy should be searched.
 	 * @return The defined namespace URI for the given prefix, or <code>null</code> if none is defined.
 	 */
-	public static String getNamespaceURI(final Element element, final String prefix, final boolean resolve)
-	{
+	public static String getNamespaceURI(final Element element, final String prefix, final boolean resolve) {
 		//get the namespace URI declared for this prefix
 		final String namespaceURI = getDeclaredNamespaceURI(element, prefix, resolve);
-		if(namespaceURI != null && namespaceURI.length() > 0) //if a namespace is defined that isn't the empty string
-		{
+		if(namespaceURI != null && namespaceURI.length() > 0) { //if a namespace is defined that isn't the empty string
 			return namespaceURI; //return that namespace URI
-		}
-		else
-		//if the namespace is null or is the empty string
-		{
+		} else { //if the namespace is null or is the empty string
 			return null; //the empty string is the same as a null namespace
 		}
 	}
@@ -2307,11 +2109,9 @@ public class XML
 	 * @param resolve Whether the entire tree hierarchy should be searched.
 	 * @return The defined namespace URI for the given prefix, or <code>null</code> if none is defined.
 	 */
-	public static String getDeclaredNamespaceURI(final Element element, final String prefix, final boolean resolve)
-	{
+	public static String getDeclaredNamespaceURI(final Element element, final String prefix, final boolean resolve) {
 		String namespaceURI = null; //assume we won't find a matching namespace
-		if(prefix != null) //if they specified a prefix
-		{
+		if(prefix != null) { //if they specified a prefix
 			if(prefix.equals(XML.XMLNS_NAMESPACE_PREFIX)) //if this is the "xmlns" prefix
 				return XML.XMLNS_NAMESPACE_URI.toString(); //return the namespace URI for "xmlns:"
 			else if(prefix.equals(XML.XML_NAMESPACE_PREFIX)) //if this is the "xml" prefix
@@ -2319,22 +2119,17 @@ public class XML
 			//see if this element has "xmlns:prefix" defined, and if so, retrieve it
 			if(element.hasAttributeNS(XML.XMLNS_NAMESPACE_URI.toString(), prefix)) //G***fix for empty namespace strings
 				namespaceURI = element.getAttributeNS(XML.XMLNS_NAMESPACE_URI.toString(), prefix);
-		}
-		else
-		//if no prefix was specified
-		{
+		} else { //if no prefix was specified
 			//see if there is an "xmlns" attribute defined in the "http://www.w3.org/2000/xmlns/" namespace
 			if(element.hasAttributeNS(XML.XMLNS_NAMESPACE_URI.toString(), XML.XMLNS_NAMESPACE_PREFIX))
 				namespaceURI = element.getAttributeNS(XML.XMLNS_NAMESPACE_URI.toString(), XML.XMLNS_NAMESPACE_PREFIX);
 		}
 		//if we didn't find a matching namespace definition for this node, search up the chain
 		//(unless no prefix was specified, and we can't use the default namespace)
-		if(namespaceURI == null)
-		{
+		if(namespaceURI == null) {
 			final Node parentNode = element.getParentNode(); //get the parent node
 			//if we should resolve, there is a parent, and it's an element (not the document)
-			if(resolve && parentNode != null && parentNode.getNodeType() == Node.ELEMENT_NODE)
-			{
+			if(resolve && parentNode != null && parentNode.getNodeType() == Node.ELEMENT_NODE) {
 				namespaceURI = getDeclaredNamespaceURI((Element)parentNode, prefix, resolve); //continue the search up the chain
 			}
 		}
@@ -2346,8 +2141,7 @@ public class XML
 	 * <code>xmlns:prefix=</code> attribute declaration.
 	 * @param element The element the namespace of which to declare.
 	 */
-	public static void ensureNamespaceDeclarations(final Element element)
-	{
+	public static void ensureNamespaceDeclarations(final Element element) {
 		ensureNamespaceDeclarations(element, null, false); //ensure namespace declarations only for this element and its attributes, adding any declarations to the element itself
 	}
 
@@ -2359,18 +2153,14 @@ public class XML
 	 *          on which they are found missing.
 	 * @param deep Whether all children and their descendants are also recursively checked for namespace declarations.
 	 */
-	public static void ensureNamespaceDeclarations(final Element element, final Element declarationElement, final boolean deep)
-	{
+	public static void ensureNamespaceDeclarations(final Element element, final Element declarationElement, final boolean deep) {
 		final NameValuePair<String, String>[] prefixNamespacePairs = getUndeclaredNamespaces(element); //get the undeclared namespaces for this element
 		declareNamespaces(declarationElement != null ? declarationElement : element, prefixNamespacePairs); //declare the undeclared namespaces, using the declaration element if provided
-		if(deep) //if we should recursively check the children of this element
-		{
+		if(deep) { //if we should recursively check the children of this element
 			final NodeList childElementList = element.getChildNodes(); //get a list of the child nodes
-			for(int i = 0; i < childElementList.getLength(); ++i) //look at each node
-			{
+			for(int i = 0; i < childElementList.getLength(); ++i) { //look at each node
 				final Node node = childElementList.item(i); //get a reference to this node
-				if(node.getNodeType() == Node.ELEMENT_NODE) //if this is an element
-				{
+				if(node.getNodeType() == Node.ELEMENT_NODE) { //if this is an element
 					ensureNamespaceDeclarations((Element)node, declarationElement, deep); //process the namespaces for this element and its descendants
 				}
 			}
@@ -2387,8 +2177,7 @@ public class XML
 	 * </p>
 	 * @param parentElement The element to which all child namespaces will be added if there are no conflicts.
 	 */
-	public static void ensureChildNamespaceDeclarations(final Element parentElement)
-	{
+	public static void ensureChildNamespaceDeclarations(final Element parentElement) {
 		ensureChildNamespaceDeclarations(parentElement, parentElement); //ensure the child namespace declarations for all children of this element, showing that this element is the parent
 	}
 
@@ -2403,28 +2192,20 @@ public class XML
 	 * @param rootElement The element to which all child namespaces will be added if there are no conflicts.
 	 * @param parentElement The element the children of which are currently being checked.
 	 */
-	protected static void ensureChildNamespaceDeclarations(final Element rootElement, final Element parentElement)
-	{
+	protected static void ensureChildNamespaceDeclarations(final Element rootElement, final Element parentElement) {
 		final NodeList childElementList = parentElement.getChildNodes(); //get a list of the child nodes
-		for(int childIndex = 0; childIndex < childElementList.getLength(); ++childIndex) //look at each child node
-		{
+		for(int childIndex = 0; childIndex < childElementList.getLength(); ++childIndex) { //look at each child node
 			final Node childNode = childElementList.item(childIndex); //get a reference to this node
-			if(childNode.getNodeType() == Node.ELEMENT_NODE) //if this is an element
-			{
+			if(childNode.getNodeType() == Node.ELEMENT_NODE) { //if this is an element
 				final Element childElement = (Element)childNode; //cast the node to an element
 				final NameValuePair<String, String>[] prefixNamespacePairs = getUndeclaredNamespaces(childElement); //get the undeclared namespaces for the child element
-				for(int i = 0; i < prefixNamespacePairs.length; ++i) //look at each name/value pair
-				{
+				for(int i = 0; i < prefixNamespacePairs.length; ++i) { //look at each name/value pair
 					final NameValuePair<String, String> prefixNamespacePair = prefixNamespacePairs[i]; //get this name/value pair representing a prefix and a namespace
 					final String prefix = prefixNamespacePair.getName(); //get the prefix
 					final String namespaceURI = prefixNamespacePair.getValue(); //get the namespace
-					if(getDeclaredNamespaceURI(rootElement, prefix, true) == null) //if the rooot element does not have this prefix defined, it's OK to add it to the parent element
-					{
+					if(getDeclaredNamespaceURI(rootElement, prefix, true) == null) { //if the rooot element does not have this prefix defined, it's OK to add it to the parent element
 						declareNamespace(rootElement, prefix, namespaceURI); //declare this namespace on the root element
-					}
-					else
-					//if the parent element has already defined this namespace
-					{
+					} else { //if the parent element has already defined this namespace
 						declareNamespace(childElement, prefix, namespaceURI); //declare the namespace on the child element
 					}
 				}
@@ -2443,21 +2224,18 @@ public class XML
 	 */
 	@SuppressWarnings("unchecked")
 	//we create an array from a generic list, creating this warning to suppress
-	public static NameValuePair<String, String>[] getUndeclaredNamespaces(final Element element)
-	{
+	public static NameValuePair<String, String>[] getUndeclaredNamespaces(final Element element) {
 		final List<NameValuePair<String, String>> prefixNamespacePairList = new ArrayList<NameValuePair<String, String>>(); //create a new list in which to store name/value pairs of prefixes and namespaces
 		if(!isNamespaceDeclared(element, element.getPrefix(), element.getNamespaceURI())) //if the element doesn't have the needed declarations
 			prefixNamespacePairList.add(new NameValuePair<String, String>(element.getPrefix(), element.getNamespaceURI())); //add this prefix and namespace to the list of namespaces needing to be declared
 		final NamedNodeMap attributeNamedNodeMap = element.getAttributes(); //get the map of attributes
 		final int attributeCount = attributeNamedNodeMap.getLength(); //find out how many attributes there are
-		for(int i = 0; i < attributeCount; ++i) //look at each attribute
-		{
+		for(int i = 0; i < attributeCount; ++i) { //look at each attribute
 			final Attr attribute = (Attr)attributeNamedNodeMap.item(i); //get this attribute
 			//as attribute namespaces are not inherited, don't check namespace
 			//  declarations for attributes if they have neither prefix nor
 			//  namespace declared
-			if(attribute.getPrefix() != null || attribute.getNamespaceURI() != null)
-			{
+			if(attribute.getPrefix() != null || attribute.getNamespaceURI() != null) {
 				if(!isNamespaceDeclared(element, attribute.getPrefix(), attribute.getNamespaceURI())) //if the attribute doesn't have the needed declarations
 					prefixNamespacePairList.add(new NameValuePair<String, String>(attribute.getPrefix(), attribute.getNamespaceURI())); //add this prefix and namespace to the list of namespaces needing to be declared
 			}
@@ -2475,10 +2253,8 @@ public class XML
 	 * @param prefix The prefix to declare, or <code>null</code> if no prefix is used.
 	 * @param namespaceURI The namespace being defined, or <code>null</code> if no namespace is used.
 	 */
-	public static void ensureNamespaceDeclaration(final Element element, final String prefix, final String namespaceURI)
-	{
-		if(!isNamespaceDeclared(element, prefix, namespaceURI)) //if this namespace isn't declared for this element
-		{
+	public static void ensureNamespaceDeclaration(final Element element, final String prefix, final String namespaceURI) {
+		if(!isNamespaceDeclared(element, prefix, namespaceURI)) { //if this namespace isn't declared for this element
 			declareNamespace(element, prefix, namespaceURI); //declare the namespace
 		}
 	}
@@ -2494,8 +2270,7 @@ public class XML
 	 * @param namespaceURI The namespace being defined, or <code>null</code> if no namespace is used.
 	 * @return <code>true</code> if the namespace is sufficiently declared, either on the given element or somewhere up the element hierarchy.
 	 */
-	public static boolean isNamespaceDeclared(final Element element, final String prefix, final String namespaceURI)
-	{
+	public static boolean isNamespaceDeclared(final Element element, final String prefix, final String namespaceURI) {
 		if(XML.XMLNS_NAMESPACE_PREFIX.equals(prefix) && XML.XMLNS_NAMESPACE_URI.toString().equals(namespaceURI)) //we don't need to define the "xmlns:" prefix
 			return true;
 		if(prefix == null && XML.XMLNS_NAMESPACE_URI.toString().equals(namespaceURI)) //we don't need to define the "xmlns" name
@@ -2504,17 +2279,12 @@ public class XML
 			return true;
 		//find out what namespace is defined for the prefix anywhere up the hierarchy
 		final String declaredNamespaceURI = getDeclaredNamespaceURI(element, prefix, true);
-		if(declaredNamespaceURI != null) //if some element declared a namespace for this prefix
-		{
-			if(declaredNamespaceURI.length() == 0) //if an empty namespace was declared
-			{
-				if(namespaceURI == null) //if we expected a null namespace
-				{
+		if(declaredNamespaceURI != null) { //if some element declared a namespace for this prefix
+			if(declaredNamespaceURI.length() == 0) { //if an empty namespace was declared
+				if(namespaceURI == null) { //if we expected a null namespace
 					return true; //show that the namespace is declared as expected
 				}
-			}
-			else if(declaredNamespaceURI.equals(namespaceURI)) //if a normal namespace was declared and it's the same one we expect
-			{
+			} else if(declaredNamespaceURI.equals(namespaceURI)) { //if a normal namespace was declared and it's the same one we expect
 				return true; //show that the namespace is declared as expected
 			}
 		}
@@ -2528,10 +2298,8 @@ public class XML
 	 * @param previxNamespacePairs An array of name/value pairs. The name of each is the the prefix to declare, or <code>null</code> if no prefix is used. The
 	 *          value of each is the URI string of the namespace being defined, or <code>null</code> if no namespace is used.
 	 */
-	public static void declareNamespaces(final Element declarationElement, final NameValuePair<String, String>[] prefixNamespacePairs)
-	{
-		for(int i = 0; i < prefixNamespacePairs.length; ++i) //look at each name/value pair
-		{
+	public static void declareNamespaces(final Element declarationElement, final NameValuePair<String, String>[] prefixNamespacePairs) {
+		for(int i = 0; i < prefixNamespacePairs.length; ++i) { //look at each name/value pair
 			final NameValuePair<String, String> nameValuePair = prefixNamespacePairs[i]; //get this name/value pair representing a prefix and a namespace
 			declareNamespace(declarationElement, nameValuePair.getName(), nameValuePair.getValue()); //declare this namespace
 		}
@@ -2544,8 +2312,7 @@ public class XML
 	 * @param prefix The prefix to declare, or <code>null</code> if no prefix is used.
 	 * @param namespaceURI The namespace being defined, or <code>null</code> if no namespace is used.
 	 */
-	public static void declareNamespace(final Element declarationElement, final String prefix, String namespaceURI)
-	{
+	public static void declareNamespace(final Element declarationElement, final String prefix, String namespaceURI) {
 		if(XML.XMLNS_NAMESPACE_PREFIX.equals(prefix) && XML.XMLNS_NAMESPACE_URI.toString().equals(namespaceURI)) //we don't need to define the "xmlns" prefix
 			return;
 		if(prefix == null && XML.XMLNS_NAMESPACE_URI.toString().equals(namespaceURI)) //we don't need to define the "xmlns" name
@@ -2554,14 +2321,10 @@ public class XML
 			return;
 		if(namespaceURI == null) //if no namespace URI was given
 			namespaceURI = ""; //we'll declare an empty namespace URI
-		if(prefix != null) //if we were given a prefix
-		{
+		if(prefix != null) { //if we were given a prefix
 			//create an attribute in the form, xmlns:prefix="namespaceURI" TODO fix for attributes that may use the same prefix for different namespace URIs
 			declarationElement.setAttributeNS(XML.XMLNS_NAMESPACE_URI.toString(), createQName(XML.XMLNS_NAMESPACE_PREFIX, prefix), namespaceURI);
-		}
-		else
-		//if we weren't given a prefix
-		{
+		} else { //if we weren't given a prefix
 			//create an attribute in the form, xmlns="namespaceURI" TODO fix for attributes that may use the same prefix for different namesapce URIs
 			declarationElement.setAttributeNS(XML.XMLNS_NAMESPACE_URI.toString(), XML.XMLNS_NAMESPACE_PREFIX, namespaceURI);
 		}
@@ -2576,22 +2339,17 @@ public class XML
 	 * @throws SAXException if there was an error parsing the fragment.
 	 */
 	public static DocumentFragment parseFragment(final String fragmentText, final DocumentBuilder documentBuilder, final String defaultNamespaceURI)
-			throws SAXException
-	{
+			throws SAXException {
 		final StringBuilder stringBuilder = new StringBuilder("<?xml version='1.0' encoding='UTF-8'?>"); //TODO use constants if we can
 		stringBuilder.append("<fragment");
-		if(defaultNamespaceURI != null) //if a default namespace was given
-		{
+		if(defaultNamespaceURI != null) { //if a default namespace was given
 			stringBuilder.append(" xmlns='").append(defaultNamespaceURI).append("'"); //xmlns="defaultNamespaceURI"
 		}
 		stringBuilder.append(">").append(fragmentText).append("</fragment>");
-		try
-		{
+		try {
 			final Document document = documentBuilder.parse(new ByteArrayInputStream(stringBuilder.toString().getBytes(UTF_8_CHARSET))); //parse the bytes of the string
 			return extractChildren(document.getDocumentElement()); //extract the children of the fragment document element and return them as a document fragment
-		}
-		catch(final IOException ioException) //we should never get an I/O exception reading from a string
-		{
+		} catch(final IOException ioException) { //we should never get an I/O exception reading from a string
 			throw new AssertionError(ioException);
 		}
 	}

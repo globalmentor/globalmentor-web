@@ -16,25 +16,25 @@
 
 package com.globalmentor.text.xml.schema;
 
-/**Represents one of the primary schema components:
-<ul>
-	<li>Simple type definitions</li>
-	<li>Complex type definitions</li>
-	<li>Attribute declarations</li>
-	<li>Element declarations</li>
-</ul>
-@author Garret Wilson
-@deprecated
-*/
-public abstract class XMLSchemaPrimaryComponent extends XMLSchemaNamedComponent
-{
+/**
+ * Represents one of the primary schema components:
+ * <ul>
+ * <li>Simple type definitions</li>
+ * <li>Complex type definitions</li>
+ * <li>Attribute declarations</li>
+ * <li>Element declarations</li>
+ * </ul>
+ * @author Garret Wilson
+ * @deprecated
+ */
+public abstract class XMLSchemaPrimaryComponent extends XMLSchemaNamedComponent {
 
-	/**Constructs a primary schema component.
-	@param newComponentType The type of XML schema component this is.
-	*/
-	public XMLSchemaPrimaryComponent(final short newComponentType)
-	{
-		super(newComponentType);  //construct the parent class
+	/**
+	 * Constructs a primary schema component.
+	 * @param newComponentType The type of XML schema component this is.
+	 */
+	public XMLSchemaPrimaryComponent(final short newComponentType) {
+		super(newComponentType); //construct the parent class
 	}
 
 }

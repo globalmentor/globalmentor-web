@@ -16,25 +16,25 @@
 
 package com.globalmentor.text.xml.schema;
 
-/**Represents one of the secondary schema components:
-<ul>
-	<li>Attribute group definitions</li>
-	<li>Identity-constraint definitions</li>
-	<li>Model group definitions</li>
-	<li>Notation declarations</li>
-</ul>
-@author Garret Wilson
-@deprecated
-*/
-public abstract class XMLSchemaSecondaryComponent extends XMLSchemaNamedComponent
-{
+/**
+ * Represents one of the secondary schema components:
+ * <ul>
+ * <li>Attribute group definitions</li>
+ * <li>Identity-constraint definitions</li>
+ * <li>Model group definitions</li>
+ * <li>Notation declarations</li>
+ * </ul>
+ * @author Garret Wilson
+ * @deprecated
+ */
+public abstract class XMLSchemaSecondaryComponent extends XMLSchemaNamedComponent {
 
-	/**Constructs a secondary schema component.
-	@param newComponentType The type of XML schema component this is.
-	*/
-	public XMLSchemaSecondaryComponent(final short newComponentType)
-	{
-		super(newComponentType);  //construct the parent class
+	/**
+	 * Constructs a secondary schema component.
+	 * @param newComponentType The type of XML schema component this is.
+	 */
+	public XMLSchemaSecondaryComponent(final short newComponentType) {
+		super(newComponentType); //construct the parent class
 	}
 
 }

@@ -54,8 +54,7 @@ import static com.globalmentor.text.xml.XML.*;
  * @see <a href="http://www.pibil.org/technology/writing/xhtml-media-type.html">XHTML: An XML Application</a>
  * @see <a href="http://www.w3.org/TR/xhtml-media-types/">XHTML Media Types</a>
  */
-public class XHTML
-{
+public class XHTML {
 
 	/** HTML MIME subtype. */
 	public final static String HTML_SUBTYPE = "html";
@@ -302,8 +301,7 @@ public class XHTML
 	 * @author Garret Wilson
 	 * @see <a href="http://www.w3.org/TR/html5/links.html#linkTypes">HTML5 Link Types</a>
 	 */
-	public enum LinkType implements IDed<String>
-	{
+	public enum LinkType implements IDed<String> {
 		ALTERNATE(LINK_REL_ALTERNATE), //<link>, <a>/<area>
 		AUTHOR(LINK_REL_AUTHOR), //<link>, <a>/<area>
 		BOOKMARK(LINK_REL_BOOKMARK), //<a>/<area>
@@ -324,14 +322,12 @@ public class XHTML
 
 		private final String id;
 
-		private LinkType(final String id)
-		{
+		private LinkType(final String id) {
 			this.id = checkInstance(id);
 		}
 
 		@Override
-		public String getID()
-		{
+		public String getID() {
 			return id;
 		}
 	}
@@ -506,8 +502,7 @@ public class XHTML
 	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
 	 * @throws DOMException if there is an error creating the XHTML document.
 	 */
-	public static Document createXHTMLDocument(final String title) throws DOMException
-	{
+	public static Document createXHTMLDocument(final String title) throws DOMException {
 		return createXHTMLDocument(title, false); //create an unformatted XHTML document with no document type
 	}
 
@@ -523,8 +518,7 @@ public class XHTML
 	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
 	 * @throws DOMException if there is an error creating the XHTML document.
 	 */
-	public static Document createXHTMLDocument(final String title, final boolean formatted) throws DOMException
-	{
+	public static Document createXHTMLDocument(final String title, final boolean formatted) throws DOMException {
 		return createXHTMLDocument(title, false, null, null, formatted); //create an XHTML document with no document type 
 	}
 
@@ -539,8 +533,7 @@ public class XHTML
 	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
 	 * @throws DOMException if there is an error creating the XHTML document.
 	 */
-	public static Document createXHTMLDocument(final String title, final boolean includeDocumentType, final boolean formatted) throws DOMException
-	{
+	public static Document createXHTMLDocument(final String title, final boolean includeDocumentType, final boolean formatted) throws DOMException {
 		return createXHTMLDocument(title, includeDocumentType, null, null, formatted); //create an XHTML document with optional doctype		
 	}
 
@@ -557,8 +550,7 @@ public class XHTML
 	 * @throws DOMException if there is an error creating the XHTML document.
 	 */
 	public static Document createXHTMLDocument(final String title, final boolean includeDocumentType, final String publicID, final String systemID)
-			throws DOMException
-	{
+			throws DOMException {
 		return createXHTMLDocument(title, includeDocumentType, publicID, systemID, false); //create an unformatted XHTML document
 	}
 
@@ -576,45 +568,36 @@ public class XHTML
 	 * @throws DOMException if there is an error creating the XHTML document.
 	 */
 	public static Document createXHTMLDocument(final String title, final boolean includeDocumentType, final String publicID, final String systemID,
-			final boolean formatted) throws DOMException
-	{
+			final boolean formatted) throws DOMException {
 		final DocumentBuilder documentBuilder = createDocumentBuilder(true); //create a namespace-aware document builder
 		final DOMImplementation domImplementation = documentBuilder.getDOMImplementation(); //get the DOM implementation from the document builder
 		final DocumentType documentType; //the document type, if any
-		if(includeDocumentType) //if we should add a document type
-		{
+		if(includeDocumentType) { //if we should add a document type
 			documentType = domImplementation.createDocumentType(ELEMENT_HTML, publicID, systemID); //create an XHTML document, using the given identifiers, if any 
-		}
-		else
-		//if we should not add a document type
-		{
+		} else { //if we should not add a document type
 			documentType = null; //don't use a document type
 		}
 		final Document document = domImplementation.createDocument(XHTML_NAMESPACE_URI.toString(), ELEMENT_HTML, documentType); //create an XHTML document
 		//TODO check about whether we need to add a <head> and <title>
 		final Element htmlElement = document.getDocumentElement(); //get the html element
-		if(formatted) //if we should format the document
-		{
+		if(formatted) { //if we should format the document
 			appendText(htmlElement, "\n"); //append a newline to start the content of the html element
 		}
 		final Element headElement = document.createElementNS(XHTML_NAMESPACE_URI.toString(), ELEMENT_HEAD); //create the head element
 		htmlElement.appendChild(headElement); //add the head element to the html element
-		if(formatted) //if we should format the document
-		{
+		if(formatted) { //if we should format the document
 			appendText(headElement, "\n"); //append a newline to start the content in the head
 			appendText(htmlElement, "\n"); //append a newline to separate the content of the html element
 		}
 		final Element titleElement = document.createElementNS(XHTML_NAMESPACE_URI.toString(), ELEMENT_TITLE); //create the title element
 		headElement.appendChild(titleElement); //add the title element to the head element
 		appendText(titleElement, title); //append the title text to the title element 
-		if(formatted) //if we should format the document
-		{
+		if(formatted) { //if we should format the document
 			appendText(headElement, "\n"); //append a newline to separate the informtaion after the title
 		}
 		final Element bodyElement = document.createElementNS(XHTML_NAMESPACE_URI.toString(), ELEMENT_BODY); //create the body element
 		htmlElement.appendChild(bodyElement); //add the body element to the html element
-		if(formatted) //if we should format the document
-		{
+		if(formatted) { //if we should format the document
 			appendText(bodyElement, "\n"); //append a newline to separate the information in the body
 			appendText(htmlElement, "\n"); //append a newline to separate the information after the body
 		}
@@ -626,8 +609,7 @@ public class XHTML
 	 * @param document The XHTML document tree.
 	 * @return A reference to the <code>&lt;body&gt;</code> element, or <code>null</code> if there is such element.
 	 */
-	public static Element getBodyElement(final Document document)
-	{
+	public static Element getBodyElement(final Document document) {
 		return (Element)getNode(document, LOCATION_STEP_SEPARATOR_CHAR + ELEMENT_BODY);
 	}
 
@@ -636,8 +618,7 @@ public class XHTML
 	 * @param document The XHTML document tree.
 	 * @return A reference to the {@code <head>} element, or <code>null</code> if there is no such element.
 	 */
-	public static Element getHeadElement(final Document document)
-	{
+	public static Element getHeadElement(final Document document) {
 		return (Element)getNode(document, LOCATION_STEP_SEPARATOR_CHAR + ELEMENT_HEAD);
 	}
 
@@ -646,8 +627,7 @@ public class XHTML
 	 * @param document The XHTML document tree.
 	 * @return A reference to the {@code <head><title>} element, or <code>null</code> if there is no such element.
 	 */
-	public static Element getHeadTitleElement(final Document document)
-	{
+	public static Element getHeadTitleElement(final Document document) {
 		return (Element)getNode(document, LOCATION_STEP_SEPARATOR_CHAR + ELEMENT_HEAD + LOCATION_STEP_SEPARATOR_CHAR + ELEMENT_TITLE);
 	}
 
@@ -657,8 +637,7 @@ public class XHTML
 	 * @return A list of all {@code <head><meta>} elements, if any.
 	 */
 	@SuppressWarnings("unchecked")
-	public static List<Element> getHeadMetaElements(final Document document)
-	{
+	public static List<Element> getHeadMetaElements(final Document document) {
 		//		final Element headElement=getHeadElement(document);	//TODO improve XPath processor to extract elements
 
 		return getElements((List<Node>)evaluatePathExpression(document.getDocumentElement(), ELEMENT_HEAD + LOCATION_STEP_SEPARATOR_CHAR + ELEMENT_META));
@@ -672,12 +651,9 @@ public class XHTML
 	 * @throws NullPointerException if the given document and/or name is <code>null</code>.
 	 * @see #ELEMENT_META_ATTRIBUTE_NAME
 	 */
-	public static Element getHeadMetaElement(final Document document, final String metaName)
-	{
-		for(final Element element : getHeadMetaElements(document)) //get all the meta elements
-		{
-			if(metaName.equalsIgnoreCase(element.getAttribute(ELEMENT_META_ATTRIBUTE_NAME))) //if this meta element has the correct name
-			{
+	public static Element getHeadMetaElement(final Document document, final String metaName) {
+		for(final Element element : getHeadMetaElements(document)) { //get all the meta elements
+			if(metaName.equalsIgnoreCase(element.getAttribute(ELEMENT_META_ATTRIBUTE_NAME))) { //if this meta element has the correct name
 				return element;
 			}
 		}
@@ -695,8 +671,7 @@ public class XHTML
 	 * @see #ELEMENT_META_ATTRIBUTE_NAME
 	 * @see #ELEMENT_META_ATTRIBUTE_CONTENT
 	 */
-	public static String getHeadMetaElementContent(final Document document, final String metaName)
-	{
+	public static String getHeadMetaElementContent(final Document document, final String metaName) {
 		final Element metaElement = getHeadMetaElement(document, metaName);
 		return metaElement != null ? metaElement.getAttribute(ELEMENT_META_ATTRIBUTE_CONTENT) : null;
 	}
@@ -708,23 +683,17 @@ public class XHTML
 	 * @param element The element which contains the image information.
 	 * @return The reference to the image file, or <code>null</code> if no reference could be found.
 	 */
-	public static String getImageElementHRef(final String xhtmlNamespaceURI, final Element element)
-	{
-		if(element != null) //if a valid element is passed
-		{
+	public static String getImageElementHRef(final String xhtmlNamespaceURI, final Element element) {
+		if(element != null) { //if a valid element is passed
 			final String namespaceURI = element.getNamespaceURI(); //get the element's namespace URI
 			//if this element is in the correct namespace
-			if((xhtmlNamespaceURI == null && namespaceURI == null) || namespaceURI.equals(xhtmlNamespaceURI))
-			{
+			if((xhtmlNamespaceURI == null && namespaceURI == null) || namespaceURI.equals(xhtmlNamespaceURI)) {
 				final String elementName = element.getLocalName(); //get the element's name
 				//see if this is an <img> or <object> element
-				if(elementName.equals(ELEMENT_IMG)) //if the corresponding element is an img element
-				{
+				if(elementName.equals(ELEMENT_IMG)) { //if the corresponding element is an img element
 					//get the src attribute, representing the href of the image, or null if not present
 					return getDefinedAttributeNS(element, null, ELEMENT_IMG_ATTRIBUTE_SRC);
-				}
-				else if(elementName.equals(ELEMENT_OBJECT)) //if the corresponding element is an object element
-				{
+				} else if(elementName.equals(ELEMENT_OBJECT)) { //if the corresponding element is an object element
 					//get the data attribute, representing the href of the image, or null if not present
 					return getDefinedAttributeNS(element, null, ELEMENT_OBJECT_ATTRIBUTE_DATA);
 				}
@@ -739,17 +708,13 @@ public class XHTML
 	 * @param element The element which might represent a link.
 	 * @return The reference of the link, or <code>null</code> if the specified element does not represent a link or has no reference.
 	 */
-	public static String getLinkElementHRef(final String xhtmlNamespaceURI, final Element element) //TODO fix to call XLink and see if this is an XLink link
-	{
-		if(element != null) //if a valid element was passed
-		{
+	public static String getLinkElementHRef(final String xhtmlNamespaceURI, final Element element) { //TODO fix to call XLink and see if this is an XLink link
+		if(element != null) { //if a valid element was passed
 			final String namespaceURI = element.getNamespaceURI(); //get the element's namespace URI
 			//if this element is in the correct namespace
-			if(Objects.equals(xhtmlNamespaceURI, namespaceURI))
-			{
+			if(Objects.equals(xhtmlNamespaceURI, namespaceURI)) {
 				final String elementName = element.getLocalName(); //get the element's name
-				if(elementName.equals(ELEMENT_A)) //if this is an <a> element
-				{
+				if(elementName.equals(ELEMENT_A)) { //if this is an <a> element
 					return getDefinedAttributeNS(element, null, ELEMENT_A_ATTRIBUTE_HREF); //return the value of the href attribute, if there is one
 				}
 			}
@@ -765,17 +730,12 @@ public class XHTML
 	 * @see #LINK_ATTRIBUTE_TYPE
 	 * @see <a href="http://www.w3.org/TR/html5/links.html#attr-hyperlink-type">HTML5 Link MIME type</a>
 	 */
-	public static ContentType getLinkContentType(final Element element)
-	{
+	public static ContentType getLinkContentType(final Element element) {
 		final String typeString = element.getAttributeNS(null, LINK_ATTRIBUTE_TYPE); //get the value of the type attribute
-		if(!typeString.isEmpty()) //if there is a type specified
-		{
-			try
-			{
+		if(!typeString.isEmpty()) { //if there is a type specified
+			try {
 				return ContentType.create(typeString); //parse the content type and return it
-			}
-			catch(final IllegalArgumentException illegalArgumentException) //if the content type isn't valid
-			{
+			} catch(final IllegalArgumentException illegalArgumentException) { //if the content type isn't valid
 				Log.debug(illegalArgumentException);
 			}
 		}
@@ -790,8 +750,7 @@ public class XHTML
 	 * @see #LINK_ATTRIBUTE_REL
 	 * @see <a href="http://www.w3.org/TR/html5/links.html#linkTypes">HTML5 Link Types</a>
 	 */
-	public static boolean hasLinkType(final Element element, final LinkType linkType)
-	{
+	public static boolean hasLinkType(final Element element, final LinkType linkType) {
 		return hasLinkType(element, linkType.getID());
 	}
 
@@ -802,8 +761,7 @@ public class XHTML
 	 * @return <code>true</code> if the given element has a {@value #LINK_ATTRIBUTE_REL} attribute with one of the given link types.
 	 * @see #LINK_ATTRIBUTE_REL
 	 */
-	public static boolean hasLinkType(final Element element, final String linkType)
-	{
+	public static boolean hasLinkType(final Element element, final String linkType) {
 		return containsTokenIgnoreCase(element.getAttributeNS(null, LINK_ATTRIBUTE_REL), SPACE_CHARACTERS, linkType); //see if the given link type ID is one of the tokens in the "rel" attribute value
 	}
 
@@ -813,21 +771,16 @@ public class XHTML
 	 * @return A style declaration representing the style in the style attribute, or <code>null</code> if there is no style in the style attribute.
 	 * @deprecated
 	 */
-	public static CSSStyleDeclaration getLocalStyle(final Element element)
-	{
+	public static CSSStyleDeclaration getLocalStyle(final Element element) {
 		final String styleValue = element.getAttributeNS(null, ATTRIBUTE_STYLE); //get the value of the style attribute
-		if(styleValue.length() != 0) //if there is a style value
-		{
+		if(styleValue.length() != 0) { //if there is a style value
 			final XMLCSSProcessor cssProcessor = new XMLCSSProcessor(); //create a new CSS processor TODO make one for the entire tidier object, if we can -- don't create it locally
 			final XMLCSSStyleDeclaration style = new XMLCSSStyleDeclaration(); //create a new style declaration
-			try
-			{
+			try {
 				final ParseReader styleReader = new ParseReader(styleValue, "Element " + element.getNodeName() + " Local Style"); //create a string reader from the value of this local style attribute TODO i18n
 				cssProcessor.parseRuleSet(styleReader, style); //read the style into our style declaration
 				return style; //return the style
-			}
-			catch(IOException e) //if we have any errors reading the style
-			{
+			} catch(IOException e) { //if we have any errors reading the style
 				return null; //show that we didn't understand the style
 			}
 		}
@@ -848,25 +801,19 @@ public class XHTML
 	 * @param contentType The content type of a resource, or <code>null</code> for no content type.
 	 * @return <code>true</code> if the given media type is one of several HTML media types.
 	 */
-	public static boolean isHTML(final ContentType contentType) //TODO maybe move this to an HTMLUtilities
-	{
-		if(contentType != null) //if a media type is given
-		{
+	public static boolean isHTML(final ContentType contentType) { //TODO maybe move this to an HTMLUtilities
+		if(contentType != null) { //if a media type is given
 			final String primaryType = contentType.getPrimaryType(); //get the primary type
 			final String subType = contentType.getSubType(); //get the sub type
-			if(ContentType.TEXT_PRIMARY_TYPE.equals(primaryType)) //if this is "text/?"
-			{
+			if(ContentType.TEXT_PRIMARY_TYPE.equals(primaryType)) { //if this is "text/?"
 				if(HTML_SUBTYPE.equals(subType) //if this is "text/html"
-						|| OEB.X_OEB1_DOCUMENT_SUBTYPE.equals(subType)) //if this is "text/x-oeb1-document"
-				{
+						|| OEB.X_OEB1_DOCUMENT_SUBTYPE.equals(subType)) { //if this is "text/x-oeb1-document"
 					return true; //show that this is HTML
 				}
 			}
-			if(ContentType.APPLICATION_PRIMARY_TYPE.equals(primaryType)) //if this is "application/?"
-			{
+			if(ContentType.APPLICATION_PRIMARY_TYPE.equals(primaryType)) { //if this is "application/?"
 				//TODO probably add a parameter to specify whether we should allow fragments to qualify as XHTML---right now this behavior is not consistent with XMLUtilities.isXML(), which doesn't recognize fragments as XML
-				if(XHTML_XML_SUBTYPE.equals(subType) || XHTML_XML_EXTERNAL_PARSED_ENTITY_SUBTYPE.equals(subType)) //if this is "application/xhtml+xml" or "application/xhtml+xml-external-parsed-entity"
-				{
+				if(XHTML_XML_SUBTYPE.equals(subType) || XHTML_XML_EXTERNAL_PARSED_ENTITY_SUBTYPE.equals(subType)) { //if this is "application/xhtml+xml" or "application/xhtml+xml-external-parsed-entity"
 					return true; //show that this is HTML
 				}
 			}
@@ -886,10 +833,8 @@ public class XHTML
 	 * @param namespaceURI A URI representing an XML namespace, or <code>null</code> for no namespace.
 	 * @return <code>true</code> if the given URI represents one of the HTML XML namespaces.
 	 */
-	public static boolean isHTMLNamespaceURI(final URI namespaceURI)
-	{
-		if(namespaceURI != null) //if the namespace URI is valid
-		{
+	public static boolean isHTMLNamespaceURI(final URI namespaceURI) {
+		if(namespaceURI != null) { //if the namespace URI is valid
 			//if it's part of the XHTML or OEB namespace
 			if(XHTML_NAMESPACE_URI.equals(namespaceURI) || OEB.OEB1_DOCUMENT_NAMESPACE_URI.equals(namespaceURI))
 				return true; //show that this is an HTML namespace
@@ -904,31 +849,25 @@ public class XHTML
 	 * @param element The element which might represent an image.
 	 * @return <code>true</code> if the specified element represents an image.
 	 */
-	public static boolean isImageElement(final String xhtmlNamespaceURI, final Element element)
-	{
-		if(element != null) //if a valid element was passed
-		{
+	public static boolean isImageElement(final String xhtmlNamespaceURI, final Element element) {
+		if(element != null) { //if a valid element was passed
 			final String namespaceURI = element.getNamespaceURI(); //get the element's namespace URI
 			//if this element is in the correct namespace
-			if(Objects.equals(xhtmlNamespaceURI, namespaceURI))
-			{
+			if(Objects.equals(xhtmlNamespaceURI, namespaceURI)) {
 				//TODO fix				final String elementName=element.getLocalName();  //get the element's name
 				final String elementName = element.getLocalName(); //get the element's name
 				if(elementName.equals(ELEMENT_IMG)) //if this is an <img> element
 					return true; //show that this is an image object
-				else if(elementName.equals(ELEMENT_OBJECT)) //if this is an <object> element
-				{
+				else if(elementName.equals(ELEMENT_OBJECT)) { //if this is an <object> element
 					//see if there is a type attribute
-					if(element.hasAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_TYPE)) //if there is a type attribute
-					{
+					if(element.hasAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_TYPE)) { //if there is a type attribute
 						final String type = element.getAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_TYPE); //get the type
 						final ContentType mediaType = ContentType.create(type); //create a media type from the given type
 						if(mediaType.getPrimaryType().equals(ContentType.IMAGE_PRIMARY_TYPE)) //if this is an image
 							return true; //show that this is an image object
 					}
 					//see if there is a data attribute, since there is no type specified
-					if(element.hasAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_DATA)) //if there is a data attribute
-					{
+					if(element.hasAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_DATA)) { //if there is a data attribute
 						final String data = element.getAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_DATA); //get the data
 						final ContentType mediaType = Files.getContentType(new File(data)); //try to get a media type from the file
 						if(mediaType != null && mediaType.getPrimaryType().equals(ContentType.IMAGE_PRIMARY_TYPE)) //if this is an image
@@ -946,14 +885,11 @@ public class XHTML
 	 * @param element The element which might represent a link.
 	 * @return <code>true</code> if the specified element represents a link.
 	 */
-	public static boolean isLinkElement(final String xhtmlNamespaceURI, final Element element) //TODO fix to call XLink and see if this is an XLink link
-	{
-		if(element != null) //if a valid element was passed
-		{
+	public static boolean isLinkElement(final String xhtmlNamespaceURI, final Element element) { //TODO fix to call XLink and see if this is an XLink link
+		if(element != null) { //if a valid element was passed
 			final String namespaceURI = element.getNamespaceURI(); //get the element's namespace URI
 			//if this element is in the correct namespace
-			if(Objects.equals(xhtmlNamespaceURI, namespaceURI))
-			{
+			if(Objects.equals(xhtmlNamespaceURI, namespaceURI)) {
 				final String elementName = element.getLocalName(); //get the element's name
 				if(elementName.equals(ELEMENT_A)) //if this is an <a> element
 					return true; //show that this is a link element
@@ -968,13 +904,11 @@ public class XHTML
 	 * @param localName The local name of the element.
 	 * @return <code>true</code> if the specified element should be empty.
 	 */
-	public static boolean isEmptyElement(final URI namespaceURI, final String localName)
-	{
+	public static boolean isEmptyElement(final URI namespaceURI, final String localName) {
 		//TODO make this static---placed here because it was causing a compile error due to an Eclipse bug
 		final String[] EMPTY_ELEMENT_LOCAL_NAMES = new String[] { ELEMENT_BASE, ELEMENT_META, ELEMENT_LINK, ELEMENT_HR, ELEMENT_BR, ELEMENT_PARAM, ELEMENT_IMG,
 				ELEMENT_AREA, ELEMENT_INPUT, ELEMENT_COL }; //TODO probably put these in a better place, either in a hash set for faster lookup or put this constant in XHTMLConstants
-		if(localName != null && (namespaceURI == null || isHTMLNamespaceURI(namespaceURI))) //if this element has an HTML namespace or no namespace
-		{
+		if(localName != null && (namespaceURI == null || isHTMLNamespaceURI(namespaceURI))) { //if this element has an HTML namespace or no namespace
 			return Arrays.indexOf(EMPTY_ELEMENT_LOCAL_NAMES, localName) >= 0; //return whether the local name is one of the empty element local names
 		}
 		return false; //this does not appear to be an empty element
@@ -986,17 +920,13 @@ public class XHTML
 	 * @param element The element which represents a link.
 	 * @param href The new reference to add to the link.
 	 */
-	public static void setLinkElementHRef(final String xhtmlNamespaceURI, final Element element, final String href) //TODO fix to call XLink and see if this is an XLink link
-	{
-		if(element != null) //if a valid element was passed
-		{
+	public static void setLinkElementHRef(final String xhtmlNamespaceURI, final Element element, final String href) { //TODO fix to call XLink and see if this is an XLink link
+		if(element != null) { //if a valid element was passed
 			final String namespaceURI = element.getNamespaceURI(); //get the element's namespace URI
 			//if this element is in the correct namespace
-			if(Objects.equals(xhtmlNamespaceURI, namespaceURI))
-			{
+			if(Objects.equals(xhtmlNamespaceURI, namespaceURI)) {
 				final String elementName = element.getLocalName(); //get the element's name
-				if(elementName.equals(ELEMENT_A)) //if this is an <a> element
-				{
+				if(elementName.equals(ELEMENT_A)) { //if this is an <a> element
 					element.setAttributeNS(null, ELEMENT_A_ATTRIBUTE_HREF, href); //set the href attribute TODO what if they were using an attribute prefix?
 				}
 			}
@@ -1013,8 +943,7 @@ public class XHTML
 	 * @see XML#getText(Node, Set)
 	 * @see #BLOCK_ELEMENTS
 	 */
-	public static String getText(final Node node)
-	{
+	public static String getText(final Node node) {
 		return XML.getText(node, BLOCK_ELEMENTS);
 	}
 
@@ -1030,8 +959,7 @@ public class XHTML
 	 * @see XML#getText(Node, Set, boolean, StringBuilder)
 	 * @see #BLOCK_ELEMENTS
 	 */
-	public static void getText(final Node node, final StringBuilder stringBuilder)
-	{
+	public static void getText(final Node node, final StringBuilder stringBuilder) {
 		XML.getText(node, BLOCK_ELEMENTS, true, stringBuilder);
 	}
 
@@ -1043,8 +971,7 @@ public class XHTML
 	 * @see #splitSpaces(CharSequence)
 	 * @see <a href="http://www.w3.org/TR/html5/dom.html#classes>The <code>class</code> attribute</a>
 	 */
-	public static Set<CharSequence> getClasses(final CharSequence htmlClass)
-	{
+	public static Set<CharSequence> getClasses(final CharSequence htmlClass) {
 		return immutableSetOf(splitSpaces(htmlClass)); //remove duplicates
 	}
 
@@ -1058,8 +985,7 @@ public class XHTML
 	 * @return The tokens resulting from the split-string-on-spaces operation.
 	 * @see <a href="http://www.w3.org/TR/html5/infrastructure.html#split-a-string-on-spaces">split a string on spaces</a>
 	 */
-	public static List<CharSequence> splitSpaces(final CharSequence charSequence)
-	{
+	public static List<CharSequence> splitSpaces(final CharSequence charSequence) {
 		return SPACE_CHARACTERS.split(charSequence); //split on character
 	}
 

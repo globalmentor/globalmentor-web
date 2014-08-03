@@ -16,16 +16,17 @@
 
 package com.globalmentor.text.xml;
 
-/**XML parsing error peporting interface.
-@author Garret Wilson
-@deprecated
-*/
-public interface XMLStatusReportable
-{
+/**
+ * XML parsing error peporting interface.
+ * @author Garret Wilson
+ * @deprecated
+ */
+public interface XMLStatusReportable {
 
-	/**Reports an error in the form of an XML exception.
-	@param xmlException The exception which holds information about the error.
-	*/
+	/**
+	 * Reports an error in the form of an XML exception.
+	 * @param xmlException The exception which holds information about the error.
+	 */
 	public void reportError(final XMLParseException xmlParseException);
 
 }

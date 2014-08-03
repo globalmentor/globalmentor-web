@@ -43,8 +43,7 @@ import com.globalmentor.text.W3CDateFormat;
  * @see <a href="http://www.w3.org/TR/NOTE-datetime">Date and Time Formats</a>
  * @see W3CDateFormat.Style#DATE_TIME
  */
-public class JSON
-{
+public class JSON {
 
 	/** The content type for JSON: <code>application/json</code>. */
 	public static final ContentType CONTENT_TYPE = ContentType.create(ContentType.APPLICATION_PRIMARY_TYPE, "json");
@@ -119,47 +118,26 @@ public class JSON
 	 * @throws IOException if there is an error appending the information.
 	 * @return The appendable object.
 	 */
-	public static <A extends Appendable> A appendValue(final A appendable, final Object value) throws IOException
-	{
-		if(value != null) //if the value is not null
-		{
-			if(value instanceof CharSequence) //string
-			{
+	public static <A extends Appendable> A appendValue(final A appendable, final Object value) throws IOException {
+		if(value != null) { //if the value is not null
+			if(value instanceof CharSequence) { //string
 				appendStringValue(appendable, (CharSequence)value);
-			}
-			else if(value instanceof Boolean) //boolean
-			{
+			} else if(value instanceof Boolean) { //boolean
 				appendBooleanValue(appendable, (Boolean)value);
-			}
-			else if(value instanceof Number) //number
-			{
+			} else if(value instanceof Number) { //number
 				appendNumberValue(appendable, (Number)value);
-			}
-			else if(value instanceof List) //if the value is a list
-			{
+			} else if(value instanceof List) { //if the value is a list
 				appendArrayValue(appendable, ((List<?>)value).toArray()); //append the list as an array
-			}
-			else if(value instanceof Map) //if the value is a map
-			{
+			} else if(value instanceof Map) { //if the value is a map
 				appendAssociativeArrayValue(appendable, (Map<?, ?>)value); //append the map as an associative array
-			}
-			else if(value.getClass().isArray()) //if the value is an array (we can't use instanceof Object[], because this may be an array of something besides Object)
-			{
+			} else if(value.getClass().isArray()) { //if the value is an array (we can't use instanceof Object[], because this may be an array of something besides Object)
 				appendArrayValue(appendable, value); //append the array
-			}
-			else if(value instanceof Date) //date
-			{
+			} else if(value instanceof Date) { //date
 				appendStringValue(appendable, W3CDateFormat.format((Date)value, W3CDateFormat.Style.DATE_HOURS_MINUTES_SECONDS));
-			}
-			else
-			//if we can't determine the type of object
-			{
+			} else { //if we can't determine the type of object
 				appendStringValue(appendable, value.toString()); //append a string form of the value	
 			}
-		}
-		else
-		//if the value is null
-		{
+		} else { //if the value is null
 			appendable.append(NULL); //append null
 		}
 		return appendable; //return the appendable object
@@ -175,8 +153,7 @@ public class JSON
 	 * @see #encodeStringValue(StringBuilder)
 	 */
 	@SuppressWarnings("unchecked")
-	public static <A extends Appendable> A appendStringValue(final A appendable, final CharSequence charSequence) throws IOException
-	{
+	public static <A extends Appendable> A appendStringValue(final A appendable, final CharSequence charSequence) throws IOException {
 		return (A)appendable.append(QUOTATION_MARK).append(encodeStringValue(charSequence)).append(QUOTATION_MARK); //append and return "encodedString"
 	}
 
@@ -189,8 +166,7 @@ public class JSON
 	 * @throws IOException if there is an error appending the information.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <A extends Appendable> A appendBooleanValue(final A appendable, final Boolean bool) throws IOException
-	{
+	public static <A extends Appendable> A appendBooleanValue(final A appendable, final Boolean bool) throws IOException {
 		return (A)appendable.append(checkInstance(bool, "Boolean value cannot be null.").toString()); //append and return boolean
 	}
 
@@ -203,8 +179,7 @@ public class JSON
 	 * @throws IOException if there is an error appending the information.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <A extends Appendable> A appendNumberValue(final A appendable, final Number number) throws IOException
-	{
+	public static <A extends Appendable> A appendNumberValue(final A appendable, final Number number) throws IOException {
 		return (A)appendable.append(checkInstance(number, "Number value cannot be null.").toString()); //append and return number
 	}
 
@@ -217,19 +192,14 @@ public class JSON
 	 * @throws IllegalArgumentException if the given object is not an array.
 	 * @throws IOException if there is an error appending the information.
 	 */
-	public static <A extends Appendable> A appendArrayValue(final A appendable, final Object array) throws IOException
-	{
+	public static <A extends Appendable> A appendArrayValue(final A appendable, final Object array) throws IOException {
 		appendable.append(BEGIN_ARRAY); //[
 		final int arrayLength = getLength(array); //see how long the array is
-		for(int i = 0; i < arrayLength; ++i) //for each array element
-		{
+		for(int i = 0; i < arrayLength; ++i) { //for each array element
 			appendValue(appendable, get(array, i)); //append this element value
-			if(i < arrayLength - 1) //if we aren't at the end
-			{
+			if(i < arrayLength - 1) { //if we aren't at the end
 				appendable.append(VALUE_SEPARATOR); //,
-			}
-			else
-			{
+			} else {
 				appendable.append(END_ARRAY); //]
 			}
 		}
@@ -248,35 +218,25 @@ public class JSON
 	 * @throws IOException if there is an error appending the information.
 	 * @see #appendValue(Appendable, Object)
 	 */
-	public static <A extends Appendable, K, V> A appendAssociativeArrayValue(final A appendable, final Map<K, V> map) throws IOException
-	{
+	public static <A extends Appendable, K, V> A appendAssociativeArrayValue(final A appendable, final Map<K, V> map) throws IOException {
 		appendable.append(BEGIN_OBJECT); //{
 		final Set<Map.Entry<K, V>> mapEntrySet = map.entrySet(); //get the set of map entries
 		boolean hasMoreElements = !mapEntrySet.isEmpty();
-		if(!hasMoreElements) //if the map is empty
-		{
+		if(!hasMoreElements) { //if the map is empty
 			appendable.append(END_OBJECT); //}
-		}
-		else
-		//if the map isn't empty
-		{
+		} else { //if the map isn't empty
 			final Iterator<Map.Entry<K, V>> mapEntryIterator = mapEntrySet.iterator();
-			do
-			{
+			do {
 				final Map.Entry<K, V> mapEntry = mapEntryIterator.next();
 				appendStringValue(appendable, mapEntry.getKey().toString()); //key
 				appendable.append(NAME_SEPARATOR); //:
 				appendValue(appendable, mapEntry.getValue()); //value
-				if(hasMoreElements = mapEntryIterator.hasNext()) //see if there are more elements
-				{
+				if(hasMoreElements = mapEntryIterator.hasNext()) { //see if there are more elements
 					appendable.append(VALUE_SEPARATOR); //,
-				}
-				else
-				{
+				} else {
 					appendable.append(END_OBJECT); //}
 				}
-			}
-			while(hasMoreElements);
+			} while(hasMoreElements);
 		}
 		return appendable; //return the appendable object
 	}
@@ -288,8 +248,7 @@ public class JSON
 	 * @return A string containing encoded characters.
 	 * @throws NullPointerException if the given character sequence is <code>null</code>.
 	 */
-	public static String encodeStringValue(final CharSequence charSequence)
-	{
+	public static String encodeStringValue(final CharSequence charSequence) {
 		final StringBuilder stringBuilder = new StringBuilder(checkInstance(charSequence, "Character sequence cannot be null.")); //create a new string builder with the contents of the character sequence
 		replace(stringBuilder, JavaScript.STRING_ENCODE_CHARS, JavaScript.STRING_ENCODE_REPLACEMENT_STRINGS); //replace the encode characters with their encoded replacements
 		return stringBuilder.toString(); //return the encoded string
@@ -303,8 +262,7 @@ public class JSON
 	 * @throws NullPointerException if the given character sequence is <code>null</code>.
 	 * @throws IllegalArgumentException if the character sequence ends with the given escape character.
 	 */
-	public static String decodeStringValue(final CharSequence charSequence)
-	{
+	public static String decodeStringValue(final CharSequence charSequence) {
 		return unescape(new StringBuilder(checkInstance(charSequence, "Character sequence cannot be null.")), ESCAPE).toString(); //unescape the string
 	}
 
@@ -313,14 +271,10 @@ public class JSON
 	 * @param object The object to serialize.
 	 * @return A string serialization of the given object.
 	 */
-	public static String serialize(final Object object)
-	{
-		try
-		{
+	public static String serialize(final Object object) {
+		try {
 			return appendValue(new StringBuilder(), object).toString(); //serialize the given object and return the resulting string
-		}
-		catch(final IOException ioException)
-		{
+		} catch(final IOException ioException) {
 			throw impossible(ioException); //string builders never throw I/O exceptions
 		}
 	}
@@ -335,10 +289,8 @@ public class JSON
 	 * @throws ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
 	 * @throws ArgumentSyntaxException if the current character in the sequence does not match the specified character.
 	 */
-	protected static int check(final CharSequence charSequence, final int index, final char c) throws ArgumentSyntaxException
-	{
-		if(charSequence.charAt(index) != c) //if this character does not match what we expected
-		{
+	protected static int check(final CharSequence charSequence, final int index, final char c) throws ArgumentSyntaxException {
+		if(charSequence.charAt(index) != c) { //if this character does not match what we expected
 			throw new ArgumentSyntaxException("Expected " + (char)c + ".", charSequence.toString(), index);
 		}
 		return index + 1; //return the subsequent index
@@ -355,11 +307,9 @@ public class JSON
 	 * @throws ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
 	 * @throws ArgumentSyntaxException if the current character in the sequence does not fall within the given range.
 	 */
-	protected static int check(final CharSequence charSequence, int index, final char lowerBound, final char upperBound)
-	{
+	protected static int check(final CharSequence charSequence, int index, final char lowerBound, final char upperBound) {
 		final char c = charSequence.charAt(index); //get the current character
-		if(c < lowerBound || c > upperBound) //if this character is not in the range
-		{
+		if(c < lowerBound || c > upperBound) { //if this character is not in the range
 			throw new ArgumentSyntaxException("Expected character from " + (char)lowerBound + " to " + (char)upperBound + ".", charSequence.toString(), index);
 		}
 		return index + 1; //return the subsequent index
@@ -375,10 +325,8 @@ public class JSON
 	 * @throws ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
 	 * @throws ArgumentSyntaxException if the current character in the sequence does not match one of the specified characters.
 	 */
-	protected static int check(final CharSequence charSequence, int index, final char[] characters)
-	{
-		if(indexOf(characters, charSequence.charAt(index)) < 0) //if this character does not match one of the expected characters
-		{
+	protected static int check(final CharSequence charSequence, int index, final char[] characters) {
+		if(indexOf(characters, charSequence.charAt(index)) < 0) { //if this character does not match one of the expected characters
 			throw new ArgumentSyntaxException("Expected one of " + java.util.Arrays.toString(characters) + ".", charSequence.toString(), index);
 		}
 		return index + 1; //return the subsequent index
@@ -394,11 +342,9 @@ public class JSON
 	 * @throws ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
 	 * @throws ArgumentSyntaxException if the current character in the sequence does not match the specified character sequence.
 	 */
-	protected static int check(final CharSequence charSequence, int index, final CharSequence match) throws ArgumentSyntaxException
-	{
+	protected static int check(final CharSequence charSequence, int index, final CharSequence match) throws ArgumentSyntaxException {
 		final int matchLength = match.length(); //get the length to match
-		for(int i = 0; i < matchLength; ++i) //for each match index
-		{
+		for(int i = 0; i < matchLength; ++i) { //for each match index
 			index = check(charSequence, index, match.charAt(i)); //compare the current character with the match character
 		}
 		return index; //return the index, which is already at the subsequent character
@@ -412,43 +358,31 @@ public class JSON
 	 * @return The new index at which to continue parsing; either the first character not in the array, or the length of the character sequence.
 	 * @throws NullPointerException if the given character sequence and/or the given characters is <code>null</code>.
 	 */
-	protected static int skip(final CharSequence charSequence, int index, final char[] characters)
-	{
+	protected static int skip(final CharSequence charSequence, int index, final char[] characters) {
 		char lowerBound = Character.MAX_VALUE; //we'll determine the lower bound of the range
 		char upperBound = 0; //we'll determine the lower bound of the range
-		for(int i = characters.length - 1; i >= 0; --i) //look at each characters to skip
-		{
+		for(int i = characters.length - 1; i >= 0; --i) { //look at each characters to skip
 			final char c = characters[i]; //get this character
-			if(c < lowerBound) //if this is a lower character than the one we already have for the lower bound
-			{
+			if(c < lowerBound) { //if this is a lower character than the one we already have for the lower bound
 				lowerBound = c; //update the lower bound
 			}
-			if(c > upperBound) //if this is a higher character than the one we already have for the upper bound
-			{
+			if(c > upperBound) { //if this is a higher character than the one we already have for the upper bound
 				upperBound = c; //update the upper bound
 			}
 		}
 		final int length = charSequence.length(); //get the length of the character sequence
-		for(; index < length; ++index) //keep looking until we run out of characters
-		{
+		for(; index < length; ++index) { //keep looking until we run out of characters
 			final char c = charSequence.charAt(index); //get the current character
-			if(c < lowerBound || c > upperBound) //if this character is not in the range of the characters
-			{
+			if(c < lowerBound || c > upperBound) { //if this character is not in the range of the characters
 				break; //stop searching
-			}
-			else
-			//if the character is within the range of characters, make sure it's one of the characters
-			{
+			} else { //if the character is within the range of characters, make sure it's one of the characters
 				boolean skip = false; //we'll see if there's a match
-				for(int i = characters.length - 1; i >= 0 && !skip; --i) //look at each characters to skip
-				{
-					if(c == characters[i]) //if we found a character to skip
-					{
+				for(int i = characters.length - 1; i >= 0 && !skip; --i) { //look at each characters to skip
+					if(c == characters[i]) { //if we found a character to skip
 						skip = true; //indicate that we should skip this character
 					}
 				}
-				if(!skip) //if we shouldn't skip this characters
-				{
+				if(!skip) { //if we shouldn't skip this characters
 					break; //stop advancing
 				}
 			}
@@ -465,14 +399,11 @@ public class JSON
 	 * @return The new index at which to continue parsing; either the first character not in the range, or the length of the character sequence.
 	 * @throws NullPointerException if the given character sequence is <code>null</code>.
 	 */
-	protected static int skip(final CharSequence charSequence, int index, final char lowerBound, final char upperBound)
-	{
+	protected static int skip(final CharSequence charSequence, int index, final char lowerBound, final char upperBound) {
 		final int length = charSequence.length(); //get the length of the character sequence
-		for(; index < length; ++index) //keep looking until we run out of characters
-		{
+		for(; index < length; ++index) { //keep looking until we run out of characters
 			final char c = charSequence.charAt(index); //get the current character
-			if(c < lowerBound || c > upperBound) //if this character is not in the range
-			{
+			if(c < lowerBound || c > upperBound) { //if this character is not in the range
 				break; //stop searching
 			}
 		}
@@ -486,13 +417,10 @@ public class JSON
 	 * @return The new index at which to continue parsing; either the first non-whitespace character, or the length of the character sequence.
 	 * @throws NullPointerException if the given character sequence is <code>null</code>.
 	 */
-	protected static int skipWhitespace(final CharSequence charSequence, int index)
-	{
+	protected static int skipWhitespace(final CharSequence charSequence, int index) {
 		final int length = charSequence.length(); //get the length of the character sequence
-		for(; index < length; ++index) //keep looking until we run out of characters
-		{
-			switch(charSequence.charAt(index))
-			{
+		for(; index < length; ++index) { //keep looking until we run out of characters
+			switch(charSequence.charAt(index)) {
 				case SPACE: //whitespace
 				case HORIZONTAL_TAB:
 				case LINE_FEED:
@@ -513,20 +441,14 @@ public class JSON
 	 * @throws NullPointerException if the given character sequence is <code>null</code>.
 	 * @throws ArgumentSyntaxException if the given character sequence does not represent a valid JSON object.
 	 */
-	public static Object parseValue(final CharSequence charSequence) throws ArgumentSyntaxException
-	{
+	public static Object parseValue(final CharSequence charSequence) throws ArgumentSyntaxException {
 		final ObjectHolder<Object> objectHolder = new ObjectHolder<Object>(); //create a new objecdt holder to hold the value
-		try
-		{
+		try {
 			parseValue(charSequence, 0, objectHolder); //parse the value
 			return objectHolder.getObject(); //return the object
-		}
-		catch(final IndexOutOfBoundsException indexOutOfBoundsException) //if we ran out of characters
-		{
+		} catch(final IndexOutOfBoundsException indexOutOfBoundsException) { //if we ran out of characters
 			throw new ArgumentSyntaxException(indexOutOfBoundsException, charSequence.toString());
-		}
-		catch(final NumberFormatException numberFormatException) //if a number wasn't formatted correctly
-		{
+		} catch(final NumberFormatException numberFormatException) { //if a number wasn't formatted correctly
 			throw new ArgumentSyntaxException(numberFormatException, charSequence.toString());
 		}
 	}
@@ -542,13 +464,10 @@ public class JSON
 	 * @throws ArgumentSyntaxException if the given character sequence does not represent a valid JSON object.
 	 * @throws ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
 	 */
-	protected static int parseValue(final CharSequence charSequence, int index, final ObjectHolder<Object> objectHolder) throws ArgumentSyntaxException
-	{
+	protected static int parseValue(final CharSequence charSequence, int index, final ObjectHolder<Object> objectHolder) throws ArgumentSyntaxException {
 		final Object object; //we'll set the object after parsing it
 		char c = charSequence.charAt(index); //get the current character
-		switch(c)
-		//check the current character
-		{
+		switch(c) { //check the current character
 			case BEGIN_ARRAY: //array
 			{
 				final List<Object> list = new ArrayList<Object>(); //create a new list to populate
@@ -615,8 +534,7 @@ public class JSON
 	 * @throws ArgumentSyntaxException if the given character sequence does not represent a valid JSON string.
 	 * @throws ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
 	 */
-	protected static int parseArray(final CharSequence charSequence, int index, final List<Object> list) throws ArgumentSyntaxException
-	{
+	protected static int parseArray(final CharSequence charSequence, int index, final List<Object> list) throws ArgumentSyntaxException {
 		index = check(charSequence, index, BEGIN_ARRAY); //make sure this is the start of an array
 		index = parseArrayContents(charSequence, index, list); //parse the contents of the array
 		return check(charSequence, index, END_ARRAY); //make sure this is the end of a array
@@ -632,31 +550,22 @@ public class JSON
 	 * @throws ArgumentSyntaxException if the given character sequence does not represent a valid JSON object.
 	 * @throws ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
 	 */
-	protected static int parseArrayContents(final CharSequence charSequence, int index, final List<Object> list) throws ArgumentSyntaxException
-	{
+	protected static int parseArrayContents(final CharSequence charSequence, int index, final List<Object> list) throws ArgumentSyntaxException {
 		index = skipWhitespace(charSequence, index); //skip whitespace
-		if(charSequence.charAt(index) == END_ARRAY) //if we've reached the end of the array
-		{
+		if(charSequence.charAt(index) == END_ARRAY) { //if we've reached the end of the array
 			return index; //return the new starting index
 		}
-		while(true)
-		{
+		while(true) {
 			final ObjectHolder<Object> objectHolder = new ObjectHolder<Object>(); //create a new object holder
 			index = parseValue(charSequence, index, objectHolder); //parse this value
 			list.add(objectHolder.getObject()); //add the object to the list
 			index = skipWhitespace(charSequence, index); //skip whitespace
 			final char c = charSequence.charAt(index); //get the next character
-			if(c == VALUE_SEPARATOR) //if there are more values
-			{
+			if(c == VALUE_SEPARATOR) { //if there are more values
 				index = skipWhitespace(charSequence, index + 1); //skip whitespace after the separator value and keep processing the other values
-			}
-			else if(c == END_ARRAY) //if we've reached the end of the array
-			{
+			} else if(c == END_ARRAY) { //if we've reached the end of the array
 				return index; //return the new starting index
-			}
-			else
-			//if we don't have more values but we haven't reached the end of the array
-			{
+			} else { //if we don't have more values but we haven't reached the end of the array
 				throw new ArgumentSyntaxException("Expected " + VALUE_SEPARATOR + " or " + END_ARRAY + ".", charSequence.toString(), index);
 			}
 		}
@@ -672,8 +581,7 @@ public class JSON
 	 * @throws ArgumentSyntaxException if the given character sequence does not represent a valid JSON string.
 	 * @throws ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
 	 */
-	protected static int parseObject(final CharSequence charSequence, int index, final Map<String, Object> map) throws ArgumentSyntaxException
-	{
+	protected static int parseObject(final CharSequence charSequence, int index, final Map<String, Object> map) throws ArgumentSyntaxException {
 		index = check(charSequence, index, BEGIN_OBJECT); //make sure this is the start of an object
 		index = parseObjectContents(charSequence, index, map); //parse the contents of the array
 		return check(charSequence, index, END_OBJECT); //make sure this is the end of a object
@@ -689,15 +597,12 @@ public class JSON
 	 * @throws ArgumentSyntaxException if the given character sequence does not represent a valid JSON object.
 	 * @throws ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
 	 */
-	protected static int parseObjectContents(final CharSequence charSequence, int index, final Map<String, Object> map) throws ArgumentSyntaxException
-	{
+	protected static int parseObjectContents(final CharSequence charSequence, int index, final Map<String, Object> map) throws ArgumentSyntaxException {
 		index = skipWhitespace(charSequence, index); //skip whitespace
-		if(charSequence.charAt(index) == END_OBJECT) //if we've reached the end of the object
-		{
+		if(charSequence.charAt(index) == END_OBJECT) { //if we've reached the end of the object
 			return index; //return the new starting index
 		}
-		while(true)
-		{
+		while(true) {
 			final ObjectHolder<String> nameHolder = new ObjectHolder<String>(); //create a new object holder for the name
 			index = parseString(charSequence, index, nameHolder); //parse the name
 			index = skipWhitespace(charSequence, index); //skip whitespace
@@ -708,17 +613,11 @@ public class JSON
 			map.put(nameHolder.getObject(), valueHolder.getObject()); //store the value
 			index = skipWhitespace(charSequence, index); //skip whitespace
 			final char c = charSequence.charAt(index); //get the next character
-			if(c == VALUE_SEPARATOR) //if there are more values
-			{
+			if(c == VALUE_SEPARATOR) { //if there are more values
 				index = skipWhitespace(charSequence, index + 1); //skip whitespace after the separator value and keep processing the other values
-			}
-			else if(c == END_OBJECT) //if we've reached the end of the object
-			{
+			} else if(c == END_OBJECT) { //if we've reached the end of the object
 				return index; //return the new starting index
-			}
-			else
-			//if we don't have more values but we haven't reached the end of the object
-			{
+			} else { //if we don't have more values but we haven't reached the end of the object
 				throw new ArgumentSyntaxException("Expected " + VALUE_SEPARATOR + " or " + END_ARRAY + ".", charSequence.toString(), index);
 			}
 		}
@@ -734,8 +633,7 @@ public class JSON
 	 * @throws ArgumentSyntaxException if the given character sequence does not represent a valid JSON string.
 	 * @throws ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
 	 */
-	protected static int parseString(final CharSequence charSequence, int index, final ObjectHolder<String> stringHolder) throws ArgumentSyntaxException
-	{
+	protected static int parseString(final CharSequence charSequence, int index, final ObjectHolder<String> stringHolder) throws ArgumentSyntaxException {
 		index = check(charSequence, index, QUOTATION_MARK); //make sure this is the start of a string
 		index = parseStringContents(charSequence, index, stringHolder); //parse the contents of the string
 		return check(charSequence, index, QUOTATION_MARK); //make sure this is the end of a string
@@ -751,34 +649,23 @@ public class JSON
 	 * @throws ArgumentSyntaxException if the given character sequence does not represent a valid JSON object.
 	 * @throws ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
 	 */
-	protected static int parseStringContents(final CharSequence charSequence, int index, final ObjectHolder<String> stringHolder) throws ArgumentSyntaxException
-	{
+	protected static int parseStringContents(final CharSequence charSequence, int index, final ObjectHolder<String> stringHolder) throws ArgumentSyntaxException {
 		final int endQuoteIndex = indexOf(charSequence, QUOTATION_MARK, index); //the most common case is a simple quoted string with no escaped characters; try to handle the common case by getting the ending quotation mark, which will be much faster than appending characters one at a time
 		final String commonCaseString = charSequence.subSequence(index, endQuoteIndex).toString(); //get the contents of the string (if there was no ending quotation mark, this will throw an exception, which we might as well throw now as any time)
-		if(commonCaseString.indexOf(ESCAPE) < 0) //if the string has no escape characters, this is a simple string that we can simply return now
-		{
+		if(commonCaseString.indexOf(ESCAPE) < 0) { //if the string has no escape characters, this is a simple string that we can simply return now
 			stringHolder.setObject(commonCaseString); //the string will be the string we just parsed
 			return endQuoteIndex; //return the ending quote, which will be our next parse index
-		}
-		else
-		//if this string has escape characters, abandon the string (even the last quote could be escaped, after all) and construct the string from scratch
-		{
+		} else { //if this string has escape characters, abandon the string (even the last quote could be escaped, after all) and construct the string from scratch
 			final StringBuilder stringBuilder = new StringBuilder(); //create a new string builder
-			while(true)
-			{
+			while(true) {
 				char c = charSequence.charAt(index); //get the current character
-				if(c == QUOTATION_MARK) //if we're reached the end of the string
-				{
+				if(c == QUOTATION_MARK) { //if we're reached the end of the string
 					stringHolder.setObject(stringBuilder.toString()); //set the string to be the contents of our string builder
 					return index; //return the index of the quotation mark
-				}
-				else if(c == ESCAPE) //if this is the escape character
-				{
+				} else if(c == ESCAPE) { //if this is the escape character
 					++index; //we'll determine which character is being escaped
 					c = charSequence.charAt(index); //get the escaped version of the character
-					switch(c)
-					//check the escaped version of the character
-					{
+					switch(c) { //check the escaped version of the character
 						case ESCAPED_QUOTATION_MARK: //" quotation mark  U+0022
 							c = QUOTATION_MARK;
 							break;
@@ -831,42 +718,34 @@ public class JSON
 	 * @throws NumberFormatException if the given character sequence does not contain a parsable JSON number.
 	 * @throws ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
 	 */
-	protected static int parseNumber(final CharSequence charSequence, int index, final ObjectHolder<Number> numberHolder) throws ArgumentSyntaxException
-	{
+	protected static int parseNumber(final CharSequence charSequence, int index, final ObjectHolder<Number> numberHolder) throws ArgumentSyntaxException {
 		final int length = charSequence.length(); //get the length of the character sequence
 		final int start = index; //make note of where we start
-		if(charSequence.charAt(index) == MINUS) //if the number starts with a minus sign
-		{
+		if(charSequence.charAt(index) == MINUS) { //if the number starts with a minus sign
 			++index; //skip the minus sign
 		}
 		index = skip(charSequence, index, '0', '9'); //skip all characters '0'-'9'
-		if(index < length) //if we're not at the end of the character sequence
-		{
+		if(index < length) { //if we're not at the end of the character sequence
 			boolean hasFraction = false; //we don't have a fraction yet
 			boolean hasExponent = false; //we don't have an exponent yet
-			if(charSequence.charAt(index) == DECIMAL_POINT) //if this is a floating point number
-			{
+			if(charSequence.charAt(index) == DECIMAL_POINT) { //if this is a floating point number
 				hasFraction = true; //we found a fraction
 				index = check(charSequence, index + 1, DIGITS); //make sure at least one digit comes after the decimal point
 				index = skip(charSequence, index, '0', '9'); //skip all fraction characters '0'-'9'				
 			}
-			if(index < length) //if we're not at the end of the character sequence
-			{
+			if(index < length) { //if we're not at the end of the character sequence
 				final char possibleExponentIndex = charSequence.charAt(index); //get the character that may be an exponent
-				if(possibleExponentIndex == 'e' || possibleExponentIndex == 'E') //if this is an exponent
-				{
+				if(possibleExponentIndex == 'e' || possibleExponentIndex == 'E') { //if this is an exponent
 					hasExponent = true; //we found an exponent
 					final char firstExponentCharacter = charSequence.charAt(index); //get the first exponent character
-					if(firstExponentCharacter == MINUS || firstExponentCharacter == PLUS) //if the exponent starts with a sign
-					{
+					if(firstExponentCharacter == MINUS || firstExponentCharacter == PLUS) { //if the exponent starts with a sign
 						++index; //skip the sign
 					}
 					index = check(charSequence, index + 1, DIGITS); //make sure at least one digit comes after the exponent
 					index = skip(charSequence, index, '0', '9'); //skip all exponent characters '0'-'9'				
 				}
 			}
-			if(hasFraction || hasExponent) //if there was a fraction or exponent
-			{
+			if(hasFraction || hasExponent) { //if there was a fraction or exponent
 				numberHolder.setObject(Double.valueOf(Double.parseDouble(charSequence.subSequence(start, index).toString()))); //parse a double and store it
 				return index; //return the new index
 			}

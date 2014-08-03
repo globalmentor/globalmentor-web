@@ -16,64 +16,67 @@
 
 package com.globalmentor.text.xml.schema;
 
-/**The abstract class which serves as the parent to all schema components.
-@author Garret Wilson
-@deprecated
-*/
-public abstract class XMLSchemaComponent
-{
+/**
+ * The abstract class which serves as the parent to all schema components.
+ * @author Garret Wilson
+ * @deprecated
+ */
+public abstract class XMLSchemaComponent {
 
 	//schema component types
-		//primary component types
-	/**Simple type definition.*/
-	public final static short SIMPLE_TYPE_COMPONENT=1;
-	/**Complex type definition.*/
-	public final static short COMPLEX_TYPE_COMPONENT=2;
-	/**Attribute declaration.*/
-	public final static short ATTRIBUTE_COMPONENT=3;
-	/**Element declaration.*/
-	public final static short ELEMENT_COMPONENT=4;
-		//secondary component types
-	/**Attribute group definition.*/
-	public final static short ATTRIBUTE_GROUP_COMPONENT=5;
-	/**Identity-constraint definition.*/
-	public final static short IDENTITY_CONSTRAINT_COMPONENT=6;
-	/**Model group definition.*/
-	public final static short MODEL_GROUP_COMPONENT=7;  //TODO fix; this is really a model group definition; a model group is a helper component
-	/**Notation declaration.*/
-	public final static short NOTATION_COMPONENT=8;
-	  //helper component types
-	/**Annotation.*/
-	public final static short ANNOTATION_COMPONENT=9;
-	/**Model group.*/
-//TODO fix	public final static short MODEL_GROUP_COMPONENT=10;
-	/**Particle.*/
-//TODO fix	public final static short PARTICLE_COMPONENT=11;
-	/**Wildcard.*/
-//TODO fix	public final static short WILDCARD_COMPONENT=12;
+	//primary component types
+	/** Simple type definition. */
+	public final static short SIMPLE_TYPE_COMPONENT = 1;
+	/** Complex type definition. */
+	public final static short COMPLEX_TYPE_COMPONENT = 2;
+	/** Attribute declaration. */
+	public final static short ATTRIBUTE_COMPONENT = 3;
+	/** Element declaration. */
+	public final static short ELEMENT_COMPONENT = 4;
+	//secondary component types
+	/** Attribute group definition. */
+	public final static short ATTRIBUTE_GROUP_COMPONENT = 5;
+	/** Identity-constraint definition. */
+	public final static short IDENTITY_CONSTRAINT_COMPONENT = 6;
+	/** Model group definition. */
+	public final static short MODEL_GROUP_COMPONENT = 7; //TODO fix; this is really a model group definition; a model group is a helper component
+	/** Notation declaration. */
+	public final static short NOTATION_COMPONENT = 8;
+	//helper component types
+	/** Annotation. */
+	public final static short ANNOTATION_COMPONENT = 9;
+	/** Model group. */
+	//TODO fix	public final static short MODEL_GROUP_COMPONENT=10;
+	/** Particle. */
+	//TODO fix	public final static short PARTICLE_COMPONENT=11;
+	/** Wildcard. */
+	//TODO fix	public final static short WILDCARD_COMPONENT=12;
 
-	/**The type of XML schema component this is.*/
+	/** The type of XML schema component this is. */
 	private short componentType;
 
-		/**Returns the type of XML schema component.
-		@return A code representing the type of the underlying schema component.
-		*/
-		public short getComponentType() {return componentType;}
+	/**
+	 * Returns the type of XML schema component.
+	 * @return A code representing the type of the underlying schema component.
+	 */
+	public short getComponentType() {
+		return componentType;
+	}
 
-	/**The schema to which this schema component belongs.*/
-//TODO fix if needed	private XMLSchema schema;
+	/** The schema to which this schema component belongs. */
+	//TODO fix if needed	private XMLSchema schema;
 
-		/**@return The schema to which this schema component belongs.*/
-//TODO fix if needed		public XMLSchema getSchema() {return schema;}
+	/** @return The schema to which this schema component belongs. */
+	//TODO fix if needed		public XMLSchema getSchema() {return schema;}
 
-//TODO fix if needed	public XMLSchemaComponent
+	//TODO fix if needed	public XMLSchemaComponent
 
-	/**Constructs an XML schema object.
-	@param newComponentType The type of XML schema component this is.
-	*/
-	public XMLSchemaComponent(final short newComponentType)
-	{
-		componentType=newComponentType;	//set the type of component this is
+	/**
+	 * Constructs an XML schema object.
+	 * @param newComponentType The type of XML schema component this is.
+	 */
+	public XMLSchemaComponent(final short newComponentType) {
+		componentType = newComponentType; //set the type of component this is
 	}
 
 }

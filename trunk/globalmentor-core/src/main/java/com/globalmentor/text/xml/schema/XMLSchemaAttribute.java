@@ -16,16 +16,15 @@
 
 package com.globalmentor.text.xml.schema;
 
-/**Represents an attribute definition or declaration, depending on the context.
-@author Garret Wilson
-@deprecated
-*/
-public class XMLSchemaAttribute extends XMLSchemaTypedComponent
-{
+/**
+ * Represents an attribute definition or declaration, depending on the context.
+ * @author Garret Wilson
+ * @deprecated
+ */
+public class XMLSchemaAttribute extends XMLSchemaTypedComponent {
 
-	/**Default constructor.*/
-	public XMLSchemaAttribute()
-	{
+	/** Default constructor. */
+	public XMLSchemaAttribute() {
 		super(ATTRIBUTE_COMPONENT); //construct the parent class
 	}
 }

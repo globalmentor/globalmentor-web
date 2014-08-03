@@ -35,21 +35,18 @@ import com.globalmentor.net.DefaultResource;
  * </p>
  * @author Garret Wilson
  */
-public class QualifiedName extends DefaultResource implements IDed<URI>
-{
+public class QualifiedName extends DefaultResource implements IDed<URI> {
 
 	/** The namespace URI, or <code>null</code> if there is no namespace URI. */
 	private final URI namespaceURI;
 
 	/** @return The namespace URI, or <code>null</code> if there is no namespace URI. */
-	public URI getNamespaceURI()
-	{
+	public URI getNamespaceURI() {
 		return namespaceURI;
 	}
 
 	/** @return The unique identifier of the object. */
-	public URI getID()
-	{
+	public URI getID() {
 		return getURI();
 	}
 
@@ -57,8 +54,7 @@ public class QualifiedName extends DefaultResource implements IDed<URI>
 	private final String prefix;
 
 	/** @return The prefix string, or <code>null</code> if there is no prefix. */
-	public String getPrefix()
-	{
+	public String getPrefix() {
 		return prefix;
 	}
 
@@ -66,8 +62,7 @@ public class QualifiedName extends DefaultResource implements IDed<URI>
 	private final String localName;
 
 	/** @return The local name. */
-	public String getLocalName()
-	{
+	public String getLocalName() {
 		return localName;
 	}
 
@@ -77,8 +72,7 @@ public class QualifiedName extends DefaultResource implements IDed<URI>
 	 * @param qname The combined <var>prefix</var>:<var>localName</var> qualified name.
 	 * @throws NullPointerException if the given qname is <code>null</code>.
 	 */
-	public QualifiedName(final URI namespaceURI, final String qname)
-	{
+	public QualifiedName(final URI namespaceURI, final String qname) {
 		this(namespaceURI, XML.getPrefix(qname), XML.getLocalName(qname)); //split out the prefix and local name and call the full constructor
 	}
 
@@ -89,8 +83,7 @@ public class QualifiedName extends DefaultResource implements IDed<URI>
 	 * @param localName The local name.
 	 * @throws NullPointerException if the given local name is <code>null</code>.
 	 */
-	public QualifiedName(final URI namespaceURI, final String prefix, final String localName)
-	{
+	public QualifiedName(final URI namespaceURI, final String prefix, final String localName) {
 		super(createReferenceURI(namespaceURI, localName)); //create our reference URI by combining our namespace URI and our local name
 		this.namespaceURI = namespaceURI;
 		this.prefix = prefix;
@@ -109,8 +102,7 @@ public class QualifiedName extends DefaultResource implements IDed<URI>
 	 * @throws IllegalArgumentException if the namespace is not <code>null</code> and cannot be converted to a valid URI.
 	 * @see XML#toNamespaceURI(String)
 	 */
-	QualifiedName(final String namespace, final String prefix, final String localName)
-	{
+	QualifiedName(final String namespace, final String prefix, final String localName) {
 		super(createReferenceURI(namespace, localName)); //create our reference URI by combining our namespace URI and our local name
 		this.namespaceURI = XML.toNamespaceURI(namespace);
 		this.prefix = prefix;
@@ -121,8 +113,7 @@ public class QualifiedName extends DefaultResource implements IDed<URI>
 	 * Returns the complete qualified name.
 	 * @return The qualified name in <code><var>prefix</var>:<var>localName</var></code> form.
 	 */
-	public String getQName()
-	{
+	public String getQName() {
 		return XML.createQName(getPrefix(), getLocalName()); //create and return a qualified name
 	}
 
@@ -132,8 +123,7 @@ public class QualifiedName extends DefaultResource implements IDed<URI>
 	 * @param localName The XML local name used in the serialization.
 	 * @return A reference URI constructed from the given namespace and local name.
 	 */
-	private static URI createReferenceURI(final URI namespaceURI, final String localName) //TODO decide how to handle null
-	{
+	private static URI createReferenceURI(final URI namespaceURI, final String localName) { //TODO decide how to handle null
 		return createReferenceURI(namespaceURI != null ? namespaceURI.toString() : null, localName); //concatenate the string version of the namespace URI and the local name
 	}
 
@@ -146,11 +136,9 @@ public class QualifiedName extends DefaultResource implements IDed<URI>
 	 * @param localName The XML local name used in the serialization.
 	 * @return A reference URI constructed from the given namespace and local name.
 	 */
-	private static URI createReferenceURI(final String namespace, final String localName)
-	{
+	private static URI createReferenceURI(final String namespace, final String localName) {
 		final StringBuilder referenceURIBuilder = new StringBuilder(); //create a new string builder
-		if(namespace != null) //if there is a namespace
-		{
+		if(namespace != null) { //if there is a namespace
 			referenceURIBuilder.append(namespace); //append the namespace
 		}
 		referenceURIBuilder.append(localName); //append the local name

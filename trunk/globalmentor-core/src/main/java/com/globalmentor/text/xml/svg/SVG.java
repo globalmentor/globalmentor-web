@@ -21,47 +21,47 @@ import java.net.URI;
 import com.globalmentor.net.ContentType;
 import com.globalmentor.text.xml.XML;
 
-/**Constants for SVG.
-@author Garret Wilson
-@see <a href="http://www.w3.org/Graphics/SVG/">Scalable Vector Graphics</a>
-@see <a href="http://www.w3.org/QA/2002/04/valid-dtd-list.html">W3C QA - Recommended List of DTDs</a>
-*/
-public class SVG
-{
+/**
+ * Constants for SVG.
+ * @author Garret Wilson
+ * @see <a href="http://www.w3.org/Graphics/SVG/">Scalable Vector Graphics</a>
+ * @see <a href="http://www.w3.org/QA/2002/04/valid-dtd-list.html">W3C QA - Recommended List of DTDs</a>
+ */
+public class SVG {
 
-	/**The SVG image MIME subtype.*/
-	public final static String SVG_XML_SUBTYPE="svg"+ContentType.SUBTYPE_SUFFIX_DELIMITER_CHAR+XML.XML_SUBTYPE_SUFFIX;
+	/** The SVG image MIME subtype. */
+	public final static String SVG_XML_SUBTYPE = "svg" + ContentType.SUBTYPE_SUFFIX_DELIMITER_CHAR + XML.XML_SUBTYPE_SUFFIX;
 
-	/**The content type for SVG: <code>application/svg+xml</code>.*/ 
-	public static final ContentType SVG_CONTENT_TYPE=ContentType.create(ContentType.APPLICATION_PRIMARY_TYPE, SVG_XML_SUBTYPE);
+	/** The content type for SVG: <code>application/svg+xml</code>. */
+	public static final ContentType SVG_CONTENT_TYPE = ContentType.create(ContentType.APPLICATION_PRIMARY_TYPE, SVG_XML_SUBTYPE);
 
-	/**The recommended prefix to the SVG namespace.*/
-	public static final String SVG_NAMESPACE_PREFIX="svg";
+	/** The recommended prefix to the SVG namespace. */
+	public static final String SVG_NAMESPACE_PREFIX = "svg";
 
-	/**The URI to the SVG namespace.*/
-	public static final URI SVG_NAMESPACE_URI=URI.create("http://www.w3.org/2000/svg");
+	/** The URI to the SVG namespace. */
+	public static final URI SVG_NAMESPACE_URI = URI.create("http://www.w3.org/2000/svg");
 
-	/**The public ID for the SVG 1.0 DTD.*/
-	public final static String SVG_1_0_PUBLIC_ID="-//W3C//DTD SVG 1.0//EN";
-	/**The system ID for the SVG 1.0 DTD.*/
-	public final static String SVG_1_0_SYSTEM_ID="http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd";
+	/** The public ID for the SVG 1.0 DTD. */
+	public final static String SVG_1_0_PUBLIC_ID = "-//W3C//DTD SVG 1.0//EN";
+	/** The system ID for the SVG 1.0 DTD. */
+	public final static String SVG_1_0_SYSTEM_ID = "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd";
 
-	/**The public ID for the SVG 1.1 Full DTD.*/
-	public final static String SVG_1_1_FULL_PUBLIC_ID="-//W3C//DTD SVG 1.1//EN";
-	/**The system ID for the SVG 1.1 Full DTD.*/
-	public final static String SVG_1_1_FULL_SYSTEM_ID="http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd";
-	
-	/**The public ID for the SVG 1.1 Basic DTD.*/
-	public final static String SVG_1_1_BASIC_PUBLIC_ID="-//W3C//DTD SVG 1.1 Basic//EN";
-	/**The system ID for the SVG 1.1 Basic DTD.*/
-	public final static String SVG_1_1_BASIC_SYSTEM_ID="http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-basic.dtd";
+	/** The public ID for the SVG 1.1 Full DTD. */
+	public final static String SVG_1_1_FULL_PUBLIC_ID = "-//W3C//DTD SVG 1.1//EN";
+	/** The system ID for the SVG 1.1 Full DTD. */
+	public final static String SVG_1_1_FULL_SYSTEM_ID = "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd";
 
-	/**The public ID for the SVG 1.1 Tiny DTD.*/
-	public final static String SVG_1_1_TINY_PUBLIC_ID="-//W3C//DTD SVG 1.1 Tiny//EN";
-	/**The system ID for the SVG 1.1 Tiny DTD.*/
-	public final static String SVG_1_1_TINY_SYSTEM_ID="http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-tiny.dtd";
+	/** The public ID for the SVG 1.1 Basic DTD. */
+	public final static String SVG_1_1_BASIC_PUBLIC_ID = "-//W3C//DTD SVG 1.1 Basic//EN";
+	/** The system ID for the SVG 1.1 Basic DTD. */
+	public final static String SVG_1_1_BASIC_SYSTEM_ID = "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-basic.dtd";
+
+	/** The public ID for the SVG 1.1 Tiny DTD. */
+	public final static String SVG_1_1_TINY_PUBLIC_ID = "-//W3C//DTD SVG 1.1 Tiny//EN";
+	/** The system ID for the SVG 1.1 Tiny DTD. */
+	public final static String SVG_1_1_TINY_SYSTEM_ID = "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-tiny.dtd";
 
 	//The SVG document element names.
-	public final static String ELEMENT_SVG="svg";
+	public final static String ELEMENT_SVG = "svg";
 
 }
