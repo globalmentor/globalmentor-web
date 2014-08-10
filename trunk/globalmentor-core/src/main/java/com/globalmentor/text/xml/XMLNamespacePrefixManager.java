@@ -29,7 +29,6 @@ import com.globalmentor.rdf.dicto.Dicto;
 import com.globalmentor.rdf.directory.vcard.RDFVCard;
 import com.globalmentor.rdf.rdfs.RDFS;
 import com.globalmentor.rdf.version.RDFVersion;
-import com.globalmentor.rdf.xeb.RDFXEB;
 import com.globalmentor.rdf.xpackage.XMLOntology;
 import com.globalmentor.rdf.xpackage.XPackage;
 import com.globalmentor.text.xml.oeb.OEB;
@@ -100,7 +99,6 @@ public class XMLNamespacePrefixManager //TODO replace with XMLNamespaceLabelMana
 		registerNamespacePrefix(XLink.XLINK_NAMESPACE_URI.toString(), XLink.XLINK_NAMESPACE_PREFIX); //XLink
 		registerNamespacePrefix(XML.XML_NAMESPACE_URI.toString(), XML.XML_NAMESPACE_PREFIX); //XML
 		registerNamespacePrefix(XML.XMLNS_NAMESPACE_URI.toString(), XML.XMLNS_NAMESPACE_PREFIX); //XML namespaces
-		registerNamespacePrefix(RDFXEB.XEB_NAMESPACE_URI.toString(), RDFXEB.XEB_NAMESPACE_PREFIX); //XEbook
 		registerNamespacePrefix(XPackage.XPACKAGE_NAMESPACE_URI.toString(), XPackage.XPACKAGE_NAMESPACE_PREFIX); //XPackage
 		registerNamespacePrefix(XMLOntology.XML_ONTOLOGY_NAMESPACE_URI.toString(), XMLOntology.XML_ONTOLOGY_NAMESPACE_PREFIX); //XPackage XML ontology
 		//TODO del		registerNamespacePrefix(FileOntologyConstants.FILE_ONTOLOGY_NAMESPACE_URI.toString(), FileOntologyConstants.FILE_ONTOLOGY_NAMESPACE_PREFIX); //XPackage file ontology
