@@ -1,5 +1,5 @@
 /*
- * Copyright © 1996-2012 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ * Copyright © 1996-2014 GlobalMentor, Inc. <http://www.globalmentor.com/>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,15 +19,20 @@ package com.globalmentor.text.xml;
 import java.io.*;
 import java.lang.ref.*;
 import java.net.URI;
+import java.nio.charset.*;
 import java.util.*;
 
 import javax.xml.parsers.*;
 
 import com.globalmentor.config.ConfigurationException;
+
 import static com.globalmentor.io.Charsets.*;
+
+import com.globalmentor.io.ByteOrderMark;
 import com.globalmentor.java.*;
 import com.globalmentor.java.Objects;
 import com.globalmentor.model.NameValuePair;
+import com.globalmentor.model.ObjectHolder;
 import com.globalmentor.net.ContentType;
 import com.globalmentor.net.URIs;
 import com.globalmentor.text.xml.oeb.OEB;
@@ -42,7 +47,6 @@ import static com.globalmentor.java.Characters.*;
 import static com.globalmentor.java.Integers.*;
 import static com.globalmentor.java.Objects.*;
 import static com.globalmentor.net.ContentTypeConstants.*;
-import static com.globalmentor.net.URIs.SCHEME_SEPARATOR;
 import static com.globalmentor.text.xml.mathml.MathML.*;
 import static com.globalmentor.text.xml.stylesheets.XMLStyleSheets.*;
 import static com.globalmentor.text.xml.svg.SVG.*;
@@ -88,6 +92,13 @@ public class XML {
 
 	/** The URI to the "xmlns" namespace. */
 	public static final URI XMLNS_NAMESPACE_URI = URI.create("http://www.w3.org/2000/xmlns/");
+
+	/**
+	 * The number of bytes to use when auto-detecting character encoding.
+	 * @see <a href="http://www.w3.org/TR/2008/REC-xml-20081126/#sec-guessing-no-ext-info">XML 1.0 (Fifth Edition): F.1 Detection Without External Encoding
+	 *      Information)</a>
+	 */
+	public static final int CHARACTER_ENCODING_AUTODETECT_BYTE_COUNT = 4;
 
 	/** The name of a CDATA section node. */
 	public static final String CDATASECTION_NODE_NAME = "#cdata-section";
@@ -403,6 +414,113 @@ public class XML {
 			systemIDMapReference = new SoftReference<Map<String, String>>(systemIDMap); //create a soft reference to the map
 		}
 		return systemIDMap; //return the map
+	}
+
+	/**
+	 * Attempts to automatically detect the character encoding of a particular input stream that supposedly contains XML data.
+	 * <ul>
+	 * <li>A byte order is attempted to be determined, either by an explicit byte order mark or by the order of the XML declaration start {@value #XML_DECL_START}
+	 * . If no byte order can be determined, <code>null</code> is returned.</li>
+	 * <li>Based upon the imputed byte order, an explicit encoding is searched for within the XML declaration. If no explicit encoding is found, the imputed byte
+	 * order's assumed charset is returned. If a start {@value #XML_DECL_START} but not an end {@value #XML_DECL_END} of the XML declaration is found, an
+	 * exception is thrown.</li>
+	 * <li>If an explicit encoding declaration is found, it is returned, unless it is less specific than the imputed byte order. For example, if the imputed byte
+	 * order is UTF-16BE but the declared encoding is UTF-16, then the charset UTF-16BE is returned.</li>
+	 * </ul>
+	 * @param inputStream The stream which supposedly contains XML data.
+	 * @param bom Receives The actual byte order mark present, if any.
+	 * @param declaredEncodingName Receives a copy of the explicitly declared name of the character encoding, if any.
+	 * @return The character encoding specified in a byte order mark, the imputed byte order, or the "encoding" attribute.
+	 * @throws IOException Thrown if an I/O error occurred, or the beginning but not the end of an XML declaration was found.
+	 * @throws UnsupportedCharsetException If no support for a declared encoding is available in this instance of the Java virtual machine
+	 * @see <a href="http://www.w3.org/TR/2008/REC-xml-20081126/#sec-guessing-no-ext-info">XML 1.0 (Fifth Edition): F.1 Detection Without External Encoding
+	 *      Information)</a>
+	 */
+	public static Charset detectXMLCharset(final InputStream inputStream, final ObjectHolder<ByteOrderMark> bom, final ObjectHolder<String> declaredEncodingName)
+			throws IOException, UnsupportedCharsetException {
+		//mark off enough room to read the largest BOM plus all the characters we need for imputation of a BOM
+		final byte[] bytes = new byte[ByteOrderMark.MAX_BYTE_COUNT + CHARACTER_ENCODING_AUTODETECT_BYTE_COUNT]; //create an array to hold the byte order mark
+		inputStream.mark(bytes.length);
+		final ByteOrderMark imputedBOM;
+		if(inputStream.read(bytes) == bytes.length) { //read the byte order mark; if we didn't reach the end of the data
+			imputedBOM = ByteOrderMark.impute(bytes, XML_DECL_START, bom); //see if we can recognize the BOM by the beginning characters
+		} else {
+			imputedBOM = null;
+		}
+		inputStream.reset();
+		if(imputedBOM == null) { //if we couldn't even impute a BOM, there aren't enough characters to detect anything
+			return null;
+		}
+		//we now know enough about the byte order to try to find an explicit XML encoding declaration any specified character encoding
+		//e.g. <?xml version="1.0" encoding="UTF-8"?>
+		final int bytesPerCharacter = imputedBOM.getMinimumBytesPerCharacter(); //find out how many bytes are used for each character
+		final int mostSignificantByteIndex = imputedBOM.getLeastSignificantByteIndex();
+		//mark off 64 characters (in the appropriate encoding) plus the BOM, which should be enough to find an encoding declaration
+		inputStream.mark(imputedBOM.getLength() + 64 * bytesPerCharacter);
+		//skip the initial BOM, if actually present
+		boolean eof = bom.isPresent() ? inputStream.skip(imputedBOM.getLength()) < imputedBOM.getLength() : false;
+		final StringBuilder detectionBuffer = new StringBuilder();
+		String encodingDeclarationValue = null;
+		while(encodingDeclarationValue == null && !eof) { //stop searching when we find an encoding declaration or reach the end of the file
+			int character = -1; //this will accept the next character read
+			for(int i = 0; i < bytesPerCharacter && !eof; ++i) { //read each encoding group (there should be no UTF-8 encodings greater than one byte)
+				if(i == mostSignificantByteIndex) { //read only the most significant byte normally
+					character = inputStream.read();
+					eof = character < 0;
+				} else { //skip the other bytes within the encoding
+					final long bytesSkipped = inputStream.skip(1);
+					eof = bytesSkipped < 1;
+				}
+			}
+			if(!eof) { //if we haven't yet reached the end of the stream
+				assert character >= 0; //if we didn't reach the end of the stream, one of the bytes should have been the most significant one
+				detectionBuffer.append((char)character); //add the character read to the end of our string
+				//if we've read enough characters, see if this stream starts with the XML declaration "<?xml..."; if it doesn't
+				if(detectionBuffer.length() == XML_DECL_START.length() && !XML_DECL_START.contentEquals(detectionBuffer)) {
+					break; //stop looking for an encoding attribute, since there isn't even an XML declaration
+				}
+				if(CharSequences.endsWith(detectionBuffer, XML_DECL_END)) { //if we've read all of the XML declaration
+					break; //stop trying to autodetect the encoding and process what we have
+				}
+				final int encodingDeclarationStartIndex = detectionBuffer.indexOf(ENCODINGDECL_NAME); //see where the "encoding" declaration starts (assuming we've read it yet)
+				if(encodingDeclarationStartIndex >= 0) { //if we've at least found the "encoding" declaration (but perhaps not the actual value)
+					int quote1Index = CharSequences.indexOf(detectionBuffer, DOUBLE_QUOTE_CHAR, encodingDeclarationStartIndex + ENCODINGDECL_NAME.length()); //see if we can find a double quote character
+					if(quote1Index < 0) //if we couldn't find a double quote
+						quote1Index = CharSequences.indexOf(detectionBuffer, SINGLE_QUOTE_CHAR, encodingDeclarationStartIndex + ENCODINGDECL_NAME.length()); //see if we can find a single quote character
+					if(quote1Index >= 0) { //if we found either a single or double quote character
+						final char quoteChar = detectionBuffer.charAt(quote1Index); //see which type of quote we found
+						final int quote2Index = CharSequences.indexOf(detectionBuffer, quoteChar, quote1Index + 1); //see if we can find the matching quote
+						if(quote2Index >= 0) { //if we found the second quote character
+							encodingDeclarationValue = detectionBuffer.substring(quote1Index + 1, quote2Index); //get the character encoding name specified
+						}
+					}
+				}
+			}
+		}
+		inputStream.reset();
+		if(eof) { //if we ran into the end of the stream
+			throw new IOException("Unable to locate XML declaration end " + XML_DECL_END + ".");
+		}
+		if(encodingDeclarationValue != null) { //if a the character encoding value was explicitly given
+			declaredEncodingName.setObject(encodingDeclarationValue); //indicate the exact name of the declared encoding
+			final boolean isImputedBOMMoreSpecific; //see if the imputed BOM is more specific as to endianness than the declared character encoding
+			switch(imputedBOM) { //see http://stackoverflow.com/q/25477854/421049
+				case UTF_16LE:
+				case UTF_16BE:
+					isImputedBOMMoreSpecific = UTF_16_NAME.equals(encodingDeclarationValue);
+					break;
+				case UTF_32LE:
+				case UTF_32BE:
+					isImputedBOMMoreSpecific = UTF_32_NAME.equals(encodingDeclarationValue);
+					break;
+				default:
+					isImputedBOMMoreSpecific = false;
+			}
+			if(!isImputedBOMMoreSpecific) { //if the declared character encoding is not less specific, go with that.
+				return Charset.forName(encodingDeclarationValue); //return a charset for that name
+			}
+		}
+		return imputedBOM.toCharset(); //if nothing was more specific, return the charset we imputed
 	}
 
 	/**
@@ -1144,7 +1262,7 @@ public class XML {
 		if(namespace == null) {
 			return null;
 		}
-		final int schemeSeparatorIndex = namespace.indexOf(SCHEME_SEPARATOR); //find out where the scheme ends
+		final int schemeSeparatorIndex = namespace.indexOf(URIs.SCHEME_SEPARATOR); //find out where the scheme ends
 		if(schemeSeparatorIndex == namespace.length() - 1) { //if the scheme separator is at the end of the string (i.e. there is no scheme-specific part, e.g. "DAV:")
 			namespace += URIs.PATH_SEPARATOR; //append a path separator (e.g. "DAV:/")
 		}
