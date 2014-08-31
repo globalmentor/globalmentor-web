@@ -811,7 +811,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	 */
 	public boolean hasAttributes() {
 		return false;
-	} //G***fix DOM
+	} //TODO fix DOM
 
 	/**
 	 * Adds an event listener to the specified map.

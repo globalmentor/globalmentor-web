@@ -153,12 +153,12 @@ public class XMLReader extends ParseReader {
 		//make sure each character is a valid XML character
 		for(int charIndex = newDataBeginIndex; charIndex < bufferEndIndex; ++charIndex) { //look at each character in the buffer
 			if(!isChar(buffer[charIndex])) { //if the character isn't a valid character
-				if(tidy) //if tidying is enabled G***fix
-					buffer[charIndex] = ' '; //replace the invalid character with a space G***use a constant
+				if(tidy) //if tidying is enabled TODO fix
+					buffer[charIndex] = ' '; //replace the invalid character with a space TODO use a constant
 				else
 					//if tidying is not enabled, report an error for the invalid character
 					throw new XMLWellFormednessException(XMLWellFormednessException.INVALID_CHARACTER,
-							new Object[] { "#x" + Integer.toHexString((int)buffer[charIndex]) }, getLineIndex(charIndex), getCharIndex(charIndex), getName()); //show that this character reference is invalid G***tell exactly where the character appears in the file
+							new Object[] { "#x" + Integer.toHexString((int)buffer[charIndex]) }, getLineIndex(charIndex), getCharIndex(charIndex), getName()); //show that this character reference is invalid TODO tell exactly where the character appears in the file
 			}
 		}
 	}

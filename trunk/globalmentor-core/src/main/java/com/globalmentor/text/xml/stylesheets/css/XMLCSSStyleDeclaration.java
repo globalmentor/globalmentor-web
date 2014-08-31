@@ -667,7 +667,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 		setProperty(CSS_PROP_COLOR, color); //set the property
 	}
 
-	//G***add other properties here
+	//TODO add other properties here
 
 	/**
 	 * @return The CSS2 "display" property.
@@ -684,7 +684,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 	 * @return Whether or not this style declaration has an inline display style.
 	 * @see #getDisplay()
 	 */
-	public boolean isDisplayInline() { //G***del and use XMLUtilities.isDisplayInline instead
+	public boolean isDisplayInline() { //TODO del and use XMLUtilities.isDisplayInline instead
 		final String displayString = getDisplay(); //get the display property
 		return displayString.length() == 0 || displayString.equals(CSS_DISPLAY_INLINE); //return true if there is no display string or it is equal to "inline"
 	}
@@ -705,7 +705,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 		setProperty(CSS_PROP_DISPLAY, display); //set the property
 	}
 
-	//G***add other properties here
+	//TODO add other properties here
 
 	/**
 	 * @return The CSS2 "font-family" property.
@@ -770,7 +770,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 		setProperty(CSS_PROP_FONT_SIZE, fontSize); //set the property
 	}
 
-	//G***add other properties here
+	//TODO add other properties here
 
 	/**
 	 * @return The CSS2 "font-style" property.
@@ -798,7 +798,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 		setProperty(CSS_PROP_FONT_STYLE, fontStyle); //set the property
 	}
 
-	//G***add other properties here
+	//TODO add other properties here
 
 	/**
 	 * @return The CSS2 "font-weight" property.
@@ -827,7 +827,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 		setProperty(CSS_PROP_FONT_WEIGHT, fontWeight); //set the property
 	}
 
-	//G***add other properties here
+	//TODO add other properties here
 
 	/**
 	 * @return The CSS2 "line-height" property.
@@ -850,7 +850,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 		setProperty(CSS_PROP_LINE_HEIGHT, lineHeight); //set the property
 	}
 
-	//G***add other properties here
+	//TODO add other properties here
 
 	/**
 	 * @return The CSS2 "list-style" property.

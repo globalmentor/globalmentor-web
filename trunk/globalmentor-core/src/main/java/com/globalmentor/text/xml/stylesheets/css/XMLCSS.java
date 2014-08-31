@@ -264,9 +264,9 @@ public class XMLCSS {
 	/**
 	 * The name used in a list to represent that there is an empty list. Used, for example, for text-decoration.
 	 */
-	//G***del probably;	public static final String CSS_LIST_NONE="none";
+	//TODO del probably;	public static final String CSS_LIST_NONE="none";
 
-	//G***add other properties here
+	//TODO add other properties here
 
 	/** The IE filter property. */
 	public static final String CSS_PROP_FILTER = "filter";

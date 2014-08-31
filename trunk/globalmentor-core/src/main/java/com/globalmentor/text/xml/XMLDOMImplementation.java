@@ -35,7 +35,7 @@ class XMLDOMImplementation implements DOMImplementation {
 	 */
 	public boolean hasFeature(String feature, String version) {
 		return true;
-	} //G***fix
+	} //TODO fix
 
 	/**
 	 * This method returns a specialized object which implements the specialized APIs of the specified feature and version, as specified in . The specialized
@@ -91,27 +91,27 @@ class XMLDOMImplementation implements DOMImplementation {
 	 * @since DOM Level 2
 	 */
 	public Document createDocument(String namespaceURI, String qualifiedName, DocumentType doctype) throws DOMException {
-		//G***fix for namespaces
-		//G***check to see if the doctype.getNodeName() is not null, and if so throw a WRONG_DOCUMENT_ERR
-		//G***check all the other conditions that might cause errors
+		//TODO fix for namespaces
+		//TODO check to see if the doctype.getNodeName() is not null, and if so throw a WRONG_DOCUMENT_ERR
+		//TODO check all the other conditions that might cause errors
 		final XMLDocument document = new XMLDocument(); //create a new document
 		document.setNodeName(qualifiedName); //set the name of the document
-		//G***make sure that doctype is really an XMLDocumentType, or throw a WRONG_DOCUMENT_ERR if not
+		//TODO make sure that doctype is really an XMLDocumentType, or throw a WRONG_DOCUMENT_ERR if not
 		//TODO probably add the document type as a child, just like the document element
 		document.setXMLDocumentType((XMLDocumentType)doctype); //set the document type
-		//G***check the namespace somewhere here; maybe use document.checkNamespace()
-		//G***do whatever we need to do with the namespace
+		//TODO check the namespace somewhere here; maybe use document.checkNamespace()
+		//TODO do whatever we need to do with the namespace
 		//create the document element
 		final XMLElement documentElement = (XMLElement)document.createElementNS(namespaceURI, qualifiedName);
 		document.getChildXMLNodeList().add(documentElement); //add this child the document
-		//G***set the document, set the parent, etc.
+		//TODO set the document, set the parent, etc.
 		documentElement.setParentXMLNode(document); //set the parent of the added child
-		/*G***check to see if we need to fire events when the document element is added
+		/*TODO check to see if we need to fire events when the document element is added
 				if(isEventsEnabled()) {	//if events are enabled
 					//create a new event for the inserted node
 					final Event nodeInsertedEvent=XMLMutationEvent.createDOMNodeInsertedEvent(xmlNewChild, this);
 					xmlNewChild.dispatchEvent(nodeInsertedEvent); //dispatch the event
-					//G***dispatch the document events
+					//TODO dispatch the document events
 				}
 		*/
 		return document; //return the document we created

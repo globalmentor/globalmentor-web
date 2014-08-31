@@ -1992,10 +1992,10 @@ public class XMLProcessor implements URIInputStreamable {
 	 *           </ul>
 	 */
 	protected static void processNamespaces(final XMLElement xmlElement) throws DOMException {
-		//G***del Log.trace("Processing namespaces for element: "+xmlElement.getNodeName());
+		//TODO del Log.trace("Processing namespaces for element: "+xmlElement.getNodeName());
 		final XMLNamedNodeMap attributeXMLNamedNodeMap = (XMLNamedNodeMap)xmlElement.getAttributes(); //get the attributes
 		final XMLNamedNodeMap newAttributeNamedNodeMap = new XMLNamedNodeMap(); //create a new named node map that will contain the new namespace-aware values
-		//G***del when works		xmlElement.setAttributeXMLNamedNodeMap(newAttributeNamedNodeMap); //now that we've processed the attributes, replace the old non-namespace-aware attrites with our new ones that recognize namespaces
+		//TODO del when works		xmlElement.setAttributeXMLNamedNodeMap(newAttributeNamedNodeMap); //now that we've processed the attributes, replace the old non-namespace-aware attrites with our new ones that recognize namespaces
 		//Replace the old non-namespace-aware attrites with our new ones that
 		//	recognize namespaces. Although we haven't yet populated the new list,
 		//	it is important after we update the namespaces of the xmlns attributes
@@ -2012,8 +2012,8 @@ public class XMLProcessor implements URIInputStreamable {
 			if((attributePrefix == null && attributeName.equals(XMLNS_NAMESPACE_PREFIX))
 					|| (attributePrefix != null && attributePrefix.equals(XMLNS_NAMESPACE_PREFIX))) {
 				final String attributeLocalName = getLocalName(attributeName); //get the local name encoded in the attribute name
-				//G***del				final String namespaceURI=XMLNode.getLocalName(attributeName);  //get the local name of this attribute, which is the namespace prefix being defined
-				//G***maybe combine all this into something that automatically updates attributes
+				//TODO del				final String namespaceURI=XMLNode.getLocalName(attributeName);  //get the local name of this attribute, which is the namespace prefix being defined
+				//TODO maybe combine all this into something that automatically updates attributes
 				xmlAttribute.setNamespaceURI(XMLNS_NAMESPACE_URI.toString()); //attributes with an "xmlns:" prefix always have the "http://www.w3.org/2000/xmlns/" namespace URI
 				xmlAttribute.setNodeName(attributePrefix, attributeLocalName); //set the prefix and the local name
 				xmlnsAttributeIterator.remove(); //remove the attribute from the original map
@@ -2027,7 +2027,7 @@ public class XMLProcessor implements URIInputStreamable {
 			final String attributeName = xmlAttribute.getNodeName(); //get the attribute's name
 			final String attributePrefix = getPrefix(attributeName); //get the prefix of the attribute, or null if there is no prefix
 			final String attributeLocalName = getLocalName(attributeName); //get the local name encoded in the attribute name
-			//if there is an attribute prefix, try to get the corresponding namespace URL G***fix for blank URIs
+			//if there is an attribute prefix, try to get the corresponding namespace URL TODO fix for blank URIs
 			final String attributeNamespaceURI = attributePrefix != null ? getNamespaceURI(xmlElement, attributePrefix, true) : null;
 			xmlAttribute.setNamespaceURI(attributeNamespaceURI); //set whatever namespace we found
 			xmlAttribute.setNodeName(attributePrefix, attributeLocalName); //set the prefix and the local name
@@ -2038,16 +2038,16 @@ public class XMLProcessor implements URIInputStreamable {
 		final String nodePrefix = getPrefix(nodeName); //get the prefix, or null if there is no prefix
 		final String nodeLocalName = getLocalName(nodeName); //get the local name encoded in the name
 
-		//G***del Log.trace("(ready to find namespace for node: "+nodeName+" with prefix: "+nodePrefix+" and local name: "+nodeLocalName+")");  //G***del
+		//TODO del Log.trace("(ready to find namespace for node: "+nodeName+" with prefix: "+nodePrefix+" and local name: "+nodeLocalName+")");  //TODO del
 
 		//get the namespace URI; if there is no prefix, this attempts to find a default namespace URI
 		final String nodeNamespaceURI = getNamespaceURI(xmlElement, nodePrefix, true);
-		//G***del Log.trace("Found namespace URI: "+nodeNamespaceURI);  //G***del
-		//G***del; we want to do this for all nodes, so they will give correct namespace values		if(nodeNamespaceURI!=null) //if there is a namespace URI found G***is this what we want to do for null namespace URIs?
+		//TODO del Log.trace("Found namespace URI: "+nodeNamespaceURI);  //TODO del
+		//TODO del; we want to do this for all nodes, so they will give correct namespace values		if(nodeNamespaceURI!=null) //if there is a namespace URI found TODO is this what we want to do for null namespace URIs?
 		xmlElement.setNamespaceURI(nodeNamespaceURI); //set whatever namespace we found
 		xmlElement.setNodeName(nodePrefix, nodeLocalName); //set the prefix and the local name
-		//G***del if not needed		final NodeList childElementList=xmlElement.getElementsByTagName("*"); //get all child elements G***is there a better way to do this?
-		final NodeList childElementList = xmlElement.getChildNodes(); //get a list of the child nodes G***see if we should use a tree walker or something
+		//TODO del if not needed		final NodeList childElementList=xmlElement.getElementsByTagName("*"); //get all child elements TODO is there a better way to do this?
+		final NodeList childElementList = xmlElement.getChildNodes(); //get a list of the child nodes TODO see if we should use a tree walker or something
 		for(int i = 0; i < childElementList.getLength(); ++i) { //look at each node
 			final Node node = childElementList.item(i); //get a reference to this node
 			if(node.getNodeType() == Node.ELEMENT_NODE) //if this is an element

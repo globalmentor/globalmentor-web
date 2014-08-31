@@ -183,7 +183,7 @@ public class XML {
 	/** Public ID characters. */
 	public static final String PUBLIC_ID_CHARS = SPACE_CHAR + CR_CHAR + LF_CHAR
 			+ "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-'()+,./:=?;!*#@$_%";
-	/*G***del when PUBLIC_ID_CHARS works
+	/*TODO del when PUBLIC_ID_CHARS works
 	#x20 | #xD | #xA | [a-zA-Z0-9] | [-'()+,./:=?;!*#@$_%]
 	*/
 
@@ -244,7 +244,7 @@ public class XML {
 			{ '\u0B4B', '\u0B4D' }, { '\u0B56', '\u0B57' }, { '\u0B82', '\u0B83' }, { '\u0BBE', '\u0BC2' }, { '\u0BC6', '\u0BC8' }, { '\u0BCA', '\u0BCD' },
 			{ '\u0BD7', '\u0BD7' }, { '\u0C01', '\u0C03' }, { '\u0C3E', '\u0C44' }, { '\u0C46', '\u0C48' }, { '\u0C4A', '\u0C4D' }, { '\u0C55', '\u0C56' },
 			{ '\u0C82', '\u0C83' }, { '\u0CBE', '\u0CC4' }, { '\u0CC6', '\u0CC8' }, { '\u0CCA', '\u0CCD' } };
-	/*G***fix
+	/*TODO fix
 	| [#x0CD5-#x0CD6] | [#x0D02-#x0D03] | [#x0D3E-#x0D43] | [#x0D46-#x0D48] | [#x0D4A-#x0D4D] | #x0D57 | #x0E31 | [#x0E34-#x0E3A] | [#x0E47-#x0E4E] | #x0EB1 | [#x0EB4-#x0EB9] | [#x0EBB-#x0EBC] | [#x0EC8-#x0ECD] | [#x0F18-#x0F19] | #x0F35 | #x0F37 | #x0F39 | #x0F3E | #x0F3F | [#x0F71-#x0F84] | [#x0F86-#x0F8B] | [#x0F90-#x0F95] | #x0F97 | [#x0F99-#x0FAD] | [#x0FB1-#x0FB7] | #x0FB9 | [#x20D0-#x20DC] | #x20E1 | [#x302A-#x302F] | #x3099 | #x309A
 	*/
 
@@ -2245,7 +2245,7 @@ public class XML {
 			else if(prefix.equals(XML.XML_NAMESPACE_PREFIX)) //if this is the "xml" prefix
 				return XML.XML_NAMESPACE_URI.toString(); //return the namespace URI for "xml:"
 			//see if this element has "xmlns:prefix" defined, and if so, retrieve it
-			if(element.hasAttributeNS(XML.XMLNS_NAMESPACE_URI.toString(), prefix)) //G***fix for empty namespace strings
+			if(element.hasAttributeNS(XML.XMLNS_NAMESPACE_URI.toString(), prefix)) //TODO fix for empty namespace strings
 				namespaceURI = element.getAttributeNS(XML.XMLNS_NAMESPACE_URI.toString(), prefix);
 		} else { //if no prefix was specified
 			//see if there is an "xmlns" attribute defined in the "http://www.w3.org/2000/xmlns/" namespace
