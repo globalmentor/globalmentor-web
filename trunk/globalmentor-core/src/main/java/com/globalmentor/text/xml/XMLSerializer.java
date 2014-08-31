@@ -392,7 +392,7 @@ public class XMLSerializer {
 		nestLevel = 0; //show that we haven't started nesting yet
 		//TODO del if not needed		outputStream.write(charset.getByteOrderMark());	//write the byte order mark, which may be an empty array
 		if(isBOMWritten()) { //if we should write a BOM
-			final ByteOrderMark bom = getByteOrderMark(charset); //get the byte order mark, if there is one
+			final ByteOrderMark bom = ByteOrderMark.forCharset(charset); //get the byte order mark, if there is one
 			outputStream.write(bom.getBytes()); //write the byte order mark
 		}
 		final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, charset)); //create a new writer based on our encoding TODO see if the writer automatically writes the byte order mark already for non-UTF-8
@@ -467,7 +467,7 @@ public class XMLSerializer {
 		nestLevel = 0; //show that we haven't started nesting yet
 		//TODO del if not needed		outputStream.write(charset.getByteOrderMark());	//write the byte order mark, which may be an empty array
 		if(isBOMWritten()) { //if we should write a BOM
-			final ByteOrderMark bom = getByteOrderMark(charset); //get the byte order mark, if there is one
+			final ByteOrderMark bom = ByteOrderMark.forCharset(charset); //get the byte order mark, if there is one
 			outputStream.write(bom.getBytes()); //write the byte order mark
 		}
 		final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, charset)); //create a new writer based on our encoding TODO see if the writer automatically writes the byte order mark already for non-UTF-8
@@ -503,7 +503,7 @@ public class XMLSerializer {
 		nestLevel = 0; //show that we haven't started nesting yet
 		//TODO del if not needed		outputStream.write(charset.getByteOrderMark());	//write the byte order mark, which may be an empty array
 		if(isBOMWritten()) { //if we should write a BOM
-			final ByteOrderMark bom = getByteOrderMark(charset); //get the byte order mark, if there is one
+			final ByteOrderMark bom = ByteOrderMark.forCharset(charset); //get the byte order mark, if there is one
 			outputStream.write(bom.getBytes()); //write the byte order mark
 		}
 		final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, charset)); //create a new writer based on our encoding TODO see if the writer automatically writes the byte order mark already for non-UTF-8
