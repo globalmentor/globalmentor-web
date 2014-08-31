@@ -18,6 +18,7 @@ package com.globalmentor.text.xml;
 
 import static com.globalmentor.io.Charsets.*;
 import static org.hamcrest.Matchers.*;
+import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.*;
 
 import java.io.*;
@@ -104,13 +105,13 @@ public class XMLTest extends AbstractTest {
 
 	/** @see XML#detectXMLCharset(InputStream, ObjectHolder, ObjectHolder) */
 	@Test
-	public void testDetectDefaultUTF_8() throws IOException {
+	public void testDetectNothing() throws IOException {
 		final InputStream inputStream = new BufferedInputStream(getClass().getResourceAsStream("hello-world-utf-8-no-xml-declaration.xml"));
 		try {
 			final ObjectHolder<ByteOrderMark> bom = new ObjectHolder<>();
 			final ObjectHolder<String> declaredEncodingName = new ObjectHolder<>();
 			final Charset charset = XML.detectXMLCharset(inputStream, bom, declaredEncodingName);
-			assertThat(charset, is(UTF_8_CHARSET));
+			assertThat(charset, is(nullValue()));
 			assertFalse(bom.isPresent());
 			assertFalse(declaredEncodingName.isPresent());
 		} finally {

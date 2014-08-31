@@ -427,12 +427,13 @@ public class XML {
 	 * exception is thrown.</li>
 	 * <li>If an explicit encoding declaration is found, it is returned, unless it is less specific than the imputed byte order. For example, if the imputed byte
 	 * order is UTF-16BE but the declared encoding is UTF-16, then the charset UTF-16BE is returned.</li>
-	 * <li>If there is no BOM and no XML declaration, a charset of UTF-8 is assumed.</li>
+	 * <li>If there is no BOM and no XML declaration, <code>null</code> is returned; the caller should assume the default XML encoding of UTF-8.</li>
 	 * </ul>
 	 * @param inputStream The stream which supposedly contains XML data; this input stream must support mark/reset.
 	 * @param bom Receives The actual byte order mark present, if any.
 	 * @param declaredEncodingName Receives a copy of the explicitly declared name of the character encoding, if any.
-	 * @return The character encoding specified in a byte order mark, the imputed byte order, the "encoding" attribute, or the default UTF-8.
+	 * @return The character encoding specified in a byte order mark, the imputed byte order, or the "encoding" attribute; or <code>null</code> indicating that no
+	 *         encoding was detecting, allowing the caller to assume UTF-8.
 	 * @throws IllegalArgumentException if mark/reset is not supported by the given input stream.
 	 * @throws IOException Thrown if an I/O error occurred, or the beginning but not the end of an XML declaration was found.
 	 * @throws UnsupportedCharsetException If no support for a declared encoding is available in this instance of the Java virtual machine
@@ -452,8 +453,8 @@ public class XML {
 			imputedBOM = null;
 		}
 		inputStream.reset();
-		if(imputedBOM == null) { //if we couldn't even impute a BOM, we assume UTF-8
-			return UTF_8_CHARSET;
+		if(imputedBOM == null) { //if we couldn't even impute a BOM, there aren't enough characters to detect anything
+			return null;
 		}
 		//we now know enough about the byte order to try to find an explicit XML encoding declaration any specified character encoding
 		//e.g. <?xml version="1.0" encoding="UTF-8"?>
