@@ -22,10 +22,10 @@ import java.nio.charset.Charset;
 
 import com.globalmentor.io.ByteOrderMark;
 
+import static com.globalmentor.java.CharSequences.*;
 import static com.globalmentor.java.Characters.SPACE_CHAR;
 
 import com.globalmentor.java.Characters;
-import com.globalmentor.java.StringBuffers;
 
 import static com.globalmentor.text.xml.XML.*;
 import static java.nio.charset.StandardCharsets.*;
@@ -529,7 +529,7 @@ public class XMLSerializer {
 	 */
 	protected void initializeEntityLookup(final NamedNodeMap entityMap) {
 		final List<String> entityNameList = new ArrayList<String>(); //create an array to hold the entity names we use
-		final StringBuffer entityCharacterValueStringBuffer = new StringBuffer(); //create a buffer to hold all the character values
+		final StringBuilder entityCharacterValueStringBuilder = new StringBuilder(); //create a buffer to hold all the character values
 		if(isUseEntities()) { //if we were asked to use their entities
 			if(entityMap != null) { //if we were provided a valid entity map
 				final int entityCount = entityMap.getLength(); //find out how many entities there are
@@ -542,40 +542,40 @@ public class XMLSerializer {
 							final String entityValue = ((Text)entityChildNode).getData(); //get the data of the node, which represents the replacement value of the entity
 							if(entityValue.length() == 1) { //if this entity represents exactly one character
 								entityNameList.add(entity.getNodeName()); //add the entity's name to the list
-								entityCharacterValueStringBuffer.append(entityValue.charAt(0)); //add the one-character value to the value buffer
+								entityCharacterValueStringBuilder.append(entityValue.charAt(0)); //add the one-character value to the value buffer
 							}
 						}
 					}
 				}
 			}
 			//add the "amp" entity if needed
-			if(StringBuffers.indexOf(entityCharacterValueStringBuffer, ENTITY_AMP_VALUE) < 0) { //if this entity value isn't defined
+			if(indexOf(entityCharacterValueStringBuilder, ENTITY_AMP_VALUE) < 0) { //if this entity value isn't defined
 				entityNameList.add(ENTITY_AMP_NAME); //add the default entity name
-				entityCharacterValueStringBuffer.append(ENTITY_AMP_VALUE); //add the default entity value
+				entityCharacterValueStringBuilder.append(ENTITY_AMP_VALUE); //add the default entity value
 			}
 			//add the "lt" entity if needed
-			if(StringBuffers.indexOf(entityCharacterValueStringBuffer, ENTITY_LT_VALUE) < 0) { //if this entity value isn't defined
+			if(indexOf(entityCharacterValueStringBuilder, ENTITY_LT_VALUE) < 0) { //if this entity value isn't defined
 				entityNameList.add(ENTITY_LT_NAME); //add the default entity name
-				entityCharacterValueStringBuffer.append(ENTITY_LT_VALUE); //add the default entity value
+				entityCharacterValueStringBuilder.append(ENTITY_LT_VALUE); //add the default entity value
 			}
 			//add the "gt" entity if needed
-			if(StringBuffers.indexOf(entityCharacterValueStringBuffer, ENTITY_GT_VALUE) < 0) { //if this entity value isn't defined
+			if(indexOf(entityCharacterValueStringBuilder, ENTITY_GT_VALUE) < 0) { //if this entity value isn't defined
 				entityNameList.add(ENTITY_GT_NAME); //add the default entity name
-				entityCharacterValueStringBuffer.append(ENTITY_GT_VALUE); //add the default entity value
+				entityCharacterValueStringBuilder.append(ENTITY_GT_VALUE); //add the default entity value
 			}
 			//add the "apos" entity if needed
-			if(StringBuffers.indexOf(entityCharacterValueStringBuffer, ENTITY_APOS_VALUE) < 0) { //if this entity value isn't defined
+			if(indexOf(entityCharacterValueStringBuilder, ENTITY_APOS_VALUE) < 0) { //if this entity value isn't defined
 				entityNameList.add(ENTITY_APOS_NAME); //add the default entity name
-				entityCharacterValueStringBuffer.append(ENTITY_APOS_VALUE); //add the default entity value
+				entityCharacterValueStringBuilder.append(ENTITY_APOS_VALUE); //add the default entity value
 			}
 			//add the "quot" entity if needed
-			if(StringBuffers.indexOf(entityCharacterValueStringBuffer, ENTITY_QUOT_VALUE) < 0) { //if this entity value isn't defined
+			if(indexOf(entityCharacterValueStringBuilder, ENTITY_QUOT_VALUE) < 0) { //if this entity value isn't defined
 				entityNameList.add(ENTITY_QUOT_NAME); //add the default entity name
-				entityCharacterValueStringBuffer.append(ENTITY_QUOT_VALUE); //add the default entity value
+				entityCharacterValueStringBuilder.append(ENTITY_QUOT_VALUE); //add the default entity value
 			}
 		}
 		entityNames = entityNameList.toArray(new String[entityNameList.size()]); //convert the entities in the list to an array
-		entityCharacterValues = entityCharacterValueStringBuffer.toString(); //convert the values into one searchable string
+		entityCharacterValues = entityCharacterValueStringBuilder.toString(); //convert the values into one searchable string
 	}
 
 	/**
@@ -594,7 +594,7 @@ public class XMLSerializer {
 	}
 
 	/**
-	 * Serializes the document's processing instrucitons to the given writer.
+	 * Serializes the document's processing instructions to the given writer.
 	 * @param document The XML document the processing instructions of which to serialize.
 	 * @param writer The writer into which the processing instructions should be written.
 	 * @throws IOException Thrown if an I/O error occurred.
