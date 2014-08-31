@@ -48,57 +48,57 @@ public class JSON {
 	/** The content type for JSON: <code>application/json</code>. */
 	public static final ContentType CONTENT_TYPE = ContentType.create(ContentType.APPLICATION_PRIMARY_TYPE, "json");
 
-	public final static char BEGIN_ARRAY = 0x5B; //[ left square bracket
-	public final static char BEGIN_OBJECT = 0x7B; //[ left square bracket
-	public final static char END_ARRAY = 0x5D; //] right square bracket
-	public final static char END_OBJECT = 0x7D; //} right curly bracket
-	public final static char NAME_SEPARATOR = 0x3A; //: colon
-	public final static char VALUE_SEPARATOR = 0x2C; //, comma
-	public final static char ESCAPE = 0x5C; //\
-	public final static char QUOTATION_MARK = 0x22; //"
-	public final static char MINUS = 0x2D; //-
-	public final static char PLUS = 0x2B; //+
-	public final static char DECIMAL_POINT = 0x2E; //.
+	public static final char BEGIN_ARRAY = 0x5B; //[ left square bracket
+	public static final char BEGIN_OBJECT = 0x7B; //[ left square bracket
+	public static final char END_ARRAY = 0x5D; //] right square bracket
+	public static final char END_OBJECT = 0x7D; //} right curly bracket
+	public static final char NAME_SEPARATOR = 0x3A; //: colon
+	public static final char VALUE_SEPARATOR = 0x2C; //, comma
+	public static final char ESCAPE = 0x5C; //\
+	public static final char QUOTATION_MARK = 0x22; //"
+	public static final char MINUS = 0x2D; //-
+	public static final char PLUS = 0x2B; //+
+	public static final char DECIMAL_POINT = 0x2E; //.
 
 	//whitespace characters
-	public final static char SPACE = 0x20; //Space
-	public final static char HORIZONTAL_TAB = 0x09; //Horizontal tab
-	public final static char LINE_FEED = 0x0A; //Line feed or New line
-	public final static char CARRIAGE_RETURN = 0x0D; //Carriage return
+	public static final char SPACE = 0x20; //Space
+	public static final char HORIZONTAL_TAB = 0x09; //Horizontal tab
+	public static final char LINE_FEED = 0x0A; //Line feed or New line
+	public static final char CARRIAGE_RETURN = 0x0D; //Carriage return
 	//escaped forms of characters
-	public final static char ESCAPED_QUOTATION_MARK = 0x22; //" quotation mark  U+0022
-	public final static char ESCAPED_REVERSE_SOLIDUS = 0x5C; //\ reverse solidus U+005C
-	public final static char REVERSE_SOLIDUS = 0x5C; //\ reverse solidus U+005C
-	public final static char ESCAPED_SOLIDUS = 0x2F; /// solidus U+002F
-	public final static char SOLIDUS = 0x2F; /// solidus U+002F
-	public final static char ESCAPED_BACKSPACE = 0x62; //b backspace U+0008
-	public final static char BACKSPACE = 0x08; //b backspace U+0008
-	public final static char ESCAPED_FORM_FEED = 0x66; //f form feed U+000C
-	public final static char FORM_FEED = 0x0C; //f form feed U+000C
-	public final static char ESCAPED_LINE_FEED = 0x6E; //n line feed U+000A
-	public final static char ESCAPED_CARRIAGE_RETURN = 0x72; //r carriage return U+000D
-	public final static char ESCAPED_TAB = 0x74; //t tab U+0009	
+	public static final char ESCAPED_QUOTATION_MARK = 0x22; //" quotation mark  U+0022
+	public static final char ESCAPED_REVERSE_SOLIDUS = 0x5C; //\ reverse solidus U+005C
+	public static final char REVERSE_SOLIDUS = 0x5C; //\ reverse solidus U+005C
+	public static final char ESCAPED_SOLIDUS = 0x2F; /// solidus U+002F
+	public static final char SOLIDUS = 0x2F; /// solidus U+002F
+	public static final char ESCAPED_BACKSPACE = 0x62; //b backspace U+0008
+	public static final char BACKSPACE = 0x08; //b backspace U+0008
+	public static final char ESCAPED_FORM_FEED = 0x66; //f form feed U+000C
+	public static final char FORM_FEED = 0x0C; //f form feed U+000C
+	public static final char ESCAPED_LINE_FEED = 0x6E; //n line feed U+000A
+	public static final char ESCAPED_CARRIAGE_RETURN = 0x72; //r carriage return U+000D
+	public static final char ESCAPED_TAB = 0x74; //t tab U+0009	
 
 	/** The character introducing an escaped Unicode code point. */
-	public final static char ESCAPED_UNICODE = 'u';
+	public static final char ESCAPED_UNICODE = 'u';
 
 	/** Sign characters. */
-	public final static char[] SIGN = new char[] { MINUS, PLUS };
+	public static final char[] SIGN = new char[] { MINUS, PLUS };
 
 	/** Digit characters. */
-	public final static char[] DIGITS = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+	public static final char[] DIGITS = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
 
 	/** Whitespace characters. */
-	public final static char[] WHITESPACE = new char[] { SPACE, HORIZONTAL_TAB, LINE_FEED, CARRIAGE_RETURN };
+	public static final char[] WHITESPACE = new char[] { SPACE, HORIZONTAL_TAB, LINE_FEED, CARRIAGE_RETURN };
 
 	/** The null identifier. */
-	public final static String NULL = "null";
+	public static final String NULL = "null";
 	/** The boolean true identifier. */
-	public final static String TRUE = "true";
+	public static final String TRUE = "true";
 	/** The boolean false identifier. */
-	public final static String FALSE = "false";
+	public static final String FALSE = "false";
 	//TODO fix (?<!\\\\)
-	public final static Pattern JSON_PATTERN = Pattern.compile("[{}\\[\\]:,]|(?:\"[^((?<!\\\\)\")]*\")|(?:null)|(?:true)(?:false)");
+	public static final Pattern JSON_PATTERN = Pattern.compile("[{}\\[\\]:,]|(?:\"[^((?<!\\\\)\")]*\")|(?:null)|(?:true)(?:false)");
 
 	/**
 	 * Appends an object value. Supported value types are:

@@ -29,13 +29,13 @@ import org.w3c.dom.*;
 class XMLTag extends XMLNode {
 
 	/** An undefined tag. */
-	private final static int UNDEFINED_TAG = -1;
+	private static final int UNDEFINED_TAG = -1;
 	/** A starting tag. */
-	public final static int START_TAG = 0;
+	public static final int START_TAG = 0;
 	/** An ending tag. */
-	public final static int END_TAG = 1;
+	public static final int END_TAG = 1;
 	/** An empty-element tag. */
-	public final static int EMPTY_ELEMENT_TAG = 2;
+	public static final int EMPTY_ELEMENT_TAG = 2;
 
 	/** The type of tag this is. */
 	private int TagType = UNDEFINED_TAG; //default to an undefined tag type

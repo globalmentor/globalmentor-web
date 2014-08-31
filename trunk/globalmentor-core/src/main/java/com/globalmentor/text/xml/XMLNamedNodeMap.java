@@ -36,7 +36,7 @@ public class XMLNamedNodeMap extends HashMap implements NamedNodeMap {
 	/**
 	 * The delimiter used for forming combined namespaceURI+localName keys for the namespace map.
 	 */
-	protected final static char NAMESPACE_DELIMITER = '$';
+	protected static final char NAMESPACE_DELIMITER = '$';
 
 	/**
 	 * Specifies which XML document owns these nodes. Can only be accessed from within this package. Used to set all document owners in one batch.
@@ -207,7 +207,7 @@ public class XMLNamedNodeMap extends HashMap implements NamedNodeMap {
 	 * @return The namespace key name to use in the map.
 	 * @see #NAMESPACE_DELIMITER
 	 */
-	protected final static String getNamespaceKey(final String namespaceURI, final String localName) {
+	protected static final String getNamespaceKey(final String namespaceURI, final String localName) {
 		return namespaceURI + NAMESPACE_DELIMITER + localName; //combine the namespace URI and the local name using the delimiter
 	}
 

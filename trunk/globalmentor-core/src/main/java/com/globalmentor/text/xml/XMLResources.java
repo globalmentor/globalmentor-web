@@ -28,7 +28,7 @@ public class XMLResources extends ListResourceBundle {
 	/** The base name used for getting resources. */
 	public static final String RESOURCE_BUNDLE_BASE_NAME = XMLResources.class.getPackage().getName() + ".XMLResources";
 	/** The prefix for XML resource names. */
-	public final static String RESOURCE_PREFIX = "XML";
+	public static final String RESOURCE_PREFIX = "XML";
 
 	public Object[][] getContents() {
 		return contents;

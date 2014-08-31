@@ -28,87 +28,87 @@ import com.globalmentor.net.URIs;
 public class XMLSchema {
 
 	/** The Default XML schema namespace prefix. */
-	public final static String XML_SCHEMA_NAMESPACE_PREFIX = "xsd";
+	public static final String XML_SCHEMA_NAMESPACE_PREFIX = "xsd";
 	/** The URI to the XML schema namespace. */
-	public final static URI XML_SCHEMA_NAMESPACE_URI = URI.create("http://www.w3.org/2001/XMLSchema");
+	public static final URI XML_SCHEMA_NAMESPACE_URI = URI.create("http://www.w3.org/2001/XMLSchema");
 
 	//XML schema elements
-	public final static String ELEMENT_ANNOTATION = "annotation";
-	public final static String ELEMENT_APPINFO = "appinfo";
-	public final static String ELEMENT_ATTRIBUTE_GROUP = "attributeGroup";
-	public final static String ELEMENT_DOCUMENTATION = "documentation";
-	public final static String ELEMENT_ELEMENT = "element";
+	public static final String ELEMENT_ANNOTATION = "annotation";
+	public static final String ELEMENT_APPINFO = "appinfo";
+	public static final String ELEMENT_ATTRIBUTE_GROUP = "attributeGroup";
+	public static final String ELEMENT_DOCUMENTATION = "documentation";
+	public static final String ELEMENT_ELEMENT = "element";
 
 	//XML schema attributes
-	public final static String ATTRIBUTE_TARGET_NAMESPACE = "targetNamespace";
-	public final static String ATTRIBUTE_NAME = "name";
+	public static final String ATTRIBUTE_TARGET_NAMESPACE = "targetNamespace";
+	public static final String ATTRIBUTE_NAME = "name";
 
 	//XML schema datatype names TODO maybe put these in a separate datatype class
 	/** The name for the base64 binary datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#base64Binary</code>. */
-	public final static String BASE64_BINARY_DATATYPE_NAME = "base64Binary";
+	public static final String BASE64_BINARY_DATATYPE_NAME = "base64Binary";
 	/** The name for the boolean datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#boolean</code>. */
-	public final static String BOOLEAN_DATATYPE_NAME = "boolean";
+	public static final String BOOLEAN_DATATYPE_NAME = "boolean";
 	/** The name for the byte datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#byte</code>. */
-	public final static String BYTE_DATATYPE_NAME = "byte";
+	public static final String BYTE_DATATYPE_NAME = "byte";
 	/** The name for the date datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#date</code>. */
-	public final static String DATE_DATATYPE_NAME = "date";
+	public static final String DATE_DATATYPE_NAME = "date";
 	/** The name for the date time datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#dateTime</code>. */
-	public final static String DATE_TIME_DATATYPE_NAME = "dateTime";
+	public static final String DATE_TIME_DATATYPE_NAME = "dateTime";
 	/** The name for the decimal datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#decimal</code>. */
-	public final static String DECIMAL_DATATYPE_NAME = "decimal";
+	public static final String DECIMAL_DATATYPE_NAME = "decimal";
 	/** The name for the double datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#double</code>. */
-	public final static String DOUBLE_DATATYPE_NAME = "double";
+	public static final String DOUBLE_DATATYPE_NAME = "double";
 	/** The name for the duration datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#duration</code>. */
-	public final static String DURATION_DATATYPE_NAME = "duration";
+	public static final String DURATION_DATATYPE_NAME = "duration";
 	/** The name for the float datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#float</code>. */
-	public final static String FLOAT_DATATYPE_NAME = "float";
+	public static final String FLOAT_DATATYPE_NAME = "float";
 	/** The name for the int datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#int</code>. */
-	public final static String INT_DATATYPE_NAME = "int";
+	public static final String INT_DATATYPE_NAME = "int";
 	/** The name for the integer datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#integer</code>. */
-	public final static String INTEGER_DATATYPE_NAME = "integer";
+	public static final String INTEGER_DATATYPE_NAME = "integer";
 	/** The name for the long datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#long</code>. */
-	public final static String LONG_DATATYPE_NAME = "long";
+	public static final String LONG_DATATYPE_NAME = "long";
 	/** The name for the short datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#short</code>. */
-	public final static String SHORT_DATATYPE_NAME = "short";
+	public static final String SHORT_DATATYPE_NAME = "short";
 	/** The name for the string datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#string</code>. */
-	public final static String STRING_DATATYPE_NAME = "string";
+	public static final String STRING_DATATYPE_NAME = "string";
 	/** The name for the time datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#time</code>. */
-	public final static String TIME_DATATYPE_NAME = "time";
+	public static final String TIME_DATATYPE_NAME = "time";
 	/** The name for the URI datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#anyURI</code>. */
-	public final static String URI_DATATYPE_NAME = "anyURI";
+	public static final String URI_DATATYPE_NAME = "anyURI";
 	//XML schema datatypes
 	/** The base 64 binary datatype. */
-	public final static URI BASE64_BINARY_DATATYPE_URI = URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, BASE64_BINARY_DATATYPE_NAME);
+	public static final URI BASE64_BINARY_DATATYPE_URI = URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, BASE64_BINARY_DATATYPE_NAME);
 	/** The boolean datatype. */
-	public final static URI BOOLEAN_DATATYPE_URI = URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, BOOLEAN_DATATYPE_NAME);
+	public static final URI BOOLEAN_DATATYPE_URI = URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, BOOLEAN_DATATYPE_NAME);
 	/** The byte datatype. */
-	public final static URI BYTE_DATATYPE_URI = URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, BYTE_DATATYPE_NAME);
+	public static final URI BYTE_DATATYPE_URI = URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, BYTE_DATATYPE_NAME);
 	/** The date datatype. */
-	public final static URI DATE_DATATYPE_URI = URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, DATE_DATATYPE_NAME);
+	public static final URI DATE_DATATYPE_URI = URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, DATE_DATATYPE_NAME);
 	/** The date time datatype. */
-	public final static URI DATE_TIME_DATATYPE_URI = URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, DATE_TIME_DATATYPE_NAME);
+	public static final URI DATE_TIME_DATATYPE_URI = URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, DATE_TIME_DATATYPE_NAME);
 	/** The decimal datatype. */
-	public final static URI DECIMAL_DATATYPE_URI = URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, DECIMAL_DATATYPE_NAME);
+	public static final URI DECIMAL_DATATYPE_URI = URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, DECIMAL_DATATYPE_NAME);
 	/** The 64-bit double datatype. */
-	public final static URI DOUBLE_DATATYPE_URI = URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, DOUBLE_DATATYPE_NAME);
+	public static final URI DOUBLE_DATATYPE_URI = URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, DOUBLE_DATATYPE_NAME);
 	/** The duration datatype. */
-	public final static URI DURATION_DATATYPE_URI = URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, DURATION_DATATYPE_NAME);
+	public static final URI DURATION_DATATYPE_URI = URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, DURATION_DATATYPE_NAME);
 	/** The 32-bit float datatype. */
-	public final static URI FLOAT_DATATYPE_URI = URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, FLOAT_DATATYPE_NAME);
+	public static final URI FLOAT_DATATYPE_URI = URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, FLOAT_DATATYPE_NAME);
 	/** The int datatype. */
-	public final static URI INT_DATATYPE_URI = URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, INT_DATATYPE_NAME);
+	public static final URI INT_DATATYPE_URI = URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, INT_DATATYPE_NAME);
 	/** The integer datatype. */
-	public final static URI INTEGER_DATATYPE_URI = URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, INTEGER_DATATYPE_NAME);
+	public static final URI INTEGER_DATATYPE_URI = URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, INTEGER_DATATYPE_NAME);
 	/** The long datatype. */
-	public final static URI LONG_DATATYPE_URI = URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, LONG_DATATYPE_NAME);
+	public static final URI LONG_DATATYPE_URI = URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, LONG_DATATYPE_NAME);
 	/** The short datatype. */
-	public final static URI SHORT_DATATYPE_URI = URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, SHORT_DATATYPE_NAME);
+	public static final URI SHORT_DATATYPE_URI = URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, SHORT_DATATYPE_NAME);
 	/** The string datatype. */
-	public final static URI STRING_DATATYPE_URI = URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, STRING_DATATYPE_NAME);
+	public static final URI STRING_DATATYPE_URI = URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, STRING_DATATYPE_NAME);
 	/** The time datatype. */
-	public final static URI TIME_DATATYPE_URI = URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, TIME_DATATYPE_NAME);
+	public static final URI TIME_DATATYPE_URI = URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, TIME_DATATYPE_NAME);
 	/** The URI datatype. */
-	public final static URI URI_DATATYPE_URI = URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, URI_DATATYPE_NAME);
+	public static final URI URI_DATATYPE_URI = URIs.resolveRawFragment(XML_SCHEMA_NAMESPACE_URI, URI_DATATYPE_NAME);
 
 	/** The global symbol table for this schema. */
 	private final XMLSchemaSymbolTable symbolTable = new XMLSchemaSymbolTable();

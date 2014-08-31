@@ -39,7 +39,7 @@ public class XMLSchemaProcessor {
 	/**
 	 * The serializer used to serialize annotations, shared across schema processors. //TODO do we want to have a lazy creation here?
 	 */
-	protected final static XMLSerializer xmlSerializer = new XMLSerializer();
+	protected static final XMLSerializer xmlSerializer = new XMLSerializer();
 
 	/** The map of schemas, keyed by target namespace. */
 	private Map schemaMap = new HashMap();

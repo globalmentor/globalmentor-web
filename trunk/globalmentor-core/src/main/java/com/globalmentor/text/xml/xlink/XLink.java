@@ -38,9 +38,9 @@ public class XLink {
 	/** The type attribute (without the namespace). */
 	public static final String ATTRIBUTE_TYPE = "type";
 	/** The XLink simple link type. */
-	public final static String SIMPLE_TYPE = "simple";
+	public static final String SIMPLE_TYPE = "simple";
 	/** The XLink extended link type. */
-	public final static String EXTENDED_TYPE = "extended";
+	public static final String EXTENDED_TYPE = "extended";
 
 	/** The href attribute (without the namespace). */
 	public static final String ATTRIBUTE_HREF = "href";

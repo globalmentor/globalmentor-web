@@ -26,31 +26,31 @@ public abstract class XMLSchemaComponent {
 	//schema component types
 	//primary component types
 	/** Simple type definition. */
-	public final static short SIMPLE_TYPE_COMPONENT = 1;
+	public static final short SIMPLE_TYPE_COMPONENT = 1;
 	/** Complex type definition. */
-	public final static short COMPLEX_TYPE_COMPONENT = 2;
+	public static final short COMPLEX_TYPE_COMPONENT = 2;
 	/** Attribute declaration. */
-	public final static short ATTRIBUTE_COMPONENT = 3;
+	public static final short ATTRIBUTE_COMPONENT = 3;
 	/** Element declaration. */
-	public final static short ELEMENT_COMPONENT = 4;
+	public static final short ELEMENT_COMPONENT = 4;
 	//secondary component types
 	/** Attribute group definition. */
-	public final static short ATTRIBUTE_GROUP_COMPONENT = 5;
+	public static final short ATTRIBUTE_GROUP_COMPONENT = 5;
 	/** Identity-constraint definition. */
-	public final static short IDENTITY_CONSTRAINT_COMPONENT = 6;
+	public static final short IDENTITY_CONSTRAINT_COMPONENT = 6;
 	/** Model group definition. */
-	public final static short MODEL_GROUP_COMPONENT = 7; //TODO fix; this is really a model group definition; a model group is a helper component
+	public static final short MODEL_GROUP_COMPONENT = 7; //TODO fix; this is really a model group definition; a model group is a helper component
 	/** Notation declaration. */
-	public final static short NOTATION_COMPONENT = 8;
+	public static final short NOTATION_COMPONENT = 8;
 	//helper component types
 	/** Annotation. */
-	public final static short ANNOTATION_COMPONENT = 9;
+	public static final short ANNOTATION_COMPONENT = 9;
 	/** Model group. */
-	//TODO fix	public final static short MODEL_GROUP_COMPONENT=10;
+	//TODO fix	public static final short MODEL_GROUP_COMPONENT=10;
 	/** Particle. */
-	//TODO fix	public final static short PARTICLE_COMPONENT=11;
+	//TODO fix	public static final short PARTICLE_COMPONENT=11;
 	/** Wildcard. */
-	//TODO fix	public final static short WILDCARD_COMPONENT=12;
+	//TODO fix	public static final short WILDCARD_COMPONENT=12;
 
 	/** The type of XML schema component this is. */
 	private short componentType;

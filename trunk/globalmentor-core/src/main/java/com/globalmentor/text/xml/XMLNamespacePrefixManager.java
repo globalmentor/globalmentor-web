@@ -108,10 +108,10 @@ public class XMLNamespacePrefixManager //TODO replace with XMLNamespaceLabelMana
 	}
 
 	/** The prefix, "java:", of a Java package namespace URI. */
-	private final static String JAVA_PACKAGE_NAMESPACE_URI_PREFIX = JAVA_URI_SCHEME + SCHEME_SEPARATOR;
+	private static final String JAVA_PACKAGE_NAMESPACE_URI_PREFIX = JAVA_URI_SCHEME + SCHEME_SEPARATOR;
 
 	/** The suffix, ".", of a Java package namespace URI. */
-	private final static String JAVA_PACKAGE_NAMESPACE_URI_SUFFIX = String.valueOf(PACKAGE_SEPARATOR);
+	private static final String JAVA_PACKAGE_NAMESPACE_URI_SUFFIX = String.valueOf(PACKAGE_SEPARATOR);
 
 	/**
 	 * Retrieves the prefix to use for the given namespace. If a namespace is unrecognized, a new one will be created and stored for future use.

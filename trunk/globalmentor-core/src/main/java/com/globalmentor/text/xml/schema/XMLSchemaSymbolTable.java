@@ -38,13 +38,13 @@ import com.globalmentor.log.Log;
 public class XMLSchemaSymbolTable {
 
 	/** The name of the attribute symbol space. */
-	public final static String ATTRIBUTE_SYMBOL_SPACE_NAME = "attribute";
+	public static final String ATTRIBUTE_SYMBOL_SPACE_NAME = "attribute";
 	/** The name of the attribute group symbol space. */
-	public final static String ATTRIBUTE_GROUP_SYMBOL_SPACE_NAME = "attributeGroup";
+	public static final String ATTRIBUTE_GROUP_SYMBOL_SPACE_NAME = "attributeGroup";
 	/** The name of the element symbol space. */
-	public final static String ELEMENT_SYMBOL_SPACE_NAME = "element";
+	public static final String ELEMENT_SYMBOL_SPACE_NAME = "element";
 	/** The name of the symbol space for simple and complex types. */
-	public final static String TYPE_SYMBOL_SPACE_NAME = "type";
+	public static final String TYPE_SYMBOL_SPACE_NAME = "type";
 
 	/**
 	 * A map of namespaces keyed to namespace URIs. Each value in the map is a symbol space, represented by another map keyed to symbol space names. Each symbol

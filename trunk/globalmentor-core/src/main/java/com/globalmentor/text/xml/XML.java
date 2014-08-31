@@ -62,9 +62,9 @@ public class XML {
 	public static final String XML_VERSION = "1.0";
 
 	/** The suffix for XML application types, as defined in <a href="http://www.ietf.org/rfc/rfc3023.txt">RFC 3023</a>, "XML Media Types". */
-	public final static String XML_SUBTYPE_SUFFIX = "xml";
+	public static final String XML_SUBTYPE_SUFFIX = "xml";
 	/** The suffix for XML external parsed entity subtypes (not yet formally defined). */
-	public final static String XML_EXTERNAL_PARSED_ENTITY_SUBTYPE_SUFFIX = "xml-external-parsed-entity";
+	public static final String XML_EXTERNAL_PARSED_ENTITY_SUBTYPE_SUFFIX = "xml-external-parsed-entity";
 
 	/** The content type for generic XML: <code>text/xml</code>. */
 	public static final ContentType CONTENT_TYPE = ContentType.create(ContentType.TEXT_PRIMARY_TYPE, XML_SUBTYPE);
@@ -73,7 +73,7 @@ public class XML {
 	public static final ContentType EXTERNAL_PARSED_ENTITY_CONTENT_TYPE = ContentType.create(ContentType.TEXT_PRIMARY_TYPE, XML_EXTERNAL_PARSED_ENTITY_SUBTYPE);
 
 	/** The name extension for eXtensible Markup Language. */
-	public final static String XML_NAME_EXTENSION = "xml";
+	public static final String XML_NAME_EXTENSION = "xml";
 
 	/** The prefix to the "xml" namespace, for use with "xml:lang", for example. */
 	public static final String XML_NAMESPACE_PREFIX = "xml";
@@ -85,10 +85,10 @@ public class XML {
 	public static final String XMLNS_NAMESPACE_PREFIX = "xmlns"; //TODO makes sure code appropriately uses the new ATTRIBUTE_XMLNS when appropriate for the attribute name
 
 	/** The local name of the language attribute <code>xml:lang</code>. */
-	public final static String ATTRIBUTE_LANG = "lang";
+	public static final String ATTRIBUTE_LANG = "lang";
 
 	/** The local name of the XML namespace attribute <code>xmlns</code>. */
-	public final static String ATTRIBUTE_XMLNS = "xmlns";
+	public static final String ATTRIBUTE_XMLNS = "xmlns";
 
 	/** The URI to the "xmlns" namespace. */
 	public static final URI XMLNS_NAMESPACE_URI = URI.create("http://www.w3.org/2000/xmlns/");
@@ -161,33 +161,33 @@ public class XML {
 	public static final short UNKNOWN_RESOURCE_ID = 99;
 
 	/** A tab character. */
-	public final static char TAB_CHAR = '\t';
+	public static final char TAB_CHAR = '\t';
 	/** A carriage return character. */
-	public final static char CR_CHAR = '\r';
+	public static final char CR_CHAR = '\r';
 	/** A linefeed character. */
-	public final static char LF_CHAR = '\n';
+	public static final char LF_CHAR = '\n';
 	/** An equals sign. */
-	public final static char EQUAL_CHAR = '=';
+	public static final char EQUAL_CHAR = '=';
 	/** A single quote character. */
-	public final static char SINGLE_QUOTE_CHAR = '\'';
+	public static final char SINGLE_QUOTE_CHAR = '\'';
 	/** A double quote character. */
-	public final static char DOUBLE_QUOTE_CHAR = '"';
+	public static final char DOUBLE_QUOTE_CHAR = '"';
 	/** The characters considered by XML to be whitespace. */
-	public final static String WHITESPACE_CHARS = "" + SPACE_CHAR + TAB_CHAR + CR_CHAR + LF_CHAR; //whitespace characters in XML are space, tab, CR, and LF TODO upgrade to use Characters
+	public static final String WHITESPACE_CHARS = "" + SPACE_CHAR + TAB_CHAR + CR_CHAR + LF_CHAR; //whitespace characters in XML are space, tab, CR, and LF TODO upgrade to use Characters
 	/** Public ID characters. */
-	public final static String PUBLIC_ID_CHARS = SPACE_CHAR + CR_CHAR + LF_CHAR
+	public static final String PUBLIC_ID_CHARS = SPACE_CHAR + CR_CHAR + LF_CHAR
 			+ "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-'()+,./:=?;!*#@$_%";
 	/*G***del when PUBLIC_ID_CHARS works
 	#x20 | #xD | #xA | [a-zA-Z0-9] | [-'()+,./:=?;!*#@$_%]
 	*/
 
 	/** The ranges considered by XML to be legal characters. */
-	public final static char[][] CHAR_RANGES = new char[][] //each range is represented as two characters, the lower inclusive character of the range and the upper inclusive character of the range
+	public static final char[][] CHAR_RANGES = new char[][] //each range is represented as two characters, the lower inclusive character of the range and the upper inclusive character of the range
 	{ { '\t', '\t' }, { '\n', '\n' }, { '\r', '\r' }, //tab, linefeed, and carriage return escaped in C fashion because including them as unicode characters seems to make JBuilder try to parse them right away
 			{ '\u0020', '\uD7FF' }, { '\uE000', '\uFFFD' }, { '\uFFFE', '\uFFFF' } }; //TODO fix the last range to match XML's [#x10000-#x10FFFF]
 
 	/** The characters considered by XML to be base characters. */
-	public final static char[][] BASE_CHAR_RANGES = new char[][] //each range is represented as two characters, the lower inclusive character of the range and the upper inclusive character of the range
+	public static final char[][] BASE_CHAR_RANGES = new char[][] //each range is represented as two characters, the lower inclusive character of the range and the upper inclusive character of the range
 	{ { '\u0041', '\u005A' }, { '\u0061', '\u007A' }, { '\u00C0', '\u00D6' }, { '\u00D8', '\u00F6' }, { '\u00F8', '\u00FF' }, { '\u0100', '\u0131' },
 			{ '\u0134', '\u013E' }, { '\u0141', '\u0148' }, { '\u014A', '\u017E' }, { '\u0180', '\u01C3' }, { '\u01CD', '\u01F0' }, { '\u01F4', '\u01F5' },
 			{ '\u01FA', '\u0217' }, { '\u0250', '\u02A8' }, { '\u02BB', '\u02C1' }, { '\u0386', '\u0386' }, { '\u0388', '\u038A' }, { '\u038C', '\u03BC' },
@@ -224,9 +224,9 @@ public class XML {
 			{ '\u3041', '\u3094' }, { '\u30A1', '\u30FA' }, { '\u3105', '\u312C' }, { '\uAC00', '\uD7A3' } };
 
 	/** The characters considered by XML to be ideographic characters. */
-	public final static char[][] IDEOGRAPHIC_RANGES = new char[][] { { '\u4E00', '\u9FA5' }, { '\u3007', '\u3007' }, { '\u3021', '\u3029' } }; //each range is represented as two characters, the lower inclusive character of the range and the upper inclusive character of the range
+	public static final char[][] IDEOGRAPHIC_RANGES = new char[][] { { '\u4E00', '\u9FA5' }, { '\u3007', '\u3007' }, { '\u3021', '\u3029' } }; //each range is represented as two characters, the lower inclusive character of the range and the upper inclusive character of the range
 	/** The characters considered by XML to be combining characters. */
-	public final static char[][] COMBINING_CHAR_RANGES = new char[][] //each range is represented as two characters, the lower inclusive character of the range and the upper inclusive character of the range
+	public static final char[][] COMBINING_CHAR_RANGES = new char[][] //each range is represented as two characters, the lower inclusive character of the range and the upper inclusive character of the range
 	{ { '\u0300', '\u0345' }, { '\u0360', '\u0361' }, { '\u0483', '\u0486' }, { '\u0591', '\u05A1' }, { '\u05A3', '\u05B9' }, { '\u05BB', '\u05BD' },
 			{ '\u05BF', '\u05BF' }, { '\u05C1', '\u05C2' }, { '\u05C4', '\u05C4' }, { '\u064B', '\u0652' }, { '\u0670', '\u0670' }, { '\u06D6', '\u06DC' },
 			{ '\u06DD', '\u06DF' }, { '\u06E0', '\u06E4' }, { '\u06E7', '\u06E8' }, { '\u06EA', '\u06ED' }, { '\u0901', '\u0903' }, { '\u093C', '\u093C' },
@@ -243,151 +243,151 @@ public class XML {
 	*/
 
 	/** The characters considered by XML to be digits. */
-	public final static char[][] DIGIT_RANGES = new char[][] //each range is represented as two characters, the lower inclusive character of the range and the upper inclusive character of the range
+	public static final char[][] DIGIT_RANGES = new char[][] //each range is represented as two characters, the lower inclusive character of the range and the upper inclusive character of the range
 	{ { '\u0030', '\u0039' }, { '\u0660', '\u0669' }, { '\u06F0', '\u06F9' }, { '\u0966', '\u096F' }, { '\u09E6', '\u09EF' }, { '\u0A66', '\u0A6F' },
 			{ '\u0AE6', '\u0AEF' }, { '\u0B66', '\u0B6F' }, { '\u0BE7', '\u0BEF' }, { '\u0C66', '\u0C6F' }, { '\u0CE6', '\u0CEF' }, { '\u0D66', '\u0D6F' },
 			{ '\u0E50', '\u0E59' }, { '\u0ED0', '\u0ED9' }, { '\u0F20', '\u0F29' } };
 	/** The characters considered by XML to be extenders. */
-	public final static char[][] EXTENDER_RANGES = new char[][] //each range is represented as two characters, the lower inclusive character of the range and the upper inclusive character of the range
+	public static final char[][] EXTENDER_RANGES = new char[][] //each range is represented as two characters, the lower inclusive character of the range and the upper inclusive character of the range
 	{ { '\u00B7', '\u00B7' }, { '\u02D0', '\u02D0' }, { '\u02D1', '\u02D1' }, { '\u0387', '\u0387' }, { '\u0640', '\u0640' }, { '\u0E46', '\u0E46' },
 			{ '\u0EC6', '\u0EC6' }, { '\u3005', '\u3005' }, { '\u3031', '\u3035' }, { '\u309D', '\u309E' }, { '\u30FC', '\u30FE' } };
 
 	/** The characters which can serve as delimiters for an attribute value. */
-	public final static String ATTRIBUTE_VALUE_DELIMITERS = String.valueOf(SINGLE_QUOTE_CHAR) + String.valueOf(DOUBLE_QUOTE_CHAR);
+	public static final String ATTRIBUTE_VALUE_DELIMITERS = String.valueOf(SINGLE_QUOTE_CHAR) + String.valueOf(DOUBLE_QUOTE_CHAR);
 
 	/** The characters which begin an attribute list declaration. */
-	public final static String ATTLIST_DECL_START = "<!ATTLIST";
+	public static final String ATTLIST_DECL_START = "<!ATTLIST";
 	/** The characters which end an attribute list declaration. */
-	public final static String ATTLIST_DECL_END = ">";
+	public static final String ATTLIST_DECL_END = ">";
 	/** The "CDATA" attribute type. */
-	public final static String ATTTYPE_CDATA = "CDATA";
+	public static final String ATTTYPE_CDATA = "CDATA";
 	/** The "ID" attribute type. */
-	public final static String ATTTYPE_ID = "ID";
+	public static final String ATTTYPE_ID = "ID";
 	/** The "IDREF" attribute type. */
-	public final static String ATTTYPE_IDREF = "IDREF";
+	public static final String ATTTYPE_IDREF = "IDREF";
 	/** The "IDREFS" attribute type. */
-	public final static String ATTTYPE_IDREFS = "IDREFS";
+	public static final String ATTTYPE_IDREFS = "IDREFS";
 	/** The "ENTITY" attribute type. */
-	public final static String ATTTYPE_ENTITY = "ENTITY";
+	public static final String ATTTYPE_ENTITY = "ENTITY";
 	/** The "ENTITIES" attribute type. */
-	public final static String ATTTYPE_ENTITIES = "ENTITIES";
+	public static final String ATTTYPE_ENTITIES = "ENTITIES";
 	/** The "NMTOKEN" attribute type. */
-	public final static String ATTTYPE_NMTOKEN = "NMTOKEN";
+	public static final String ATTTYPE_NMTOKEN = "NMTOKEN";
 	/** The "NMTOKENS" attribute type. */
-	public final static String ATTTYPE_NMTOKENS = "NMTOKENS";
+	public static final String ATTTYPE_NMTOKENS = "NMTOKENS";
 	/** The notation type attribute type. */
-	public final static String ATTTYPE_NOTATION = "NOTATION";
+	public static final String ATTTYPE_NOTATION = "NOTATION";
 	/** The start of an enumerated attribute type. */
-	public final static String ATTTYPE_ENUMERATION_START = "(";
+	public static final String ATTTYPE_ENUMERATION_START = "(";
 	/** The end of an enumerated attribute type. */
-	public final static String ATTTYPE_ENUMERATION_END = ")";
+	public static final String ATTTYPE_ENUMERATION_END = ")";
 	/** The required attribute default declaration. */
-	public final static String ATT_DEFAULT_REQUIRED = "#REQUIRED";
+	public static final String ATT_DEFAULT_REQUIRED = "#REQUIRED";
 	/** The implied attribute default declaration. */
-	public final static String ATT_DEFAULT_IMPLIED = "#IMPLIED";
+	public static final String ATT_DEFAULT_IMPLIED = "#IMPLIED";
 	/** The fixed attribute default declaration. */
-	public final static String ATT_DEFAULT_FIXED = "#FIXED";
+	public static final String ATT_DEFAULT_FIXED = "#FIXED";
 	/** The characters which begin an entity reference. */
-	public final static String ENTITY_REF_START = "&";
+	public static final String ENTITY_REF_START = "&";
 	/** The characters which end an entity reference. */
-	public final static String ENTITY_REF_END = ";";
+	public static final String ENTITY_REF_END = ";";
 	/** The characters which begin a character reference. */
-	public final static String CHARACTER_REF_START = "&#";
+	public static final String CHARACTER_REF_START = "&#";
 	/** The character which indicates a hexadecimal character reference. */
-	public final static String CHARACTER_REF_HEX_FLAG = "x";
+	public static final String CHARACTER_REF_HEX_FLAG = "x";
 	/** The characters which end a character reference. */
-	public final static String CHARACTER_REF_END = ";";
+	public static final String CHARACTER_REF_END = ";";
 	/** The characters which begin a CDATA section. */
-	public final static String CDATA_START = "<![CDATA[";
+	public static final String CDATA_START = "<![CDATA[";
 	/** The characters which end a CDATA section. */
-	public final static String CDATA_END = "]]>";
+	public static final String CDATA_END = "]]>";
 	/** The characters which begin a comment section. */
-	public final static String COMMENT_START = "<!--";
+	public static final String COMMENT_START = "<!--";
 	/**
 	 * The first set of characters which end a comment section (because the string "--" cannot appear inside a comment for campatibility reasons).
 	 */
-	public final static String COMMENT_END_PART1 = "--";
+	public static final String COMMENT_END_PART1 = "--";
 	/**
 	 * The first set of characters which end a comment section (because the string "--" cannot appear inside a comment for campatibility reasons).
 	 */
-	public final static String COMMENT_END_PART2 = ">";
+	public static final String COMMENT_END_PART2 = ">";
 	/** The entire set of characters which end a comment section. */
-	public final static String COMMENT_END = COMMENT_END_PART1 + COMMENT_END_PART2;
+	public static final String COMMENT_END = COMMENT_END_PART1 + COMMENT_END_PART2;
 	/** The name which identifies a document type declaration section, it it were to be considered a tag. */
-	public final static String DOCTYPE_DECL_NAME = "!DOCTYPE";
+	public static final String DOCTYPE_DECL_NAME = "!DOCTYPE";
 	/** The characters which begin a document type declaration section. */
-	public final static String DOCTYPE_DECL_START = "<" + DOCTYPE_DECL_NAME;
+	public static final String DOCTYPE_DECL_START = "<" + DOCTYPE_DECL_NAME;
 	/** The characters which end a document type declaration section. */
-	public final static String DOCTYPE_DECL_END = ">";
+	public static final String DOCTYPE_DECL_END = ">";
 	/** The name of the document type system ID label. */
-	public final static String SYSTEM_ID_NAME = "SYSTEM";
+	public static final String SYSTEM_ID_NAME = "SYSTEM";
 	/** The name of the document type public ID label. */
-	public final static String PUBLIC_ID_NAME = "PUBLIC";
+	public static final String PUBLIC_ID_NAME = "PUBLIC";
 	/** DTD: A string indicating an element can have any content. */
-	public final static String ELEMENT_CONTENT_ANY = "ANY";
+	public static final String ELEMENT_CONTENT_ANY = "ANY";
 	/** DTD: A string indicating an element must have no content. */
-	public final static String ELEMENT_CONTENT_EMPTY = "EMPTY";
+	public static final String ELEMENT_CONTENT_EMPTY = "EMPTY";
 	/** The characters which begin an element declaration. */
-	public final static String ELEMENT_TYPE_DECL_START = "<!ELEMENT";
+	public static final String ELEMENT_TYPE_DECL_START = "<!ELEMENT";
 	/** The characters which end an element declaration. */
-	public final static String ELEMENT_TYPE_DECL_END = ">";
+	public static final String ELEMENT_TYPE_DECL_END = ">";
 	/** The characters which begin an entity declaration. */
-	public final static String ENTITY_DECL_START = "<!ENTITY";
+	public static final String ENTITY_DECL_START = "<!ENTITY";
 	/** The characters which end an entity declaration. */
-	public final static String ENTITY_DECL_END = ">";
+	public static final String ENTITY_DECL_END = ">";
 	/** The characters which begin an internal document type declaration subset. */
-	public final static String INTERNAL_DTD_SUBSET_START = "[";
+	public static final String INTERNAL_DTD_SUBSET_START = "[";
 	/** The characters which end a document type declaration internal subset. */
-	public final static String INTERNAL_DTD_SUBSET_END = "]";
+	public static final String INTERNAL_DTD_SUBSET_END = "]";
 	/** The characters which begin a parameter entity reference. */
-	public final static String PARAMETER_ENTITY_REF_START = "%";
+	public static final String PARAMETER_ENTITY_REF_START = "%";
 	/** The characters which end a parameter entity reference. */
-	public final static String PARAMETER_ENTITY_REF_END = ";";
+	public static final String PARAMETER_ENTITY_REF_END = ";";
 	/** The characters which begin a processing instruction. */
-	public final static String PROCESSING_INSTRUCTION_START = "<?";
+	public static final String PROCESSING_INSTRUCTION_START = "<?";
 	/** The characters which end a processing instruction. */
-	public final static String PROCESSING_INSTRUCTION_END = "?>";
+	public static final String PROCESSING_INSTRUCTION_END = "?>";
 	/** The characters which begin a tag. */
-	public final static String TAG_START = "<";
+	public static final String TAG_START = "<";
 	/** The characters which end a tag. */
-	public final static String TAG_END = ">";
+	public static final String TAG_END = ">";
 	/** The characters which marks a tag as being an end tag or an empty element tag. */
-	public final static char END_TAG_IDENTIFIER_CHAR = '/';
+	public static final char END_TAG_IDENTIFIER_CHAR = '/';
 	/** The characters which begin an XML declaration section. */
-	public final static String XML_DECL_START = "<?xml";
+	public static final String XML_DECL_START = "<?xml";
 	/** The characters which end an XML declaration section. */
-	public final static String XML_DECL_END = "?>";
+	public static final String XML_DECL_END = "?>";
 	/** The name of the version info attribute of an XML declaration section. */
-	public final static String VERSIONINFO_NAME = "version";
+	public static final String VERSIONINFO_NAME = "version";
 	/** The name of the encoding declaration attribute of an XML declaration section. */
-	public final static String ENCODINGDECL_NAME = "encoding";
+	public static final String ENCODINGDECL_NAME = "encoding";
 	/** The name of the standalone attribute of an XML declaration section. */
-	public final static String SDDECL_NAME = "standalone";
+	public static final String SDDECL_NAME = "standalone";
 
 	//default entities
 	/** The lt entity name. */
-	public final static String ENTITY_LT_NAME = "lt";
+	public static final String ENTITY_LT_NAME = "lt";
 	/** The lt entity value. */
-	public final static char ENTITY_LT_VALUE = '<';
+	public static final char ENTITY_LT_VALUE = '<';
 	/** The gt entity name. */
-	public final static String ENTITY_GT_NAME = "gt";
+	public static final String ENTITY_GT_NAME = "gt";
 	/** The gt entity value. */
-	public final static char ENTITY_GT_VALUE = '>';
+	public static final char ENTITY_GT_VALUE = '>';
 	/** The amp entity name. */
-	public final static String ENTITY_AMP_NAME = "amp";
+	public static final String ENTITY_AMP_NAME = "amp";
 	/** The amp entity value. */
-	public final static char ENTITY_AMP_VALUE = '&';
+	public static final char ENTITY_AMP_VALUE = '&';
 	/** The apos entity name. */
-	public final static String ENTITY_APOS_NAME = "apos";
+	public static final String ENTITY_APOS_NAME = "apos";
 	/** The apos entity value. */
-	public final static char ENTITY_APOS_VALUE = '\'';
+	public static final char ENTITY_APOS_VALUE = '\'';
 	/** The quot entity name. */
-	public final static String ENTITY_QUOT_NAME = "quot";
+	public static final String ENTITY_QUOT_NAME = "quot";
 	/** The quot entity value. */
-	public final static char ENTITY_QUOT_VALUE = '"';
+	public static final char ENTITY_QUOT_VALUE = '"';
 
 	/** The character used for indicating namespaces. */
-	public final static char NAMESPACE_DIVIDER = ':';
+	public static final char NAMESPACE_DIVIDER = ':';
 
 	/** A lazily-created cache of system IDs keyed to public IDs. */
 	private static Reference<Map<String, String>> systemIDMapReference = null;
@@ -1160,16 +1160,16 @@ public class XML {
 	}
 
 	/** The character to replace the first character if needed. */
-	protected final static char REPLACEMENT_FIRST_CHAR = 'x';
+	protected static final char REPLACEMENT_FIRST_CHAR = 'x';
 
 	/** The character to use to replace any other character. */
-	protected final static char REPLACEMENT_CHAR = '_';
+	protected static final char REPLACEMENT_CHAR = '_';
 
 	/** The special XML symbols that should be replaced with entities. */
-	private final static char[] XML_ENTITY_CHARS = { '&', '"', '\'', '>', '<' }; //TODO use constants
+	private static final char[] XML_ENTITY_CHARS = { '&', '"', '\'', '>', '<' }; //TODO use constants
 
 	/** The strings to replace XML symbols. */
-	private final static String[] XML_ENTITY_REPLACMENTS = { "&amp;", "&quot;", "&apos;", "&gt;", "&lt;" }; //TODO use constants
+	private static final String[] XML_ENTITY_REPLACMENTS = { "&amp;", "&quot;", "&apos;", "&gt;", "&lt;" }; //TODO use constants
 
 	/**
 	 * Replaces special XML symbols with their escaped versions, (e.g. replaces '&lt' with "&amp;lt;") so that the string is valid XML content.

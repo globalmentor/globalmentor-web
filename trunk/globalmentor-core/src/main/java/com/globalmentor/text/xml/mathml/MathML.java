@@ -31,7 +31,7 @@ import static com.globalmentor.text.xml.XML.*;
 public class MathML {
 
 	/** A MathML application. */
-	public final static String MATHML_XML_SUBTYPE = "mathml" + ContentType.SUBTYPE_SUFFIX_DELIMITER_CHAR + XML_SUBTYPE_SUFFIX;
+	public static final String MATHML_XML_SUBTYPE = "mathml" + ContentType.SUBTYPE_SUFFIX_DELIMITER_CHAR + XML_SUBTYPE_SUFFIX;
 
 	/** The content type for MathML: <code>application/mathml+xml</code>. */
 	public static final ContentType MATHML_CONTENT_TYPE = ContentType.create(ContentType.APPLICATION_PRIMARY_TYPE, MATHML_XML_SUBTYPE);
@@ -43,14 +43,14 @@ public class MathML {
 	public static final URI MATHML_NAMESPACE_URI = URI.create("http://www.w3.org/1998/Math/MathML");
 
 	/** The system ID for the MathML 1.01 DTD. */
-	public final static String MATHML_1_01_SYSTEM_ID = "http://www.w3.org/Math/DTD/mathml1/mathml.dtd";
+	public static final String MATHML_1_01_SYSTEM_ID = "http://www.w3.org/Math/DTD/mathml1/mathml.dtd";
 
 	/** The public ID for the MathML 2.0 DTD. */
-	public final static String MATHML_2_0_PUBLIC_ID = "-//W3C//DTD MathML 2.0//EN";
+	public static final String MATHML_2_0_PUBLIC_ID = "-//W3C//DTD MathML 2.0//EN";
 	/** The system ID for the MathML 2.0 DTD. */
-	public final static String MATHML_2_0_SYSTEM_ID = "http://www.w3.org/TR/MathML2/dtd/mathml2.dtd";
+	public static final String MATHML_2_0_SYSTEM_ID = "http://www.w3.org/TR/MathML2/dtd/mathml2.dtd";
 
 	//The MathML document element names.
-	public final static String ELEMENT_MATHML = "mathml";
+	public static final String ELEMENT_MATHML = "mathml";
 
 }

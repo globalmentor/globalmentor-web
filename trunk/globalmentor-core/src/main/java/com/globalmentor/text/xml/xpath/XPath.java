@@ -35,50 +35,50 @@ import org.w3c.dom.*;
 public class XPath {
 
 	/** The character used to separate a location path into location steps. */
-	public final static char LOCATION_STEP_SEPARATOR_CHAR = '/';
+	public static final char LOCATION_STEP_SEPARATOR_CHAR = '/';
 	/** The character used as a wildcard matching character. */
-	public final static char WILDCARD_CHAR = '*';
+	public static final char WILDCARD_CHAR = '*';
 	/** The string form of the wildcard matching character. */
-	public final static String WILDCARD_STRING = String.valueOf(WILDCARD_CHAR);
+	public static final String WILDCARD_STRING = String.valueOf(WILDCARD_CHAR);
 	/** The string used to separate an axis from a node test in a location step. */
-	public final static String AXIS_SEPARATOR_STRING = "::";
-	public final static char LEFT_PARENTHESIS = '(';
-	public final static char RIGHT_PARENTHESIS = ')';
+	public static final String AXIS_SEPARATOR_STRING = "::";
+	public static final char LEFT_PARENTHESIS = '(';
+	public static final char RIGHT_PARENTHESIS = ')';
 	//axes
 	/**
 	 * <code>ROOT</code> is not defined as an axis in XPath, but here represents the root of the document.
 	 */
-	public final static String ROOT = String.valueOf(LOCATION_STEP_SEPARATOR_CHAR);
-	public final static String ANCESTOR = "ancestor";
-	public final static String ANCESTOR_OR_SELF = "ancestor-or-self";
-	public final static String ATTRIBUTE = "attribute";
-	public final static String CHILD = "child";
-	public final static String DESCENDANT = "descendant";
-	public final static String DESCENDANT_OR_SELF = "descendant-or-self";
-	public final static String FOLLOWING = "following";
-	public final static String FOLLOWING_SIBLING = "following-sibling";
-	public final static String NAMESPACE = "namespace";
-	public final static String PARENT = "parent";
-	public final static String PRECEDING = "preceding";
-	public final static String PRECEDING_SIBLING = "preceding-sibling";
-	public final static String SELF = "self";
+	public static final String ROOT = String.valueOf(LOCATION_STEP_SEPARATOR_CHAR);
+	public static final String ANCESTOR = "ancestor";
+	public static final String ANCESTOR_OR_SELF = "ancestor-or-self";
+	public static final String ATTRIBUTE = "attribute";
+	public static final String CHILD = "child";
+	public static final String DESCENDANT = "descendant";
+	public static final String DESCENDANT_OR_SELF = "descendant-or-self";
+	public static final String FOLLOWING = "following";
+	public static final String FOLLOWING_SIBLING = "following-sibling";
+	public static final String NAMESPACE = "namespace";
+	public static final String PARENT = "parent";
+	public static final String PRECEDING = "preceding";
+	public static final String PRECEDING_SIBLING = "preceding-sibling";
+	public static final String SELF = "self";
 	//node tests
 	//node types
-	public final static String COMMENT = "comment";
-	public final static String TEXT = "text";
-	public final static String PROCESSING_INSTRUCTION = "processing-instruction";
-	public final static String NODE = "node";
-	public final static String COMMENT_NODE_TEST = COMMENT + LEFT_PARENTHESIS + RIGHT_PARENTHESIS;
-	public final static String TEXT_NODE_TEST = TEXT + LEFT_PARENTHESIS + RIGHT_PARENTHESIS;
-	public final static String PROCESSING_INSTRUCTION_NODE_TEST = PROCESSING_INSTRUCTION + LEFT_PARENTHESIS + RIGHT_PARENTHESIS;
-	public final static String NODE_NODE_TEST = NODE + LEFT_PARENTHESIS + RIGHT_PARENTHESIS;
+	public static final String COMMENT = "comment";
+	public static final String TEXT = "text";
+	public static final String PROCESSING_INSTRUCTION = "processing-instruction";
+	public static final String NODE = "node";
+	public static final String COMMENT_NODE_TEST = COMMENT + LEFT_PARENTHESIS + RIGHT_PARENTHESIS;
+	public static final String TEXT_NODE_TEST = TEXT + LEFT_PARENTHESIS + RIGHT_PARENTHESIS;
+	public static final String PROCESSING_INSTRUCTION_NODE_TEST = PROCESSING_INSTRUCTION + LEFT_PARENTHESIS + RIGHT_PARENTHESIS;
+	public static final String NODE_NODE_TEST = NODE + LEFT_PARENTHESIS + RIGHT_PARENTHESIS;
 
 	/** The abbreviation for self::node(). */
-	public final static String SELF_NODE_ABBREVIATION = ".";
+	public static final String SELF_NODE_ABBREVIATION = ".";
 	/** The abbreviation for parent::node(). */
-	public final static String PARENT_NODE_ABBREVIATION = "..";
+	public static final String PARENT_NODE_ABBREVIATION = "..";
 	/** The abbreviation for attribute::. */
-	public final static String ATTRIBUTE_ABBREVIATION = "@";
+	public static final String ATTRIBUTE_ABBREVIATION = "@";
 
 	/**
 	 * Convenience function to retrieve a node from the root element of the specified document, based on the specified XPath expression. If multiple nodes match
@@ -174,11 +174,11 @@ public class XPath {
 				nodeList.addAll(getMatchingNodes(node.getAttributes(), nodeTest, false, Node.ATTRIBUTE_NODE)); //add all matching attributes to our list (indicating that we shouldn't search child nodes, since attributes have no child nodes)
 		}
 		/*TODO fix
-			public final static String FOLLOWING="following";
-			public final static String FOLLOWING_SIBLING="following-sibling";
-			public final static String NAMESPACE="namespace";
-			public final static String PRECEDING="preceding";
-			public final static String PRECEDING_SIBLING="preceding-sibling";
+			public static final String FOLLOWING="following";
+			public static final String FOLLOWING_SIBLING="following-sibling";
+			public static final String NAMESPACE="namespace";
+			public static final String PRECEDING="preceding";
+			public static final String PRECEDING_SIBLING="preceding-sibling";
 		*/
 		if(stepIndex < pathExpression.getStepCount() - 1) { //if we haven't reached the end of the path expression
 			final List<Node> resultNodeList = new ArrayList<Node>(); //make a list of nodes to store our results

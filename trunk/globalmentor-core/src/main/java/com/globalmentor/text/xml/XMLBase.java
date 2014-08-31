@@ -31,7 +31,7 @@ import org.w3c.dom.*;
 public class XMLBase {
 
 	/** The local name of the <code>xml:base</code> attribute. */
-	public final static String ATTRIBUTE_BASE = "base";
+	public static final String ATTRIBUTE_BASE = "base";
 
 	/**
 	 * Retrieves the value of the <code>xml:base</code> attribute, if present.

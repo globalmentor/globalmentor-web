@@ -29,16 +29,16 @@ import com.globalmentor.text.xml.*;
 public class XMLMutationEvent extends XMLEvent implements MutationEvent {
 
 	/** The identification string of this class of events. */
-	public final static String FEATURE_NAME = "MutationEvents";
+	public static final String FEATURE_NAME = "MutationEvents";
 
 	//types of mutation events
-	public final static String DOM_SUBTREE_MODIFIED = "DOMSubtreeModified";
-	public final static String DOM_NODE_INSERTED = "DOMNodeInserted";
-	public final static String DOM_NODE_REMOVED = "DOMNodeRemoved";
-	public final static String DOM_NODE_REMOVED_FROM_DOCUMENT = "DOMNodeRemovedFromDocument";
-	public final static String DOM_NODE_INSERTED_INTO_DOCUMENT = "DOMNodeInsertedIntoDocument";
-	public final static String DOM_ATTR_MODIFIED = "DOMAttrModified";
-	public final static String DOM_CHARACTER_DATA_MODIFIED = "DOMCharacterDataModified";
+	public static final String DOM_SUBTREE_MODIFIED = "DOMSubtreeModified";
+	public static final String DOM_NODE_INSERTED = "DOMNodeInserted";
+	public static final String DOM_NODE_REMOVED = "DOMNodeRemoved";
+	public static final String DOM_NODE_REMOVED_FROM_DOCUMENT = "DOMNodeRemovedFromDocument";
+	public static final String DOM_NODE_INSERTED_INTO_DOCUMENT = "DOMNodeInsertedIntoDocument";
+	public static final String DOM_ATTR_MODIFIED = "DOMAttrModified";
+	public static final String DOM_CHARACTER_DATA_MODIFIED = "DOMCharacterDataModified";
 
 	/** The node related to this mutation, if applicable. */
 	private Node relatedNode = null;

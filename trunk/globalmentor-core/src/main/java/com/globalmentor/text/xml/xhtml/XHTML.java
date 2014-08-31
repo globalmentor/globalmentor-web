@@ -57,13 +57,13 @@ import static com.globalmentor.text.xml.XML.*;
 public class XHTML {
 
 	/** HTML MIME subtype. */
-	public final static String HTML_SUBTYPE = "html";
+	public static final String HTML_SUBTYPE = "html";
 
 	/** An XHTML application. */
-	public final static String XHTML_XML_SUBTYPE = "xhtml" + ContentType.SUBTYPE_SUFFIX_DELIMITER_CHAR + XML_SUBTYPE_SUFFIX;
+	public static final String XHTML_XML_SUBTYPE = "xhtml" + ContentType.SUBTYPE_SUFFIX_DELIMITER_CHAR + XML_SUBTYPE_SUFFIX;
 
 	/** An XHTML fragment (not yet formally defined). */
-	public final static String XHTML_XML_EXTERNAL_PARSED_ENTITY_SUBTYPE = "xhtml" + ContentType.SUBTYPE_SUFFIX_DELIMITER_CHAR
+	public static final String XHTML_XML_EXTERNAL_PARSED_ENTITY_SUBTYPE = "xhtml" + ContentType.SUBTYPE_SUFFIX_DELIMITER_CHAR
 			+ XML_EXTERNAL_PARSED_ENTITY_SUBTYPE_SUFFIX;
 
 	/** The content type for HTML: <code>text/html</code>. */
@@ -77,13 +77,13 @@ public class XHTML {
 			XHTML_XML_EXTERNAL_PARSED_ENTITY_SUBTYPE);
 
 	/** The old extension for HTML resource names. */
-	public final static String HTM_NAME_EXTENSION = "htm";
+	public static final String HTM_NAME_EXTENSION = "htm";
 
 	/** The extension for HTML resource names. */
-	public final static String HTML_NAME_EXTENSION = "html";
+	public static final String HTML_NAME_EXTENSION = "html";
 
 	/** The extension for XHTML resource names. */
-	public final static String XHTML_NAME_EXTENSION = "xhtml";
+	public static final String XHTML_NAME_EXTENSION = "xhtml";
 
 	/** The recommended prefix to the XHTML namespace. */
 	public static final String XHTML_NAMESPACE_PREFIX = "xhtml";
@@ -92,145 +92,145 @@ public class XHTML {
 	public static final URI XHTML_NAMESPACE_URI = URI.create("http://www.w3.org/1999/xhtml");
 
 	/** The public ID for the HTML 2.0 DTD. */
-	public final static String HTML_2_0_PUBLIC_ID = "-//IETF//DTD HTML 2.0//EN";
+	public static final String HTML_2_0_PUBLIC_ID = "-//IETF//DTD HTML 2.0//EN";
 
 	/** The public ID for the HTML 3.2 DTD. */
-	public final static String HTML_3_2_PUBLIC_ID = "-//W3C//DTD HTML 3.2 Final//EN";
+	public static final String HTML_3_2_PUBLIC_ID = "-//W3C//DTD HTML 3.2 Final//EN";
 
 	/** The public ID for the HTML 4.01 Strict DTD. */
-	public final static String HTML_4_01_STRICT_PUBLIC_ID = "-//W3C//DTD HTML 4.01//EN";
+	public static final String HTML_4_01_STRICT_PUBLIC_ID = "-//W3C//DTD HTML 4.01//EN";
 	/** The system ID for the HTML 4.01 Strict DTD. */
-	public final static String HTML_4_01_STRICT_SYSTEM_ID = "http://www.w3.org/TR/html4/strict.dtd";
+	public static final String HTML_4_01_STRICT_SYSTEM_ID = "http://www.w3.org/TR/html4/strict.dtd";
 
 	/** The public ID for the HTML 4.01 Traditional DTD. */
-	public final static String HTML_4_01_TRANSITIONAL_PUBLIC_ID = "-//W3C//DTD HTML 4.01 Transitional//EN";
+	public static final String HTML_4_01_TRANSITIONAL_PUBLIC_ID = "-//W3C//DTD HTML 4.01 Transitional//EN";
 	/** The system ID for the HTML 4.01 Traditional DTD. */
-	public final static String HTML_4_01_TRANSITIONAL_SYSTEM_ID = "http://www.w3.org/TR/html4/loose.dtd";
+	public static final String HTML_4_01_TRANSITIONAL_SYSTEM_ID = "http://www.w3.org/TR/html4/loose.dtd";
 
 	/** The public ID for the HTML 4.01 Frameset DTD. */
-	public final static String HTML_4_01_FRAMESET_PUBLIC_ID = "-//W3C//DTD HTML 4.01 Frameset//EN";
+	public static final String HTML_4_01_FRAMESET_PUBLIC_ID = "-//W3C//DTD HTML 4.01 Frameset//EN";
 	/** The system ID for the HTML 4.01 Frameset DTD. */
-	public final static String HTML_4_01_FRAMESET_SYSTEM_ID = "http://www.w3.org/TR/html4/frameset.dtd";
+	public static final String HTML_4_01_FRAMESET_SYSTEM_ID = "http://www.w3.org/TR/html4/frameset.dtd";
 
 	/** The public ID for the XHTML 1.0 Strict DTD. */
-	public final static String XHTML_1_0_STRICT_PUBLIC_ID = "-//W3C//DTD XHTML 1.0 Strict//EN";
+	public static final String XHTML_1_0_STRICT_PUBLIC_ID = "-//W3C//DTD XHTML 1.0 Strict//EN";
 	/** The system ID for the XHTML 1.0 Strict DTD. */
-	public final static String XHTML_1_0_STRICT_SYSTEM_ID = "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd";
+	public static final String XHTML_1_0_STRICT_SYSTEM_ID = "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd";
 
 	/** The public ID for the XHTML 1.0 Traditional DTD. */
-	public final static String XHTML_1_0_TRANSITIONAL_PUBLIC_ID = "-//W3C//DTD XHTML 1.0 Transitional//EN";
+	public static final String XHTML_1_0_TRANSITIONAL_PUBLIC_ID = "-//W3C//DTD XHTML 1.0 Transitional//EN";
 	/** The system ID for the XHTML 1.0 Traditional DTD. */
-	public final static String XHTML_1_0_TRANSITIONAL_SYSTEM_ID = "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd";
+	public static final String XHTML_1_0_TRANSITIONAL_SYSTEM_ID = "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd";
 
 	/** The public ID for the XHTML 1.0 Frameset DTD. */
-	public final static String XHTML_1_0_FRAMESET_PUBLIC_ID = "-//W3C//DTD XHTML 1.0 Frameset//EN";
+	public static final String XHTML_1_0_FRAMESET_PUBLIC_ID = "-//W3C//DTD XHTML 1.0 Frameset//EN";
 	/** The system ID for the XHTML 1.0 Frameset DTD. */
-	public final static String XHTML_1_0_FRAMESET_SYSTEM_ID = "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd";
+	public static final String XHTML_1_0_FRAMESET_SYSTEM_ID = "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd";
 
 	/** The public ID for the XHTML 1.1 DTD. */
-	public final static String XHTML_1_1_PUBLIC_ID = "-//W3C//DTD XHTML 1.1//EN";
+	public static final String XHTML_1_1_PUBLIC_ID = "-//W3C//DTD XHTML 1.1//EN";
 	/** The system ID for the XHTML 1.1 DTD. */
-	public final static String XHTML_1_1_SYSTEM_ID = "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd";
+	public static final String XHTML_1_1_SYSTEM_ID = "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd";
 
 	/** The public ID for the XHTML+MathML+SVG DTD. */
-	public final static String XHTML_MATHML_SVG_PUBLIC_ID = "-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN";
+	public static final String XHTML_MATHML_SVG_PUBLIC_ID = "-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN";
 	/** The system ID for the XHTML+MathML+SVG DTD. */
-	public final static String XHTML_MATHML_SVG_SYSTEM_ID = "http://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd";
+	public static final String XHTML_MATHML_SVG_SYSTEM_ID = "http://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd";
 
 	/**
 	 * Characters considered <dfn>space characters</dfn> in HTML.
 	 * @see <a href="http://www.w3.org/TR/html5/infrastructure.html#space-character">HTML5 space characters</a>
 	 */
-	public final static Characters SPACE_CHARACTERS = new Characters(SPACE_CHAR, CHARACTER_TABULATION_CHAR, LINE_FEED_CHAR, FORM_FEED_CHAR, CARRIAGE_RETURN_CHAR);
+	public static final Characters SPACE_CHARACTERS = new Characters(SPACE_CHAR, CHARACTER_TABULATION_CHAR, LINE_FEED_CHAR, FORM_FEED_CHAR, CARRIAGE_RETURN_CHAR);
 
 	//The XHTML 1.0 document element names.
 	//TODO fix; some are missing since these were copied from the OEB 1.0
-	public final static String ELEMENT_A = "a";
-	public final static String ELEMENT_ADDRESS = "address";
-	public final static String ELEMENT_APPLET = "applet";
-	public final static String ELEMENT_AREA = "area";
-	public final static String ELEMENT_ARTICLE = "article";
-	public final static String ELEMENT_ASIDE = "aside";
-	public final static String ELEMENT_B = "b";
-	public final static String ELEMENT_BASE = "base";
-	public final static String ELEMENT_BIG = "big";
-	public final static String ELEMENT_BLOCKCODE = "blockcode";
-	public final static String ELEMENT_BLOCKQUOTE = "blockquote";
-	public final static String ELEMENT_BODY = "body";
-	public final static String ELEMENT_BR = "br";
-	public final static String ELEMENT_BUTTON = "button";
-	public final static String ELEMENT_CAPTION = "caption";
-	public final static String ELEMENT_CENTER = "center";
-	public final static String ELEMENT_CITE = "cite";
-	public final static String ELEMENT_COL = "col";
-	public final static String ELEMENT_CODE = "code";
-	public final static String ELEMENT_DD = "dd";
-	public final static String ELEMENT_DFN = "dfn";
-	public final static String ELEMENT_DIV = "div";
-	public final static String ELEMENT_DL = "dl";
-	public final static String ELEMENT_DT = "dt";
-	public final static String ELEMENT_EM = "em";
-	public final static String ELEMENT_EMBED = "embed";
-	public final static String ELEMENT_FIELDSET = "fieldset";
-	public final static String ELEMENT_FIGCAPTION = "figcaption";
-	public final static String ELEMENT_FIGURE = "figure";
-	public final static String ELEMENT_FONT = "font";
-	public final static String ELEMENT_FOOTER = "footer";
-	public final static String ELEMENT_FORM = "form";
-	public final static String ELEMENT_H1 = "h1";
-	public final static String ELEMENT_H2 = "h2";
-	public final static String ELEMENT_H3 = "h3";
-	public final static String ELEMENT_H4 = "h4";
-	public final static String ELEMENT_H5 = "h5";
-	public final static String ELEMENT_H6 = "h6";
-	public final static String ELEMENT_HEAD = "head";
-	public final static String ELEMENT_HEADER = "header";
-	public final static String ELEMENT_HR = "hr";
-	public final static String ELEMENT_HTML = "html";
-	public final static String ELEMENT_I = "i";
-	public final static String ELEMENT_IFRAME = "iframe";
-	public final static String ELEMENT_IMG = "img";
-	public final static String ELEMENT_INPUT = "input";
-	public final static String ELEMENT_KBD = "kbd";
-	public final static String ELEMENT_LI = "li";
-	public final static String ELEMENT_LABEL = "label";
-	public final static String ELEMENT_LEGEND = "legend";
-	public final static String ELEMENT_LINK = "link";
-	public final static String ELEMENT_MAP = "map";
-	public final static String ELEMENT_META = "meta";
-	public final static String ELEMENT_NAV = "nav";
-	public final static String ELEMENT_OBJECT = "object";
-	public final static String ELEMENT_OL = "ol";
-	public final static String ELEMENT_OPTION = "option";
-	public final static String ELEMENT_P = "p";
-	public final static String ELEMENT_PARAM = "param";
-	public final static String ELEMENT_PRE = "pre";
-	public final static String ELEMENT_Q = "q";
-	public final static String ELEMENT_S = "s";
-	public final static String ELEMENT_SAMP = "samp";
-	public final static String ELEMENT_SCRIPT = "script";
-	public final static String ELEMENT_SECTION = "section";
-	public final static String ELEMENT_SELECT = "select";
-	public final static String ELEMENT_SMALL = "small";
-	public final static String ELEMENT_SPAN = "span";
-	public final static String ELEMENT_STRIKE = "strike";
-	public final static String ELEMENT_STRONG = "strong";
-	public final static String ELEMENT_STYLE = "style";
-	public final static String ELEMENT_SUB = "sub";
-	public final static String ELEMENT_SUP = "sup";
-	public final static String ELEMENT_TABLE = "table";
-	public final static String ELEMENT_TD = "td";
-	public final static String ELEMENT_TEXTAREA = "textarea";
-	public final static String ELEMENT_TH = "th";
-	public final static String ELEMENT_TBODY = "tbody";
-	public final static String ELEMENT_THEAD = "thead";
-	public final static String ELEMENT_TFOOT = "tfoot";
-	public final static String ELEMENT_TITLE = "title";
-	public final static String ELEMENT_TR = "tr";
-	public final static String ELEMENT_TT = "tt";
-	public final static String ELEMENT_U = "u";
-	public final static String ELEMENT_UL = "ul";
-	public final static String ELEMENT_VAR = "var";
+	public static final String ELEMENT_A = "a";
+	public static final String ELEMENT_ADDRESS = "address";
+	public static final String ELEMENT_APPLET = "applet";
+	public static final String ELEMENT_AREA = "area";
+	public static final String ELEMENT_ARTICLE = "article";
+	public static final String ELEMENT_ASIDE = "aside";
+	public static final String ELEMENT_B = "b";
+	public static final String ELEMENT_BASE = "base";
+	public static final String ELEMENT_BIG = "big";
+	public static final String ELEMENT_BLOCKCODE = "blockcode";
+	public static final String ELEMENT_BLOCKQUOTE = "blockquote";
+	public static final String ELEMENT_BODY = "body";
+	public static final String ELEMENT_BR = "br";
+	public static final String ELEMENT_BUTTON = "button";
+	public static final String ELEMENT_CAPTION = "caption";
+	public static final String ELEMENT_CENTER = "center";
+	public static final String ELEMENT_CITE = "cite";
+	public static final String ELEMENT_COL = "col";
+	public static final String ELEMENT_CODE = "code";
+	public static final String ELEMENT_DD = "dd";
+	public static final String ELEMENT_DFN = "dfn";
+	public static final String ELEMENT_DIV = "div";
+	public static final String ELEMENT_DL = "dl";
+	public static final String ELEMENT_DT = "dt";
+	public static final String ELEMENT_EM = "em";
+	public static final String ELEMENT_EMBED = "embed";
+	public static final String ELEMENT_FIELDSET = "fieldset";
+	public static final String ELEMENT_FIGCAPTION = "figcaption";
+	public static final String ELEMENT_FIGURE = "figure";
+	public static final String ELEMENT_FONT = "font";
+	public static final String ELEMENT_FOOTER = "footer";
+	public static final String ELEMENT_FORM = "form";
+	public static final String ELEMENT_H1 = "h1";
+	public static final String ELEMENT_H2 = "h2";
+	public static final String ELEMENT_H3 = "h3";
+	public static final String ELEMENT_H4 = "h4";
+	public static final String ELEMENT_H5 = "h5";
+	public static final String ELEMENT_H6 = "h6";
+	public static final String ELEMENT_HEAD = "head";
+	public static final String ELEMENT_HEADER = "header";
+	public static final String ELEMENT_HR = "hr";
+	public static final String ELEMENT_HTML = "html";
+	public static final String ELEMENT_I = "i";
+	public static final String ELEMENT_IFRAME = "iframe";
+	public static final String ELEMENT_IMG = "img";
+	public static final String ELEMENT_INPUT = "input";
+	public static final String ELEMENT_KBD = "kbd";
+	public static final String ELEMENT_LI = "li";
+	public static final String ELEMENT_LABEL = "label";
+	public static final String ELEMENT_LEGEND = "legend";
+	public static final String ELEMENT_LINK = "link";
+	public static final String ELEMENT_MAP = "map";
+	public static final String ELEMENT_META = "meta";
+	public static final String ELEMENT_NAV = "nav";
+	public static final String ELEMENT_OBJECT = "object";
+	public static final String ELEMENT_OL = "ol";
+	public static final String ELEMENT_OPTION = "option";
+	public static final String ELEMENT_P = "p";
+	public static final String ELEMENT_PARAM = "param";
+	public static final String ELEMENT_PRE = "pre";
+	public static final String ELEMENT_Q = "q";
+	public static final String ELEMENT_S = "s";
+	public static final String ELEMENT_SAMP = "samp";
+	public static final String ELEMENT_SCRIPT = "script";
+	public static final String ELEMENT_SECTION = "section";
+	public static final String ELEMENT_SELECT = "select";
+	public static final String ELEMENT_SMALL = "small";
+	public static final String ELEMENT_SPAN = "span";
+	public static final String ELEMENT_STRIKE = "strike";
+	public static final String ELEMENT_STRONG = "strong";
+	public static final String ELEMENT_STYLE = "style";
+	public static final String ELEMENT_SUB = "sub";
+	public static final String ELEMENT_SUP = "sup";
+	public static final String ELEMENT_TABLE = "table";
+	public static final String ELEMENT_TD = "td";
+	public static final String ELEMENT_TEXTAREA = "textarea";
+	public static final String ELEMENT_TH = "th";
+	public static final String ELEMENT_TBODY = "tbody";
+	public static final String ELEMENT_THEAD = "thead";
+	public static final String ELEMENT_TFOOT = "tfoot";
+	public static final String ELEMENT_TITLE = "title";
+	public static final String ELEMENT_TR = "tr";
+	public static final String ELEMENT_TT = "tt";
+	public static final String ELEMENT_U = "u";
+	public static final String ELEMENT_UL = "ul";
+	public static final String ELEMENT_VAR = "var";
 
 	//attributes
 
@@ -238,63 +238,63 @@ public class XHTML {
 	 * The delimiter character for separating parts of an attribute string (e.g. for HTML5 data- attributes). This is distinct from the namespace prefix
 	 * delimiter.
 	 */
-	public final static char ATTRIBUTE_DELIMITER_CHAR = '-';
+	public static final char ATTRIBUTE_DELIMITER_CHAR = '-';
 
 	/**
 	 * The identifier, with no delimiter, indicating that an attribute is an HTML5 data attribute
 	 * @see <a href="http://www.w3.org/TR/html5/elements.html#embedding-custom-non-visible-data-with-the-data-attributes">HTML 5 Data Attributes</a>
 	 */
-	public final static String DATA_ATTRIBUTE_ID = "data";
+	public static final String DATA_ATTRIBUTE_ID = "data";
 
 	/** The attribute for class. */
-	public final static String ATTRIBUTE_CLASS = "class";
+	public static final String ATTRIBUTE_CLASS = "class";
 	/** The attribute for direction. */
-	public final static String ATTRIBUTE_DIR = "dir";
+	public static final String ATTRIBUTE_DIR = "dir";
 	/** The attribute for left-to-right direction. */
-	public final static String DIR_LTR = "ltr";
+	public static final String DIR_LTR = "ltr";
 	/** The attribute for right-to-left direction. */
-	public final static String DIR_RTL = "rtl";
+	public static final String DIR_RTL = "rtl";
 	/** The attribute for ID. */
-	public final static String ATTRIBUTE_ID = "id";
+	public static final String ATTRIBUTE_ID = "id";
 	/** The attribute for language. */
-	public final static String ATTRIBUTE_LANG = "lang";
+	public static final String ATTRIBUTE_LANG = "lang";
 	/** The attribute for name. */
-	public final static String ATTRIBUTE_NAME = "name";
+	public static final String ATTRIBUTE_NAME = "name";
 	/** The attribute for style. */
-	public final static String ATTRIBUTE_STYLE = "style";
+	public static final String ATTRIBUTE_STYLE = "style";
 	/** The attribute for title. */
-	public final static String ATTRIBUTE_TITLE = "title";
+	public static final String ATTRIBUTE_TITLE = "title";
 	/** The attribute for value. */
-	public final static String ATTRIBUTE_VALUE = "value";
+	public static final String ATTRIBUTE_VALUE = "value";
 	//event attributes
-	public final static String ATTRIBUTE_ONCLICK = "onclick";
-	public final static String ATTRIBUTE_ONLOAD = "onload";
+	public static final String ATTRIBUTE_ONCLICK = "onclick";
+	public static final String ATTRIBUTE_ONLOAD = "onload";
 
-	public final static String LINK_ATTRIBUTE_REL = "rel"; //the link type attribute for <a>, <area>, and <link>; see http://www.w3.org/TR/html5/links.html#linkTypes
-	public final static String LINK_ATTRIBUTE_TYPE = "type"; //the link MIME type attribute for <a>, <area>, and <link>; see http://www.w3.org/TR/html5/links.html#attr-hyperlink-type
+	public static final String LINK_ATTRIBUTE_REL = "rel"; //the link type attribute for <a>, <area>, and <link>; see http://www.w3.org/TR/html5/links.html#linkTypes
+	public static final String LINK_ATTRIBUTE_TYPE = "type"; //the link MIME type attribute for <a>, <area>, and <link>; see http://www.w3.org/TR/html5/links.html#attr-hyperlink-type
 	//link types for <a>, <area>, and <link>; see http://www.w3.org/TR/html5/links.html#linkTypes 
-	public final static String LINK_REL_ALTERNATE = "alternate"; //<link>, <a>/<area>
-	public final static String LINK_REL_AUTHOR = "author"; //<link>, <a>/<area>
-	public final static String LINK_REL_BOOKMARK = "bookmark"; //<a>/<area>
-	public final static String LINK_REL_EXTERNAL = "external"; //<a>/<area>
-	public final static String LINK_REL_HELP = "help"; //<link>, <a>/<area>
-	public final static String LINK_REL_ICON = "icon"; //<link>
-	public final static String LINK_REL_LICENSE = "license"; //<link>, <a>/<area>
-	public final static String LINK_REL_NEXT = "next"; //<link>, <a>/<area>
-	public final static String LINK_REL_NOFOLLOW = "nofollow"; //<a>/<area>
-	public final static String LINK_REL_NOREFERRER = "noreferrer"; //<a>/<area>
-	public final static String LINK_REL_PINGBACK = "pingback"; //<link>
-	public final static String LINK_REL_PREFETCH = "prefetch"; //<link>, <a>/<area>
-	public final static String LINK_REL_PREV = "prev"; //<link>, <a>/<area>
-	public final static String LINK_REL_SEARCH = "search"; //<link>, <a>/<area>
-	public final static String LINK_REL_SIDEBAR = "sidebar"; //<link>, <a>/<area>
-	public final static String LINK_REL_STYLESHEET = "stylesheet"; //<link>
-	public final static String LINK_REL_TAG = "tag"; //<link>, <a>/<area>
+	public static final String LINK_REL_ALTERNATE = "alternate"; //<link>, <a>/<area>
+	public static final String LINK_REL_AUTHOR = "author"; //<link>, <a>/<area>
+	public static final String LINK_REL_BOOKMARK = "bookmark"; //<a>/<area>
+	public static final String LINK_REL_EXTERNAL = "external"; //<a>/<area>
+	public static final String LINK_REL_HELP = "help"; //<link>, <a>/<area>
+	public static final String LINK_REL_ICON = "icon"; //<link>
+	public static final String LINK_REL_LICENSE = "license"; //<link>, <a>/<area>
+	public static final String LINK_REL_NEXT = "next"; //<link>, <a>/<area>
+	public static final String LINK_REL_NOFOLLOW = "nofollow"; //<a>/<area>
+	public static final String LINK_REL_NOREFERRER = "noreferrer"; //<a>/<area>
+	public static final String LINK_REL_PINGBACK = "pingback"; //<link>
+	public static final String LINK_REL_PREFETCH = "prefetch"; //<link>, <a>/<area>
+	public static final String LINK_REL_PREV = "prev"; //<link>, <a>/<area>
+	public static final String LINK_REL_SEARCH = "search"; //<link>, <a>/<area>
+	public static final String LINK_REL_SIDEBAR = "sidebar"; //<link>, <a>/<area>
+	public static final String LINK_REL_STYLESHEET = "stylesheet"; //<link>
+	public static final String LINK_REL_TAG = "tag"; //<link>, <a>/<area>
 
 	//attributes for <a>
-	public final static String ELEMENT_A_ATTRIBUTE_HREF = "href";
-	public final static String ELEMENT_A_ATTRIBUTE_TARGET = "target";
-	public final static String ELEMENT_A_ATTRIBUTE_REL = LINK_ATTRIBUTE_REL;
+	public static final String ELEMENT_A_ATTRIBUTE_HREF = "href";
+	public static final String ELEMENT_A_ATTRIBUTE_TARGET = "target";
+	public static final String ELEMENT_A_ATTRIBUTE_REL = LINK_ATTRIBUTE_REL;
 
 	/**
 	 * Link types for {@code<a>}, {@code<area>}, and {@code<link>}.
@@ -333,161 +333,161 @@ public class XHTML {
 	}
 
 	//attributes for <applet>
-	public final static String ELEMENT_APPLET_ATTRIBUTE_CODE = "code";
-	public final static String ELEMENT_APPLET_ATTRIBUTE_HEIGHT = "height";
-	public final static String ELEMENT_APPLET_ATTRIBUTE_WIDTH = "width";
+	public static final String ELEMENT_APPLET_ATTRIBUTE_CODE = "code";
+	public static final String ELEMENT_APPLET_ATTRIBUTE_HEIGHT = "height";
+	public static final String ELEMENT_APPLET_ATTRIBUTE_WIDTH = "width";
 
 	//attributes for <button>
-	public final static String ELEMENT_BUTTON_ATTRIBUTE_TYPE = "type";
-	public final static String BUTTON_TYPE_BUTTON = "button";
-	public final static String BUTTON_TYPE_RESET = "reset";
-	public final static String BUTTON_TYPE_SUBMIT = "submit";
+	public static final String ELEMENT_BUTTON_ATTRIBUTE_TYPE = "type";
+	public static final String BUTTON_TYPE_BUTTON = "button";
+	public static final String BUTTON_TYPE_RESET = "reset";
+	public static final String BUTTON_TYPE_SUBMIT = "submit";
 
 	//attributes for <form>
-	public final static String ELEMENT_FORM_ATTRIBUTE_ACTION = "action";
-	public final static String ELEMENT_FORM_ATTRIBUTE_ENCTYPE = "enctype";
+	public static final String ELEMENT_FORM_ATTRIBUTE_ACTION = "action";
+	public static final String ELEMENT_FORM_ATTRIBUTE_ENCTYPE = "enctype";
 	/** The "application/x-www-form-urlencoded" encoding type; see <a href="http://www.rfc-editor.org/rfc/rfc1867.txt">RFC 1867</a>. */
-	public final static ContentType APPLICATION_X_WWW_FORM_URLENCODED_CONTENT_TYPE = ContentType.create(ContentType.APPLICATION_PRIMARY_TYPE,
+	public static final ContentType APPLICATION_X_WWW_FORM_URLENCODED_CONTENT_TYPE = ContentType.create(ContentType.APPLICATION_PRIMARY_TYPE,
 			X_WWW_FORM_URLENCODED);
 	/** The "multipart/form-data" encoding type; see <a href="http://www.rfc-editor.org/rfc/rfc1867.txt">RFC 1867</a>. */
-	public final static ContentType MULTIPART_FORM_DATA_CONTENT_TYPE = ContentType.create(ContentType.MULTIPART_PRIMARY_TYPE, FORM_DATA_SUBTYPE);
+	public static final ContentType MULTIPART_FORM_DATA_CONTENT_TYPE = ContentType.create(ContentType.MULTIPART_PRIMARY_TYPE, FORM_DATA_SUBTYPE);
 
-	public final static String ELEMENT_FORM_ATTRIBUTE_METHOD = "method";
-	public final static String FORM_METHOD_GET = "get";
-	public final static String FORM_METHOD_POST = "post";
+	public static final String ELEMENT_FORM_ATTRIBUTE_METHOD = "method";
+	public static final String FORM_METHOD_GET = "get";
+	public static final String FORM_METHOD_POST = "post";
 
 	//attributes for <embed>
-	public final static String ELEMENT_EMBED_ATTRIBUTE_SRC = "src";
-	public final static String ELEMENT_EMBED_ATTRIBUTE_HEIGHT = "height";
-	public final static String ELEMENT_EMBED_ATTRIBUTE_WIDTH = "width";
-	public final static String ELEMENT_EMBED_ATTRIBUTE_TYPE = "type";
+	public static final String ELEMENT_EMBED_ATTRIBUTE_SRC = "src";
+	public static final String ELEMENT_EMBED_ATTRIBUTE_HEIGHT = "height";
+	public static final String ELEMENT_EMBED_ATTRIBUTE_WIDTH = "width";
+	public static final String ELEMENT_EMBED_ATTRIBUTE_TYPE = "type";
 
 	//attributes for <iframe>
-	public final static String ELEMENT_IFRAME_ATTRIBUTE_ALLOW_TRANSPARENCY = "allowTransparency"; //IE-specific; see http://msdn.microsoft.com/en-us/library/ms533072.aspx
-	public final static String ELEMENT_IFRAME_ATTRIBUTE_SRC = "src";
-	public final static String ELEMENT_IFRAME_ATTRIBUTE_FRAMEBORDER = "frameborder";
-	public final static String ELEMENT_IFRAME_ATTRIBUTE_SCROLLING = "scrolling";
-	public final static String IFRAME_SCROLLING_NO = "no";
-	public final static String IFRAME_SCROLLING_YES = "yes";
-	public final static String IFRAME_SCROLLING_AUTO = "auto";
+	public static final String ELEMENT_IFRAME_ATTRIBUTE_ALLOW_TRANSPARENCY = "allowTransparency"; //IE-specific; see http://msdn.microsoft.com/en-us/library/ms533072.aspx
+	public static final String ELEMENT_IFRAME_ATTRIBUTE_SRC = "src";
+	public static final String ELEMENT_IFRAME_ATTRIBUTE_FRAMEBORDER = "frameborder";
+	public static final String ELEMENT_IFRAME_ATTRIBUTE_SCROLLING = "scrolling";
+	public static final String IFRAME_SCROLLING_NO = "no";
+	public static final String IFRAME_SCROLLING_YES = "yes";
+	public static final String IFRAME_SCROLLING_AUTO = "auto";
 
 	//attributes for <img>
-	public final static String ELEMENT_IMG_ATTRIBUTE_ALT = "alt";
-	public final static String ELEMENT_IMG_ATTRIBUTE_HEIGHT = "height";
-	public final static String ELEMENT_IMG_ATTRIBUTE_WIDTH = "width";
-	public final static String ELEMENT_IMG_ATTRIBUTE_SRC = "src";
+	public static final String ELEMENT_IMG_ATTRIBUTE_ALT = "alt";
+	public static final String ELEMENT_IMG_ATTRIBUTE_HEIGHT = "height";
+	public static final String ELEMENT_IMG_ATTRIBUTE_WIDTH = "width";
+	public static final String ELEMENT_IMG_ATTRIBUTE_SRC = "src";
 
 	//attributes for <input>
-	public final static String ELEMENT_INPUT_ATTRIBUTE_ACCEPT = "accept";
-	public final static String ELEMENT_INPUT_ATTRIBUTE_TYPE = "type";
-	public final static String INPUT_TYPE_BUTTON = "button";
-	public final static String INPUT_TYPE_CHECKBOX = "checkbox";
-	public final static String INPUT_TYPE_FILE = "file";
-	public final static String INPUT_TYPE_HIDDEN = "hidden";
-	public final static String INPUT_TYPE_IMAGE = "image";
-	public final static String INPUT_TYPE_PASSWORD = "password";
-	public final static String INPUT_TYPE_RADIO = "radio";
-	public final static String INPUT_TYPE_RESET = "reset";
-	public final static String INPUT_TYPE_SUBMIT = "submit";
-	public final static String INPUT_TYPE_TEXT = "text";
-	public final static String ELEMENT_INPUT_ATTRIBUTE_CHECKED = "checked";
-	public final static String INPUT_CHECKED_CHECKED = "checked";
-	public final static String ELEMENT_INPUT_ATTRIBUTE_DISABLED = "disabled";
-	public final static String INPUT_DISABLED_DISABLED = "disabled";
-	public final static String ELEMENT_INPUT_ATTRIBUTE_MAXLENGTH = "maxlength";
-	public final static String ELEMENT_INPUT_ATTRIBUTE_READONLY = "readonly";
-	public final static String ELEMENT_INPUT_ATTRIBUTE_SIZE = "size";
-	public final static String INPUT_READONLY_READONLY = "readonly";
+	public static final String ELEMENT_INPUT_ATTRIBUTE_ACCEPT = "accept";
+	public static final String ELEMENT_INPUT_ATTRIBUTE_TYPE = "type";
+	public static final String INPUT_TYPE_BUTTON = "button";
+	public static final String INPUT_TYPE_CHECKBOX = "checkbox";
+	public static final String INPUT_TYPE_FILE = "file";
+	public static final String INPUT_TYPE_HIDDEN = "hidden";
+	public static final String INPUT_TYPE_IMAGE = "image";
+	public static final String INPUT_TYPE_PASSWORD = "password";
+	public static final String INPUT_TYPE_RADIO = "radio";
+	public static final String INPUT_TYPE_RESET = "reset";
+	public static final String INPUT_TYPE_SUBMIT = "submit";
+	public static final String INPUT_TYPE_TEXT = "text";
+	public static final String ELEMENT_INPUT_ATTRIBUTE_CHECKED = "checked";
+	public static final String INPUT_CHECKED_CHECKED = "checked";
+	public static final String ELEMENT_INPUT_ATTRIBUTE_DISABLED = "disabled";
+	public static final String INPUT_DISABLED_DISABLED = "disabled";
+	public static final String ELEMENT_INPUT_ATTRIBUTE_MAXLENGTH = "maxlength";
+	public static final String ELEMENT_INPUT_ATTRIBUTE_READONLY = "readonly";
+	public static final String ELEMENT_INPUT_ATTRIBUTE_SIZE = "size";
+	public static final String INPUT_READONLY_READONLY = "readonly";
 
 	//attributes for <label>
-	public final static String ELEMENT_LABEL_ATTRIBUTE_FOR = "for";
+	public static final String ELEMENT_LABEL_ATTRIBUTE_FOR = "for";
 
 	//attributes for <link>
-	public final static String ELEMENT_LINK_ATTRIBUTE_HREF = "href";
-	public final static String ELEMENT_LINK_ATTRIBUTE_REL = LINK_ATTRIBUTE_REL;
-	public final static String ELEMENT_LINK_ATTRIBUTE_TYPE = "type";
-	public final static String ELEMENT_LINK_ATTRIBUTE_MEDIA = "media";
-	public final static String LINK_MEDIA_SCREEN = "screen";
+	public static final String ELEMENT_LINK_ATTRIBUTE_HREF = "href";
+	public static final String ELEMENT_LINK_ATTRIBUTE_REL = LINK_ATTRIBUTE_REL;
+	public static final String ELEMENT_LINK_ATTRIBUTE_TYPE = "type";
+	public static final String ELEMENT_LINK_ATTRIBUTE_MEDIA = "media";
+	public static final String LINK_MEDIA_SCREEN = "screen";
 
 	//attributes for <meta>
-	public final static String ELEMENT_META_ATTRIBUTE_CONTENT = "content";
-	public final static String ELEMENT_META_ATTRIBUTE_NAME = "name";
-	public final static String ELEMENT_META_ATTRIBUTE_PROPERTY = "property"; //TODO Facebook OpenGraph specific; document and move; see https://developers.facebook.com/docs/opengraph/ 
+	public static final String ELEMENT_META_ATTRIBUTE_CONTENT = "content";
+	public static final String ELEMENT_META_ATTRIBUTE_NAME = "name";
+	public static final String ELEMENT_META_ATTRIBUTE_PROPERTY = "property"; //TODO Facebook OpenGraph specific; document and move; see https://developers.facebook.com/docs/opengraph/ 
 
 	//attributes for <object>
-	public final static String ELEMENT_OBJECT_ATTRIBUTE_CLASSID = "classid";
-	public final static String ELEMENT_OBJECT_ATTRIBUTE_CODEBASE = "codebase";
-	public final static String ELEMENT_OBJECT_ATTRIBUTE_CODETYPE = "codetype";
-	public final static String ELEMENT_OBJECT_ATTRIBUTE_DATA = "data";
-	public final static String ELEMENT_OBJECT_ATTRIBUTE_HEIGHT = "height";
-	public final static String ELEMENT_OBJECT_ATTRIBUTE_WIDTH = "width";
-	public final static String ELEMENT_OBJECT_ATTRIBUTE_TYPE = "type";
+	public static final String ELEMENT_OBJECT_ATTRIBUTE_CLASSID = "classid";
+	public static final String ELEMENT_OBJECT_ATTRIBUTE_CODEBASE = "codebase";
+	public static final String ELEMENT_OBJECT_ATTRIBUTE_CODETYPE = "codetype";
+	public static final String ELEMENT_OBJECT_ATTRIBUTE_DATA = "data";
+	public static final String ELEMENT_OBJECT_ATTRIBUTE_HEIGHT = "height";
+	public static final String ELEMENT_OBJECT_ATTRIBUTE_WIDTH = "width";
+	public static final String ELEMENT_OBJECT_ATTRIBUTE_TYPE = "type";
 
 	//attributes for <option>
-	public final static String ELEMENT_OPTION_ATTRIBUTE_DISABLED = "disabled";
-	public final static String OPTION_DISABLED_DISABLED = "disabled";
-	public final static String ELEMENT_OPTION_ATTRIBUTE_SELECTED = "selected";
-	public final static String OPTION_SELECTED_SELECTED = "selected";
+	public static final String ELEMENT_OPTION_ATTRIBUTE_DISABLED = "disabled";
+	public static final String OPTION_DISABLED_DISABLED = "disabled";
+	public static final String ELEMENT_OPTION_ATTRIBUTE_SELECTED = "selected";
+	public static final String OPTION_SELECTED_SELECTED = "selected";
 
 	//attributes for <param>
-	public final static String ELEMENT_PARAM_ATTRIBUTE_NAME = "name";
-	public final static String ELEMENT_PARAM_ATTRIBUTE_VALUE = "value";
+	public static final String ELEMENT_PARAM_ATTRIBUTE_NAME = "name";
+	public static final String ELEMENT_PARAM_ATTRIBUTE_VALUE = "value";
 
 	//attributes for <script>
-	public final static String ELEMENT_SCRIPT_ATTRIBUTE_SRC = "src";
-	public final static String ELEMENT_SCRIPT_ATTRIBUTE_TYPE = "type";
-	public final static String ELEMENT_SCRIPT_ATTRIBUTE_LANGUAGE = "language";
+	public static final String ELEMENT_SCRIPT_ATTRIBUTE_SRC = "src";
+	public static final String ELEMENT_SCRIPT_ATTRIBUTE_TYPE = "type";
+	public static final String ELEMENT_SCRIPT_ATTRIBUTE_LANGUAGE = "language";
 
 	//attributes for <select>
-	public final static String ELEMENT_SELECT_ATTRIBUTE_MULTIPLE = "multiple";
-	public final static String SELECT_MULTIPLE_MULTIPLE = "multiple";
-	public final static String ELEMENT_SELECT_ATTRIBUTE_SIZE = "size";
+	public static final String ELEMENT_SELECT_ATTRIBUTE_MULTIPLE = "multiple";
+	public static final String SELECT_MULTIPLE_MULTIPLE = "multiple";
+	public static final String ELEMENT_SELECT_ATTRIBUTE_SIZE = "size";
 
 	//attributes for <td>
-	public final static String ELEMENT_TD_ATTRIBUTE_ALIGN = "align";
-	public final static String TD_ALIGN_LEFT = "left";
-	public final static String TD_ALIGN_CENTER = "center";
-	public final static String TD_ALIGN_RIGHT = "right";
-	public final static String ELEMENT_TD_ATTRIBUTE_VALIGN = "valign";
-	public final static String TD_VALIGN_TOP = "top";
-	public final static String TD_VALIGN_MIDDLE = "middle";
-	public final static String TD_VALIGN_BOTTOM = "bottom";
-	public final static String ELEMENT_TD_ATTRIBUTE_COLSPAN = "colspan";
-	public final static String ELEMENT_TD_ATTRIBUTE_ROWSPAN = "rowspan";
-	public final static String ELEMENT_TD_ATTRIBUTE_SCOPE = "scope";
-	public final static String TD_SCOPE_COLGROUP = "colgroup";
+	public static final String ELEMENT_TD_ATTRIBUTE_ALIGN = "align";
+	public static final String TD_ALIGN_LEFT = "left";
+	public static final String TD_ALIGN_CENTER = "center";
+	public static final String TD_ALIGN_RIGHT = "right";
+	public static final String ELEMENT_TD_ATTRIBUTE_VALIGN = "valign";
+	public static final String TD_VALIGN_TOP = "top";
+	public static final String TD_VALIGN_MIDDLE = "middle";
+	public static final String TD_VALIGN_BOTTOM = "bottom";
+	public static final String ELEMENT_TD_ATTRIBUTE_COLSPAN = "colspan";
+	public static final String ELEMENT_TD_ATTRIBUTE_ROWSPAN = "rowspan";
+	public static final String ELEMENT_TD_ATTRIBUTE_SCOPE = "scope";
+	public static final String TD_SCOPE_COLGROUP = "colgroup";
 
 	//attributes for <tr>
-	public final static String ELEMENT_TR_ATTRIBUTE_ALIGN = "align";
-	public final static String TR_ALIGN_LEFT = "left";
-	public final static String TR_ALIGN_CENTER = "center";
-	public final static String TR_ALIGN_RIGHT = "right";
-	public final static String ELEMENT_TR_ATTRIBUTE_VALIGN = "valign";
-	public final static String TR_VALIGN_TOP = "top";
-	public final static String TR_VALIGN_MIDDLE = "middle";
-	public final static String TR_VALIGN_BOTTOM = "bottom";
+	public static final String ELEMENT_TR_ATTRIBUTE_ALIGN = "align";
+	public static final String TR_ALIGN_LEFT = "left";
+	public static final String TR_ALIGN_CENTER = "center";
+	public static final String TR_ALIGN_RIGHT = "right";
+	public static final String ELEMENT_TR_ATTRIBUTE_VALIGN = "valign";
+	public static final String TR_VALIGN_TOP = "top";
+	public static final String TR_VALIGN_MIDDLE = "middle";
+	public static final String TR_VALIGN_BOTTOM = "bottom";
 
 	//attributes for <textarea>
-	public final static String ELEMENT_TEXTAREA_ATTRIBUTE_COLS = "cols";
-	public final static String ELEMENT_TEXTAREA_ATTRIBUTE_ROWS = "rows";
-	public final static String ELEMENT_TEXTAREA_ATTRIBUTE_WRAP = "wrap";
-	public final static String TEXTAREA_WRAP_OFF = "off";
-	public final static String TEXTAREA_WRAP_HARD = "hard";
-	public final static String TEXTAREA_WRAP_SOFT = "soft";
+	public static final String ELEMENT_TEXTAREA_ATTRIBUTE_COLS = "cols";
+	public static final String ELEMENT_TEXTAREA_ATTRIBUTE_ROWS = "rows";
+	public static final String ELEMENT_TEXTAREA_ATTRIBUTE_WRAP = "wrap";
+	public static final String TEXTAREA_WRAP_OFF = "off";
+	public static final String TEXTAREA_WRAP_HARD = "hard";
+	public static final String TEXTAREA_WRAP_SOFT = "soft";
 	/*"hard" and "soft" apparently have more acceptance than "physical" and "virtual"; see http://msdn2.microsoft.com/en-us/library/ms535152.aspx and http://lists.evolt.org/archive/Week-of-Mon-19991101/091388.html
-			public final static String TEXTAREA_WRAP_PHYSICAL="physical";
-			public final static String TEXTAREA_WRAP_VIRTUAL="virtual";
+			public static final String TEXTAREA_WRAP_PHYSICAL="physical";
+			public static final String TEXTAREA_WRAP_VIRTUAL="virtual";
 	*/
-	public final static String ELEMENT_TEXTAREA_ATTRIBUTE_DISABLED = "disabled";
-	public final static String TEXTAREA_DISABLED_DISABLED = "disabled";
-	public final static String ELEMENT_TEXTAREA_ATTRIBUTE_READONLY = "readonly";
-	public final static String TEXTAREA_READONLY_READONLY = "readonly";
+	public static final String ELEMENT_TEXTAREA_ATTRIBUTE_DISABLED = "disabled";
+	public static final String TEXTAREA_DISABLED_DISABLED = "disabled";
+	public static final String ELEMENT_TEXTAREA_ATTRIBUTE_READONLY = "readonly";
+	public static final String TEXTAREA_READONLY_READONLY = "readonly";
 
 	/**
 	 * The XHTML elements that by default have <code>display:block</code> CSS style.
 	 * @see <a href="http://www.w3.org/TR/2003/WD-xhtml2-20030506/mod-block-text.html">XHTML Block Text Module</a>
 	 */
-	public final static Set<String> BLOCK_ELEMENTS = immutableSetOf(ELEMENT_ADDRESS, ELEMENT_BLOCKCODE, ELEMENT_BLOCKQUOTE, ELEMENT_DIV, ELEMENT_H1, ELEMENT_H2,
+	public static final Set<String> BLOCK_ELEMENTS = immutableSetOf(ELEMENT_ADDRESS, ELEMENT_BLOCKCODE, ELEMENT_BLOCKQUOTE, ELEMENT_DIV, ELEMENT_H1, ELEMENT_H2,
 			ELEMENT_H3, ELEMENT_H4, ELEMENT_H5, ELEMENT_H6, ELEMENT_HR, ELEMENT_P, ELEMENT_PRE, ELEMENT_SECTION);
 
 	/**

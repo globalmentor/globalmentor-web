@@ -46,16 +46,16 @@ public class CSSTidier //TODO add a feature to remove empty style declarations
 {
 
 	/** Whether font sizes should be made relative to a base font size. */
-	public final static String MAKE_FONT_SIZES_RELATIVE_OPTION = "makeFontSizesRelative";
+	public static final String MAKE_FONT_SIZES_RELATIVE_OPTION = "makeFontSizesRelative";
 
 	/** Default to not making font sizes relative. */
-	public final static boolean MAKE_FONT_SIZES_RELATIVE_OPTION_DEFAULT = false;
+	public static final boolean MAKE_FONT_SIZES_RELATIVE_OPTION_DEFAULT = false;
 
 	/** Whether Microsoft Office-specific properties should be removed. */
-	public final static String REMOVE_MS_OFFICE_PROPERTIES_OPTION = "removeMSOfficeProperties";
+	public static final String REMOVE_MS_OFFICE_PROPERTIES_OPTION = "removeMSOfficeProperties";
 
 	/** Default to removing MS Office properties. */
-	public final static boolean REMOVE_MS_OFFICE_PROPERTIES_OPTION_DEFAULT = true;
+	public static final boolean REMOVE_MS_OFFICE_PROPERTIES_OPTION_DEFAULT = true;
 
 	/** Whether font sizes should be made relative to a base font size. */
 	private boolean makeFontSizesRelative = MAKE_FONT_SIZES_RELATIVE_OPTION_DEFAULT;

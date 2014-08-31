@@ -154,24 +154,24 @@ public class XHTMLTidier {
 	/**
 	 * Whether underline tags (<code>&lt;u&gt;</code>) should be converted to italics tags (<code>&lt;i&gt;</code>).
 	 */
-	public final static String CONVERT_UNDERLINE_ITALICS_OPTION = "convertUnderlineItalics";
+	public static final String CONVERT_UNDERLINE_ITALICS_OPTION = "convertUnderlineItalics";
 
 	/** Default to not converting underline to italics. */
-	public final static boolean CONVERT_UNDERLINE_ITALICS_OPTION_DEFAULT = false;
+	public static final boolean CONVERT_UNDERLINE_ITALICS_OPTION_DEFAULT = false;
 
 	/**
 	 * Whether internal stylesheets should be extracted and stored as external stylesheets.
 	 */
-	public final static String EXTRACT_INTERNAL_STYLESHEETS_OPTION = "extractInternalStylesheets";
+	public static final String EXTRACT_INTERNAL_STYLESHEETS_OPTION = "extractInternalStylesheets";
 
 	/** Default to not extracting internal stylesheets. */
-	public final static boolean EXTRACT_INTERNAL_STYLESHEETS_OPTION_DEFAULT = false;
+	public static final boolean EXTRACT_INTERNAL_STYLESHEETS_OPTION_DEFAULT = false;
 
 	/** Whether style class names should be made consistent. */
-	public final static String NORMALIZE_STYLE_CLASSES_OPTION = "normalizeStyleClasses";
+	public static final String NORMALIZE_STYLE_CLASSES_OPTION = "normalizeStyleClasses";
 
 	/** Default to normalizing style classes. */
-	public final static boolean NORMALIZE_STYLE_CLASSES_OPTION_DEFAULT = true;
+	public static final boolean NORMALIZE_STYLE_CLASSES_OPTION_DEFAULT = true;
 
 	/**
 	 * Whether underline tags (<code>&lt;u&gt;</code>) should be converted to italics tags (<code>&lt;i&gt;</code>).
@@ -233,39 +233,39 @@ public class XHTMLTidier {
 	//Microsoft Office style classes
 
 	/** Microsoft Office caption class. */
-	public final static String MSO_CAPTION_CLASS = "MsoCaption";
+	public static final String MSO_CAPTION_CLASS = "MsoCaption";
 
 	/** Microsoft Office normal class. */
-	public final static String MSO_NORMAL_CLASS = "MsoNormal";
+	public static final String MSO_NORMAL_CLASS = "MsoNormal";
 
 	/** Microsoft Office block text class. */
-	public final static String MSO_BLOCK_TEXT_CLASS = "MsoBlockText";
+	public static final String MSO_BLOCK_TEXT_CLASS = "MsoBlockText";
 
 	/** Microsoft Office indented body text class. */
-	public final static String MSO_BODY_TEXT_INDENT_CLASS = "MsoBodyTextIndent";
+	public static final String MSO_BODY_TEXT_INDENT_CLASS = "MsoBodyTextIndent";
 
 	/** Microsoft Office title class. */
-	public final static String MSO_TITLE_CLASS = "MsoTitle";
+	public static final String MSO_TITLE_CLASS = "MsoTitle";
 
 	//Tidy style classes
 
 	/** The normal caption class. */
-	public final static String CAPTION_CLASS = "caption";
+	public static final String CAPTION_CLASS = "caption";
 
 	/** The normal chapter number class. */
-	public final static String CHAPTER_NUMBER_CLASS = "chapterNumber";
+	public static final String CHAPTER_NUMBER_CLASS = "chapterNumber";
 
 	/** The normal title class. */
-	public final static String TITLE_CLASS = "title";
+	public static final String TITLE_CLASS = "title";
 
 	/** A substring "chap" which might appear in a chapter title class. */
-	public final static String CHAPTER_TITLE_CLASS_CHAP_SUBSTRING = "chap"; //TODO shouldn't this be chapterNumber?
+	public static final String CHAPTER_TITLE_CLASS_CHAP_SUBSTRING = "chap"; //TODO shouldn't this be chapterNumber?
 
 	/** A substring "num" which might appear in a chapter title class. */
-	public final static String CHAPTER_TITLE_CLASS_NUM_SUBSTRING = "num";
+	public static final String CHAPTER_TITLE_CLASS_NUM_SUBSTRING = "num";
 
 	/** A substring "title" which might appear in a chapter title class. */
-	public final static String CHAPTER_TITLE_CLASS_TITLE_SUBSTRING = "title";
+	public static final String CHAPTER_TITLE_CLASS_TITLE_SUBSTRING = "title";
 
 	//TODO probably pass a namespace and check all the elements against the namespace
 
@@ -280,41 +280,41 @@ public class XHTMLTidier {
 	//characters to be converted TODO probably put these in some constant Unicode file
 
 	/** An incorrect ellipsis. */
-	protected final static char BAD_ELLIPSIS = 0x85;
+	protected static final char BAD_ELLIPSIS = 0x85;
 
 	/** An incorrect OE. */
-	protected final static char BAD_UPPERCASE_OE = 0x8C;
+	protected static final char BAD_UPPERCASE_OE = 0x8C;
 
 	/** An incorrect left single quote. */
-	protected final static char BAD_LEFT_SINGLE_QUOTE = 0x91;
+	protected static final char BAD_LEFT_SINGLE_QUOTE = 0x91;
 
 	/** An incorrect right single quote. */
-	protected final static char BAD_RIGHT_SINGLE_QUOTE = 0x92;
+	protected static final char BAD_RIGHT_SINGLE_QUOTE = 0x92;
 
 	/** An incorrect left double quote. */
-	protected final static char BAD_LEFT_DOUBLE_QUOTE = 0x93;
+	protected static final char BAD_LEFT_DOUBLE_QUOTE = 0x93;
 
 	/** An incorrect right double quote. */
-	protected final static char BAD_RIGHT_DOUBLE_QUOTE = 0x94;
+	protected static final char BAD_RIGHT_DOUBLE_QUOTE = 0x94;
 
 	/** An incorrect m dash. */
-	protected final static char BAD_N_DASH = 0x96;
+	protected static final char BAD_N_DASH = 0x96;
 
 	/** An incorrect m dash. */
-	protected final static char BAD_M_DASH = 0x97;
+	protected static final char BAD_M_DASH = 0x97;
 
 	/** An incorrect trademark. */
-	protected final static char BAD_TRADEMARK = 0x99;
+	protected static final char BAD_TRADEMARK = 0x99;
 
 	/** An incorrect oe. */
-	protected final static char BAD_LOWERCASE_OE = 0x9C;
+	protected static final char BAD_LOWERCASE_OE = 0x9C;
 
 	/** An incorrect Y umlaut. */
-	protected final static char BAD_UPPERCASE_Y_UMLAUT = 0x9F;
+	protected static final char BAD_UPPERCASE_Y_UMLAUT = 0x9F;
 
 	/** Characters to be replaced, along with their replacements. */
 	//TODO move these up after moving the match character references (above) elsewhere
-	protected final static char[][] CHARACTER_MATCH_REPLACE_SET_ARRAY = new char[][] { { BAD_LEFT_SINGLE_QUOTE, LEFT_SINGLE_QUOTATION_MARK_CHAR },
+	protected static final char[][] CHARACTER_MATCH_REPLACE_SET_ARRAY = new char[][] { { BAD_LEFT_SINGLE_QUOTE, LEFT_SINGLE_QUOTATION_MARK_CHAR },
 			{ BAD_RIGHT_SINGLE_QUOTE, RIGHT_SINGLE_QUOTATION_MARK_CHAR }, { BAD_LEFT_DOUBLE_QUOTE, LEFT_DOUBLE_QUOTATION_MARK_CHAR },
 			{ BAD_RIGHT_DOUBLE_QUOTE, RIGHT_DOUBLE_QUOTATION_MARK_CHAR }, { BAD_N_DASH, EN_DASH_CHAR }, { BAD_M_DASH, EM_DASH_CHAR },
 			{ BAD_TRADEMARK, TRADE_MARK_SIGN_CHAR }, { BAD_LOWERCASE_OE, LATIN_SMALL_LIGATURE_OE_CHAR }, { BAD_UPPERCASE_OE, LATIN_CAPITAL_LIGATURE_OE_CHAR },
@@ -555,10 +555,10 @@ public class XHTMLTidier {
 
 	/** Characters which could conceivably be appended to a list marker. */
 	//TODO move this to the beginning, probably
-	protected final static Characters LIST_ITEM_MARKER_DELIMITER_CHARS = new Characters('.', ')', '-', EM_DASH_CHAR, EN_DASH_CHAR);
+	protected static final Characters LIST_ITEM_MARKER_DELIMITER_CHARS = new Characters('.', ')', '-', EM_DASH_CHAR, EN_DASH_CHAR);
 	/** A string representation of the bullet character which will be converted to a list item marker. */
 	//TODO move this to the beginning, probably
-	protected final static String BULLET_STRING = String.valueOf(BULLET_CHAR);
+	protected static final String BULLET_STRING = String.valueOf(BULLET_CHAR);
 
 	/**
 	 * Searches all first-level child block elements for any content which could be classified as list items and appropriately turns those items into lists.

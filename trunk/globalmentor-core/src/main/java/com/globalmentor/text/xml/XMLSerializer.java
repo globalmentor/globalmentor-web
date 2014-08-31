@@ -40,36 +40,36 @@ import org.w3c.dom.*;
 public class XMLSerializer {
 
 	/** Whether the output should be formatted. */
-	public final static String FORMAT_OUTPUT_OPTION = "formatOutput";
+	public static final String FORMAT_OUTPUT_OPTION = "formatOutput";
 
 	/** Default to unformatted output. */
-	public final static boolean FORMAT_OUTPUT_OPTION_DEFAULT = false;
+	public static final boolean FORMAT_OUTPUT_OPTION_DEFAULT = false;
 
 	/** Whether Unicode control characters should be XML-encoded. */
-	public final static String XML_ENCODE_CONTROL_OPTION = "xmlEncodeControl";
+	public static final String XML_ENCODE_CONTROL_OPTION = "xmlEncodeControl";
 
 	/** Default to not XML-encoding control characters. */
-	public final static boolean XML_ENCODE_CONTROL_OPTION_DEFAULT = false;
+	public static final boolean XML_ENCODE_CONTROL_OPTION_DEFAULT = false;
 
 	/** Whether extended characters (above 127) should be XML-encoded. */
-	public final static String XML_ENCODE_NON_ASCII_OPTION = "xmlEncodeNonASCII";
+	public static final String XML_ENCODE_NON_ASCII_OPTION = "xmlEncodeNonASCII";
 
 	/** Default to not XML-encoding extended characters. */
-	public final static boolean XML_ENCODE_NON_ASCII_OPTION_DEFAULT = false;
+	public static final boolean XML_ENCODE_NON_ASCII_OPTION_DEFAULT = false;
 
 	/** Whether private use Unicode characters should be XML-encoded. */
-	public final static String XML_ENCODE_PRIVATE_USE_OPTION = "xmlEncodePrivateUse";
+	public static final String XML_ENCODE_PRIVATE_USE_OPTION = "xmlEncodePrivateUse";
 
 	/** Default to not XML-encoding private use characters. */
-	public final static boolean XML_ENCODE_PRIVATE_USE_OPTION_DEFAULT = false;
+	public static final boolean XML_ENCODE_PRIVATE_USE_OPTION_DEFAULT = false;
 
 	/**
 	 * Whether characters which match a one-character predefined entity should be encoded using that entity.
 	 */
-	public final static String USE_ENTITIES_OPTION = "useEntities";
+	public static final String USE_ENTITIES_OPTION = "useEntities";
 
 	/** Default to using one-character predefined entities for encoding. */
-	public final static boolean USE_ENTITIES_OPTION_DEFAULT = true;
+	public static final boolean USE_ENTITIES_OPTION_DEFAULT = true;
 
 	/** Whether a byte order mark (BOM) is written. */
 	private boolean bomWritten = false;

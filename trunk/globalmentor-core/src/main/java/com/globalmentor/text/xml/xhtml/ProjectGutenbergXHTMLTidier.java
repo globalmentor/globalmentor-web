@@ -82,43 +82,43 @@ public class ProjectGutenbergXHTMLTidier //TODO move to different package
 	/**
 	 * The first part of the words "Project Gutenberg". Some works such as optns10.txt misspell this as "Project Gutenburg".
 	 */
-	public final static String PROJECT_GUTENB = "Project Gutenb";
+	public static final String PROJECT_GUTENB = "Project Gutenb";
 
 	/** The word "copyright". */
-	public final static String COPYRIGHT = "copyright";
+	public static final String COPYRIGHT = "copyright";
 
 	/** The word "Edition". */
-	public final static String EDITION = "Edition";
+	public static final String EDITION = "Edition";
 
 	/** The word "EText". */
-	public final static String ETEXT = "Etext";
+	public static final String ETEXT = "Etext";
 
 	/** The word "EBook". */
-	public final static String EBOOK = "EBook";
+	public static final String EBOOK = "EBook";
 
 	/** The word "the". */
-	public final static String THE = "the";
+	public static final String THE = "the";
 
 	/** The word "book". */
-	public final static String BOOK = "book";
+	public static final String BOOK = "book";
 
 	/** The word "is". */
-	public final static String IS = "is";
+	public static final String IS = "is";
 
 	/** The word "of". */
-	public final static String OF = "of";
+	public static final String OF = "of";
 
 	/** The word "by" to indicate an author. */
-	public final static String BY = "by";
+	public static final String BY = "by";
 
 	/** A substring indicating Project Gutenberg small print. */
-	public final static String SMALL_PRINT = "SMALL PRINT";
+	public static final String SMALL_PRINT = "SMALL PRINT";
 
 	/** A substring marking the start of the Project Gutenberg small print. */
-	public final static String SMALL_PRINT_START = "START";
+	public static final String SMALL_PRINT_START = "START";
 
 	/** A substring marking the end of the Project Gutenberg small print. */
-	public final static String SMALL_PRINT_END = "END";
+	public static final String SMALL_PRINT_END = "END";
 
 	/**
 	 * Tidies an XHTML document representing a Project Gutenberg etext.

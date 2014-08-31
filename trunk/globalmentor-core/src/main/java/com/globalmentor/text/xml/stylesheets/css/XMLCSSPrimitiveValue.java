@@ -39,22 +39,22 @@ public class XMLCSSPrimitiveValue extends XMLCSSValue implements org.w3c.dom.css
 
 	//Strings that specify the various accepted unit types. TODO perhaps later give these more appropriate names
 	//TODO put these in a constants file
-	public final static String UNIT_EMS_STRING = "em";
-	public final static String UNIT_EXS_STRING = "ex";
-	public final static String UNIT_PX_STRING = "px";
-	public final static String UNIT_CM_STRING = "cm";
-	public final static String UNIT_MM_STRING = "mm";
-	public final static String UNIT_IN_STRING = "in";
-	public final static String UNIT_PT_STRING = "pt";
-	public final static String UNIT_PC_STRING = "pc";
-	public final static String UNIT_DEG_STRING = "deg";
-	public final static String UNIT_RAD_STRING = "rad";
-	public final static String UNIT_GRAD_STRING = "grad";
-	public final static String UNIT_MS_STRING = "ms";
-	public final static String UNIT_S_STRING = "s";
-	public final static String UNIT_HZ_STRING = "Hz";
-	public final static String UNIT_KHZ_STRING = "kHz";
-	public final static String UNIT_PERCENTAGE_STRING = "%";
+	public static final String UNIT_EMS_STRING = "em";
+	public static final String UNIT_EXS_STRING = "ex";
+	public static final String UNIT_PX_STRING = "px";
+	public static final String UNIT_CM_STRING = "cm";
+	public static final String UNIT_MM_STRING = "mm";
+	public static final String UNIT_IN_STRING = "in";
+	public static final String UNIT_PT_STRING = "pt";
+	public static final String UNIT_PC_STRING = "pc";
+	public static final String UNIT_DEG_STRING = "deg";
+	public static final String UNIT_RAD_STRING = "rad";
+	public static final String UNIT_GRAD_STRING = "grad";
+	public static final String UNIT_MS_STRING = "ms";
+	public static final String UNIT_S_STRING = "s";
+	public static final String UNIT_HZ_STRING = "Hz";
+	public static final String UNIT_KHZ_STRING = "kHz";
+	public static final String UNIT_PERCENTAGE_STRING = "%";
 
 	/*Constructor which requires a specific primitive type.
 	@param primitiveType The primitive type of this primitive CSS value.

@@ -55,69 +55,69 @@ public class RDF //TODO special-case rdf:nil list resources so that they are not
 {
 
 	/** The recommended prefix to the RDF namespace. */
-	public final static String RDF_NAMESPACE_PREFIX = "rdf";
+	public static final String RDF_NAMESPACE_PREFIX = "rdf";
 
 	/** The URI to the RDF namespace. */
-	public final static URI RDF_NAMESPACE_URI = URI.create("http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+	public static final URI RDF_NAMESPACE_URI = URI.create("http://www.w3.org/1999/02/22-rdf-syntax-ns#");
 
 	/** The name extension for Resource Description Framework (RDF) files. */
-	public final static String RDF_NAME_EXTENSION = "rdf";
+	public static final String RDF_NAME_EXTENSION = "rdf";
 
 	//RDF property names
 	/** The pseudo-property name of a member container used only for serialization. The local name of rdf:li. */
-	public final static String LI_PROPERTY_NAME = "li";
+	public static final String LI_PROPERTY_NAME = "li";
 	/** The first element of a list. The local name of rdf:first. */
-	public final static String FIRST_PROPERTY_NAME = "first";
+	public static final String FIRST_PROPERTY_NAME = "first";
 	/** The rest of the elements of a list. The local name of rdf:rest. */
-	public final static String REST_PROPERTY_NAME = "rest";
+	public static final String REST_PROPERTY_NAME = "rest";
 	/** The type of an RDF resource. The local name of rdf:type. */
-	public final static String TYPE_PROPERTY_NAME = "type";
+	public static final String TYPE_PROPERTY_NAME = "type";
 	/** The value of an RDF resource. The local name of rdf:value. (Defined in RDFS.) */
-	public final static String VALUE_PROPERTY_NAME = "value";
+	public static final String VALUE_PROPERTY_NAME = "value";
 
 	//RDF class names
 	/** The local name of rdf:Alt. */
-	public final static String ALT_CLASS_NAME = "Alt";
+	public static final String ALT_CLASS_NAME = "Alt";
 	/** The local name of rdf:Bag. */
-	public final static String BAG_CLASS_NAME = "Bag";
+	public static final String BAG_CLASS_NAME = "Bag";
 	/** The local name of rdf:List. */
-	public final static String LIST_CLASS_NAME = "List";
+	public static final String LIST_CLASS_NAME = "List";
 	/** The local name of rdf:Seq. */
-	public final static String SEQ_CLASS_NAME = "Seq";
+	public static final String SEQ_CLASS_NAME = "Seq";
 
 	//RDF datatypes
 	/** The local name of the rdf:XMLLiteral. */
-	public final static String XML_LITERAL_DATATYPE_NAME = "XMLLiteral";
+	public static final String XML_LITERAL_DATATYPE_NAME = "XMLLiteral";
 	/** The URI of the <code>rdf:XMLLiteral</code> datatype. */
-	public final static URI XML_LITERAL_DATATYPE_URI = RDFResources.createReferenceURI(RDF_NAMESPACE_URI, XML_LITERAL_DATATYPE_NAME);
+	public static final URI XML_LITERAL_DATATYPE_URI = RDFResources.createReferenceURI(RDF_NAMESPACE_URI, XML_LITERAL_DATATYPE_NAME);
 
 	/**
 	 * The prefix to be used when generating property names for each member of a container, originally represented by <code>&lt;li&gt;</code> in the
 	 * serialization.
 	 */
-	public final static String CONTAINER_MEMBER_PREFIX = "_";
+	public static final String CONTAINER_MEMBER_PREFIX = "_";
 
 	//RDF predefined reference URIs
 	/** The name of the <code>rdf:nil</code> resource. */
-	public final static String NIL_RESOURCE_NAME = "nil";
+	public static final String NIL_RESOURCE_NAME = "nil";
 	/** The URI of the <code>rdf:nil</code> resource. */
-	public final static URI NIL_RESOURCE_URI = RDFResources.createReferenceURI(RDF_NAMESPACE_URI, NIL_RESOURCE_NAME);
+	public static final URI NIL_RESOURCE_URI = RDFResources.createReferenceURI(RDF_NAMESPACE_URI, NIL_RESOURCE_NAME);
 
 	//RDF XML predefined class reference URIs
 	/** The reference URI of the rdf:alt property. */
-	public final static URI ALT_PROPERTY_REFERENCE_URI = RDFResources.createReferenceURI(RDF_NAMESPACE_URI, ALT_CLASS_NAME);
+	public static final URI ALT_PROPERTY_REFERENCE_URI = RDFResources.createReferenceURI(RDF_NAMESPACE_URI, ALT_CLASS_NAME);
 	/** The reference URI of the rdf:bag property. */
-	public final static URI BAG_PROPERTY_REFERENCE_URI = RDFResources.createReferenceURI(RDF_NAMESPACE_URI, BAG_CLASS_NAME);
+	public static final URI BAG_PROPERTY_REFERENCE_URI = RDFResources.createReferenceURI(RDF_NAMESPACE_URI, BAG_CLASS_NAME);
 	/** The reference URI of the rdf:list property. */
-	public final static URI LIST_PROPERTY_REFERENCE_URI = RDFResources.createReferenceURI(RDF_NAMESPACE_URI, LIST_CLASS_NAME);
+	public static final URI LIST_PROPERTY_REFERENCE_URI = RDFResources.createReferenceURI(RDF_NAMESPACE_URI, LIST_CLASS_NAME);
 	/** The reference URI of the rdf:seq property. */
-	public final static URI SEQ_PROPERTY_REFERENCE_URI = RDFResources.createReferenceURI(RDF_NAMESPACE_URI, SEQ_CLASS_NAME);
+	public static final URI SEQ_PROPERTY_REFERENCE_URI = RDFResources.createReferenceURI(RDF_NAMESPACE_URI, SEQ_CLASS_NAME);
 
 	//RDF XML predefined property reference URIs
 	/** The reference URI of the rdf:li property. */
-	public final static URI LI_PROPERTY_REFERENCE_URI = RDFResources.createReferenceURI(RDF_NAMESPACE_URI, LI_PROPERTY_NAME);
+	public static final URI LI_PROPERTY_REFERENCE_URI = RDFResources.createReferenceURI(RDF_NAMESPACE_URI, LI_PROPERTY_NAME);
 	/** The reference URI of the rdf:type property. */
-	public final static URI TYPE_PROPERTY_REFERENCE_URI = RDFResources.createReferenceURI(RDF_NAMESPACE_URI, TYPE_PROPERTY_NAME);
+	public static final URI TYPE_PROPERTY_REFERENCE_URI = RDFResources.createReferenceURI(RDF_NAMESPACE_URI, TYPE_PROPERTY_NAME);
 
 	/** A map of resource factories, keyed to namespace URI. */
 	private final Map<URI, RDFResourceFactory> resourceFactoryMap = new HashMap<URI, RDFResourceFactory>();
