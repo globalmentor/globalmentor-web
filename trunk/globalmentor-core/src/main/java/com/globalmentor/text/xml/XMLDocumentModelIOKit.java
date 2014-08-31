@@ -16,6 +16,8 @@
 
 package com.globalmentor.text.xml;
 
+import static java.nio.charset.StandardCharsets.*;
+
 import java.io.*;
 import java.net.*;
 
@@ -81,7 +83,7 @@ public class XMLDocumentModelIOKit extends AbstractIOKit<XMLNodeModel<Document>>
 	 * @throws IOException Thrown if there is an error writing the model.
 	 */
 	public void save(final XMLNodeModel<Document> model, final OutputStream outputStream) throws IOException {
-		final Writer writer = new OutputStreamWriter(outputStream, Charsets.UTF_8_CHARSET); //create a UTF-8 writer
+		final Writer writer = new OutputStreamWriter(outputStream, UTF_8); //create a UTF-8 writer
 		new XMLSerializer(true).serialize(model.getXML(), outputStream); //serialize the XML document
 		writer.flush(); //flush the data to the output stream
 	}

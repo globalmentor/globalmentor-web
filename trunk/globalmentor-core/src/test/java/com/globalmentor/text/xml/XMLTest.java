@@ -16,7 +16,7 @@
 
 package com.globalmentor.text.xml;
 
-import static com.globalmentor.io.Charsets.*;
+import static java.nio.charset.StandardCharsets.*;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.*;
@@ -47,9 +47,9 @@ public class XMLTest extends AbstractTest {
 			final ObjectHolder<ByteOrderMark> bom = new ObjectHolder<>();
 			final ObjectHolder<String> declaredEncodingName = new ObjectHolder<>();
 			final Charset charset = XML.detectXMLCharset(inputStream, bom, declaredEncodingName);
-			assertThat(charset, is(ISO_8859_1_CHARSET));
+			assertThat(charset, is(ISO_8859_1));
 			assertFalse(bom.isPresent());
-			assertThat(declaredEncodingName.getObject(), is(ISO_8859_1_NAME));
+			assertThat(declaredEncodingName.getObject(), is(ISO_8859_1.name()));
 		} finally {
 			inputStream.close();
 		}
@@ -63,9 +63,9 @@ public class XMLTest extends AbstractTest {
 			final ObjectHolder<ByteOrderMark> bom = new ObjectHolder<>();
 			final ObjectHolder<String> declaredEncodingName = new ObjectHolder<>();
 			final Charset charset = XML.detectXMLCharset(inputStream, bom, declaredEncodingName);
-			assertThat(charset, is(UTF_8_CHARSET));
+			assertThat(charset, is(UTF_8));
 			assertFalse(bom.isPresent());
-			assertThat(declaredEncodingName.getObject(), is(UTF_8_NAME));
+			assertThat(declaredEncodingName.getObject(), is(UTF_8.name()));
 		} finally {
 			inputStream.close();
 		}
@@ -79,9 +79,9 @@ public class XMLTest extends AbstractTest {
 			final ObjectHolder<ByteOrderMark> bom = new ObjectHolder<>();
 			final ObjectHolder<String> declaredEncodingName = new ObjectHolder<>();
 			final Charset charset = XML.detectXMLCharset(inputStream, bom, declaredEncodingName);
-			assertThat(charset, is(UTF_8_CHARSET));
+			assertThat(charset, is(UTF_8));
 			assertThat(bom.getObject(), is(ByteOrderMark.UTF_8));
-			assertThat(declaredEncodingName.getObject(), is(UTF_8_NAME));
+			assertThat(declaredEncodingName.getObject(), is(UTF_8.name()));
 		} finally {
 			inputStream.close();
 		}
@@ -95,7 +95,7 @@ public class XMLTest extends AbstractTest {
 			final ObjectHolder<ByteOrderMark> bom = new ObjectHolder<>();
 			final ObjectHolder<String> declaredEncodingName = new ObjectHolder<>();
 			final Charset charset = XML.detectXMLCharset(inputStream, bom, declaredEncodingName);
-			assertThat(charset, is(UTF_8_CHARSET));
+			assertThat(charset, is(UTF_8));
 			assertFalse(bom.isPresent());
 			assertFalse(declaredEncodingName.isPresent());
 		} finally {
@@ -127,9 +127,9 @@ public class XMLTest extends AbstractTest {
 			final ObjectHolder<ByteOrderMark> bom = new ObjectHolder<>();
 			final ObjectHolder<String> declaredEncodingName = new ObjectHolder<>();
 			final Charset charset = XML.detectXMLCharset(inputStream, bom, declaredEncodingName);
-			assertThat(charset, is(UTF_16LE_CHARSET));
+			assertThat(charset, is(UTF_16LE));
 			assertFalse(bom.isPresent());
-			assertThat(declaredEncodingName.getObject(), is(UTF_16_NAME));
+			assertThat(declaredEncodingName.getObject(), is(UTF_16.name()));
 		} finally {
 			inputStream.close();
 		}
@@ -143,9 +143,9 @@ public class XMLTest extends AbstractTest {
 			final ObjectHolder<ByteOrderMark> bom = new ObjectHolder<>();
 			final ObjectHolder<String> declaredEncodingName = new ObjectHolder<>();
 			final Charset charset = XML.detectXMLCharset(inputStream, bom, declaredEncodingName);
-			assertThat(charset, is(UTF_16LE_CHARSET));
+			assertThat(charset, is(UTF_16LE));
 			assertThat(bom.getObject(), is(ByteOrderMark.UTF_16LE));
-			assertThat(declaredEncodingName.getObject(), is(UTF_16_NAME));
+			assertThat(declaredEncodingName.getObject(), is(UTF_16.name()));
 		} finally {
 			inputStream.close();
 		}

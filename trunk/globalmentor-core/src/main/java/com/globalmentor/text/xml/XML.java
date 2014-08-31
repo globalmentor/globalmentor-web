@@ -52,6 +52,7 @@ import static com.globalmentor.text.xml.mathml.MathML.*;
 import static com.globalmentor.text.xml.stylesheets.XMLStyleSheets.*;
 import static com.globalmentor.text.xml.svg.SVG.*;
 import static com.globalmentor.text.xml.xhtml.XHTML.*;
+import static java.nio.charset.StandardCharsets.*;
 
 /**
  * Various XML constants and manipulation functions.
@@ -74,7 +75,7 @@ public class XML {
 	public static final ContentType EXTERNAL_PARSED_ENTITY_CONTENT_TYPE = ContentType.create(ContentType.TEXT_PRIMARY_TYPE, XML_EXTERNAL_PARSED_ENTITY_SUBTYPE);
 
 	/** The default charset to assume if none is indicated. */
-	public static final Charset DEFAULT_CHARSET = UTF_8_CHARSET;
+	public static final Charset DEFAULT_CHARSET = UTF_8;
 
 	/** The name extension for eXtensible Markup Language. */
 	public static final String XML_NAME_EXTENSION = "xml";
@@ -2473,7 +2474,7 @@ public class XML {
 		}
 		stringBuilder.append(">").append(fragmentText).append("</fragment>");
 		try {
-			final Document document = documentBuilder.parse(new ByteArrayInputStream(stringBuilder.toString().getBytes(UTF_8_CHARSET))); //parse the bytes of the string
+			final Document document = documentBuilder.parse(new ByteArrayInputStream(stringBuilder.toString().getBytes(UTF_8))); //parse the bytes of the string
 			return extractChildren(document.getDocumentElement()); //extract the children of the fragment document element and return them as a document fragment
 		} catch(final IOException ioException) { //we should never get an I/O exception reading from a string
 			throw new AssertionError(ioException);

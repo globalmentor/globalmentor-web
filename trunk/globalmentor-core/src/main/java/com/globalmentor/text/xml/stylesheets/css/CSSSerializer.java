@@ -22,8 +22,8 @@ import java.util.*;
 
 import org.w3c.dom.css.*;
 
-import static com.globalmentor.io.Charsets.*;
 import static com.globalmentor.text.xml.stylesheets.css.XMLCSS.*;
+import static java.nio.charset.StandardCharsets.*;
 
 /**
  * Class which serializes a CSS stylesheet to a byte-oriented output stream. Has the option of automatically formatting the output in a hierarchical structure
@@ -61,7 +61,7 @@ public class CSSSerializer //TODO del all the XMLUndefinedEntityReferenceExcepti
 	 * @throws UnsupportedEncodingException Thrown if the UTF-8 encoding not recognized.
 	 */
 	public void serialize(final CSSStyleSheet stylesheet, final OutputStream outputStream) throws UnsupportedEncodingException, IOException {
-		serialize(stylesheet, outputStream, UTF_8_CHARSET); //serialize the document, defaulting to UTF-8
+		serialize(stylesheet, outputStream, UTF_8); //serialize the document, defaulting to UTF-8
 	}
 
 	/**

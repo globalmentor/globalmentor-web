@@ -18,16 +18,18 @@ package com.globalmentor.text.xml;
 
 import java.io.*;
 import java.util.*;
-
 import java.nio.charset.Charset;
 
 import com.globalmentor.io.ByteOrderMark;
-import static com.globalmentor.io.Charsets.*;
+
 import static com.globalmentor.java.Characters.SPACE_CHAR;
 
 import com.globalmentor.java.Characters;
 import com.globalmentor.java.StringBuffers;
+
 import static com.globalmentor.text.xml.XML.*;
+import static java.nio.charset.StandardCharsets.*;
+
 import com.globalmentor.util.PropertiesUtilities;
 
 import org.w3c.dom.*;
@@ -305,8 +307,8 @@ public class XMLSerializer {
 	public String serialize(final Document document) throws UnsupportedEncodingException, IOException {
 		try {
 			final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(); //create an output stream for receiving the XML data
-			serialize(document, byteArrayOutputStream, UTF_8_CHARSET); //serialize the document to the output stream using UTF-8 with no byte order mark
-			return byteArrayOutputStream.toString(UTF_8_CHARSET.name()); //convert the byte array to a string, using the UTF-8 encoding, and return it
+			serialize(document, byteArrayOutputStream, UTF_8); //serialize the document to the output stream using UTF-8 with no byte order mark
+			return byteArrayOutputStream.toString(UTF_8.name()); //convert the byte array to a string, using the UTF-8 encoding, and return it
 		} catch(final UnsupportedEncodingException unsupportedEncodingException) { //UTF-8 should always be supported
 			throw new AssertionError(unsupportedEncodingException);
 		} catch(final IOException ioException) { //there should never by an I/O exception writing to a byte array output stream
@@ -322,8 +324,8 @@ public class XMLSerializer {
 	public String serialize(final DocumentFragment documentFragment) {
 		try {
 			final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(); //create an output stream for receiving the XML data
-			serialize(documentFragment, byteArrayOutputStream, UTF_8_CHARSET); //serialize the document fragment to the output stream using UTF-8 with no byte order mark
-			return byteArrayOutputStream.toString(UTF_8_CHARSET.name()); //convert the byte array to a string, using the UTF-8 encoding, and return it
+			serialize(documentFragment, byteArrayOutputStream, UTF_8); //serialize the document fragment to the output stream using UTF-8 with no byte order mark
+			return byteArrayOutputStream.toString(UTF_8.name()); //convert the byte array to a string, using the UTF-8 encoding, and return it
 		} catch(final UnsupportedEncodingException unsupportedEncodingException) { //UTF-8 should always be supported
 			throw new AssertionError(unsupportedEncodingException);
 		} catch(final IOException ioException) { //there should never by an I/O exception writing to a byte array output stream
@@ -339,8 +341,8 @@ public class XMLSerializer {
 	public String serialize(final Element element) {
 		try {
 			final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(); //create an output stream for receiving the XML data
-			serialize(element, byteArrayOutputStream, UTF_8_CHARSET); //serialize the element to the output stream using UTF-8 with no byte order mark
-			return byteArrayOutputStream.toString(UTF_8_CHARSET.name()); //convert the byte array to a string, using the UTF-8 encoding, and return it
+			serialize(element, byteArrayOutputStream, UTF_8); //serialize the element to the output stream using UTF-8 with no byte order mark
+			return byteArrayOutputStream.toString(UTF_8.name()); //convert the byte array to a string, using the UTF-8 encoding, and return it
 		} catch(final UnsupportedEncodingException unsupportedEncodingException) { //UTF-8 should always be supported
 			throw new AssertionError(unsupportedEncodingException);
 		} catch(final IOException ioException) { //there should never by an I/O exception writing to a byte array output stream
@@ -356,8 +358,8 @@ public class XMLSerializer {
 	public String serializeContent(final Node node) {
 		try {
 			final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(); //create an output stream for receiving the XML data
-			serializeContent(node, byteArrayOutputStream, UTF_8_CHARSET); //serialize the node content to the output stream using UTF-8 with no byte order mark
-			return byteArrayOutputStream.toString(UTF_8_CHARSET.name()); //convert the byte array to a string, using the UTF-8 encoding, and return it
+			serializeContent(node, byteArrayOutputStream, UTF_8); //serialize the node content to the output stream using UTF-8 with no byte order mark
+			return byteArrayOutputStream.toString(UTF_8.name()); //convert the byte array to a string, using the UTF-8 encoding, and return it
 		} catch(final UnsupportedEncodingException unsupportedEncodingException) { //UTF-8 should always be supported
 			throw new AssertionError(unsupportedEncodingException);
 		} catch(final IOException ioException) { //there should never by an I/O exception writing to a byte array output stream
@@ -373,7 +375,7 @@ public class XMLSerializer {
 	 */
 	public void serialize(final Document document, final OutputStream outputStream) throws IOException {
 		try {
-			serialize(document, outputStream, UTF_8_CHARSET); //serialize the document, defaulting to UTF-8
+			serialize(document, outputStream, UTF_8); //serialize the document, defaulting to UTF-8
 		} catch(final IOException ioException) { //there should never by an I/O exception writing to a byte array output stream
 			throw new AssertionError(ioException);
 		}
@@ -426,7 +428,7 @@ public class XMLSerializer {
 	 * @throws UnsupportedEncodingException Thrown if the UTF-8 encoding not recognized.
 	 */
 	public void serialize(final DocumentFragment documentFragment, final OutputStream outputStream) throws UnsupportedEncodingException, IOException {
-		serialize(documentFragment, outputStream, UTF_8_CHARSET); //serialize the document, defaulting to UTF-8
+		serialize(documentFragment, outputStream, UTF_8); //serialize the document, defaulting to UTF-8
 	}
 
 	/**
@@ -451,7 +453,7 @@ public class XMLSerializer {
 	 * @throws UnsupportedEncodingException Thrown if the UTF-8 encoding is not recognized.
 	 */
 	public void serialize(final Element element, final OutputStream outputStream) throws IOException, UnsupportedEncodingException {
-		serialize(element, outputStream, UTF_8_CHARSET); //serialize the element using UTF-8
+		serialize(element, outputStream, UTF_8); //serialize the element using UTF-8
 	}
 
 	/**
@@ -487,7 +489,7 @@ public class XMLSerializer {
 	 * @throws UnsupportedEncodingException Thrown if the UTF-8 encoding is not recognized.
 	 */
 	protected void serializeContent(final Node node, final OutputStream outputStream) throws IOException, UnsupportedEncodingException {
-		serializeContent(node, outputStream, UTF_8_CHARSET); //serialize the content UTF-8
+		serializeContent(node, outputStream, UTF_8); //serialize the content UTF-8
 	}
 
 	/**

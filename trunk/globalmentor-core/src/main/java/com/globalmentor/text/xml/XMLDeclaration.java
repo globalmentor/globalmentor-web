@@ -16,7 +16,7 @@
 
 package com.globalmentor.text.xml;
 
-import static com.globalmentor.io.Charsets.*;
+import static java.nio.charset.StandardCharsets.*;
 
 /**
  * XML declaration in an XML document.
@@ -43,7 +43,7 @@ public class XMLDeclaration extends XMLNode {
 	}
 
 	/** The encoding of this document, which defaults to UTF-8. */
-	private String Encoding = UTF_8_NAME;
+	private String Encoding = UTF_8.name();
 
 	/** @return The encoding. */
 	public String getEncoding() {

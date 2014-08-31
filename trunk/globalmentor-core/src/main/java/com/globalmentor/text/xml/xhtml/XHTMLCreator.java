@@ -28,9 +28,9 @@ import com.globalmentor.text.xml.XML;
 
 import org.w3c.dom.*;
 
-import static com.globalmentor.io.Charsets.*;
 import static com.globalmentor.java.Characters.*;
 import static com.globalmentor.text.xml.xhtml.XHTML.*;
+import static java.nio.charset.StandardCharsets.*;
 
 /**
  * Allows creation of an XHTML document from a text document. Each group of lines is converted to an XHTML <code>&lt;p&gt;</code>.
@@ -108,7 +108,7 @@ public class XHTMLCreator {
 	 * @throws IOException Thrown if there is an I/O error.
 	 */
 	public void createXHTMLFromText(final Document document, final InputStream inputStream) throws IOException {
-		createXHTMLFromText(document, inputStream, ISO_8859_1_CHARSET); //create the XHTML using the default encoding
+		createXHTMLFromText(document, inputStream, ISO_8859_1); //create the XHTML using the default encoding
 	}
 
 	/**
@@ -193,12 +193,12 @@ public class XHTMLCreator {
 				} else if(headingType != Prose.NO_HEADING) { //if this isn't the first line and we have a heading
 					final int possibleHeadingType = Prose.getHeadingType(line); //find out if this line appears to be a heading
 					if(possibleHeadingType != headingType) { //if this line is of a different heading type (or no heading type)
-					/*TODO fix; this partially solves the problem, but then how does the XHTMLTidier know if this is a paragraph or a heading?
-											final float averageLineLength=lineLengthSum/lineCount;  //find out the average line length
-												//if we've had the heading for more than two lines, or if this line s signficantly longer than the first one
-											if(lineCount>2 || line.length()>averageLineLength*1.10)
-											{
-					*/
+						/*TODO fix; this partially solves the problem, but then how does the XHTMLTidier know if this is a paragraph or a heading?
+												final float averageLineLength=lineLengthSum/lineCount;  //find out the average line length
+													//if we've had the heading for more than two lines, or if this line s signficantly longer than the first one
+												if(lineCount>2 || line.length()>averageLineLength*1.10)
+												{
+						*/
 
 						ungetLine(line); //put the line back in the buffer
 						break; //return what we have so far, and come back later for this text (which could be the start of a paragraph after a heading, for instance)
