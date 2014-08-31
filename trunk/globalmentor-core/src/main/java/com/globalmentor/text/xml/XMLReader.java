@@ -60,43 +60,39 @@ public class XMLReader extends ParseReader {
 		super(inString, name); //construct the base class
 	}
 
-	/*Constructor to create an <code>XMLReader</code> from another
-		reader, along with several characters that have already been read.
-		<code>prereadCharacters</code> must be less than or equal to the length of
-		the buffer.
-	@param inReader The reader that contains the data.
-	@param prereadCharacters The characters that have already been read.
-	@throws IOException Thrown if <code>prereadCharacters</code> is too long for the buffer.
-	@see BufferedPushbackReader
-	*/
+	/**
+	 * Constructor to create an <code>XMLReader</code> from another reader, along with several characters that have already been read.
+	 * <code>prereadCharacters</code> must be less than or equal to the length of the buffer.
+	 * @param inReader The reader that contains the data.
+	 * @param prereadCharacters The characters that have already been read.
+	 * @throws IOException Thrown if <code>prereadCharacters</code> is too long for the buffer.
+	 * @see BufferedPushbackReader
+	 */
 	public XMLReader(final Reader inReader, final StringBuffer prereadCharacters) throws IOException {
 		super(inReader, prereadCharacters); //allow the super class to do the constructing
 	}
 
-	/*Constructor to create an <code>XMLReader</code> from another
-		reader, along with a source object.
-		<code>prereadCharacters</code> must be less than or equal to the length of
-		the buffer.
-	@param inReader The reader that contains the data.
-	@param sourceObject The source of the data (e.g. a String, File, or URL).
-	@throws IOException Thrown if <code>prereadCharacters</code> is too long for the buffer.
-	@see BufferedPushbackReader
-	*/
+	/**
+	 * Constructor to create an <code>XMLReader</code> from another reader, along with a source object. <code>prereadCharacters</code> must be less than or equal
+	 * to the length of the buffer.
+	 * @param inReader The reader that contains the data.
+	 * @param sourceObject The source of the data (e.g. a String, File, or URL).
+	 * @throws IOException Thrown if <code>prereadCharacters</code> is too long for the buffer.
+	 * @see BufferedPushbackReader
+	 */
 	public XMLReader(final Reader inReader, final Object sourceObject) throws IOException {
 		super(inReader, sourceObject); //allow the super class to do the constructing
 	}
 
-	/*Constructor to create an <code>XMLReader</code> from another
-		reader, along with several characters that have already been read and a source
-		object.
-		<code>prereadCharacters</code> must be less than or equal to the length of
-		the buffer.
-	@param inReader The reader that contains the data.
-	@param prereadCharacters The characters that have already been read.
-	@param sourceObject The source of the data (e.g. a String, File, or URL).
-	@throws IOException Thrown if <code>prereadCharacters</code> is too long for the buffer.
-	@see BufferedPushbackReader
-	*/
+	/**
+	 * Constructor to create an <code>XMLReader</code> from another reader, along with several characters that have already been read and a source object.
+	 * <code>prereadCharacters</code> must be less than or equal to the length of the buffer.
+	 * @param inReader The reader that contains the data.
+	 * @param prereadCharacters The characters that have already been read.
+	 * @param sourceObject The source of the data (e.g. a String, File, or URL).
+	 * @throws IOException Thrown if <code>prereadCharacters</code> is too long for the buffer.
+	 * @see BufferedPushbackReader
+	 */
 	public XMLReader(final Reader inReader, final StringBuffer prereadCharacters, final Object sourceObject) throws IOException {
 		super(inReader, prereadCharacters, sourceObject); //allow the super class to do the constructing
 	}

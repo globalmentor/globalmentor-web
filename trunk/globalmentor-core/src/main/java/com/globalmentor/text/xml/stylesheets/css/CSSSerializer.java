@@ -17,10 +17,12 @@
 package com.globalmentor.text.xml.stylesheets.css;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.*;
+
 import org.w3c.dom.css.*;
 
-import static com.globalmentor.text.CharacterEncoding.*;
+import static com.globalmentor.io.Charsets.*;
 import static com.globalmentor.text.xml.stylesheets.css.XMLCSS.*;
 
 /**
@@ -59,20 +61,20 @@ public class CSSSerializer //TODO del all the XMLUndefinedEntityReferenceExcepti
 	 * @throws UnsupportedEncodingException Thrown if the UTF-8 encoding not recognized.
 	 */
 	public void serialize(final CSSStyleSheet stylesheet, final OutputStream outputStream) throws UnsupportedEncodingException, IOException {
-		serialize(stylesheet, outputStream, UTF_8); //serialize the document, defaulting to UTF-8
+		serialize(stylesheet, outputStream, UTF_8_CHARSET); //serialize the document, defaulting to UTF-8
 	}
 
 	/**
 	 * Serializes the specified stylesheet to the given output stream using the specified encoding.
 	 * @param document The CSS stylesheet to serialize.
 	 * @param outputStream The stream into which the document should be serialized.
-	 * @param encoding The encoding format to use when serializing.
+	 * @param charset The encoding format to use when serializing.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 * @throws UnsupportedEncodingException Thrown if the specified encoding is not recognized.
 	 */
-	public void serialize(final CSSStyleSheet stylesheet, final OutputStream outputStream, final String encoding) throws IOException,
+	public void serialize(final CSSStyleSheet stylesheet, final OutputStream outputStream, final Charset charset) throws IOException,
 			UnsupportedEncodingException {
-		final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, encoding)); //create a new writer based on our encoding
+		final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, charset)); //create a new writer based on our encoding
 		//TODO fix		writeProlog(document, writer, encoding);	//write the prolog
 		//TODO return whatever header stuff is needed
 		final CSSRuleList cssRuleList = stylesheet.getCssRules(); //get the list of CSS rules

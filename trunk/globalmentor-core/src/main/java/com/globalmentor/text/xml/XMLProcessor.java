@@ -20,6 +20,7 @@ import java.io.*;
 import java.util.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.Charset;
 
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
@@ -27,17 +28,16 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import static com.globalmentor.java.Characters.SPACE_CHAR;
-import static com.globalmentor.text.CharacterEncoding.*;
 import static com.globalmentor.text.xml.XML.*;
 
+import com.globalmentor.io.ByteOrderMark;
 import com.globalmentor.io.Files;
 import com.globalmentor.io.ParseEOFException;
 import com.globalmentor.io.ParseUnexpectedDataException;
 import com.globalmentor.io.URIInputStreamable;
-import com.globalmentor.java.CharSequences;
 import com.globalmentor.log.Log;
+import com.globalmentor.model.ObjectHolder;
 import com.globalmentor.net.URIs;
-import com.globalmentor.text.CharacterEncoding;
 import com.globalmentor.text.xml.schema.*;
 
 //TODO del all the XMLUndefinedEntityReferenceException throws when we don't need them anymore, in favor of XMLWellFormednessException
@@ -213,106 +213,6 @@ public class XMLProcessor implements URIInputStreamable {
 		schemaProcessor = new XMLSchemaProcessor(); //create a new schema processor to use
 	}
 
-	/**
-	 * Attempts to automatically detect the character encoding of a particular input stream that supposedly contains XML data.
-	 * @param inputStream The stream which supposedly contains XML data.
-	 * @param encodingAttributeValue Receives a copy of the encoding "encoding" attribute string.
-	 * @param autodetectPrereadCharacters Receives a copy of any characters preread during autodetection of character encoding.
-	 * @return The character encoding specified in a byte order mark or the "encoding" attribute, or UTF-8 if there was no encoding attribute specified.
-	 * @throws IOException Thrown if an I/O error occurred.
-	 */
-	public static CharacterEncoding getXMLEncoding(final InputStream inputStream, final StringBuffer encodingAttributeValue,
-			final StringBuffer autodetectPrereadCharacters) throws IOException {
-		autodetectPrereadCharacters.delete(0, autodetectPrereadCharacters.length()); //clear the autodetect preread characters string buffer
-		encodingAttributeValue.delete(0, encodingAttributeValue.length()); //clear the encoding attribute value
-		CharacterEncoding characterEncoding = new CharacterEncoding(UTF_8, null, NO_BOM); //start out assuming UTF-8 encoding with no byte order mark
-		final byte[] byteOrderMarkArray = new byte[4]; //create an array to hold the byte order mark
-		if(inputStream.read(byteOrderMarkArray) == byteOrderMarkArray.length) { //read the byte order mark; if we didn't reach the end of the data
-			final CharacterEncoding detectedCharacterEncoding = CharacterEncoding.create(byteOrderMarkArray, XML_DECL_START); //see if we can recognize the encoding by the beginning characters
-			if(detectedCharacterEncoding != null) { //if we detected an encoding, use that one, because it will contain the correct byte order mark (we still have to convert the other characters, if any, to preread characters)
-				characterEncoding = detectedCharacterEncoding; //use the detected encoding, which will contain the correct byte order mark, if any
-			}
-			final int bytesPerCharacter = characterEncoding.getBytesPerCharacter(); //find out how many bytes are used for each character
-			//convert the preread bytes after the byte order mark into characters
-			if(bytesPerCharacter == 1) { //if there is only one byte for each character
-				//convert the remaining bytes to characters normally, skipping the byte order mark, if any
-				for(int i = characterEncoding.getByteOrderMark().length; i < byteOrderMarkArray.length; autodetectPrereadCharacters
-						.append((char)byteOrderMarkArray[i++]))
-					;
-			} else if(bytesPerCharacter == 2) { //if there are two bytes for each character, the first two make up the true Byte Order Mark, so ignore them
-				if(characterEncoding.getEndian() == Endian.BE) //if the least-sigificant byte (the one we're interested in) comes second
-					autodetectPrereadCharacters.append((char)byteOrderMarkArray[3]); //take the second byte (ignoring the Byte Order Mark)
-				else
-					//if the least-sigificant byte (the one we're interested in) comes first
-					autodetectPrereadCharacters.append((char)byteOrderMarkArray[2]); //take the first byte (ignoring the Byte Order Mark)
-			} else if(bytesPerCharacter == 4) { //if there are four bytes for each character
-				if(characterEncoding.getEndian() == Endian.BE) //if the least-sigificant byte (the one we're interested in) comes last
-					autodetectPrereadCharacters.append((char)byteOrderMarkArray[3]); //take the last byte
-				else
-					//if the least-sigificant byte (the one we're interested in) comes first
-					autodetectPrereadCharacters.append((char)byteOrderMarkArray[0]); //take the first byte
-				//TODO here, support unusual UCS-4 octet orders may be added
-			}
-			while(true) { //we now know the encoding family and have a string with the bytes read so far; now, try to find any specified character encoding
-				int nextCharInt; //this will accept the next character read
-				if(bytesPerCharacter == 1) //if there is only one byte for each character
-					nextCharInt = inputStream.read(); //read the next character normally
-				else if(bytesPerCharacter == 2) { //if there are two bytes for each character
-					if(characterEncoding.getEndian() == Endian.BE) { //if the least-sigificant byte (the one we're interested in) comes second
-						inputStream.skip(1); //skip the first byte
-						nextCharInt = inputStream.read(); //read the next character normally
-					} else { //if the least-sigificant byte (the one we're interested in) comes first
-						nextCharInt = inputStream.read(); //read the next character normally
-						inputStream.skip(1); //skip the next byte
-					}
-				} else if(bytesPerCharacter == 4) { //if there are four bytes for each character
-					if(characterEncoding.getEndian() == Endian.BE) { //if the least-sigificant byte (the one we're interested in) comes last
-						inputStream.skip(3); //skip the first three byte
-						nextCharInt = inputStream.read(); //read the next character normally
-					} else { //if the least-sigificant byte (the one we're interested in) comes first
-						nextCharInt = inputStream.read(); //read the next character normally
-						inputStream.skip(3); //skip the next three byte
-					}
-					//TODO here, support unusual UCS-4 octet orders may be added
-				} else
-					//if bytesPerCharacter has an unrecognized value
-					nextCharInt = inputStream.read(); //assume one byte per character and read the next character normally
-				if(nextCharInt == -1) //if we reach the end of the stream
-					break; //stop trying to autodetect the encoding and process what we have
-				autodetectPrereadCharacters.append((char)nextCharInt); //add the character read to the end of our string
-				//if we've read enough characters to see if this stream starts with the XML declaration "<?xml...", and if it doesn't
-				if(autodetectPrereadCharacters.length() == XML_DECL_START.length() && !XML_DECL_START.contentEquals(autodetectPrereadCharacters))
-					break; //stop looking for an encoding attribute, since there isn't even an XML declaration
-				if(CharSequences.endsWith(autodetectPrereadCharacters, XML_DECL_END)) //if we've read all of the XML declaration
-					break; //stop trying to autodetect the encoding and process what we have
-				final int encodingDeclarationStartIndex = autodetectPrereadCharacters.indexOf(ENCODINGDECL_NAME); //see where the "encoding" declaration starts (assuming we've read it yet)
-				if(encodingDeclarationStartIndex >= 0) { //if we've at least found the "encoding" declaration (but perhaps not the actual value)
-					//TODO mabye make this more efficient by createing a CharSequenceUtilities.indexOf() method that takes a character argument
-					int quote1Index = autodetectPrereadCharacters.indexOf(String.valueOf(DOUBLE_QUOTE_CHAR), encodingDeclarationStartIndex + ENCODINGDECL_NAME.length()); //see if we can find a double quote character
-					if(quote1Index < 0) //if we couldn't find a double quote
-						quote1Index = autodetectPrereadCharacters.indexOf(String.valueOf(SINGLE_QUOTE_CHAR), encodingDeclarationStartIndex + ENCODINGDECL_NAME.length()); //see if we can find a single quote character
-					if(quote1Index >= 0) { //if we found either a single or double quote character
-						final char quoteChar = autodetectPrereadCharacters.charAt(quote1Index); //see which type of quote we found
-						final int quote2Index = autodetectPrereadCharacters.indexOf(String.valueOf(quoteChar), quote1Index + 1); //see if we can find the matching quote
-						if(quote2Index != -1) { //if we found the second quote character
-							encodingAttributeValue.append(autodetectPrereadCharacters.substring(quote1Index + 1, quote2Index)); //get the character encoding name specified
-							break; //stop looking for the encoding
-						}
-					}
-				}
-			}
-		}
-		//override the default encoding by the XML-specified encoding if needed
-		if(encodingAttributeValue.length() > 0) { //if the character encoding attribute was given
-			final CharacterEncoding specifiedCharacterEncoding = new CharacterEncoding(encodingAttributeValue.toString(), NO_BOM); //use the character encoding given in the attribute, noting that we found no byte order mark
-			//if a different character encoding was specified than we autodetected, or if we didn't detect any character encoding
-			if(!specifiedCharacterEncoding.equals(characterEncoding)) {
-				characterEncoding = specifiedCharacterEncoding; //use the encoding specified (if it's the same as the one we autodetected, keep the one we found because it stores our byte order mark)
-			}
-		}
-		return characterEncoding; //return the character encoding
-	}
-
 	//TODO fix	public reportError(final XMLException xmlException);
 
 	/**
@@ -351,40 +251,31 @@ public class XMLProcessor implements URIInputStreamable {
 
 	/**
 	 * Creates a reader to read the specified input stream. Encoding is preread and correctly interpreted.
-	 * @param inputStream The input stream from which to get the XML data.
+	 * @param inputStream The input stream from which to get the XML data; mark/reset must be supported.
 	 * @param sourceObject The source of the data (e.g. a String, File, or URL).
 	 * @return A reader from which the file may be read.
+	 * @throws IllegalArgumentException if mark/reset is not supported by the given input stream.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 */
 	protected XMLReader createReader(final InputStream xmlInputStream, final Object sourceObject) throws IOException { //TODO comment exceptions
-		final StringBuffer encodingAttributeValue = new StringBuffer(); //this will receive the encoding specified by the XML document
-		final StringBuffer autodetectPrereadCharacters = new StringBuffer(); //this will receive whatever characters were read while prereading the encoding
-		//see if we can determine the encoding before we we parse the stream
-		final CharacterEncoding characterEncoding = getXMLEncoding(xmlInputStream, encodingAttributeValue, autodetectPrereadCharacters);
-		if(characterEncoding != null) { //if we found an encoding
-			//if this was UTF-16, but there was no Byte Order Mark (don't do this check if we're tidying)
+		final ObjectHolder<ByteOrderMark> bom = new ObjectHolder<>();
+		final ObjectHolder<String> declaredEncodingName = new ObjectHolder<>();
+		Charset charset = XML.detectXMLCharset(xmlInputStream, bom, declaredEncodingName);
+		if(charset != null) {
+			/*TODO fix
 			if(!isTidy() && UTF_16.equalsIgnoreCase(characterEncoding.getFamily()) && characterEncoding.getByteOrderMark().length == 0)
 				throw new XMLWellFormednessException(XMLWellFormednessException.INVALID_FORMAT, new Object[] {}, 0, 0, sourceObject != null ? sourceObject.toString()
 						: ""); //show that the UTF-16 had no Byte Order Mark
-				/*TODO see how this should really be interpreted; probably don't do this in the parser itself
-							if(!encoding.equalsIgnoreCase(UTF8))	//if the encoding was something besides UTF-8, yet there was no "encoding" attribute, this is an error
-								throw new XMLWellFormednessException(XMLWellFormednessException.INVALID_ENCODING, new Object[]{encoding}, 0, 0, sourceObject!=null ? sourceObject.toString() : "");	//show that something besides UTF-8 was used with no "encoding" attribute
-				*/
+			*/
+		} else { //if no charset is indicated, assume the default
+			charset = DEFAULT_CHARSET;
 		}
-		/*TODO; right now there is never "no decoding found"; the code below probably wanted to say, "if we're defaulting to UTF-8 but we didn't start with XML_DECL_START, use ISO-8859-1," but it's not clear how that would help anything 
-		else {	//if there was no encoding found
-		//TODO this code doesn't seem quite right---if we're not tidying and the stream doesn't start with with <?xml..., we probably shouldn't assume UTF-8---this is an error
-		//TODO even worse, we're checking the characters sent to us---won't that always be the XML declarations? and why 
-					//if we couldn't find an encoding, if we should tidy this document and the document started with "<?xml..."
-				if(tidy && autodetectPrereadCharacters.toString().startsWith(XML_DECL_START.substring(0, Math.min(autodetectPrereadCharacters.length(), XML_DECL_START.length()))))
-					characterEncoding=new CharacterEncoding(ISO_8859_1, false);	//construct a default ISO-LATIN-1 character encoding for tidied documents TODO maybe use the default encoding
-				else  //if we couldn't find the encoding, but we're either not tidying or there was a "<?xml..." (which means we have to assume UTF-8)
-					characterEncoding=new CharacterEncoding(UTF_8, false);	//construct a default UTF-8 character encoding, since we don't recognize the Byte Order Mark (the big-endian/little-endian byte order flag is meaningless here)
+		if(bom.isPresent()) { //skip the BOM if present
+			xmlInputStream.skip(bom.getObject().getLength());
 		}
-		*/
-		final InputStreamReader xmlInputStreamReader = new InputStreamReader(xmlInputStream, characterEncoding.toString()); //create a new input stream reader with the correct encoding
+		final InputStreamReader xmlInputStreamReader = new InputStreamReader(xmlInputStream, charset); //create a new input stream reader with the correct encoding
 		//TODO catch any unsupported encoding exception here and throw our own
-		final XMLReader xmlReader = new XMLReader(xmlInputStreamReader, autodetectPrereadCharacters, sourceObject); //create a new XML reader with our correctly encoded reader and the characters we've preread so far in autodetecting the encoding
+		final XMLReader xmlReader = new XMLReader(xmlInputStreamReader, sourceObject); //create a new XML reader with our correctly encoded reader
 		xmlReader.tidy = isTidy(); //TODO fix
 		return xmlReader; //TODO fix
 	}
@@ -623,13 +514,13 @@ public class XMLProcessor implements URIInputStreamable {
 						ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + ATTRIBUTE_RESOURCE_ID),
 						attribute.getNodeName() }, reader.getLineIndex(), reader.getCharIndex(), reader.getName()); //show that we couldn't find the end of the attribute
 			if(isTidyingValue) { //if we're tidying this value, we need to know whether or not to discard the following character
-			/*TODO fix
-							reader.resetPeek(); //reset peeking so that we'll really be peeking the next character to come
-							final char characterAfterValue=reader.peekChar();	//see which character comes after the value
-							if(isWhitespace(characterAfterValue)==-1) {	//if this is *not* a whitespace character (e.g. it is a '>')
-								reader.readExpectedChar(characterAfterValue);	//discard the character (we already know what it will be)
-							}
-			*/
+				/*TODO fix
+								reader.resetPeek(); //reset peeking so that we'll really be peeking the next character to come
+								final char characterAfterValue=reader.peekChar();	//see which character comes after the value
+								if(isWhitespace(characterAfterValue)==-1) {	//if this is *not* a whitespace character (e.g. it is a '>')
+									reader.readExpectedChar(characterAfterValue);	//discard the character (we already know what it will be)
+								}
+				*/
 			} else { //if we're not tidying this value
 				reader.readExpectedChar(attributeValueDelimiters); //read the ending delimiter of the attribute value (we already know what it will be)
 			}
@@ -1034,24 +925,24 @@ public class XMLProcessor implements URIInputStreamable {
 					}
 				}
 					break; //TODO perhaps have a more instructive error here if they try to split up general entities across entities
-					//TODO del or fix					reader.readExpectedChar(']');	//read the end of the internal document type content TODO use constant
+				//TODO del or fix					reader.readExpectedChar(']');	//read the end of the internal document type content TODO use constant
 				case ENTITY_DECL: //if this is an entity declaration
 				{
 					final XMLEntity entity = parseEntityDeclaration(reader, ownerDocument); //parse the entity declaration
 					if(entity.isParameterEntity()) { //if the entity is a parameter entity		//TODO do parameter entities have the same action of ignoring multiple definitions?
 						if(!parameterEntityMap.containsNamedItem(entity)) //if we haven't already defined this parameter entity
 							parameterEntityMap.setNamedItem(entity); //store the entity in our named node map TODO this will eventually allow a DOMException to be thrown; reflect this
-							/*TODO del when caching works
-															if(!documentType.getParameterEntityXMLNamedNodeMap().containsNamedItem(entity))	//if we haven't already defined this parameter entity
-																documentType.getParameterEntityXMLNamedNodeMap().setNamedItem(entity);	//store the entity in our named node map TODO this will eventually allow a DOMException to be thrown; reflect this
-							*/
+						/*TODO del when caching works
+														if(!documentType.getParameterEntityXMLNamedNodeMap().containsNamedItem(entity))	//if we haven't already defined this parameter entity
+															documentType.getParameterEntityXMLNamedNodeMap().setNamedItem(entity);	//store the entity in our named node map TODO this will eventually allow a DOMException to be thrown; reflect this
+						*/
 					} else { //if this is a general entity
 						if(!generalEntityMap.containsNamedItem(entity)) //if we haven't already defined this general entity
 							generalEntityMap.setNamedItem(entity); //store the entity in our named node map TODO this will eventually allow a DOMException to be thrown; reflect this
-							/*TODO del when caching works
-															if(!documentType.getEntityXMLNamedNodeMap().containsNamedItem(entity))	//if we haven't already defined this general entity
-																documentType.getEntityXMLNamedNodeMap().setNamedItem(entity);	//store the entity in our named node map TODO this will eventually allow a DOMException to be thrown; reflect this
-							*/
+						/*TODO del when caching works
+														if(!documentType.getEntityXMLNamedNodeMap().containsNamedItem(entity))	//if we haven't already defined this general entity
+															documentType.getEntityXMLNamedNodeMap().setNamedItem(entity);	//store the entity in our named node map TODO this will eventually allow a DOMException to be thrown; reflect this
+						*/
 						//TODO use an else here to display a warning if the node existed already
 					}
 				}

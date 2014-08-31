@@ -73,6 +73,9 @@ public class XML {
 	/** The content type for a generic XML fragment: <code>text/xml-external-parsed-entity</code>. */
 	public static final ContentType EXTERNAL_PARSED_ENTITY_CONTENT_TYPE = ContentType.create(ContentType.TEXT_PRIMARY_TYPE, XML_EXTERNAL_PARSED_ENTITY_SUBTYPE);
 
+	/** The default charset to assume if none is indicated. */
+	public static final Charset DEFAULT_CHARSET = UTF_8_CHARSET;
+
 	/** The name extension for eXtensible Markup Language. */
 	public static final String XML_NAME_EXTENSION = "xml";
 
