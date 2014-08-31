@@ -29,8 +29,6 @@ import com.globalmentor.rdf.dicto.Dicto;
 import com.globalmentor.rdf.directory.vcard.RDFVCard;
 import com.globalmentor.rdf.rdfs.RDFS;
 import com.globalmentor.rdf.version.RDFVersion;
-import com.globalmentor.rdf.xpackage.XMLOntology;
-import com.globalmentor.rdf.xpackage.XPackage;
 import com.globalmentor.text.xml.oeb.OEB;
 import com.globalmentor.text.xml.schema.XMLSchema;
 import com.globalmentor.text.xml.xhtml.XHTML;
@@ -49,7 +47,7 @@ public class XMLNamespacePrefixManager //TODO replace with XMLNamespaceLabelMana
 {
 
 	/**
-	 * The map of XML serialization prefixes, keyed to namespacee. We must use strings rather than URIs, as XML serializations may have namespaces (notoriously
+	 * The map of XML serialization prefixes, keyed to namespaces. We must use strings rather than URIs, as XML serializations may have namespaces (notoriously
 	 * the WebDAV namespace quasi-URI, "DAV:") that aren't technically URIs.
 	 */
 	private final Map<String, String> namespacePrefixMap = new HashMap<String, String>();
@@ -61,7 +59,7 @@ public class XMLNamespacePrefixManager //TODO replace with XMLNamespaceLabelMana
 	 * @param prefix The XML serialization prefix to use with the given namespace.
 	 */
 	public void registerNamespacePrefix(final String namespace, final String prefix) {
-		namespacePrefixMap.put(namespace, prefix); //store the prefix in the map, keyed to the namesapce
+		namespacePrefixMap.put(namespace, prefix); //store the prefix in the map, keyed to the namespace
 	}
 
 	/**
@@ -99,8 +97,6 @@ public class XMLNamespacePrefixManager //TODO replace with XMLNamespaceLabelMana
 		registerNamespacePrefix(XLink.XLINK_NAMESPACE_URI.toString(), XLink.XLINK_NAMESPACE_PREFIX); //XLink
 		registerNamespacePrefix(XML.XML_NAMESPACE_URI.toString(), XML.XML_NAMESPACE_PREFIX); //XML
 		registerNamespacePrefix(XML.XMLNS_NAMESPACE_URI.toString(), XML.XMLNS_NAMESPACE_PREFIX); //XML namespaces
-		registerNamespacePrefix(XPackage.XPACKAGE_NAMESPACE_URI.toString(), XPackage.XPACKAGE_NAMESPACE_PREFIX); //XPackage
-		registerNamespacePrefix(XMLOntology.XML_ONTOLOGY_NAMESPACE_URI.toString(), XMLOntology.XML_ONTOLOGY_NAMESPACE_PREFIX); //XPackage XML ontology
 		//TODO del		registerNamespacePrefix(FileOntologyConstants.FILE_ONTOLOGY_NAMESPACE_URI.toString(), FileOntologyConstants.FILE_ONTOLOGY_NAMESPACE_PREFIX); //XPackage file ontology
 		//TODO add XPackage Unicode ontology
 		//TODO del		registerNamespacePrefix(MIMEOntologyConstants.MIME_ONTOLOGY_NAMESPACE_URI.toString(), MIMEOntologyConstants.MIME_ONTOLOGY_NAMESPACE_PREFIX); //XPackage MIME ontology
@@ -130,7 +126,7 @@ public class XMLNamespacePrefixManager //TODO replace with XMLNamespaceLabelMana
 	 * URI without that trailing fragment separator character.
 	 * </p>
 	 * <p>
-	 * If a namespace is unrecognized (i.e. no prefix, inluding the <code>null</code> prefix, has been registered with the given namespace), a new one will
+	 * If a namespace is unrecognized (i.e. no prefix, including the <code>null</code> prefix, has been registered with the given namespace), a new one will
 	 * optionally be created and stored in the map for future use.
 	 * </p>
 	 * <p>

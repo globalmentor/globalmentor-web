@@ -23,8 +23,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
 
-import static com.globalmentor.rdf.xpackage.XMLOntology.*;
-import static com.globalmentor.rdf.xpackage.XPackage.*;
 import static com.globalmentor.text.xml.stylesheets.XMLStyleSheets.*;
 import static com.globalmentor.text.xml.xhtml.XHTML.*;
 
@@ -278,14 +276,6 @@ public abstract class AbstractXMLCSSStylesheetApplier<D, E> implements URIInputS
 		if(mediaTypeNamespaceURI != null) { //if we found a namespace for the media type
 			namespaceURISet.add(mediaTypeNamespaceURI.toString()); //add the content type namespace to the namespace set
 		}
-		if(description != null) { //if a description of the resource is provided
-			for(final RDFResource namespaceResource : getNamespaces(description)) { //for each namespace resource
-				final URI namespaceURI = namespaceResource.getURI(); //get the next namespace resource URI
-				if(namespaceURI != null) { //if this namespace resource has a URI
-					namespaceURISet.add(namespaceURI.toString()); //add the namespace URI to the set
-				}
-			}
-		}
 		return namespaceURISet.toArray(new String[namespaceURISet.size()]); //return an array of the namespace URIs in the set we filled
 	}
 
@@ -302,16 +292,6 @@ public abstract class AbstractXMLCSSStylesheetApplier<D, E> implements URIInputS
 	protected XMLStyleSheetDescriptor[] getStylesheetDescriptors(final D document, final RDFResource description) {
 		final List<XMLStyleSheetDescriptor> styleSheetDescriptorList = new ArrayList<XMLStyleSheetDescriptor>(); //create a list to hold stylesheet descriptors
 		//gather all XML processing instructions stylesheet links
-		if(description != null) { //if a description is provided
-			for(final RDFResource style : getStyles(description)) { //get all listed styles
-				//TODO check the media type, etc. here
-				final String href = getLocationHRef(style); //get the style location TODO fix; this incorrectly will resolve the location href against the document base URI rather than the publication base URI
-				if(href != null) { //if there is an href
-					final XMLStyleSheetDescriptor styleSheetDescriptor = new XMLStyleSheetDescriptor(href); //create a new descriptor for this stylesheet TODO fix for media type, title, etc.
-					styleSheetDescriptorList.add(styleSheetDescriptor); //add the stylesheet descriptor to our list
-				}
-			}
-		}
 		//find stylesheet references from processing instructions
 		final NameValuePair[] processingInstructions = getDocumentProcessingInstructions(document); //get the processing instructions, if any (this will never return null)
 		for(int processingInstructionIndex = 0; processingInstructionIndex < processingInstructions.length; ++processingInstructionIndex) { //look at each processing instruction
