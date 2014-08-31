@@ -28,21 +28,21 @@ import java.net.URI;
 public class OpenGraph {
 
 	/** The Open Graph namespace. */
-	public final static URI NAMESPACE_URI = URI.create("http://ogp.me/ns#");
+	public static final URI NAMESPACE_URI = URI.create("http://ogp.me/ns#");
 	/** The default prefix for the Open Graph namespace, e.g. in XML documents. */
-	public final static String NAMESPACE_PREFIX = "og";
+	public static final String NAMESPACE_PREFIX = "og";
 
 	/** The title of the object. (required) */
-	public final static String TITLE_LOCAL_NAME = "title";
+	public static final String TITLE_LOCAL_NAME = "title";
 	/** The type of object, e.g. "movie". (required) */
-	public final static String TYPE_LOCAL_NAME = "type";
+	public static final String TYPE_LOCAL_NAME = "type";
 	/** The URL of an image to represent the object. (required) */
-	public final static String IMAGE_LOCAL_NAME = "image";
+	public static final String IMAGE_LOCAL_NAME = "image";
 	/** The canonical URL of the object to be used as its permanent. (required) */
-	public final static String URL_LOCAL_NAME = "url";
+	public static final String URL_LOCAL_NAME = "url";
 	/** A short description of the object. (optional) */
-	public final static String DESCRIPTION_LOCAL_NAME = "description";
+	public static final String DESCRIPTION_LOCAL_NAME = "description";
 	/** The name of the overall site, if this object is part of a larger web site. (optional) */
-	public final static String SITE_NAME_LOCAL_NAME = "site_name";
+	public static final String SITE_NAME_LOCAL_NAME = "site_name";
 
 }

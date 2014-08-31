@@ -26,42 +26,42 @@ import java.net.URI;
 public class FOAF {
 
 	/** The recommended prefix to the FOAF namespace. */
-	public final static String FOAF_NAMESPACE_PREFIX = "foaf";
+	public static final String FOAF_NAMESPACE_PREFIX = "foaf";
 	/** The URI to the FOAF namespace. */
-	public final static URI FOAF_NAMESPACE_URI = URI.create("http://xmlns.com/foaf/0.1/");
+	public static final URI FOAF_NAMESPACE_URI = URI.create("http://xmlns.com/foaf/0.1/");
 
 	//FOAF type names
 	/** An agent (e.g. person, group, software or physical artifact). */
-	public final static String AGENT_TYPE_NAME = "Agent";
+	public static final String AGENT_TYPE_NAME = "Agent";
 	/** A church. */
-	public final static String CHURCH_TYPE_NAME = "Church";
+	public static final String CHURCH_TYPE_NAME = "Church";
 	/** A company. */
-	public final static String COMPANY_TYPE_NAME = "Company";
+	public static final String COMPANY_TYPE_NAME = "Company";
 	/** A non-governmental organization. */
-	public final static String NGO_TYPE_NAME = "NGO";
+	public static final String NGO_TYPE_NAME = "NGO";
 	/** A non-profit organization. */
-	public final static String NONPROFIT_TYPE_NAME = "Nonprofit";
+	public static final String NONPROFIT_TYPE_NAME = "Nonprofit";
 	/** An organization. */
-	public final static String ORGANIZATION_TYPE_NAME = "Organization";
+	public static final String ORGANIZATION_TYPE_NAME = "Organization";
 	/** A person. */
-	public final static String PERSON_TYPE_NAME = "Person";
+	public static final String PERSON_TYPE_NAME = "Person";
 	/** A religious organization. */
-	public final static String RELIGIOUS_ORGANIZATION_TYPE_NAME = "ReligiousOrganization";
+	public static final String RELIGIOUS_ORGANIZATION_TYPE_NAME = "ReligiousOrganization";
 	/** A school. */
-	public final static String SCHOOL_TYPE_NAME = "School";
+	public static final String SCHOOL_TYPE_NAME = "School";
 	/** A synagogue. */
-	public final static String SYNAGOGUE_TYPE_NAME = "Synagogue";
+	public static final String SYNAGOGUE_TYPE_NAME = "Synagogue";
 	/** A temple. */
-	public final static String TEMPLE_TYPE_NAME = "Temple";
+	public static final String TEMPLE_TYPE_NAME = "Temple";
 	/** A university. */
-	public final static String UNIVERSITY_TYPE_NAME = "University";
+	public static final String UNIVERSITY_TYPE_NAME = "University";
 
 	//FOAF property names
 	/** The gender of this Agent (typically but not necessarily "male" or "female"). */
-	public final static String GENDER_PROPERTY_NAME = "gender";
+	public static final String GENDER_PROPERTY_NAME = "gender";
 	/** A personal mailbox. */
-	public final static String MBOX_PROPERTY_NAME = "mbox";
+	public static final String MBOX_PROPERTY_NAME = "mbox";
 	/** A name for some thing. */
-	public final static String NAME_PROPERTY_NAME = "name";
+	public static final String NAME_PROPERTY_NAME = "name";
 
 }
