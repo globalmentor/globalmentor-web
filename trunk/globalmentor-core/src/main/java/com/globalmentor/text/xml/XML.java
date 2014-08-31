@@ -36,6 +36,7 @@ import com.globalmentor.model.NameValuePair;
 import com.globalmentor.model.ObjectHolder;
 import com.globalmentor.net.ContentType;
 import com.globalmentor.net.URIs;
+import com.globalmentor.text.ASCII;
 import com.globalmentor.text.xml.oeb.OEB;
 import com.globalmentor.text.xml.xhtml.XHTML;
 
@@ -516,11 +517,11 @@ public class XML {
 			switch(imputedBOM) { //see http://stackoverflow.com/q/25477854/421049
 				case UTF_16LE:
 				case UTF_16BE:
-					isImputedBOMMoreSpecific = UTF_16_NAME.equals(encodingDeclarationValue);
+					isImputedBOMMoreSpecific = ASCII.equalsIgnoreCase(UTF_16_NAME, encodingDeclarationValue);
 					break;
 				case UTF_32LE:
 				case UTF_32BE:
-					isImputedBOMMoreSpecific = UTF_32_NAME.equals(encodingDeclarationValue);
+					isImputedBOMMoreSpecific = ASCII.equalsIgnoreCase(UTF_32_NAME, encodingDeclarationValue);
 					break;
 				default:
 					isImputedBOMMoreSpecific = false;
