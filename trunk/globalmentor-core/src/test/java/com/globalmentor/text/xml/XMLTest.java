@@ -104,6 +104,22 @@ public class XMLTest extends AbstractTest {
 
 	/** @see XML#detectXMLCharset(InputStream, ObjectHolder, ObjectHolder) */
 	@Test
+	public void testDetectDefaultUTF_8() throws IOException {
+		final InputStream inputStream = new BufferedInputStream(getClass().getResourceAsStream("hello-world-utf-8-no-xml-declaration.xml"));
+		try {
+			final ObjectHolder<ByteOrderMark> bom = new ObjectHolder<>();
+			final ObjectHolder<String> declaredEncodingName = new ObjectHolder<>();
+			final Charset charset = XML.detectXMLCharset(inputStream, bom, declaredEncodingName);
+			assertThat(charset, is(UTF_8_CHARSET));
+			assertFalse(bom.isPresent());
+			assertFalse(declaredEncodingName.isPresent());
+		} finally {
+			inputStream.close();
+		}
+	}
+
+	/** @see XML#detectXMLCharset(InputStream, ObjectHolder, ObjectHolder) */
+	@Test
 	public void testDetectUTF_16LE() throws IOException {
 		final InputStream inputStream = new BufferedInputStream(getClass().getResourceAsStream("hello-world-utf-16le.xml"));
 		try {

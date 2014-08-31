@@ -27,6 +27,7 @@ import javax.xml.parsers.*;
 import com.globalmentor.config.ConfigurationException;
 
 import static com.globalmentor.io.Charsets.*;
+import static com.globalmentor.io.InputStreams.*;
 
 import com.globalmentor.io.ByteOrderMark;
 import com.globalmentor.java.*;
@@ -426,11 +427,13 @@ public class XML {
 	 * exception is thrown.</li>
 	 * <li>If an explicit encoding declaration is found, it is returned, unless it is less specific than the imputed byte order. For example, if the imputed byte
 	 * order is UTF-16BE but the declared encoding is UTF-16, then the charset UTF-16BE is returned.</li>
+	 * <li>If there is no BOM and no XML declaration, a charset of UTF-8 is assumed.</li>
 	 * </ul>
-	 * @param inputStream The stream which supposedly contains XML data.
+	 * @param inputStream The stream which supposedly contains XML data; this input stream must support mark/reset.
 	 * @param bom Receives The actual byte order mark present, if any.
 	 * @param declaredEncodingName Receives a copy of the explicitly declared name of the character encoding, if any.
-	 * @return The character encoding specified in a byte order mark, the imputed byte order, or the "encoding" attribute.
+	 * @return The character encoding specified in a byte order mark, the imputed byte order, the "encoding" attribute, or the default UTF-8.
+	 * @throws IllegalArgumentException if mark/reset is not supported by the given input stream.
 	 * @throws IOException Thrown if an I/O error occurred, or the beginning but not the end of an XML declaration was found.
 	 * @throws UnsupportedCharsetException If no support for a declared encoding is available in this instance of the Java virtual machine
 	 * @see <a href="http://www.w3.org/TR/2008/REC-xml-20081126/#sec-guessing-no-ext-info">XML 1.0 (Fifth Edition): F.1 Detection Without External Encoding
@@ -438,6 +441,7 @@ public class XML {
 	 */
 	public static Charset detectXMLCharset(final InputStream inputStream, final ObjectHolder<ByteOrderMark> bom, final ObjectHolder<String> declaredEncodingName)
 			throws IOException, UnsupportedCharsetException {
+		checkMarkSupported(inputStream);
 		//mark off enough room to read the largest BOM plus all the characters we need for imputation of a BOM
 		final byte[] bytes = new byte[ByteOrderMark.MAX_BYTE_COUNT + CHARACTER_ENCODING_AUTODETECT_BYTE_COUNT]; //create an array to hold the byte order mark
 		inputStream.mark(bytes.length);
@@ -448,8 +452,8 @@ public class XML {
 			imputedBOM = null;
 		}
 		inputStream.reset();
-		if(imputedBOM == null) { //if we couldn't even impute a BOM, there aren't enough characters to detect anything
-			return null;
+		if(imputedBOM == null) { //if we couldn't even impute a BOM, we assume UTF-8
+			return UTF_8_CHARSET;
 		}
 		//we now know enough about the byte order to try to find an explicit XML encoding declaration any specified character encoding
 		//e.g. <?xml version="1.0" encoding="UTF-8"?>
