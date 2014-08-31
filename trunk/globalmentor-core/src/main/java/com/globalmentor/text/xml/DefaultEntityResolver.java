@@ -16,9 +16,7 @@
 
 package com.globalmentor.text.xml;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.concurrent.atomic.AtomicReference;
+import java.io.*;
 
 import org.xml.sax.*;
 
@@ -34,28 +32,25 @@ import com.globalmentor.io.Files;
  * @author Garret Wilson
  * @see Files#encodeCrossPlatformFilename(String)
  */
-public class XMLEntityResolver implements EntityResolver {
+public class DefaultEntityResolver implements EntityResolver {
 
 	/** The singleton instance reference of this entity resolver. */
-	private static AtomicReference<XMLEntityResolver> instanceReference = new AtomicReference<XMLEntityResolver>();
+	private static final DefaultEntityResolver INSTANCE = new DefaultEntityResolver();
 
 	/**
 	 * Returns the singleton instance of this entity resolver. This method is thread safe.
 	 * @return The singleton instance of this entity resolver.
 	 */
-	public static XMLEntityResolver getInstance() {
-		if(instanceReference.get() == null) { //if there is no instance
-			instanceReference.compareAndSet(null, new XMLEntityResolver()); //update the entity resolver reference atomically
-		}
-		return instanceReference.get(); //return the singleton instance
+	public static DefaultEntityResolver getInstance() {
+		return INSTANCE;
 	}
 
-	protected XMLEntityResolver() {
+	protected DefaultEntityResolver() {
 	}
 
 	/**
 	 * Resolves the given entity based upon its public and system IDs.
-	 * @param publicID The entity putlic ID, or <code>null</code> if none was given.
+	 * @param publicID The entity public ID, or <code>null</code> if none was given.
 	 * @param systemID The entity system ID.
 	 * @return An input source describing the entity, or <code>null</code> to request that the parser open a regular URI connection to the system identifier.
 	 */

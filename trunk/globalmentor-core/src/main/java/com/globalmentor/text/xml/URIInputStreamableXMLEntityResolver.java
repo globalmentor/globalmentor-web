@@ -35,7 +35,8 @@ import static com.globalmentor.java.Objects.*;
  * be publicly instantiated.
  * @author Garret Wilson
  */
-public class URIInputStreamableXMLEntityResolver extends XMLEntityResolver {
+@Deprecated
+public class URIInputStreamableXMLEntityResolver extends DefaultEntityResolver {
 
 	/** The source of the data. */
 	private final URIInputStreamable source;

@@ -575,7 +575,7 @@ public class XML {
 	 * @param publicID The public ID for which a content type should be retrieved.
 	 * @return The content type corresponding to the given public ID, or <code>null</code> if the given public ID is not recognized.
 	 */
-	public static ContentType getContentType(final String publicID) {
+	public static ContentType getContentTypeForPublicID(final String publicID) {
 		return getContentTypeMap().get(publicID); //return the content type corresponding to the given public ID, if we have one
 	}
 
@@ -619,7 +619,7 @@ public class XML {
 	 * @throws IOException If there is an error reading or parsing the information.
 	 */
 	public static Document parse(final InputStream inputStream) throws IOException {
-		return parse(inputStream, XMLEntityResolver.getInstance());
+		return parse(inputStream, DefaultEntityResolver.getInstance());
 	}
 
 	/**
@@ -652,7 +652,7 @@ public class XML {
 	 * @throws IOException If there is an error reading or parsing the information.
 	 */
 	public static Document parse(final InputStream inputStream, final URI systemID) throws IOException {
-		return parse(inputStream, systemID, XMLEntityResolver.getInstance());
+		return parse(inputStream, systemID, DefaultEntityResolver.getInstance());
 	}
 
 	/**
@@ -686,7 +686,7 @@ public class XML {
 	 * @throws IOException If there is an error reading or parsing the information.
 	 */
 	public static Document parse(final InputStream inputStream, final boolean namespaceAware) throws IOException {
-		return parse(inputStream, namespaceAware, XMLEntityResolver.getInstance());
+		return parse(inputStream, namespaceAware, DefaultEntityResolver.getInstance());
 	}
 
 	/**
@@ -721,7 +721,7 @@ public class XML {
 	 * @throws IOException If there is an error reading or parsing the information.
 	 */
 	public static Document parse(final InputStream inputStream, final URI systemID, final boolean namespaceAware) throws IOException {
-		return parse(inputStream, systemID, namespaceAware, XMLEntityResolver.getInstance());
+		return parse(inputStream, systemID, namespaceAware, DefaultEntityResolver.getInstance());
 	}
 
 	/**
@@ -758,7 +758,7 @@ public class XML {
 	 * @throws IOException If there is an error reading or parsing the information.
 	 */
 	public static Document parse(final InputStream inputStream, final boolean namespaceAware, final boolean validating) throws IOException {
-		return parse(inputStream, namespaceAware, validating, XMLEntityResolver.getInstance());
+		return parse(inputStream, namespaceAware, validating, DefaultEntityResolver.getInstance());
 	}
 
 	/**
@@ -800,7 +800,7 @@ public class XML {
 	 * @throws IOException If there is an error reading or parsing the information.
 	 */
 	public static Document parse(final InputStream inputStream, final URI systemID, final boolean namespaceAware, final boolean validating) throws IOException {
-		return parse(inputStream, systemID, namespaceAware, validating, XMLEntityResolver.getInstance());
+		return parse(inputStream, systemID, namespaceAware, validating, DefaultEntityResolver.getInstance());
 	}
 
 	/**
@@ -834,7 +834,7 @@ public class XML {
 	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
 	 */
 	public static DocumentBuilder createDocumentBuilder() {
-		return createDocumentBuilder(XMLEntityResolver.getInstance());
+		return createDocumentBuilder(DefaultEntityResolver.getInstance());
 	}
 
 	/**
@@ -855,7 +855,7 @@ public class XML {
 	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
 	 */
 	public static DocumentBuilder createDocumentBuilder(final boolean namespaceAware) {
-		return createDocumentBuilder(namespaceAware, XMLEntityResolver.getInstance());
+		return createDocumentBuilder(namespaceAware, DefaultEntityResolver.getInstance());
 	}
 
 	/**
@@ -878,7 +878,7 @@ public class XML {
 	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
 	 */
 	public static DocumentBuilder createDocumentBuilder(final boolean namespaceAware, final boolean validating) {
-		return createDocumentBuilder(namespaceAware, validating, XMLEntityResolver.getInstance());
+		return createDocumentBuilder(namespaceAware, validating, DefaultEntityResolver.getInstance());
 	}
 
 	/**
@@ -918,10 +918,10 @@ public class XML {
 	 * @return A character reference in the form <code>&#xXX;</code>.
 	 */
 	public static String createCharacterReference(final char character) {
-		final StringBuilder stringBuilder = new StringBuilder(XML.CHARACTER_REF_START); //create a string builder with the start of a character reference
-		stringBuilder.append(XML.CHARACTER_REF_HEX_FLAG); //indicate that the character reference is in hex
+		final StringBuilder stringBuilder = new StringBuilder(CHARACTER_REF_START); //create a string builder with the start of a character reference
+		stringBuilder.append(CHARACTER_REF_HEX_FLAG); //indicate that the character reference is in hex
 		stringBuilder.append(toHexString(character, 4)); //write the hex value of the character
-		stringBuilder.append(XML.CHARACTER_REF_END); //end the character reference
+		stringBuilder.append(CHARACTER_REF_END); //end the character reference
 		return stringBuilder.toString(); //return the constructed character reference
 	}
 
@@ -986,7 +986,7 @@ public class XML {
 	 * @throws NullPointerException if the given qualified name is <code>null</code>.
 	 */
 	public static String getPrefix(final String qualifiedName) {
-		final int prefixDividerIndex = qualifiedName.indexOf(XML.NAMESPACE_DIVIDER); //see if there is a prefix
+		final int prefixDividerIndex = qualifiedName.indexOf(NAMESPACE_DIVIDER); //see if there is a prefix
 		if(prefixDividerIndex >= 0) //if there is a prefix
 			return qualifiedName.substring(0, prefixDividerIndex); //return the prefix
 		else
@@ -1001,7 +1001,7 @@ public class XML {
 	 * @throws NullPointerException if the given qualified name is <code>null</code>.
 	 */
 	public static String getLocalName(final String qualifiedName) {
-		final int namespaceDividerIndex = qualifiedName.indexOf(XML.NAMESPACE_DIVIDER); //find where the namespace divider is in the name
+		final int namespaceDividerIndex = qualifiedName.indexOf(NAMESPACE_DIVIDER); //find where the namespace divider is in the name
 		return namespaceDividerIndex >= 0 ? //if there is a namespace prefix
 		qualifiedName.substring(namespaceDividerIndex + 1)
 				: //remove the namespace prefix
@@ -1029,7 +1029,7 @@ public class XML {
 	 * @return true if the character is a legal XML character.
 	 */
 	public static boolean isChar(final char c) {
-		return Characters.isCharInRange(c, XML.CHAR_RANGES); //see if the character is a legal XML character
+		return Characters.isCharInRange(c, CHAR_RANGES); //see if the character is a legal XML character
 	}
 
 	/**
@@ -1038,7 +1038,7 @@ public class XML {
 	 * @return true if the character is XML whitespace.
 	 */
 	public static boolean isWhitespace(final char c) {
-		return XML.WHITESPACE_CHARS.indexOf(c) != -1; //if the character matches any characters in our whitespace string, the character is whitespace
+		return WHITESPACE_CHARS.indexOf(c) != -1; //if the character matches any characters in our whitespace string, the character is whitespace
 	}
 
 	/**
@@ -1047,7 +1047,7 @@ public class XML {
 	 * @return true if the character is an XML letter.
 	 */
 	public static boolean isLetter(final char c) {
-		return Characters.isCharInRange(c, XML.BASE_CHAR_RANGES) || Characters.isCharInRange(c, XML.IDEOGRAPHIC_RANGES); //see if the character is a base character or an ideographic character
+		return Characters.isCharInRange(c, BASE_CHAR_RANGES) || Characters.isCharInRange(c, IDEOGRAPHIC_RANGES); //see if the character is a base character or an ideographic character
 	}
 
 	/**
@@ -1056,7 +1056,7 @@ public class XML {
 	 * @return true if the character is an XML digit.
 	 */
 	public static boolean isDigit(final char c) {
-		return Characters.isCharInRange(c, XML.DIGIT_RANGES); //see if the character is a digit
+		return Characters.isCharInRange(c, DIGIT_RANGES); //see if the character is a digit
 	}
 
 	/**
@@ -1187,7 +1187,7 @@ public class XML {
 	 * @return An XML-friendly string.
 	 */
 	public static String createValidContent(final String string) {
-		return Strings.replace(string, XML_ENTITY_CHARS, XML_ENTITY_REPLACMENTS); //do the replacments for the special XML symbols and return the results
+		return Strings.replace(string, XML_ENTITY_CHARS, XML_ENTITY_REPLACMENTS); //do the replacements for the special XML symbols and return the results
 	}
 
 	/**
@@ -1205,29 +1205,6 @@ public class XML {
 			}
 		}
 		return stringBuffer != null ? stringBuffer.toString() : string; //return the original string unless we've actually modified something
-	}
-
-	/**
-	 * Creates an XML name by replacing every non-name character with an underscore ('_') character. If the first character of the string cannot begin an XML
-	 * name, it will be replaced with an 'x'. An empty string will receive an 'x' as well.
-	 * @param string The string to be changed to an XML name.
-	 * @return The string modified to be an XML name.
-	 */
-	public static String createName(final String string) {
-		if(isName(string)) //if the string is already a name (we'll check all the characters, assuming that most of the time the strings will already be valid names, making this more efficient)
-			return string; //return the string, because it doesn't need to be converted
-		else { //if the string isn't a name already (we'll check all the characters, assuming that most of the time the strings will already be valid names, making this more efficient)
-			final StringBuffer stringBuffer = new StringBuffer(string); //create a string buffer from the string, so that we can modify it as necessary
-			if(stringBuffer.length() == 0) //if the string isn't long enough to be a name
-				stringBuffer.append(REPLACEMENT_FIRST_CHAR); //put an 'x' in the first position
-			else if(!isNameFirstChar(stringBuffer.charAt(0))) //if the string does have at least one character, but it's not a valid first character for an XML name
-				stringBuffer.setCharAt(0, REPLACEMENT_FIRST_CHAR); //replace the first character with an 'x'
-			for(int i = 1; i < string.length(); ++i) { //look at each character in the string, except the first (which we've already checked)
-				if(!isNameChar(stringBuffer.charAt(i))) //if this character isn't a name character
-					stringBuffer.setCharAt(i, REPLACEMENT_CHAR); //replace the character with an underscore
-			}
-			return stringBuffer.toString(); //return the string we constructed
-		}
 	}
 
 	/**
@@ -2185,7 +2162,7 @@ public class XML {
 
 	/**
 	 * Converts an XML element to a string. If an error occurs converting the element to a string, the normal object string will be returned.
-	 * @param element The XML elment to convert.
+	 * @param element The XML element to convert.
 	 * @return A string representation of the XML element.
 	 */
 	public static String toString(final Element element) {

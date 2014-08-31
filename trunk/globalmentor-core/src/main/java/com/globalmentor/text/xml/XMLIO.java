@@ -31,7 +31,7 @@ import org.xml.sax.SAXException;
 
 /**
  * Implementation of loading and saving XML information. This class is a {@link DocumentBuilder}, and can be configured to produced appropriate XML parsers.
- * Instances of {@link DocumentBuilder} are intialized with an {@link XMLEntityResolver} entity resolver. This class is thread-safe.
+ * Instances of {@link DocumentBuilder} are initialized with an {@link DefaultEntityResolver} entity resolver. This class is thread-safe.
  * @author Garret Wilson
  */
 public class XMLIO extends DocumentBuilderFactory implements IO<Document> {

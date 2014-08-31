@@ -17,7 +17,7 @@
 package com.globalmentor.text.xml;
 
 /**
- * XML parsing error peporting interface.
+ * XML parsing error reporting interface.
  * @author Garret Wilson
  * @deprecated
  */
