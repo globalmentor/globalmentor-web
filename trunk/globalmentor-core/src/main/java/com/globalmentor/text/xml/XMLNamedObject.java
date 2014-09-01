@@ -21,7 +21,7 @@ import com.globalmentor.java.Objects;
 /**
  * The base class for XML objects that are named&mdash;identified by qname and/or namespace and local name.
  * <p>
- * This class can be used indepedently of the rest of the W3C DOM implementations in this package.
+ * This class can be used independently of the rest of the W3C DOM implementations in this package.
  * </p>
  * @author Garret Wilson
  * @deprecated

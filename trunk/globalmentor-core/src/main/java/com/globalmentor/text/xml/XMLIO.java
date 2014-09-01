@@ -184,7 +184,7 @@ public class XMLIO extends DocumentBuilderFactory implements IO<Document> {
 	 * Writes an XML document to an output stream.
 	 * @param outputStream The output stream to which to write the data.
 	 * @param baseURI The base URI of the data, or <code>null</code> if no base URI is available.
-	 * @param document The XML Mdocument to write to the given output stream.
+	 * @param document The XML document to write to the given output stream.
 	 * @throws NullPointerException if the given output stream and/or document is <code>null</code>.
 	 * @throws IOException Thrown if there is an error writing the data.
 	 */
@@ -197,7 +197,7 @@ public class XMLIO extends DocumentBuilderFactory implements IO<Document> {
 	 * @param outputStream The output stream to which to write the data.
 	 * @param baseURI The base URI of the data, or <code>null</code> if no base URI is available.
 	 * @param document The XML document to write to the given output stream.
-	 * @excepion NullPointerException if the given output stream and/or document is <code>null</code>.
+	 * @throws NullPointerException if the given output stream and/or document is <code>null</code>.
 	 * @throws IOException Thrown if there is an error writing the data.
 	 */
 	public static void writeXML(final OutputStream outputStream, final URI baseURI, final Document document) throws IOException {
@@ -211,13 +211,13 @@ public class XMLIO extends DocumentBuilderFactory implements IO<Document> {
 	 * @param document The XML document to write to the given output stream.
 	 * @param bomWritten Whether a byte order mark (BOM) is written.
 	 * @param formatted Whether output is formatted.
-	 * @excepion NullPointerException if the given output stream and/or document is <code>null</code>.
+	 * @throws NullPointerException if the given output stream and/or document is <code>null</code>.
 	 * @throws IOException Thrown if there is an error writing the data.
 	 */
 	public static void writeXML(final OutputStream outputStream, final URI baseURI, final Document document, final boolean bomWritten, final boolean formatted)
 			throws IOException {
 		final XMLSerializer xmlSerializer = new XMLSerializer(formatted); //create a new XML serializer
-		xmlSerializer.setBOMWritten(bomWritten); //indicate whether the BOM shoudl be written
+		xmlSerializer.setBOMWritten(bomWritten); //indicate whether the BOM should be written
 		xmlSerializer.serialize(document, outputStream); //serialize the document to the output stream 
 	}
 
