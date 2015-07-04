@@ -17,12 +17,21 @@
 package com.globalmentor.text.xml.stylesheets.css;
 
 import java.io.*;
-
 import java.net.URI;
+
 import static com.globalmentor.text.xml.stylesheets.css.XMLCSS.*;
 
 import com.globalmentor.io.*;
 import com.globalmentor.text.xml.*;
+import com.globalmentor.text.xml.processor.XMLComment;
+import com.globalmentor.text.xml.processor.XMLDocument;
+import com.globalmentor.text.xml.processor.XMLElement;
+import com.globalmentor.text.xml.processor.XMLNode;
+import com.globalmentor.text.xml.processor.XMLNodeList;
+import com.globalmentor.text.xml.processor.XMLSyntaxException;
+import com.globalmentor.text.xml.processor.XMLUndefinedEntityReferenceException;
+import com.globalmentor.text.xml.processor.XMLValidityException;
+import com.globalmentor.text.xml.processor.XMLWellFormednessException;
 
 import org.w3c.dom.*;
 import org.w3c.dom.stylesheets.StyleSheet;

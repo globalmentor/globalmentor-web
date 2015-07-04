@@ -19,6 +19,7 @@ package com.globalmentor.text.xml.stylesheets;
 import java.util.LinkedList;
 
 import com.globalmentor.text.xml.*;
+import com.globalmentor.text.xml.processor.XMLDocument;
 
 import org.w3c.dom.stylesheets.*;
 

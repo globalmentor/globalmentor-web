@@ -28,8 +28,7 @@ import com.globalmentor.io.*;
 import com.globalmentor.java.Characters;
 import com.globalmentor.log.Log;
 import com.globalmentor.net.ContentType;
-
-import com.globalmentor.text.xml.XMLNode;
+import com.globalmentor.text.xml.processor.XMLNode;
 
 import static com.globalmentor.java.Characters.*;
 import static java.util.Collections.unmodifiableMap;
@@ -608,7 +607,7 @@ public class XMLCSS {
 			final String cssFilename = Files.encodeCrossPlatformFilename(namespaceURI) + Files.FILENAME_EXTENSION_SEPARATOR + CSS_NAME_EXTENSION;
 			final URL styleSheetURL = XMLCSS.class.getResource(cssFilename); //see if we can load this resource locally
 			if(styleSheetURL != null) { //if we were able to find a stylesheet stored as a resource
-				final XMLCSSStyleSheet styleSheet = new XMLCSSStyleSheet((com.globalmentor.text.xml.XMLNode)null); //create a new CSS stylesheet that has no owner TODO make this cast use a generic Node, or make a default constructor
+				final XMLCSSStyleSheet styleSheet = new XMLCSSStyleSheet((com.globalmentor.text.xml.processor.XMLNode)null); //create a new CSS stylesheet that has no owner TODO make this cast use a generic Node, or make a default constructor
 				try {
 					//TODO XMLCSSProcessor has been updated -- see if we need to modify this code
 					final InputStream inputStream = styleSheetURL.openConnection().getInputStream(); //open a connection to the URL and get an input stream from that

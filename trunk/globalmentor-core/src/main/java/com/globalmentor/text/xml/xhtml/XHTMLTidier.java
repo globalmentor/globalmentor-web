@@ -394,10 +394,10 @@ public class XHTMLTidier {
 		if(isExtractInternalStylesheets()) { //if we should extract internal stylesheets
 			try {
 				final XMLCSSProcessor cssProcessor = new XMLCSSProcessor(); //create a new CSS processor
-				cssProcessor.parseInternalStyleSheets((com.globalmentor.text.xml.XMLDocument)document); //parse the internal stylesheets TODO this needs to be fixed so that it doesn't store stylesheets in the document
-				if(((com.globalmentor.text.xml.XMLDocument)document).getStyleSheetList().size() > 0) { //if there are internal stylesheets TODO this is terrible; fix
-					if(((com.globalmentor.text.xml.XMLDocument)document).getStyleSheetList().get(0) instanceof CSSStyleSheet) { //if the first stylesheet is a CSS stylesheet
-						final CSSStyleSheet cssStyleSheet = (CSSStyleSheet)((com.globalmentor.text.xml.XMLDocument)document).getStyleSheetList().get(0); //get a reference to this CSS stylesheet
+				cssProcessor.parseInternalStyleSheets((com.globalmentor.text.xml.processor.XMLDocument)document); //parse the internal stylesheets TODO this needs to be fixed so that it doesn't store stylesheets in the document
+				if(((com.globalmentor.text.xml.processor.XMLDocument)document).getStyleSheetList().size() > 0) { //if there are internal stylesheets TODO this is terrible; fix
+					if(((com.globalmentor.text.xml.processor.XMLDocument)document).getStyleSheetList().get(0) instanceof CSSStyleSheet) { //if the first stylesheet is a CSS stylesheet
+						final CSSStyleSheet cssStyleSheet = (CSSStyleSheet)((com.globalmentor.text.xml.processor.XMLDocument)document).getStyleSheetList().get(0); //get a reference to this CSS stylesheet
 						cssTidier.tidy(cssStyleSheet); //tidy the stylesheet
 						if(contextFile != null) { //if we have a context file
 							final File stylesheetFile = new File(Files.changeExtension(contextFile, "css").getCanonicalPath()); //create a file with a .css extension TODO use a constant here

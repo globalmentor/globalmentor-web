@@ -21,7 +21,7 @@ import java.util.StringTokenizer;
 
 import static com.globalmentor.text.xml.stylesheets.css.XMLCSS.*;
 
-import com.globalmentor.text.xml.XMLDOMException;
+import com.globalmentor.text.xml.processor.XMLDOMException;
 
 import org.w3c.dom.DOMException;
 import org.w3c.dom.css.*;

@@ -26,8 +26,7 @@ import com.globalmentor.java.Objects;
  * @author Garret Wilson
  * @deprecated
  */
-public class XMLNamedObject //TODO implement NamedObject or extend DefaultNamedObject when Java gets generics; also investigate leveraging the new QualifiedName
-{
+public class XMLNamedObject { //TODO implement NamedObject or extend DefaultNamedObject when Java gets generics; also investigate leveraging the new QualifiedName
 
 	/** The qualified name of the object. */
 	private String qname = null;
@@ -35,7 +34,9 @@ public class XMLNamedObject //TODO implement NamedObject or extend DefaultNamedO
 	/** The namespace URI, or <code>null</code> if there is no namespace. */
 	private String namespaceURI = null;
 
-	/** @return The namespace URI, or <code>null</code> there is no namespace. */
+	/**
+	 * @return The namespace URI, or <code>null</code> there is no namespace.
+	 */
 	public String getNamespaceURI() {
 		return namespaceURI;
 	}
@@ -44,7 +45,7 @@ public class XMLNamedObject //TODO implement NamedObject or extend DefaultNamedO
 	 * Sets the namespace URI.
 	 * @param newNamespaceURI The new namespace URI, or <code>null</code> if there should be no namespace.
 	 */
-	void setNamespaceURI(final String newNamespaceURI) {
+	public /*TODO remove public designation*/ void setNamespaceURI(final String newNamespaceURI) {
 		namespaceURI = newNamespaceURI;
 	}
 
@@ -72,7 +73,9 @@ public class XMLNamedObject //TODO implement NamedObject or extend DefaultNamedO
 	/** The local name of the node. */
 	private String localName = null;
 
-	/** @return The local part of the qualified name of this node. */
+	/**
+	 * @return The local part of the qualified name of this node.
+	 */
 	public String getLocalName() {
 		return localName;
 	}

@@ -19,6 +19,7 @@ package com.globalmentor.text.xml.stylesheets.css;
 import java.util.ArrayList;
 
 import com.globalmentor.text.xml.*;
+import com.globalmentor.text.xml.processor.XMLDocument;
 
 import org.w3c.dom.css.CSSRule;
 

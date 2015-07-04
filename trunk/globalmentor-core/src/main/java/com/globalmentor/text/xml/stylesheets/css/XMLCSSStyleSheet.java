@@ -16,7 +16,7 @@
 
 package com.globalmentor.text.xml.stylesheets.css;
 
-import com.globalmentor.text.xml.XMLDOMException;
+import com.globalmentor.text.xml.processor.XMLDOMException;
 import com.globalmentor.text.xml.stylesheets.*;
 
 import org.w3c.dom.*;

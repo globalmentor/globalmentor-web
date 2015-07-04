@@ -19,12 +19,14 @@ package com.globalmentor.text.xml.stylesheets.css;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
 import org.w3c.dom.css.*;
 
 import static com.globalmentor.text.xml.stylesheets.css.XMLCSS.*;
-import com.globalmentor.text.xml.XMLDOMException;
+
+import com.globalmentor.text.xml.processor.XMLDOMException;
 
 /**
  * The class which represents a signle rule set in a CSS stylesheet.
