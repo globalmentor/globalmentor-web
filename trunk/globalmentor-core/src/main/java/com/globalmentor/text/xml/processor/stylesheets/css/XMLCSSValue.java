@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.globalmentor.text.xml.stylesheets.css;
+package com.globalmentor.text.xml.processor.stylesheets.css;
 
 import org.w3c.dom.DOMException;
 import org.w3c.dom.css.*;
@@ -27,8 +27,7 @@ import org.w3c.dom.css.*;
  * @see org.w3c.dom.css.CSSValue
  * @deprecated
  */
-public abstract class XMLCSSValue implements org.w3c.dom.css.CSSValue//TODO fix, Cloneable
-{
+public abstract class XMLCSSValue implements org.w3c.dom.css.CSSValue {	//TODO fix, Cloneable
 
 	/**
 	 * Constructor which requires a value type.

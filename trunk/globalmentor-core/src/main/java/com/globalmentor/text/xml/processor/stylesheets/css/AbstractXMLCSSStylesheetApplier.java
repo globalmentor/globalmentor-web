@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.globalmentor.text.xml.stylesheets.css;
+package com.globalmentor.text.xml.processor.stylesheets.css;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -23,7 +23,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
 
-import static com.globalmentor.text.xml.stylesheets.XMLStyleSheets.*;
+import static com.globalmentor.text.xml.XMLStyleSheets.*;
 import static com.globalmentor.text.xml.xhtml.XHTML.*;
 
 import com.globalmentor.io.*;
@@ -33,7 +33,7 @@ import com.globalmentor.net.ContentType;
 import com.globalmentor.net.URIs;
 import com.globalmentor.rdf.RDFResource;
 import com.globalmentor.text.xml.XML;
-import com.globalmentor.text.xml.stylesheets.XMLStyleSheetDescriptor;
+import com.globalmentor.text.xml.processor.stylesheets.XMLStyleSheetDescriptor;
 import com.globalmentor.text.xml.xhtml.XHTML;
 
 import org.w3c.dom.css.*;

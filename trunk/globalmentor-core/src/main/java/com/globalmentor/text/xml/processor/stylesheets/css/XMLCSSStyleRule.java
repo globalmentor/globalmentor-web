@@ -14,9 +14,12 @@
  * limitations under the License.
  */
 
-package com.globalmentor.text.xml.stylesheets.css;
+package com.globalmentor.text.xml.processor.stylesheets.css;
 
 import java.util.List;
+
+import static com.globalmentor.text.css.CSS.*;
+
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -24,18 +27,15 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
 import org.w3c.dom.css.*;
 
-import static com.globalmentor.text.xml.stylesheets.css.XMLCSS.*;
-
 import com.globalmentor.text.xml.processor.XMLDOMException;
 
 /**
- * The class which represents a signle rule set in a CSS stylesheet.
+ * The class which represents a single rule set in a CSS stylesheet.
  * @author Garret Wilson
  * @see org.w3c.dom.css.CSSRule
  * @deprecated
  */
-public class XMLCSSStyleRule extends XMLCSSRule implements CSSStyleRule //TODO fix, Cloneable
-{
+public class XMLCSSStyleRule extends XMLCSSRule implements CSSStyleRule {	//TODO fix, Cloneable
 
 	/**
 	 * Constructor which requires a parent stylesheet to be specified.

@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.globalmentor.text.xml.stylesheets.css;
-
-import static com.globalmentor.text.xml.stylesheets.css.XMLCSS.*;
+package com.globalmentor.text.xml.processor.stylesheets.css;
 
 import com.globalmentor.java.CharSequences;
 import com.globalmentor.java.Strings;
+
+import static com.globalmentor.text.css.CSS.*;
 
 import org.w3c.dom.DOMException;
 import org.w3c.dom.css.*;
@@ -34,8 +34,7 @@ import org.w3c.dom.css.*;
  * @see org.w3c.dom.css.CSSValue
  * @deprecated
  */
-public class XMLCSSPrimitiveValue extends XMLCSSValue implements org.w3c.dom.css.CSSPrimitiveValue//TODO fix, Cloneable
-{
+public class XMLCSSPrimitiveValue extends XMLCSSValue implements org.w3c.dom.css.CSSPrimitiveValue {	//TODO fix, Cloneable
 
 	//Strings that specify the various accepted unit types. TODO perhaps later give these more appropriate names
 	//TODO put these in a constants file

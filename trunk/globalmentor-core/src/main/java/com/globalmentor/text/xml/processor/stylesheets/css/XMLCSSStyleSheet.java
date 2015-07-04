@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.globalmentor.text.xml.stylesheets.css;
+package com.globalmentor.text.xml.processor.stylesheets.css;
 
 import com.globalmentor.text.xml.processor.XMLDOMException;
-import com.globalmentor.text.xml.stylesheets.*;
+import com.globalmentor.text.xml.processor.stylesheets.XMLStyleSheet;
 
 import org.w3c.dom.*;
 import org.w3c.dom.css.*;

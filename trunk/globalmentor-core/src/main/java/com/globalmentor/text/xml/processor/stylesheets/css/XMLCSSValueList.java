@@ -14,18 +14,14 @@
  * limitations under the License.
  */
 
-package com.globalmentor.text.xml.stylesheets.css;
+package com.globalmentor.text.xml.processor.stylesheets.css;
 
-import java.io.IOException;
-import java.io.StreamTokenizer;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.*;
+import java.util.*;
 
 import com.globalmentor.log.Log;
 
-import org.w3c.dom.css.CSSValue;
-import org.w3c.dom.css.CSSValueList;
+import org.w3c.dom.css.*;
 
 /**
  * An ordered collection of CSS vlaues. An empty list is the same as a list that contains the medium <code>"all"</code>.

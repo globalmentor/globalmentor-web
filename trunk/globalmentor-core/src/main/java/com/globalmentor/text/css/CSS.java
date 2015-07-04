@@ -14,27 +14,22 @@
  * limitations under the License.
  */
 
-package com.globalmentor.text.xml.stylesheets.css;
+package com.globalmentor.text.css;
 
-import java.io.*;
-import java.net.URL;
 import java.util.*;
 import java.util.regex.Pattern;
 
 import org.w3c.dom.*;
 import org.w3c.dom.css.*;
 
-import com.globalmentor.io.*;
 import com.globalmentor.java.Characters;
-import com.globalmentor.log.Log;
 import com.globalmentor.net.ContentType;
-import com.globalmentor.text.xml.processor.XMLNode;
 
 import static com.globalmentor.java.Characters.*;
-import static java.util.Collections.unmodifiableMap;
+import static java.util.Collections.*;
 
 /** Constants and utilities for CSS. */
-public class XMLCSS {
+public class CSS {
 
 	/** The name extension for CSS stylesheets. */
 	public static final String CSS_NAME_EXTENSION = "css";
@@ -536,7 +531,7 @@ public class XMLCSS {
 
 	/**
 	 * Returns a string to display on a marker for the given list item.
-	 * @param listStyleType The type of list marker to use, one of the <code>XMLCSS.CSS_LIST_STYLE_TYPE_</code> constants.
+	 * @param listStyleType The type of list marker to use, one of the <code>CSS_LIST_STYLE_TYPE_</code> constants.
 	 * @param listItemIndex The index of the list item for which text should be generated
 	 * @return The string to be rendered for the given list item, or <code>null</code> if a string rendering is not appropriate for the given list style type.
 	 */
@@ -593,44 +588,6 @@ public class XMLCSS {
 	}
 
 	/**
-	 * Loads a default stylesheet resource if one is available for the given XML namespace. A stylesheet will be found for the given namespace if it is stored as
-	 * a file in the directory corresponding to this class package, with the same name as the namespace, with all invalid filename characters replaced with
-	 * underscores, with an extension of "css".
-	 * @param namespaceURI The namespace for which to locate a default stylsheet.
-	 * @return A W3C CSS DOM tree representing the stylesheet, or <code>null</code> if no stylesheet was found or <code>namespaceURI</code> is <code>null</code>.
-	 * @deprecated
-	 */
-	public static CSSStyleSheet getDefaultStyleSheet(final String namespaceURI) { //TODO add a URIInputStreamable argument which can get local input streams as well as external ones
-		//TODO do we want to cache stylesheets? probably not
-		if(namespaceURI != null) { //if a valid namespace was passed
-			//convert the namespace URI to a valid filaname and add a "css" extension
-			final String cssFilename = Files.encodeCrossPlatformFilename(namespaceURI) + Files.FILENAME_EXTENSION_SEPARATOR + CSS_NAME_EXTENSION;
-			final URL styleSheetURL = XMLCSS.class.getResource(cssFilename); //see if we can load this resource locally
-			if(styleSheetURL != null) { //if we were able to find a stylesheet stored as a resource
-				final XMLCSSStyleSheet styleSheet = new XMLCSSStyleSheet((com.globalmentor.text.xml.processor.XMLNode)null); //create a new CSS stylesheet that has no owner TODO make this cast use a generic Node, or make a default constructor
-				try {
-					//TODO XMLCSSProcessor has been updated -- see if we need to modify this code
-					final InputStream inputStream = styleSheetURL.openConnection().getInputStream(); //open a connection to the URL and get an input stream from that
-					final InputStreamReader inputStreamReader = new InputStreamReader(inputStream); //get an input stream reader to the stylesheet TODO what about encoding?
-					final ParseReader styleSheetReader = new ParseReader(inputStreamReader, styleSheetURL); //create a parse reader reader to use to read the stylesheet
-					try {
-						//TODO fix			entityReader.setCurrentLineIndex(entity.getLineIndex());	//pretend we're reading where the entity was located in that file, so any errors will show the correct information
-						//TODO fix			entityReader.setCurrentCharIndex(entity.getCharIndex());	//pretend we're reading where the entity was located in that file, so any errors will show the correct information
-						final XMLCSSProcessor cssProcessor = new XMLCSSProcessor(); //create a new CSS processor
-						cssProcessor.parseStyleSheetContent(styleSheetReader, styleSheet); //parse the stylesheet content
-						return styleSheet; //return the stylesheet we parsed
-					} finally {
-						styleSheetReader.close(); //always close the stylesheet reader
-					}
-				} catch(IOException ioException) { //if anything goes wrong reading the stylesheet, that's bad but shouldn't keep the program from continuing
-					Log.warn(ioException); //warn that there's was an IO problem
-				}
-			}
-		}
-		return null; //show that for some reason we couldn't load a default stylesheet for the given namespace
-	}
-
-	/**
 	 * Gets a particular value from the style that should be a length, returning the length in pixels. TODO fix; right now it returns points
 	 * @param styleManager The object that allows style lookups for elements.
 	 * @param element The element with which style is associated.
@@ -653,7 +610,7 @@ public class XMLCSS {
 										break;
 					*/
 				case CSSPrimitiveValue.CSS_PT: //if they want the size in points
-					return primitiveValue.getFloatValue(primitiveValue.CSS_PT); //get the value in pixels and round to the nearest integer pixel length TODO fix to use pixels instead of points, as it does now
+					return primitiveValue.getFloatValue(CSSPrimitiveValue.CSS_PT); //get the value in pixels and round to the nearest integer pixel length TODO fix to use pixels instead of points, as it does now
 			}
 		}
 		return defaultValue; //if we couldn't determine the value, return the default value
@@ -702,7 +659,7 @@ public class XMLCSS {
 											return emSize*textIndentValue.getFloatValue(XMLCSSPrimitiveValue.CSS_EMS);  //TODO testing
 										}
 				*/
-					case XMLCSSPrimitiveValue.CSS_PT: //TODO testing
+					case CSSPrimitiveValue.CSS_PT: //TODO testing
 						return textIndentValue.getFloatValue(CSSPrimitiveValue.CSS_PT); //get the value in pixels and round to the nearest integer pixel length TODO fix to use pixels instead of points, as it does now
 				}
 			}
@@ -742,8 +699,7 @@ public class XMLCSS {
 					Debug.assert(cssStyle instanceof CSS2Properties, "DOM implementation does not support CSS2Properties interface for CSSStyleDeclaration"); //TODO do we want to take action if the style does not implement CSS2Properties?
 					final CSS2Properties cssProperties=(CSS2Properties)cssStyle;  //get the CSS2Properties interface, which is expected to be implemented by the DOM CSSStyleDeclaration
 		*/
-			final XMLCSSStyleDeclaration cssProperties = (XMLCSSStyleDeclaration)cssStyle; //get the CSS2Properties interface, which is expected to be implemented by the DOM CSSStyleDeclaration TODO fix
-			final String displayString = cssProperties.getDisplay(); //get the display property
+			final String displayString = cssStyle.getPropertyValue(CSS_PROP_DISPLAY); //get the display property
 			return displayString.length() == 0 || displayString.equals(CSS_DISPLAY_INLINE); //return true if there is no display string or it is equal to "inline"
 		}
 		return true; //if there is no style, we assume inline

@@ -14,27 +14,25 @@
  * limitations under the License.
  */
 
-package com.globalmentor.text.xml.stylesheets.css;
+package com.globalmentor.text.xml.processor.stylesheets;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 
-import com.globalmentor.text.xml.*;
-import com.globalmentor.text.xml.processor.XMLDocument;
-
-import org.w3c.dom.css.CSSRule;
+import org.w3c.dom.stylesheets.*;
 
 /**
- * A list of CSS rules.
- * @author Garret Wilson
+ * A list of stylesheets in an XML document.
  * @see XMLDocument
- * @see CSSRule
+ * @see XMLStyleSheet
+ * @see StyleSheet
+ * @see StyleSheetList
  * @deprecated
  */
-public class XMLCSSRuleList extends ArrayList implements org.w3c.dom.css.CSSRuleList {
+public class XMLStyleSheetList extends LinkedList implements org.w3c.dom.stylesheets.StyleSheetList {
 
 	/**
-	 * Returns the number of rules in the list. The range of valid rule indices is 0 to <code>length-1</code> inclusive.
-	 * @return The number of rules in the list.
+	 * Returns the number of stylesheets in the list. The range of valid stylesheet indices is 0 to <code>length-1</code> inclusive.
+	 * @return The number of stylesheets in the list.
 	 * @version DOM Level 2
 	 * @since DOM Level 2
 	 */
@@ -43,19 +41,18 @@ public class XMLCSSRuleList extends ArrayList implements org.w3c.dom.css.CSSRule
 	}
 
 	/**
-	 * Returns the <code>index</code>th item in the list. If <code>index</code> is greater than or equal to the number of CSS rules in the list, this returns
+	 * Returns the <code>index</code>th item in the list. If <code>index</code> is greater than or equal to the number of stylesheets in the list, this returns
 	 * <code>null</code>.
 	 * @param index Index into the list.
-	 * @return The CSS rule at the <code>index</code>th position in the list, or <code>null</code> if that is not a valid index.
+	 * @return The stylesheet at the <code>index</code>th position in the list, or <code>null</code> if that is not a valid index.
 	 * @version DOM Level 2
 	 * @since DOM Level 2
 	 */
-	public CSSRule item(int index) {
+	public StyleSheet item(int index) {
 		try {
-			return (CSSRule)get(index); //return the object at the index
+			return (StyleSheet)get(index); //return the object at the index
 		} catch(IndexOutOfBoundsException e) { //if they don't give a valid index
 			return null; //return null instead of throwing an exception
 		}
 	}
-
 }

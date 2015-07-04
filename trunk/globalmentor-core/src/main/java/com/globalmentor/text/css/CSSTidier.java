@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.globalmentor.text.xml.stylesheets.css;
+package com.globalmentor.text.css;
+
+import static com.globalmentor.text.css.CSS.*;
 
 import java.util.*;
-
-import static com.globalmentor.text.xml.stylesheets.css.XMLCSS.*;
 
 import com.globalmentor.java.Strings;
 import com.globalmentor.log.Log;
@@ -42,8 +42,7 @@ import org.w3c.dom.css.*;
  * </ul>
  * @author Garret Wilson
  */
-public class CSSTidier //TODO add a feature to remove empty style declarations
-{
+public class CSSTidier {	//TODO add a feature to remove empty style declarations
 
 	/** Whether font sizes should be made relative to a base font size. */
 	public static final String MAKE_FONT_SIZES_RELATIVE_OPTION = "makeFontSizesRelative";

@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package com.globalmentor.text.xml.stylesheets.css;
+package com.globalmentor.text.xml.processor.stylesheets.css;
 
 import java.net.URI;
 import java.io.*;
 import java.util.*;
 import com.globalmentor.io.*;
 import com.globalmentor.model.NameValuePair;
+import com.globalmentor.text.css.CSSStyleManager;
 import com.globalmentor.text.xml.XML;
 
 import org.w3c.dom.*;
@@ -31,8 +32,7 @@ import org.w3c.dom.css.*;
  * @author Garret Wilson
  * @deprecated
  */
-public class XMLCSSStylesheetApplier extends AbstractXMLCSSStylesheetApplier<Document, Element> implements CSSStyleManager //TODO do we really need this style manager interface? 
-{
+public class XMLCSSStylesheetApplier extends AbstractXMLCSSStylesheetApplier<Document, Element> implements CSSStyleManager {	//TODO do we really need this style manager interface? 
 
 	//TODO maybe move all the map storage stuff to the abstract version
 

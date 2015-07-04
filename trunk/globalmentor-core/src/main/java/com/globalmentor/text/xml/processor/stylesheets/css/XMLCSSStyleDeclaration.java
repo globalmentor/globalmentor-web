@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package com.globalmentor.text.xml.stylesheets.css;
+package com.globalmentor.text.xml.processor.stylesheets.css;
+
+import static com.globalmentor.text.css.CSS.*;
 
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
-import static com.globalmentor.text.xml.stylesheets.css.XMLCSS.*;
-
+import com.globalmentor.text.css.CSS;
 import com.globalmentor.text.xml.processor.XMLDOMException;
 
 import org.w3c.dom.DOMException;
@@ -33,8 +34,7 @@ import org.w3c.dom.css.*;
  * @see org.w3c.dom.css.CSS2Properties
  * @deprecated
  */
-public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements CSSStyleDeclaration //TODO fix, org.w3c.dom.css.CSS2Properties
-{
+public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements CSSStyleDeclaration {	//TODO fix, org.w3c.dom.css.CSS2Properties
 
 	/**
 	 * @return A parsable string representation of this style declaration block, excluding the surrounding curly braces. For the DOM version, see getCssText().
@@ -341,7 +341,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 				primitiveValue.setPriority(priority); //set the priority of the property
 				//if the value is an RGB color or a color identifier value, it's the background color
 				if(primitiveValue.getPrimitiveType() == primitiveValue.CSS_RGBCOLOR
-						|| (primitiveValue.getPrimitiveType() == primitiveValue.CSS_IDENT && XMLCSS.CSS_COLOR_NAME_VALUES.containsKey(primitiveValue.getStringValue()
+						|| (primitiveValue.getPrimitiveType() == primitiveValue.CSS_IDENT && CSS.CSS_COLOR_NAME_VALUES.containsKey(primitiveValue.getStringValue()
 								.toLowerCase()))) {
 					setPropertyCSSValue(CSS_PROP_BACKGROUND_COLOR, primitiveValue); //set the background color property
 				}

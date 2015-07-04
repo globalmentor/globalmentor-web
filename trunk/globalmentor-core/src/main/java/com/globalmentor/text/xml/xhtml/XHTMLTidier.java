@@ -25,17 +25,19 @@ import com.globalmentor.java.*;
 import com.globalmentor.log.Log;
 import com.globalmentor.net.ContentType;
 import com.globalmentor.text.Prose;
+import com.globalmentor.text.css.CSSSerializer;
+import com.globalmentor.text.css.CSSTidier;
+import com.globalmentor.text.css.CSS;
 import com.globalmentor.text.xml.XML;
 import com.globalmentor.text.xml.oeb.OEB;
-import com.globalmentor.text.xml.stylesheets.css.*;
 import com.globalmentor.text.xml.xpath.XPath;
 import com.globalmentor.util.*;
 
 import static com.globalmentor.java.Characters.*;
 import static com.globalmentor.net.ContentTypeConstants.*;
 import static com.globalmentor.text.xml.XML.*;
+import static com.globalmentor.text.css.CSS.*;
 import static com.globalmentor.text.unicode.SymbolEncodingConstants.*;
-import static com.globalmentor.text.xml.stylesheets.css.XMLCSS.*;
 import static com.globalmentor.text.xml.xhtml.XHTML.*;
 
 import org.w3c.dom.*;
@@ -392,6 +394,8 @@ public class XHTMLTidier {
 		*/
 		document.normalize(); //normalize the document so that multiple subsequent text nodes will be combined (important for finding enclosing characters, for instance)
 		if(isExtractInternalStylesheets()) { //if we should extract internal stylesheets
+			throw new UnsupportedOperationException("internal stylesheets not currently supported");
+			/*TODO fix with general stylesheet processor implementation
 			try {
 				final XMLCSSProcessor cssProcessor = new XMLCSSProcessor(); //create a new CSS processor
 				cssProcessor.parseInternalStyleSheets((com.globalmentor.text.xml.processor.XMLDocument)document); //parse the internal stylesheets TODO this needs to be fixed so that it doesn't store stylesheets in the document
@@ -417,6 +421,7 @@ public class XHTMLTidier {
 			} catch(Exception exception) { //if any exception occurs
 				Log.warn(exception); //warn and move on
 			}
+			*/
 		}
 		final Element documentElement = document.getDocumentElement(); //get the root element
 		tidy(documentElement); //tidy the root element and all elements beneath it
@@ -498,8 +503,9 @@ public class XHTMLTidier {
 				tidyStyle((Element)childNode); //tidy the style of this child element
 			}
 		}
+		/*TODO fix with general style processor implementation
 		//get the element's style TODO later remove the cast when XMLCSSStyleDeclaration implements CSS2Properties
-		final XMLCSSStyleDeclaration oldStyle = (XMLCSSStyleDeclaration)XHTML.getLocalStyle(element);
+		final XMLCSSStyleDeclaration oldStyle = (XMLCSSStyleDeclaration)XMLCSSProcessor.getLocalHTMLStyle(element);
 		if(oldStyle != null) { //if there is an existing style
 			final XMLCSSStyleDeclaration newStyle = new XMLCSSStyleDeclaration(); //create a new style declaration to received the tidied styles
 			//TODO automate this style copying
@@ -513,9 +519,7 @@ public class XHTMLTidier {
 			if(listStyleTypeValue != null) //if we have a list style type set
 				newStyle.setPropertyCSSValue(CSS_PROP_LIST_STYLE_TYPE, listStyleTypeValue);
 			//TODO bring over other style properties
-			/*TODO fix
-							((XMLElement)element).setLocalCSSStyle(style);  //set the element's style to whatever we constructed TODO eventually use a separate style tree instead of the element itself
-			*/
+			//TODO fix ((XMLElement)element).setLocalCSSStyle(style);  //set the element's style to whatever we constructed TODO eventually use a separate style tree instead of the element itself
 			final String newStyleValue = newStyle.getCssText().trim(); //get the new style
 			if(newStyleValue.length() > 0) //if we carried any styles over
 				element.setAttributeNS(null, ATTRIBUTE_STYLE, newStyleValue); //change the style to match our new style
@@ -523,6 +527,7 @@ public class XHTMLTidier {
 				//if we didn't carry any styles over
 				element.removeAttributeNS(null, ATTRIBUTE_STYLE); //remove the style attribute
 		}
+		*/
 	}
 
 	/**
@@ -639,9 +644,9 @@ public class XHTMLTidier {
 					//  started a list)
 					if(markerListStyleType != null && (listStyleType == null || markerListStyleType == listStyleType)) {
 						//get what we expect the marker string to be based upon the index this list item would be in the list
-						final String expectedMarkerString = XMLCSS.getMarkerString(markerListStyleType, listItemNodeList.size());
+						final String expectedMarkerString = CSS.getMarkerString(markerListStyleType, listItemNodeList.size());
 						//to detect new lists starting, see what would come at the first of this type of list
-						final String expectedFirstMarkerString = XMLCSS.getMarkerString(markerListStyleType, 0);
+						final String expectedFirstMarkerString = CSS.getMarkerString(markerListStyleType, 0);
 						final boolean isExpectedMarker; //we'll see if this is the marker we were expecting
 						//if this is one of the list types that always have the same marker
 						if(markerListStyleType == CSS_LIST_STYLE_TYPE_CIRCLE || markerListStyleType == CSS_LIST_STYLE_TYPE_DISC
@@ -674,7 +679,7 @@ public class XHTMLTidier {
 					//create a new list element to contain the elements we found
 					final Element listElement = document.createElementNS(elementNamespace, listElementName);
 					//add the class="list-style: listStyleType" attribute with the correct list style TODO maybe later create a style declaration and write it to the class attribute, so this will be created automatically
-					listElement.setAttributeNS(null, ATTRIBUTE_STYLE, CSS_PROP_LIST_STYLE_TYPE + XMLCSS.PROPERTY_DIVIDER_CHAR + XMLCSS.SPACE_CHAR + listStyleType);
+					listElement.setAttributeNS(null, ATTRIBUTE_STYLE, CSS_PROP_LIST_STYLE_TYPE + CSS.PROPERTY_DIVIDER_CHAR + CSS.SPACE_CHAR + listStyleType);
 					final Element firstListItemElement = (Element)listItemNodeList.get(0); //get a reference to our first element to become a list item
 					final Element lastListItemElement = (Element)listItemNodeList.get(listItemNodeList.size() - 1); //get a reference to our last element to become a list item
 					element.insertBefore(listElement, firstListItemElement); //insert our list right before the first list item
@@ -742,7 +747,8 @@ public class XHTMLTidier {
 					float leftMargin = 0; //we'll store the left margin here, if we find one
 					float rightMargin = 0; //we'll store the right margin here, if we find one
 					final Element childElement = (Element)childNode; //cast the node to an element
-					final CSSStyleDeclaration style = XHTML.getLocalStyle(childElement); //get the child element's style from the style attribute
+					/*TODO fix with general stylesheet processor implementation
+					final CSSStyleDeclaration style = XMLCSSProcessor.getLocalHTMLStyle(childElement); //get the child element's style from the style attribute
 					if(style != null) { //if this element has a local style
 						final CSSPrimitiveValue leftMarginValue = (CSSPrimitiveValue)style.getPropertyCSSValue(CSS_PROP_MARGIN_LEFT); //get the left margin value
 						if(leftMarginValue != null) { //if there's a left margin value
@@ -750,24 +756,24 @@ public class XHTMLTidier {
 							if(rightMarginValue != null) { //if there's a right margin value
 								leftMargin = leftMarginValue.getFloatValue(leftMarginValue.getPrimitiveType()); //get the left margin, ignoring the units
 								rightMargin = leftMarginValue.getFloatValue(rightMarginValue.getPrimitiveType()); //get the left margin, ignoring the units
-								/*TODO del when works
-																if(leftMargin==rightMargin) {	//if the left and right margins are identical, we assume this is a blockquote
-																	if(leftMargin>margin) {	//if the margin increased, this is the start of another blockquote
-																		blockquoteNodeList.clear(); //we'll start the list over, because this is a nested blockquote
-																		blockquoteNodeList.add(childElement); //add this element which will become a blockquote
-																		margin=leftMargin;  //show the margin our new blockquote uses
-																	}
-																	else if(leftMargin>0 && leftMargin==margin) {	//if this is valid blockquote at the same level of blockquote we had before
-																		blockquoteNodeList.add(childElement); //add this element to our list of elements to become blockquotes
-																	}
-																	else if(blockquoteNodeList.size()>0) {	//if the margin decreased, the blockqoute is finished
-																		break;  //we finished a blockquote; stop this current iteration of searching
-																	}
-																}
-								*/
+//TODO del when works
+//								if(leftMargin==rightMargin) {	//if the left and right margins are identical, we assume this is a blockquote
+//									if(leftMargin>margin) {	//if the margin increased, this is the start of another blockquote
+//										blockquoteNodeList.clear(); //we'll start the list over, because this is a nested blockquote
+//										blockquoteNodeList.add(childElement); //add this element which will become a blockquote
+//										margin=leftMargin;  //show the margin our new blockquote uses
+//									}
+//									else if(leftMargin>0 && leftMargin==margin) {	//if this is valid blockquote at the same level of blockquote we had before
+//										blockquoteNodeList.add(childElement); //add this element to our list of elements to become blockquotes
+//									}
+//									else if(blockquoteNodeList.size()>0) {	//if the margin decreased, the blockqoute is finished
+//										break;  //we finished a blockquote; stop this current iteration of searching
+//									}
+//								}
 							}
 						}
 					}
+					*/
 					//TODO it would probably be best to give the left and right margins some initial invalid number
 					//if this is a blockquote and we've started a list, assume this is a nested blockquote
 					if(ELEMENT_DIV.equals(childNodeName) && "fullIndent".equals(childElement.getAttributeNS(null, "class")) && blockquoteNodeList.size() > 0) { //G**use constants here
@@ -1206,16 +1212,15 @@ public class XHTMLTidier {
 			//TODO del			try
 			{
 				if(styleValue.length() != 0) { //if there is a style value
-
+/*TODO fix with general style processing implementation
 					//TODO move all of this to tidy text or something
-					final XMLCSSStyleDeclaration oldStyle = (XMLCSSStyleDeclaration)XHTML.getLocalStyle(element); //get the element's style TODO later remove the cast when XMLCSSStyleDeclaration implements CSS2Properties
-					/*TODO del when works
-												//TODO change to XHTMLUtilities.getLocalStyle()
-										final XMLCSSProcessor cssProcessor=new XMLCSSProcessor();	//create a new CSS processor TODO make one for the entire tidier object -- don't create it locally
-										final XMLCSSStyleDeclaration oldStyle=new XMLCSSStyleDeclaration(); //create a new style declaration
-										final ParseReader styleReader=new ParseReader(styleValue, "Element "+element.getNodeName()+" Local Style");	//create a string reader from the value of this local style attribute TODO i18n
-										cssProcessor.parseRuleSet(styleReader, oldStyle); //read the style into our style declaration
-					*/
+					final XMLCSSStyleDeclaration oldStyle = (XMLCSSStyleDeclaration)XMLCSSProcessor.getLocalHTMLStyle(element); //get the element's style TODO later remove the cast when XMLCSSStyleDeclaration implements CSS2Properties
+//TODO del when works
+//							//TODO change to XHTMLUtilities.getLocalStyle()
+//					final XMLCSSProcessor cssProcessor=new XMLCSSProcessor();	//create a new CSS processor TODO make one for the entire tidier object -- don't create it locally
+//					final XMLCSSStyleDeclaration oldStyle=new XMLCSSStyleDeclaration(); //create a new style declaration
+//					final ParseReader styleReader=new ParseReader(styleValue, "Element "+element.getNodeName()+" Local Style");	//create a string reader from the value of this local style attribute TODO i18n
+//					cssProcessor.parseRuleSet(styleReader, oldStyle); //read the style into our style declaration
 					//TODO check for parseRuleSet() return value
 					final String textTransform = oldStyle.getTextTransform(); //see if there is a text transform request
 					if(textTransform.length() > 0) { //if a text transformation was requested
@@ -1241,6 +1246,7 @@ public class XHTMLTidier {
 					final CSSValue listStyleTypeValue = oldStyle.getPropertyCSSValue(CSS_PROP_LIST_STYLE_TYPE);
 					if(listStyleTypeValue != null) //if we have a list style type set
 						newStyle.setPropertyCSSValue(CSS_PROP_LIST_STYLE_TYPE, listStyleTypeValue);
+*/
 					//TODO bring over other style properties
 
 					/*TODO fix

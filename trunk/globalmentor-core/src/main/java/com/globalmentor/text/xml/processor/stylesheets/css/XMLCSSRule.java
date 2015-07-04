@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.globalmentor.text.xml.stylesheets.css;
+package com.globalmentor.text.xml.processor.stylesheets.css;
 
 import org.w3c.dom.DOMException;
 import org.w3c.dom.css.*;
@@ -27,8 +27,7 @@ import org.w3c.dom.css.*;
  * @see org.w3c.dom.css.CSSRule
  * @deprecated
  */
-public abstract class XMLCSSRule implements CSSRule//TODO fix, Cloneable
-{
+public abstract class XMLCSSRule implements CSSRule {	//TODO fix, Cloneable
 
 	/**
 	 * Constructor which requires a parent stylesheet to be specified.

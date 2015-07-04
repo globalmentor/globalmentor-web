@@ -14,24 +14,16 @@
  * limitations under the License.
  */
 
-package com.globalmentor.text.xml.stylesheets.css;
+package com.globalmentor.text.xml.processor.stylesheets.css;
+
+import static com.globalmentor.text.css.CSS.*;
 
 import java.io.*;
 import java.net.URI;
 
-import static com.globalmentor.text.xml.stylesheets.css.XMLCSS.*;
-
 import com.globalmentor.io.*;
-import com.globalmentor.text.xml.*;
-import com.globalmentor.text.xml.processor.XMLComment;
-import com.globalmentor.text.xml.processor.XMLDocument;
-import com.globalmentor.text.xml.processor.XMLElement;
-import com.globalmentor.text.xml.processor.XMLNode;
-import com.globalmentor.text.xml.processor.XMLNodeList;
-import com.globalmentor.text.xml.processor.XMLSyntaxException;
-import com.globalmentor.text.xml.processor.XMLUndefinedEntityReferenceException;
-import com.globalmentor.text.xml.processor.XMLValidityException;
-import com.globalmentor.text.xml.processor.XMLWellFormednessException;
+import com.globalmentor.text.xml.processor.*;
+import com.globalmentor.text.xml.xhtml.XHTML;
 
 import org.w3c.dom.*;
 import org.w3c.dom.stylesheets.StyleSheet;
@@ -516,6 +508,28 @@ public class XMLCSSProcessor implements URIInputStreamable {
 		//TODO fix			entityReader.setCurrentLineIndex(entity.getLineIndex());	//pretend we're reading where the entity was located in that file, so any errors will show the correct information
 		//TODO fix			entityReader.setCurrentCharIndex(entity.getCharIndex());	//pretend we're reading where the entity was located in that file, so any errors will show the correct information
 		parseStyleSheetContent(styleSheetReader, styleSheet); //parse the stylesheet content
+	}
+
+	/**
+	 * Checks to see if the given element contains a <code>style</code> attribute, and if so returns a style declaration containing the given style properties.
+	 * @param element The element to check for a style
+	 * @return A style declaration representing the style in the style attribute, or <code>null</code> if there is no style in the style attribute.
+	 * @deprecated
+	 */
+	public static CSSStyleDeclaration getLocalHTMLStyle(final Element element) {	//TODO fix and move to some HTML-specific package
+		final String styleValue = element.getAttributeNS(null, XHTML.ATTRIBUTE_STYLE); //get the value of the style attribute
+		if(styleValue.length() != 0) { //if there is a style value
+			final XMLCSSProcessor cssProcessor = new XMLCSSProcessor(); //create a new CSS processor TODO make one for the entire tidier object, if we can -- don't create it locally
+			final XMLCSSStyleDeclaration style = new XMLCSSStyleDeclaration(); //create a new style declaration
+			try {
+				final ParseReader styleReader = new ParseReader(styleValue, "Element " + element.getNodeName() + " Local Style"); //create a string reader from the value of this local style attribute TODO i18n
+				cssProcessor.parseRuleSet(styleReader, style); //read the style into our style declaration
+				return style; //return the style
+			} catch(IOException e) { //if we have any errors reading the style
+				return null; //show that we didn't understand the style
+			}
+		}
+		return null; //show that we couldn't find a style
 	}
 
 }

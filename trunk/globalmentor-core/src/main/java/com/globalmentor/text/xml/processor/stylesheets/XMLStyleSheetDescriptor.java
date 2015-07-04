@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-package com.globalmentor.text.xml.stylesheets;
+package com.globalmentor.text.xml.processor.stylesheets;
 
 /**
  * Class that encapsulates necessary information for referencing a stylesheet.
  * @author Garret Wilson
  * @deprecated
  */
-public class XMLStyleSheetDescriptor //TODO fix media type, title, etc.
-{
+public class XMLStyleSheetDescriptor {	//TODO fix media type, title, etc.
 
 	/** The reference to the stylesheet's location. */
 	private final String href;

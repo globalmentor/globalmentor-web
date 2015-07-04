@@ -43,37 +43,37 @@ public class XMLSchema {
 	public static final String ATTRIBUTE_NAME = "name";
 
 	//XML schema datatype names TODO maybe put these in a separate datatype class
-	/** The name for the base64 binary datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#base64Binary</code>. */
+	/** The name for the base64 binary datatype. The fragment identifier of <code>http://www.w3.org/2001/XMLSchema#base64Binary</code>. */
 	public static final String BASE64_BINARY_DATATYPE_NAME = "base64Binary";
-	/** The name for the boolean datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#boolean</code>. */
+	/** The name for the boolean datatype. The fragment identifier of <code>http://www.w3.org/2001/XMLSchema#boolean</code>. */
 	public static final String BOOLEAN_DATATYPE_NAME = "boolean";
-	/** The name for the byte datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#byte</code>. */
+	/** The name for the byte datatype. The fragment identifier of <code>http://www.w3.org/2001/XMLSchema#byte</code>. */
 	public static final String BYTE_DATATYPE_NAME = "byte";
-	/** The name for the date datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#date</code>. */
+	/** The name for the date datatype. The fragment identifier of <code>http://www.w3.org/2001/XMLSchema#date</code>. */
 	public static final String DATE_DATATYPE_NAME = "date";
-	/** The name for the date time datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#dateTime</code>. */
+	/** The name for the date time datatype. The fragment identifier of <code>http://www.w3.org/2001/XMLSchema#dateTime</code>. */
 	public static final String DATE_TIME_DATATYPE_NAME = "dateTime";
-	/** The name for the decimal datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#decimal</code>. */
+	/** The name for the decimal datatype. The fragment identifier of <code>http://www.w3.org/2001/XMLSchema#decimal</code>. */
 	public static final String DECIMAL_DATATYPE_NAME = "decimal";
-	/** The name for the double datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#double</code>. */
+	/** The name for the double datatype. The fragment identifier of <code>http://www.w3.org/2001/XMLSchema#double</code>. */
 	public static final String DOUBLE_DATATYPE_NAME = "double";
-	/** The name for the duration datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#duration</code>. */
+	/** The name for the duration datatype. The fragment identifier of <code>http://www.w3.org/2001/XMLSchema#duration</code>. */
 	public static final String DURATION_DATATYPE_NAME = "duration";
-	/** The name for the float datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#float</code>. */
+	/** The name for the float datatype. The fragment identifier of <code>http://www.w3.org/2001/XMLSchema#float</code>. */
 	public static final String FLOAT_DATATYPE_NAME = "float";
-	/** The name for the int datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#int</code>. */
+	/** The name for the int datatype. The fragment identifier of <code>http://www.w3.org/2001/XMLSchema#int</code>. */
 	public static final String INT_DATATYPE_NAME = "int";
-	/** The name for the integer datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#integer</code>. */
+	/** The name for the integer datatype. The fragment identifier of <code>http://www.w3.org/2001/XMLSchema#integer</code>. */
 	public static final String INTEGER_DATATYPE_NAME = "integer";
-	/** The name for the long datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#long</code>. */
+	/** The name for the long datatype. The fragment identifier of <code>http://www.w3.org/2001/XMLSchema#long</code>. */
 	public static final String LONG_DATATYPE_NAME = "long";
-	/** The name for the short datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#short</code>. */
+	/** The name for the short datatype. The fragment identifier of <code>http://www.w3.org/2001/XMLSchema#short</code>. */
 	public static final String SHORT_DATATYPE_NAME = "short";
-	/** The name for the string datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#string</code>. */
+	/** The name for the string datatype. The fragment identifier of <code>http://www.w3.org/2001/XMLSchema#string</code>. */
 	public static final String STRING_DATATYPE_NAME = "string";
-	/** The name for the time datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#time</code>. */
+	/** The name for the time datatype. The fragment identifier of <code>http://www.w3.org/2001/XMLSchema#time</code>. */
 	public static final String TIME_DATATYPE_NAME = "time";
-	/** The name for the URI datatype. The fragement identifier of <code>http://www.w3.org/2001/XMLSchema#anyURI</code>. */
+	/** The name for the URI datatype. The fragment identifier of <code>http://www.w3.org/2001/XMLSchema#anyURI</code>. */
 	public static final String URI_DATATYPE_NAME = "anyURI";
 	//XML schema datatypes
 	/** The base 64 binary datatype. */

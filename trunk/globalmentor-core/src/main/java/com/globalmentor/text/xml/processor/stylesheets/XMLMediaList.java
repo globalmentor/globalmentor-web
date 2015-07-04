@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.globalmentor.text.xml.stylesheets;
+package com.globalmentor.text.xml.processor.stylesheets;
 
 import java.util.ArrayList;
 

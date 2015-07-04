@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.globalmentor.text.xml.stylesheets;
+package com.globalmentor.text.xml;
 
 /**
  * Constants for linking an XML documents to a stylesheet according to <a href="http://www.w3.org/TR/xml-stylesheet">http://www.w3.org/TR/xml-stylesheet</a>.
@@ -23,7 +23,6 @@ package com.globalmentor.text.xml.stylesheets;
  */
 public class XMLStyleSheets {
 
-	//stylesheet processing instruction
 	/**
 	 * The processing instruction for linking an XML document to a stylesheet according to <a href="http://www.w3.org/TR/xml-stylesheet">Associating Style Sheets
 	 * with XML documents</a>.

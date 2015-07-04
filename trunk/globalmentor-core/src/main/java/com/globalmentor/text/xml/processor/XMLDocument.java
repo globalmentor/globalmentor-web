@@ -91,16 +91,16 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	/**
 	 * The list of stylesheets for this document, in order encountered.
 	 * @see org.w3c.dom.stylesheets.StyleSheet
-	 * @see com.globalmentor.text.xml.stylesheets.XMLStyleSheet
-	 * @see com.globalmentor.text.xml.stylesheets.css.XMLCSSStyleSheet
+	 * @see com.globalmentor.text.xml.processor.stylesheets.XMLStyleSheet
+	 * @see com.globalmentor.text.xml.processor.stylesheets.css.XMLCSSStyleSheet
 	 */
 	private List StyleSheetList = new ArrayList(); //TODO remove this proprietary stuff when we can
 
 	/**
 	 * @return The list of stylesheets for this document in order encountered.
 	 * @see org.w3c.dom.stylesheets.StyleSheet
-	 * @see com.globalmentor.text.xml.stylesheets.XMLStyleSheet
-	 * @see com.globalmentor.text.xml.stylesheets.css.XMLCSSStyleSheet
+	 * @see com.globalmentor.text.xml.processor.stylesheets.XMLStyleSheet
+	 * @see com.globalmentor.text.xml.processor.stylesheets.css.XMLCSSStyleSheet
 	 */
 	public List getStyleSheetList() {
 		return StyleSheetList;

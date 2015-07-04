@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.globalmentor.text.xml.stylesheets.css;
+package com.globalmentor.text.css;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -22,7 +22,7 @@ import java.util.*;
 
 import org.w3c.dom.css.*;
 
-import static com.globalmentor.text.xml.stylesheets.css.XMLCSS.*;
+import static com.globalmentor.text.css.CSS.*;
 import static java.nio.charset.StandardCharsets.*;
 
 /**
@@ -31,8 +31,7 @@ import static java.nio.charset.StandardCharsets.*;
  * @author Garret Wilson
  * @see XMLCSSProcessor
  */
-public class CSSSerializer //TODO del all the XMLUndefinedEntityReferenceException throws when we don't need them anymore, in favor of XMLWellFormednessException
-{
+public class CSSSerializer {	//TODO del all the XMLUndefinedEntityReferenceException throws when we don't need them anymore, in favor of XMLWellFormednessException
 
 	/**
 	 * Sets the options based on the contents of the option properties.

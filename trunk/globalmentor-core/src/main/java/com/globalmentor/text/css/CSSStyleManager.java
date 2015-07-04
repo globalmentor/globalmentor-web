@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.globalmentor.text.xml.stylesheets.css;
+package com.globalmentor.text.css;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.css.CSSStyleDeclaration;

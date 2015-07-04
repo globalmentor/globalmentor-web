@@ -76,8 +76,7 @@ import org.w3c.dom.*;
  * </dl>
  * @author Garret Wilson
  */
-public class ProjectGutenbergXHTMLTidier //TODO move to different package
-{
+public class ProjectGutenbergXHTMLTidier {	//TODO move to different package
 
 	/**
 	 * The first part of the words "Project Gutenberg". Some works such as optns10.txt misspell this as "Project Gutenburg".

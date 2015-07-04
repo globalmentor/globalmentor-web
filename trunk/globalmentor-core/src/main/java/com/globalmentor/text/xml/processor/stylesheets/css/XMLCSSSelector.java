@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.globalmentor.text.xml.stylesheets.css;
+package com.globalmentor.text.xml.processor.stylesheets.css;
 
 import org.w3c.dom.Element;
 
@@ -24,8 +24,7 @@ import org.w3c.dom.Element;
  * @see XMLCSSStyleRule
  * @deprecated
  */
-public class XMLCSSSelector//TODO fix, Cloneable
-{
+public class XMLCSSSelector {	//TODO fix, Cloneable
 
 	/*Constructor which requires a tag name and a class.
 	@param tagName The name of the tag this selector matches,

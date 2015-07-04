@@ -23,7 +23,6 @@ import java.util.*;
 import javax.xml.parsers.*;
 
 import org.w3c.dom.*;
-import org.w3c.dom.css.CSSStyleDeclaration;
 
 import com.globalmentor.config.ConfigurationException;
 import com.globalmentor.io.*;
@@ -36,7 +35,6 @@ import com.globalmentor.model.IDed;
 import com.globalmentor.net.ContentType;
 import com.globalmentor.text.xml.XML;
 import com.globalmentor.text.xml.oeb.OEB;
-import com.globalmentor.text.xml.stylesheets.css.*;
 
 import static com.globalmentor.text.ASCII.*;
 import static com.globalmentor.text.xml.xpath.XPath.*;
@@ -763,28 +761,6 @@ public class XHTML {
 	 */
 	public static boolean hasLinkType(final Element element, final String linkType) {
 		return containsTokenIgnoreCase(element.getAttributeNS(null, LINK_ATTRIBUTE_REL), SPACE_CHARACTERS, linkType); //see if the given link type ID is one of the tokens in the "rel" attribute value
-	}
-
-	/**
-	 * Checks to see if the given element contains a <code>style</code> attribute, and if so returns a style declaration containing the given style properties.
-	 * @param element The element to check for a style
-	 * @return A style declaration representing the style in the style attribute, or <code>null</code> if there is no style in the style attribute.
-	 * @deprecated
-	 */
-	public static CSSStyleDeclaration getLocalStyle(final Element element) {
-		final String styleValue = element.getAttributeNS(null, ATTRIBUTE_STYLE); //get the value of the style attribute
-		if(styleValue.length() != 0) { //if there is a style value
-			final XMLCSSProcessor cssProcessor = new XMLCSSProcessor(); //create a new CSS processor TODO make one for the entire tidier object, if we can -- don't create it locally
-			final XMLCSSStyleDeclaration style = new XMLCSSStyleDeclaration(); //create a new style declaration
-			try {
-				final ParseReader styleReader = new ParseReader(styleValue, "Element " + element.getNodeName() + " Local Style"); //create a string reader from the value of this local style attribute TODO i18n
-				cssProcessor.parseRuleSet(styleReader, style); //read the style into our style declaration
-				return style; //return the style
-			} catch(IOException e) { //if we have any errors reading the style
-				return null; //show that we didn't understand the style
-			}
-		}
-		return null; //show that we couldn't find a style
 	}
 
 	/**
