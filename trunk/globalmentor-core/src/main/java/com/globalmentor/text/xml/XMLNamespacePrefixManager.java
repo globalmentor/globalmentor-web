@@ -24,7 +24,6 @@ import com.globalmentor.dcmi.DCMI;
 import com.globalmentor.foaf.FOAF;
 import com.globalmentor.net.http.webdav.*;
 import static com.globalmentor.net.URIs.*;
-import com.globalmentor.rdf.dicto.Dicto;
 import com.globalmentor.text.xml.oeb.OEB;
 import com.globalmentor.text.xml.schema.XMLSchema;
 import com.globalmentor.text.xml.xhtml.XHTML;
@@ -74,7 +73,7 @@ public class XMLNamespacePrefixManager //TODO replace with XMLNamespaceLabelMana
 	/** Default constructor that is initialized with a default set of namespace prefix mappings. */
 	public XMLNamespacePrefixManager() {
 		registerNamespacePrefix(ApacheWebDAV.APACHE_WEBDAV_PROPERTY_NAMESPACE_URI.toString(), ApacheWebDAV.APACHE_WEBDAV_PROPERTY_NAMESPACE_PREFIX); //Apache WebDAV properties
-		registerNamespacePrefix(Dicto.DICTO_NAMESPACE_URI.toString(), Dicto.DICTO_NAMESPACE_PREFIX); //Dicto
+		registerNamespacePrefix("http://globalmentor.com/namespaces/2003/dicto#", "dicto"); //Dicto
 		registerNamespacePrefix(DCMI.DCMI11_ELEMENTS_NAMESPACE_URI.toString(), DCMI.DCMI_ELEMENTS_NAMESPACE_PREFIX); //Dublin Core
 		registerNamespacePrefix(FOAF.FOAF_NAMESPACE_URI.toString(), FOAF.FOAF_NAMESPACE_PREFIX); //FOAF
 		//TODO convert to URF		registerNamespacePrefix(MAQRO.MAQRO_NAMESPACE_URI.toString(), MAQRO.MAQRO_NAMESPACE_PREFIX); //MAQRO

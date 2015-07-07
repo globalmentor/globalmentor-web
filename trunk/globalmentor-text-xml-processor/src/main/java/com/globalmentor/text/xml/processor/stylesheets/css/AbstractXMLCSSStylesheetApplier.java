@@ -31,7 +31,6 @@ import com.globalmentor.log.Log;
 import com.globalmentor.model.NameValuePair;
 import com.globalmentor.net.ContentType;
 import com.globalmentor.net.URIs;
-import com.globalmentor.rdf.RDFResource;
 import com.globalmentor.text.xml.XML;
 import com.globalmentor.text.xml.processor.stylesheets.XMLStyleSheetDescriptor;
 import com.globalmentor.text.xml.xhtml.XHTML;
@@ -165,10 +164,10 @@ public abstract class AbstractXMLCSSStylesheetApplier<D, E> implements URIInputS
 	 * @param description An XPackage-compliant description of the document, or <code>null</code> if no description is available.
 	 * @return An array of stylesheets.
 	 */
-	public CSSStyleSheet[] getStylesheets(final D document, final URI baseURI, final ContentType mediaType, final RDFResource description) {
+	public CSSStyleSheet[] getStylesheets(final D document, final URI baseURI, final ContentType mediaType/*TODO convert to something general, final RDFResource description*/) {
 		final List<CSSStyleSheet> styleSheetList = new ArrayList<CSSStyleSheet>(); //create a new list to hold the stylesheets
 		//get all default stylesheets
-		final String[] namespaceURIArray = getNamespaceURIs(document, mediaType, description); //get all namespaces used in this document
+		final String[] namespaceURIArray = getNamespaceURIs(document, mediaType/*TODO fix, description*/); //get all namespaces used in this document
 		for(int i = 0; i < namespaceURIArray.length; ++i) { //look at each namespace
 			final String namespaceURI = namespaceURIArray[i]; //get this namespace
 			final CSSStyleSheet cssStyleSheet = XMLCSS.getDefaultStyleSheet(namespaceURI); //get the default stylesheet for the given namespace
@@ -179,7 +178,7 @@ public abstract class AbstractXMLCSSStylesheetApplier<D, E> implements URIInputS
 		//gather all stylesheet links
 		final XMLCSSProcessor cssProcessor = new XMLCSSProcessor(this); //create a new CSS processor for parsing all the stylesheets, showing that we'll worry about getting the needed input streams
 		//gather all the references to external stylesheets
-		final XMLStyleSheetDescriptor[] styleSheetDescriptorArray = getStylesheetDescriptors(document, description);
+		final XMLStyleSheetDescriptor[] styleSheetDescriptorArray = getStylesheetDescriptors(document/*TODO convert to something general, description*/);
 		if(styleSheetDescriptorArray.length > 0) { //if there are stylesheet descriptors
 			for(int i = 0; i < styleSheetDescriptorArray.length; ++i) { //look at each stylesheet descriptor
 				final XMLStyleSheetDescriptor styleSheetDescriptor = styleSheetDescriptorArray[i]; //get the next descriptor
@@ -265,7 +264,7 @@ public abstract class AbstractXMLCSSStylesheetApplier<D, E> implements URIInputS
 	 * @param description An XPackage-compliant description of the document, or <code>null</code> if no description is available.
 	 * @return A non-<code>null</code> array of namespace URIs.
 	 */
-	protected String[] getNamespaceURIs(final D document, final ContentType mediaType, final RDFResource description) { //TODO fix to actually look through all the namespaces, maybe, but that could be intensive -- on the other hand, a subclass could get that information from the OEB package, overriding the intensive part
+	protected String[] getNamespaceURIs(final D document, final ContentType mediaType/*TODO convert to something general, final RDFResource description*/) { //TODO fix to actually look through all the namespaces, maybe, but that could be intensive -- on the other hand, a subclass could get that information from the OEB package, overriding the intensive part
 		final Set<String> namespaceURISet = new HashSet<String>(); //create a set of namespaces
 		final E documentElement = getDocumentElement(document); //get the root element of the document
 		final String documentElementNamespaceURI = getElementNamespaceURI(documentElement); //get the document element namespace URI
@@ -289,7 +288,7 @@ public abstract class AbstractXMLCSSStylesheetApplier<D, E> implements URIInputS
 	 * @param description An XPackage-compliant description of the document, or <code>null</code> if no description is available.
 	 * @return An array of style sheet descriptors, each referencing a stylesheet.
 	 */
-	protected XMLStyleSheetDescriptor[] getStylesheetDescriptors(final D document, final RDFResource description) {
+	protected XMLStyleSheetDescriptor[] getStylesheetDescriptors(final D document/*TODO convert to something general, final RDFResource description*/) {
 		final List<XMLStyleSheetDescriptor> styleSheetDescriptorList = new ArrayList<XMLStyleSheetDescriptor>(); //create a list to hold stylesheet descriptors
 		//gather all XML processing instructions stylesheet links
 		//find stylesheet references from processing instructions
