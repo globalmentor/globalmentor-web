@@ -24,11 +24,7 @@ import com.globalmentor.dcmi.DCMI;
 import com.globalmentor.foaf.FOAF;
 import com.globalmentor.net.http.webdav.*;
 import static com.globalmentor.net.URIs.*;
-import com.globalmentor.rdf.RDF;
 import com.globalmentor.rdf.dicto.Dicto;
-import com.globalmentor.rdf.directory.vcard.RDFVCard;
-import com.globalmentor.rdf.rdfs.RDFS;
-import com.globalmentor.rdf.version.RDFVersion;
 import com.globalmentor.text.xml.oeb.OEB;
 import com.globalmentor.text.xml.schema.XMLSchema;
 import com.globalmentor.text.xml.xhtml.XHTML;
@@ -87,11 +83,11 @@ public class XMLNamespacePrefixManager //TODO replace with XMLNamespaceLabelMana
 		registerNamespacePrefix("http://marmox.net/namespaces/content#", "content"); //Marmox content
 		//TODO del		registerNamespacePrefix(PLOOP.PLOOP_PROPERTY_NAMESPACE_URI.toString(), PLOOP.PLOOP_PROPERTY_NAMESPACE_PREFIX); //PLOOP property
 		//TODO del		registerNamespacePrefix(QTIConstants.QTI_1_1_NAMESPACE_URI.toString(), QTIConstants.QTI_NAMESPACE_PREFIX); //QTI
-		registerNamespacePrefix(RDF.RDF_NAMESPACE_URI.toString(), RDF.RDF_NAMESPACE_PREFIX); //RDF
-		registerNamespacePrefix(RDFS.RDFS_NAMESPACE_URI.toString(), RDFS.RDFS_NAMESPACE_PREFIX); //RDFS
+		registerNamespacePrefix("http://www.w3.org/1999/02/22-rdf-syntax-ns#", "rdf"); //RDF
+		registerNamespacePrefix("http://www.w3.org/2000/01/rdf-schema#", "rdfs"); //RDFS
 		//TODO add SOAP
-		registerNamespacePrefix(RDFVCard.VCARD_NAMESPACE_URI.toString(), RDFVCard.VCARD_NAMESPACE_PREFIX); //vCard
-		registerNamespacePrefix(RDFVersion.VERSION_NAMESPACE_URI.toString(), RDFVersion.VERSION_NAMESPACE_PREFIX); //version
+		registerNamespacePrefix("http://www.w3.org/2006/vcard/ns#", "vcard"); //vCard
+		registerNamespacePrefix("http://globalmentor.com/namespaces/2003/version#", "ver"); //version
 		registerNamespacePrefix(XMLSchema.XML_SCHEMA_NAMESPACE_URI.toString(), XMLSchema.XML_SCHEMA_NAMESPACE_PREFIX); //XML Schema
 		registerNamespacePrefix(XHTML.XHTML_NAMESPACE_URI.toString(), XHTML.XHTML_NAMESPACE_PREFIX); //XHTML
 		registerNamespacePrefix(XLink.XLINK_NAMESPACE_URI.toString(), XLink.XLINK_NAMESPACE_PREFIX); //XLink

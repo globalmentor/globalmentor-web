@@ -27,7 +27,6 @@ import static com.globalmentor.rdf.RDFResources.*;
 import com.globalmentor.rdf.rdfs.RDFS;
 import com.globalmentor.rdf.xmlschema.XMLSchemaRDFTypedLiteralFactory;
 import com.globalmentor.text.xml.schema.XMLSchema;
-import com.globalmentor.util.*;
 
 /**
  * An RDF data model.
@@ -59,9 +58,6 @@ public class RDF //TODO special-case rdf:nil list resources so that they are not
 
 	/** The URI to the RDF namespace. */
 	public static final URI RDF_NAMESPACE_URI = URI.create("http://www.w3.org/1999/02/22-rdf-syntax-ns#");
-
-	/** The name extension for Resource Description Framework (RDF) files. */
-	public static final String RDF_NAME_EXTENSION = "rdf";
 
 	//RDF property names
 	/** The pseudo-property name of a member container used only for serialization. The local name of rdf:li. */
