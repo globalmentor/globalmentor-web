@@ -22,7 +22,6 @@ import static com.globalmentor.java.Java.*;
 
 import com.globalmentor.dcmi.DCMI;
 import com.globalmentor.foaf.FOAF;
-import com.globalmentor.net.http.webdav.*;
 import static com.globalmentor.net.URIs.*;
 import com.globalmentor.text.xml.oeb.OEB;
 import com.globalmentor.text.xml.schema.XMLSchema;
@@ -72,7 +71,7 @@ public class XMLNamespacePrefixManager //TODO replace with XMLNamespaceLabelMana
 
 	/** Default constructor that is initialized with a default set of namespace prefix mappings. */
 	public XMLNamespacePrefixManager() {
-		registerNamespacePrefix(ApacheWebDAV.APACHE_WEBDAV_PROPERTY_NAMESPACE_URI.toString(), ApacheWebDAV.APACHE_WEBDAV_PROPERTY_NAMESPACE_PREFIX); //Apache WebDAV properties
+		registerNamespacePrefix("http://apache.org/dav/props/", "apache"); //Apache WebDAV properties
 		registerNamespacePrefix("http://globalmentor.com/namespaces/2003/dicto#", "dicto"); //Dicto
 		registerNamespacePrefix(DCMI.DCMI11_ELEMENTS_NAMESPACE_URI.toString(), DCMI.DCMI_ELEMENTS_NAMESPACE_PREFIX); //Dublin Core
 		registerNamespacePrefix(FOAF.FOAF_NAMESPACE_URI.toString(), FOAF.FOAF_NAMESPACE_PREFIX); //FOAF
@@ -95,7 +94,7 @@ public class XMLNamespacePrefixManager //TODO replace with XMLNamespaceLabelMana
 		//TODO del		registerNamespacePrefix(FileOntologyConstants.FILE_ONTOLOGY_NAMESPACE_URI.toString(), FileOntologyConstants.FILE_ONTOLOGY_NAMESPACE_PREFIX); //XPackage file ontology
 		//TODO add XPackage Unicode ontology
 		//TODO del		registerNamespacePrefix(MIMEOntologyConstants.MIME_ONTOLOGY_NAMESPACE_URI.toString(), MIMEOntologyConstants.MIME_ONTOLOGY_NAMESPACE_PREFIX); //XPackage MIME ontology
-		registerNamespacePrefix(WebDAV.WEBDAV_NAMESPACE, WebDAV.WEBDAV_NAMESPACE_PREFIX); //WebDAV namespace (quasi-URI)
+		registerNamespacePrefix("DAV:", "D"); //WebDAV namespace (quasi-URI) TODO decide where to put this; it is dangerous to have a non-URI in the list
 	}
 
 	/** The prefix, "java:", of a Java package namespace URI. */
