@@ -20,8 +20,6 @@ import java.util.*;
 
 import static com.globalmentor.java.Java.*;
 
-import com.globalmentor.dcmi.DCMI;
-import com.globalmentor.foaf.FOAF;
 import static com.globalmentor.net.URIs.*;
 import com.globalmentor.text.xml.oeb.OEB;
 import com.globalmentor.text.xml.schema.XMLSchema;
@@ -73,8 +71,8 @@ public class XMLNamespacePrefixManager //TODO replace with XMLNamespaceLabelMana
 	public XMLNamespacePrefixManager() {
 		registerNamespacePrefix("http://apache.org/dav/props/", "apache"); //Apache WebDAV properties
 		registerNamespacePrefix("http://globalmentor.com/namespaces/2003/dicto#", "dicto"); //Dicto
-		registerNamespacePrefix(DCMI.DCMI11_ELEMENTS_NAMESPACE_URI.toString(), DCMI.DCMI_ELEMENTS_NAMESPACE_PREFIX); //Dublin Core
-		registerNamespacePrefix(FOAF.FOAF_NAMESPACE_URI.toString(), FOAF.FOAF_NAMESPACE_PREFIX); //FOAF
+		registerNamespacePrefix("http://purl.org/dc/elements/1.1/", "dc"); //Dublin Core
+		registerNamespacePrefix("http://xmlns.com/foaf/0.1/", "foaf"); //FOAF
 		//TODO convert to URF		registerNamespacePrefix(MAQRO.MAQRO_NAMESPACE_URI.toString(), MAQRO.MAQRO_NAMESPACE_PREFIX); //MAQRO
 		registerNamespacePrefix(OEB.OEB1_DOCUMENT_NAMESPACE_URI.toString(), OEB.OEB1_DOCUMENT_NAMESPACE_PREFIX); //OEB 1
 		registerNamespacePrefix("http://globalmentor.com/namespaces/marmot#", "marmot"); //Marmot TODO link to Marmot constants when Marmot is included in normal libraries
