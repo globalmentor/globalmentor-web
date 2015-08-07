@@ -16,10 +16,14 @@
 
 package com.globalmentor.facebook;
 
+import static com.globalmentor.java.Objects.*;
+
 import java.net.URI;
 
+import com.globalmentor.model.*;
+
 /**
- * Definitions and utilities for working with Facebook's Open Graph protocol.
+ * Definitions of Facebook's Open Graph protocol.
  * 
  * @author Garret Wilson
  * @see <a href="http://ogp.me/">The Open Graph Protocol</a>
@@ -44,5 +48,103 @@ public class OpenGraph {
 	public static final String DESCRIPTION_LOCAL_NAME = "description";
 	/** The name of the overall site, if this object is part of a larger web site. (optional) */
 	public static final String SITE_NAME_LOCAL_NAME = "site_name";
+
+	/**
+	 * A predefined category of Open Graph type.
+	 * @author Garret Wilson
+	 * @see <a href="http://ogp.me/">The Open Graph Protocol</a>
+	 */
+	public enum PredefinedCategory implements Labeled {
+		ACTIVITIES("Activities"), BUSINESSES("Businesses"), GROUPS("Groups"), ORGANIZATIONS("Organizations"), PEOPLE("People"), PLACES("Places"), PRODUCTS_ENTERTAINMENT(
+				"Products and Entertainment"), WEBSITES("Websites");
+
+		private final CharSequence label;
+
+		/** {@inheritDoc} */
+		public CharSequence getLabel() {
+			return label;
+		}
+
+		PredefinedCategory(final CharSequence label) {
+			this.label = checkInstance(label);
+		}
+
+	}
+
+	/**
+	 * One of the types predefined in the Open Graph specification.
+	 * @author Garret Wilson
+	 * @see <a href="http://ogp.me/">The Open Graph Protocol</a>
+	 */
+	public enum PredefinedType implements IDed<String> {
+		//note: new predefined types must also be added to a category within getCategory() or an assertion exception will be thrown
+
+		ACTIVITY, SPORT, BAR, COMPANY, CAFE, HOTEL, RESTAURANT, CAUSE, SPORTS_LEAGUE, SPORTS_TEAM, BAND, GOVERNMENT, NON_PROFIT, SCHOOL, UNIVERSITY, ACTOR, ATHLETE, AUTHOR, DIRECTOR, MUSICIAN, POLITICIAN, PROFILE, PUBLIC_FIGURE, CITY, COUNTRY, LANDMARK, STATE_PROVINCE, ALBUM, BOOK, DRINK, FOOD, GAME, MOVIE, PRODUCT, SONG, TV_SHOW, ARTICLE, BLOG, WEBSITE;
+
+		/** @return The predefined category of this predefined type. */
+		public PredefinedCategory getCategory() {
+			switch(this) {
+				case ACTIVITY:
+				case SPORT:
+					return PredefinedCategory.ACTIVITIES;
+				case BAR:
+				case COMPANY:
+				case CAFE:
+				case HOTEL:
+				case RESTAURANT:
+					return PredefinedCategory.BUSINESSES;
+				case CAUSE:
+				case SPORTS_LEAGUE:
+				case SPORTS_TEAM:
+					return PredefinedCategory.GROUPS;
+				case BAND:
+				case GOVERNMENT:
+				case NON_PROFIT:
+				case SCHOOL:
+				case UNIVERSITY:
+					return PredefinedCategory.ORGANIZATIONS;
+				case ACTOR:
+				case ATHLETE:
+				case AUTHOR:
+				case DIRECTOR:
+				case MUSICIAN:
+				case POLITICIAN:
+				case PROFILE:
+				case PUBLIC_FIGURE:
+					return PredefinedCategory.PEOPLE;
+				case CITY:
+				case COUNTRY:
+				case LANDMARK:
+				case STATE_PROVINCE:
+					return PredefinedCategory.PLACES;
+				case ALBUM:
+				case BOOK:
+				case DRINK:
+				case FOOD:
+				case GAME:
+				case MOVIE:
+				case PRODUCT:
+				case SONG:
+				case TV_SHOW:
+					return PredefinedCategory.PRODUCTS_ENTERTAINMENT;
+				case ARTICLE:
+				case BLOG:
+				case WEBSITE:
+					return PredefinedCategory.WEBSITES;
+				default:
+					throw new AssertionError("No category defined for type " + this);
+			}
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * <p>
+		 * This ID is the official ID given by the Open Graph specification and suitable for serialization.
+		 * </p>
+		 */
+		public String getID() {
+			return toString().toLowerCase(); //all the type IDs are simply the lowercase version of the enum string
+		}
+	}
 
 }
