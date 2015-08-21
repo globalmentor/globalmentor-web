@@ -25,6 +25,7 @@ import com.globalmentor.java.*;
 import com.globalmentor.log.Log;
 import com.globalmentor.net.ContentType;
 import com.globalmentor.text.Prose;
+import com.globalmentor.text.Unicode;
 import com.globalmentor.text.css.CSSSerializer;
 import com.globalmentor.text.css.CSSTidier;
 import com.globalmentor.text.css.CSS;
@@ -38,7 +39,6 @@ import static com.globalmentor.net.ContentTypeConstants.*;
 import static com.globalmentor.text.xml.XML.*;
 import static com.globalmentor.text.css.CSS.*;
 import static com.globalmentor.text.xml.xhtml.XHTML.*;
-import static com.globalmentor.unicode.SymbolEncodingConstants.*;
 
 import org.w3c.dom.*;
 import org.w3c.dom.traversal.NodeFilter;
@@ -1478,7 +1478,7 @@ public class XHTMLTidier {
 	 */
 	protected static void convertSymbolToUnicode(final StringBuffer stringBuffer) {
 		//TODO shouldn't we have a function that transforms this automatically?
-		StringBuffers.replace(stringBuffer, SYMBOL_FONT_TO_UNICODE_TABLE); //convert all symbol characters to Unicode
+		StringBuffers.replace(stringBuffer, Unicode.SYMBOL_FONT_TO_UNICODE_TABLE); //convert all symbol characters to Unicode
 		/*TODO del when works
 				final int converstionTableLength=SYMBOL_FONT_TO_UNICODE_TABLE.length; //find out how many characters we recognize
 				final int stringBufferLength=stringBuffer.length(); //find out how many characters there are to convert
