@@ -37,8 +37,8 @@ import static com.globalmentor.java.Characters.*;
 import static com.globalmentor.net.ContentTypeConstants.*;
 import static com.globalmentor.text.xml.XML.*;
 import static com.globalmentor.text.css.CSS.*;
-import static com.globalmentor.text.unicode.SymbolEncodingConstants.*;
 import static com.globalmentor.text.xml.xhtml.XHTML.*;
+import static com.globalmentor.unicode.SymbolEncodingConstants.*;
 
 import org.w3c.dom.*;
 import org.w3c.dom.traversal.NodeFilter;
