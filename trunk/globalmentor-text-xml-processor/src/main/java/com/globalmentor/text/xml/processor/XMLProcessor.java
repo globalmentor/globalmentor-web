@@ -40,7 +40,6 @@ import com.globalmentor.model.ObjectHolder;
 import com.globalmentor.net.URIs;
 import com.globalmentor.text.xml.XML;
 import com.globalmentor.text.xml.processor.schema.XMLSchemaProcessor;
-import com.globalmentor.text.xml.schema.*;
 
 //TODO del all the XMLUndefinedEntityReferenceException throws when we don't need them anymore, in favor of XMLWellFormednessException
 
