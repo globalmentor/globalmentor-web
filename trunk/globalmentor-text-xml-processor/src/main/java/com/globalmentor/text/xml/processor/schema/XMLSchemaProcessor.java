@@ -16,13 +16,13 @@
 
 package com.globalmentor.text.xml.processor.schema;
 
+import static com.globalmentor.w3c.spec.XMLSchema.*;
+
 import java.util.*;
 
 import com.globalmentor.collections.iterators.Iterators;
 import com.globalmentor.log.Log;
 import com.globalmentor.text.xml.XMLSerializer;
-
-import static com.globalmentor.text.xml.schema.XMLSchema.*;
 
 import org.w3c.dom.*;
 

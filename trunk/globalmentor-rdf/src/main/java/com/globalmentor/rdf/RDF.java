@@ -26,7 +26,7 @@ import com.globalmentor.net.URIs;
 import static com.globalmentor.rdf.RDFResources.*;
 import com.globalmentor.rdf.rdfs.RDFS;
 import com.globalmentor.rdf.xmlschema.XMLSchemaRDFTypedLiteralFactory;
-import com.globalmentor.text.xml.schema.XMLSchema;
+import com.globalmentor.w3c.spec.XMLSchema;
 
 /**
  * An RDF data model.

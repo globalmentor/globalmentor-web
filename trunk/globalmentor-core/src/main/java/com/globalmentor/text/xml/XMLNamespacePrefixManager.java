@@ -21,10 +21,6 @@ import java.util.*;
 import static com.globalmentor.java.Java.*;
 
 import static com.globalmentor.net.URIs.*;
-import com.globalmentor.text.xml.oeb.OEB;
-import com.globalmentor.text.xml.schema.XMLSchema;
-import com.globalmentor.text.xml.xhtml.XHTML;
-import com.globalmentor.text.xml.xlink.XLink;
 
 /**
  * Manages XML namespaces and prefixes for serialization. This class is initialized with a default set of known namespace prefix mappings. Mapping prefixes to
@@ -74,7 +70,7 @@ public class XMLNamespacePrefixManager //TODO replace with XMLNamespaceLabelMana
 		registerNamespacePrefix("http://purl.org/dc/elements/1.1/", "dc"); //Dublin Core
 		registerNamespacePrefix("http://xmlns.com/foaf/0.1/", "foaf"); //FOAF
 		//TODO convert to URF		registerNamespacePrefix(MAQRO.MAQRO_NAMESPACE_URI.toString(), MAQRO.MAQRO_NAMESPACE_PREFIX); //MAQRO
-		registerNamespacePrefix(OEB.OEB1_DOCUMENT_NAMESPACE_URI.toString(), OEB.OEB1_DOCUMENT_NAMESPACE_PREFIX); //OEB 1
+		registerNamespacePrefix("http://openebook.org/namespaces/oeb-document/1.0/", "oeb1"); //OEB 1
 		registerNamespacePrefix("http://globalmentor.com/namespaces/marmot#", "marmot"); //Marmot TODO link to Marmot constants when Marmot is included in normal libraries
 		registerNamespacePrefix("http://marmox.net/namespaces/content#", "content"); //Marmox content
 		//TODO del		registerNamespacePrefix(PLOOP.PLOOP_PROPERTY_NAMESPACE_URI.toString(), PLOOP.PLOOP_PROPERTY_NAMESPACE_PREFIX); //PLOOP property
@@ -84,11 +80,11 @@ public class XMLNamespacePrefixManager //TODO replace with XMLNamespaceLabelMana
 		//TODO add SOAP
 		registerNamespacePrefix("http://www.w3.org/2006/vcard/ns#", "vcard"); //vCard
 		registerNamespacePrefix("http://globalmentor.com/namespaces/2003/version#", "ver"); //version
-		registerNamespacePrefix(XMLSchema.XML_SCHEMA_NAMESPACE_URI.toString(), XMLSchema.XML_SCHEMA_NAMESPACE_PREFIX); //XML Schema
-		registerNamespacePrefix(XHTML.XHTML_NAMESPACE_URI.toString(), XHTML.XHTML_NAMESPACE_PREFIX); //XHTML
-		registerNamespacePrefix(XLink.XLINK_NAMESPACE_URI.toString(), XLink.XLINK_NAMESPACE_PREFIX); //XLink
-		registerNamespacePrefix(XML.XML_NAMESPACE_URI.toString(), XML.XML_NAMESPACE_PREFIX); //XML
-		registerNamespacePrefix(XML.XMLNS_NAMESPACE_URI.toString(), XML.XMLNS_NAMESPACE_PREFIX); //XML namespaces
+		registerNamespacePrefix("http://www.w3.org/2001/XMLSchema", "xsd"); //XML Schema
+		registerNamespacePrefix("http://www.w3.org/1999/xhtml", "xhtml"); //XHTML
+		registerNamespacePrefix("http://www.w3.org/1999/xlink", "xlink"); //XLink
+		registerNamespacePrefix("http://www.w3.org/XML/1998/namespace", "xml"); //XML
+		registerNamespacePrefix("http://www.w3.org/2000/xmlns/", "xmlns"); //XML namespaces
 		//TODO del		registerNamespacePrefix(FileOntologyConstants.FILE_ONTOLOGY_NAMESPACE_URI.toString(), FileOntologyConstants.FILE_ONTOLOGY_NAMESPACE_PREFIX); //XPackage file ontology
 		//TODO add XPackage Unicode ontology
 		//TODO del		registerNamespacePrefix(MIMEOntologyConstants.MIME_ONTOLOGY_NAMESPACE_URI.toString(), MIMEOntologyConstants.MIME_ONTOLOGY_NAMESPACE_PREFIX); //XPackage MIME ontology

@@ -16,13 +16,12 @@
 
 package com.globalmentor.text.css;
 
-import static com.globalmentor.text.css.CSS.*;
+import static com.globalmentor.w3c.spec.CSS.*;
 
 import java.util.*;
 
 import com.globalmentor.java.Strings;
 import com.globalmentor.log.Log;
-import com.globalmentor.text.xml.oeb.css.OEBCSS;
 import com.globalmentor.util.*;
 
 import org.w3c.dom.css.*;
@@ -220,8 +219,10 @@ public class CSSTidier {	//TODO add a feature to remove empty style declarations
 		//if we should remove MS Office properties, and this is an MS Office property
 		if(isRemoveMSOfficeProperties() && propertyName.startsWith("mso-")) //TODO use a constant here
 			return true; //show that we should remove this property
-		if(!OEBCSS.isOEB1CSSProperty(propertyName)) //if this is not an OEB 1.0 CSS property TODO move this to an OEBCSSTidier
+		/*TODO move this to an OEBCSSTidier
+		if(!OEBCSS.isOEB1CSSProperty(propertyName)) //if this is not an OEB 1.0 CSS property
 			return true; //remove non-OEB CSS properties
+		*/
 		return false; //since we didn't find a reason to, don't remove this property
 	}
 

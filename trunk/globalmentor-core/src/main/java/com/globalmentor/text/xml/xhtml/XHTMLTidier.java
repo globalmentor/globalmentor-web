@@ -24,21 +24,21 @@ import com.globalmentor.io.Files;
 import com.globalmentor.java.*;
 import com.globalmentor.log.Log;
 import com.globalmentor.net.ContentType;
+import com.globalmentor.oebps.spec.OEB;
 import com.globalmentor.text.Prose;
 import com.globalmentor.text.Unicode;
 import com.globalmentor.text.css.CSSSerializer;
 import com.globalmentor.text.css.CSSTidier;
-import com.globalmentor.text.css.CSS;
 import com.globalmentor.text.xml.XML;
-import com.globalmentor.text.xml.oeb.OEB;
 import com.globalmentor.text.xml.xpath.XPath;
 import com.globalmentor.util.*;
+import com.globalmentor.w3c.spec.CSS;
 
 import static com.globalmentor.java.Characters.*;
 import static com.globalmentor.net.ContentTypeConstants.*;
 import static com.globalmentor.text.xml.XML.*;
-import static com.globalmentor.text.css.CSS.*;
 import static com.globalmentor.text.xml.xhtml.XHTML.*;
+import static com.globalmentor.w3c.spec.CSS.*;
 
 import org.w3c.dom.*;
 import org.w3c.dom.traversal.NodeFilter;

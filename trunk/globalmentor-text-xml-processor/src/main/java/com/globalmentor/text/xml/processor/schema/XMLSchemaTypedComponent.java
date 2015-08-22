@@ -16,7 +16,7 @@
 
 package com.globalmentor.text.xml.processor.schema;
 
-import com.globalmentor.text.xml.schema.XMLSchema;
+import com.globalmentor.w3c.spec.XMLSchema;
 
 /**
  * Represents one of the schema components that can be assigned a type:

@@ -16,13 +16,13 @@
 
 package com.globalmentor.text.xml.processor.stylesheets.css;
 
-import static com.globalmentor.text.css.CSS.*;
+import static com.globalmentor.w3c.spec.CSS.*;
 
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
-import com.globalmentor.text.css.CSS;
 import com.globalmentor.text.xml.processor.XMLDOMException;
+import com.globalmentor.w3c.spec.CSS;
 
 import org.w3c.dom.DOMException;
 import org.w3c.dom.css.*;

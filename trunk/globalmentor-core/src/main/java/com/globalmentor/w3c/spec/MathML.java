@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.globalmentor.text.xml.mathml;
+package com.globalmentor.w3c.spec;
 
 import java.net.URI;
 

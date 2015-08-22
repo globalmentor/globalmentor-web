@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.globalmentor.log.Log;
-import com.globalmentor.text.xml.schema.XMLSchema;
+import com.globalmentor.w3c.spec.XMLSchema;
 
 /**
  * A table which provides mappings from names to schema components, based upon the component type category (e.g. simple and complex type components fall into

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.globalmentor.text.css;
+package com.globalmentor.w3c.spec;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -24,6 +24,7 @@ import org.w3c.dom.css.*;
 
 import com.globalmentor.java.Characters;
 import com.globalmentor.net.ContentType;
+import com.globalmentor.text.css.CSSStyleManager;
 
 import static com.globalmentor.java.Characters.*;
 import static java.util.Collections.*;

@@ -16,7 +16,7 @@
 
 package com.globalmentor.text.xml.processor.stylesheets.css;
 
-import static com.globalmentor.text.css.CSS.*;
+import static com.globalmentor.w3c.spec.CSS.*;
 
 import java.io.*;
 import java.net.URL;

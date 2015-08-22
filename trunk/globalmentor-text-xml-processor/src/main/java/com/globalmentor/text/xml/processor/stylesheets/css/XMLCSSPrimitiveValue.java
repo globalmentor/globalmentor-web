@@ -19,7 +19,7 @@ package com.globalmentor.text.xml.processor.stylesheets.css;
 import com.globalmentor.java.CharSequences;
 import com.globalmentor.java.Strings;
 
-import static com.globalmentor.text.css.CSS.*;
+import static com.globalmentor.w3c.spec.CSS.*;
 
 import org.w3c.dom.DOMException;
 import org.w3c.dom.css.*;

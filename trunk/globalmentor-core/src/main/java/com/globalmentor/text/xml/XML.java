@@ -37,7 +37,6 @@ import com.globalmentor.model.ObjectHolder;
 import com.globalmentor.net.ContentType;
 import com.globalmentor.net.URIs;
 import com.globalmentor.text.ASCII;
-import com.globalmentor.text.xml.oeb.OEB;
 import com.globalmentor.text.xml.xhtml.XHTML;
 
 import org.w3c.dom.*;
@@ -50,9 +49,9 @@ import static com.globalmentor.java.Integers.*;
 import static com.globalmentor.java.Objects.*;
 import static com.globalmentor.net.ContentTypeConstants.*;
 import static com.globalmentor.text.xml.XMLStyleSheets.*;
-import static com.globalmentor.text.xml.mathml.MathML.*;
-import static com.globalmentor.text.xml.svg.SVG.*;
 import static com.globalmentor.text.xml.xhtml.XHTML.*;
+import static com.globalmentor.w3c.spec.MathML.*;
+import static com.globalmentor.w3c.spec.SVG.*;
 import static java.nio.charset.StandardCharsets.*;
 
 /**
@@ -2179,8 +2178,10 @@ public class XML {
 		if(mediaType != null) { //if we were given a valid media type
 			if(XHTML.isHTML(mediaType)) //if this is one of the HTML media types
 				return XHTML.XHTML_NAMESPACE_URI; //return the XHTML media type
+			/*TODO fix for OEB; create some sort of registration facility
 			else if(mediaType.match(ContentType.TEXT_PRIMARY_TYPE, OEB.X_OEB1_DOCUMENT_SUBTYPE)) //if this is an OEB 1.x document
 				return OEB.OEB1_DOCUMENT_NAMESPACE_URI; //return the OEB 1.x document namespace
+			*/
 		}
 		return null; //show that we can't find a default namespace URI
 	}

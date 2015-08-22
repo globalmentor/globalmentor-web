@@ -34,7 +34,6 @@ import com.globalmentor.log.Log;
 import com.globalmentor.model.IDed;
 import com.globalmentor.net.ContentType;
 import com.globalmentor.text.xml.XML;
-import com.globalmentor.text.xml.oeb.OEB;
 
 import static com.globalmentor.text.ASCII.*;
 import static com.globalmentor.text.xml.xpath.XPath.*;
@@ -772,7 +771,6 @@ public class XHTML {
 	 * <li><code>text/html</code></li>
 	 * <li><code>application/xhtml+xml</code></li>
 	 * <li><code>application/xhtml+xml-external-parsed-entity</code> (not formally defined)</li>
-	 * <li><code>text/x-oeb1-document</code></li>
 	 * </ul>
 	 * @param contentType The content type of a resource, or <code>null</code> for no content type.
 	 * @return <code>true</code> if the given media type is one of several HTML media types.
@@ -783,7 +781,7 @@ public class XHTML {
 			final String subType = contentType.getSubType(); //get the sub type
 			if(ContentType.TEXT_PRIMARY_TYPE.equals(primaryType)) { //if this is "text/?"
 				if(HTML_SUBTYPE.equals(subType) //if this is "text/html"
-						|| OEB.X_OEB1_DOCUMENT_SUBTYPE.equals(subType)) { //if this is "text/x-oeb1-document"
+						/*TODO fix for OEB || OEB.X_OEB1_DOCUMENT_SUBTYPE.equals(subType)*/) { //if this is "text/x-oeb1-document"
 					return true; //show that this is HTML
 				}
 			}
@@ -804,15 +802,14 @@ public class XHTML {
 	 * </p>
 	 * <ul>
 	 * <li><code>http://www.w3.org/1999/xhtml</code></li>
-	 * <li><code>http://openebook.org/namespaces/oeb-document/1.0/</code></li>
 	 * </ul>
 	 * @param namespaceURI A URI representing an XML namespace, or <code>null</code> for no namespace.
 	 * @return <code>true</code> if the given URI represents one of the HTML XML namespaces.
 	 */
 	public static boolean isHTMLNamespaceURI(final URI namespaceURI) {
 		if(namespaceURI != null) { //if the namespace URI is valid
-			//if it's part of the XHTML or OEB namespace
-			if(XHTML_NAMESPACE_URI.equals(namespaceURI) || OEB.OEB1_DOCUMENT_NAMESPACE_URI.equals(namespaceURI))
+			//if it's part of the XHTML namespace
+			if(XHTML_NAMESPACE_URI.equals(namespaceURI) /*TODO fix for OEB || OEB.OEB1_DOCUMENT_NAMESPACE_URI.equals(namespaceURI)*/)
 				return true; //show that this is an HTML namespace
 		}
 		return false; //show that we didn't recognize the namespace as HTML
