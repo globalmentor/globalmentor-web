@@ -37,7 +37,7 @@ import com.globalmentor.text.xml.XML;
 
 import static com.globalmentor.text.ASCII.*;
 import static com.globalmentor.text.xml.xpath.XPath.*;
-
+import static com.globalmentor.w3c.spec.XML.*;
 import static com.globalmentor.collections.Sets.*;
 import static com.globalmentor.java.Characters.*;
 import static com.globalmentor.java.Objects.*;

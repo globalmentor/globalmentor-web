@@ -20,6 +20,7 @@ import java.net.URI;
 import java.util.*;
 
 import com.globalmentor.net.AbstractNamespaceLabelManager;
+import com.globalmentor.w3c.spec.XML;
 
 /**
  * Map managing namespace URIs and labels for XML.

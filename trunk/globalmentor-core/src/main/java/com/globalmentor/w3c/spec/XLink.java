@@ -18,7 +18,7 @@ package com.globalmentor.w3c.spec;
 
 import java.net.URI;
 
-import static com.globalmentor.text.xml.XML.*;
+import static com.globalmentor.w3c.spec.XML.*;
 
 import org.w3c.dom.Element;
 

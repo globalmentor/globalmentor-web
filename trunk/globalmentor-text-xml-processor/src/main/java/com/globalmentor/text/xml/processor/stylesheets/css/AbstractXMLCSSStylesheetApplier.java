@@ -25,6 +25,7 @@ import java.util.*;
 
 import static com.globalmentor.text.xml.XMLStyleSheets.*;
 import static com.globalmentor.text.xml.xhtml.XHTML.*;
+import static com.globalmentor.w3c.spec.XML.*;
 
 import com.globalmentor.io.*;
 import com.globalmentor.log.Log;
@@ -300,7 +301,7 @@ public abstract class AbstractXMLCSSStylesheetApplier<D, E> implements URIInputS
 				final String processingInstructionData = (String)processingInstruction.getValue(); //get the processing instruction's data, assuming it's a string
 				//TODO check the media type, etc. here
 				//get the href pseudo-attribute, if it is defined
-				final String href = XML.getProcessingInstructionPseudoAttributeValue(processingInstructionData, HREF_ATTRIBUTE);
+				final String href = getProcessingInstructionPseudoAttributeValue(processingInstructionData, HREF_ATTRIBUTE);
 				if(href != null) { //if there is an href
 					final XMLStyleSheetDescriptor styleSheetDescriptor = new XMLStyleSheetDescriptor(href); //create a new descriptor for this stylesheet TODO fix for media type, title, etc.
 					styleSheetDescriptorList.add(styleSheetDescriptor); //add the stylesheet descriptor to our list

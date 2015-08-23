@@ -18,7 +18,7 @@ package com.globalmentor.text.xml.processor;
 
 import java.util.ListResourceBundle;
 
-import com.globalmentor.text.xml.XML;
+import com.globalmentor.w3c.spec.XML;
 
 /**
  * Resource bundle for XML.

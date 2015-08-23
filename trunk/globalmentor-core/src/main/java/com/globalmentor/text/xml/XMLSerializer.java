@@ -28,6 +28,7 @@ import static com.globalmentor.java.Characters.SPACE_CHAR;
 import com.globalmentor.java.Characters;
 
 import static com.globalmentor.text.xml.XML.*;
+import static com.globalmentor.w3c.spec.XML.*;
 import static java.nio.charset.StandardCharsets.*;
 
 import com.globalmentor.util.PropertiesUtilities;
@@ -774,7 +775,7 @@ public class XMLSerializer {
 						writer.newLine(); //add a newline after the element
 					break;
 				case Node.CDATA_SECTION_NODE: //if this is a CDATA section node
-					writer.write(XML.CDATA_START); //write the start of the CDATA section
+					writer.write(CDATA_START); //write the start of the CDATA section
 					writer.write(encodeContent(childNode.getNodeValue())); //write the text value of the node after encoding the string for XML
 					writer.write(CDATA_END); //write the end of the CDATA section
 					break;

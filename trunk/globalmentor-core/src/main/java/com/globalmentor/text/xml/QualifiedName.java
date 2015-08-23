@@ -19,9 +19,11 @@ package com.globalmentor.text.xml;
 import java.net.URI;
 
 import static com.globalmentor.java.Objects.*;
+import static com.globalmentor.text.xml.XML.*;
 
 import com.globalmentor.model.IDed;
 import com.globalmentor.net.DefaultResource;
+import com.globalmentor.w3c.spec.XML;
 
 /**
  * Represents a qualified name (QName) of an XML element, including the namespace URI, the prefix, and the local name. The reference URI indicates the
@@ -104,7 +106,7 @@ public class QualifiedName extends DefaultResource implements IDed<URI> {
 	 */
 	QualifiedName(final String namespace, final String prefix, final String localName) {
 		super(createReferenceURI(namespace, localName)); //create our reference URI by combining our namespace URI and our local name
-		this.namespaceURI = XML.toNamespaceURI(namespace);
+		this.namespaceURI = toNamespaceURI(namespace);
 		this.prefix = prefix;
 		this.localName = checkInstance(localName, "Local name cannot be null.");
 	}

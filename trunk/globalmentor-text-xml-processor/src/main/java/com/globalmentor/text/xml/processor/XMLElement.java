@@ -27,7 +27,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.TypeInfo;
 
-import com.globalmentor.text.xml.XML;
+import com.globalmentor.w3c.spec.XML;
 
 /**
  * An element in an XML document.
@@ -587,7 +587,7 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element {
 	} //TODO fix for DOM 3
 
 	public String getTextContent() throws DOMException { //TODO fix for DOM 3 in XMLNode
-		return XML.getText(this, true);
+		return com.globalmentor.text.xml.XML.getText(this, true);
 	}
 
 }

@@ -29,6 +29,7 @@ import org.w3c.dom.NodeList;
 
 import static com.globalmentor.java.Characters.SPACE_CHAR;
 import static com.globalmentor.text.xml.XML.*;
+import static com.globalmentor.w3c.spec.XML.*;
 
 import com.globalmentor.io.ByteOrderMark;
 import com.globalmentor.io.Files;

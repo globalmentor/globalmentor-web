@@ -20,7 +20,8 @@ import java.io.Reader;
 import java.io.IOException;
 
 import com.globalmentor.io.ParseReader;
-import static com.globalmentor.text.xml.XML.*;
+
+import static com.globalmentor.w3c.spec.XML.*;
 
 /**
  * Class for parsing XML data from a stream. This class lets <code>ParseReader</code> do most of the work, while overriding <code>processBufferedData()</code>

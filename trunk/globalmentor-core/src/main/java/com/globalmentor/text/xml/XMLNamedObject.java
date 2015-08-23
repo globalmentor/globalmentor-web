@@ -17,6 +17,7 @@
 package com.globalmentor.text.xml;
 
 import com.globalmentor.java.Objects;
+import com.globalmentor.w3c.spec.XML;
 
 /**
  * The base class for XML objects that are named&mdash;identified by qname and/or namespace and local name.

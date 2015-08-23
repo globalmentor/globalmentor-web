@@ -18,7 +18,6 @@ package com.globalmentor.text.xml;
 
 import static java.nio.charset.StandardCharsets.*;
 import static org.hamcrest.Matchers.*;
-import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.*;
 
 import java.io.*;
@@ -31,10 +30,9 @@ import com.globalmentor.model.ObjectHolder;
 import com.globalmentor.test.AbstractTest;
 
 /**
- * Tests of XML processing.
+ * Tests of XML utilities.
  * 
  * @author Garret Wilson
- * @see XMLProcessor
  *
  */
 public class XMLTest extends AbstractTest {

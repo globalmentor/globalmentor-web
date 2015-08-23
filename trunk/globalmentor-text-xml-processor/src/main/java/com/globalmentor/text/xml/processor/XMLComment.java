@@ -16,7 +16,7 @@
 
 package com.globalmentor.text.xml.processor;
 
-import static com.globalmentor.text.xml.XML.*;
+import static com.globalmentor.w3c.spec.XML.*;
 
 /**
  * A comment in an XML document.

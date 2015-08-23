@@ -19,7 +19,6 @@ package com.globalmentor.w3c.spec;
 import java.net.URI;
 
 import com.globalmentor.net.ContentType;
-import com.globalmentor.text.xml.XML;
 
 /**
  * Constants for SVG.

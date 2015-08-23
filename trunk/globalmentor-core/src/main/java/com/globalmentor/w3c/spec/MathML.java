@@ -20,8 +20,6 @@ import java.net.URI;
 
 import com.globalmentor.net.ContentType;
 
-import static com.globalmentor.text.xml.XML.*;
-
 /**
  * Constants for MathML.
  * @author Garret Wilson
@@ -31,7 +29,7 @@ import static com.globalmentor.text.xml.XML.*;
 public class MathML {
 
 	/** A MathML application. */
-	public static final String MATHML_XML_SUBTYPE = "mathml" + ContentType.SUBTYPE_SUFFIX_DELIMITER_CHAR + XML_SUBTYPE_SUFFIX;
+	public static final String MATHML_XML_SUBTYPE = "mathml" + ContentType.SUBTYPE_SUFFIX_DELIMITER_CHAR + XML.XML_SUBTYPE_SUFFIX;
 
 	/** The content type for MathML: <code>application/mathml+xml</code>. */
 	public static final ContentType MATHML_CONTENT_TYPE = ContentType.create(ContentType.APPLICATION_PRIMARY_TYPE, MATHML_XML_SUBTYPE);
