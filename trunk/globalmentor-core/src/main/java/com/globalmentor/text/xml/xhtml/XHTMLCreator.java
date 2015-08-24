@@ -29,7 +29,7 @@ import com.globalmentor.text.xml.XML;
 import org.w3c.dom.*;
 
 import static com.globalmentor.java.Characters.*;
-import static com.globalmentor.text.xml.xhtml.XHTML.*;
+import static com.globalmentor.w3c.spec.HTML.*;
 import static java.nio.charset.StandardCharsets.*;
 
 /**

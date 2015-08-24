@@ -24,7 +24,7 @@ import java.net.URISyntaxException;
 import java.util.*;
 
 import static com.globalmentor.text.xml.XMLStyleSheets.*;
-import static com.globalmentor.text.xml.xhtml.XHTML.*;
+import static com.globalmentor.w3c.spec.HTML.*;
 import static com.globalmentor.w3c.spec.XML.*;
 
 import com.globalmentor.io.*;
@@ -34,7 +34,6 @@ import com.globalmentor.net.ContentType;
 import com.globalmentor.net.URIs;
 import com.globalmentor.text.xml.XML;
 import com.globalmentor.text.xml.processor.stylesheets.XMLStyleSheetDescriptor;
-import com.globalmentor.text.xml.xhtml.XHTML;
 
 import org.w3c.dom.css.*;
 
@@ -211,7 +210,7 @@ public abstract class AbstractXMLCSSStylesheetApplier<D, E> implements URIInputS
 				final E childElement = getChildElement(documentElement, childIndex); //get a reference to the child element
 				final String childElementLocalName = getElementLocalName(childElement); //get the child element local name
 				//if this element is <head> and it's an HTML <head>
-				if(XHTML.ELEMENT_HEAD.equals(childElementLocalName)) { //TODO fix checking to see if this is HTML					&& XHTMLSwingTextUtilities.isHTMLElement(childAttributeSet, documentAttributeSet))
+				if(ELEMENT_HEAD.equals(childElementLocalName)) { //TODO fix checking to see if this is HTML					&& XHTMLSwingTextUtilities.isHTMLElement(childAttributeSet, documentAttributeSet))
 					getInternalStylesheets(childElement, cssProcessor, styleSheetList); //get the internal stylesheets from the HTML <head> element
 				}
 			}
@@ -229,7 +228,7 @@ public abstract class AbstractXMLCSSStylesheetApplier<D, E> implements URIInputS
 	protected void getInternalStylesheets(final E element, final XMLCSSProcessor cssProcessor, final List<CSSStyleSheet> styleSheetList) {
 		final String elementLocalName = getElementLocalName(element); //get the element's local name
 		//if this is an HTML <style>
-		if(XHTML.ELEMENT_STYLE.equals(elementLocalName)) { //TODO fix checking to see if this is HTML				&& XHTMLSwingTextUtilities.isHTMLElement(attributeSet, swingDocumentElement.getAttributes()))
+		if(ELEMENT_STYLE.equals(elementLocalName)) { //TODO fix checking to see if this is HTML				&& XHTMLSwingTextUtilities.isHTMLElement(attributeSet, swingDocumentElement.getAttributes()))
 			try {
 				final String styleText = getElementText(element); //get the text of the style element
 				final String descriptionString = "Internal Style Sheet"; //create a string to describe the internal style sheet TODO i18n
@@ -463,7 +462,7 @@ public abstract class AbstractXMLCSSStylesheetApplier<D, E> implements URIInputS
 		//TODO later make this more robust for CSS 2 and CSS 3
 		if(selectorContext.getTagName().length() == 0 || selectorContext.getTagName().equals(elementLocalName)) { //if the tag names match, or we don't have a tag name to match with (which means we'll be matching class only)
 			//TODO right now this is XHTML-specific---make more generic if possible
-			if(selectorContext.getTagClass().length() == 0 || selectorContext.getTagClass().equals(getElementAttributeValue(element, null, XHTML.ATTRIBUTE_CLASS))) //if the class names match as well (or there isn't a specified class in this selector)
+			if(selectorContext.getTagClass().length() == 0 || selectorContext.getTagClass().equals(getElementAttributeValue(element, null, ATTRIBUTE_CLASS))) //if the class names match as well (or there isn't a specified class in this selector)
 				return true;
 		}
 		return false; //if we get to this point, this selector doesn't apply to this element

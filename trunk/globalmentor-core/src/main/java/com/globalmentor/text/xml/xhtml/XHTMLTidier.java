@@ -29,13 +29,14 @@ import com.globalmentor.text.css.CSSTidier;
 import com.globalmentor.text.xml.xpath.XPath;
 import com.globalmentor.util.*;
 import com.globalmentor.w3c.spec.CSS;
+import com.globalmentor.w3c.spec.HTML;
 import com.globalmentor.w3c.spec.XML;
 
 import static com.globalmentor.java.Characters.*;
 import static com.globalmentor.net.ContentTypeConstants.*;
 import static com.globalmentor.text.xml.XML.*;
-import static com.globalmentor.text.xml.xhtml.XHTML.*;
 import static com.globalmentor.w3c.spec.CSS.*;
+import static com.globalmentor.w3c.spec.HTML.*;
 import static com.globalmentor.w3c.spec.XML.*;
 
 import org.w3c.dom.*;
@@ -1154,12 +1155,12 @@ public class XHTMLTidier {
 	protected static void tidyAttributes(final Element element) {
 		tidyStyleAttribute(element); //tidy the style attribute, if it's present
 		//change any "lang" attribute to "xml:lang"
-		if(element.hasAttributeNS(null, XHTML.ATTRIBUTE_LANG)) { //if there is a lang attribute defined
-			final String langValue = element.getAttributeNS(null, XHTML.ATTRIBUTE_LANG); //get the lang attribute value
+		if(element.hasAttributeNS(null, HTML.ATTRIBUTE_LANG)) { //if there is a lang attribute defined
+			final String langValue = element.getAttributeNS(null, HTML.ATTRIBUTE_LANG); //get the lang attribute value
 			if(!element.hasAttributeNS(XML_NAMESPACE_URI.toString(), XML.ATTRIBUTE_LANG)) { //if there is no xml:lang attribute TODO use a constant, use namespaces
 				//create an xml:lang attribute with the value of the lang attribute TODO use a constant here, use namespaces
 				element.setAttributeNS(XML_NAMESPACE_URI.toString(), createQName(XML_NAMESPACE_PREFIX, XML.ATTRIBUTE_LANG), langValue);
-				element.removeAttributeNS(null, XHTML.ATTRIBUTE_LANG); //remove the lang attribute
+				element.removeAttributeNS(null, HTML.ATTRIBUTE_LANG); //remove the lang attribute
 			}
 		}
 		final String elementName = element.getNodeName(); //get the element's name TODO make this namespace aware

@@ -23,7 +23,7 @@ import java.net.URI;
 
 import com.globalmentor.io.*;
 import com.globalmentor.text.xml.processor.*;
-import com.globalmentor.text.xml.xhtml.XHTML;
+import com.globalmentor.w3c.spec.HTML;
 
 import org.w3c.dom.*;
 import org.w3c.dom.stylesheets.StyleSheet;
@@ -517,7 +517,7 @@ public class XMLCSSProcessor implements URIInputStreamable {
 	 * @deprecated
 	 */
 	public static CSSStyleDeclaration getLocalHTMLStyle(final Element element) {	//TODO fix and move to some HTML-specific package
-		final String styleValue = element.getAttributeNS(null, XHTML.ATTRIBUTE_STYLE); //get the value of the style attribute
+		final String styleValue = element.getAttributeNS(null, HTML.ATTRIBUTE_STYLE); //get the value of the style attribute
 		if(styleValue.length() != 0) { //if there is a style value
 			final XMLCSSProcessor cssProcessor = new XMLCSSProcessor(); //create a new CSS processor TODO make one for the entire tidier object, if we can -- don't create it locally
 			final XMLCSSStyleDeclaration style = new XMLCSSStyleDeclaration(); //create a new style declaration
