@@ -19,9 +19,9 @@ package com.globalmentor.text.xml.processor.events;
 import org.w3c.dom.Node;
 import org.w3c.dom.events.*;
 
-import com.globalmentor.text.xml.*;
 import com.globalmentor.text.xml.processor.XMLAttribute;
 import com.globalmentor.text.xml.processor.XMLNode;
+import com.globalmentor.xml.*;
 
 /**
  * Represents a change in the document tree.

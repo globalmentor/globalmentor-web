@@ -19,9 +19,9 @@ package com.globalmentor.text.xml.processor.schema;
 import java.util.*;
 
 import com.globalmentor.log.Log;
-import static com.globalmentor.w3c.spec.HTML.*;
+import com.globalmentor.xml.*;
 
-import com.globalmentor.text.xml.*;
+import static com.globalmentor.w3c.spec.HTML.*;
 
 import org.w3c.dom.*;
 

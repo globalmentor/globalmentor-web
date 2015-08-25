@@ -21,9 +21,9 @@ import java.util.*;
 import org.w3c.dom.*;
 import org.w3c.dom.traversal.*;
 
-import com.globalmentor.text.xml.*;
 import com.globalmentor.text.xml.processor.XMLDOMException;
 import com.globalmentor.text.xml.processor.XMLNode;
+import com.globalmentor.xml.*;
 
 /**
  * An iterator that iterates of XML objects of a particular type contained in a collection of child objects.

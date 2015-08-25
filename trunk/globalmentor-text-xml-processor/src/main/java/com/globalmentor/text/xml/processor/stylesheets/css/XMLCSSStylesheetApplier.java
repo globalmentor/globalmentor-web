@@ -19,10 +19,11 @@ package com.globalmentor.text.xml.processor.stylesheets.css;
 import java.net.URI;
 import java.io.*;
 import java.util.*;
+
+import com.globalmentor.css.CSSStyleManager;
 import com.globalmentor.io.*;
 import com.globalmentor.model.NameValuePair;
-import com.globalmentor.text.css.CSSStyleManager;
-import com.globalmentor.text.xml.XML;
+import com.globalmentor.xml.XML;
 
 import org.w3c.dom.*;
 import org.w3c.dom.css.*;

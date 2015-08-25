@@ -22,7 +22,7 @@ import java.util.*;
 
 import com.globalmentor.collections.iterators.Iterators;
 import com.globalmentor.log.Log;
-import com.globalmentor.text.xml.XMLSerializer;
+import com.globalmentor.xml.XMLSerializer;
 
 import org.w3c.dom.*;
 

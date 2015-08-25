@@ -28,8 +28,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import static com.globalmentor.java.Characters.SPACE_CHAR;
-import static com.globalmentor.text.xml.XML.*;
 import static com.globalmentor.w3c.spec.XML.*;
+import static com.globalmentor.xml.XML.*;
 
 import com.globalmentor.io.ByteOrderMark;
 import com.globalmentor.io.Files;
@@ -39,8 +39,8 @@ import com.globalmentor.io.URIInputStreamable;
 import com.globalmentor.log.Log;
 import com.globalmentor.model.ObjectHolder;
 import com.globalmentor.net.URIs;
-import com.globalmentor.text.xml.XML;
 import com.globalmentor.text.xml.processor.schema.XMLSchemaProcessor;
+import com.globalmentor.xml.XML;
 
 //TODO del all the XMLUndefinedEntityReferenceException throws when we don't need them anymore, in favor of XMLWellFormednessException
 

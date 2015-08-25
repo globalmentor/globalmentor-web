@@ -587,7 +587,7 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element {
 	} //TODO fix for DOM 3
 
 	public String getTextContent() throws DOMException { //TODO fix for DOM 3 in XMLNode
-		return com.globalmentor.text.xml.XML.getText(this, true);
+		return com.globalmentor.xml.XML.getText(this, true);
 	}
 
 }

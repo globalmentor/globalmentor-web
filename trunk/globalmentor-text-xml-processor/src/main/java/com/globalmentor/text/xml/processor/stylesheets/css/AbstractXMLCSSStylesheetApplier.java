@@ -23,17 +23,17 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
 
-import static com.globalmentor.text.xml.XMLStyleSheets.*;
 import static com.globalmentor.w3c.spec.HTML.*;
 import static com.globalmentor.w3c.spec.XML.*;
+import static com.globalmentor.xml.XMLStyleSheets.*;
 
 import com.globalmentor.io.*;
 import com.globalmentor.log.Log;
 import com.globalmentor.model.NameValuePair;
 import com.globalmentor.net.ContentType;
 import com.globalmentor.net.URIs;
-import com.globalmentor.text.xml.XML;
 import com.globalmentor.text.xml.processor.stylesheets.XMLStyleSheetDescriptor;
+import com.globalmentor.xml.XML;
 
 import org.w3c.dom.css.*;
 
