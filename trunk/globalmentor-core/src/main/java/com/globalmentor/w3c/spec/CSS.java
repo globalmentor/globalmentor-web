@@ -27,7 +27,12 @@ import com.globalmentor.net.ContentType;
 import static com.globalmentor.java.Characters.*;
 import static java.util.Collections.*;
 
-/** Constants and utilities for CSS. */
+/**
+ * Constants defining the W3C Cascading Style Sheets (CSS) specification.
+ * 
+ * @author Garret Wilson
+ * @see <a href="http://www.w3.org/Style/CSS/">Cascading Style Sheets</a>
+ */
 public class CSS {
 
 	/** The name extension for CSS stylesheets. */
