@@ -6,7 +6,7 @@ trunk/globalmentor-rdf/.classpath
 trunk/globalmentor-rdf/.project
 trunk/globalmentor-rdf/.settings
 trunk/globalmentor-rdf/target
-trunk/globalmentor-text-xml-processor/.classpath
-trunk/globalmentor-text-xml-processor/.project
-trunk/globalmentor-text-xml-processor/.settings
-trunk/globalmentor-text-xml-processor/target
+trunk/globalmentor-xml-dom-impl/.classpath
+trunk/globalmentor-xml-dom-impl/.project
+trunk/globalmentor-xml-dom-impl/.settings
+trunk/globalmentor-xml-dom-impl/target
