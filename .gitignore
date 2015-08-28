@@ -1,3 +1,7 @@
+trunk/globalmentor-css/.classpath
+trunk/globalmentor-css/.project
+trunk/globalmentor-css/.settings
+trunk/globalmentor-css/target
 trunk/globalmentor-javascript/.classpath
 trunk/globalmentor-javascript/.project
 trunk/globalmentor-javascript/.settings
@@ -10,3 +14,7 @@ trunk/globalmentor-xml-dom-impl/.classpath
 trunk/globalmentor-xml-dom-impl/.project
 trunk/globalmentor-xml-dom-impl/.settings
 trunk/globalmentor-xml-dom-impl/target
+trunk/globalmentor-xml/.classpath
+trunk/globalmentor-xml/.project
+trunk/globalmentor-xml/.settings
+trunk/globalmentor-xml/target
