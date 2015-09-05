@@ -3,11 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.globalmentor</groupId>
-	<artifactId>globalmentor-xml-dom-impl</artifactId>
+	<artifactId>globalmentor-w3c-spec</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>GlobalMentor XML DOM Implementation</name>
+	<name>GlobalMentor W3C Specifications Library</name>
 	<url>http://www.globalmentor.com/</url>
 
 	<properties>
@@ -18,24 +18,6 @@
 		<dependency>
 			<groupId>com.globalmentor</groupId>
 			<artifactId>globalmentor-core</artifactId>
-			<version>1.0-SNAPSHOT</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.globalmentor</groupId>
-			<artifactId>globalmentor-css</artifactId>
-			<version>1.0-SNAPSHOT</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.globalmentor</groupId>
-			<artifactId>globalmentor-w3c-spec</artifactId>
-			<version>1.0-SNAPSHOT</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.globalmentor</groupId>
-			<artifactId>globalmentor-xml</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
