@@ -24,14 +24,13 @@ import java.util.*;
 
 import javax.xml.parsers.*;
 
-import com.globalmentor.config.ConfigurationException;
-
 import static com.globalmentor.io.Charsets.*;
 import static com.globalmentor.io.InputStreams.*;
 
 import com.globalmentor.io.ByteOrderMark;
 import com.globalmentor.java.*;
 import com.globalmentor.java.Objects;
+import com.globalmentor.model.ConfigurationException;
 import com.globalmentor.model.NameValuePair;
 import com.globalmentor.model.ObjectHolder;
 import com.globalmentor.net.ContentType;

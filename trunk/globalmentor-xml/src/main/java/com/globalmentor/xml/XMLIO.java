@@ -24,8 +24,8 @@ import java.net.*;
 import javax.xml.parsers.*;
 import javax.xml.validation.Schema;
 
-import com.globalmentor.config.ConfigurationException;
 import com.globalmentor.io.IO;
+import com.globalmentor.model.ConfigurationException;
 
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
