@@ -16,7 +16,7 @@
 
 package com.globalmentor.metadata;
 
-import static com.globalmentor.java.Objects.*;
+import static java.util.Objects.*;
 
 import java.net.URI;
 
@@ -66,7 +66,7 @@ public class OpenGraph {
 		}
 
 		PredefinedCategory(final CharSequence label) {
-			this.label = checkInstance(label);
+			this.label = requireNonNull(label);
 		}
 
 	}
