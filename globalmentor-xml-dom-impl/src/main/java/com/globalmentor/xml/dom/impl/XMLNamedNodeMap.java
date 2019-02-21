@@ -26,7 +26,7 @@ import org.w3c.dom.DOMException;
  * A map of nodes in an XML document in no particular order.
  * @author Garret Wilson
  * @see XMLNode
- * @see XMLNodeIterator
+ * @see com.globalmentor.xml.dom.impl.traversal.XMLNodeIterator
  * @see org.w3c.dom.Node
  * @see org.w3c.dom.NamedNodeMap
  * @deprecated
@@ -129,14 +129,17 @@ public class XMLNamedNodeMap extends HashMap implements NamedNodeMap {
 	}
 
 	/**
-	 * Adds a node using its <code>nodeName</code> attribute, which is the qualified name when applicable.<br/>
+	 * Adds a node using its <code>nodeName</code> attribute, which is the qualified name when applicable.
+	 * <p>
 	 * As the <code>nodeName</code> attribute is used to derive the name which the node must be stored under, multiple nodes of certain types (those that have a
 	 * "special" string value) cannot be stored as the names would clash. This is seen as preferable to allowing nodes to be aliased.
+	 * </p>
 	 * @param arg A node to store in a named node map. The node will later be accessible using the value of the <code>nodeName</code> attribute of the node. If a
 	 *          node with that name is already present in the map, it is replaced by the new one.
 	 * @return If the new <code>Node</code> replaces an existing node with the same name the previously existing <code>Node</code> is returned, otherwise
 	 *         <code>null</code> is returned.
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>WRONG_DOCUMENT_ERR: Raised if <code>arg</code> was created from a different document than the one that created the <code>NamedNodeMap</code>.
 	 *           </li>
 	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this <code>NamedNodeMap</code> is readonly.</li>
@@ -159,7 +162,8 @@ public class XMLNamedNodeMap extends HashMap implements NamedNodeMap {
 	 *          attribute of the <code>Node</code> interface, if the removed attribute is known to have a default value, an attribute immediately appears
 	 *          containing the default value.
 	 * @return The node removed from the map if a node with such a name exists.
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>NOT_FOUND_ERR: Raised if there is no node named <code>name</code> in the map.</li>
 	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this map is readonly.</li>
 	 *           </ul>
@@ -172,7 +176,7 @@ public class XMLNamedNodeMap extends HashMap implements NamedNodeMap {
 			return existingNode; //return that node
 		else
 			//if the node didn't exist to begin with
-			throw new XMLDOMException(DOMException.NOT_FOUND_ERR, new Object[] { name }); //show that we couldn't find the existing node
+			throw new XMLDOMException(DOMException.NOT_FOUND_ERR, new Object[] {name}); //show that we couldn't find the existing node
 		//TODO do whatever is needed for bringing default nodes in
 	}
 
@@ -230,7 +234,8 @@ public class XMLNamedNodeMap extends HashMap implements NamedNodeMap {
 	 * @param arg A node to store in this map. The node will later be accessible using the value of its <code>namespaceURI</code> and <code>localName</code>
 	 *          attributes.
 	 * @return If the new <code>Node</code> replaces an existing node the replaced <code>Node</code> is returned, otherwise <code>null</code> is returned.
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>WRONG_DOCUMENT_ERR: Raised if <code>arg</code> was created from a different document than the one that created this map.</li>
 	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this map is readonly.</li>
 	 *           <li>INUSE_ATTRIBUTE_ERR: Raised if <code>arg</code> is an <code>Attr</code> that is already an attribute of another <code>Element</code> object.
@@ -251,9 +256,10 @@ public class XMLNamedNodeMap extends HashMap implements NamedNodeMap {
 	 * attached to an element, as returned by the attributes attribute of the <code>Node</code> interface. If so, an attribute immediately appears containing the
 	 * default value as well as the corresponding namespace URI, local name, and prefix when applicable.
 	 * @param namespaceURI The namespace URI of the node to remove.
-	 * @param localNameThe local name of the node to remove.
+	 * @param localName The local name of the node to remove.
 	 * @return The node removed from this map if a node with such a local name and namespace URI exists.
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>NOT_FOUND_ERR: Raised if there is no node with the specified <code>namespaceURI</code> and <code>localName</code> in this map.</li>
 	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this map is readonly.</li>
 	 *           </ul>

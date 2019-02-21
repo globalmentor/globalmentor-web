@@ -33,7 +33,7 @@ public class XMLSyntaxException extends XMLParseException {
 
 	/**
 	 * Constructor for a syntax error, along with a message.
-	 * @param s The error message.
+	 * @param message The error message.
 	 */
 	public XMLSyntaxException(final String message) {
 		super(message);
@@ -51,7 +51,7 @@ public class XMLSyntaxException extends XMLParseException {
 
 	/**
 	 * Constructor for a syntax error, along with error message and error location specified.
-	 * @param s The error message.
+	 * @param message The error message.
 	 * @param lineIndex The index of the line in which the error occurred.
 	 * @param charIndex The index of the character at which the error occurred on the current line.
 	 * @param sourceName The name of the source of the XML document (perhaps a filename).

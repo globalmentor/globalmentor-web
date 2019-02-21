@@ -135,7 +135,8 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	 * classes in this package, such as <code>XMLNamespaceProcessor</code>.
 	 * @param newPrefix The namespace prefix of the node, or <code>null</code> for no prefix.
 	 * @param newLocalName The node's local name.
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>NAMESPACE_ERR: Raised if the specified <code>prefix</code> is malformed, if the <code>namespaceURI</code> of is <code>null</code>, if the
 	 *           specified prefix is "xml" and the <code>namespaceURI</code> of this node is different from "http://www.w3.org/XML/1998/namespace", if this node
 	 *           is an attribute and the specified prefix is "xmlns" and the <code>namespaceURI</code> of this node is different from
@@ -144,7 +145,6 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	 * @see #setNodeName
 	 * @see #getNodeType
 	 * @see #setNodeNameNS
-	 * @see XMLNamespaceProcessor
 	 */
 	protected void setNodeName(final String newPrefix, final String newLocalName) {
 		//TODO fix to throw DOM exceptions if we need to
@@ -155,6 +155,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	 * Sets the name of this this node, correctly extracting namespace information. This is <em>not</em> a DOM function, but is provided as protected access so
 	 * that specific nodes can set their name. This function parses the name and sets name properties as follows:
 	 * <table>
+	 * <caption>Determination of note attributes from parameter values.</caption>
 	 * <tr>
 	 * <th>Attribute</th>
 	 * <th>Value</th>
@@ -172,8 +173,9 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	 * <td>local name, extracted from <code>qualifiedName</code></td>
 	 * </tr>
 	 * </table>
-	 * @param qualififedName The qualified name of the node.
-	 * @throws DOMException <ul>
+	 * @param qualifiedName The qualified name of the node.
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>NAMESPACE_ERR: Raised if the specified <code>prefix</code> is malformed, if the <code>namespaceURI</code> of is <code>null</code>, if the
 	 *           specified prefix is "xml" and the <code>namespaceURI</code> of this node is different from "http://www.w3.org/XML/1998/namespace", if this node
 	 *           is an attribute and the specified prefix is "xmlns" and the <code>namespaceURI</code> of this node is different from
@@ -202,8 +204,8 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	 * Sets the value of the node, depending on its type. In nodes for which <code>getNodeValue</code> returns <code>null</code>, this function does nothing. The
 	 * <code>XMLNode</code> implementation does nothing unless overridden.
 	 * @param nodeValue The new value of the node.
-	 * @see getNodeValue.
-	 * @see getNodeType
+	 * @see #getNodeValue
+	 * @see #getNodeType
 	 * @version DOM Level 1
 	 */
 	public void setNodeValue(String nodeValue) throws DOMException {
@@ -295,6 +297,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	 * Specifies whether or not a particular node can be added as a child of this node. This allows all node functionality to be included in XMLNode, while
 	 * allowing derived node types to simply override this function to specify if a particular type of node can be added. Nodes that do not support child nodes
 	 * can keep this default implementation, which returns <code>false</code>.
+	 * @param node The node to be verified.
 	 * @return Whether or not the specified node can be added to the list of children.
 	 * @see XMLNode#checkNodeBeforeAdding
 	 */
@@ -304,7 +307,9 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 
 	/**
 	 * Checks the specified node to ensure it can be added as a child node.
-	 * @throws DOMException <ul>
+	 * @param node The node to be verified.
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>HIERARCHY_REQUEST_ERR: Raised if this node is of a type that does not allow children of the type of the <code>newChild</code> node, or if the
 	 *           node to append is one of this node's ancestors.</li>
 	 *           <li>WRONG_DOCUMENT_ERR: Raised if <code>newChild</code> was created from a different document than the one that created this node.</li>
@@ -314,7 +319,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	 */
 	protected void checkNodeBeforeAdding(final Node node) throws DOMException {
 		if(!isNodeTypeAllowed(node)) //if we can't add this type of node
-			throw new XMLDOMException(DOMException.HIERARCHY_REQUEST_ERR, new Object[] { node.getNodeName() }); //show that this node type isn't allowed
+			throw new XMLDOMException(DOMException.HIERARCHY_REQUEST_ERR, new Object[] {node.getNodeName()}); //show that this node type isn't allowed
 		//TODO see if the node is one of this node's ancestors
 		//TODO check the document type
 		//TODO check readonly status
@@ -454,14 +459,17 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 
 	/**
 	 * Inserts the node <code>newChild</code> before the existing child node <code>refChild</code>. If <code>refChild</code> is <code>null</code>, inserts
-	 * <code>newChild</code> at the end of the list of children. //TODO fix this comment <br>
+	 * <code>newChild</code> at the end of the list of children. //TODO fix this comment
+	 * <p>
 	 * If <code>newChild</code> is a <code>DocumentFragment</code> object, all of its children are inserted, in the same order, before <code>refChild</code>. If
 	 * the <code>newChild</code> is already in the tree, it is first removed.
+	 * </p>
 	 * @param newChild The node to insert. If <code>newChild</code> is a <code>DocumentFragment</code> object, all of its children are inserted, in the same
 	 *          order, before <code>refChild</code>. If the <code>newChild</code> is already in the tree, it is first removed.
 	 * @param refChild The reference node, i.e., the node before which the new node must be inserted.
 	 * @return The node being inserted.
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>HIERARCHY_REQUEST_ERR: Raised if this node is of a type that does not allow children of the type of the <code>newChild</code> node, or if the
 	 *           node to insert is one of this node's ancestors.</li>
 	 *           <li>WRONG_DOCUMENT_ERR: Raised if <code>newChild</code> was created from a different document than the one that created this node.</li>
@@ -485,7 +493,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 			checkNodeBeforeAdding(newChild); //make sure this node can be added to our list; if not, the appropriate exception will be thrown
 			final int refChildIndex = getChildXMLNodeList().indexOf(refChild); //get the index of the reference child
 			if(refChildIndex == -1) //if we can't find the reference child
-				throw new XMLDOMException(DOMException.NOT_FOUND_ERR, new Object[] { refChild.getNodeName() }); //show that we couldn't find the reference node
+				throw new XMLDOMException(DOMException.NOT_FOUND_ERR, new Object[] {refChild.getNodeName()}); //show that we couldn't find the reference node
 			getChildXMLNodeList().add(refChildIndex, newChild); //add this child to our list at the appropriate index
 			//TODO set the document, set the parent, etc.
 			xmlNewChild.setParentXMLNode(this); //set the parent of the added child
@@ -505,7 +513,8 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	 * @param newChild The new node to put in the child list.
 	 * @param oldChild The node being replaced in the list.
 	 * @return The node replaced.
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>HIERARCHY_REQUEST_ERR: Raised if this node is of a type that does not allow children of the type of the <code>newChild</code> node, or it the
 	 *           node to put in is one of this node's ancestors.</li>
 	 *           <li>WRONG_DOCUMENT_ERR: Raised if <code>newChild</code> was created from a different document than the one that created this node.</li>
@@ -517,7 +526,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	 */
 	public Node replaceChild(Node newChild, Node oldChild) throws DOMException {
 		if(getChildXMLNodeList().indexOf(oldChild) == -1) //if the old child isn't in the list (do this first, even though this will be checked again in our call to removeChild(), so that errors will occur before modifications occur
-			throw new XMLDOMException(DOMException.NOT_FOUND_ERR, new Object[] { oldChild.getNodeName() }); //show that we couldn't find the node to remove
+			throw new XMLDOMException(DOMException.NOT_FOUND_ERR, new Object[] {oldChild.getNodeName()}); //show that we couldn't find the node to remove
 		final int newChildIndex = getChildXMLNodeList().indexOf(newChild); //see if the new child is already in our list
 		if(newChildIndex != -1) //if the new child is already in our list
 			getChildXMLNodeList().remove(newChildIndex); //remove the new child from the list before we replace the old child with it
@@ -531,7 +540,8 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	 * Removes the child node indicated by <code>oldChild</code> from the list of children, and returns it.
 	 * @param oldChild The node being removed.
 	 * @return The node removed.
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
 	 *           <li>NOT_FOUND_ERR: Raised if <code>oldChild</code> is not a child of this node.</li>
 	 *           </ul>
@@ -548,7 +558,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 		}
 		final int oldChildIndex = getChildXMLNodeList().indexOf(oldChild); //get the index of the child to remove
 		if(oldChildIndex == -1) //if we can't find the child they want removed
-			throw new XMLDOMException(DOMException.NOT_FOUND_ERR, new Object[] { oldChild.getNodeName() }); //show that we couldn't find the node to remove
+			throw new XMLDOMException(DOMException.NOT_FOUND_ERR, new Object[] {oldChild.getNodeName()}); //show that we couldn't find the node to remove
 		getChildXMLNodeList().remove(oldChildIndex); //remove the child
 		((XMLNode)oldChild).setParentXMLNode(null); //show that the removed child no longer has a parent
 		return oldChild; //return the child they removed
@@ -559,7 +569,8 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	 * @param newChild The node to add. If it is a <code>DocumentFragment</code> object, the entire contents of the document fragment are moved into the child
 	 *          list of this node
 	 * @return The node added.
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>HIERARCHY_REQUEST_ERR: Raised if this node is of a type that does not allow children of the type of the <code>newChild</code> node, or if the
 	 *           node to append is one of this node's ancestors.</li>
 	 *           <li>WRONG_DOCUMENT_ERR: Raised if <code>newChild</code> was created from a different document than the one that created this node.</li>
@@ -598,9 +609,9 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	/**
 	 * Appends the specified character content to this element's last node if that node is an <code>XMLText</code> node, otherwise creates an <code>XMLText</code>
 	 * and adds it to the list of child nodes.
-	 * @param characterContent The character content to be added.
-	 * @return The node added.
-	 * @throws DOMException <ul>
+	 * @param textString The string content to be added.
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>HIERARCHY_REQUEST_ERR: Raised if this node is of a type that does not allow children of the type of the <code>newChild</code> node, or if the
 	 *           node to append is one of this node's ancestors.</li>
 	 *           <li>WRONG_DOCUMENT_ERR: Raised if <code>newChild</code> was created from a different document than the one that created this node.</li>
@@ -624,8 +635,8 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	}
 
 	/**
-	 * Returns the text of this node, recursively searching all child nodes. Ultimately, this will return a concatenated string of all terminal XMLText nodes.
-	 * Therefore, this function will be overriden in XMLText.
+	 * @return The text of this node, recursively searching all child nodes. Ultimately, this will return a concatenated string of all terminal XMLText nodes.
+	 *         Therefore, this function will be overriden in XMLText.
 	 * @see XMLText
 	 * @see XMLText#getText
 	 */
@@ -727,9 +738,9 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 
 	/**
 	 * Tests whether the DOM implementation implements a specific feature and that feature is supported by this node.
-	 * @param featureThe name of the feature to test. This is the same name which can be passed to the method <code>hasFeature</code> on
+	 * @param feature The name of the feature to test. This is the same name which can be passed to the method <code>hasFeature</code> on
 	 *          <code>DOMImplementation</code>.
-	 * @param versionThis is the version number of the feature to test. In Level 2, version 1, this is the string "2.0". If the version is not specified,
+	 * @param version This is the version number of the feature to test. In Level 2, version 1, this is the string "2.0". If the version is not specified,
 	 *          supporting any version of the feature will cause the method to return <code>true</code>.
 	 * @return Returns <code>true</code> if the specified feature is supported on this node, <code>false</code> otherwise.
 	 * @since DOM Level 2
@@ -748,7 +759,8 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	 * Note also that changing the prefix of an attribute that is known to have a default value, does not make a new attribute with the default value and the
 	 * original prefix appear, since the <code>namespaceURI</code> and <code>localName</code> do not change.
 	 * </p>
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>INVALID_CHARACTER_ERR: Raised if the specified prefix contains an illegal character.</li>
 	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
 	 *           <li>NAMESPACE_ERR: Raised if the specified <code>prefix</code> is malformed, if the <code>namespaceURI</code> of this node is <code>null</code>,
@@ -772,7 +784,8 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 
 	/**
 	 * Checks a prefix against a namespace URI to ensure they are compatibile.
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>NAMESPACE_ERR: Raised if the <code>qualifiedName</code> is malformed, if the <code>qualifiedName</code> has a prefix and the
 	 *           <code>namespaceURI</code> is <code>null</code>, or if the <code>qualifiedName</code> has a prefix that is "xml" and the <code>namespaceURI</code>
 	 *           is different from "http://www.w3.org/XML/1998/namespace".</li>
@@ -781,7 +794,10 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 
 	/**
 	 * Checks a prefix against a namespace URI to ensure they are compatibile. A prefix may be <code>null</code> without causing an error.
-	 * @throws DOMException <ul>
+	 * @param namespaceURI The URI of the namespace of nodes to return. The special value "*" matches all namespaces.
+	 * @param prefix The prefix to look for. If this parameter is <code>null</code>, the method will return the default namespace URI if any.
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>NAMESPACE_ERR: Raised if the specified <code>prefix</code> is malformed, if the <code>namespaceURI</code> of is <code>null</code>, if the
 	 *           specified prefix is "xml" and the <code>namespaceURI</code> of this node is different from "http://www.w3.org/XML/1998/namespace", if this node
 	 *           is an attribute and the specified prefix is "xmlns" and the <code>namespaceURI</code> of this node is different from
@@ -802,7 +818,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 				if(!mismatchedPrefix) //if the prefix matches the URI
 					return; //everything is OK, as far as we can tell
 			}
-			throw new XMLDOMException(DOMException.NAMESPACE_ERR, new Object[] { prefix + " (URI: " + namespaceURI + ")" }); //show that this namespace prefix isn't allowed with this specified URI
+			throw new XMLDOMException(DOMException.NAMESPACE_ERR, new Object[] {prefix + " (URI: " + namespaceURI + ")"}); //show that this namespace prefix isn't allowed with this specified URI
 		}
 	}
 
@@ -884,9 +900,9 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	 * </p>
 	 * @param type Specifies the event type of the <code>EventListener</code> being removed.
 	 * @param listener Indicates the <code>EventListener </code> to be removed.
-	 * @param useCaptureSpecifies whether the <code>EventListener</code> being removed was registered as a capturing listener or not. If a listener was registered
-	 *          twice, one with capture and one without, each must be removed separately. Removal of a capturing listener does not affect a non-capturing version
-	 *          of the same listener, and vice versa.
+	 * @param useCapture Specifies whether the <code>EventListener</code> being removed was registered as a capturing listener or not. If a listener was
+	 *          registered twice, one with capture and one without, each must be removed separately. Removal of a capturing listener does not affect a
+	 *          non-capturing version of the same listener, and vice versa.
 	 */
 	public void removeEventListener(String type, EventListener listener, boolean useCapture) {
 		if(useCapture) { //if this event listener was for capture events
@@ -904,7 +920,8 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	 * @param event Specifies the event type, behavior, and contextual information to be used in processing the event.
 	 * @return Whether any of the listeners which handled the event called <code>preventDefault</code>. If <code>preventDefault</code> was called the value is
 	 *         <code>false</code>, else the value is <code>true</code>.
-	 * @throws EventException <ul>
+	 * @throws EventException
+	 *           <ul>
 	 *           <li>UNSPECIFIED_EVENT_TYPE_ERR: Raised if the <code>Event</code>'s type was not specified by initializing the event before
 	 *           <code>dispatchEvent</code> was called. Specification of the <code>Event</code>'s type as <code>null</code> or an empty string will also trigger
 	 *           this exception.</li>
@@ -977,7 +994,8 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	 * @param xmlEvent The captured event to dispatch to any capture event listeners.
 	 * @return Whether any of the listeners which handled the event called <code>preventDefault</code>. If <code>preventDefault</code> was called the value is
 	 *         <code>false</code>, else the value is <code>true</code>.
-	 * @throws EventException <ul>
+	 * @throws EventException
+	 *           <ul>
 	 *           <li>UNSPECIFIED_EVENT_TYPE_ERR: Raised if the <code>Event</code>'s type was not specified by initializing the event before
 	 *           <code>dispatchEvent</code> was called. Specification of the <code>Event</code>'s type as <code>null</code> or an empty string will also trigger
 	 *           this exception.</li>
@@ -996,7 +1014,8 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	 * @param xmlEvent The captured event to dispatch to any event listeners via bubbling.
 	 * @return Whether any of the listeners which handled the event called <code>preventDefault</code>. If <code>preventDefault</code> was called the value is
 	 *         <code>false</code>, else the value is <code>true</code>.
-	 * @throws EventException <ul>
+	 * @throws EventException
+	 *           <ul>
 	 *           <li>UNSPECIFIED_EVENT_TYPE_ERR: Raised if the <code>Event</code>'s type was not specified by initializing the event before
 	 *           <code>dispatchEvent</code> was called. Specification of the <code>Event</code>'s type as <code>null</code> or an empty string will also trigger
 	 *           this exception.</li>
@@ -1013,6 +1032,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	 * Returns a NodeList of first-level descendant nodes with a given type and node name. The special wildcard name "*" returns nodes of all names. If
 	 * <code>deep</code> is set to <code>true</code>, returns a NodeList of all descendant nodes with a given name, in the order in which they would be
 	 * encountered in a preorder traversal of the node tree.
+	 * @param nodeType The type of node this is.
 	 * @param nodeName The name of the node to match on. The special value "*" matches all nodes.
 	 * @param deep Whether or not matching child nodes of each matching child node, etc. should be included.
 	 * @return A new NodeList object containing all the matching nodes.
@@ -1039,6 +1059,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	 * Returns a NodeList of first-level descendant nodes with a given type, namespace URI, and local name. The special wildcard name "*" returns nodes of all
 	 * local names. If <code>deep</code> is set to <code>true</code>, returns a NodeList of all descendant nodes with a given name, in the order in which they
 	 * would be encountered in a preorder traversal of the node tree.
+	 * @param nodeType The type of node this is.
 	 * @param namespaceURI The URI of the namespace of nodes to return. The special value "*" matches all namespaces.
 	 * @param localName The local name of the node to match on. The special value "*" matches all local names.
 	 * @param deep Whether or not matching child nodes of each matching child node, etc. should be included.
@@ -1058,7 +1079,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 				final String nodeLocalName = node.getLocalName(); //get the node's local name
 				if(matchAllNamespaces || //if we should match all namespaces
 						((namespaceURI == null && nodeNamespaceURI == null) || //if both namespaces are null
-						(namespaceURI != null && namespaceURI.equals(nodeNamespaceURI))) //if the namespace URI's match
+								(namespaceURI != null && namespaceURI.equals(nodeNamespaceURI))) //if the namespace URI's match
 				) { //if we should match all namespaces, or the namespaces match
 					if(matchAllLocalNames || localName.equals(nodeLocalName)) { //if we should match all local names, or the local names match
 						nodeList.add(node); //add this node to the list
@@ -1073,43 +1094,54 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 
 	/**
 	 * Inserts the node <code>newChild</code> before the existing child node <code>refChild</code>. If <code>refChild</code> is <code>null</code>, insert
-	 * <code>newChild</code> at the end of the list of children. <br>
+	 * <code>newChild</code> at the end of the list of children.
+	 * <p>
 	 * If <code>newChild</code> is a <code>DocumentFragment</code> object, all of its children are inserted, in the same order, before <code>refChild</code>. If
 	 * the <code>newChild</code> is already in the tree, it is first removed.
-	 * <p >
+	 * </p>
+	 * <p>
 	 * <b>Note:</b> Inserting a node before itself is implementation dependent.
+	 * </p>
 	 * @param newChild The node to insert.
 	 * @param refChild The reference node, i.e., the node before which the new node must be inserted.
 	 * @return The node being inserted.
-	 * @throws DOMException HIERARCHY_REQUEST_ERR: Raised if this node is of a type that does not allow children of the type of the <code>newChild</code> node, or
-	 *           if the node to insert is one of this node's ancestors or this node itself, or if this node is of type <code>Document</code> and the DOM
-	 *           application attempts to insert a second <code>DocumentType</code> or <code>Element</code> node. <br>
-	 *           WRONG_DOCUMENT_ERR: Raised if <code>newChild</code> was created from a different document than the one that created this node. <br>
-	 *           NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly or if the parent of the node being inserted is readonly. <br>
-	 *           NOT_FOUND_ERR: Raised if <code>refChild</code> is not a child of this node. <br>
-	 *           NOT_SUPPORTED_ERR: if this node is of type <code>Document</code>, this exception might be raised if the DOM implementation doesn't support the
-	 *           insertion of a <code>DocumentType</code> or <code>Element</code> node.
+	 * @throws DOMException
+	 *           <ul>
+	 *           <li>HIERARCHY_REQUEST_ERR: Raised if this node is of a type that does not allow children of the type of the <code>newChild</code> node, or if the
+	 *           node to insert is one of this node's ancestors or this node itself, or if this node is of type <code>Document</code> and the DOM application
+	 *           attempts to insert a second <code>DocumentType</code> or <code>Element</code> node.</li>
+	 *           <li>WRONG_DOCUMENT_ERR: Raised if <code>newChild</code> was created from a different document than the one that created this node.</li>
+	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly or if the parent of the node being inserted is readonly.</li>
+	 *           <li>NOT_FOUND_ERR: Raised if <code>refChild</code> is not a child of this node.</li>
+	 *           <li>NOT_SUPPORTED_ERR: if this node is of type <code>Document</code>, this exception might be raised if the DOM implementation doesn't support
+	 *           the insertion of a <code>DocumentType</code> or <code>Element</code> node.</li>
+	 *           </ul>
 	 * @version DOM Level 3
 	 */
 	//TODO fix for DOM 3    public Node insertBefore(Node newChild, Node refChild) throws DOMException {throw new UnsupportedOperationException();}	//TODO fix for DOM 3
 
 	/**
-	 * Replaces the child node <code>oldChild</code> with <code>newChild</code> in the list of children, and returns the <code>oldChild</code> node. <br>
+	 * Replaces the child node <code>oldChild</code> with <code>newChild</code> in the list of children, and returns the <code>oldChild</code> node.
+	 * <p>
 	 * If <code>newChild</code> is a <code>DocumentFragment</code> object, <code>oldChild</code> is replaced by all of the <code>DocumentFragment</code> children,
 	 * which are inserted in the same order. If the <code>newChild</code> is already in the tree, it is first removed.
+	 * </p>
 	 * <p >
 	 * <b>Note:</b> Replacing a node with itself is implementation dependent.
 	 * @param newChild The new node to put in the child list.
 	 * @param oldChild The node being replaced in the list.
 	 * @return The node replaced.
-	 * @throws DOMException HIERARCHY_REQUEST_ERR: Raised if this node is of a type that does not allow children of the type of the <code>newChild</code> node, or
-	 *           if the node to put in is one of this node's ancestors or this node itself, or if this node is of type <code>Document</code> and the result of the
-	 *           replacement operation would add a second <code>DocumentType</code> or <code>Element</code> on the <code>Document</code> node. <br>
-	 *           WRONG_DOCUMENT_ERR: Raised if <code>newChild</code> was created from a different document than the one that created this node. <br>
-	 *           NO_MODIFICATION_ALLOWED_ERR: Raised if this node or the parent of the new node is readonly. <br>
-	 *           NOT_FOUND_ERR: Raised if <code>oldChild</code> is not a child of this node. <br>
-	 *           NOT_SUPPORTED_ERR: if this node is of type <code>Document</code>, this exception might be raised if the DOM implementation doesn't support the
-	 *           replacement of the <code>DocumentType</code> child or <code>Element</code> child.
+	 * @throws DOMException
+	 *           <ul>
+	 *           <li>HIERARCHY_REQUEST_ERR: Raised if this node is of a type that does not allow children of the type of the <code>newChild</code> node, or if the
+	 *           node to put in is one of this node's ancestors or this node itself, or if this node is of type <code>Document</code> and the result of the
+	 *           replacement operation would add a second <code>DocumentType</code> or <code>Element</code> on the <code>Document</code> node.</li>
+	 *           <li>WRONG_DOCUMENT_ERR: Raised if <code>newChild</code> was created from a different document than the one that created this node.</li>
+	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node or the parent of the new node is readonly.</li>
+	 *           <li>NOT_FOUND_ERR: Raised if <code>oldChild</code> is not a child of this node.</li>
+	 *           <li>NOT_SUPPORTED_ERR: if this node is of type <code>Document</code>, this exception might be raised if the DOM implementation doesn't support
+	 *           the replacement of the <code>DocumentType</code> child or <code>Element</code> child.</li>
+	 *           </ul>
 	 * @version DOM Level 3
 	 */
 	//TODO fix for DOM 3    public Node replaceChild(Node newChild, Node oldChild) throws DOMException {throw new UnsupportedOperationException();}	//TODO fix for DOM 3
@@ -1118,10 +1150,13 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	 * Removes the child node indicated by <code>oldChild</code> from the list of children, and returns it.
 	 * @param oldChild The node being removed.
 	 * @return The node removed.
-	 * @throws DOMException NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly. <br>
-	 *           NOT_FOUND_ERR: Raised if <code>oldChild</code> is not a child of this node. <br>
-	 *           NOT_SUPPORTED_ERR: if this node is of type <code>Document</code>, this exception might be raised if the DOM implementation doesn't support the
-	 *           removal of the <code>DocumentType</code> child or the <code>Element</code> child.
+	 * @throws DOMException
+	 *           <ul>
+	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
+	 *           <li>NOT_FOUND_ERR: Raised if <code>oldChild</code> is not a child of this node.</li>
+	 *           <li>NOT_SUPPORTED_ERR: if this node is of type <code>Document</code>, this exception might be raised if the DOM implementation doesn't support
+	 *           the removal of the <code>DocumentType</code> child or the <code>Element</code> child.</li>
+	 *           </ul>
 	 * @version DOM Level 3
 	 */
 	//TODO fix for DOM 3        public Node removeChild(Node oldChild) throws DOMException {throw new UnsupportedOperationException();}	//TODO fix for DOM 3
@@ -1132,13 +1167,16 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	 * @param newChild The node to add.If it is a <code>DocumentFragment</code> object, the entire contents of the document fragment are moved into the child list
 	 *          of this node
 	 * @return The node added.
-	 * @throws DOMException HIERARCHY_REQUEST_ERR: Raised if this node is of a type that does not allow children of the type of the <code>newChild</code> node, or
-	 *           if the node to append is one of this node's ancestors or this node itself, or if this node is of type <code>Document</code> and the DOM
-	 *           application attempts to append a second <code>DocumentType</code> or <code>Element</code> node. <br>
-	 *           WRONG_DOCUMENT_ERR: Raised if <code>newChild</code> was created from a different document than the one that created this node. <br>
-	 *           NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly or if the previous parent of the node being inserted is readonly. <br>
-	 *           NOT_SUPPORTED_ERR: if the <code>newChild</code> node is a child of the <code>Document</code> node, this exception might be raised if the DOM
-	 *           implementation doesn't support the removal of the <code>DocumentType</code> child or <code>Element</code> child.
+	 * @throws DOMException
+	 *           <ul>
+	 *           <li>HIERARCHY_REQUEST_ERR: Raised if this node is of a type that does not allow children of the type of the <code>newChild</code> node, or if the
+	 *           node to append is one of this node's ancestors or this node itself, or if this node is of type <code>Document</code> and the DOM application
+	 *           attempts to append a second <code>DocumentType</code> or <code>Element</code> node.</li>
+	 *           <li>WRONG_DOCUMENT_ERR: Raised if <code>newChild</code> was created from a different document than the one that created this node.</li>
+	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly or if the previous parent of the node being inserted is readonly.</li>
+	 *           <li>NOT_SUPPORTED_ERR: if the <code>newChild</code> node is a child of the <code>Document</code> node, this exception might be raised if the DOM
+	 *           implementation doesn't support the removal of the <code>DocumentType</code> child or <code>Element</code> child.</li>
+	 *           </ul>
 	 * @version DOM Level 3
 	 */
 	//TODO fix for DOM 3        public Node appendChild(Node newChild) throws DOMException {throw new UnsupportedOperationException();}	//TODO fix for DOM 3
@@ -1147,10 +1185,10 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	 * Puts all <code>Text</code> nodes in the full depth of the sub-tree underneath this <code>Node</code>, including attribute nodes, into a "normal" form where
 	 * only structure (e.g., elements, comments, processing instructions, CDATA sections, and entity references) separates <code>Text</code> nodes, i.e., there
 	 * are neither adjacent <code>Text</code> nodes nor empty <code>Text</code> nodes. This can be used to ensure that the DOM view of a document is the same as
-	 * if it were saved and re-loaded, and is useful when operations (such as XPointer [<a
-	 * href='http://www.w3.org/TR/2003/REC-xptr-framework-20030325/'>XPointer</a>] lookups) that depend on a particular document tree structure are to be used. If
-	 * the parameter "normalize-characters" of the <code>DOMConfiguration</code> object attached to the <code>Node.ownerDocument</code> is <code>true</code>, this
-	 * method will also fully normalize the characters of the <code>Text</code> nodes.
+	 * if it were saved and re-loaded, and is useful when operations (such as XPointer [
+	 * <a href='http://www.w3.org/TR/2003/REC-xptr-framework-20030325/'>XPointer</a>] lookups) that depend on a particular document tree structure are to be used.
+	 * If the parameter "normalize-characters" of the <code>DOMConfiguration</code> object attached to the <code>Node.ownerDocument</code> is <code>true</code>,
+	 * this method will also fully normalize the characters of the <code>Text</code> nodes.
 	 * <p >
 	 * <b>Note:</b> In cases where the document contains <code>CDATASections</code>, the normalize operation alone may not be sufficient, since XPointers do not
 	 * differentiate between <code>Text</code> nodes and <code>CDATASection</code> nodes.
@@ -1185,19 +1223,20 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	/**
 	 * This attribute returns the text content of this node and its descendants. When it is defined to be <code>null</code>, setting it has no effect. On setting,
 	 * any possible children this node may have are removed and, if it the new string is not empty or <code>null</code>, replaced by a single <code>Text</code>
-	 * node containing the string this attribute is set to. <br>
+	 * node containing the string this attribute is set to.
+	 * <p>
 	 * On getting, no serialization is performed, the returned string does not contain any markup. No whitespace normalization is performed and the returned
 	 * string does not contain the white spaces in element content (see the attribute <code>Text.isElementContentWhitespace</code>). Similarly, on setting, no
-	 * parsing is performed either, the input string is taken as pure textual content. <br>
+	 * parsing is performed either, the input string is taken as pure textual content.
+	 * </p>
 	 * The string returned is made of the text content of this node depending on its type, as defined below:
-	 * <table border='1' cellpadding='3'>
+	 * <table summary="" border='1' cellpadding='3'>
 	 * <tr>
 	 * <th>Node type</th>
 	 * <th>Content</th>
 	 * </tr>
 	 * <tr>
-	 * <td valign='top' rowspan='1' colspan='1'>
-	 * ELEMENT_NODE, ATTRIBUTE_NODE, ENTITY_NODE, ENTITY_REFERENCE_NODE, DOCUMENT_FRAGMENT_NODE</td>
+	 * <td valign='top' rowspan='1' colspan='1'>ELEMENT_NODE, ATTRIBUTE_NODE, ENTITY_NODE, ENTITY_REFERENCE_NODE, DOCUMENT_FRAGMENT_NODE</td>
 	 * <td valign='top' rowspan='1' colspan='1'>concatenation of the <code>textContent</code> attribute value of every child node, excluding COMMENT_NODE and
 	 * PROCESSING_INSTRUCTION_NODE nodes. This is the empty string if the node has no children.</td>
 	 * </tr>
@@ -1221,19 +1260,20 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	/**
 	 * This attribute returns the text content of this node and its descendants. When it is defined to be <code>null</code>, setting it has no effect. On setting,
 	 * any possible children this node may have are removed and, if it the new string is not empty or <code>null</code>, replaced by a single <code>Text</code>
-	 * node containing the string this attribute is set to. <br>
+	 * node containing the string this attribute is set to.
+	 * <p>
 	 * On getting, no serialization is performed, the returned string does not contain any markup. No whitespace normalization is performed and the returned
 	 * string does not contain the white spaces in element content (see the attribute <code>Text.isElementContentWhitespace</code>). Similarly, on setting, no
-	 * parsing is performed either, the input string is taken as pure textual content. <br>
+	 * parsing is performed either, the input string is taken as pure textual content.
+	 * </p>
 	 * The string returned is made of the text content of this node depending on its type, as defined below:
-	 * <table border='1' cellpadding='3'>
+	 * <table summary="" border='1' cellpadding='3'>
 	 * <tr>
 	 * <th>Node type</th>
 	 * <th>Content</th>
 	 * </tr>
 	 * <tr>
-	 * <td valign='top' rowspan='1' colspan='1'>
-	 * ELEMENT_NODE, ATTRIBUTE_NODE, ENTITY_NODE, ENTITY_REFERENCE_NODE, DOCUMENT_FRAGMENT_NODE</td>
+	 * <td valign='top' rowspan='1' colspan='1'>ELEMENT_NODE, ATTRIBUTE_NODE, ENTITY_NODE, ENTITY_REFERENCE_NODE, DOCUMENT_FRAGMENT_NODE</td>
 	 * <td valign='top' rowspan='1' colspan='1'>concatenation of the <code>textContent</code> attribute value of every child node, excluding COMMENT_NODE and
 	 * PROCESSING_INSTRUCTION_NODE nodes. This is the empty string if the node has no children.</td>
 	 * </tr>
@@ -1254,10 +1294,12 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	} //TODO fix for DOM 3
 
 	/**
-	 * Returns whether this node is the same node as the given one. <br>
+	 * Returns whether this node is the same node as the given one.
+	 * <p>
 	 * This method provides a way to determine whether two <code>Node</code> references returned by the implementation reference the same object. When two
 	 * <code>Node</code> references are references to the same object, even if through a proxy, the references may be used completely interchangeably, such that
 	 * all attributes have the same values and calling the same DOM method on either reference always has exactly the same effect.
+	 * </p>
 	 * @param other The node to test against.
 	 * @return Returns <code>true</code> if the nodes are the same, <code>false</code> otherwise.
 	 * @since DOM Level 3
@@ -1267,8 +1309,10 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	} //TODO fix for DOM 3
 
 	/**
-	 * Look up the prefix associated to the given namespace URI, starting from this node. The default namespace declarations are ignored by this method. <br>
+	 * Look up the prefix associated to the given namespace URI, starting from this node. The default namespace declarations are ignored by this method.
+	 * <p>
 	 * See for details on the algorithm used by this method.
+	 * </p>
 	 * @param namespaceURI The namespace URI to look for.
 	 * @return Returns an associated namespace prefix if found or <code>null</code> if none is found. If more than one prefix are associated to the namespace
 	 *         prefix, the returned namespace prefix is implementation dependent.
@@ -1289,8 +1333,10 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	} //TODO fix for DOM 3
 
 	/**
-	 * Look up the namespace URI associated to the given prefix, starting from this node. <br>
+	 * Look up the namespace URI associated to the given prefix, starting from this node.
+	 * <p>
 	 * See for details on the algorithm used by this method.
+	 * </p>
 	 * @param prefix The prefix to look for. If this parameter is <code>null</code>, the method will return the default namespace URI if any.
 	 * @return Returns the associated namespace URI or <code>null</code> if none is found.
 	 * @since DOM Level 3
@@ -1300,9 +1346,11 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	} //TODO fix for DOM 3
 
 	/**
-	 * Tests whether two nodes are equal. <br>
+	 * Tests whether two nodes are equal.
+	 * <p>
 	 * This method tests for equality of nodes, not sameness (i.e., whether the two nodes are references to the same object) which can be tested with
-	 * <code>Node.isSameNode()</code>. All nodes that are the same will also be equal, though the reverse may not be true. <br>
+	 * <code>Node.isSameNode()</code>. All nodes that are the same will also be equal, though the reverse may not be true.
+	 * </p>
 	 * Two nodes are equal if and only if the following conditions are satisfied:
 	 * <ul>
 	 * <li>The two nodes are of the same type.</li>
@@ -1313,22 +1361,22 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	 * <li>The <code>childNodes</code> <code>NodeLists</code> are equal. This is: they are both <code>null</code>, or they have the same length and contain equal
 	 * nodes at the same index. Note that normalization can affect equality; to avoid this, nodes should be normalized before being compared.</li>
 	 * </ul>
-	 * <br>
+	 * <p>
 	 * For two <code>DocumentType</code> nodes to be equal, the following conditions must also be satisfied:
 	 * <ul>
 	 * <li>The following string attributes are equal: <code>publicId</code>, <code>systemId</code>, <code>internalSubset</code>.</li>
 	 * <li>The <code>entities</code> <code>NamedNodeMaps</code> are equal.</li>
 	 * <li>The <code>notations</code> <code>NamedNodeMaps</code> are equal.</li>
 	 * </ul>
-	 * <br>
 	 * On the other hand, the following do not affect equality: the <code>ownerDocument</code>, <code>baseURI</code>, and <code>parentNode</code> attributes, the
 	 * <code>specified</code> attribute for <code>Attr</code> nodes, the <code>schemaTypeInfo</code> attribute for <code>Attr</code> and <code>Element</code>
 	 * nodes, the <code>Text.isElementContentWhitespace</code> attribute for <code>Text</code> nodes, as well as any user data or event listeners registered on
 	 * the nodes.
-	 * <p >
+	 * <p>
 	 * <b>Note:</b> As a general rule, anything not mentioned in the description above is not significant in consideration of equality checking. Note that future
 	 * versions of this specification may take into account more attributes and implementations conform to this specification are expected to be updated
 	 * accordingly.
+	 * </p>
 	 * @param arg The node to compare equality with.
 	 * @return Returns <code>true</code> if the nodes are equal, <code>false</code> otherwise.
 	 * @since DOM Level 3
@@ -1379,52 +1427,52 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 
 	/** @return A string representation of the node. */
 	public String toString() {
-		final StringBuffer stringBuffer = new StringBuffer(); //create a string buffer to hold the characters
-		stringBuffer.append('['); //append the node type
+		final StringBuilder stringBuilder = new StringBuilder(); //create a string buffer to hold the characters
+		stringBuilder.append('['); //append the node type
 		switch(getNodeType()) {
 			case ELEMENT_NODE:
-				stringBuffer.append("ELEMENT_NODE");
+				stringBuilder.append("ELEMENT_NODE");
 				break;
 			case ATTRIBUTE_NODE:
-				stringBuffer.append("ATTRIBUTE_NODE");
+				stringBuilder.append("ATTRIBUTE_NODE");
 				break;
 			case TEXT_NODE:
-				stringBuffer.append("TEXT_NODE");
+				stringBuilder.append("TEXT_NODE");
 				break;
 			case CDATA_SECTION_NODE:
-				stringBuffer.append("CDATA_SECTION_NODE");
+				stringBuilder.append("CDATA_SECTION_NODE");
 				break;
 			case ENTITY_REFERENCE_NODE:
-				stringBuffer.append("ENTITY_REFERENCE_NODE");
+				stringBuilder.append("ENTITY_REFERENCE_NODE");
 				break;
 			case ENTITY_NODE:
-				stringBuffer.append("ENTITY_NODE");
+				stringBuilder.append("ENTITY_NODE");
 				break;
 			case PROCESSING_INSTRUCTION_NODE:
-				stringBuffer.append("PROCESSING_INSTRUCTION_NODE");
+				stringBuilder.append("PROCESSING_INSTRUCTION_NODE");
 				break;
 			case COMMENT_NODE:
-				stringBuffer.append("COMMENT_NODE");
+				stringBuilder.append("COMMENT_NODE");
 				break;
 			case DOCUMENT_NODE:
-				stringBuffer.append("DOCUMENT_NODE");
+				stringBuilder.append("DOCUMENT_NODE");
 				break;
 			case DOCUMENT_TYPE_NODE:
-				stringBuffer.append("DOCUMENT_TYPE_NODE");
+				stringBuilder.append("DOCUMENT_TYPE_NODE");
 				break;
 			case DOCUMENT_FRAGMENT_NODE:
-				stringBuffer.append("DOCUMENT_FRAGMENT_NODE");
+				stringBuilder.append("DOCUMENT_FRAGMENT_NODE");
 				break;
 			case NOTATION_NODE:
-				stringBuffer.append("NOTATION_NODE");
+				stringBuilder.append("NOTATION_NODE");
 				break;
 			default:
-				stringBuffer.append("UNKNOWN_NODE");
+				stringBuilder.append("UNKNOWN_NODE");
 				break;
 		}
-		stringBuffer.append("] ");
-		stringBuffer.append(getNodeName()); //append the node name
-		return stringBuffer.toString(); //convert the string buffer to a string and return it
+		stringBuilder.append("] ");
+		stringBuilder.append(getNodeName()); //append the node name
+		return stringBuilder.toString(); //convert the string buffer to a string and return it
 	}
 
 }

@@ -67,7 +67,7 @@ public class XMLCSSValueList extends XMLCSSValue implements CSSValueList {
 	/**
 	 * Returns the parsable textual representation of the current value.
 	 * @return The parsable textual representation of the value.
-	 * @see XMLValue#getCssText
+	 * @see XMLCSSValue#getCssText
 	 * @version DOM Level 2
 	 * @since DOM Level 2
 	 */
@@ -86,7 +86,7 @@ public class XMLCSSValueList extends XMLCSSValue implements CSSValueList {
 	//TODO this still does not work for quoted values with spaces -- the tokenizer will break up the quoted string; fix this
 	/**
 	 * Creates a value list from a value string. TODO decide if we want this is XMLCSSValueList or XMLCSSValue.createValue()
-	 * @valueListString The string which contains the parsable CSS value list.
+	 * @param valueListString The string which contains the parsable CSS value list.
 	 * @return The new primitive value, or <code>null</code> if the value string was not parsable.
 	 */
 	//TODO after figuring out the difference between ident and string, do we really need the property name passed here?

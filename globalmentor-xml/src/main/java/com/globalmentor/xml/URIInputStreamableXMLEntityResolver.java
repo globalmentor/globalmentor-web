@@ -20,12 +20,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 
+import static java.util.Objects.*;
+
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import static com.globalmentor.io.Files.*;
 import com.globalmentor.io.URIInputStreamable;
-import static com.globalmentor.java.Objects.*;
 
 /**
  * An entity resolver that retrieves XML entities from a {@link URIInputStreamable}. This implementation looks up and returns special predefined entities
@@ -52,7 +53,7 @@ public class URIInputStreamableXMLEntityResolver extends DefaultEntityResolver {
 	 * @throws NullPointerException if the given source is <code>null</code>.
 	 */
 	public URIInputStreamableXMLEntityResolver(final URIInputStreamable source) {
-		this.source = checkInstance(source);
+		this.source = requireNonNull(source);
 	}
 
 	/**

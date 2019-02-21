@@ -70,7 +70,7 @@ public class XML {
 	/** A lazily-created cache of system IDs keyed to public IDs. */
 	private static Reference<Map<String, String>> systemIDMapReference = null;
 
-	/** A lazily-created cache of system IDs keyed to public IDs. */
+	/** @return A lazily-created cache of system IDs keyed to public IDs. */
 	protected static Map<String, String> getSystemIDMap() {
 		//get the cache if we have one
 		Map<String, String> systemIDMap = systemIDMapReference != null ? systemIDMapReference.get() : null;
@@ -97,11 +97,11 @@ public class XML {
 	/**
 	 * Attempts to automatically detect the character encoding of a particular input stream that supposedly contains XML data.
 	 * <ul>
-	 * <li>A byte order is attempted to be determined, either by an explicit byte order mark or by the order of the XML declaration start {@value #XML_DECL_START}
-	 * . If no byte order can be determined, <code>null</code> is returned.</li>
+	 * <li>A byte order is attempted to be determined, either by an explicit byte order mark or by the order of the XML declaration start
+	 * {@link com.globalmentor.w3c.spec.XML#XML_DECL_START} . If no byte order can be determined, <code>null</code> is returned.</li>
 	 * <li>Based upon the imputed byte order, an explicit encoding is searched for within the XML declaration. If no explicit encoding is found, the imputed byte
-	 * order's assumed charset is returned. If a start {@value #XML_DECL_START} but not an end {@value #XML_DECL_END} of the XML declaration is found, an
-	 * exception is thrown.</li>
+	 * order's assumed charset is returned. If a start {@link com.globalmentor.w3c.spec.XML#XML_DECL_START} but not an end
+	 * {@link com.globalmentor.w3c.spec.XML#XML_DECL_END} of the XML declaration is found, an exception is thrown.</li>
 	 * <li>If an explicit encoding declaration is found, it is returned, unless it is less specific than the imputed byte order. For example, if the imputed byte
 	 * order is UTF-16BE but the declared encoding is UTF-16, then the charset UTF-16BE is returned.</li>
 	 * <li>If there is no BOM and no XML declaration, <code>null</code> is returned; the caller should assume the default XML encoding of UTF-8.</li>
@@ -125,7 +125,7 @@ public class XML {
 		inputStream.mark(bytes.length);
 		final ByteOrderMark imputedBOM;
 		if(inputStream.read(bytes) == bytes.length) { //read the byte order mark; if we didn't reach the end of the data
-			imputedBOM = ByteOrderMark.impute(bytes, XML_DECL_START, bom); //see if we can recognize the BOM by the beginning characters
+			imputedBOM = ByteOrderMark.impute(bytes, XML_DECL_START, bom).orElse(null); //see if we can recognize the BOM by the beginning characters
 		} else {
 			imputedBOM = null;
 		}
@@ -217,7 +217,7 @@ public class XML {
 	/** A lazily-created cache of content types keyed to public IDs. */
 	private static Reference<Map<String, ContentType>> contentTypeMapReference = null;
 
-	/** A lazily-created cache of content types keyed to public IDs. */
+	/** @return A lazily-created cache of content types keyed to public IDs. */
 	protected static Map<String, ContentType> getContentTypeMap() {
 		//get the cache if we have one
 		Map<String, ContentType> contentTypeMap = contentTypeMapReference != null ? contentTypeMapReference.get() : null;
@@ -254,7 +254,7 @@ public class XML {
 	/** A lazily-created cache of root element local names keyed to content types base type names. */
 	private static Reference<Map<String, String>> rootElementLocalNameMapReference = null;
 
-	/** A lazily-created cache of root element local names keyed to content types. */
+	/** @return A lazily-created cache of root element local names keyed to content types. */
 	protected static Map<String, String> getRootElementLocalNameMap() {
 		//get the cache if we have one
 		Map<String, String> rootElementLocalNameMap = rootElementLocalNameMapReference != null ? rootElementLocalNameMapReference.get() : null;
@@ -596,8 +596,10 @@ public class XML {
 
 	/**
 	 * Returns a list of all nodes of a given type from the given list of nodes.
+	 * @param <N> The type of the nodes.
 	 * @param nodes The list of nodes.
 	 * @param nodeType The type of node to retrieve, one of the <code>Node.?_NODE</code> constants.
+	 * @param nodeClass The class of the nodes to retrieve.
 	 * @return A list of all nodes of the given type from the given list.
 	 * @throws NullPointerException if the given list is <code>null</code>.
 	 * @throws ClassCastException if the given node type does not correspond to the given node class.
@@ -712,13 +714,13 @@ public class XML {
 	protected static final char REPLACEMENT_CHAR = '_';
 
 	/** The special XML symbols that should be replaced with entities. */
-	private static final char[] XML_ENTITY_CHARS = { '&', '"', '\'', '>', '<' }; //TODO use constants
+	private static final char[] XML_ENTITY_CHARS = {'&', '"', '\'', '>', '<'}; //TODO use constants
 
 	/** The strings to replace XML symbols. */
-	private static final String[] XML_ENTITY_REPLACMENTS = { "&amp;", "&quot;", "&apos;", "&gt;", "&lt;" }; //TODO use constants
+	private static final String[] XML_ENTITY_REPLACMENTS = {"&amp;", "&quot;", "&apos;", "&gt;", "&lt;"}; //TODO use constants
 
 	/**
-	 * Replaces special XML symbols with their escaped versions, (e.g. replaces '&lt' with "&amp;lt;") so that the string is valid XML content.
+	 * Replaces special XML symbols with their escaped versions, (e.g. replaces '&lt;' with "&amp;lt;") so that the string is valid XML content.
 	 * @param string The string to be manipulated.
 	 * @return An XML-friendly string.
 	 */
@@ -732,15 +734,15 @@ public class XML {
 	 * @return A new string with illegal XML characters replaced with spaces, or the original string if no characters were replaced.
 	 */
 	public static String createValidString(final String string) {
-		StringBuffer stringBuffer = null; //we'll only create a string buffer if there are invalid characters
+		StringBuilder stringBuilder = null; //we'll only create a string buffer if there are invalid characters
 		for(int i = string.length() - 1; i >= 0; --i) { //look at all the characters in the string
 			if(!isChar(string.charAt(i))) { //if this is not a valid character
-				if(stringBuffer == null) //if we haven't create a string buffer, yet
-					stringBuffer = new StringBuffer(string); //create a string buffer to hold our replacements
-				stringBuffer.setCharAt(i, SPACE_CHAR); //replace this character with a space
+				if(stringBuilder == null) //if we haven't create a string buffer, yet
+					stringBuilder = new StringBuilder(string); //create a string buffer to hold our replacements
+				stringBuilder.setCharAt(i, SPACE_CHAR); //replace this character with a space
 			}
 		}
-		return stringBuffer != null ? stringBuffer.toString() : string; //return the original string unless we've actually modified something
+		return stringBuilder != null ? stringBuilder.toString() : string; //return the original string unless we've actually modified something
 	}
 
 	/**
@@ -779,20 +781,20 @@ public class XML {
 	}
 
 	/**
-	 * Adds a stylesheet to the XML document using the standard <code>&lt;<?xml-stylesheet...</code> processing instruction notation.
+	 * Adds a stylesheet to the XML document using the standard <code>&lt;?xml-stylesheet...&gt;</code> processing instruction notation.
 	 * @param document The document to which the stylesheet reference should be added.
 	 * @param href The reference to the stylesheet.
 	 * @param mediaType The media type of the stylesheet.
 	 */
 	public static void addStyleSheetReference(final Document document, final String href, final ContentType mediaType) {
 		final String target = XML_STYLESHEET_PROCESSING_INSTRUCTION; //the PI target will be the name of the stylesheet processing instruction
-		final StringBuffer dataStringBuffer = new StringBuffer(); //create a string buffer to construct the data parameter (with its pseudo attributes)
+		final StringBuilder dataStringBuilder = new StringBuilder(); //create a string buffer to construct the data parameter (with its pseudo attributes)
 		//add: href="href"
-		dataStringBuffer.append(HREF_ATTRIBUTE).append(EQUAL_CHAR).append(DOUBLE_QUOTE_CHAR).append(href).append(DOUBLE_QUOTE_CHAR);
-		dataStringBuffer.append(SPACE_CHAR); //add a space between the pseudo attributes
+		dataStringBuilder.append(HREF_ATTRIBUTE).append(EQUAL_CHAR).append(DOUBLE_QUOTE_CHAR).append(href).append(DOUBLE_QUOTE_CHAR);
+		dataStringBuilder.append(SPACE_CHAR); //add a space between the pseudo attributes
 		//add: type="type"
-		dataStringBuffer.append(TYPE_ATTRIBUTE).append(EQUAL_CHAR).append(DOUBLE_QUOTE_CHAR).append(mediaType).append(DOUBLE_QUOTE_CHAR);
-		final String data = dataStringBuffer.toString(); //convert the data string buffer to a string
+		dataStringBuilder.append(TYPE_ATTRIBUTE).append(EQUAL_CHAR).append(DOUBLE_QUOTE_CHAR).append(mediaType).append(DOUBLE_QUOTE_CHAR);
+		final String data = dataStringBuilder.toString(); //convert the data string buffer to a string
 		final ProcessingInstruction processingInstruction = document.createProcessingInstruction(target, data); //create a processing instruction with the correct information
 		document.appendChild(processingInstruction); //append the processing instruction to the document
 	}
@@ -1061,7 +1063,7 @@ public class XML {
 	 * @return A new document fragment containing the extracted children.
 	 * @throws ArrayIndexOutOfBoundsException Thrown if either index is negative, if the start index is greater than or equal to the number of children, or if the
 	 *           ending index is greater than the number of children (unless the ending index is not greater than the starting index). TODO should we throw an
-	 *           exception is startChildIndex>endChildIndex, like String.substring()?
+	 *           exception is startChildIndex&gt;endChildIndex, like String.substring()?
 	 * @throws IllegalArgumentException if the given node has no owner document.
 	 * @throws ArrayIndexOutOfBoundsException if the given range is invalid for the given node's children.
 	 * @throws DOMException
@@ -1084,7 +1086,7 @@ public class XML {
 	 * @return A new document fragment containing the extracted children.
 	 * @throws ArrayIndexOutOfBoundsException Thrown if either index is negative, if the start index is greater than or equal to the number of children, or if the
 	 *           ending index is greater than the number of children (unless the ending index is not greater than the starting index). TODO should we throw an
-	 *           exception is startChildIndex>endChildIndex, like String.substring()?
+	 *           exception is startChildIndex&gt;endChildIndex, like String.substring()?
 	 * @throws IllegalArgumentException if the given node has no owner document.
 	 * @throws ArrayIndexOutOfBoundsException if the given range is invalid for the given node's children.
 	 * @throws DOMException
@@ -1188,6 +1190,7 @@ public class XML {
 	/**
 	 * Retrieves the nodes contained in child nodes of type {@link Node#ELEMENT_NODE}.
 	 * @param node The node from which child elements will be returned.
+	 * @return A list with the child nodes.
 	 * @see Node#ELEMENT_NODE
 	 */
 	public static List<Element> getChildElements(final Node node) {
@@ -1251,6 +1254,7 @@ public class XML {
 	 * Gathers child nodes with a given type, namespace URI, and local name. The special wildcard name "*" returns nodes of all local names. If <code>deep</code>
 	 * is set to <code>true</code>, returns a list of all descendant nodes with a given name, in the order in which they would be encountered in a preorder
 	 * traversal of the node tree.
+	 * @param <C> The type of the collection of nodes.
 	 * @param node The node the child nodes of which will be searched.
 	 * @param nodeType The type of nodes to include.
 	 * @param namespaceURI The URI of the namespace of nodes to return. The special value "*" matches all namespaces.
@@ -1319,7 +1323,7 @@ public class XML {
 	 */
 	public static String getText(final Node node, final boolean deep) {
 		final StringBuilder stringBuilder = new StringBuilder(); //create a string buffer to collect the text data
-		getText(node, Collections.<String> emptySet(), deep, stringBuilder); //collect the text in the string buffer
+		getText(node, Collections.<String>emptySet(), deep, stringBuilder); //collect the text in the string buffer
 		return stringBuilder.toString(); //convert the string buffer to a string and return it
 	}
 
@@ -1371,7 +1375,7 @@ public class XML {
 	 * @return <code>true</code> if an ancestor element with the given namespace URI and name was found.
 	 */
 	public static boolean hasAncestorElementNS(Element element, final String ancestorElementNamespaceURI, final String ancestorElementName) {
-		while((element = asInstance(element.getParentNode(), Element.class)) != null) { //keep looking at parents until we run out of elements and hit the document
+		while((element = asInstance(element.getParentNode(), Element.class).orElse(null)) != null) { //keep looking at parents until we run out of elements and hit the document
 			if(Objects.equals(element.getNamespaceURI(), ancestorElementNamespaceURI) && element.getNodeName().equals(ancestorElementName)) {
 				return true;
 			}
@@ -1445,7 +1449,8 @@ public class XML {
 	 * @param startChildIndex The index of the first child to remove.
 	 * @param endChildIndex The index directly after the last child to remove. Must be greater than <code>startChildIndex</code> or no action will occur.
 	 * @throws ArrayIndexOutOfBoundsException Thrown if either index is negative, if the start index is greater than or equal to the number of children, or if the
-	 *           ending index is greater than the number of children. TODO should we throw an exception is startChildIndex>endChildIndex, like String.substring()?
+	 *           ending index is greater than the number of children. TODO should we throw an exception is startChildIndex&gt;endChildIndex, like
+	 *           String.substring()?
 	 * @throws DOMException
 	 *           <ul>
 	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
@@ -1822,7 +1827,6 @@ public class XML {
 	 * Gets the namespace declarations this element needs so that all namespaces for the element and its attributes are properly declared using the appropriate
 	 * <code>xmlns=</code> or <code>xmlns:prefix=</code> attribute declaration. The children of this element are optionally checked.
 	 * @param element The element for which namespace declarations should be checked.
-	 * @param deep Whether all children and their descendants are also recursively checked for namespace declarations.
 	 * @return An array of name/value pairs. The name of each is the the prefix to declare, or <code>null</code> if no prefix is used. The value of each is the
 	 *         URI string of the namespace being defined, or <code>null</code> if no namespace is used.
 	 */
@@ -1899,7 +1903,7 @@ public class XML {
 	 * Declares prefixes for the given namespaces using the appropriate <code>xmlns=</code> or <code>xmlns:prefix=</code> attribute declaration for the given
 	 * element.
 	 * @param declarationElement The element on which the namespaces should be declared.
-	 * @param previxNamespacePairs An array of name/value pairs. The name of each is the the prefix to declare, or <code>null</code> if no prefix is used. The
+	 * @param prefixNamespacePairs An array of name/value pairs. The name of each is the the prefix to declare, or <code>null</code> if no prefix is used. The
 	 *          value of each is the URI string of the namespace being defined, or <code>null</code> if no namespace is used.
 	 */
 	public static void declareNamespaces(final Element declarationElement, final NameValuePair<String, String>[] prefixNamespacePairs) {

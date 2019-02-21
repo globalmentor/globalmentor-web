@@ -41,7 +41,7 @@ import org.w3c.dom.css.*;
  * </ul>
  * @author Garret Wilson
  */
-public class CSSTidier {	//TODO add a feature to remove empty style declarations
+public class CSSTidier { //TODO add a feature to remove empty style declarations
 
 	/** Whether font sizes should be made relative to a base font size. */
 	public static final String MAKE_FONT_SIZES_RELATIVE_OPTION = "makeFontSizesRelative";
@@ -93,7 +93,8 @@ public class CSSTidier {	//TODO add a feature to remove empty style declarations
 	 */
 	public void setOptions(final Properties options) {
 		setMakeFontSizesRelative(PropertiesUtilities.getBooleanProperty(options, MAKE_FONT_SIZES_RELATIVE_OPTION, MAKE_FONT_SIZES_RELATIVE_OPTION_DEFAULT));
-		setRemoveMSOfficeProperties(PropertiesUtilities.getBooleanProperty(options, REMOVE_MS_OFFICE_PROPERTIES_OPTION, REMOVE_MS_OFFICE_PROPERTIES_OPTION_DEFAULT));
+		setRemoveMSOfficeProperties(
+				PropertiesUtilities.getBooleanProperty(options, REMOVE_MS_OFFICE_PROPERTIES_OPTION, REMOVE_MS_OFFICE_PROPERTIES_OPTION_DEFAULT));
 	}
 
 	/** The base font size, if we've found one, in its original CSS value. */
@@ -168,7 +169,7 @@ public class CSSTidier {	//TODO add a feature to remove empty style declarations
 					final CSSPrimitiveValue propertyCSSValue = (CSSPrimitiveValue)cssStyleDeclaration.getPropertyCSSValue(propertyName); //get the property with this name TODO we shouldn't really assume this is a primitive value
 					///TODO del when works				  if(baseFontSizeCSSValue.getCssValueType()==propertyCSSValue.getCssValueType())  //if both value types are the same
 					if(baseFontSizeCssValueType == propertyCSSValue.getCssValueType()) { //if both value types are the same
-					//TODO del when works						final float baseFontSize=baseFontSizeCSSValue.getFloatValue(baseFontSizeCSSValue.getCssValueType());  //get the base font size
+						//TODO del when works						final float baseFontSize=baseFontSizeCSSValue.getFloatValue(baseFontSizeCSSValue.getCssValueType());  //get the base font size
 						final float fontSizeValue = propertyCSSValue.getFloatValue(propertyCSSValue.getCssValueType()); //get the current font size
 						final float relativeSize = Math.round(fontSizeValue / baseFontSizeValue * 100); //get the relative size convert it to a percentage by multiplying by 100, rounding the value TODO use a constant here
 						propertyCSSValue.setFloatValue(propertyCSSValue.CSS_PERCENTAGE, relativeSize); //change the value to a relative size
@@ -214,6 +215,7 @@ public class CSSTidier {	//TODO add a feature to remove empty style declarations
 	 * Determines whether a particular CSS property should be removed.
 	 * @param cssStyleDeclaration The CSS style declaration containing the property
 	 * @param propertyName The name of the property being examined.
+	 * @return {@code true} if the property should be removed and {@code false} if not.
 	 */
 	protected boolean shouldRemoveProperty(final CSSStyleDeclaration cssStyleDeclaration, final String propertyName) {
 		//if we should remove MS Office properties, and this is an MS Office property

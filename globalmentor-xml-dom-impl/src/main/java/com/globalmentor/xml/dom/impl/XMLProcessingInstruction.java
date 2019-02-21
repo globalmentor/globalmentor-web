@@ -38,6 +38,7 @@ public class XMLProcessingInstruction extends XMLNode implements org.w3c.dom.Pro
 
 	/**
 	 * Returns the value of any pseudo attribute in the form name="value" or name='value' which may be part of the processing instruction data.
+	 * @param pseudoAttributeName used to achieve its own pseudo attribute value.
 	 * @return The value of the given pseudo attribute, or <code>null</code> if that attribute isn't present in the data of the processing instruction.
 	 * @see #getData
 	 * @see #setData

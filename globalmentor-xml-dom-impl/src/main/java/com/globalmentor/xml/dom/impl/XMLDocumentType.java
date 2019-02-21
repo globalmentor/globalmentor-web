@@ -97,9 +97,9 @@ public class XMLDocumentType extends XMLNode implements DocumentType {
 	private XMLNamedNodeMap Entities = new XMLNamedNodeMap();
 
 	/**
-	 * Returns an <code>XMLNamedNodeMap</code> containing the general entities, both external and internal, declared in the DTD. Duplicates are discarded. Every
-	 * entry in the map is an <code>XMLEntity</code>. For the DOM version, see getEntities(). The DOM Level 2 does not support editing entities, so the entities
-	 * cannot be altered in any way.
+	 * @return An <code>XMLNamedNodeMap</code> containing the general entities, both external and internal, declared in the DTD. Duplicates are discarded. Every
+	 *         entry in the map is an <code>XMLEntity</code>. For the DOM version, see getEntities(). The DOM Level 2 does not support editing entities, so the
+	 *         entities cannot be altered in any way.
 	 * @see XMLEntity
 	 * @see XMLDocumentType#getEntities
 	 */
@@ -126,8 +126,10 @@ public class XMLDocumentType extends XMLNode implements DocumentType {
 
 	/**
 	 * A <code>NamedNodeMap</code> containing the notations declared in the DTD. Duplicates are discarded. Every node in this map also implements the
-	 * <code>Notation</code> interface. <br>
+	 * <code>Notation</code> interface.
+	 * <p>
 	 * The DOM Level 2 does not support editing notations, therefore <code>notations</code> cannot be altered in any way.
+	 * </p>
 	 */
 	public NamedNodeMap getNotations() {
 		return null;
@@ -156,6 +158,7 @@ public class XMLDocumentType extends XMLNode implements DocumentType {
 
 	/**
 	 * Sets the public identifier.
+	 * @param publicID The new public ID.
 	 * @see XMLDocumentType#setSystemID
 	 */
 	public void setPublicID(final String publicID) {
@@ -185,6 +188,7 @@ public class XMLDocumentType extends XMLNode implements DocumentType {
 
 	/**
 	 * Sets the system identifier.
+	 * @param systemID The new system ID.
 	 * @see XMLDocumentType#setPublicID
 	 */
 	public void setSystemID(final String systemID) {

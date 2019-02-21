@@ -46,7 +46,8 @@ public class XMLCSSSelector {	//TODO fix, Cloneable
 
 	/**
 	 * Determines whether, this selector applies to the specified element.
-	 * @param The element whose name and class should match those contained in this selector.
+	 * @param element The element whose name and class should match those contained in this selector.
+	 * @return <code>true</code> if the selector applies to the specified element.
 	 * @see XMLCSSStyleRule#appliesTo
 	 */
 	public boolean appliesTo(Element element) {

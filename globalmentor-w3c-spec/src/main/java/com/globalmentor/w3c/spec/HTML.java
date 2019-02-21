@@ -19,13 +19,14 @@ package com.globalmentor.w3c.spec;
 import java.net.URI;
 import java.util.*;
 
+import static java.util.Objects.*;
+
 import com.globalmentor.java.Characters;
 import com.globalmentor.model.IDed;
 import com.globalmentor.net.ContentType;
 
 import static com.globalmentor.collections.Sets.*;
 import static com.globalmentor.java.Characters.*;
-import static com.globalmentor.java.Objects.*;
 import static com.globalmentor.net.ContentTypeConstants.*;
 
 /**
@@ -303,7 +304,7 @@ public class HTML {
 		private final String id;
 
 		private LinkType(final String id) {
-			this.id = checkInstance(id);
+			this.id = requireNonNull(id);
 		}
 
 		@Override
@@ -476,7 +477,7 @@ public class HTML {
 	 * @return The HTML CSS class identifiers, if any.
 	 * @see #ATTRIBUTE_CLASS
 	 * @see #splitSpaces(CharSequence)
-	 * @see <a href="http://www.w3.org/TR/html5/dom.html#classes>The <code>class</code> attribute</a>
+	 * @see <a href="http://www.w3.org/TR/html5/dom.html#classes">The <code>class</code> attribute</a>
 	 */
 	public static Set<CharSequence> getClasses(final CharSequence htmlClass) {
 		return immutableSetOf(splitSpaces(htmlClass)); //remove duplicates

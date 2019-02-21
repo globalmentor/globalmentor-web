@@ -43,26 +43,32 @@ public class XMLWellFormednessException extends XMLParseException {
 	public static final short PE_IN_INTERNAL_SUBSET = 0; //TODO fix
 
 	/**
-	 * Well-Formedness Constraint: Element Type Match<br/>
+	 * Well-Formedness Constraint: Element Type Match
+	 * <p>
 	 * The Name in an element's end-tag must match the element type in the start-tag. Arguments: Name of beginning tag, name of ending tag.
+	 * </p>
 	 */
 	public static final short ELEMENT_TYPE_MATCH = 1;
 
 	/**
-	 * Well-Formedness Constraint: Unique Att Spec<br/>
+	 * Well-Formedness Constraint: Unique Att Spec
+	 * <p>
 	 * No attribute name may appear more than once in the same start-tag or empty-element tag. Arguments: Tag name, attribute name.
+	 * </p>
 	 */
 	public static final short UNIQUE_ATT_SPEC = 2;
 
 	/**
-	 * Well-Formedness Constraint: No External Entity References<br/>
+	 * Well-Formedness Constraint: No External Entity References
+	 * <p>
 	 * Attribute values cannot contain direct or indirect entity references to external entities. Arguments: Attribute name, external entity name.
+	 * </p>
 	 */
 	public static final short NO_EXTERNAL_ENTITY_REFERENCES = 3;
 
 	/**
-	 * Well-Formedness Constraint: No < in Attribute Values The replacement text of any entity referred to directly or indirectly in an attribute value (other
-	 * than "&lt;") must not contain a <. Arguments: Attribute name.
+	 * Well-Formedness Constraint: No {@code <} in Attribute Values The replacement text of any entity referred to directly or indirectly in an attribute value
+	 * (other than {@code &lt;}) must not contain a {@code <}. Arguments: Attribute name.
 	 */
 	public static final short NO_LT_IN_ATTRIBUTE_VALUES = 4;
 
@@ -141,11 +147,13 @@ public class XMLWellFormednessException extends XMLParseException {
 	 * @param charIndex The index of the character at which the error occurred on the current line.
 	 * @param sourceName The name of the source of the XML document (perhaps a filename).
 	 */
-	public XMLWellFormednessException(final short errorType, final Object[] messageArguments, final long lineIndex, final long charIndex, final String sourceName) {
+	public XMLWellFormednessException(final short errorType, final Object[] messageArguments, final long lineIndex, final long charIndex,
+			final String sourceName) {
 		//format a message based upon their error type
-		super(ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX + ERROR_NAME_RESOURCE_ID) + ": "
-				+ MessageFormat.format(ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX + errorType), messageArguments), lineIndex,
-				charIndex, sourceName);
+		super(
+				ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX + ERROR_NAME_RESOURCE_ID) + ": "
+						+ MessageFormat.format(ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX + errorType), messageArguments),
+				lineIndex, charIndex, sourceName);
 	}
 
 	/**
@@ -156,8 +164,9 @@ public class XMLWellFormednessException extends XMLParseException {
 	 */
 	public XMLWellFormednessException(final ParseEOFException parseEOFException, final String objectType, final String objectName) {
 		//format a message for an unexpected end of file
-		super(ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX + ERROR_NAME_RESOURCE_ID) + ": "
-				+ MessageFormat.format(ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX + EOF), new Object[] { objectType, objectName }),
+		super(
+				ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX + ERROR_NAME_RESOURCE_ID) + ": "
+						+ MessageFormat.format(ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX + EOF), new Object[] {objectType, objectName}),
 				parseEOFException.getLineIndex(), parseEOFException.getCharIndex(), parseEOFException.getSourceName());
 		initCause(parseEOFException); //show what caused this exception
 	}
@@ -168,11 +177,11 @@ public class XMLWellFormednessException extends XMLParseException {
 	 */
 	public XMLWellFormednessException(final ParseUnexpectedDataException parseUnexpectedDataException) {
 		//format a message for unexpected data
-		super(ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX + ERROR_NAME_RESOURCE_ID)
-				+ ": "
-				+ MessageFormat.format(ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX + UNEXPECTED_DATA), new Object[] {
-						parseUnexpectedDataException.getExpectedMessage(), parseUnexpectedDataException.getFoundMessage() }), parseUnexpectedDataException.getLineIndex(),
-				parseUnexpectedDataException.getCharIndex(), parseUnexpectedDataException.getSourceName());
+		super(
+				ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX + ERROR_NAME_RESOURCE_ID) + ": "
+						+ MessageFormat.format(ResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME).getString(RESOURCE_PREFIX + UNEXPECTED_DATA),
+								new Object[] {parseUnexpectedDataException.getExpectedMessage(), parseUnexpectedDataException.getFoundMessage()}),
+				parseUnexpectedDataException.getLineIndex(), parseUnexpectedDataException.getCharIndex(), parseUnexpectedDataException.getSourceName());
 		initCause(parseUnexpectedDataException); //show what caused this exception
 	}
 

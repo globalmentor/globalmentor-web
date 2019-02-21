@@ -36,38 +36,38 @@ import org.w3c.dom.*;
  * </p>
  * <dl>
  * <dt>bma10.txt</dt>
- * <dd>Project Gutenberg Etext of Bulfinch's Mythology, The Age of Fable<br />
+ * <dd>Project Gutenberg Etext of Bulfinch's Mythology, The Age of Fable<br>
  * #1 in our series by Thomas Bulfinch</dd>
  * <dt>0ws3510.txt</dt>
- * <dd>The Project Gutenberg's Etext of Shakespeare's First Folio***<br />
+ * <dd>The Project Gutenberg's Etext of Shakespeare's First Folio***<br>
  * The Tragedie of Anthonie, and Cleopatra*************</dd>
  * <dt>vngln10i.txt</dt>
- * <dd>The Project Gutenberg Etext of Evangeline, by Henry W. Longfellow<br />
+ * <dd>The Project Gutenberg Etext of Evangeline, by Henry W. Longfellow<br>
  * #6 in our series by Henry W. Longfellow</dd>
  * <dt>siddh02.txt</dt>
- * <dd>The Project Gutenberg Etext of "Siddhartha," by Hermann Hesse<br />
+ * <dd>The Project Gutenberg Etext of "Siddhartha," by Hermann Hesse<br>
  * #2 in our series by Hesse</dd>
  * <dt>sawyr10.txt</dt>
- * <dd>The Project Gutenberg Etext of Tom Sawyer, by Twain/Clemens**<br />
+ * <dd>The Project Gutenberg Etext of Tom Sawyer, by Twain/Clemens**<br>
  * This file should be named sawyr10.txt or sawyr10.zip*****</dd>
  * <dt>poe3v11.txt</dt>
- * <dd>The Project Gutenberg Etext of The Works of Edgar Allan Poe V. 3<br />
- * Volume 3 of the Raven Edition<br />
+ * <dd>The Project Gutenberg Etext of The Works of Edgar Allan Poe V. 3<br>
+ * Volume 3 of the Raven Edition<br>
  * #8 in our series by Edgar Allan Poe</dd>
  * <dt>ozland10.txt</dt>
- * <dd>The Project Gutenberg Etext of The Marvelous Land of Oz*<br />
+ * <dd>The Project Gutenberg Etext of The Marvelous Land of Oz*<br>
  * This file should be named ozland10.txt or ozland10.zip**</dd>
  * <dt>8cncd10.txt</dt>
- * <dd>The Project Gutenberg Etext of A Week on the Concord and Merrimack Rivers<br />
+ * <dd>The Project Gutenberg Etext of A Week on the Concord and Merrimack Rivers<br>
  * by Henry David Thoreau</dd>
  * <dt>ynkgp10.txt</dt>
- * <dd>The Project Gutenberg Etext of Yankee Gypsies, by Whittier***<br />
+ * <dd>The Project Gutenberg Etext of Yankee Gypsies, by Whittier***<br>
  * #1 in our series by John Greenleaf Whittier</dd>
  * <dt>wman11.txt</dt>
- * <dd>The Project Gutenberg Edition of "What Is Man?" by Mark Twain*<br />
+ * <dd>The Project Gutenberg Edition of "What Is Man?" by Mark Twain*<br>
  * #1 in our series by Mark Twain [Samuel Langhorne Clemens]</dd>
  * <dt>phant12.zip</dt>
- * <dd>The Project Gutenberg EBook of The Phantom of the Opera, by Gaston Leroux<br />
+ * <dd>The Project Gutenberg EBook of The Phantom of the Opera, by Gaston Leroux<br>
  * #1 in our series by Gaston Leroux</dd>
  * <dt>uscon95b.txt</dt>
  * <dd>Project Gutenberg's United States Congress Address Book****</dd>

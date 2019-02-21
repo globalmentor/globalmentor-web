@@ -55,8 +55,8 @@ public class XMLSchema {
 	 * Sets the schema target namespace.
 	 * @param newTargetNamespace The target namespace for the schema.
 	 */
-	public void setTargetNamespace(final String newTargetNamepace) {
-		targetNamespace = newTargetNamepace;
+	public void setTargetNamespace(final String newTargetNamespace) {
+		targetNamespace = newTargetNamespace;
 	}
 
 	/** Default constructor. */
@@ -105,7 +105,7 @@ public class XMLSchema {
 	/**
 	 * Returns a collection of all components in the schema from the specified symbol space. The collection is backed by the symbol space, so modifications to the
 	 * symbol space will cause the collection to be modified. The returned collection is read-only.
-	 * @param targetNamespace The URI of the requested namespace.
+	 * @param namespace The URI of the requested namespace.
 	 * @param symbolSpaceName The name of the symbol space from which to return
 	 * @return An unmodifiable collection of schema components from the specified symbol space.
 	 */

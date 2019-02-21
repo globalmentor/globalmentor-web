@@ -195,13 +195,16 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 
 	/**
 	 * Creates an element of the type specified. If the document type has known attributes with default values, attribute nodes representing them are
-	 * automatically created and attached to the element.<br />
+	 * automatically created and attached to the element.
+	 * <p>
 	 * To create an element with a qualified name and namespace URI, use the createElementNS() method.
+	 * </p>
 	 * @param tagName The name of the element type to instantiate. For XML, this is case-sensitive. For HTML, the <code>tagName</code> parameter may be provided
 	 *          in any case, but it must be mapped to the canonical uppercase form by the DOM implementation.
 	 * @return A new <code>Element</code> object.
-	 * @throws DOMException <ul>
-	 *           </li>INVALID_CHARACTER_ERR: Raised if the specified name contains an invalid character.</li>
+	 * @throws DOMException
+	 *           <ul>
+	 *           <li>INVALID_CHARACTER_ERR: Raised if the specified name contains an invalid character.</li>
 	 *           </ul>
 	 * @see XMLAttribute
 	 * @see XMLElement
@@ -227,7 +230,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	 * Creates a text node given the specified string.
 	 * @param data The data for the node.
 	 * @return The new text node object.
-	 * @see XMLTextNode
+	 * @see XMLText
 	 * @version DOM Level 1
 	 */
 	public Text createTextNode(String data) {
@@ -249,7 +252,8 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	 * Creates a CDATA section node whose value is the specified string.
 	 * @param data The data for the CDATA section contents.
 	 * @return The new CDATA section node object.
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>NOT_SUPPORTED_ERR: Raised if this document is an HTML document.</li>
 	 *           </ul>
 	 * @version DOM Level 1
@@ -264,9 +268,11 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	 * @param target The target part of the processing instruction.
 	 * @param data The data for the node.
 	 * @return The new <code>ProcessingInstruction</code> object.
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>INVALID_CHARACTER_ERR: Raised if an invalid character is specified.</li>
 	 *           <li>NOT_SUPPORTED_ERR: Raised if this document is an HTML document.</li>
+	 *           </ul>
 	 */
 	public ProcessingInstruction createProcessingInstruction(String target, String data) throws DOMException {
 		//TODO check for an invalid character
@@ -276,11 +282,14 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	}
 
 	/**
-	 * Creates an attribute with the given name. Note that the attribute instance can then be set on an element node setAttribute() method.<br />
+	 * Creates an attribute with the given name. Note that the attribute instance can then be set on an element node setAttribute() method.
+	 * <p>
 	 * To create an attribute with a qualified name and namespace URI, use the createAttributeNS() method.
+	 * </p>
 	 * @param name The name of the attribute.
 	 * @return A new attribute node object.
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>INVALID_CHARACTER_ERR: Raised if the specified name contains an invalid character.</li>
 	 *           </ul>
 	 * @see XMLElement
@@ -297,8 +306,12 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	 * Creates an EntityReference object.
 	 * @param name The name of the entity to reference.
 	 * @return The new <code>EntityReference</code> object.
-	 * @throws DOMException INVALID_CHARACTER_ERR: Raised if the specified name contains an invalid character. <br>
-	 *           NOT_SUPPORTED_ERR: Raised if this document is an HTML document.
+	 * @throws DOMException
+	 *           <ul>
+	 *           <li>INVALID_CHARACTER_ERR: Raised if the specified name contains an invalid character.</li>
+	 *           <li>NOT_SUPPORTED_ERR: Raised if this document is an HTML document.</li>
+	 *           </ul>
+	 * 
 	 */
 	public EntityReference createEntityReference(String name) throws DOMException {
 		return null;
@@ -332,9 +345,9 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	 * @param tagname The name of the tag to match on. The special value "*" matches all tags.
 	 * @return A new NodeList object containing all the matched elements.
 	 * @see XMLElement
-	 * @see XMLELement#getElementsByTagName
 	 * @see XMLDocument
 	 * @see XMLDocument#getDocumentElement
+	 * @see XMLDocument#getElementsByTagName(String)
 	 * @see XMLNodeList
 	 * @version DOM Level 1
 	 */
@@ -376,8 +389,8 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	 * <li>DOCUMENT_NODE: Document nodes nodes cannot be imported.</li>
 	 * <li>DOCUMENT_TYPE_NODE: Document type nodes cannot be imported.</li>
 	 * <li>DOCUMENT_FRAGMENT_NODE: If the <code>deep</code> option was set to <code>true</code>, the descendants of the source element will be recursively
-	 * imported and the resulting nodes reassembled to form the corresponding subtree. Otherwise, this simply generates an empty DocumentFragment node.</li> TODO
-	 * is that last sentence really true?
+	 * <li>imported and the resulting nodes reassembled to form the corresponding subtree. Otherwise, this simply generates an empty DocumentFragment node.</li>
+	 * <!-- TODO is that last sentence really true?-->
 	 * <li>NOTATION_NODE: Notation nodes can be imported, however in the current release of the DOM the document type is readonly. Ability to add these imported
 	 * nodes to a document type will be considered for addition to a future release of the DOM. On import, the publicID and systemID attributes are copied. Note
 	 * that the <code>deep</code> parameter does not apply to notation nodes since they never have any children.</li>
@@ -386,7 +399,8 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	 * @param deep If <code>true</code>, recursively imports the subtree under the specified node; if <code>false</code>, imports only the node itself, as
 	 *          explained above. This does not apply to Attribute, EntityReference, and Notation nodes.
 	 * @return The imported node that belongs to this document.
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>NOT_SUPPORTED_ERR: Raised if the type of node being imported is not supported.</li>
 	 *           </ul>
 	 * @see XMLNode#cloneNode
@@ -411,7 +425,8 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	 *          order, before <code>refChild</code>. If the <code>newChild</code> is already in the tree, it is first removed.
 	 * @param refChild The reference node, i.e., the node before which the new node must be inserted.
 	 * @return The node being inserted.
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>HIERARCHY_REQUEST_ERR: Raised if this node is of a type that does not allow children of the type of the <code>newChild</code> node, or if the
 	 *           node to insert is one of this node's ancestors.</li>
 	 *           <li>WRONG_DOCUMENT_ERR: Raised if <code>newChild</code> was created from a different document than the one that created this node.</li>
@@ -422,7 +437,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	 */
 	public Node insertBefore(Node newChild, Node refChild) throws DOMException {
 		if(newChild.getNodeType() == Node.ELEMENT_NODE) //if they are trying to add an element
-			throw new XMLDOMException(DOMException.HIERARCHY_REQUEST_ERR, new Object[] { newChild.getNodeName() }); //show that there can only be one document element
+			throw new XMLDOMException(DOMException.HIERARCHY_REQUEST_ERR, new Object[] {newChild.getNodeName()}); //show that there can only be one document element
 		return super.insertBefore(newChild, refChild); //do the default functionality		
 	}
 
@@ -436,7 +451,8 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	 * @param newChild The new node to put in the child list.
 	 * @param oldChild The node being replaced in the list.
 	 * @return The node replaced.
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>HIERARCHY_REQUEST_ERR: Raised if this node is of a type that does not allow children of the type of the <code>newChild</code> node, or it the
 	 *           node to put in is one of this node's ancestors.</li>
 	 *           <li>WRONG_DOCUMENT_ERR: Raised if <code>newChild</code> was created from a different document than the one that created this node.</li>
@@ -450,10 +466,10 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 		//if an element is replacing a node and/or if an element is being replaced
 		if((newChild.getNodeType() == Node.ELEMENT_NODE || oldChild.getNodeType() == Node.ELEMENT_NODE)) {
 			if(newChild.getNodeType() != oldChild.getNodeType()) //if one is an element, both have to be an element
-				throw new XMLDOMException(DOMException.HIERARCHY_REQUEST_ERR, new Object[] { newChild.getNodeName() }); //show that there must be at least one and only one document element
+				throw new XMLDOMException(DOMException.HIERARCHY_REQUEST_ERR, new Object[] {newChild.getNodeName()}); //show that there must be at least one and only one document element
 			final int index = getChildXMLNodeList().indexOf(oldChild); //get the index of the old child
 			if(index < 0) //if the old child isn't in the list (do this first, even though this will be checked again in our call to removeChild(), so that errors will occur before modifications occur
-				throw new XMLDOMException(DOMException.NOT_FOUND_ERR, new Object[] { oldChild.getNodeName() }); //show that we couldn't find the node to remove
+				throw new XMLDOMException(DOMException.NOT_FOUND_ERR, new Object[] {oldChild.getNodeName()}); //show that we couldn't find the node to remove
 			final XMLNode xmlNewChild = (XMLNode)newChild; //cast the child to an XMLNode
 			//TODO make sure this replacement fires the correct events
 			getChildXMLNodeList().set(index, xmlNewChild); //replace the document element
@@ -472,7 +488,8 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	 * </p>
 	 * @param oldChild The node being removed.
 	 * @return The node removed.
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
 	 *           <li>NOT_FOUND_ERR: Raised if <code>oldChild</code> is not a child of this node.</li>
 	 *           </ul>
@@ -480,7 +497,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	 */
 	public Node removeChild(Node oldChild) throws DOMException {
 		if(oldChild.getNodeType() == Node.ELEMENT_NODE) //if they are trying to remove the document element
-			throw new XMLDOMException(DOMException.HIERARCHY_REQUEST_ERR, new Object[] { oldChild.getNodeName() }); //show that there must be one document element
+			throw new XMLDOMException(DOMException.HIERARCHY_REQUEST_ERR, new Object[] {oldChild.getNodeName()}); //show that there must be one document element
 		return super.removeChild(oldChild); //do the default functionality
 	}
 
@@ -492,7 +509,8 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	 * @param newChild The node to add. If it is a <code>DocumentFragment</code> object, the entire contents of the document fragment are moved into the child
 	 *          list of this node
 	 * @return The node added.
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>HIERARCHY_REQUEST_ERR: Raised if this node is of a type that does not allow children of the type of the <code>newChild</code> node, or if the
 	 *           node to append is one of this node's ancestors.</li>
 	 *           <li>WRONG_DOCUMENT_ERR: Raised if <code>newChild</code> was created from a different document than the one that created this node.</li>
@@ -504,7 +522,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	 */
 	public Node appendChild(Node newChild) throws DOMException {
 		if(newChild.getNodeType() == Node.ELEMENT_NODE) //if they are trying to append an element
-			throw new XMLDOMException(DOMException.HIERARCHY_REQUEST_ERR, new Object[] { newChild.getNodeName() }); //show that there can only be one document element
+			throw new XMLDOMException(DOMException.HIERARCHY_REQUEST_ERR, new Object[] {newChild.getNodeName()}); //show that there can only be one document element
 		return super.appendChild(newChild); //do the default functionality
 	}
 
@@ -514,6 +532,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	 * @param qualifiedName The qualified name of the element type to instantiate.
 	 * @return A new <code>Element</code> object with the following attributes:
 	 *         <table>
+	 *         <caption>Determination of note attributes from parameter values.</caption>
 	 *         <tr>
 	 *         <th>Attribute</th>
 	 *         <th>Value</th>
@@ -539,7 +558,8 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	 *         <td><code>qualifiedName</code></td>
 	 *         </tr>
 	 *         </table>
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>INVALID_CHARACTER_ERR: Raised if the specified qualified name contains an illegal character.</li>
 	 *           <li>NAMESPACE_ERR: Raised if the <code>qualifiedName</code> is malformed, if the <code>qualifiedName</code> has a prefix and the
 	 *           <code>namespaceURI</code> is <code>null</code>, or if the <code>qualifiedName</code> has a prefix that is "xml" and the <code>namespaceURI</code>
@@ -560,6 +580,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	 * @param qualifiedName The qualified name of the attribute to instantiate.
 	 * @return A new <code>Attr</code> object with the following attributes:
 	 *         <table>
+	 *         <caption>Determination of note attributes from parameter values.</caption>
 	 *         <tr>
 	 *         <th>Attribute</th>
 	 *         <th>Value</th>
@@ -589,7 +610,8 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	 *         <td>the empty string</td>
 	 *         </tr>
 	 *         </table>
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>INVALID_CHARACTER_ERR: Raised if the specified qualified name contains an illegal character.</li>
 	 *           <li>NAMESPACE_ERR: Raised if the <code>qualifiedName</code> is malformed, if the <code>qualifiedName</code> has a prefix and the
 	 *           <code>namespaceURI</code> is <code>null</code>, if the <code>qualifiedName</code> has a prefix that is "xml" and the <code>namespaceURI</code> is
@@ -607,8 +629,8 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	/**
 	 * Returns a <code>NodeList</code> of all the <code>Elements</code> with a given local name and namespace URI in the order in which they are encountered in a
 	 * preorder traversal of the <code>Document</code> tree.
-	 * @param namespaceURIThe namespace URI of the elements to match on. The special value "*" matches all namespaces.
-	 * @param localNameThe local name of the elements to match on. The special value "*" matches all local names.
+	 * @param namespaceURI The namespace URI of the elements to match on. The special value "*" matches all namespaces.
+	 * @param localName The local name of the elements to match on. The special value "*" matches all local names.
 	 * @return A new <code>NodeList</code> object containing all the matched <code>Elements</code>.
 	 * @since DOM Level 2
 	 */
@@ -632,12 +654,14 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	/**
 	 * The Document Type Declaration (see <code>DocumentType</code>) associated with this document. For XML documents without a document type declaration this
 	 * returns <code>null</code>. For HTML documents, a <code>DocumentType</code> object may be returned, independently of the presence or absence of document
-	 * type declaration in the HTML document. <br>
+	 * type declaration in the HTML document.
+	 * <p>
 	 * This provides direct access to the <code>DocumentType</code> node, child node of this <code>Document</code>. This node can be set at document creation time
 	 * and later changed through the use of child nodes manipulation methods, such as <code>Node.insertBefore</code>, or <code>Node.replaceChild</code>. Note,
 	 * however, that while some implementations may instantiate different types of <code>Document</code> objects supporting additional features than the "Core",
 	 * such as "HTML" [<a href='http://www.w3.org/TR/2003/REC-DOM-Level-2-HTML-20030109'>DOM Level 2 HTML</a>] , based on the <code>DocumentType</code> specified
 	 * at creation time, changing it afterwards is very unlikely to result in a change of the features supported.
+	 * <p>
 	 * @version DOM Level 3
 	 */
 	//TODO fix for DOM 3    public DocumentType getDoctype() {throw new UnsupportedOperationException();}	//TODO fix for DOM 3
@@ -680,7 +704,10 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	 * <b>Note:</b> No verification is done on the value when setting this attribute. Applications should use <code>Document.normalizeDocument()</code> with the
 	 * "validate" parameter to verify if the value matches the <a href='http://www.w3.org/TR/2004/REC-xml-20040204#sec-rmd'>validity constraint for standalone
 	 * document declaration</a> as defined in [<a href='http://www.w3.org/TR/2004/REC-xml-20040204'>XML 1.0</a>].
-	 * @throws DOMException NOT_SUPPORTED_ERR: Raised if this document does not support the "XML" feature.
+	 * @throws DOMException
+	 *           <ul>
+	 *           <li>NOT_SUPPORTED_ERR: Raised if this document does not support the "XML" feature.</li>
+	 *           </ul>
 	 * @since DOM Level 3
 	 */
 	public void setXmlStandalone(boolean xmlStandalone) throws DOMException {
@@ -692,13 +719,15 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	 * document. If there is no declaration and if this document supports the "XML" feature, the value is <code>"1.0"</code>. If this document does not support
 	 * the "XML" feature, the value is always <code>null</code>. Changing this attribute will affect methods that check for invalid characters in XML names.
 	 * Application should invoke <code>Document.normalizeDocument()</code> in order to check for invalid characters in the <code>Node</code>s that are already
-	 * part of this <code>Document</code>. <br>
+	 * part of this <code>Document</code>.
+	 * <p>
 	 * DOM applications may use the <code>DOMImplementation.hasFeature(feature, version)</code> method with parameter values "XMLVersion" and "1.0" (respectively)
 	 * to determine if an implementation supports [<a href='http://www.w3.org/TR/2004/REC-xml-20040204'>XML 1.0</a>]. DOM applications may use the same method
-	 * with parameter values "XMLVersion" and "1.1" (respectively) to determine if an implementation supports [<a
-	 * href='http://www.w3.org/TR/2004/REC-xml11-20040204/'>XML 1.1</a>]. In both cases, in order to support XML, an implementation must also support the "XML"
+	 * with parameter values "XMLVersion" and "1.1" (respectively) to determine if an implementation supports [
+	 * <a href='http://www.w3.org/TR/2004/REC-xml11-20040204/'>XML 1.1</a>]. In both cases, in order to support XML, an implementation must also support the "XML"
 	 * feature defined in this specification. <code>Document</code> objects supporting a version of the "XMLVersion" feature must not raise a
 	 * <code>NOT_SUPPORTED_ERR</code> exception for the same version number when using <code>Document.xmlVersion</code>.
+	 * <p>
 	 * @since DOM Level 3
 	 */
 	public String getXmlVersion() {
@@ -710,15 +739,20 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	 * document. If there is no declaration and if this document supports the "XML" feature, the value is <code>"1.0"</code>. If this document does not support
 	 * the "XML" feature, the value is always <code>null</code>. Changing this attribute will affect methods that check for invalid characters in XML names.
 	 * Application should invoke <code>Document.normalizeDocument()</code> in order to check for invalid characters in the <code>Node</code>s that are already
-	 * part of this <code>Document</code>. <br>
+	 * part of this <code>Document</code>.
+	 * <p>
 	 * DOM applications may use the <code>DOMImplementation.hasFeature(feature, version)</code> method with parameter values "XMLVersion" and "1.0" (respectively)
 	 * to determine if an implementation supports [<a href='http://www.w3.org/TR/2004/REC-xml-20040204'>XML 1.0</a>]. DOM applications may use the same method
-	 * with parameter values "XMLVersion" and "1.1" (respectively) to determine if an implementation supports [<a
-	 * href='http://www.w3.org/TR/2004/REC-xml11-20040204/'>XML 1.1</a>]. In both cases, in order to support XML, an implementation must also support the "XML"
+	 * with parameter values "XMLVersion" and "1.1" (respectively) to determine if an implementation supports [
+	 * <a href='http://www.w3.org/TR/2004/REC-xml11-20040204/'>XML 1.1</a>]. In both cases, in order to support XML, an implementation must also support the "XML"
 	 * feature defined in this specification. <code>Document</code> objects supporting a version of the "XMLVersion" feature must not raise a
 	 * <code>NOT_SUPPORTED_ERR</code> exception for the same version number when using <code>Document.xmlVersion</code>.
-	 * @throws DOMException NOT_SUPPORTED_ERR: Raised if the version is set to a value that is not supported by this <code>Document</code> or if this document
-	 *           does not support the "XML" feature.
+	 * </p>
+	 * @throws DOMException
+	 *           <ul>
+	 *           <li>NOT_SUPPORTED_ERR: Raised if the version is set to a value that is not supported by this <code>Document</code> or if this document does not
+	 *           support the "XML" feature.</li>
+	 *           </ul>
 	 * @since DOM Level 3
 	 */
 	public void setXmlVersion(String xmlVersion) throws DOMException {
@@ -748,9 +782,11 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	/**
 	 * The location of the document or <code>null</code> if undefined or if the <code>Document</code> was created using
 	 * <code>DOMImplementation.createDocument</code>. No lexical checking is performed when setting this attribute; this could result in a <code>null</code> value
-	 * returned when using <code>Node.baseURI</code> . <br>
+	 * returned when using <code>Node.baseURI</code> .
+	 * <p>
 	 * Beware that when the <code>Document</code> supports the feature "HTML" [<a href='http://www.w3.org/TR/2003/REC-DOM-Level-2-HTML-20030109'>DOM Level 2
 	 * HTML</a>] , the href attribute of the HTML BASE element takes precedence over this attribute when computing <code>Node.baseURI</code>.
+	 * </p>
 	 * @since DOM Level 3
 	 */
 	public String getDocumentURI() {
@@ -760,9 +796,11 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	/**
 	 * The location of the document or <code>null</code> if undefined or if the <code>Document</code> was created using
 	 * <code>DOMImplementation.createDocument</code>. No lexical checking is performed when setting this attribute; this could result in a <code>null</code> value
-	 * returned when using <code>Node.baseURI</code> . <br>
+	 * returned when using <code>Node.baseURI</code> .
+	 * <p>
 	 * Beware that when the <code>Document</code> supports the feature "HTML" [<a href='http://www.w3.org/TR/2003/REC-DOM-Level-2-HTML-20030109'>DOM Level 2
 	 * HTML</a>] , the href attribute of the HTML BASE element takes precedence over this attribute when computing <code>Node.baseURI</code>.
+	 * </p>
 	 * @since DOM Level 3
 	 */
 	public void setDocumentURI(String documentURI) {
@@ -783,17 +821,14 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	 * <dt>DOCUMENT_FRAGMENT_NODE</dt>
 	 * <dd>The descendants of the source node are recursively adopted.</dd>
 	 * <dt>DOCUMENT_NODE</dt>
-	 * <dd>
-	 * <code>Document</code> nodes cannot be adopted.</dd>
+	 * <dd><code>Document</code> nodes cannot be adopted.</dd>
 	 * <dt>DOCUMENT_TYPE_NODE</dt>
-	 * <dd>
-	 * <code>DocumentType</code> nodes cannot be adopted.</dd>
+	 * <dd><code>DocumentType</code> nodes cannot be adopted.</dd>
 	 * <dt>ELEMENT_NODE</dt>
 	 * <dd><em>Specified</em> attribute nodes of the source element are adopted. Default attributes are discarded, though if the document being adopted into
 	 * defines default attributes for this element name, those are assigned. The descendants of the source element are recursively adopted.</dd>
 	 * <dt>ENTITY_NODE</dt>
-	 * <dd>
-	 * <code>Entity</code> nodes cannot be adopted.</dd>
+	 * <dd><code>Entity</code> nodes cannot be adopted.</dd>
 	 * <dt>ENTITY_REFERENCE_NODE</dt>
 	 * <dd>Only the <code>EntityReference</code> node itself is adopted, the descendants are discarded, since the source and destination documents might have
 	 * defined the entity differently. If the document being imported into provides a definition for this entity name, its value is assigned.</dd>
@@ -808,8 +843,11 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	 * is not an XML name according to the XML version in use.
 	 * @param source The node to move into this document.
 	 * @return The adopted node, or <code>null</code> if this operation fails, such as when the source node comes from a different implementation.
-	 * @throws DOMException NOT_SUPPORTED_ERR: Raised if the source node is of type <code>DOCUMENT</code>, <code>DOCUMENT_TYPE</code>. <br>
-	 *           NO_MODIFICATION_ALLOWED_ERR: Raised when the source node is readonly.
+	 * @throws DOMException
+	 *           <ul>
+	 *           <li>NOT_SUPPORTED_ERR: Raised if the source node is of type <code>DOCUMENT</code>, <code>DOCUMENT_TYPE</code>.</li>
+	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised when the source node is readonly.</li>
+	 *           </ul>
 	 * @since DOM Level 3
 	 */
 	public Node adoptNode(Node source) throws DOMException {
@@ -826,10 +864,12 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 
 	/**
 	 * This method acts as if the document was going through a save and load cycle, putting the document in a "normal" form. As a consequence, this method updates
-	 * the replacement tree of <code>EntityReference</code> nodes and normalizes <code>Text</code> nodes, as defined in the method <code>Node.normalize()</code>. <br>
+	 * the replacement tree of <code>EntityReference</code> nodes and normalizes <code>Text</code> nodes, as defined in the method <code>Node.normalize()</code>.
+	 * <p>
 	 * Otherwise, the actual result depends on the features being set on the <code>Document.domConfig</code> object and governing what operations actually take
 	 * place. Noticeably this method could also make the document namespace well-formed according to the algorithm described in , check the character
 	 * normalization, remove the <code>CDATASection</code> nodes, etc. See <code>DOMConfiguration</code> for details.
+	 * </p>
 	 * 
 	 * <pre>
 	 * // Keep in the document 
@@ -839,12 +879,15 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	 * myDocument.normalizeDocument();
 	 * </pre>
 	 * 
-	 * <br>
-	 * Mutation events, when supported, are generated to reflect the changes occurring on the document. <br>
+	 * <p>
+	 * Mutation events, when supported, are generated to reflect the changes occurring on the document.
+	 * </p>
+	 * <p>
 	 * If errors occur during the invocation of this method, such as an attempt to update a read-only node or a <code>Node.nodeName</code> contains an invalid
 	 * character according to the XML version in use, errors or warnings (<code>DOMError.SEVERITY_ERROR</code> or <code>DOMError.SEVERITY_WARNING</code>) will be
 	 * reported using the <code>DOMErrorHandler</code> object associated with the "error-handler " parameter. Note this method might also report fatal errors (
 	 * <code>DOMError.SEVERITY_FATAL_ERROR</code>) if an implementation cannot recover from an error.
+	 * </p>
 	 * @since DOM Level 3
 	 */
 	public void normalizeDocument() {
@@ -852,42 +895,49 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	} //TODO fix for DOM 3
 
 	/**
-	 * Rename an existing node of type <code>ELEMENT_NODE</code> or <code>ATTRIBUTE_NODE</code>. <br>
+	 * Rename an existing node of type <code>ELEMENT_NODE</code> or <code>ATTRIBUTE_NODE</code>.
+	 * <p>
 	 * When possible this simply changes the name of the given node, otherwise this creates a new node with the specified name and replaces the existing node with
-	 * the new node as described below. <br>
+	 * the new node as described below.
+	 * </p>
+	 * <p>
 	 * If simply changing the name of the given node is not possible, the following operations are performed: a new node is created, any registered event listener
 	 * is registered on the new node, any user data attached to the old node is removed from that node, the old node is removed from its parent if it has one, the
 	 * children are moved to the new node, if the renamed node is an <code>Element</code> its attributes are moved to the new node, the new node is inserted at
 	 * the position the old node used to have in its parent's child nodes list if it has one, the user data that was attached to the old node is attached to the
-	 * new node. <br>
+	 * new node.
+	 * </p>
+	 * <p>
 	 * When the node being renamed is an <code>Element</code> only the specified attributes are moved, default attributes originated from the DTD are updated
 	 * according to the new element name. In addition, the implementation may update default attributes from other schemas. Applications should use
-	 * <code>Document.normalizeDocument()</code> to guarantee these attributes are up-to-date. <br>
+	 * <code>Document.normalizeDocument()</code> to guarantee these attributes are up-to-date.
+	 * </p>
 	 * When the node being renamed is an <code>Attr</code> that is attached to an <code>Element</code>, the node is first removed from the <code>Element</code>
-	 * attributes map. Then, once renamed, either by modifying the existing node or creating a new one as described above, it is put back. <br>
-	 * In addition,
+	 * attributes map. Then, once renamed, either by modifying the existing node or creating a new one as described above, it is put back. In addition,
 	 * <ul>
 	 * <li>a user data event <code>NODE_RENAMED</code> is fired,</li>
-	 * <li>
-	 * when the implementation supports the feature "MutationNameEvents", each mutation operation involved in this method fires the appropriate event, and in the
-	 * end the event { <code>http://www.w3.org/2001/xml-events</code>, <code>DOMElementNameChanged</code> or { <code>http://www.w3.org/2001/xml-events</code>,
+	 * <li>when the implementation supports the feature "MutationNameEvents", each mutation operation involved in this method fires the appropriate event, and in
+	 * the end the event { <code>http://www.w3.org/2001/xml-events</code>, <code>DOMElementNameChanged</code> or { <code>http://www.w3.org/2001/xml-events</code>,
 	 * <code>DOMAttributeNameChanged</code> is fired.</li>
 	 * </ul>
 	 * @param n The node to rename.
 	 * @param namespaceURI The new namespace URI.
 	 * @param qualifiedName The new qualified name.
 	 * @return The renamed node. This is either the specified node or the new node that was created to replace the specified node.
-	 * @throws DOMException NOT_SUPPORTED_ERR: Raised when the type of the specified node is neither <code>ELEMENT_NODE</code> nor <code>ATTRIBUTE_NODE</code>, or
-	 *           if the implementation does not support the renaming of the document element. <br>
-	 *           INVALID_CHARACTER_ERR: Raised if the new qualified name is not an XML name according to the XML version in use specified in the
-	 *           <code>Document.xmlVersion</code> attribute. <br>
-	 *           WRONG_DOCUMENT_ERR: Raised when the specified node was created from a different document than this document. <br>
-	 *           NAMESPACE_ERR: Raised if the <code>qualifiedName</code> is a malformed qualified name, if the <code>qualifiedName</code> has a prefix and the
+	 * @throws DOMException
+	 *           <ul>
+	 *           <li>NOT_SUPPORTED_ERR: Raised when the type of the specified node is neither <code>ELEMENT_NODE</code> nor <code>ATTRIBUTE_NODE</code>, or if the
+	 *           implementation does not support the renaming of the document element.</li>
+	 *           <li>INVALID_CHARACTER_ERR: Raised if the new qualified name is not an XML name according to the XML version in use specified in the
+	 *           <code>Document.xmlVersion</code> attribute.</li>
+	 *           <li>WRONG_DOCUMENT_ERR: Raised when the specified node was created from a different document than this document.</li>
+	 *           <li>NAMESPACE_ERR: Raised if the <code>qualifiedName</code> is a malformed qualified name, if the <code>qualifiedName</code> has a prefix and the
 	 *           <code>namespaceURI</code> is <code>null</code>, or if the <code>qualifiedName</code> has a prefix that is "xml" and the <code>namespaceURI</code>
-	 *           is different from "<a href='http://www.w3.org/XML/1998/namespace'> http://www.w3.org/XML/1998/namespace</a>" [<a
-	 *           href='http://www.w3.org/TR/1999/REC-xml-names-19990114/'>XML Namespaces</a>] . Also raised, when the node being renamed is an attribute, if the
-	 *           <code>qualifiedName</code>, or its prefix, is "xmlns" and the <code>namespaceURI</code> is different from
-	 *           "<a href='http://www.w3.org/2000/xmlns/'>http://www.w3.org/2000/xmlns/</a>".
+	 *           is different from "<a href='http://www.w3.org/XML/1998/namespace'> http://www.w3.org/XML/1998/namespace</a>" [
+	 *           <a href='http://www.w3.org/TR/1999/REC-xml-names-19990114/'>XML Namespaces</a>] . Also raised, when the node being renamed is an attribute, if
+	 *           the <code>qualifiedName</code>, or its prefix, is "xmlns" and the <code>namespaceURI</code> is different from
+	 *           "<a href='http://www.w3.org/2000/xmlns/'>http://www.w3.org/2000/xmlns/</a>".</li>
+	 *           </ul>
 	 * @since DOM Level 3
 	 */
 	public Node renameNode(Node n, String namespaceURI, String qualifiedName) throws DOMException {
@@ -896,35 +946,40 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 
 	/**
 	 * Creates a new <code>NodeIterator</code> over the subtree rooted at the specified node.
-	 * @param rootThe node which will be iterated together with its children. The iterator is initially positioned just before this node. The
+	 * @param root The node which will be iterated together with its children. The iterator is initially positioned just before this node. The
 	 *          <code>whatToShow</code> flags and the filter, if any, are not considered when setting this position. The root must not be <code>null</code>.
 	 * @param whatToShow Which node types may appear in the logical view of the tree presented by the iterator. See the description of <code>NodeFilter</code> for
 	 *          the set of possible <code>SHOW_</code> values.These flags can be combined using boolean OR.
 	 * @param filter The <code>NodeFilter</code> to be used with this <code>TreeWalker</code>, or <code>null</code> to indicate no filter.
 	 * @param entityReferenceExpansion Whether entity reference nodes are expanded.
 	 * @return The newly created <code>NodeIterator</code>.
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>NOT_SUPPORTED_ERR: Raised if the specified <code>root</code> is <code>null</code>.</li>
+	 *           </ul>
 	 */
 	public NodeIterator createNodeIterator(Node root, int whatToShow, NodeFilter filter, boolean entityReferenceExpansion) throws DOMException {
 		if(root == null) //if an invalid root was given
-			throw new XMLDOMException(DOMException.NOT_SUPPORTED_ERR, new Object[] { "null" }); //show that a null root is not allowed TODO use a constant here
+			throw new XMLDOMException(DOMException.NOT_SUPPORTED_ERR, new Object[] {"null"}); //show that a null root is not allowed TODO use a constant here
 		return new XMLNodeIterator(root, whatToShow, filter, entityReferenceExpansion); //create and return a new node iterator
 	}
 
 	/**
 	 * Create a new <code>TreeWalker</code> over the subtree rooted at the specified node.
-	 * @param rootThe node which will serve as the <code>root</code> for the <code>TreeWalker</code>. The <code>whatToShow</code> flags and the
+	 * @param root The node which will serve as the <code>root</code> for the <code>TreeWalker</code>. The <code>whatToShow</code> flags and the
 	 *          <code>NodeFilter</code> are not considered when setting this value; any node type will be accepted as the <code>root</code>. The
 	 *          <code>currentNode</code> of the <code>TreeWalker</code> is initialized to this node, whether or not it is visible. The <code>root</code> functions
 	 *          as a stopping point for traversal methods that look upward in the document structure, such as <code>parentNode</code> and nextNode. The
 	 *          <code>root</code> must not be <code>null</code>.
-	 * @param whatToShowThis flag specifies which node types may appear in the logical view of the tree presented by the tree-walker. See the description of
+	 * @param whatToShow This flag specifies which node types may appear in the logical view of the tree presented by the tree-walker. See the description of
 	 *          <code>NodeFilter</code> for the set of possible SHOW_ values.These flags can be combined using <code>OR</code>.
-	 * @param filterThe <code>NodeFilter</code> to be used with this <code>TreeWalker</code>, or <code>null</code> to indicate no filter.
-	 * @param entityReferenceExpansionIf this flag is false, the contents of <code>EntityReference</code> nodes are not presented in the logical view.
+	 * @param filter The <code>NodeFilter</code> to be used with this <code>TreeWalker</code>, or <code>null</code> to indicate no filter.
+	 * @param entityReferenceExpansion If this flag is false, the contents of <code>EntityReference</code> nodes are not presented in the logical view.
 	 * @return The newly created <code>TreeWalker</code>.
-	 * @throws DOMException NOT_SUPPORTED_ERR: Raised if the specified <code>root</code> is <code>null</code>.
+	 * @throws DOMException
+	 *           <ul>
+	 *           <li>NOT_SUPPORTED_ERR: Raised if the specified <code>root</code> is <code>null</code>.</li>
+	 *           </ul>
 	 */
 	public TreeWalker createTreeWalker(Node root, int whatToShow, NodeFilter filter, boolean entityReferenceExpansion) throws DOMException {
 		return null;
@@ -937,7 +992,8 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 	 *          <code>dispatchEvent</code> method the appropriate event init method must be called after creation in order to initialize the <code>Event</code>'s
 	 *          values.
 	 * @return The newly created <code>Event</code>.
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>NOT_SUPPORTED_ERR: Raised if the implementation does not support the type of <code>Event</code> interface requested.</li>
 	 *           </ul>
 	 */
@@ -946,7 +1002,7 @@ public class XMLDocument extends XMLNode implements Document, DocumentTraversal,
 			return new XMLMutationEvent(); //create a new mutation event
 		else
 			//if this type of event was not recognized
-			throw new XMLDOMException(DOMException.NOT_SUPPORTED_ERR, new Object[] { eventType }); //show that this event type isn't allowed
+			throw new XMLDOMException(DOMException.NOT_SUPPORTED_ERR, new Object[] {eventType}); //show that this event type isn't allowed
 	}
 
 }

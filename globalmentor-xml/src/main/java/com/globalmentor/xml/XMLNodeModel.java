@@ -112,7 +112,6 @@ public class XMLNodeModel<N extends Node> extends URIAccessibleModel {
 
 	/**
 	 * Base URI and input stream locator constructor.
-	 * @param xml The XML information being modeled, or <code>null</code> if there is no XML information.
 	 * @param baseURI The base URI of the model, or <code>null</code> if unknown.
 	 * @param uriInputStreamable The implementation to use for accessing a URI for input, or <code>null</code> if the default implementation should be used.
 	 */

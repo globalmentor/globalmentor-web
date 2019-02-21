@@ -43,6 +43,7 @@ public class XMLAttribute extends XMLNode implements org.w3c.dom.Attr {
 	/**
 	 * Constructor that uses a specified name and namespace URI. The attributes's names and values will be constructed in the following fashion:
 	 * <table>
+	 * <caption>Determination of note attributes from parameter values.</caption>
 	 * <tr>
 	 * <th>Attribute</th>
 	 * <th>Value</th>
@@ -76,7 +77,8 @@ public class XMLAttribute extends XMLNode implements org.w3c.dom.Attr {
 	 * @param namespaceURI The namespace URI of the attribute.
 	 * @param qualifiedName The qualified name of the attribute.
 	 * @param newValue The new value of the attribute.
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>NAMESPACE_ERR: Raised if the specified <code>prefix</code> is malformed, if the <code>namespaceURI</code> of is <code>null</code>, if the
 	 *           specified prefix is "xml" and the <code>namespaceURI</code> of this node is different from "http://www.w3.org/XML/1998/namespace", if this node
 	 *           is an attribute and the specified prefix is "xmlns" and the <code>namespaceURI</code> of this node is different from
@@ -168,7 +170,7 @@ public class XMLAttribute extends XMLNode implements org.w3c.dom.Attr {
 	//TODO fix these different value types, and maybe move them to node or something
 	/**
 	 * Gets the integer value of the attribute.
-	 * @throw NumberFormatException Thrown when the value being read is not a valid integer.
+	 * @throws NumberFormatException Thrown when the value being read is not a valid integer.
 	 * @return The integer value of the attribute.
 	 */
 	public int getIntegerValue() throws NumberFormatException {
@@ -177,7 +179,8 @@ public class XMLAttribute extends XMLNode implements org.w3c.dom.Attr {
 
 	/**
 	 * Gets the boolean value of the attribute.
-	 * @throw NumberFormatException Thrown when the value being read is not a valid boolean value.
+	 * @param attributeName The name of the attribute.
+	 * @throws NumberFormatException Thrown when the value being read is not a valid boolean value.
 	 * @return The boolean value of the attribute with the specified name.
 	 */
 	public boolean getAttributeBooleanValue(final String attributeName) throws NumberFormatException {
@@ -191,7 +194,7 @@ public class XMLAttribute extends XMLNode implements org.w3c.dom.Attr {
 	 * Returns the element node to which this attribute is attached, or <code>null</code> if this attribute is not in use. For the DOM version, see
 	 * getOwnerElement().
 	 * @return The owner of the attribute, or <code>null</code> if this attribute is not in use.
-	 * @seeXMLAattribute#getOwnerElement
+	 * @see XMLAttribute#getOwnerElement
 	 * @see XMLElement
 	 * @version DOM Level 2
 	 * @since DOM Level 2
@@ -230,7 +233,8 @@ public class XMLAttribute extends XMLNode implements org.w3c.dom.Attr {
 	 * Note also that changing the prefix of an attribute that is known to have a default value, does not make a new attribute with the default value and the
 	 * original prefix appear, since the <code>namespaceURI</code> and <code>localName</code> do not change.
 	 * </p>
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>INVALID_CHARACTER_ERR: Raised if the specified prefix contains an illegal character.</li>
 	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
 	 *           <li>NAMESPACE_ERR: Raised if the specified <code>prefix</code> is malformed, if the <code>namespaceURI</code> of this node is <code>null</code>,
@@ -333,6 +337,7 @@ public class XMLAttribute extends XMLNode implements org.w3c.dom.Attr {
 
 	/**
 	 * Set whether this attribute was was explicitly given a value in the original document or by the user.
+	 * @param specified The new specified value.
 	 * @see XMLAttribute#setValue
 	 */
 	protected void setSpecified(final boolean specified) {
@@ -352,7 +357,8 @@ public class XMLAttribute extends XMLNode implements org.w3c.dom.Attr {
 	 * Sets the value of the attribute, and makes a note that the attribute has now been explicitely specified. TODO fix On setting, this creates a
 	 * <code>Text</code> node with the unparsed contents of the string.
 	 * @param value The new value for the attribute.
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised when the node is readonly.</li>
 	 *           </ul>
 	 * @see XMLAttribute#getNodeValue
@@ -382,9 +388,9 @@ public class XMLAttribute extends XMLNode implements org.w3c.dom.Attr {
 	 * to determine if this attribute is a schema-determined ID attribute using the <a href='http://www.w3.org/TR/2003/REC-xptr-framework-20030325/#term-sdi'>
 	 * schema-determined ID</a> definition in [<a href='http://www.w3.org/TR/2003/REC-xptr-framework-20030325/'>XPointer</a>] .</li>
 	 * <li>If validation occurred using a DTD while loading the document or while invoking <code>Document.normalizeDocument()</code>, the infoset <b>[type
-	 * definition]</b> value is used to determine if this attribute is a DTD-determined ID attribute using the <a
-	 * href='http://www.w3.org/TR/2003/REC-xptr-framework-20030325/#term-ddi'> DTD-determined ID</a> definition in [<a
-	 * href='http://www.w3.org/TR/2003/REC-xptr-framework-20030325/'>XPointer</a>] .</li>
+	 * definition]</b> value is used to determine if this attribute is a DTD-determined ID attribute using the
+	 * <a href='http://www.w3.org/TR/2003/REC-xptr-framework-20030325/#term-ddi'> DTD-determined ID</a> definition in
+	 * [<a href='http://www.w3.org/TR/2003/REC-xptr-framework-20030325/'>XPointer</a>] .</li>
 	 * <li>from the use of the methods <code>Element.setIdAttribute()</code>, <code>Element.setIdAttributeNS()</code>, or
 	 * <code>Element.setIdAttributeNode()</code>, i.e. it is an user-determined ID attribute;
 	 * <p >
@@ -393,10 +399,11 @@ public class XMLAttribute extends XMLNode implements org.w3c.dom.Attr {
 	 * <li>using mechanisms that are outside the scope of this specification, it is then an externally-determined ID attribute. This includes using schema
 	 * languages different from XML schema and DTD.</li>
 	 * </ul>
-	 * <br>
+	 * <p>
 	 * If validation occurred while invoking <code>Document.normalizeDocument()</code>, all user-determined ID attributes are reset and all attribute nodes ID
 	 * information are then reevaluated in accordance to the schema used. As a consequence, if the <code>Attr.schemaTypeInfo</code> attribute contains an ID type,
 	 * <code>isId</code> will always return true.
+	 * </p>
 	 * @since DOM Level 3
 	 */
 	public boolean isId() {

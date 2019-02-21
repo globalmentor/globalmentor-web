@@ -365,7 +365,7 @@ public class XML {
 	/**
 	 * Creates a character reference to represent the given characters.
 	 * @param character The character to encode.
-	 * @return A character reference in the form <code>&#xXX;</code>.
+	 * @return A character reference in the form {@code &#xXX;}.
 	 */
 	public static String createCharacterReference(final char character) {
 		final StringBuilder stringBuilder = new StringBuilder(CHARACTER_REF_START); //create a string builder with the start of a character reference

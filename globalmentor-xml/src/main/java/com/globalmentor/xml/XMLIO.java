@@ -443,13 +443,11 @@ public class XMLIO extends DocumentBuilderFactory implements IO<Document> {
 	 * All implementations are required to support the {@link javax.xml.XMLConstants#FEATURE_SECURE_PROCESSING} feature. When the feature is:
 	 * </p>
 	 * <ul>
-	 * <li>
-	 * <code>true</code>: the implementation will limit XML processing to conform to implementation limits. Examples include enity expansion limits and XML Schema
-	 * constructs that would consume large amounts of resources. If XML processing is limited for security reasons, it will be reported via a call to the
+	 * <li><code>true</code>: the implementation will limit XML processing to conform to implementation limits. Examples include enity expansion limits and XML
+	 * Schema constructs that would consume large amounts of resources. If XML processing is limited for security reasons, it will be reported via a call to the
 	 * registered {@link org.xml.sax.ErrorHandler#fatalError(SAXParseException exception)}. See
 	 * {@link DocumentBuilder#setErrorHandler(org.xml.sax.ErrorHandler errorHandler)}.</li>
-	 * <li>
-	 * <code>false</code>: the implementation will processing XML according to the XML specifications without regard to possible implementation limits.</li>
+	 * <li><code>false</code>: the implementation will processing XML according to the XML specifications without regard to possible implementation limits.</li>
 	 * </ul>
 	 * 
 	 * @param name Feature name.
@@ -506,28 +504,32 @@ public class XMLIO extends DocumentBuilderFactory implements IO<Document> {
 	}
 
 	/**
-	 * <p>
 	 * Set the {@link Schema} to be used by parsers created from this factory.
 	 * 
 	 * <p>
 	 * When a {@link Schema} is non-null, a parser will use a validator created from it to validate documents before it passes information down to the
 	 * application.
+	 * </p>
 	 * 
 	 * <p>
 	 * When errors are found by the validator, the parser is responsible to report them to the user-specified {@link org.xml.sax.ErrorHandler} (or if the error
 	 * handler is not set, ignore them or throw them), just like any other errors found by the parser itself. In other words, if the user-specified
 	 * {@link org.xml.sax.ErrorHandler} is set, it must receive those errors, and if not, they must be treated according to the implementation specific default
 	 * error handling rules.
+	 * </p>
 	 * 
 	 * <p>
 	 * A validator may modify the outcome of a parse (for example by adding default values that were missing in documents), and a parser is responsible to make
 	 * sure that the application will receive modified DOM trees.
+	 * </p>
 	 * 
 	 * <p>
 	 * Initialy, null is set as the {@link Schema}.
+	 * </p>
 	 * 
 	 * <p>
 	 * This processing will take effect even if the {@link #isValidating()} method returns <code>false</code>.
+	 * </p>
 	 * 
 	 * <p>
 	 * It is an error to use the <code>http://java.sun.com/xml/jaxp/properties/schemaSource</code> property and/or the
@@ -536,7 +538,7 @@ public class XMLIO extends DocumentBuilderFactory implements IO<Document> {
 	 * </p>
 	 *
 	 * 
-	 * <h4>Note for implmentors</h4>
+	 * <h3>Note for implementors</h3>
 	 *
 	 * <p>
 	 * A parser must be able to work with any {@link Schema} implementation. However, parsers and schemas are allowed to use implementation-specific custom

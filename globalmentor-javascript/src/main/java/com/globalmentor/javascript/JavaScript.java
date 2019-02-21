@@ -140,7 +140,7 @@ public class JavaScript {
 	 * <li>'\t' is changed to "\\t"</li>
 	 * </ul>
 	 * @param string The string to escape.
-	 * @return An JavasScript-safe string.
+	 * @return A JavasScript-safe string.
 	 */
 	public static String escape(final String string) {
 		final StringBuilder stringBuilder = new StringBuilder(string); //create a new string builder based upon the string
@@ -156,6 +156,7 @@ public class JavaScript {
 	 * Returns the name of a method: <code><var>method</var>()</code>
 	 * @param method The name of the method.
 	 * @param parameters The method parameters.
+	 * @return The name of the method.
 	 */
 	public static String getMethod(final String method, final String... parameters) {
 		final StringBuilder stringBuilder = new StringBuilder();
@@ -175,6 +176,7 @@ public class JavaScript {
 	 * Returns the name of an object property: <code><var>object</var>.<var>property</var></code>
 	 * @param object The name of the object.
 	 * @param property The name of the property.
+	 * @return The name of the object property.
 	 */
 	public static String getObjectProperty(final String object, final String property) {
 		return object + PROPERTY_DELIMITER + property;
@@ -185,6 +187,7 @@ public class JavaScript {
 	 * @param object The name of the object.
 	 * @param method The name of the method.
 	 * @param parameters The method parameters.
+	 * @return The name of the object method.
 	 */
 	public static String getObjectMethod(final String object, final String method, final String... parameters) {
 		final StringBuilder stringBuilder = new StringBuilder();
@@ -197,6 +200,7 @@ public class JavaScript {
 	 * Returns the name of an object indexed property: <code><var>object</var>['<var>property</var>']</code>
 	 * @param object The name of the object.
 	 * @param property The name of the property.
+	 * @return The name of the object indexed property.
 	 */
 	public static String getObjectIndexedProperty(final String object, final String property) {
 		return object + ARRAY_INDEX_BEGIN_CHAR + '\'' + property + '\'' + ARRAY_INDEX_END_CHAR;
@@ -205,6 +209,7 @@ public class JavaScript {
 	/**
 	 * Returns the name of the form variable with the given ID: <code>document.forms[<var>formID</var>]</code>
 	 * @param formID The ID of the form to return.
+	 * @return The name of the form variable.
 	 */
 	public static String getFormVariable(final String formID) {
 		return getObjectIndexedProperty(getObjectProperty(DOCUMENT, FORMS), formID);
@@ -214,6 +219,7 @@ public class JavaScript {
 	 * Returns the name of a form component variable: <code>document.forms[<var>formID</var>][<var>componentID</var>]</code>
 	 * @param formID The ID of the form containing the component.
 	 * @param componentID The ID of the component variable to return.
+	 * @return The name of the form component variable.
 	 */
 	public static String getFormComponentVariable(final String formID, final String componentID) {
 		return getObjectIndexedProperty(getFormVariable(formID), componentID);
@@ -223,6 +229,7 @@ public class JavaScript {
 	 * Returns the name of a variable assignment: <code><var>variable</var>=<var>value</var></code>
 	 * @param variable The variable to which the value should be assigned.
 	 * @param value The value to assign to the variable, or <code>null</code>.
+	 * @return The name of the variable assignment.
 	 */
 	public static String setValue(final String variable, final String value) {
 		return variable + ASSIGNMENT_CHAR + (value != null ? value : NULL);
@@ -232,6 +239,7 @@ public class JavaScript {
 	 * Returns the name of a variable assignment with a literal variable: <code><var>variable</var>='<var>value</var>'</code> The value is escaped.
 	 * @param variable The variable to which the value should be assigned.
 	 * @param value The literal value to assign to the variable, or <code>null</code>.
+	 * @return The name of the variable assignment with the literal variable.
 	 */
 	public static String setLiteralValue(final String variable, final String value) {
 		return setValue(variable, value != null ? '\'' + escape(value) + '\'' : null); //TODO use a constant
@@ -244,6 +252,7 @@ public class JavaScript {
 	 * @param componentID The ID of the component variable.
 	 * @param property The name of the component property.
 	 * @param value The value to assign to the form component property.
+	 * @return The string representing the form component value assignment.
 	 */
 	public static String setFormComponentPropertyValue(final String formID, final String componentID, final String property, final String value) {
 		return setValue(getObjectProperty(getFormComponentVariable(formID, componentID), property), value); //set the form component property value
@@ -256,6 +265,7 @@ public class JavaScript {
 	 * @param componentID The ID of the component variable.
 	 * @param property The name of the component property.
 	 * @param value The literal value to assign to the form component property.
+	 * @return The string representing the form component literal value assignment.
 	 */
 	public static String setFormComponentPropertyLiteralValue(final String formID, final String componentID, final String property, final String value) {
 		return setLiteralValue(getObjectProperty(getFormComponentVariable(formID, componentID), property), value); //set the form component property value
@@ -264,6 +274,7 @@ public class JavaScript {
 	/**
 	 * Returns a string representing an alert: <code>alert(<var>text</var>)</code>
 	 * @param text The text to present to the user.
+	 * @return The string representing the alert.
 	 */
 	public static String alert(final String text) {
 		return getMethod(ALERT_METHOD, text); //get the method for alerting
@@ -272,14 +283,16 @@ public class JavaScript {
 	/**
 	 * Returns a string representing an alert of literal text: <code>alert('<var>textID</var>')</code> The text is correctly escaped.
 	 * @param text The text to present to the user.
+	 * @return The string representing the alert of literal text.
 	 */
 	public static String alertLiteral(final String text) {
 		return alert('\'' + escape(text) + '\''); //place the text in quotes
 	}
 
 	/**
-	 * Returns a string representing a confirmation: <code>confirm(<var>text/var>)</code>
+	 * Returns a string representing a confirmation: <code>confirm(<var>text</var>)</code>
 	 * @param text The text to present to the user.
+	 * @return The string representing the confirmation.
 	 */
 	public static String confirm(final String text) {
 		return getMethod(CONFIRM_METHOD, text); //get the method for confirming by presenting a message
@@ -288,6 +301,7 @@ public class JavaScript {
 	/**
 	 * Returns a string representing a confirmation of literal text: <code>confirm('<var>text</var>')</code> The text is correctly escaped.
 	 * @param text The text to present to the user.
+	 * @return The string representing the confirmation of literal text.
 	 */
 	public static String confirmLiteral(final String text) {
 		return confirm('\'' + escape(text) + '\''); //place the text in quotes
@@ -296,14 +310,16 @@ public class JavaScript {
 	/**
 	 * Returns a string representing a form submission: <code>document.forms[<var>formID</var>].submit()</code>
 	 * @param formID The ID of the form containing the component.
+	 * @return The string representing the form submission.
 	 */
 	public static String submitForm(final String formID) {
 		return getObjectMethod(getFormVariable(formID), SUBMIT_METHOD); //get the method for submitting a form
 	}
 
 	/**
-	 * Creates a statement: <code><var>statement</var>;
+	 * Creates a statement: <code><var>statement</var></code>;
 	 * @param statement The statement to create.
+	 * @return The statement created.
 	 */
 	public static String createStatement(final String statement) {
 		return statement + STATEMENT_END_CHAR;
@@ -356,6 +372,7 @@ public class JavaScript {
 	 * Creates JavaScript code for popping up a window.
 	 * @param uri The URI to show in the new window.
 	 * @param name The name of the window; must not have spaces to work on IE.
+	 * @return The JavaScript code.
 	 */
 	public static String popupWindow(final URI uri, final String name) {
 		return //TODO testing
@@ -365,6 +382,7 @@ public class JavaScript {
 	/**
 	 * Creates a return statement: <code>return <var>value</var>;</code>
 	 * @param value The value to return.
+	 * @return The return statement.
 	 */
 	public static String returnValue(final Object value) {
 		return createStatement(RETURN_KEYWORD + ' ' + value);

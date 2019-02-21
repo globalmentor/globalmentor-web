@@ -29,7 +29,6 @@ import static java.nio.charset.StandardCharsets.*;
  * Class which serializes a CSS stylesheet to a byte-oriented output stream. Has the option of automatically formatting the output in a hierarchical structure
  * with tabs or other strings.
  * @author Garret Wilson
- * @see XMLCSSProcessor
  */
 public class CSSSerializer {	//TODO del all the XMLUndefinedEntityReferenceException throws when we don't need them anymore, in favor of XMLWellFormednessException
 
@@ -54,7 +53,7 @@ public class CSSSerializer {	//TODO del all the XMLUndefinedEntityReferenceExcep
 
 	/**
 	 * Serializes the specified stylesheet to the given output stream using the UTF-8 encoding.
-	 * @param document The CSS stylesheet to serialize.
+	 * @param stylesheet The CSS stylesheet to serialize.
 	 * @param outputStream The stream into which the document should be serialized.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 * @throws UnsupportedEncodingException Thrown if the UTF-8 encoding not recognized.
@@ -65,7 +64,7 @@ public class CSSSerializer {	//TODO del all the XMLUndefinedEntityReferenceExcep
 
 	/**
 	 * Serializes the specified stylesheet to the given output stream using the specified encoding.
-	 * @param document The CSS stylesheet to serialize.
+	 * @param stylesheet The CSS stylesheet to serialize.
 	 * @param outputStream The stream into which the document should be serialized.
 	 * @param charset The encoding format to use when serializing.
 	 * @throws IOException Thrown if an I/O error occurred.

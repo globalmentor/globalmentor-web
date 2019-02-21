@@ -16,6 +16,8 @@
 
 package com.globalmentor.xml.dom.impl.stylesheets;
 
+import com.globalmentor.xml.dom.impl.*;
+
 import org.w3c.dom.Node;
 import org.w3c.dom.stylesheets.*;
 

@@ -32,7 +32,7 @@ import com.globalmentor.w3c.spec.XMLSchema;
  * A schema's symbol table will contain components from all symbol spaces. A complex type, on the other hand, will only contain elements and attributes.
  * </p>
  * @see XMLSchema
- * @see XMLSchemaComplexTypeComponent
+ * @see XMLSchemaTypeComponent
  * @author Garret Wilson
  * @deprecated
  */

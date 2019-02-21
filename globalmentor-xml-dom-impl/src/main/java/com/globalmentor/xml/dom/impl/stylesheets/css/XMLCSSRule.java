@@ -19,6 +19,8 @@ package com.globalmentor.xml.dom.impl.stylesheets.css;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.css.*;
 
+import com.globalmentor.xml.dom.impl.XMLDocument;
+
 /**
  * The class which forms a basis for all CSS rules, including rule sets and at-rules.
  * @author Garret Wilson

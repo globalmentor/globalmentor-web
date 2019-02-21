@@ -61,11 +61,20 @@ import com.globalmentor.xml.dom.impl.schema.XMLSchemaProcessor;
  * <li>Changes all attribute names to lowercase. TODO later change this to check the schema</li>
  * <li>Ensures the name of any document type matches the name of the document element.</li>
  * </ul>
- * TODO make tidy fix things like <li>All rights reserved.</p></li>; right now it truncates by changing the </p> to an </li>
+ * <p>
+ * TODO make tidy fix things like {@code All 
+ * <li>rights reserved
+ * </p>
+ * </li>}.; right now it truncates by changing the {@code 
+ * 
+</p>
+ * } to an {@code 
+ * 
+<li>}
  * <p>
  * When loading an external DTD subset or an external entity which has a public ID, this class first searches for the file stored in the same location as the
  * class itself. The filename should be the same as the public ID with illegal filename characters (e.g. '/' and '\') replaced with the underscore character
- * ('_') and the extension removed. This allows for faster performance by making relieving network access and even making it unnecesary for the file to even
+ * ('_') and the extension removed. This allows for faster performance by making relieving network access and even making it unnecessary for the file to even
  * exist at the location specified by its system ID.
  * </p>
  * <p>
@@ -99,8 +108,8 @@ public class XMLProcessor implements URIInputStreamable {
 	/**
 	 * Sets an overriding public and system ID to use in tidy mode. If set, any internal DTD subset will still be in effect but the tidy external public and
 	 * system IDs will be used for an external DTD subset, whether or not one is defined in the document.
-	 * @pararm publicID The overriding document type public ID.
-	 * @pararm systemID The overriding document type system ID.
+	 * @param publicID The overriding document type public ID.
+	 * @param systemID The overriding document type system ID.
 	 * @see #isTidy
 	 */
 	public void setTidyDocumentTypeExternalID(final String publicID, final String systemID) {
@@ -175,7 +184,7 @@ public class XMLProcessor implements URIInputStreamable {
 	/**
 	 * @return The document type for the document being processed. This will be the same document type that is returned by the document's getXMLDocumentType()
 	 *         function if the document being processed has a document type.
-	 * @see XMLDocument#getXMLDocumentTYpe
+	 * @see XMLDocument#getXMLDocumentType
 	 */
 	protected XMLDocumentType getXMLDocumentType() {
 		return DocumentType;
@@ -193,7 +202,7 @@ public class XMLProcessor implements URIInputStreamable {
 
 	/**
 	 * Set whether or not we should allow end tags to be unnamed. Note that if this is set to true, we will not technically be adhering to the XML specification.
-	 * @param new AllowUnnamedEndTags Whether or not we should allow end tags to be unnamed.
+	 * @param newAllowUnnamedEndTags Whether or not we should allow end tags to be unnamed.
 	 */
 	public void setAllowUnnamedEndTags(boolean newAllowUnnamedEndTags) {
 		AllowUnnamedEndTags = newAllowUnnamedEndTags;
@@ -208,7 +217,7 @@ public class XMLProcessor implements URIInputStreamable {
 
 	/**
 	 * Constructor that sets the interface to use to locate external files.
-	 * @param newURIInputSTreamable A class implementing the interface that can find files and return an <code>InputStream</code> to them.
+	 * @param newURIInputStreamable A class implementing the interface that can find files and return an <code>InputStream</code> to them.
 	 */
 	public XMLProcessor(final URIInputStreamable newURIInputStreamable) {
 		setURIInputStreamable(newURIInputStreamable); //show which input stream locator we'll use
@@ -253,7 +262,7 @@ public class XMLProcessor implements URIInputStreamable {
 
 	/**
 	 * Creates a reader to read the specified input stream. Encoding is preread and correctly interpreted.
-	 * @param inputStream The input stream from which to get the XML data; mark/reset must be supported.
+	 * @param xmlInputStream The input stream from which to get the XML data; mark/reset must be supported.
 	 * @param sourceObject The source of the data (e.g. a String, File, or URL).
 	 * @return A reader from which the file may be read.
 	 * @throws IllegalArgumentException if mark/reset is not supported by the given input stream.
@@ -305,7 +314,6 @@ public class XMLProcessor implements URIInputStreamable {
 	 * @throws IOException Thrown when an i/o error occurs.
 	 * @return A reader from which the file may be read.
 	 * @throws IOException Thrown if an I/O error occurred.
-	 * @see FileConstants#ILLEGAL_FILENAME_CHARACTERS
 	 */
 	protected XMLReader createReader(final Object context, final String publicID, final String systemID) throws IOException { //TODO comment exceptions
 		try {
@@ -328,6 +336,7 @@ public class XMLProcessor implements URIInputStreamable {
 	/**
 	 * Creates a reader to read from the specified entity, regardless of whether this entity is internal or external.
 	 * @param context The context object, usually a URI.
+	 * @param entity The entity that this content belongs to.
 	 * @throws IOException Thrown when an i/o error occurs.
 	 * @return A reader from which the entity may be read.
 	 */
@@ -357,8 +366,8 @@ public class XMLProcessor implements URIInputStreamable {
 	 *           stream is reached unexpectedly.
 	 * @return The character encoded by the character reference.
 	 */
-	protected char parseCharacterReference(final XMLReader reader) throws IOException, XMLSyntaxException, XMLWellFormednessException,
-			ParseUnexpectedDataException { //TODO del, ParseEOFException
+	protected char parseCharacterReference(final XMLReader reader)
+			throws IOException, XMLSyntaxException, XMLWellFormednessException, ParseUnexpectedDataException { //TODO del, ParseEOFException
 		try {
 			String characterReferenceString = reader.readDelimitedString(CHARACTER_REF_START, CHARACTER_REF_END); //read all the characters in the character reference between its start and end
 			int numberBase; //we'll determine which number base to use
@@ -370,13 +379,13 @@ public class XMLProcessor implements URIInputStreamable {
 				numberBase = 10; //it should be a decimal number
 			final char c = (char)Integer.parseInt(characterReferenceString, numberBase); //convert the number to a character TODO what if it's an invalid number string? probably throw an error
 			if(!isChar(c)) //if the character isn't a valid character
-				throw new XMLWellFormednessException(XMLWellFormednessException.LEGAL_CHARACTER, new Object[] { CHARACTER_REF_START + characterReferenceString
-						+ CHARACTER_REF_END }, reader.getLineIndex(), reader.getCharIndex(), reader.getName()); //show that this character reference is invalid TODO make sure we tell what base the reference string is, and perhaps give a better indication of its location
+				throw new XMLWellFormednessException(XMLWellFormednessException.LEGAL_CHARACTER,
+						new Object[] {CHARACTER_REF_START + characterReferenceString + CHARACTER_REF_END}, reader.getLineIndex(), reader.getCharIndex(), reader.getName()); //show that this character reference is invalid TODO make sure we tell what base the reference string is, and perhaps give a better indication of its location
 			return c; //return the character referenced
 		} catch(final ParseEOFException parseEOFException) { //if we run out of data
-			throw new XMLWellFormednessException(parseEOFException, ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(
-					XMLResources.RESOURCE_PREFIX + CHARACTER_REFERENCE_RESOURCE_ID), ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(
-					XMLResources.RESOURCE_PREFIX + UNKNOWN_RESOURCE_ID)); //show that we couldn't find the end of the character reference
+			throw new XMLWellFormednessException(parseEOFException,
+					ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + CHARACTER_REFERENCE_RESOURCE_ID),
+					ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + UNKNOWN_RESOURCE_ID)); //show that we couldn't find the end of the character reference
 		}
 	}
 
@@ -395,8 +404,8 @@ public class XMLProcessor implements URIInputStreamable {
 	 * @return The entity referenced by this entity reference or a <code>String</code> containing the entity reference markup if none exists yet none is required
 	 *         for well-formedness.
 	 */
-	protected Object parseEntityReference(final XMLReader reader, final XMLDocument ownerDocument) throws IOException, XMLSyntaxException,
-			XMLWellFormednessException, ParseUnexpectedDataException, XMLUndefinedEntityReferenceException {
+	protected Object parseEntityReference(final XMLReader reader, final XMLDocument ownerDocument)
+			throws IOException, XMLSyntaxException, XMLWellFormednessException, ParseUnexpectedDataException, XMLUndefinedEntityReferenceException {
 		String entityReferenceName = ""; //this will be the name of our entity reference
 		try {
 			entityReferenceName = reader.readDelimitedString("&", ";"); //read all the characters in the entity reference between its start and end TODO make these constant
@@ -405,21 +414,22 @@ public class XMLProcessor implements URIInputStreamable {
 			if(documentType.getEntityXMLNamedNodeMap().containsKey(entityReferenceName)) { //if our map of entity references has this entity name
 				final XMLEntity entity = (XMLEntity)documentType.getEntityXMLNamedNodeMap().getNamedItem(entityReferenceName); //find the entity referenced by this entity reference
 				if(!entity.isParsedEntity()) //if this is an unparsed entity
-					throw new XMLWellFormednessException(XMLWellFormednessException.PARSED_ENTITY, new Object[] { entity.getNodeName() }, reader.getLineIndex(),
+					throw new XMLWellFormednessException(XMLWellFormednessException.PARSED_ENTITY, new Object[] {entity.getNodeName()}, reader.getLineIndex(),
 							reader.getCharIndex(), reader.getName()); //show that we don't accept unparsed entity references here TODO we need to give a better position in the error, here
 				return entity; //return the entity referenced by this name
 			} else { //if we don't recognize this entity reference name
 				if(ownerDocument.getXMLDocumentType() == null || ownerDocument.getXMLDeclaration().isStandalone()) //if there is no DTD or this document is declared standalone TODO what about "internal DTD subset which contains no parameter entity references?"
-					throw new XMLWellFormednessException(XMLWellFormednessException.ENTITY_DECLARED, new Object[] { entityReferenceName }, reader.getLineIndex(),
+					throw new XMLWellFormednessException(XMLWellFormednessException.ENTITY_DECLARED, new Object[] {entityReferenceName}, reader.getLineIndex(),
 							reader.getCharIndex(), reader.getName()); //show that this entity reference was not found
 				else
 					//if the document has a DTD, not having a declared entity is not a *well-formedness* error, although it probably makes the document not valid
 					return new String("&" + entityReferenceName + ";"); //TODO check, comment, use constants
 			}
 		} catch(final ParseEOFException parseEOFException) { //if we run out of data
-			throw new XMLWellFormednessException(parseEOFException, ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(
-					XMLResources.RESOURCE_PREFIX + ENTITY_REFERENCE_RESOURCE_ID), entityReferenceName != null ? entityReferenceName : ResourceBundle.getBundle(
-					XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + UNKNOWN_RESOURCE_ID)); //show that we couldn't find the end of the entity reference
+			throw new XMLWellFormednessException(parseEOFException,
+					ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + ENTITY_REFERENCE_RESOURCE_ID),
+					entityReferenceName != null ? entityReferenceName
+							: ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + UNKNOWN_RESOURCE_ID)); //show that we couldn't find the end of the entity reference
 		}
 	}
 
@@ -454,9 +464,10 @@ public class XMLProcessor implements URIInputStreamable {
 					throw new XMLUndefinedEntityReferenceException(entityReferenceName, entityReferenceLineIndex, entityReferenceCharIndex, reader.getName()); //show that we don't recognize the entity reference TODO we should probably make a distinction between general and parameter entity references in the error; perhaps both functions could even somehow be combined
 			}
 		} catch(final ParseEOFException parseEOFException) { //if we run out of data
-			throw new XMLWellFormednessException(parseEOFException, ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(
-					XMLResources.RESOURCE_PREFIX + PARAMETER_ENTITY_REFERENCE_RESOURCE_ID), entityReferenceName != null ? entityReferenceName : ResourceBundle.getBundle(
-					XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + UNKNOWN_RESOURCE_ID)); //show that we couldn't find the end of the parameter entity reference
+			throw new XMLWellFormednessException(parseEOFException,
+					ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + PARAMETER_ENTITY_REFERENCE_RESOURCE_ID),
+					entityReferenceName != null ? entityReferenceName
+							: ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + UNKNOWN_RESOURCE_ID)); //show that we couldn't find the end of the parameter entity reference
 		}
 	}
 
@@ -473,8 +484,8 @@ public class XMLProcessor implements URIInputStreamable {
 	 * @return An XMLAttribute object with the values of the read attribute-value pair.
 	 * @see XMLAttribute
 	 */
-	protected XMLAttribute parseAttribute(final XMLReader reader, final XMLDocument ownerDocument) throws IOException, XMLSyntaxException,
-			XMLWellFormednessException, XMLUndefinedEntityReferenceException, ParseUnexpectedDataException {
+	protected XMLAttribute parseAttribute(final XMLReader reader, final XMLDocument ownerDocument)
+			throws IOException, XMLSyntaxException, XMLWellFormednessException, XMLUndefinedEntityReferenceException, ParseUnexpectedDataException {
 		final long attributeLineIndex = reader.getLineIndex(), attributeCharIndex = reader.getCharIndex() + 1; //make a note of where the attribute will begins
 		String attributeName = ""; //this will receive the name of our attribute
 		try {
@@ -485,7 +496,7 @@ public class XMLProcessor implements URIInputStreamable {
 			*/
 
 			if(!isName(attributeName)) //if this isn't a valid name
-				throw new XMLWellFormednessException(XMLWellFormednessException.INVALID_NAME, new Object[] { attributeName }, reader.getLineIndex(),
+				throw new XMLWellFormednessException(XMLWellFormednessException.INVALID_NAME, new Object[] {attributeName}, reader.getLineIndex(),
 						reader.getCharIndex(), reader.getName()); //show that this isn't a valid XML name
 			final XMLAttribute attribute = new XMLAttribute(ownerDocument, attributeName, attributeLineIndex, attributeCharIndex); //create a new attribute-value pair object
 
@@ -512,9 +523,10 @@ public class XMLProcessor implements URIInputStreamable {
 				isTidyingValue = false; //show that we're not tidying this value
 			}
 			if(!parseAttributeValue(reader, ownerDocument, attribute, attributeValueDelimiters)) //parse the attribute; if we couldn't find the end of the attribute value
-				throw new XMLWellFormednessException(XMLWellFormednessException.EOF, new Object[] {
-						ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + ATTRIBUTE_RESOURCE_ID),
-						attribute.getNodeName() }, reader.getLineIndex(), reader.getCharIndex(), reader.getName()); //show that we couldn't find the end of the attribute
+				throw new XMLWellFormednessException(XMLWellFormednessException.EOF,
+						new Object[] {ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + ATTRIBUTE_RESOURCE_ID),
+								attribute.getNodeName()},
+						reader.getLineIndex(), reader.getCharIndex(), reader.getName()); //show that we couldn't find the end of the attribute
 			if(isTidyingValue) { //if we're tidying this value, we need to know whether or not to discard the following character
 				/*TODO fix
 								reader.resetPeek(); //reset peeking so that we'll really be peeking the next character to come
@@ -528,9 +540,10 @@ public class XMLProcessor implements URIInputStreamable {
 			}
 			return attribute; //return the attribute we created
 		} catch(final ParseEOFException parseEOFException) { //if we run out of data
-			throw new XMLWellFormednessException(parseEOFException, ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(
-					XMLResources.RESOURCE_PREFIX + ATTRIBUTE_RESOURCE_ID), attributeName != null ? attributeName : ResourceBundle.getBundle(
-					XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + UNKNOWN_RESOURCE_ID)); //show that we couldn't find the end of the attribute
+			throw new XMLWellFormednessException(parseEOFException,
+					ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + ATTRIBUTE_RESOURCE_ID),
+					attributeName != null ? attributeName
+							: ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + UNKNOWN_RESOURCE_ID)); //show that we couldn't find the end of the attribute
 		}
 	}
 
@@ -551,40 +564,40 @@ public class XMLProcessor implements URIInputStreamable {
 	 * @return <code>true</code> if the ending character for this entity was found, else <code>false</code>.
 	 */
 	protected boolean parseAttributeValue(final XMLReader reader, final XMLDocument ownerDocument, final XMLAttribute attribute,
-			final String attributeValueDelimiters) throws IOException, XMLSyntaxException, XMLWellFormednessException, XMLUndefinedEntityReferenceException,
-			ParseUnexpectedDataException {
+			final String attributeValueDelimiters)
+			throws IOException, XMLSyntaxException, XMLWellFormednessException, XMLUndefinedEntityReferenceException, ParseUnexpectedDataException {
 		try {
-			final StringBuffer attributeValueStringBuffer = new StringBuffer(); //create a string buffer for collecting attribute value data
+			final StringBuilder attributeValueStringBuilder = new StringBuilder(); //create a string buffer for collecting attribute value data
 			//TODO we can probably make this even more efficient by carrying this string buffer along with us when we recurse
 			while(true) { //keep reading content; when we find the ending character we'll return from there
 				//TODO fix for parameter entities here
-				attributeValueStringBuffer.append(reader.readStringUntilCharEOF("&<" + attributeValueDelimiters)); //read character content until we find a reference, an illegal less-than character, the end of the attribute, or until we reach the end of the file TODO make these constants
+				attributeValueStringBuilder.append(reader.readStringUntilCharEOF("&<" + attributeValueDelimiters)); //read character content until we find a reference, an illegal less-than character, the end of the attribute, or until we reach the end of the file TODO make these constants
 				if(reader.isEnd()) { //if we run out of characters looking for the end of the entity, this may not be an error; we may have just been parsing an entity reader for another entity
-					attribute.setNodeValue(attribute.getNodeValue() + attributeValueStringBuffer.toString()); //append whatever text we've collected so far to the attribute
+					attribute.setNodeValue(attribute.getNodeValue() + attributeValueStringBuilder.toString()); //append whatever text we've collected so far to the attribute
 					return false; //return, showing that we have not yet found the end of the attribute
 				}
 				final char c = reader.peekChar(); //see which character comes next
 				if(attributeValueDelimiters.indexOf(c) != -1) { //if the next character is the end of the attribute value
-					attribute.setNodeValue(attribute.getNodeValue() + attributeValueStringBuffer.toString()); //append whatever text we've collected so far to the attribute
+					attribute.setNodeValue(attribute.getNodeValue() + attributeValueStringBuilder.toString()); //append whatever text we've collected so far to the attribute
 					return true; //we're finished parsing all the attribute content we know about, so return
 				}
 				switch(c) { //see which character comes next
 					case '&': //if this is a character or entity reference TODO use a constant here
 						if(reader.peekChar() == '#') //if this is a character reference TODO make this a constant
-							attributeValueStringBuffer.append(parseCharacterReference(reader)); //parse this character reference and add the character to our attribute value
+							attributeValueStringBuilder.append(parseCharacterReference(reader)); //parse this character reference and add the character to our attribute value
 						else { //if this is not a character reference, it must be an entity reference
-							attribute.setNodeValue(attribute.getNodeValue() + attributeValueStringBuffer.toString()); //append whatever text we've collected so far to the attribute
+							attribute.setNodeValue(attribute.getNodeValue() + attributeValueStringBuilder.toString()); //append whatever text we've collected so far to the attribute
 							final Object entityResult = parseEntityReference(reader, ownerDocument); //parse this entity reference and see which entity it refers to TODO do we want to parse the entity and store everything as an entity reference node?
 							if(entityResult instanceof XMLEntity) { //if we found a matching entity
 								final XMLEntity entity = (XMLEntity)entityResult; //case the result to an entity
 								if(nestedEntityReferenceMap.containsKey(entity)) //if, somewhere along our nested way, we've already processed this entity (i.e. this is a circular entity reference)
-									throw new XMLWellFormednessException(XMLWellFormednessException.NO_RECURSION, new Object[] { entity.getNodeName() }, reader.getLineIndex(),
+									throw new XMLWellFormednessException(XMLWellFormednessException.NO_RECURSION, new Object[] {entity.getNodeName()}, reader.getLineIndex(),
 											reader.getCharIndex(), reader.getName()); //show that an entity can't reference itself, directly or indirectly TODO we need to give a better position in the error, here
 								if(entity.isExternalEntity()) //if this is an external entity
-									throw new XMLWellFormednessException(XMLWellFormednessException.NO_EXTERNAL_ENTITY_REFERENCES, new Object[] { attribute.getNodeName(),
-											entity.getNodeName() }, reader.getLineIndex(), reader.getCharIndex(), reader.getName()); //show that this attribute contains an external entity reference
-								final XMLReader entityReader = new XMLReader(entity.getText(), "General entity \"" + entity.getNodeName() + "\" from \""
-										+ entity.getSourceName() + "\""); //create a string reader from the text of the entity, giving our entity name for the name of the reader TODO i18n
+									throw new XMLWellFormednessException(XMLWellFormednessException.NO_EXTERNAL_ENTITY_REFERENCES,
+											new Object[] {attribute.getNodeName(), entity.getNodeName()}, reader.getLineIndex(), reader.getCharIndex(), reader.getName()); //show that this attribute contains an external entity reference
+								final XMLReader entityReader = new XMLReader(entity.getText(),
+										"General entity \"" + entity.getNodeName() + "\" from \"" + entity.getSourceName() + "\""); //create a string reader from the text of the entity, giving our entity name for the name of the reader TODO i18n
 
 								entityReader.tidy = isTidy(); //TODO fix
 
@@ -596,25 +609,26 @@ public class XMLProcessor implements URIInputStreamable {
 								if(parseAttributeValue(entityReader, ownerDocument, attribute, attributeValueDelimiters))
 									return true; //show that we found the end of the element TODO throw an error here
 								nestedEntityReferenceMap.remove(entity); //show that we're finished processing this entity
-								attributeValueStringBuffer.setLength(0); //we'll now start collecting new attribute data
+								attributeValueStringBuilder.setLength(0); //we'll now start collecting new attribute data
 							} else { //if there was no matching entity, yet this doesn't cause a well-formedness error
 								//TODO if we're validating, we'll probably want to throw a validity error, here
-								attributeValueStringBuffer.append((String)entityResult); //store the entity reference name in our character data TODO maybe construct this manually; we don't want to depend on toString() behavior, and constructing this manually will probably be faster
+								attributeValueStringBuilder.append((String)entityResult); //store the entity reference name in our character data TODO maybe construct this manually; we don't want to depend on toString() behavior, and constructing this manually will probably be faster
 							}
 						}
 						break;
 					case '<': //if this is a less-than character in the attribute value TODO use a constant here
 						reader.read(); //read the character to update our character positions
-						throw new XMLWellFormednessException(XMLWellFormednessException.NO_LT_IN_ATTRIBUTE_VALUES, new Object[] { attribute.getNodeName() },
+						throw new XMLWellFormednessException(XMLWellFormednessException.NO_LT_IN_ATTRIBUTE_VALUES, new Object[] {attribute.getNodeName()},
 								reader.getLineIndex(), reader.getCharIndex(), reader.getName()); //show that this attribute contains a less-than character
 					default: //TODO why do we check for end tag and also have a default?
-						attributeValueStringBuffer.append(reader.readChar()); //add this character to what we've collected so far
+						attributeValueStringBuilder.append(reader.readChar()); //add this character to what we've collected so far
 						break;
 				}
 			}
 		} catch(final ParseEOFException parseEOFException) { //if we run out of data
-			throw new XMLWellFormednessException(parseEOFException, ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(
-					XMLResources.RESOURCE_PREFIX + ATTRIBUTE_RESOURCE_ID), attribute.getNodeName()); //show that we couldn't find the end of the attribute
+			throw new XMLWellFormednessException(parseEOFException,
+					ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + ATTRIBUTE_RESOURCE_ID),
+					attribute.getNodeName()); //show that we couldn't find the end of the attribute
 		}
 	}
 
@@ -674,14 +688,14 @@ public class XMLProcessor implements URIInputStreamable {
 			}
 			return externalID; //return the external ID we constructed
 		} catch(final ParseEOFException parseEOFException) { //if we run out of data
-			throw new XMLWellFormednessException(parseEOFException, ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(
-					XMLResources.RESOURCE_PREFIX + EXTERNAL_ID_RESOURCE_ID), ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(
-					XMLResources.RESOURCE_PREFIX + UNKNOWN_RESOURCE_ID)); //show that we couldn't find the end of the external ID
+			throw new XMLWellFormednessException(parseEOFException,
+					ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + EXTERNAL_ID_RESOURCE_ID),
+					ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + UNKNOWN_RESOURCE_ID)); //show that we couldn't find the end of the external ID
 		}
 	}
 
 	/**
-	 * Parses an input stream that supposedly begins with a document type declaration ("<!DOCTYPE").
+	 * Parses an input stream that supposedly begins with a document type declaration ("&lt;!DOCTYPE").
 	 * @param reader The reader from which to retrieve characters.
 	 * @param ownerDocument The document which will own the document type.
 	 * @throws IOException Thrown when an i/o error occurs.
@@ -708,7 +722,7 @@ public class XMLProcessor implements URIInputStreamable {
 			skipWhitespaceCharacters(reader); //skip any whitespace characters
 			final String documentTypeName = reader.readStringUntilChar(WHITESPACE_CHARS + "[>"); //read the name of the document type, which will end with whitespace or the beginning-of-internal-subset marker, or maybe even the end of the declaration TODO use constants here
 			if(!isName(documentTypeName)) //if this isn't a valid name
-				throw new XMLWellFormednessException(XMLWellFormednessException.INVALID_NAME, new Object[] { documentTypeName }, reader.getLineIndex(),
+				throw new XMLWellFormednessException(XMLWellFormednessException.INVALID_NAME, new Object[] {documentTypeName}, reader.getLineIndex(),
 						reader.getCharIndex(), reader.getName()); //show that this isn't a valid XML name
 			documentType.setNodeName(documentTypeName); //set the name of the document type
 			skipWhitespaceCharacters(reader); //skip any whitespace characters
@@ -726,9 +740,11 @@ public class XMLProcessor implements URIInputStreamable {
 				//  be updated immediately
 				if(!parseDocumentTypeContent(reader, ownerDocument, documentType.getEntityXMLNamedNodeMap(), documentType.getParameterEntityXMLNamedNodeMap(),
 						elementDeclarationList, attributeListDeclarationList)) {
-					throw new XMLWellFormednessException(XMLWellFormednessException.EOF, new Object[] {
-							ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + DOCUMENT_TYPE_RESOURCE_ID),
-							documentType.getName() }, reader.getLineIndex(), reader.getCharIndex(), reader.getName()); //show that we couldn't find the end of the document type
+					throw new XMLWellFormednessException(XMLWellFormednessException.EOF,
+							new Object[] {
+									ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + DOCUMENT_TYPE_RESOURCE_ID),
+									documentType.getName()},
+							reader.getLineIndex(), reader.getCharIndex(), reader.getName()); //show that we couldn't find the end of the document type
 				}
 				reader.readExpectedChar(']'); //read the end of the internal DTD TODO fix, make constant
 				skipWhitespaceCharacters(reader); //skip any whitespace characters
@@ -783,9 +799,10 @@ public class XMLProcessor implements URIInputStreamable {
 			*/
 			return documentType; //return the document type we constructed
 		} catch(final ParseEOFException parseEOFException) { //if we run out of data
-			throw new XMLWellFormednessException(parseEOFException, ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(
-					XMLResources.RESOURCE_PREFIX + DOCUMENT_TYPE_RESOURCE_ID), documentType.getName() != null ? documentType.getName() : ResourceBundle.getBundle(
-					XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + UNKNOWN_RESOURCE_ID)); //show that we couldn't find the end of the document type
+			throw new XMLWellFormednessException(parseEOFException,
+					ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + DOCUMENT_TYPE_RESOURCE_ID),
+					documentType.getName() != null ? documentType.getName()
+							: ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + UNKNOWN_RESOURCE_ID)); //show that we couldn't find the end of the document type
 		}
 	}
 
@@ -799,8 +816,9 @@ public class XMLProcessor implements URIInputStreamable {
 	/**
 	 * Places a document type subset in the cache for easy retrieval. The object will be deep-cloned, and the parent of the cloned object and all child objects
 	 * will be recursively set to null. The cloned object will be stored keyed to both the public ID and private ID, providing they are not null.
-	 * @param publicID The public ID of the docuement type subset, or <code>null</code> if there is no public ID.
-	 * @param systemID The system ID of the docuement type subset.
+	 * @param publicID The public ID of the document type subset, or <code>null</code> if there is no public ID.
+	 * @param systemID The system ID of the document type subset.
+	 * @param generalEntityMap The map of general entities which will be created and returned.
 	 */
 	protected void putCachedDocumentTypeSubset(final String publicID, final String systemID, final XMLNamedNodeMap generalEntityMap) {
 		final XMLNamedNodeMap clonedEntityMap = generalEntityMap.cloneDeep(); //make a deep clone of the map
@@ -846,7 +864,7 @@ public class XMLProcessor implements URIInputStreamable {
 			XMLWellFormednessException, XMLUndefinedEntityReferenceException, ParseUnexpectedDataException, ParseEOFException {
 		/*TODO fix
 		final XMLDocument ownerDocument, final XMLDocumentType documentType
-
+		
 		*/
 		final String publicID = documentType.getPublicID(); //get a reference to the document type's public ID, if there is one
 		final String systemID = documentType.getSystemID(); //get a reference to the document type's system ID
@@ -895,16 +913,16 @@ public class XMLProcessor implements URIInputStreamable {
 	 * @throws XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
 	 * @throws XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
 	 * @throws ParseUnexpectedDataException Thrown when an unexpected character is found.
-	 * @throws ParseEOFException Thrown when the end of the input stream is reached unexpectedly. //TODO fix @return <code>true</code> if the ending tag for this
-	 *           element was found, else <code>false</code>.
+	 * @throws ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
+	 * @return <code>true</code> if the ending tag for this element was found, else <code>false</code>.
 	 */
 	//TODO have a variable here that specifies whether a conditional parameter entity existed; if so, we won't be able to cache the result
 	protected boolean parseDocumentTypeContent(final XMLReader reader, final XMLDocument ownerDocument, final XMLNamedNodeMap generalEntityMap,
 			final XMLNamedNodeMap parameterEntityMap, final XMLNodeList elementDeclarationList, final XMLNodeList attributeListDeclarationList) throws IOException,
 			XMLSyntaxException, XMLWellFormednessException, XMLUndefinedEntityReferenceException, ParseUnexpectedDataException, ParseEOFException {
 		//the markup strings we expect in this document type declaration
-		final String[] EXPECTED_DTD_MARKUP_STRINGS = { INTERNAL_DTD_SUBSET_END, PARAMETER_ENTITY_REF_START, ENTITY_DECL_START, ELEMENT_TYPE_DECL_START,
-				ATTLIST_DECL_START, COMMENT_START };
+		final String[] EXPECTED_DTD_MARKUP_STRINGS = {INTERNAL_DTD_SUBSET_END, PARAMETER_ENTITY_REF_START, ENTITY_DECL_START, ELEMENT_TYPE_DECL_START,
+				ATTLIST_DECL_START, COMMENT_START};
 		//the indexes of the DTD markup strings in our array
 		final int END_OF_INTERNAL_DTD_SUBSET = 0, PARAMETER_ENTITY_REF = 1, ENTITY_DECL = 2, ELEMENT_TYPE_DECL = 3, ATTLIST_DECL = 4, COMMENT = 5;
 		while(true) { //keep reading content; when we find the end of the data we'll return from there
@@ -982,8 +1000,8 @@ public class XMLProcessor implements URIInputStreamable {
 	 * @throws ParseUnexpectedDataException Thrown when an unexpected character is found.
 	 * @return A new XML entity constructed from the reader.
 	 */
-	protected XMLEntity parseEntityDeclaration(final XMLReader reader, final XMLDocument ownerDocument) throws IOException, XMLSyntaxException,
-			XMLWellFormednessException, XMLUndefinedEntityReferenceException, ParseUnexpectedDataException {
+	protected XMLEntity parseEntityDeclaration(final XMLReader reader, final XMLDocument ownerDocument)
+			throws IOException, XMLSyntaxException, XMLWellFormednessException, XMLUndefinedEntityReferenceException, ParseUnexpectedDataException {
 		final XMLEntity entity = new XMLEntity(ownerDocument); //create a new XML entity
 		try {
 			reader.readExpectedString(ENTITY_DECL_START); //we expect to read the start of an entity declaration
@@ -997,8 +1015,8 @@ public class XMLProcessor implements URIInputStreamable {
 			}
 			final String entityName = reader.readStringUntilChar(WHITESPACE_CHARS); //read the name of the entity, which will end with whitespace
 			if(!isName(entityName)) //if this isn't a valid name
-				throw new XMLWellFormednessException(XMLWellFormednessException.INVALID_NAME, new Object[] { entityName }, reader.getLineIndex(),
-						reader.getCharIndex(), reader.getName()); //show that this isn't a valid XML name
+				throw new XMLWellFormednessException(XMLWellFormednessException.INVALID_NAME, new Object[] {entityName}, reader.getLineIndex(), reader.getCharIndex(),
+						reader.getName()); //show that this isn't a valid XML name
 			entity.setNodeName(entityName); //set the name of the entity
 			reader.readExpectedChar(WHITESPACE_CHARS); //we expect at least one whitespace character
 			skipWhitespaceCharacters(reader); //skip any other whitespace characters
@@ -1012,9 +1030,11 @@ public class XMLProcessor implements URIInputStreamable {
 				entity.setLineIndex(reader.getLineIndex()); //store which line the entity starts on
 				entity.setCharIndex(reader.getCharIndex()); //store which character the entity starts on
 				if(!parseEntityContent(reader, ownerDocument, entity, entityValueDelimiter)) { //parse the entity content; if we couldn't find the end of the entity
-					throw new XMLWellFormednessException(XMLWellFormednessException.EOF, new Object[] {
-							ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + ENTITY_DECLARATION_RESOURCE_ID),
-							entity.getNodeName() }, reader.getLineIndex(), reader.getCharIndex(), reader.getName()); //show that we couldn't find the end of the entity declaration
+					throw new XMLWellFormednessException(XMLWellFormednessException.EOF,
+							new Object[] {
+									ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + ENTITY_DECLARATION_RESOURCE_ID),
+									entity.getNodeName()},
+							reader.getLineIndex(), reader.getCharIndex(), reader.getName()); //show that we couldn't find the end of the entity declaration
 				}
 				reader.readExpectedChar(entityValueDelimiter); //read the ending delimiter (we already know what it will be)
 				//TODO do something with the entity text, here
@@ -1037,7 +1057,7 @@ public class XMLProcessor implements URIInputStreamable {
 								inputStream=new FileInputStream(entity.getSystemID());	//assume it's a file and try to open it
 							}
 							final ParseReader externalEntityReader=new ParseReader(inputStream, entity.getSystemID());	//create an XML reader that will read from the input stream
-
+				
 							entity.setSourceName(externalEntityReader.getName());	//store where we found the entity
 							entity.setLineIndex(externalEntityReader.getLineIndex());	//store which line the entity starts on
 							entity.setCharIndex(externalEntityReader.getCharIndex());	//store which character the entity starts on
@@ -1049,9 +1069,10 @@ public class XMLProcessor implements URIInputStreamable {
 			reader.readExpectedChar(ENTITY_DECL_END); //the next character should be the ending delimiter of the declaration
 			return entity; //return the entity we constructed
 		} catch(final ParseEOFException parseEOFException) { //if we run out of data
-			throw new XMLWellFormednessException(parseEOFException, ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(
-					XMLResources.RESOURCE_PREFIX + ENTITY_DECLARATION_RESOURCE_ID), entity.getNodeName() != null ? entity.getNodeName() : ResourceBundle.getBundle(
-					XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + UNKNOWN_RESOURCE_ID)); //show that we couldn't find the end of the entity declaration
+			throw new XMLWellFormednessException(parseEOFException,
+					ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + ENTITY_DECLARATION_RESOURCE_ID),
+					entity.getNodeName() != null ? entity.getNodeName()
+							: ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + UNKNOWN_RESOURCE_ID)); //show that we couldn't find the end of the entity declaration
 		}
 	}
 
@@ -1071,33 +1092,34 @@ public class XMLProcessor implements URIInputStreamable {
 	 * @return <code>true</code> if the ending character for this entity was found, else <code>false</code>.
 	 */
 	protected boolean parseEntityContent(final XMLReader reader, final XMLDocument ownerDocument, final XMLEntity entity, final char entityValueDelimiter)
-			throws IOException, XMLSyntaxException, XMLWellFormednessException, XMLUndefinedEntityReferenceException, ParseUnexpectedDataException, ParseEOFException {
+			throws IOException, XMLSyntaxException, XMLWellFormednessException, XMLUndefinedEntityReferenceException, ParseUnexpectedDataException,
+			ParseEOFException {
 		//TODO store the start position of the element so we can report the error location
-		final StringBuffer entityValueStringBuffer = new StringBuffer(); //we haven't parsed any content, yet
+		final StringBuilder entityValueStringBuilder = new StringBuilder(); //we haven't parsed any content, yet
 		while(true) { //keep reading content; when we find the ending character we'll return from there
 			//TODO fix for parameter entities here
-			entityValueStringBuffer.append(reader.readStringUntilCharEOF("&" + entityValueDelimiter)); //read character content until we find a reference, the end of the entity declaration, or until we reach the end of the file TODO make these constants
+			entityValueStringBuilder.append(reader.readStringUntilCharEOF("&" + entityValueDelimiter)); //read character content until we find a reference, the end of the entity declaration, or until we reach the end of the file TODO make these constants
 			if(reader.isEnd()) { //if we run out of characters looking for the end of the entity, this may not be an error; we may have just been parsing an entity reader for another entity
-				entity.appendText(entityValueStringBuffer.toString()); //append whatever text we've collected so far to the entity
+				entity.appendText(entityValueStringBuilder.toString()); //append whatever text we've collected so far to the entity
 				return false; //return, showing that we have not yet found the end of the entity
 			}
 			final char c = reader.peekChar(); //see which character comes next
 			if(c == entityValueDelimiter) { //if the next character is the end of the entity declaration
-				entity.appendText(entityValueStringBuffer.toString()); //append whatever text we've collected so far to the entity
+				entity.appendText(entityValueStringBuilder.toString()); //append whatever text we've collected so far to the entity
 				return true; //we're finished parsing all the entity content we know about, so return
 			}
 			//TODO somehow, we need to know if we should accept parameter entity references here
 			switch(c) { //see which character comes next
 				case '&': //if this is a character or entity reference
 					if(reader.peekChar() == '#') //if this is a character reference TODO make this a constant
-						entityValueStringBuffer.append(parseCharacterReference(reader)); //parse this character reference and add the character to our entity value
+						entityValueStringBuilder.append(parseCharacterReference(reader)); //parse this character reference and add the character to our entity value
 					else
 						//if this is not a character reference, it must be an entity reference
-						entityValueStringBuffer.append(reader.readChar()); //we'll not parse general entities inside entities, so read the beginning of the entity so that the rest of it won't be parsed as an entity
+						entityValueStringBuilder.append(reader.readChar()); //we'll not parse general entities inside entities, so read the beginning of the entity so that the rest of it won't be parsed as an entity
 					//TODO fix for entity references; we should ignore them and keep the actual characters
 					break;
 				default: //TODO why do we check for end tag and also have a default?
-					entity.appendText(entityValueStringBuffer.toString()); //append whatever text we've collected so far to the entity
+					entity.appendText(entityValueStringBuilder.toString()); //append whatever text we've collected so far to the entity
 					return true; //we're finished parsing all the entity content we know about, so return
 			}
 		}
@@ -1117,7 +1139,8 @@ public class XMLProcessor implements URIInputStreamable {
 	 * @return A new XML element constructed from the reader containing the declaration information for this element.
 	 */
 	protected XMLElement parseElementTypeDeclaration(final XMLReader reader, final XMLDocument ownerDocument, final XMLNamedNodeMap parameterEntityMap)
-			throws IOException, XMLSyntaxException, XMLWellFormednessException, XMLUndefinedEntityReferenceException, ParseUnexpectedDataException, ParseEOFException {
+			throws IOException, XMLSyntaxException, XMLWellFormednessException, XMLUndefinedEntityReferenceException, ParseUnexpectedDataException,
+			ParseEOFException {
 		final XMLElement element = new XMLElement(ownerDocument, "element"); //create a new XML element which will hold the rules for this element declaration TODO use constant TODO use the document createElement() function
 		reader.readExpectedString(ELEMENT_TYPE_DECL_START); //we expect to read the start of an element type declaration
 		reader.readExpectedChar(WHITESPACE_CHARS); //we expect at least one whitespace character
@@ -1126,7 +1149,7 @@ public class XMLProcessor implements URIInputStreamable {
 		reader.readExpectedChar(WHITESPACE_CHARS); //we expect at least one whitespace character
 		skipWhitespaceCharacters(reader); //skip any other whitespace characters
 		//the content specification strings we expect
-		final String[] CONTENT_SPEC_STRINGS = { ELEMENT_CONTENT_ANY, ELEMENT_CONTENT_EMPTY, "" };
+		final String[] CONTENT_SPEC_STRINGS = {ELEMENT_CONTENT_ANY, ELEMENT_CONTENT_EMPTY, ""};
 		//the indexes of the content specification strings in our array
 		final int ANY = 0, EMPTY = 1;
 		reader.resetPeek(); //reset peeking so that the next character peeked will reflect the next character to be read
@@ -1163,10 +1186,11 @@ public class XMLProcessor implements URIInputStreamable {
 	 * @return A new XML element constructed from the reader containing the declaration information for this element.
 	 */
 	protected XMLElement parseAttributeListDeclaration(final XMLReader reader, final XMLDocument ownerDocument, final XMLNamedNodeMap parameterEntityMap)
-			throws IOException, XMLSyntaxException, XMLWellFormednessException, XMLUndefinedEntityReferenceException, ParseUnexpectedDataException, ParseEOFException {
+			throws IOException, XMLSyntaxException, XMLWellFormednessException, XMLUndefinedEntityReferenceException, ParseUnexpectedDataException,
+			ParseEOFException {
 		//the attribute type strings we expect; notice that "IDREFS", "IDREF", and "ID" must be in that order because the first match is always chosen
-		final String[] ATTTYPE_STRINGS = { ATTTYPE_CDATA, ATTTYPE_IDREFS, ATTTYPE_IDREF, ATTTYPE_ID, ATTTYPE_ENTITY, ATTTYPE_ENTITIES, ATTTYPE_NMTOKEN,
-				ATTTYPE_NMTOKENS, ATTTYPE_NOTATION, ATTTYPE_ENUMERATION_START };
+		final String[] ATTTYPE_STRINGS = {ATTTYPE_CDATA, ATTTYPE_IDREFS, ATTTYPE_IDREF, ATTTYPE_ID, ATTTYPE_ENTITY, ATTTYPE_ENTITIES, ATTTYPE_NMTOKEN,
+				ATTTYPE_NMTOKENS, ATTTYPE_NOTATION, ATTTYPE_ENUMERATION_START};
 		//the indexes of the attribute type strings in our array
 		final int CDATA = 0, IDREFS = 1, IDREF = 2, ID = 3, ENTITY = 4, ENTITIES = 5, NMTOKEN = 6, NMTOKENS = 7, NOTATION = 8, ENUMERATION = 9;
 		final XMLElement element = new XMLElement(ownerDocument, "element"); //create a new XML element which will hold the attribute list for an element declaration TODO use constant
@@ -1181,10 +1205,10 @@ public class XMLProcessor implements URIInputStreamable {
 		attributeListDeclarationReader.setCharIndex(reader.getCharIndex()); //pretend we're reading where we already were, so any errors will show at least something close (hopefully)
 		//create a string buffer into which we can expand the attribute list declaration;
 		//  we know it will be at least as long as the original string
-		final StringBuffer expandedAttributeListDeclarationStringBuffer = new StringBuffer(attributeListDeclarationString.length());
-		expandParameterEntityReferences(attributeListDeclarationReader, ownerDocument, parameterEntityMap, expandedAttributeListDeclarationStringBuffer); //expand all character references in this string into the string buffer
+		final StringBuilder expandedAttributeListDeclarationStringBuilder = new StringBuilder(attributeListDeclarationString.length());
+		expandParameterEntityReferences(attributeListDeclarationReader, ownerDocument, parameterEntityMap, expandedAttributeListDeclarationStringBuilder); //expand all character references in this string into the string buffer
 		//now, make another reader to parse our new string with the parameter entities expanded
-		attributeListDeclarationReader = new XMLReader(expandedAttributeListDeclarationStringBuffer.toString(), reader.getName() + ":Attribute List Declaration"); //create a string reader the attribute list declaration, but we don't know its name TODO i18n
+		attributeListDeclarationReader = new XMLReader(expandedAttributeListDeclarationStringBuilder.toString(), reader.getName() + ":Attribute List Declaration"); //create a string reader the attribute list declaration, but we don't know its name TODO i18n
 
 		attributeListDeclarationReader.tidy = isTidy(); //TODO fix
 
@@ -1236,7 +1260,7 @@ public class XMLProcessor implements URIInputStreamable {
 			String defaultString = null; //if we find a default *or* a fixed value, we'll store it here
 			boolean fixed = false; //if we set this to true, this will indicate that the defaultString holds a fixed value
 			//the attribute default declaration strings we expect
-			final String[] DEFAULT_DECL_STRINGS = { ATT_DEFAULT_REQUIRED, ATT_DEFAULT_IMPLIED, ATT_DEFAULT_FIXED, "" };
+			final String[] DEFAULT_DECL_STRINGS = {ATT_DEFAULT_REQUIRED, ATT_DEFAULT_IMPLIED, ATT_DEFAULT_FIXED, ""};
 			//the indexes of the attribute default declaration strings in our array
 			final int REQUIRED = 0, IMPLIED = 1, FIXED = 2;
 			switch(attributeListDeclarationReader.readExpectedStrings(DEFAULT_DECL_STRINGS)) { //see what default declaration this is
@@ -1285,11 +1309,9 @@ public class XMLProcessor implements URIInputStreamable {
 	 * @throws XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
 	 * @throws ParseUnexpectedDataException Thrown when an unexpected character is found.
 	 * @throws ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
-	 * @return The characters until the end of the string with any parameter entity references expanded and padded with one beginning and one end space, as the
-	 *         XML specification requires.
 	 */
 	protected void expandParameterEntityReferences(final XMLReader reader, final XMLDocument ownerDocument, final XMLNamedNodeMap parameterEntityMap,
-			final StringBuffer expandedText) throws IOException, XMLSyntaxException, XMLWellFormednessException, XMLUndefinedEntityReferenceException,
+			final StringBuilder expandedText) throws IOException, XMLSyntaxException, XMLWellFormednessException, XMLUndefinedEntityReferenceException,
 			ParseUnexpectedDataException, ParseEOFException {
 		while(true) { //keep looking at charactes from the reader until we reach the end of file (which will kick us out from inside the loop)
 			expandedText.append(reader.readStringUntilCharEOF('%')); //read character content until we find an entity reference or the end of the stream TODO use a constant here
@@ -1335,7 +1357,7 @@ public class XMLProcessor implements URIInputStreamable {
 				//if this is any other markup
 				reader.resetPeek(); //reset peeking so that the next character peeked will reflect the next character to be read
 			//the markup strings we expect; make sure we put the TAG_START last, because all the markup matches TAG_START
-			final String[] EXPECTED_MARKUP_STRINGS = { COMMENT_START, CDATA_START, DOCTYPE_DECL_START, PROCESSING_INSTRUCTION_START, TAG_START };
+			final String[] EXPECTED_MARKUP_STRINGS = {COMMENT_START, CDATA_START, DOCTYPE_DECL_START, PROCESSING_INSTRUCTION_START, TAG_START};
 			//the indexes of the markup strings in our array
 			final int COMMENT = 0, CDATA_SECTION = 1, DOCTYPE_DECL = 2, PROCESSING_INSTRUCTION = 3, TAG = 4;
 			reader.resetPeek(); //reset peeking so that the next character peeked will reflect the next character to be read
@@ -1363,9 +1385,9 @@ public class XMLProcessor implements URIInputStreamable {
 					throw new XMLSyntaxException("Unrecognized markup.", reader.getLineIndex(), reader.getCharIndex(), reader.getName()); //show that we were expecting markup data TODO this shouldn't be an XMLSyntaxException
 			}
 		} catch(final ParseEOFException parseEOFException) { //if we run out of data
-			throw new XMLWellFormednessException(parseEOFException, ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(
-					XMLResources.RESOURCE_PREFIX + MARKUP_RESOURCE_ID), ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(
-					XMLResources.RESOURCE_PREFIX + UNKNOWN_RESOURCE_ID)); //show that we couldn't find markup
+			throw new XMLWellFormednessException(parseEOFException,
+					ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + MARKUP_RESOURCE_ID),
+					ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + UNKNOWN_RESOURCE_ID)); //show that we couldn't find markup
 		}
 	}
 
@@ -1380,8 +1402,8 @@ public class XMLProcessor implements URIInputStreamable {
 	 * @throws XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
 	 * @return A new XML tag constructed from the reader.
 	 */
-	protected XMLTag parseTag(final XMLReader reader, final XMLDocument ownerDocument) throws IOException, XMLSyntaxException, XMLWellFormednessException,
-			ParseUnexpectedDataException, XMLUndefinedEntityReferenceException {
+	protected XMLTag parseTag(final XMLReader reader, final XMLDocument ownerDocument)
+			throws IOException, XMLSyntaxException, XMLWellFormednessException, ParseUnexpectedDataException, XMLUndefinedEntityReferenceException {
 		final XMLTag tag = new XMLTag(ownerDocument); //create a new XML tag
 		try {
 			reader.readExpectedChar('<'); //since we're here, we expect the start of a tag TODO use a constant here
@@ -1392,7 +1414,7 @@ public class XMLProcessor implements URIInputStreamable {
 				//TODO have the tag check to make sure this is not an empty name
 				final String tagName = reader.readStringUntilChar(WHITESPACE_CHARS + ">"); //read the name of the tag, which will end with whitespace or the end-of-tag marker TODO use a constant here
 				if(!isName(tagName) && !isTidy()) //if this isn't a valid name, and we're not tidying
-					throw new XMLWellFormednessException(XMLWellFormednessException.INVALID_NAME, new Object[] { tagName }, reader.getLineIndex(), reader.getCharIndex(),
+					throw new XMLWellFormednessException(XMLWellFormednessException.INVALID_NAME, new Object[] {tagName}, reader.getLineIndex(), reader.getCharIndex(),
 							reader.getName()); //show that this isn't a valid XML name
 				tag.setNodeName(tagName); //set the name of the tag
 				skipWhitespaceCharacters(reader); //skip all whitespace characters (we already know the next character is valid)
@@ -1406,7 +1428,7 @@ public class XMLProcessor implements URIInputStreamable {
 					reader.readStringUntilChar("/>"); //read and discard everything up to the end of the end-of-tag marker TODO use a constant here
 				else
 					//if we're not tidying
-					throw new XMLWellFormednessException(XMLWellFormednessException.INVALID_NAME, new Object[] { tagName }, reader.getLineIndex(), reader.getCharIndex(),
+					throw new XMLWellFormednessException(XMLWellFormednessException.INVALID_NAME, new Object[] {tagName}, reader.getLineIndex(), reader.getCharIndex(),
 							reader.getName()); //show that this isn't a valid XML name
 			}
 			tag.setNodeName(tagName); //set the name of the tag
@@ -1428,7 +1450,7 @@ public class XMLProcessor implements URIInputStreamable {
 						final XMLAttribute attribute = parseAttribute(reader, ownerDocument); //read an attribute-value pair
 						//TODO store the tag's location within the file, and return that location in the error message
 						if(tag.getAttributeXMLNamedNodeMap().containsNamedItem(attribute)) //if this attribute has already been defined
-							throw new XMLWellFormednessException(XMLWellFormednessException.UNIQUE_ATT_SPEC, new Object[] { tag.getNodeName(), attribute.getNodeName() },
+							throw new XMLWellFormednessException(XMLWellFormednessException.UNIQUE_ATT_SPEC, new Object[] {tag.getNodeName(), attribute.getNodeName()},
 									reader.getLineIndex(), reader.getCharIndex(), reader.getName()); //show that this attribute has already been defined
 						//TODO make sure the attribute name is valid, here; this is different than checking the name inside the XMLAttribute object
 						tag.getAttributeXMLNamedNodeMap().setNamedItem(attribute); //add this attribute to the tag's map of attributes
@@ -1437,14 +1459,15 @@ public class XMLProcessor implements URIInputStreamable {
 			}
 		} catch(final ParseEOFException parseEOFException) { //if we run out of data
 			//show that we couldn't find the end of the tag
-			throw new XMLWellFormednessException(parseEOFException, ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(
-					XMLResources.RESOURCE_PREFIX + TAG_RESOURCE_ID), tag.getNodeName() != null ? tag.getNodeName() : ResourceBundle.getBundle(
-					XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + UNKNOWN_RESOURCE_ID));
+			throw new XMLWellFormednessException(parseEOFException,
+					ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + TAG_RESOURCE_ID),
+					tag.getNodeName() != null ? tag.getNodeName()
+							: ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + UNKNOWN_RESOURCE_ID));
 		}
 	}
 
 	/**
-	 * Parses an input stream that supposedly begins with an XML declaration ("<?xml").
+	 * Parses an input stream that supposedly begins with an XML declaration ("&lt;?xml").
 	 * @param reader The reader from which to retrieve characters.
 	 * @param ownerDocument The document which will own the XML declaration.
 	 * @throws IOException Thrown when an i/o error occurs.
@@ -1454,8 +1477,8 @@ public class XMLProcessor implements URIInputStreamable {
 	 * @throws XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
 	 * @return A new XML declaration constructed from the reader.
 	 */
-	protected XMLDeclaration parseXMLDeclaration(final XMLReader reader, final XMLDocument ownerDocument) throws IOException, XMLSyntaxException,
-			XMLWellFormednessException, ParseUnexpectedDataException, XMLUndefinedEntityReferenceException {
+	protected XMLDeclaration parseXMLDeclaration(final XMLReader reader, final XMLDocument ownerDocument)
+			throws IOException, XMLSyntaxException, XMLWellFormednessException, ParseUnexpectedDataException, XMLUndefinedEntityReferenceException {
 		XMLDeclaration xmlDecl = new XMLDeclaration(ownerDocument); //create a new XML declaration object
 		try {
 			reader.readExpectedString(XML_DECL_START); //we expect to read the start of an XML declaration
@@ -1506,9 +1529,10 @@ public class XMLProcessor implements URIInputStreamable {
 				}
 			}
 		} catch(final ParseEOFException parseEOFException) { //if we run out of data
-			throw new XMLWellFormednessException(parseEOFException, ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(
-					XMLResources.RESOURCE_PREFIX + XML_DECLARATION_RESOURCE_ID), xmlDecl.getNodeName() != null ? xmlDecl.getNodeName() : ResourceBundle.getBundle(
-					XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + UNKNOWN_RESOURCE_ID)); //show that we couldn't find the end of the XML declaration
+			throw new XMLWellFormednessException(parseEOFException,
+					ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + XML_DECLARATION_RESOURCE_ID),
+					xmlDecl.getNodeName() != null ? xmlDecl.getNodeName()
+							: ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + UNKNOWN_RESOURCE_ID)); //show that we couldn't find the end of the XML declaration
 		}
 	}
 
@@ -1517,27 +1541,29 @@ public class XMLProcessor implements URIInputStreamable {
 	 * @param reader The reader from which to retrieve characters.
 	 * @param ownerDocument The document which will own the XML declaration.
 	 * @throws IOException Thrown when an i/o error occurs.
+	 * @throws XMLSyntaxException Thrown when there is a syntax error in the XML file.
 	 * @throws XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
 	 * @throws ParseUnexpectedDataException Thrown when an unexpected character is found.
 	 * @return A new XML processing instruction constructed from the reader.
 	 */
-	protected XMLProcessingInstruction parseProcessingInstruction(final XMLReader reader, final XMLDocument ownerDocument) throws IOException,
-			XMLSyntaxException, XMLWellFormednessException, ParseUnexpectedDataException {
+	protected XMLProcessingInstruction parseProcessingInstruction(final XMLReader reader, final XMLDocument ownerDocument)
+			throws IOException, XMLSyntaxException, XMLWellFormednessException, ParseUnexpectedDataException {
 		XMLProcessingInstruction processingInstruction = new XMLProcessingInstruction(ownerDocument); //create a new processing instruction
 		try {
 			reader.readExpectedString(PROCESSING_INSTRUCTION_START); //we expect to read the start of an XML declaration
 			final String piTarget = reader.readStringUntilChar(WHITESPACE_CHARS); //read the name of the processing instruction, which will end with whitespace
 			if(!isPITarget(piTarget)) //if this isn't a valid processing instruction target
-				throw new XMLWellFormednessException(XMLWellFormednessException.INVALID_PI_TARGET, new Object[] { piTarget }, reader.getLineIndex(),
+				throw new XMLWellFormednessException(XMLWellFormednessException.INVALID_PI_TARGET, new Object[] {piTarget}, reader.getLineIndex(),
 						reader.getCharIndex(), reader.getName()); //show that this isn't a valid XML name
 			processingInstruction.setNodeName(piTarget); //set the name (target) of the processing instruction
 			skipWhitespaceCharacters(reader); //skip any whitespace characters (we require at least one, but we know there's one here because we found one when reading the name, above)
 			processingInstruction.setData(reader.readDelimitedString(PROCESSING_INSTRUCTION_END)); //read all the characters in the processing instruction up to the PROCESSING_INSTRUCTION_END delimiter
 			return processingInstruction; //return the processing instruction we constructed
 		} catch(final ParseEOFException parseEOFException) { //if we run out of data
-			throw new XMLWellFormednessException(parseEOFException, ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(
-					XMLResources.RESOURCE_PREFIX + PROCESSING_INSTRUCTION_RESOURCE_ID), processingInstruction.getTarget() != null ? processingInstruction.getNodeName()
-					: ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + UNKNOWN_RESOURCE_ID)); //show that we couldn't find the end of the XML processing instruction
+			throw new XMLWellFormednessException(parseEOFException,
+					ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + PROCESSING_INSTRUCTION_RESOURCE_ID),
+					processingInstruction.getTarget() != null ? processingInstruction.getNodeName()
+							: ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + UNKNOWN_RESOURCE_ID)); //show that we couldn't find the end of the XML processing instruction
 		}
 	}
 
@@ -1551,16 +1577,16 @@ public class XMLProcessor implements URIInputStreamable {
 	 * @throws ParseUnexpectedDataException Thrown when an unexpected character is found.
 	 * @return A new CDATA constructed from the reader.
 	 */
-	protected XMLCDATASection parseCDATASection(final XMLReader reader, final XMLDocument ownerDocument) throws IOException, XMLSyntaxException,
-			XMLWellFormednessException, ParseUnexpectedDataException {
+	protected XMLCDATASection parseCDATASection(final XMLReader reader, final XMLDocument ownerDocument)
+			throws IOException, XMLSyntaxException, XMLWellFormednessException, ParseUnexpectedDataException {
 		try {
 			String characterData = reader.readDelimitedString(CDATA_START, CDATA_END); //read all the characters in the CDATA section between the CDATA_START and CDATA_END delimiters
 			XMLCDATASection CDATA = new XMLCDATASection(ownerDocument, characterData); //create a new CDATA object
 			return CDATA; //return the CDATA we constructed
 		} catch(final ParseEOFException parseEOFException) { //if we run out of data
-			throw new XMLWellFormednessException(parseEOFException, ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(
-					XMLResources.RESOURCE_PREFIX + CDATA_RESOURCE_ID), ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(
-					XMLResources.RESOURCE_PREFIX + UNKNOWN_RESOURCE_ID)); //show that we couldn't find the end of the CDATA
+			throw new XMLWellFormednessException(parseEOFException,
+					ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + CDATA_RESOURCE_ID),
+					ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + UNKNOWN_RESOURCE_ID)); //show that we couldn't find the end of the CDATA
 		}
 	}
 
@@ -1574,17 +1600,17 @@ public class XMLProcessor implements URIInputStreamable {
 	 * @throws ParseUnexpectedDataException Thrown when an unexpected character is found.
 	 * @return A new comment object constructed from the reader.
 	 */
-	protected XMLComment parseComment(final XMLReader reader, final XMLDocument ownerDocument) throws IOException, XMLSyntaxException,
-			XMLWellFormednessException, ParseUnexpectedDataException {
+	protected XMLComment parseComment(final XMLReader reader, final XMLDocument ownerDocument)
+			throws IOException, XMLSyntaxException, XMLWellFormednessException, ParseUnexpectedDataException {
 		try {
 			String characterData = reader.readDelimitedString(COMMENT_START, COMMENT_END_PART1); //read all the characters in the comment section between the COMMENT_START and COMMENT_END_PART1 delimiters
 			XMLComment comment = new XMLComment(ownerDocument, characterData); //create a new comment object
 			reader.readExpectedString(COMMENT_END_PART2); //read the second part of the end of the comment (this two-step process is because XML doesn't allow "--" inside of comment for compatibility reasons)
 			return comment; //return the comment we constructed
 		} catch(final ParseEOFException parseEOFException) { //if we run out of data
-			throw new XMLWellFormednessException(parseEOFException, ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(
-					XMLResources.RESOURCE_PREFIX + COMMENT_RESOURCE_ID), ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(
-					XMLResources.RESOURCE_PREFIX + UNKNOWN_RESOURCE_ID)); //show that we couldn't find the end of the comment
+			throw new XMLWellFormednessException(parseEOFException,
+					ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + COMMENT_RESOURCE_ID),
+					ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + UNKNOWN_RESOURCE_ID)); //show that we couldn't find the end of the comment
 		}
 	}
 
@@ -1610,14 +1636,16 @@ public class XMLProcessor implements URIInputStreamable {
 			if(tag.getTagType() == XMLTag.EMPTY_ELEMENT_TAG) //if this is an empty element tag
 				return element; //there is no content in this element
 			if(!parseElementContent(reader, ownerDocument, element, "")) { //parse the element content, showing that we have not yet found any character content; if we couldn't find the end of the element
-				throw new XMLWellFormednessException(XMLWellFormednessException.EOF, new Object[] {
-						ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + ELEMENT_RESOURCE_ID),
-						element.getNodeName() }, reader.getLineIndex(), reader.getCharIndex(), reader.getName()); //show that we couldn't find the end of the element
+				throw new XMLWellFormednessException(XMLWellFormednessException.EOF,
+						new Object[] {ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + ELEMENT_RESOURCE_ID),
+								element.getNodeName()},
+						reader.getLineIndex(), reader.getCharIndex(), reader.getName()); //show that we couldn't find the end of the element
 			}
 			return element; //return the element we constructed
 		} catch(final ParseEOFException parseEOFException) { //if we run out of data
-			throw new XMLWellFormednessException(parseEOFException, ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(
-					XMLResources.RESOURCE_PREFIX + ELEMENT_RESOURCE_ID), element.getNodeName()); //show that we couldn't find the end of the element
+			throw new XMLWellFormednessException(parseEOFException,
+					ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + ELEMENT_RESOURCE_ID),
+					element.getNodeName()); //show that we couldn't find the end of the element
 		}
 
 	}
@@ -1657,10 +1685,10 @@ public class XMLProcessor implements URIInputStreamable {
 						if(entityResult instanceof XMLEntity) { //if we found a matching entity
 							final XMLEntity entity = (XMLEntity)entityResult; //case the result to an entity
 							if(nestedEntityReferenceMap.containsKey(entity)) //if, somewhere along our nested way, we've already processed this entity (i.e. this is a circular entity reference)
-								throw new XMLWellFormednessException(XMLWellFormednessException.NO_RECURSION, new Object[] { entity.getNodeName() }, reader.getLineIndex(),
+								throw new XMLWellFormednessException(XMLWellFormednessException.NO_RECURSION, new Object[] {entity.getNodeName()}, reader.getLineIndex(),
 										reader.getCharIndex(), reader.getName()); //show that an entity can't reference itself, directly or indirectly TODO we need to give a better position in the error, here
-							final XMLReader entityReader = new XMLReader(entity.getText(), "General entity \"" + entity.getNodeName() + "\" from \"" + entity.getSourceName()
-									+ "\""); //create a string reader from the text of the entity, giving our entity name for the name of the reader TODO i18n
+							final XMLReader entityReader = new XMLReader(entity.getText(),
+									"General entity \"" + entity.getNodeName() + "\" from \"" + entity.getSourceName() + "\""); //create a string reader from the text of the entity, giving our entity name for the name of the reader TODO i18n
 
 							entityReader.tidy = isTidy(); //TODO fix
 
@@ -1717,8 +1745,8 @@ public class XMLProcessor implements URIInputStreamable {
 											reader.unread(childTag.toXMLString().toCharArray()); //unread the ending tag so that it will be read the next time as an end tag for our parent instead of processing it now TODO use constants here
 										} else
 											//if we're not tidying the document
-											throw new XMLWellFormednessException(XMLWellFormednessException.ELEMENT_TYPE_MATCH, new Object[] { element.getNodeName(),
-													childTag.getNodeName() }, reader.getLineIndex(), reader.getCharIndex(), reader.getName()); //show that the beginning and ending tags do not match
+											throw new XMLWellFormednessException(XMLWellFormednessException.ELEMENT_TYPE_MATCH,
+													new Object[] {element.getNodeName(), childTag.getNodeName()}, reader.getLineIndex(), reader.getCharIndex(), reader.getName()); //show that the beginning and ending tags do not match
 									}
 									element.appendText(characterContent); //append whatever text we've collected so far to the element
 									return true; //we're finished parsing all the element content we know about, so return TODO how will we know when we're at the end of the tag if we're just looking at a string?
@@ -1763,8 +1791,7 @@ public class XMLProcessor implements URIInputStreamable {
 			childTag.setAttributeXMLNamedNodeMap(newAttributeNamedNodeMap); //now that we've processed the attributes, replace the old non-namespace-aware attrites with our new ones that recognize namespaces
 		}
 		if(tagName.equals("br") //TODO get all this from the DTD
-				|| tagName.equals("area") || tagName.equals("hr") || tagName.equals("img") || tagName.equals("link")
-				|| tagName.equals("param")
+				|| tagName.equals("area") || tagName.equals("hr") || tagName.equals("img") || tagName.equals("link") || tagName.equals("param")
 				|| tagName.equals("frame") || tagName.equals("meta"))
 			childTag.setTagType(XMLTag.EMPTY_ELEMENT_TAG); //convert the tag to an empty element tag
 	}
@@ -1798,8 +1825,8 @@ public class XMLProcessor implements URIInputStreamable {
 	 * @throws XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
 	 * @return A new XML document.
 	 */
-	protected XMLDocument parseDocument(final XMLReader reader) throws IOException, XMLSyntaxException, XMLWellFormednessException, XMLValidityException,
-			XMLUndefinedEntityReferenceException {
+	protected XMLDocument parseDocument(final XMLReader reader)
+			throws IOException, XMLSyntaxException, XMLWellFormednessException, XMLValidityException, XMLUndefinedEntityReferenceException {
 		long nodeLineIndex = 0, nodeCharIndex = 0; //make a note of where each node begins
 
 		XMLDocument document = new XMLDocument(); //create a new document	TODO use the XMLDOMImplementation function here
@@ -1868,7 +1895,7 @@ public class XMLProcessor implements URIInputStreamable {
 					docType.setNodeName(root.getNodeName()); //make the document type name match the root node name TODO should we do this after namespace processing? or should we put namespace processing in the processor itself?
 				else
 					//if we're not tidying, this consitutes a validity error
-					throw new XMLValidityException(XMLValidityException.ROOT_ELEMENT_TYPE, new Object[] { root.getNodeName(), docType.getName() }, reader.getLineIndex(),
+					throw new XMLValidityException(XMLValidityException.ROOT_ELEMENT_TYPE, new Object[] {root.getNodeName(), docType.getName()}, reader.getLineIndex(),
 							reader.getCharIndex(), reader.getName()); //show that this element type has already been declared TODO give a better indication of the element type declaration's location
 			}
 			//TODO does this adequately check for multiple root nodes?
@@ -1880,9 +1907,10 @@ public class XMLProcessor implements URIInputStreamable {
 		} catch(final ParseUnexpectedDataException parseUnexpectedDataException) { //if we run into data we don't recognize
 			throw new XMLWellFormednessException(parseUnexpectedDataException); //create a well-formedness exception and throw it
 		} catch(final ParseEOFException parseEOFException) { //if we run out of data
-			throw new XMLWellFormednessException(parseEOFException, ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(
-					XMLResources.RESOURCE_PREFIX + DOCUMENT_RESOURCE_ID), document.getNodeName() != null ? document.getNodeName() : ResourceBundle.getBundle(
-					XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + UNKNOWN_RESOURCE_ID)); //show that we couldn't find the end of the document
+			throw new XMLWellFormednessException(parseEOFException,
+					ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + DOCUMENT_RESOURCE_ID),
+					document.getNodeName() != null ? document.getNodeName()
+							: ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + UNKNOWN_RESOURCE_ID)); //show that we couldn't find the end of the document
 		}
 		//TODO decide if we should close the reader ourselves here
 		//TODO process namespaces here
@@ -1893,7 +1921,7 @@ public class XMLProcessor implements URIInputStreamable {
 
 	/**
 	 * Parses an XML document from an input stream.
-	 * @param inputStream The input stream from which to get the XML data.
+	 * @param xmlInputStream The input stream from which to get the XML data.
 	 * @param sourceObject The source of the data (e.g. a String, File, or URL).
 	 * @throws IOException Thrown when an i/o error occurs.
 	 * @throws XMLSyntaxException Thrown when there is a syntax error in the XML file.
@@ -1902,8 +1930,8 @@ public class XMLProcessor implements URIInputStreamable {
 	 * @throws XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
 	 * @return A new XML document.
 	 */
-	public XMLDocument parseDocument(final InputStream xmlInputStream, final Object sourceObject) throws IOException, XMLSyntaxException,
-			XMLWellFormednessException, XMLValidityException, XMLUndefinedEntityReferenceException {
+	public XMLDocument parseDocument(final InputStream xmlInputStream, final Object sourceObject)
+			throws IOException, XMLSyntaxException, XMLWellFormednessException, XMLValidityException, XMLUndefinedEntityReferenceException {
 		final XMLReader xmlReader = createReader(xmlInputStream, sourceObject); //create a reader from the input stream
 		return parseDocument(xmlReader); //parse the document using the reader we constructed, and return the new document
 	}
@@ -1919,8 +1947,8 @@ public class XMLProcessor implements URIInputStreamable {
 	 * @throws XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
 	 * @return A new XML document.
 	 */
-	public XMLDocument parseDocument(final Reader reader, final Object sourceObject) throws IOException, XMLSyntaxException, XMLWellFormednessException,
-			XMLValidityException, XMLUndefinedEntityReferenceException {
+	public XMLDocument parseDocument(final Reader reader, final Object sourceObject)
+			throws IOException, XMLSyntaxException, XMLWellFormednessException, XMLValidityException, XMLUndefinedEntityReferenceException {
 		final XMLReader xmlReader = new XMLReader(reader, sourceObject); //create an XML reader from the reader
 		return parseDocument(xmlReader); //parse the document using the reader we constructed, and return the new document
 	}
@@ -1936,8 +1964,8 @@ public class XMLProcessor implements URIInputStreamable {
 	 * @throws XMLValidityException Thrown when there is a validity error in the XML file.
 	 * @throws XMLUndefinedEntityReferenceException Thrown if a named entity reference has not been defined.
 	 */
-	public void parseElementContent(final XMLElement element, final String elementContent) throws IOException, XMLSyntaxException, XMLWellFormednessException,
-			XMLValidityException, XMLUndefinedEntityReferenceException {
+	public void parseElementContent(final XMLElement element, final String elementContent)
+			throws IOException, XMLSyntaxException, XMLWellFormednessException, XMLValidityException, XMLUndefinedEntityReferenceException {
 		final XMLDocument document = (XMLDocument)element.getOwnerDocument(); //get the owner document of the element
 		final XMLReader reader = new XMLReader(elementContent, "Element Content"); //create a string reader from the given element content TODO i18n
 
@@ -1945,15 +1973,16 @@ public class XMLProcessor implements URIInputStreamable {
 
 		try {
 			if(parseElementContent(reader, (XMLDocument)element.getOwnerDocument(), element, "")) { //parse the element content, showing that we have not yet found any character content; if we found the end of the element
-				throw new XMLWellFormednessException(XMLWellFormednessException.UNEXPECTED_DATA, new Object[] { "", "</" + element.getNodeName() + ">" },
+				throw new XMLWellFormednessException(XMLWellFormednessException.UNEXPECTED_DATA, new Object[] {"", "</" + element.getNodeName() + ">"},
 						reader.getLineIndex(), reader.getCharIndex(), reader.getName()); //show that we shouldn't have found the end of the element TODO use a constant here
 			}
 		} catch(final ParseUnexpectedDataException parseUnexpectedDataException) { //if we run into data we don't recognize
 			throw new XMLWellFormednessException(parseUnexpectedDataException); //create a well-formedness exception and throw it
 		} catch(final ParseEOFException parseEOFException) { //if we run out of data
-			throw new XMLWellFormednessException(parseEOFException, ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(
-					XMLResources.RESOURCE_PREFIX + DOCUMENT_RESOURCE_ID), document.getNodeName() != null ? document.getNodeName() : ResourceBundle.getBundle(
-					XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + UNKNOWN_RESOURCE_ID)); //show that we couldn't find the end of the document
+			throw new XMLWellFormednessException(parseEOFException,
+					ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + DOCUMENT_RESOURCE_ID),
+					document.getNodeName() != null ? document.getNodeName()
+							: ResourceBundle.getBundle(XMLResources.RESOURCE_BUNDLE_BASE_NAME).getString(XMLResources.RESOURCE_PREFIX + UNKNOWN_RESOURCE_ID)); //show that we couldn't find the end of the document
 		}
 	}
 
@@ -1986,7 +2015,8 @@ public class XMLProcessor implements URIInputStreamable {
 	/**
 	 * Resolves the namespace references in this element and its children by setting the namespace URIs and prefixes of the appropriate elements and attributes.
 	 * @param xmlElement The element for which namespaces should be processed and resolved.
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>NAMESPACE_ERR: Raised if the a <code>prefix</code> is malformed, if a <code>namespaceURI</code> is <code>null</code>, if a prefix is "xml"
 	 *           and the <code>namespaceURI</code> of the node is different from "http://www.w3.org/XML/1998/namespace", if a node is an attribute and the
 	 *           specified prefix is "xmlns" and the <code>namespaceURI</code> of this node is different from "http://www.w3.org/2000/xmlns/", or if a node is an

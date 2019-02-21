@@ -183,7 +183,8 @@ public class XMLNodeIterator implements NodeIterator {
 	 * Returns the next node in the set and advances the position of the iterator in the set. After a <code>NodeIterator</code> is created, the first call to
 	 * <code>nextNode()</code> returns the first node in the set. The reference node will be updated.
 	 * @return The next <code>Node</code> in the set being iterated over, or <code>null</code> if there are no more members in that set.
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>INVALID_STATE_ERR: Raised if this method is called after the <code>detach</code> method was invoked.</li>
 	 *           </ul>
 	 */
@@ -204,7 +205,8 @@ public class XMLNodeIterator implements NodeIterator {
 	/**
 	 * Returns the previous node in the set and moves the position of the <code>NodeIterator</code> backwards in the set. The reference node will be updated.
 	 * @return The previous <code>Node</code> in the set being iterated over, or <code>null</code> if there are no more members in that set.
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>INVALID_STATE_ERR: Raised if this method is called after the <code>detach</code> method was invoked.</li>
 	 *           </ul>
 	 */
@@ -227,13 +229,14 @@ public class XMLNodeIterator implements NodeIterator {
 	 * <code>nextNode()</code> returns the first node in the set. This function returns the next node without checking it against the filter to see if it should
 	 * be included. The reference node will be updated.
 	 * @return The next <code>Node</code> in the set being iterated over, or <code>null</code> if there are no more members in that set.
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>INVALID_STATE_ERR: Raised if this method is called after the <code>detach</code> method was invoked.</li>
 	 *           </ul>
 	 */
 	protected Node getNextNode() throws DOMException {
 		if(isDetached()) //if this iterator has been detached
-			throw new XMLDOMException(DOMException.INVALID_STATE_ERR, new Object[] { getClass().getName() }); //show that iterator is in an invalid state
+			throw new XMLDOMException(DOMException.INVALID_STATE_ERR, new Object[] {getClass().getName()}); //show that iterator is in an invalid state
 		final Node oldReferenceNode = getReferenceNode(); //get the reference node
 		if(isBeforeReferenceNode()) { //if we're before the reference node
 			setAfterReferenceNode(true); //show that our iterator is now after the reference node
@@ -268,13 +271,14 @@ public class XMLNodeIterator implements NodeIterator {
 	 * Returns the previous node in the set and moves the position of the <code>NodeIterator</code> backwards in the set. This function returns the previous node
 	 * without checking it against the filter to see if it should be included. The reference node will be updated.
 	 * @return The previous <code>Node</code> in the set being iterated over, or <code>null</code> if there are no more members in that set.
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>INVALID_STATE_ERR: Raised if this method is called after the <code>detach</code> method was invoked.</li>
 	 *           </ul>
 	 */
 	protected Node getPreviousNode() throws DOMException {
 		if(isDetached()) //if this iterator has been detached
-			throw new XMLDOMException(DOMException.INVALID_STATE_ERR, new Object[] { getClass().getName() }); //show that iterator is in an invalid state
+			throw new XMLDOMException(DOMException.INVALID_STATE_ERR, new Object[] {getClass().getName()}); //show that iterator is in an invalid state
 		final Node oldReferenceNode = getReferenceNode(); //get the reference node
 		if(isAfterReferenceNode()) { //if we're after the reference node
 			setBeforeReferenceNode(true); //show that our iterator is now before the reference node
@@ -385,6 +389,7 @@ public class XMLNodeIterator implements NodeIterator {
 	 * Returns whether a particular node meets the given criterion of what to show.
 	 * @param node The node to test.
 	 * @param whatToShow The nodes to be presented, as defined in <code>NodeFilter</code>.
+	 * @return <code>true</code> if the node meets the given criterion of what to show.
 	 * @see NodeFilter
 	 */
 	protected static boolean shouldShow(final Node node, final int whatToShow) {

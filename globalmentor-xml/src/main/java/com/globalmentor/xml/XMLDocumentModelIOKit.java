@@ -28,7 +28,6 @@ import org.w3c.dom.Document;
 /**
  * Class for loading and saving an XML document model.
  * @author Garret Wilson
- * @see XMLDocumentModel
  * @deprecated
  */
 public class XMLDocumentModelIOKit extends AbstractIOKit<XMLNodeModel<Document>> {

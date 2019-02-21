@@ -30,7 +30,7 @@ import org.w3c.dom.css.*;
  * @author Garret Wilson
  * @version DOM Level 2
  * @since DOM Level 2
- * @see XMLCSSStyleDeclaration#getPropertyCSSValue()
+ * @see XMLCSSStyleDeclaration#getPropertyCSSValue(String)
  * @see org.w3c.dom.css.CSSValue
  * @deprecated
  */
@@ -132,7 +132,7 @@ public class XMLCSSPrimitiveValue extends XMLCSSValue implements org.w3c.dom.css
 	/**
 	 * Returns the parsable textual representation of the current value.
 	 * @return The parsable textual representation of the value.
-	 * @see XMLValue#getCssText
+	 * @see XMLCSSValue#getCssText
 	 * @version DOM Level 2
 	 * @since DOM Level 2
 	 */
@@ -335,8 +335,8 @@ public class XMLCSSPrimitiveValue extends XMLCSSValue implements org.w3c.dom.css
 	 * Returns a string representation of the given type.
 	 * @param primitiveType A unit type as defined in CSSPrimitiveType.
 	 * @return The standard CSS string representation of the given type, or the empty string for a type that has no notation or is unrecognized.
-	 * @see CSSPrimitiveType#getPrimitiveType
-	 * @see CSSPrimitiveType#setPrimitiveType
+	 * @see XMLCSSPrimitiveValue#getPrimitiveType
+	 * @see XMLCSSPrimitiveValue#setPrimitiveType(short)
 	 */
 	public static String primitiveTypeToString(final short primitiveType) {
 		switch(primitiveType) { //see which primitive type this is, and return the appropriate string
@@ -466,7 +466,7 @@ public class XMLCSSPrimitiveValue extends XMLCSSValue implements org.w3c.dom.css
 	/**
 	 * Creates a primitive value from a value string. TODO decide if we want this in XMLCSSPrimitiveValue or XMLCSSValue.createValue() //G**del if not needed @propertyName
 	 * The name of the property to which the value will be assigned, or //TODO del if not needed <code>null</code> if the property name is not known.
-	 * @valueString The string which contains the parsable CSS primitive value.
+	 * @param valueString The string which contains the parsable CSS primitive value.
 	 * @return The new primitive value, or <code>null</code> if the value string was not parsable. TODO do we want to instead throw an exception?
 	 */
 	//TODO after figuring out the difference between ident and string, do we really need the property name passed here?

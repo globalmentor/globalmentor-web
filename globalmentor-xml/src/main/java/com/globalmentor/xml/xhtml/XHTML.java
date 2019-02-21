@@ -31,6 +31,7 @@ import com.globalmentor.java.Objects;
 import com.globalmentor.log.Log;
 import com.globalmentor.model.ConfigurationException;
 import com.globalmentor.net.ContentType;
+import com.globalmentor.w3c.spec.HTML;
 import com.globalmentor.xml.XML;
 
 import static com.globalmentor.text.ASCII.*;
@@ -50,9 +51,6 @@ public class XHTML {
 	 * Creates a new unformatted default XHTML document with the required minimal structure, {@code <html><head><title></title<head><body></html>}, with no
 	 * document type.
 	 * @param title The title of the document.
-	 * @param includeDocumentType Whether a document type should be added to the document.
-	 * @param publicID The external subset public identifier, or <code>null</code> if there is no such identifier.
-	 * @param systemID The external subset system identifier, or <code>null</code> if there is no such identifier.
 	 * @return A newly created default generic XHTML document with the required minimal structure.
 	 * @throws NullPointerException if the given title is <code>null</code>.
 	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
@@ -65,9 +63,6 @@ public class XHTML {
 	/**
 	 * Creates a new default XHTML document with the required minimal structure, {@code <html><head><title></title<head><body></html>}, with no document type.
 	 * @param title The title of the document.
-	 * @param includeDocumentType Whether a document type should be added to the document.
-	 * @param publicID The external subset public identifier, or <code>null</code> if there is no such identifier.
-	 * @param systemID The external subset system identifier, or <code>null</code> if there is no such identifier.
 	 * @param formatted <code>true</code> if the sections of the document should be formatted.
 	 * @return A newly created default generic XHTML document with the required minimal structure.
 	 * @throws NullPointerException if the given title is <code>null</code>.
@@ -205,7 +200,7 @@ public class XHTML {
 	 * @param metaName The name of the meta element to return.
 	 * @return The first {@code <head><meta>} element with the given name, case insensitive, or <code>null</code> if no such meta element can be found.
 	 * @throws NullPointerException if the given document and/or name is <code>null</code>.
-	 * @see #ELEMENT_META_ATTRIBUTE_NAME
+	 * @see HTML#ELEMENT_META_ATTRIBUTE_NAME
 	 */
 	public static Element getHeadMetaElement(final Document document, final String metaName) {
 		for(final Element element : getHeadMetaElements(document)) { //get all the meta elements
@@ -224,8 +219,8 @@ public class XHTML {
 	 * @return The <code>content</code> attribute of the first {@code <head><meta>} element with the given name, case insensitive, or <code>null</code> if no such
 	 *         meta element can be found.
 	 * @throws NullPointerException if the given document and/or name is <code>null</code>.
-	 * @see #ELEMENT_META_ATTRIBUTE_NAME
-	 * @see #ELEMENT_META_ATTRIBUTE_CONTENT
+	 * @see HTML#ELEMENT_META_ATTRIBUTE_NAME
+	 * @see HTML#ELEMENT_META_ATTRIBUTE_CONTENT
 	 */
 	public static String getHeadMetaElementContent(final Document document, final String metaName) {
 		final Element metaElement = getHeadMetaElement(document, metaName);
@@ -283,7 +278,7 @@ public class XHTML {
 	 * @param element The element, presumably a link ({@code<a>}, {@code<area>}, or {@code<link>}).
 	 * @return The content type specified by the link element, or <code>null</code> if no content type was specified or the content type was not syntactically
 	 *         correct.
-	 * @see #LINK_ATTRIBUTE_TYPE
+	 * @see HTML#LINK_ATTRIBUTE_TYPE
 	 * @see <a href="http://www.w3.org/TR/html5/links.html#attr-hyperlink-type">HTML5 Link MIME type</a>
 	 */
 	public static ContentType getLinkContentType(final Element element) {
@@ -299,11 +294,11 @@ public class XHTML {
 	}
 
 	/**
-	 * Checks to see if the given link's {@value #LINK_ATTRIBUTE_REL} attribute contains the given link type with ASCII case insensitivity.
+	 * Checks to see if the given link's {@value HTML#LINK_ATTRIBUTE_REL} attribute contains the given link type with ASCII case insensitivity.
 	 * @param element The element, presumably a link ({@code<a>}, {@code<area>}, or {@code<link>}).
 	 * @param linkType The type of link to look for.
-	 * @return <code>true</code> if the given element has a {@value #LINK_ATTRIBUTE_REL} attribute with one of the given link types.
-	 * @see #LINK_ATTRIBUTE_REL
+	 * @return <code>true</code> if the given element has a {@value HTML#LINK_ATTRIBUTE_REL} attribute with one of the given link types.
+	 * @see HTML#LINK_ATTRIBUTE_REL
 	 * @see <a href="http://www.w3.org/TR/html5/links.html#linkTypes">HTML5 Link Types</a>
 	 */
 	public static boolean hasLinkType(final Element element, final LinkType linkType) {
@@ -311,11 +306,11 @@ public class XHTML {
 	}
 
 	/**
-	 * Checks to see if the given link's {@value #LINK_ATTRIBUTE_REL} attribute contains the given link type with ASCII case insensitivity.
+	 * Checks to see if the given link's {@value HTML#LINK_ATTRIBUTE_REL} attribute contains the given link type with ASCII case insensitivity.
 	 * @param element The element, presumably a link ({@code<a>}, {@code<area>}, or {@code<link>}).
 	 * @param linkType The type of link to look for.
-	 * @return <code>true</code> if the given element has a {@value #LINK_ATTRIBUTE_REL} attribute with one of the given link types.
-	 * @see #LINK_ATTRIBUTE_REL
+	 * @return <code>true</code> if the given element has a {@value HTML#LINK_ATTRIBUTE_REL} attribute with one of the given link types.
+	 * @see HTML#LINK_ATTRIBUTE_REL
 	 */
 	public static boolean hasLinkType(final Element element, final String linkType) {
 		return containsTokenIgnoreCase(element.getAttributeNS(null, LINK_ATTRIBUTE_REL), SPACE_CHARACTERS, linkType); //see if the given link type ID is one of the tokens in the "rel" attribute value
@@ -473,7 +468,7 @@ public class XHTML {
 	 * @param node The node from which text will be retrieved.
 	 * @return The data of all <code>Text</code> descendant nodes, which may be the empty string.
 	 * @see XML#getText(Node, Set)
-	 * @see #BLOCK_ELEMENTS
+	 * @see HTML#BLOCK_ELEMENTS
 	 */
 	public static String getText(final Node node) {
 		return XML.getText(node, BLOCK_ELEMENTS);
@@ -486,10 +481,9 @@ public class XHTML {
 	 * This HTML-specific version adds whitespace to separate block elements.
 	 * </p>
 	 * @param node The node from which text will be retrieved.
-	 * @param deep Whether text of all descendants in document order will be returned.
 	 * @param stringBuilder The buffer to which text will be added.
 	 * @see XML#getText(Node, Set, boolean, StringBuilder)
-	 * @see #BLOCK_ELEMENTS
+	 * @see HTML#BLOCK_ELEMENTS
 	 */
 	public static void getText(final Node node, final StringBuilder stringBuilder) {
 		XML.getText(node, BLOCK_ELEMENTS, true, stringBuilder);

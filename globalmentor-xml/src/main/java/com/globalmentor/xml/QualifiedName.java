@@ -18,7 +18,8 @@ package com.globalmentor.xml;
 
 import java.net.URI;
 
-import static com.globalmentor.java.Objects.*;
+import static java.util.Objects.*;
+
 import static com.globalmentor.xml.XML.*;
 
 import com.globalmentor.model.IDed;
@@ -89,7 +90,7 @@ public class QualifiedName extends DefaultResource implements IDed<URI> {
 		super(createReferenceURI(namespaceURI, localName)); //create our reference URI by combining our namespace URI and our local name
 		this.namespaceURI = namespaceURI;
 		this.prefix = prefix;
-		this.localName = checkInstance(localName, "Local name cannot be null.");
+		this.localName = requireNonNull(localName, "Local name cannot be null.");
 	}
 
 	/**
@@ -108,7 +109,7 @@ public class QualifiedName extends DefaultResource implements IDed<URI> {
 		super(createReferenceURI(namespace, localName)); //create our reference URI by combining our namespace URI and our local name
 		this.namespaceURI = toNamespaceURI(namespace);
 		this.prefix = prefix;
-		this.localName = checkInstance(localName, "Local name cannot be null.");
+		this.localName = requireNonNull(localName, "Local name cannot be null.");
 	}
 
 	/**

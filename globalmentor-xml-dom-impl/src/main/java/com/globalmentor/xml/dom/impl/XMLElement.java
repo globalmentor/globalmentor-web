@@ -70,6 +70,7 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element {
 	/**
 	 * Constructor that uses a specified name and namespace URI. The element's names will be constructed in the following fashion:
 	 * <table>
+	 * <caption>Determination of note attributes from parameter values.</caption>
 	 * <tr>
 	 * <th>Attribute</th>
 	 * <th>Value</th>
@@ -98,7 +99,8 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element {
 	 * @param ownerDocument The document which owns this node.
 	 * @param namespaceURI The namespace URI of the element.
 	 * @param qualifiedName The qualified name of the element.
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>NAMESPACE_ERR: Raised if the specified <code>prefix</code> is malformed, if the <code>namespaceURI</code> of is <code>null</code>, if the
 	 *           specified prefix is "xml" and the <code>namespaceURI</code> of this node is different from "http://www.w3.org/XML/1998/namespace", if this node
 	 *           is an attribute and the specified prefix is "xmlns" and the <code>namespaceURI</code> of this node is different from
@@ -150,7 +152,7 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element {
 	/**
 	 * Returns a <code>NamedNodeMap</code> containing the attributes of this element.
 	 * @return A map of attributes of this element node.
-	 * @see Attribute
+	 * @see XMLAttribute
 	 * @see NamedNodeMap
 	 * @see XMLNode#getAttributes
 	 * @version DOM Level 1
@@ -294,13 +296,13 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element {
 	 * create an attribute node plus any text and entity references nodes and use setAttributeNode() to assign that tree as the value of that attribute.
 	 * @param name The name of the attribute to create or alter.
 	 * @param value Value to set in string form.
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>INVALID_CHARACTER_ERR: Raised if the specified name contains an invalid character.</li>
 	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
 	 *           </ul>
 	 * @see XMLAttribute
 	 * @see XMLText
-	 * @see XMLEntityReference
 	 * @see XMLElement#setAttributeNode
 	 * @version DOM Level 1
 	 */
@@ -320,7 +322,8 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element {
 	/**
 	 * Removes an attribute by name. If the removed attribute is known to have a default value, an attribute immediately appears containing the default value.
 	 * @param name The name of the attribute to remove.
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
 	 *           </ul>
 	 * @version DOM Level 1
@@ -353,7 +356,8 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element {
 	 * @param newAttr The attribute node to add to the attribute list.
 	 * @return If the new attribute replaces an existing attribute with the same name, the previously existing attribute node is returned, otherwise
 	 *         <code>null</code> is returned.
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>WRONG_DOCUMENT_ERR: Raised if the new attribute was created from a different document than the one that created the element.</li>
 	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
 	 *           <li>INUSE_ATTRIBUTE_ERR: Raised if the new attribute is already an attribute of another element node. The DOM user must explicitly clone
@@ -373,8 +377,11 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element {
 	 * @param oldAttr The <code>Attr</code> node to remove from the attribute list. If the removed <code>Attr</code> has a default value it is immediately
 	 *          replaced.
 	 * @return The <code>Attr</code> node that was removed.
-	 * @throws DOMException NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly. <br>
-	 *           NOT_FOUND_ERR: Raised if <code>oldAttr</code> is not an attribute of the element.
+	 * @throws DOMException
+	 *           <ul>
+	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
+	 *           <li>NOT_FOUND_ERR: Raised if <code>oldAttr</code> is not an attribute of the element.</li>
+	 *           </ul>
 	 */
 	public Attr removeAttributeNode(Attr oldAttr) throws DOMException {
 		return null;
@@ -392,7 +399,7 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element {
 	 * @version DOM Level 1
 	 */
 	public NodeList getElementsByTagName(String name) { //TODO does this correctly return a *preorder* traversal?
-	//TODO we may want to just remove the function below and replace it with a direct call to getNodesByName()
+		//TODO we may want to just remove the function below and replace it with a direct call to getNodesByName()
 		return getNodesByName(ELEMENT_NODE, name, true); //get the elements, showing that we want *all* the child elements at whatever level
 	}
 
@@ -417,8 +424,9 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element {
 	 * <code>setAttributeNodeNS</code> or <code>setAttributeNode</code> to assign it as the value of an attribute.
 	 * @param namespaceURI The namespace URI of the attribute to create or alter.
 	 * @param qualifiedName The qualified name of the attribute to create or alter.
-	 * @param valueThe value to set in string form.
-	 * @throws DOMException <ul>
+	 * @param value The value to set in string form.
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>INVALID_CHARACTER_ERR: Raised if the specified qualified name contains an illegal character.</li>
 	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
 	 *           <li>NAMESPACE_ERR: Raised if the <code>qualifiedName</code> is malformed, if the <code>qualifiedName</code> has a prefix and the
@@ -448,8 +456,9 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element {
 	 * Removes an attribute by local name and namespace URI. If the removed attribute has a default value it is immediately replaced. The replacing attribute has
 	 * the same namespace URI and local name, as well as the original prefix.
 	 * @param namespaceURI The namespace URI of the attribute to remove.
-	 * @param localNameThe local name of the attribute to remove.
-	 * @throws DOMException <ul>
+	 * @param localName The local name of the attribute to remove.
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
 	 *           </ul>
 	 * @since DOM Level 2
@@ -481,7 +490,8 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element {
 	 * @param newAttr The <code>Attr</code> node to add to the attribute list.
 	 * @return If the <code>newAttr</code> attribute replaces an existing attribute with the same local name and namespace URI, the replaced <code>Attr</code>
 	 *         node is returned, otherwise <code>null</code> is returned.
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>WRONG_DOCUMENT_ERR: Raised if <code>newAttr</code> was created from a different document than the one that created the element.</li>
 	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
 	 *           <li>INUSE_ATTRIBUTE_ERR: Raised if <code>newAttr</code> is already an attribute of another <code>Element</code> object. The DOM user must
@@ -543,12 +553,17 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element {
 	 * If the parameter <code>isId</code> is <code>true</code>, this method declares the specified attribute to be a user-determined ID attribute . This affects
 	 * the value of <code>Attr.isId</code> and the behavior of <code>Document.getElementById</code>, but does not change any schema that may be in use, in
 	 * particular this does not affect the <code>Attr.schemaTypeInfo</code> of the specified <code>Attr</code> node. Use the value <code>false</code> for the
-	 * parameter <code>isId</code> to undeclare an attribute for being a user-determined ID attribute. <br>
+	 * parameter <code>isId</code> to undeclare an attribute for being a user-determined ID attribute.
+	 * <p>
 	 * To specify an attribute by local name and namespace URI, use the <code>setIdAttributeNS</code> method.
+	 * </p>
 	 * @param name The name of the attribute.
 	 * @param isId Whether the attribute is a of type ID.
-	 * @throws DOMException NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly. <br>
-	 *           NOT_FOUND_ERR: Raised if the specified node is not an attribute of this element.
+	 * @throws DOMException
+	 *           <ul>
+	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
+	 *           <li>NOT_FOUND_ERR: Raised if the specified node is not an attribute of this element.</li>
+	 *           </ul>
 	 * @since DOM Level 3
 	 */
 	public void setIdAttribute(String name, boolean isId) throws DOMException {
@@ -563,8 +578,11 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element {
 	 * @param namespaceURI The namespace URI of the attribute.
 	 * @param localName The local name of the attribute.
 	 * @param isId Whether the attribute is a of type ID.
-	 * @throws DOMException NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly. <br>
-	 *           NOT_FOUND_ERR: Raised if the specified node is not an attribute of this element.
+	 * @throws DOMException
+	 *           <ul>
+	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
+	 *           <li>NOT_FOUND_ERR: Raised if the specified node is not an attribute of this element.</li>
+	 *           </ul>
 	 * @since DOM Level 3
 	 */
 	public void setIdAttributeNS(String namespaceURI, String localName, boolean isId) throws DOMException {
@@ -578,8 +596,11 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element {
 	 * parameter <code>isId</code> to undeclare an attribute for being a user-determined ID attribute.
 	 * @param idAttr The attribute node.
 	 * @param isId Whether the attribute is a of type ID.
-	 * @throws DOMException NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly. <br>
-	 *           NOT_FOUND_ERR: Raised if the specified node is not an attribute of this element.
+	 * @throws DOMException
+	 *           <ul>
+	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
+	 *           <li>NOT_FOUND_ERR: Raised if the specified node is not an attribute of this element.</li>
+	 *           </ul>
 	 * @since DOM Level 3
 	 */
 	public void setIdAttributeNode(Attr idAttr, boolean isId) throws DOMException {

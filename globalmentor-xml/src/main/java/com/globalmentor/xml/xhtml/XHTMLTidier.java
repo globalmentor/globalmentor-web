@@ -56,7 +56,7 @@ import org.w3c.dom.traversal.NodeFilter;
  * the <code>&lt;body&gt;</code> element.</li>
  * <li>Converts characters in an element requested the symbol font to Unicode equivalents.</li>
  * <li>Performs any transformation requested by the <code>text-transform</code> CSS property on immediate child nodes.</li>
- * <li>Converts text with list-like content to either ordered or unordered lists (code>&lt;ol&gt;</code> and code>&lt;ul&gt;</code>).</li>
+ * <li>Converts text with list-like content to either ordered or unordered lists (<code>&lt;ol&gt;</code> and <code>&lt;ul&gt;</code>).</li>
  * <li>Groups text with equal left and right margins inside <code>&lt;div class="fullIndent"&gt;</code> elements.</li>
  * </ul>
  * <p>
@@ -80,8 +80,7 @@ import org.w3c.dom.traversal.NodeFilter;
  * <li>0x9C replaced with a Unicode Latin small ligature oe, 0x0153.</li>
  * <li>0x8C replaced with a Unicode Latin uppercase ligature OE, 0x0152.</li>
  * <li>0x85 replaced with a Unicode horizontal ellipsis, 0x2026.</li>
- * <li>0x9F replaced with a Unicode uppercase Y with diaeresis, 0x0178.</li>
- * //TODO del if not needed
+ * <li>0x9F replaced with a Unicode uppercase Y with diaeresis, 0x0178.</li> <!--TODO del if not needed-->
  * <li>0x00A0 non-breaking space replaced with a space, 0x0020.</li>
  * <li>Runs of "--", "---", and "----" replaced with an m dash character, 0x2014.</li>
  * </ul>
@@ -105,8 +104,7 @@ import org.w3c.dom.traversal.NodeFilter;
  * content.</li>
  * <li><code>&lt;span&gt;</code> elements which contain all the content of their parent element (that is, a span that is the only child of an element).</li>
  * <li>Lists (<code>&lt;ol&gt;</code> and <code>&lt;ul&gt;</code>) that contain a single list child element of the same name (duplicated nested lists).</li>
- * <li><code>&lt;div&gt;</code> elements that are the only element children of <code>&lt;body&gt;</code>.</li>
- * //TODO decide
+ * <li><code>&lt;div&gt;</code> elements that are the only element children of <code>&lt;body&gt;</code>.</li> <!--TODO decide-->
  * <li><code>&lt;div&gt;</code> elements that contain only whitespace and empty elements (such as <code>&lt;hr&gt;</code>).</li>
  * </ul>
  * <p>
@@ -147,7 +145,7 @@ import org.w3c.dom.traversal.NodeFilter;
  * </ul>
  * </li>
  * </ul>
- * @author Garret Wilson TODO added stuff not commented: removed <html> attributes added OEB DOCTYPe
+ * @author Garret Wilson <!--TODO added stuff not commented: removed html attributes added OEB DOCTYPE-->
  */
 public class XHTMLTidier {
 
@@ -314,12 +312,12 @@ public class XHTMLTidier {
 
 	/** Characters to be replaced, along with their replacements. */
 	//TODO move these up after moving the match character references (above) elsewhere
-	protected static final char[][] CHARACTER_MATCH_REPLACE_SET_ARRAY = new char[][] { { BAD_LEFT_SINGLE_QUOTE, LEFT_SINGLE_QUOTATION_MARK_CHAR },
-			{ BAD_RIGHT_SINGLE_QUOTE, RIGHT_SINGLE_QUOTATION_MARK_CHAR }, { BAD_LEFT_DOUBLE_QUOTE, LEFT_DOUBLE_QUOTATION_MARK_CHAR },
-			{ BAD_RIGHT_DOUBLE_QUOTE, RIGHT_DOUBLE_QUOTATION_MARK_CHAR }, { BAD_N_DASH, EN_DASH_CHAR }, { BAD_M_DASH, EM_DASH_CHAR },
-			{ BAD_TRADEMARK, TRADE_MARK_SIGN_CHAR }, { BAD_LOWERCASE_OE, LATIN_SMALL_LIGATURE_OE_CHAR }, { BAD_UPPERCASE_OE, LATIN_CAPITAL_LIGATURE_OE_CHAR },
-			{ BAD_ELLIPSIS, HORIZONTAL_ELLIPSIS_CHAR }, { BAD_UPPERCASE_Y_UMLAUT, LATIN_CAPITAL_LETTER_Y_WITH_DIAERESIS_CHAR }
-	//TODO del if not needed					{NO_BREAK_SPACE_CHAR, SPACE_CHAR}
+	protected static final char[][] CHARACTER_MATCH_REPLACE_SET_ARRAY = new char[][] {{BAD_LEFT_SINGLE_QUOTE, LEFT_SINGLE_QUOTATION_MARK_CHAR},
+			{BAD_RIGHT_SINGLE_QUOTE, RIGHT_SINGLE_QUOTATION_MARK_CHAR}, {BAD_LEFT_DOUBLE_QUOTE, LEFT_DOUBLE_QUOTATION_MARK_CHAR},
+			{BAD_RIGHT_DOUBLE_QUOTE, RIGHT_DOUBLE_QUOTATION_MARK_CHAR}, {BAD_N_DASH, EN_DASH_CHAR}, {BAD_M_DASH, EM_DASH_CHAR}, {BAD_TRADEMARK, TRADE_MARK_SIGN_CHAR},
+			{BAD_LOWERCASE_OE, LATIN_SMALL_LIGATURE_OE_CHAR}, {BAD_UPPERCASE_OE, LATIN_CAPITAL_LIGATURE_OE_CHAR}, {BAD_ELLIPSIS, HORIZONTAL_ELLIPSIS_CHAR},
+			{BAD_UPPERCASE_Y_UMLAUT, LATIN_CAPITAL_LETTER_Y_WITH_DIAERESIS_CHAR}
+			//TODO del if not needed					{NO_BREAK_SPACE_CHAR, SPACE_CHAR}
 	};
 
 	/** Our object to tidy CSS, should we ever need to use it. */
@@ -331,8 +329,8 @@ public class XHTMLTidier {
 	 */
 	public void setOptions(final Properties options) {
 		setConvertUnderlineItalics(PropertiesUtilities.getBooleanProperty(options, CONVERT_UNDERLINE_ITALICS_OPTION, CONVERT_UNDERLINE_ITALICS_OPTION_DEFAULT));
-		setExtractInternalStylesheets(PropertiesUtilities.getBooleanProperty(options, EXTRACT_INTERNAL_STYLESHEETS_OPTION,
-				EXTRACT_INTERNAL_STYLESHEETS_OPTION_DEFAULT));
+		setExtractInternalStylesheets(
+				PropertiesUtilities.getBooleanProperty(options, EXTRACT_INTERNAL_STYLESHEETS_OPTION, EXTRACT_INTERNAL_STYLESHEETS_OPTION_DEFAULT));
 		setNormalizeStyleClasses(PropertiesUtilities.getBooleanProperty(options, NORMALIZE_STYLE_CLASSES_OPTION, NORMALIZE_STYLE_CLASSES_OPTION_DEFAULT));
 		cssTidier.setOptions(options); //pass the options along to the CSS tidier
 	}
@@ -409,7 +407,7 @@ public class XHTMLTidier {
 								new CSSSerializer().serialize(cssStyleSheet, stylesheetOutputStream); //write the stylesheet out to the file TODO use a pre-created serializer, maybe
 								stylesheetOutputStream.flush(); //flush the output stream
 								addStyleSheetReference(document, stylesheetFile.getName(), OEB.OEB10_CSS_MEDIA_TYPE); //add the stylesheet to the document TODO eventually change to text/css
-
+			
 							} finally {
 								stylesheetOutputStream.close(); //always close the file
 							}
@@ -529,9 +527,9 @@ public class XHTMLTidier {
 	}
 
 	/**
-	 * Tidies the children of a particular node, treating each one as an independent node. Called from <code>tidyNode()</code>.
+	 * Tidies the children of a particular node, treating each one as an independent node. Called from <code>tidy(node)</code>.
 	 * @param node The node the children of which should be tidied.
-	 * @see #tidyNode
+	 * @see #tidy(Node)
 	 */
 	protected void tidyChildNodes(final Node node) {
 		final NodeList childNodeList = node.getChildNodes(); //get a list of child nodes
@@ -546,9 +544,9 @@ public class XHTMLTidier {
 
 	/**
 	 * Tidies the first-level children of a particular node, recognizing meaning within groups of nodes. This method locates lists, for example. Called from
-	 * <code>tidyNode()</code>.
+	 * <code>tidy(Node)</code>.
 	 * @param element The element the children of which should be tidied.
-	 * @see #tidyNode
+	 * @see #tidy(Node)
 	 */
 	protected void tidyChildGroups(final Element element) {
 		convertChildHeadings(element); //convert any children that appear to be headings into headings
@@ -568,7 +566,8 @@ public class XHTMLTidier {
 	 * Called from <code>tidyChildGroups()</code>. This method takes the following steps to locate list items:
 	 * <ol>
 	 * <li>Look at each first-level block element child, ignoring list elements.</li>
-	 * <li>If a child begins with an appropriate marker (such as '1' or 'a') and some delimiter (such as ')' or '.'), the item is marked as list item potential.</li>
+	 * <li>If a child begins with an appropriate marker (such as '1' or 'a') and some delimiter (such as ')' or '.'), the item is marked as list item potential.
+	 * </li>
 	 * <li>If there are multiple potential list items, and all their markers are appropriately sequenced, the elements and all interspersed nodes are removed and
 	 * placed inside an <code>&lt;ol&gt;</code> or <code>&lt;il&gt;</code> as appropriate in the same location as the first list item.</li>
 	 * <li>The newly formed list is tidied.</li>
@@ -720,7 +719,8 @@ public class XHTMLTidier {
 	 * <ol>
 	 * <li>Look at each first-level block element child, ignoring list elements.</li>
 	 * <li>If a child element's left and right margins are greater than zero and are equal, the item is marked as included in a potential indented section.</li>
-	 * <li>If an element is found with a greater indention, the preceding elements are discarded and the process starts over with the new indented element(s).</li>
+	 * <li>If an element is found with a greater indention, the preceding elements are discarded and the process starts over with the new indented element(s).
+	 * </li>
 	 * <li>If at the end of the child elements there are collected elements, they are grouped in a <code>&lt;div class="fullIndented"&gt;</code> element.</li>
 	 * <li>This procedure is repeated from the beginning, starting at the first child, until no new indented elements have been created.</li>
 	 * </ol>
@@ -741,7 +741,7 @@ public class XHTMLTidier {
 				final int childNodeType = childNode.getNodeType(); //get the type of this child node
 				final String childNodeName = childNode.getNodeName(); //get the node's name TODO use namespaces
 				//only look at block elements that are not blockquotes TODO what if we skip some in the middle of a list?
-				if(childNodeType == childNode.ELEMENT_NODE /*TODO testing && !childNodeName.equals(ELEMENT_BLOCKQUOTE)*/&& isBlockElement((Element)childNode)) {
+				if(childNodeType == childNode.ELEMENT_NODE /*TODO testing && !childNodeName.equals(ELEMENT_BLOCKQUOTE)*/ && isBlockElement((Element)childNode)) {
 					float leftMargin = 0; //we'll store the left margin here, if we find one
 					float rightMargin = 0; //we'll store the right margin here, if we find one
 					final Element childElement = (Element)childNode; //cast the node to an element
@@ -754,20 +754,20 @@ public class XHTMLTidier {
 							if(rightMarginValue != null) { //if there's a right margin value
 								leftMargin = leftMarginValue.getFloatValue(leftMarginValue.getPrimitiveType()); //get the left margin, ignoring the units
 								rightMargin = leftMarginValue.getFloatValue(rightMarginValue.getPrimitiveType()); //get the left margin, ignoring the units
-//TODO del when works
-//								if(leftMargin==rightMargin) {	//if the left and right margins are identical, we assume this is a blockquote
-//									if(leftMargin>margin) {	//if the margin increased, this is the start of another blockquote
-//										blockquoteNodeList.clear(); //we'll start the list over, because this is a nested blockquote
-//										blockquoteNodeList.add(childElement); //add this element which will become a blockquote
-//										margin=leftMargin;  //show the margin our new blockquote uses
-//									}
-//									else if(leftMargin>0 && leftMargin==margin) {	//if this is valid blockquote at the same level of blockquote we had before
-//										blockquoteNodeList.add(childElement); //add this element to our list of elements to become blockquotes
-//									}
-//									else if(blockquoteNodeList.size()>0) {	//if the margin decreased, the blockqoute is finished
-//										break;  //we finished a blockquote; stop this current iteration of searching
-//									}
-//								}
+					//TODO del when works
+					//								if(leftMargin==rightMargin) {	//if the left and right margins are identical, we assume this is a blockquote
+					//									if(leftMargin>margin) {	//if the margin increased, this is the start of another blockquote
+					//										blockquoteNodeList.clear(); //we'll start the list over, because this is a nested blockquote
+					//										blockquoteNodeList.add(childElement); //add this element which will become a blockquote
+					//										margin=leftMargin;  //show the margin our new blockquote uses
+					//									}
+					//									else if(leftMargin>0 && leftMargin==margin) {	//if this is valid blockquote at the same level of blockquote we had before
+					//										blockquoteNodeList.add(childElement); //add this element to our list of elements to become blockquotes
+					//									}
+					//									else if(blockquoteNodeList.size()>0) {	//if the margin decreased, the blockqoute is finished
+					//										break;  //we finished a blockquote; stop this current iteration of searching
+					//									}
+					//								}
 							}
 						}
 					}
@@ -818,7 +818,7 @@ public class XHTMLTidier {
 
 	/**
 	 * Searches all first-level child block elements for any content which could be classified as headers and appropriately turns those items into
-	 * <code>&lt;hX"&gt;</code> elements. Called from <code>tidyChildGroups()</code>.</p>
+	 * <code>&lt;hX"&gt;</code> elements. Called from <code>tidyChildGroups()</code>.
 	 * <p>
 	 * The following are always considered to be headers:
 	 * </p>
@@ -945,15 +945,15 @@ public class XHTMLTidier {
 						lastAttemptedPageBreakElementIndex = elementIndex; //show at what index we wanted to make a page break
 						lastAttemptedPageBreakType = headingType; //show what type of heading we wanted to use
 					} else if(headingType != Prose.NO_HEADING) { //if this is any other type of heading
-					/*TODO fix
-											if(contentsHeadingElement!=null && contentsHeadingElement!=childElement) {	//if we're processing the table of contents
-													//find out how many lines there are
-												final int lineCount=(new StringTokenizer(text, EOL_CHARS, true).countTokens()+1)/2;
-
-											}
-											if(contentsHeadingElement==null || contentsHeadingElement==childElement)  //if we're not processing the table of contents, turn this element into a heading normally
-					//TODO fix						else  //if we're not processing a table of contents, turn this element into a heading normally
-					*/
+						/*TODO fix
+												if(contentsHeadingElement!=null && contentsHeadingElement!=childElement) {	//if we're processing the table of contents
+														//find out how many lines there are
+													final int lineCount=(new StringTokenizer(text, EOL_CHARS, true).countTokens()+1)/2;
+						
+												}
+												if(contentsHeadingElement==null || contentsHeadingElement==childElement)  //if we're not processing the table of contents, turn this element into a heading normally
+						//TODO fix						else  //if we're not processing a table of contents, turn this element into a heading normally
+						*/
 						{
 							boolean isIndependent = true; //a header must be indepedent of the other text; we'll confirm that this one is
 							if(lastElement != null) { //if we've already processing an element
@@ -1190,7 +1190,8 @@ public class XHTMLTidier {
 	 * @param element The element to be checked for a style attribute.
 	 */
 	protected static void tidyStyleAttribute(final Element element) { //TODO rename, perhaps, to tidyStyle()
-		if(element.hasAttributeNS(null, ATTRIBUTE_STYLE)) { //if this element has a style attribute
+		if(element.hasAttributeNS(null, ATTRIBUTE_STYLE)) {
+			//if this element has a style attribute
 			/*TODO bring back final */String styleValue = element.getAttributeNS(null, ATTRIBUTE_STYLE); //get the value of the style attribute
 			if(Strings.indexOfIgnoreCase(styleValue, "symbol") >= 0) { //if the word "symbol" is found in the style, assume it is the symbol font TODO actually parse the style
 				final NodeList childNodeList = element.getChildNodes(); //get a list of the child nodes
@@ -1210,41 +1211,41 @@ public class XHTMLTidier {
 			//TODO del			try
 			{
 				if(styleValue.length() != 0) { //if there is a style value
-/*TODO fix with general style processing implementation
-					//TODO move all of this to tidy text or something
-					final XMLCSSStyleDeclaration oldStyle = (XMLCSSStyleDeclaration)XMLCSSProcessor.getLocalHTMLStyle(element); //get the element's style TODO later remove the cast when XMLCSSStyleDeclaration implements CSS2Properties
-//TODO del when works
-//							//TODO change to XHTMLUtilities.getLocalStyle()
-//					final XMLCSSProcessor cssProcessor=new XMLCSSProcessor();	//create a new CSS processor TODO make one for the entire tidier object -- don't create it locally
-//					final XMLCSSStyleDeclaration oldStyle=new XMLCSSStyleDeclaration(); //create a new style declaration
-//					final ParseReader styleReader=new ParseReader(styleValue, "Element "+element.getNodeName()+" Local Style");	//create a string reader from the value of this local style attribute TODO i18n
-//					cssProcessor.parseRuleSet(styleReader, oldStyle); //read the style into our style declaration
-					//TODO check for parseRuleSet() return value
-					final String textTransform = oldStyle.getTextTransform(); //see if there is a text transform request
-					if(textTransform.length() > 0) { //if a text transformation was requested
-						if(CSS_TEXT_TRANSFORM_UPPERCASE.equals(textTransform))
-							; //if we should transform the text to uppercase
-						{
-							final NodeList childNodeList = element.getChildNodes(); //get a list of the child nodes
-							final int childNodeCount = childNodeList.getLength(); //see how many child nodes there are
-							for(int i = 0; i < childNodeCount; ++i) { //look at each child node
-								final Node childNode = childNodeList.item(i); //get a reference to this child node
-								if(childNode.getNodeType() == Node.TEXT_NODE) { //if this is a text node
-									final Text textNode = (Text)childNode; //cast the node to a text node
-									textNode.setData(textNode.getData().toUpperCase()); //convert the text to uppercase TODO check locale; all this should be done better
-								}
-							}
-						}
-					}
-					final XMLCSSStyleDeclaration newStyle = new XMLCSSStyleDeclaration(); //create a new style declaration to received the tidied styles
-					//TODO automate this style copying
-					final CSSValue backgroundColorValue = oldStyle.getPropertyCSSValue(CSS_PROP_BACKGROUND_COLOR);
-					if(backgroundColorValue != null) //if we have a background set
-						newStyle.setPropertyCSSValue(CSS_PROP_BACKGROUND_COLOR, backgroundColorValue);
-					final CSSValue listStyleTypeValue = oldStyle.getPropertyCSSValue(CSS_PROP_LIST_STYLE_TYPE);
-					if(listStyleTypeValue != null) //if we have a list style type set
-						newStyle.setPropertyCSSValue(CSS_PROP_LIST_STYLE_TYPE, listStyleTypeValue);
-*/
+					/*TODO fix with general style processing implementation
+										//TODO move all of this to tidy text or something
+										final XMLCSSStyleDeclaration oldStyle = (XMLCSSStyleDeclaration)XMLCSSProcessor.getLocalHTMLStyle(element); //get the element's style TODO later remove the cast when XMLCSSStyleDeclaration implements CSS2Properties
+					//TODO del when works
+					//							//TODO change to XHTMLUtilities.getLocalStyle()
+					//					final XMLCSSProcessor cssProcessor=new XMLCSSProcessor();	//create a new CSS processor TODO make one for the entire tidier object -- don't create it locally
+					//					final XMLCSSStyleDeclaration oldStyle=new XMLCSSStyleDeclaration(); //create a new style declaration
+					//					final ParseReader styleReader=new ParseReader(styleValue, "Element "+element.getNodeName()+" Local Style");	//create a string reader from the value of this local style attribute TODO i18n
+					//					cssProcessor.parseRuleSet(styleReader, oldStyle); //read the style into our style declaration
+										//TODO check for parseRuleSet() return value
+										final String textTransform = oldStyle.getTextTransform(); //see if there is a text transform request
+										if(textTransform.length() > 0) { //if a text transformation was requested
+											if(CSS_TEXT_TRANSFORM_UPPERCASE.equals(textTransform))
+												; //if we should transform the text to uppercase
+											{
+												final NodeList childNodeList = element.getChildNodes(); //get a list of the child nodes
+												final int childNodeCount = childNodeList.getLength(); //see how many child nodes there are
+												for(int i = 0; i < childNodeCount; ++i) { //look at each child node
+													final Node childNode = childNodeList.item(i); //get a reference to this child node
+													if(childNode.getNodeType() == Node.TEXT_NODE) { //if this is a text node
+														final Text textNode = (Text)childNode; //cast the node to a text node
+														textNode.setData(textNode.getData().toUpperCase()); //convert the text to uppercase TODO check locale; all this should be done better
+													}
+												}
+											}
+										}
+										final XMLCSSStyleDeclaration newStyle = new XMLCSSStyleDeclaration(); //create a new style declaration to received the tidied styles
+										//TODO automate this style copying
+										final CSSValue backgroundColorValue = oldStyle.getPropertyCSSValue(CSS_PROP_BACKGROUND_COLOR);
+										if(backgroundColorValue != null) //if we have a background set
+											newStyle.setPropertyCSSValue(CSS_PROP_BACKGROUND_COLOR, backgroundColorValue);
+										final CSSValue listStyleTypeValue = oldStyle.getPropertyCSSValue(CSS_PROP_LIST_STYLE_TYPE);
+										if(listStyleTypeValue != null) //if we have a list style type set
+											newStyle.setPropertyCSSValue(CSS_PROP_LIST_STYLE_TYPE, listStyleTypeValue);
+					*/
 					//TODO bring over other style properties
 
 					/*TODO fix
@@ -1285,8 +1286,8 @@ public class XHTMLTidier {
 			else if(isNormalizeStyleClasses()) { //if we should normalize style classes
 				//if the class contains "num" and at least "chap" or "title"
 				if(Strings.indexOfIgnoreCase(classValue, CHAPTER_TITLE_CLASS_NUM_SUBSTRING) != -1
-						&& (Strings.indexOfIgnoreCase(classValue, CHAPTER_TITLE_CLASS_CHAP_SUBSTRING) != -1 || Strings.indexOfIgnoreCase(classValue,
-								CHAPTER_TITLE_CLASS_TITLE_SUBSTRING) != -1)) {
+						&& (Strings.indexOfIgnoreCase(classValue, CHAPTER_TITLE_CLASS_CHAP_SUBSTRING) != -1
+								|| Strings.indexOfIgnoreCase(classValue, CHAPTER_TITLE_CLASS_TITLE_SUBSTRING) != -1)) {
 					element.setAttributeNS(null, ATTRIBUTE_CLASS, CHAPTER_NUMBER_CLASS); //change the class value to "chapterNumber"
 					if(!elementName.equals(ELEMENT_H1)) { //if this is not an H1 element
 						//replace the element with an <h1> element
@@ -1416,8 +1417,7 @@ public class XHTMLTidier {
 	 * <li>Proprietary characters are replaced with Unicode code points.</li>
 	 * <li>The runs "--", "---", and "----" are each replaced with an em-dash.</li>
 	 * <li>The run "''" (subsequent apostrophes) is replaced with a quote character.</li>
-	 * <li>The run "``" (subsequent grave accents) is replaced with a quote character.</li>
-	 * //TODO fix
+	 * <li>The run "``" (subsequent grave accents) is replaced with a quote character.</li> <!--TODO fix-->
 	 * <li>Grave accents following spaces are converted to apostrophes.</li>
 	 * </ul>
 	 * @param stringBuffer The buffer containing the text data to tidy.
@@ -1430,7 +1430,7 @@ public class XHTMLTidier {
 							final String textTransform=oldStyle.getTextTransform(); //see if there is a text transform request
 							if(textTransform.length()>0) {	//if a text transformation was requested
 							  CSS_TEXT_TRANSFORM_UPPERCASE.equals(textTransform)
-
+		
 							}
 		*/
 		boolean modified = replacementCount > 0; //see if we modified the characters
@@ -1443,10 +1443,10 @@ public class XHTMLTidier {
 		StringBuffers.replaceRuns(stringBuffer, GRAVE_ACCENT_CHAR, 2, 2, QUOTATION_MARK_CHAR);
 		if(stringBuffer.length() != originalLength) //if replacing runs changed the length of the string buffer
 			modified = true; //something was modified
-			/*TODO this needs to be thought through more---what about at the end of a word? should we replace all of them?
-							//convert grave accents following whitespace to apostrophes TODO use a common routine to do this
-					for(int i=stringBuffer.lengt()-1; i>=0; --i)  //look at each character in the string buffer
-			*/
+		/*TODO this needs to be thought through more---what about at the end of a word? should we replace all of them?
+						//convert grave accents following whitespace to apostrophes TODO use a common routine to do this
+				for(int i=stringBuffer.lengt()-1; i>=0; --i)  //look at each character in the string buffer
+		*/
 		/*TODO fix for option only
 				if(tidyUnicode) {	//if we should convert some Unicode characters to their plain equivalents
 					//TODO optimize; make static somewhere else; make more readable representation
@@ -1573,6 +1573,7 @@ public class XHTMLTidier {
 	 * there are no siblings, the parent. "xml:lang", "class" and/or "style" elements are only promoted to the parent element, and only if that parent has no
 	 * other child elements. If the element to which the attribute values will be promoted already has values for attributes with those names, the values for the
 	 * element being removed will be lost.
+	 * @param node The node to be prepared for removal.
 	 */
 	protected static void prepareNodeForRemoval(final Node node) {
 		if(node.getNodeType() == Node.ELEMENT_NODE) { //if this node is an element
@@ -1619,7 +1620,7 @@ public class XHTMLTidier {
 	 * @param destElement The element to which the attribute value should be copied.
 	 * @param sourceElement The element from which the attribute value should be copied.
 	 * @param namespaceURI The URI of the attribute's namespace.
-	 * @param localname The local name of the attribute.
+	 * @param localName The local name of the attribute.
 	 */
 	protected static void copyAttributeValue(final Element destElement, final Element sourceElement, final String namespaceURI, final String localName) {
 		if(sourceElement.hasAttributeNS(namespaceURI, localName)) { //if the attribute exists in the source element
@@ -1669,8 +1670,7 @@ public class XHTMLTidier {
 				return true; //remove all style elements
 			if(node.getChildNodes().getLength() == 0) { //if there are no child nodes
 				if(!nodeName.equals(ELEMENT_APPLET) //if this is not one of the elements we expect to be empty TODO get the list of these from somewhere else
-						&& !nodeName.equals(ELEMENT_BR) && !nodeName.equals(ELEMENT_HR) && !nodeName.equals(ELEMENT_IMG)
-						&& !nodeName.equals(ELEMENT_PARAM)
+						&& !nodeName.equals(ELEMENT_BR) && !nodeName.equals(ELEMENT_HR) && !nodeName.equals(ELEMENT_IMG) && !nodeName.equals(ELEMENT_PARAM)
 						&& !nodeName.equals(ELEMENT_OBJECT)) {
 					return true; //show that we should remove the empty node (such as a paragraph or span)
 				}
@@ -1693,12 +1693,12 @@ public class XHTMLTidier {
 			final String data = text.getData(); //get the text data
 			if(parentNode != null && parentNode.getChildNodes().getLength() == 1) { //if this is the only child of the parent (i.e. don't remove empty text nodes when there are other sibling nodes)
 				if(isTextContainer(parentNode)) { //if this text is inside a text container (i.e. <p>, <span>, etc. and not not <ul> or something similar)
-				/*TODO fix; probably change to pruning; change class comments
-									final String trimmedData=data.replace(StringUtilities.NON_BREAKING_SPACE, ' ').trim();  //trim the string, after replacing all non-breaking spaces with normal spaces
-									if(trimmedData.length()==0) {	//if this text node has only whitespace
-										return true;  //we'll remove empty text children TODO only do this for <p>, <span>, etc. -- not <ul> and such
-									}
-				*/
+					/*TODO fix; probably change to pruning; change class comments
+										final String trimmedData=data.replace(StringUtilities.NON_BREAKING_SPACE, ' ').trim();  //trim the string, after replacing all non-breaking spaces with normal spaces
+										if(trimmedData.length()==0) {	//if this text node has only whitespace
+											return true;  //we'll remove empty text children TODO only do this for <p>, <span>, etc. -- not <ul> and such
+										}
+					*/
 				}
 			}
 		} else if(nodeType == Node.COMMENT_NODE) { //if node is a comment
@@ -1733,33 +1733,33 @@ public class XHTMLTidier {
 					//if the div element has only one attribute, "class", and its value contains "section" in any case
 					if(element.getAttributes().getLength() == 1 && Strings.indexOfIgnoreCase(element.getAttributeNS(null, ATTRIBUTE_CLASS), "section") >= 0)
 						return true; //<div class="*section*> should be pruned
-						/*TODO decide if we want this or not -- after all, <object> an <img> should be inside a block
-											boolean onlyWhitespace=true;  //we'll see if there is any non-text whitespace
-											boolean onlyEmptyElements=true; //we'll see if there are any non-empty child elements
-										  for(int childIndex=childNodeList.getLength()-1; childIndex>=0; --childIndex) {	//look at each of the child nodes
-												final Node childNode=childNodeList.item(childIndex); //get a reference to this child
-												if(childNode.getNodeType()==childNode.TEXT_NODE) {	//if the child is a text node
-													final Text text=(Text)childNode;  //cast the child node to a text node
-													final String data=text.getData();    //get the text data
-													final int dataLength=data.length(); //find out how much text data there is
-												  for(int i=0; i<dataLength; ++i) {	//look at each character in the data
-														final char c=data.charAt(i);  //get a reference to this character
-														if(!Character.isWhitespace(c) && c!=NO_BREAK_SPACE_CHAR) {	//if this is not whitespace, and it's not a non-breaking space
-															onlyWhitespace=false; //show that this we found non-whitespace
-															childIndex=0; //stop looking at all thie children
-															break;  //stop searching
-														}
+					/*TODO decide if we want this or not -- after all, <object> an <img> should be inside a block
+										boolean onlyWhitespace=true;  //we'll see if there is any non-text whitespace
+										boolean onlyEmptyElements=true; //we'll see if there are any non-empty child elements
+									  for(int childIndex=childNodeList.getLength()-1; childIndex>=0; --childIndex) {	//look at each of the child nodes
+											final Node childNode=childNodeList.item(childIndex); //get a reference to this child
+											if(childNode.getNodeType()==childNode.TEXT_NODE) {	//if the child is a text node
+												final Text text=(Text)childNode;  //cast the child node to a text node
+												final String data=text.getData();    //get the text data
+												final int dataLength=data.length(); //find out how much text data there is
+											  for(int i=0; i<dataLength; ++i) {	//look at each character in the data
+													final char c=data.charAt(i);  //get a reference to this character
+													if(!Character.isWhitespace(c) && c!=NO_BREAK_SPACE_CHAR) {	//if this is not whitespace, and it's not a non-breaking space
+														onlyWhitespace=false; //show that this we found non-whitespace
+														childIndex=0; //stop looking at all thie children
+														break;  //stop searching
 													}
 												}
-												else if(childNode.getChildNodes().getLength()>0) {	//if this is not an empty element
-													onlyEmptyElements=false;  //show that we found a non-empty element
-													break;  //stop searching
-												}
 											}
-											if(onlyWhitespace && onlyEmptyElements) {	//if there are only empty elements and whitespace inside the <div>
-												return true;  //show that we should prune the <div>
+											else if(childNode.getChildNodes().getLength()>0) {	//if this is not an empty element
+												onlyEmptyElements=false;  //show that we found a non-empty element
+												break;  //stop searching
 											}
-						*/
+										}
+										if(onlyWhitespace && onlyEmptyElements) {	//if there are only empty elements and whitespace inside the <div>
+											return true;  //show that we should prune the <div>
+										}
+					*/
 				} else if(isListElement(element)) { //if this is a list (<ol> or <ul>)
 					//see how many child lists there are
 					final int childListCount = getChildElementCount(element, element.getNamespaceURI(), element.getLocalName());
@@ -1871,7 +1871,7 @@ public class XHTMLTidier {
 
 	/**
 	 * Determines if the given node is a block element such as <code>&lt;p&gt;</code>, <code>&lt;blockquote&gt;</code>, and <code>&lt;div&gt;</code>.
-	 * @param node The node to examine.
+	 * @param element The node to examine.
 	 * @return <code>true</code> if the node is a block element.
 	 */
 	protected static boolean isBlockElement(final Element element) {
@@ -1884,7 +1884,7 @@ public class XHTMLTidier {
 
 	/**
 	 * Determines if the given node is a list element such as <code>&lt;ol&gt;</code> and <code>&lt;ul&gt;</code>.
-	 * @param node The node to examine.
+	 * @param element The element to examine.
 	 * @return <code>true</code> if the node is a list element.
 	 */
 	protected static boolean isListElement(final Element element) {
@@ -1903,8 +1903,7 @@ public class XHTMLTidier {
 		if(node.getNodeType() == Node.ELEMENT_NODE && //if this is an element and the name matches one of our text container elements
 				(
 				//TODO fix					nodeName.equals(ELEMENT_DIV)  //TODO add others, like <em>, <code>, etc.
-				nodeName.equals(ELEMENT_P) || nodeName.equals(ELEMENT_SPAN) || nodeName.equals(ELEMENT_B) || nodeName.equals(ELEMENT_EM) || nodeName.equals(ELEMENT_I)
-						|| nodeName.equals(ELEMENT_STRONG) || nodeName.equals(ELEMENT_SUB) || nodeName.equals(ELEMENT_SUP))) {
+				nodeName.equals(ELEMENT_P) || nodeName.equals(ELEMENT_SPAN) || nodeName.equals(ELEMENT_B) || nodeName.equals(ELEMENT_EM) || nodeName.equals(ELEMENT_I) || nodeName.equals(ELEMENT_STRONG) || nodeName.equals(ELEMENT_SUB) || nodeName.equals(ELEMENT_SUP))) {
 			return true; //show that this is a text container
 		}
 		return false; //show that this isn't a text container

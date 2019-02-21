@@ -23,7 +23,7 @@ import org.w3c.dom.Node;
  * A list of nodes in an XML document.
  * @author Garret Wilson
  * @see XMLNode
- * @see XMLNodeIterator
+ * @see com.globalmentor.xml.dom.impl.traversal.XMLNodeIterator
  * @see org.w3c.dom.Node
  * @see org.w3c.dom.NodeList
  * @deprecated
@@ -64,7 +64,7 @@ public class XMLNodeList extends LinkedList implements org.w3c.dom.NodeList {
 	 * 
 	 *
 	 * @param o element to be appended to this list.
-	 * @return <tt>true</tt> (as per the general contract of Collection.add).
+	 * @return <code>true</code> (as per the general contract of Collection.add).
 	 */
 	//TODO fix		public boolean add(Object o) {
 

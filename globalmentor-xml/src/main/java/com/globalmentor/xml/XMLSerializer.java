@@ -160,7 +160,7 @@ public class XMLSerializer {
 	/**
 	 * Sets whether private use Unicode characters should be XML-encoded.
 	 * @param newXMLEncodePrivateUse <code>true</code> if private use characters should be XML-encoded, else <code>false</code>.
-	 * @see setUseEntities
+	 * @see #setUseEntities(boolean)
 	 */
 	public void setXMLEncodePrivateUse(final boolean newXMLEncodePrivateUse) {
 		xmlEncodePrivateUse = newXMLEncodePrivateUse;
@@ -173,7 +173,7 @@ public class XMLSerializer {
 
 	/**
 	 * @return Whether one-character entities will be used when possible.
-	 * @see #isXMLEncode
+	 * @see #isXMLEncodeControl()
 	 */
 	public boolean isUseEntities() {
 		return useEntities;
@@ -183,7 +183,7 @@ public class XMLSerializer {
 	 * Sets whether characters which match a one-character predefined entity should be encoded using that entity. This will override the XML-encoding settings
 	 * when applicable.
 	 * @param newUseEntities <code>true</code> if available entities should be used to encode characters.
-	 * @see #setXMLEncode
+	 * @see #setXMLEncodeControl(boolean)
 	 */
 	public void setUseEntities(final boolean newUseEntities) {
 		useEntities = newUseEntities;
@@ -825,7 +825,7 @@ public class XMLSerializer {
 		final boolean xmlEncodeControl = isXMLEncodeControl(); //see if we should XML-encode control characters
 		final boolean xmlEncodeNonASCII = isXMLEncodeNonASCII(); //see if we should XML-encode characters over 127
 		final boolean xmlEncodePrivateUse = isXMLEncodePrivateUse(); //see if we should XML-encode Unicode private use characters
-		final StringBuffer stringBuffer = new StringBuffer(text.length()); //we know that the output string will be at least as long as the input string
+		final StringBuilder stringBuilder = new StringBuilder(text.length()); //we know that the output string will be at least as long as the input string
 		final int textLength = text.length(); //see how long the content is currently
 		for(int i = 0; i < textLength; ++i) { //look at each character in the text
 			final char c = text.charAt(i); //get a reference to this character
@@ -834,9 +834,9 @@ public class XMLSerializer {
 			//  because the lookup table has already been set up appropriately
 			//  based on that option, and we *always* want to encode such things as '&'
 			if(entityIndex >= 0) { //if this character should be replaced by an entity
-				stringBuffer.append(ENTITY_REF_START); //append the start-of-entity
-				stringBuffer.append(entityNames[entityIndex]); //append the corresponding entity name
-				stringBuffer.append(ENTITY_REF_END); //append the end-of-entity
+				stringBuilder.append(ENTITY_REF_START); //append the start-of-entity
+				stringBuilder.append(entityNames[entityIndex]); //append the corresponding entity name
+				stringBuilder.append(ENTITY_REF_END); //append the end-of-entity
 			}
 			//if we have no entity replacement for the character,
 			//  but it is an extended character and we should XML-encode such
@@ -846,16 +846,16 @@ public class XMLSerializer {
 					|| (xmlEncodePrivateUse && Character.getType(c) == Character.PRIVATE_USE) //if we should encode control characters, and this is a control character
 					|| (c == delimiter) //the delimiter character, if present, will *always* be encoded
 			) {
-				stringBuffer.append(CHARACTER_REF_START); //append the start-of-character-reference
-				stringBuffer.append('x'); //show that this will be a hexadecimal number TODO use a constant here
-				stringBuffer.append(Integer.toHexString(c).toUpperCase()); //append the hex representation of the character
-				//TODO del if not needed				stringBuffer.append(IntegerUtilities.toHexString(c, 4));  //append the character in four-digit hex format (i.g. &#XXXX;)
-				stringBuffer.append(CHARACTER_REF_END); //append the end-of-character-reference
+				stringBuilder.append(CHARACTER_REF_START); //append the start-of-character-reference
+				stringBuilder.append('x'); //show that this will be a hexadecimal number TODO use a constant here
+				stringBuilder.append(Integer.toHexString(c).toUpperCase()); //append the hex representation of the character
+				//TODO del if not needed				stringBuilder.append(IntegerUtilities.toHexString(c, 4));  //append the character in four-digit hex format (i.g. &#XXXX;)
+				stringBuilder.append(CHARACTER_REF_END); //append the end-of-character-reference
 			} else { //if this character shouldn't be encoded
-				stringBuffer.append(c); //append the character normally
+				stringBuilder.append(c); //append the character normally
 			}
 		}
-		return stringBuffer.toString(); //return the encoded version of the content
+		return stringBuilder.toString(); //return the encoded version of the content
 	}
 
 }

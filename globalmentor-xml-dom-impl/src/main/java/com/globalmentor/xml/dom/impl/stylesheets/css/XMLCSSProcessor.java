@@ -129,7 +129,6 @@ public class XMLCSSProcessor implements URIInputStreamable {
 	 * @param uri A complete URI to a file.
 	 * @return An input stream to the contents of the file represented by the given URI.
 	 * @throws IOException Thrown if an I/O error occurred.
-	 * @see #getFileLocator
 	 */
 	public InputStream getInputStream(final URI uri) throws IOException {
 		return uri.toURL().openConnection().getInputStream(); //since we don't know any better (they didn't specify their own file locator), try to open a connection to the URI (converted to a URL) directly and return an input stream to that connection
@@ -141,8 +140,8 @@ public class XMLCSSProcessor implements URIInputStreamable {
 	 * will itself be parsed later when assigned to a style declaration.
 	 * @param reader The reader from which to retrieve characters.
 	 * @param propertyName The name of the property for which the value is being parsed //TODO fix all the exception stuff
-	 * @throws IOException Thrown when an i/o error occurs. //TODO fix @throws XMLSyntaxException Thrown when there is a syntax error in the XML file. //TODO fix @throws
-	 *           XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
+	 * @throws IOException Thrown when an i/o error occurs. //TODO fix @throws XMLSyntaxException Thrown when there is a syntax error in the XML file. //TODO
+	 *           fix @throws XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
 	 * @throws ParseUnexpectedDataException Thrown when an unexpected character is found.
 	 * @throws ParseEOFException Thrown when the end of the input stream is reached unexpectedly. //TODO fix @throws XMLUndefinedEntityReferenceException Thrown
 	 *           if a named entity reference has not been defined.
@@ -150,7 +149,8 @@ public class XMLCSSProcessor implements URIInputStreamable {
 	 */
 	//TODO throw DOM syntax error exception, maybe
 	//TODO the EOF exception is now no longer returned; take away that exception declaration
-	protected static String parseValue(final ParseReader reader, final String propertyName) throws IOException,/*TODO fix, XMLSyntaxException, XMLWellFormednessException, */
+	protected static String parseValue(final ParseReader reader, final String propertyName)
+			throws IOException, /*TODO fix, XMLSyntaxException, XMLWellFormednessException, */
 			ParseUnexpectedDataException, ParseEOFException//TODO fix, XMLUndefinedEntityReferenceException
 	{
 		//TODO fix		String valueString=reader.readStringUntilCharEOF(WHITESPACE_CHARS+DECLARATION_SEPARATOR_CHAR+RULE_GROUP_END_CHAR);	//get the value of the property, which is followed by whitespace, a divider character, or the end of the group
@@ -204,14 +204,15 @@ public class XMLCSSProcessor implements URIInputStreamable {
 	 * Parses an input stream that supposedly begins with a CSS ruleset.
 	 * @param reader The reader from which to retrieve characters.
 	 * @param parentStyleSheet The stylesheet which will hold the selectors and properties encountered. //TODO fix all the exception stuff
-	 * @throws IOException Thrown when an i/o error occurs. //TODO fix @throws XMLSyntaxException Thrown when there is a syntax error in the XML file. //TODO fix @throws
-	 *           XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
+	 * @throws IOException Thrown when an i/o error occurs. //TODO fix @throws XMLSyntaxException Thrown when there is a syntax error in the XML file. //TODO
+	 *           fix @throws XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
 	 * @throws ParseUnexpectedDataException Thrown when an unexpected character is found.
 	 * @throws ParseEOFException Thrown when the end of the input stream is reached unexpectedly. //TODO fix @throws XMLUndefinedEntityReferenceException Thrown
 	 *           if a named entity reference has not been defined.
 	 * @return A new XML tag constructed from the reader.
 	 */
-	protected static XMLCSSStyleRule parseRuleSet(final ParseReader reader, final XMLCSSStyleSheet parentStyleSheet) throws IOException,/*TODO fix, XMLSyntaxException, XMLWellFormednessException, */
+	protected static XMLCSSStyleRule parseRuleSet(final ParseReader reader, final XMLCSSStyleSheet parentStyleSheet)
+			throws IOException, /*TODO fix, XMLSyntaxException, XMLWellFormednessException, */
 			ParseUnexpectedDataException, ParseEOFException//TODO fix, XMLUndefinedEntityReferenceException
 	{
 		final XMLCSSStyleRule styleRule = new XMLCSSStyleRule(parentStyleSheet); //create a new style rule for this stylesheet
@@ -227,11 +228,11 @@ public class XMLCSSProcessor implements URIInputStreamable {
 								do {	//keep reading declarations until there aren't any more
 									skipWhitespaceCharacters(reader);	//skip any whitespace characters
 									final String propertyName=reader.readStringUntilChar(WHITESPACE_CHARS+PROPERTY_DIVIDER_CHAR);	//get the name of the property, which is followed by whitespace or a divider character
-
+				
 									skipWhitespaceCharacters(reader);	//skip any whitespace characters
 									reader.readExpectedChar(PROPERTY_DIVIDER_CHAR);	//reade the divider between the property name and its value
 									skipWhitespaceCharacters(reader);	//skip any whitespace characters
-
+				
 									final XMLCSSValue propertyValue=parseValue(reader, propertyName);	//parse the value, showing which property the value is for
 									skipWhitespaceCharacters(reader);	//skip any whitespace characters
 									//TODO parse the priority somewhere here
@@ -251,14 +252,14 @@ public class XMLCSSProcessor implements URIInputStreamable {
 	/**
 	 * Parses a CSS style from a string.
 	 * @param styleValue The set of rules to parse. //TODO fix all the exception stuff
-	 * @throws IOException Thrown when an i/o error occurs. //TODO fix @throws XMLSyntaxException Thrown when there is a syntax error in the XML file. //TODO fix @throws
-	 *           XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
+	 * @throws IOException Thrown when an i/o error occurs. //TODO fix @throws XMLSyntaxException Thrown when there is a syntax error in the XML file. //TODO
+	 *           fix @throws XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
 	 * @throws ParseUnexpectedDataException Thrown when an unexpected character is found.
 	 * @throws ParseEOFException Thrown when the end of the input stream is reached unexpectedly. //TODO fix @throws XMLUndefinedEntityReferenceException Thrown
 	 *           if a named entity reference has not been defined.
 	 * @return <code>true</code> if the end-of-rule-group character was found, <code>false</code> if the end of the stream was reached.
 	 */
-	public static CSSStyleDeclaration parseRuleSet(final String styleValue) throws IOException,/*TODO fix, XMLSyntaxException, XMLWellFormednessException, */
+	public static CSSStyleDeclaration parseRuleSet(final String styleValue) throws IOException, /*TODO fix, XMLSyntaxException, XMLWellFormednessException, */
 			ParseUnexpectedDataException, ParseEOFException//TODO fix, XMLUndefinedEntityReferenceException
 	{
 		final XMLCSSStyleDeclaration style = new XMLCSSStyleDeclaration(); //create a new style declaration
@@ -271,15 +272,15 @@ public class XMLCSSProcessor implements URIInputStreamable {
 	 * Parses an input stream that supposedly begins with a CSS style, a group of rules with attribute names and values.
 	 * @param reader The reader from which to retrieve characters.
 	 * @param styleDeclaration The style declaration which will hold the style declaration elements.
-	 * @param endChar //TODO fix all the exception stuff
-	 * @throws IOException Thrown when an i/o error occurs. //TODO fix @throws XMLSyntaxException Thrown when there is a syntax error in the XML file. //TODO fix @throws
-	 *           XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.
+	 * @throws IOException Thrown when an i/o error occurs. <!--TODO fix @throws XMLSyntaxException Thrown when there is a syntax error in the XML file. TODO
+	 *           fix @throws XMLWellFormednessException Thrown when there is a well-formedness error in the XML file.-->
 	 * @throws ParseUnexpectedDataException Thrown when an unexpected character is found.
 	 * @throws ParseEOFException Thrown when the end of the input stream is reached unexpectedly. //TODO fix @throws XMLUndefinedEntityReferenceException Thrown
 	 *           if a named entity reference has not been defined.
 	 * @return <code>true</code> if the end-of-rule-group character was found, <code>false</code> if the end of the stream was reached.
 	 */
-	public static boolean parseRuleSet(final ParseReader reader, final XMLCSSStyleDeclaration styleDeclaration) throws IOException,/*TODO fix, XMLSyntaxException, XMLWellFormednessException, */
+	public static boolean parseRuleSet(final ParseReader reader, final XMLCSSStyleDeclaration styleDeclaration)
+			throws IOException, /*TODO fix, XMLSyntaxException, XMLWellFormednessException, */
 			ParseUnexpectedDataException, ParseEOFException//TODO fix, XMLUndefinedEntityReferenceException
 	{
 		do { //keep reading declarations until there aren't any more
@@ -338,10 +339,11 @@ public class XMLCSSProcessor implements URIInputStreamable {
 	 * @throws ParseUnexpectedDataException Thrown when an unexpected character is found.
 	 * @throws ParseEOFException Thrown when the end of the input stream is reached unexpectedly. //TODO fix @return A new XML object constructed from the markup.
 	 */
-	protected void parseStyleSheetContent(final ParseReader reader, final XMLCSSStyleSheet parentStyleSheet) throws IOException, /*TODO fix XMLSyntaxException, XMLWellFormednessException, XMLValidityException, XMLUndefinedEntityReferenceException,*/
+	protected void parseStyleSheetContent(final ParseReader reader, final XMLCSSStyleSheet parentStyleSheet)
+			throws IOException, /*TODO fix XMLSyntaxException, XMLWellFormednessException, XMLValidityException, XMLUndefinedEntityReferenceException,*/
 			ParseUnexpectedDataException, ParseEOFException {
 		//the stylesheet strings we expect; make sure we put the AT_RULE_START after the other at-rule constants, because it represents an unknown at-rule
-		final String[] EXPECTED_STYLESHEET_STRINGS = { MEDIA_RULE_SYMBOL, PAGE_RULE_SYMBOL, FONT_FACE_RULE_SYMBOL, AT_RULE_START, CDO, CDC, COMMENT_START, "" };
+		final String[] EXPECTED_STYLESHEET_STRINGS = {MEDIA_RULE_SYMBOL, PAGE_RULE_SYMBOL, FONT_FACE_RULE_SYMBOL, AT_RULE_START, CDO, CDC, COMMENT_START, ""};
 		//the indexes of the stylesheet strings in our array
 		final int MEDIA_RULE = 0, PAGE_RULE = 1, FONT_FACE_RULE = 2, UNKNOWN_AT_RULE = 3, XML_COMMENT_START = 4, XML_COMMENT_END = 5, COMMENT = 6;
 		while(true) { //we'll keep processing rulesets and such until we run out of characters looking for whitespace
@@ -432,14 +434,14 @@ public class XMLCSSProcessor implements URIInputStreamable {
 	 * Parses a stylesheet from the contents of a <code>Reader</code> with a given owner node.
 	 * @param reader The source from which the information will be read.
 	 * @param sourceObject The source of the data (e.g. a String, File, or URL).
-	 * @param The node that associates this stylesheet with the document.
-	 * @return A new stylesheet contructed from the reader.
+	 * @param ownerNode The node that associates this stylesheet with the document.
+	 * @return A new stylesheet constructed from the reader.
 	 * @throws IOException Thrown when an i/o error occurs.
 	 * @throws ParseUnexpectedDataException Thrown when an unexpected character is found.
 	 * @throws ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
 	 */
-	public CSSStyleSheet parseStyleSheet(final Reader reader, final Object sourceObject, final Node ownerNode) throws IOException, ParseUnexpectedDataException,
-			ParseEOFException {
+	public CSSStyleSheet parseStyleSheet(final Reader reader, final Object sourceObject, final Node ownerNode)
+			throws IOException, ParseUnexpectedDataException, ParseEOFException {
 		final XMLCSSStyleSheet styleSheet = new XMLCSSStyleSheet(ownerNode); //create a new stylesheet owned by the given node
 		parse(styleSheet, reader, sourceObject); //parse the stylesheet
 		return styleSheet; //return the stylesheet
@@ -450,13 +452,13 @@ public class XMLCSSProcessor implements URIInputStreamable {
 	 * @param reader The source from which the information will be read.
 	 * @param sourceObject The source of the data (e.g. a String, File, or URL).
 	 * @param parentStyleSheet The stylesheet that included this stylesheet.
-	 * @return A new stylesheet contructed from the reader.
+	 * @return A new stylesheet constructed from the reader.
 	 * @throws IOException Thrown when an i/o error occurs.
 	 * @throws ParseUnexpectedDataException Thrown when an unexpected character is found.
 	 * @throws ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
 	 */
-	public CSSStyleSheet parseStyleSheet(final Reader reader, final Object sourceObject, final StyleSheet parentStyleSheet) throws IOException,
-			ParseUnexpectedDataException, ParseEOFException {
+	public CSSStyleSheet parseStyleSheet(final Reader reader, final Object sourceObject, final StyleSheet parentStyleSheet)
+			throws IOException, ParseUnexpectedDataException, ParseEOFException {
 		final XMLCSSStyleSheet styleSheet = new XMLCSSStyleSheet(parentStyleSheet); //create a new stylesheet with the given parent
 		parse(styleSheet, reader, sourceObject); //parse the stylesheet
 		return styleSheet; //return the stylesheet
@@ -466,7 +468,7 @@ public class XMLCSSProcessor implements URIInputStreamable {
 	 * Parses a stylesheet from the contents of a <code>Reader</code> with no parent document or owner node.
 	 * @param reader The source from which the information will be read.
 	 * @param sourceObject The source of the data (e.g. a String, File, or URL).
-	 * @return A new stylesheet contructed from the reader.
+	 * @return A new stylesheet constructed from the reader.
 	 * @throws IOException Thrown when an i/o error occurs.
 	 * @throws ParseUnexpectedDataException Thrown when an unexpected character is found.
 	 * @throws ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
@@ -481,7 +483,7 @@ public class XMLCSSProcessor implements URIInputStreamable {
 	 * Parses a stylesheet from the contents of a string.
 	 * @param styleText The string containing the style information.
 	 * @param name The name of the style information (e.g. "Internal Style Sheet").
-	 * @return A new stylesheet contructed from the string.
+	 * @return A new stylesheet constructed from the string.
 	 * @throws IOException Thrown when an i/o error occurs.
 	 * @throws ParseUnexpectedDataException Thrown when an unexpected character is found.
 	 * @throws ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
@@ -502,8 +504,8 @@ public class XMLCSSProcessor implements URIInputStreamable {
 	 * @throws ParseUnexpectedDataException Thrown when an unexpected character is found.
 	 * @throws ParseEOFException Thrown when the end of the input stream is reached unexpectedly.
 	 */
-	protected void parse(final XMLCSSStyleSheet styleSheet, final Reader reader, final Object sourceObject) throws IOException, ParseUnexpectedDataException,
-			ParseEOFException {
+	protected void parse(final XMLCSSStyleSheet styleSheet, final Reader reader, final Object sourceObject)
+			throws IOException, ParseUnexpectedDataException, ParseEOFException {
 		final ParseReader styleSheetReader = new ParseReader(reader, sourceObject); //create a parse reader reader to use to read the stylesheet
 		//TODO fix			entityReader.setCurrentLineIndex(entity.getLineIndex());	//pretend we're reading where the entity was located in that file, so any errors will show the correct information
 		//TODO fix			entityReader.setCurrentCharIndex(entity.getCharIndex());	//pretend we're reading where the entity was located in that file, so any errors will show the correct information
@@ -516,7 +518,7 @@ public class XMLCSSProcessor implements URIInputStreamable {
 	 * @return A style declaration representing the style in the style attribute, or <code>null</code> if there is no style in the style attribute.
 	 * @deprecated
 	 */
-	public static CSSStyleDeclaration getLocalHTMLStyle(final Element element) {	//TODO fix and move to some HTML-specific package
+	public static CSSStyleDeclaration getLocalHTMLStyle(final Element element) { //TODO fix and move to some HTML-specific package
 		final String styleValue = element.getAttributeNS(null, HTML.ATTRIBUTE_STYLE); //get the value of the style attribute
 		if(styleValue.length() != 0) { //if there is a style value
 			final XMLCSSProcessor cssProcessor = new XMLCSSProcessor(); //create a new CSS processor TODO make one for the entire tidier object, if we can -- don't create it locally

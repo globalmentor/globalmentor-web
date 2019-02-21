@@ -112,16 +112,16 @@ class XMLTag extends XMLNode {
 
 	/** @return A string representation of the tag as it should appear in an XML document. */
 	public String toXMLString() {
-		final StringBuffer stringBuffer = new StringBuffer(); //create a string buffer to hold the characters
-		stringBuffer.append(TAG_START); //append the starting character for a tag
+		final StringBuilder stringBuilder = new StringBuilder(); //create a string buffer to hold the characters
+		stringBuilder.append(TAG_START); //append the starting character for a tag
 		if(getTagType() == END_TAG) //if this is an ending tag
-			stringBuffer.append(END_TAG_IDENTIFIER_CHAR); //add the character for identifying the tag as an end tag
-		stringBuffer.append(getNodeName()); //append the name of the tag
+			stringBuilder.append(END_TAG_IDENTIFIER_CHAR); //add the character for identifying the tag as an end tag
+		stringBuilder.append(getNodeName()); //append the name of the tag
 		if(getTagType() == EMPTY_ELEMENT_TAG) //if this is an empty element tag
-			stringBuffer.append(END_TAG_IDENTIFIER_CHAR); //add the character for identifying the tag as an empty element tag
+			stringBuilder.append(END_TAG_IDENTIFIER_CHAR); //add the character for identifying the tag as an empty element tag
 			//TODO should we	add a space above for HTML compatibility for empty element tags?
-		stringBuffer.append(TAG_END); //append the ending character for a tag
-		return stringBuffer.toString(); //convert the string buffer to a string and return it
+		stringBuilder.append(TAG_END); //append the ending character for a tag
+		return stringBuilder.toString(); //convert the string buffer to a string and return it
 	}
 
 	//TODO do we want or need a clone() function here?

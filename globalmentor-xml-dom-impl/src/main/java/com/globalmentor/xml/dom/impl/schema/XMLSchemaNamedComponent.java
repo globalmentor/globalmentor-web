@@ -56,8 +56,8 @@ public abstract class XMLSchemaNamedComponent extends XMLSchemaComponent impleme
 	 * Sets the component target namespace.
 	 * @param newTargetNamespace The target namespace for the component.
 	 */
-	public void setTargetNamespace(final String newTargetNamepace) {
-		targetNamespace = newTargetNamepace;
+	public void setTargetNamespace(final String newTargetNamespace) {
+		targetNamespace = newTargetNamespace;
 	}
 
 	/** This component's annotation, or <code>null</code> if none has been assigned. */

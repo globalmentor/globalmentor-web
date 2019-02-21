@@ -37,7 +37,7 @@ public abstract class XMLSchemaTypedComponent extends XMLSchemaPrimaryComponent 
 	/**
 	 * @return The name of the component type, which will be the same as the name of the type component if one has been assigned. TODO is that how we want to do
 	 *         this?
-	 * @see @getType
+	 * @see #getType
 	 */
 	public String getTypeName() {
 		return typeName;
@@ -55,8 +55,8 @@ public abstract class XMLSchemaTypedComponent extends XMLSchemaPrimaryComponent 
 	private XMLSchemaTypeComponent type;
 
 	/**
-	 * Returns the data type of this component, or <code>null</code> if the type has not yet been assigned by the schema processor (e.g. this component references
-	 * a type and the reference has not yet been resolved).
+	 * @return The data type of this component, or <code>null</code> if the type has not yet been assigned by the schema processor (e.g. this component references
+	 *         a type and the reference has not yet been resolved).
 	 */
 	public XMLSchemaTypeComponent getType() {
 		return type;
@@ -137,13 +137,14 @@ public abstract class XMLSchemaTypedComponent extends XMLSchemaPrimaryComponent 
 
 	/**
 	 * @return The name used for comparing two typed schema components; in this implementation, this is the combination of the the target namespace, the scope
-	 *         name, and the component name. <code>null</code> scopes, unnamed scopes, and <code>null namespaces will not be included, so any comparing function
-		must do special processing to account for this possibility.
+	 *         name, and the component name. <code>null</code> scopes, unnamed scopes, and <code>null</code> namespaces will not be included, so any comparing function
+	 *         must do special processing to account for this possibility.
 	 */
 	protected String getCompareName() {
 		return (getTargetNamespace() != null ? getTargetNamespace() : "")
-				+ (getScope() != null && !(getScope() instanceof XMLSchema) && ((XMLSchemaTypeComponent)getScope()).getName() != null ? ((XMLSchemaTypeComponent)getScope())
-						.getName() : "") + (getName() != null ? getName() : ""); //return TargetNamespace+Name, using "" instead of null for either
+				+ (getScope() != null && !(getScope() instanceof XMLSchema) && ((XMLSchemaTypeComponent)getScope()).getName() != null
+						? ((XMLSchemaTypeComponent)getScope()).getName() : "")
+				+ (getName() != null ? getName() : ""); //return TargetNamespace+Name, using "" instead of null for either
 	}
 
 }

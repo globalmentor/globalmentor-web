@@ -27,11 +27,12 @@ import org.w3c.dom.*;
  * </p>
  * <ul>
  * <li><code>/html/body/*</code> Selects all element children of <code>body</code>.</li>
- * <li><code>/html/body/img/@src</code> Selects the <code>src</code> attribute of the first <code>img</code> element in <code>body</code>.</li> </li>
+ * <li><code>/html/body/img/@src</code> Selects the <code>src</code> attribute of the first <code>img</code> element in <code>body</code>.</li>
+ * </ul>
  * @see <a href="http://www.w3.org/TR/xpath">XML Path Language (XPath)</a>
  * @author Garret Wilson
  */
-@Deprecated	//TODO convert to Java's included XPath; see e.g. http://stackoverflow.com/questions/2811001/how-to-read-xml-using-xpath-in-java
+@Deprecated //TODO convert to Java's included XPath; see e.g. http://stackoverflow.com/questions/2811001/how-to-read-xml-using-xpath-in-java
 public class XPath {
 
 	/** The character used to separate a location path into location steps. */
@@ -83,7 +84,7 @@ public class XPath {
 	/**
 	 * Convenience function to retrieve a node from the root element of the specified document, based on the specified XPath expression. If multiple nodes match
 	 * the expression, the first one will be returned. If none match, <code>null</code> will be returned.
-	 * @param node The document on which the expression should be evaluated.
+	 * @param document The document on which the expression should be evaluated.
 	 * @param expression The XPath expression to evaluate.
 	 * @return The first node matching the XPath expression, or <code>null</code> if there is no match.
 	 */

@@ -33,8 +33,8 @@ public class XMLSchemaAnnotation extends XMLSchemaHelperComponent {
 
 	/**
 	 * @return The list of annotation elements, each of which should either be application information or documentation.
-	 * @see #ApplicationInformation
-	 * @see #UserInformation
+	 * @see ApplicationInformation
+	 * @see UserInformation
 	 */
 	public List getElementList() {
 		return elementList;
@@ -64,7 +64,7 @@ public class XMLSchemaAnnotation extends XMLSchemaHelperComponent {
 	/**
 	 * @return A list of all user information elements (if any), in the correct order. The list cannot be modified.
 	 * @see #getElementList
-	 * @see #UserInformation
+	 * @see UserInformation
 	 */
 	public List getUserInformation() {
 		final List userInfoList = new ArrayList(); //create a new list to hold the elements
@@ -79,7 +79,7 @@ public class XMLSchemaAnnotation extends XMLSchemaHelperComponent {
 
 	/**
 	 * Adds application information to the annotation.
-	 * @param appInfo The text of the application information.
+	 * @param applicationInfo The text of the application information.
 	 */
 	public void addApplicationInformation(final String applicationInfo) {
 		addApplicationInformation(new ApplicationInformation(applicationInfo)); //create an object with the correct information and add it
@@ -96,7 +96,7 @@ public class XMLSchemaAnnotation extends XMLSchemaHelperComponent {
 	/**
 	 * @return A list of all application information elements (if any), in the correct order. The list cannot be modified.
 	 * @see #getElementList
-	 * @see #ApplicationInformation
+	 * @see ApplicationInformation
 	 */
 	public List getApplicationInformation() {
 		final List appInfoList = new ArrayList(); //create a new list to hold the elements

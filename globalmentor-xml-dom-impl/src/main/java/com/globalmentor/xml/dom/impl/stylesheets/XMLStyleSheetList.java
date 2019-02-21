@@ -18,6 +18,8 @@ package com.globalmentor.xml.dom.impl.stylesheets;
 
 import java.util.LinkedList;
 
+import com.globalmentor.xml.dom.impl.*;
+
 import org.w3c.dom.stylesheets.*;
 
 /**

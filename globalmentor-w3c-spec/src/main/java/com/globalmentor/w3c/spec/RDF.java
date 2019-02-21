@@ -18,9 +18,9 @@ package com.globalmentor.w3c.spec;
 
 import java.net.URI;
 
-import com.globalmentor.net.ContentType;
+import static java.util.Objects.*;
 
-import static com.globalmentor.java.Objects.*;
+import com.globalmentor.net.ContentType;
 
 /**
  * Definition of the Resource Description Framework (RDF).
@@ -101,8 +101,8 @@ public class RDF {
 	public static URI createReferenceURI(final URI namespaceURI, final String localName) { //TODO del if not needed throws URISyntaxException	//TODO del if not needed with QualifiedName.createReferenceURI
 		//TODO check for local names that aren't valid URI characters---see QualifiedName.createReferenceURI
 		final StringBuilder stringBuilder = new StringBuilder(); //create a string builder to hold the resource URI
-		stringBuilder.append(checkInstance(namespaceURI, "Namespace URI cannot be null.")); //append the namespace URI
-		stringBuilder.append(checkInstance(localName, "Local name cannot be null.")); //append the local name
+		stringBuilder.append(requireNonNull(namespaceURI, "Namespace URI cannot be null.")); //append the namespace URI
+		stringBuilder.append(requireNonNull(localName, "Local name cannot be null.")); //append the local name
 		return URI.create(stringBuilder.toString()); //return a URI from the the string we constructed; if somehow concatenating the strings does not create a valid URI, a runtime exception will be thrown
 	}
 

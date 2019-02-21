@@ -19,7 +19,9 @@ package com.globalmentor.xml.dom.impl;
 import java.io.Reader;
 import java.io.IOException;
 
+import com.globalmentor.io.IO;
 import com.globalmentor.io.ParseReader;
+import com.globalmentor.io.ProcessingBufferedReader;
 
 import static com.globalmentor.w3c.spec.XML.*;
 
@@ -67,7 +69,6 @@ public class XMLReader extends ParseReader {
 	 * @param inReader The reader that contains the data.
 	 * @param prereadCharacters The characters that have already been read.
 	 * @throws IOException Thrown if <code>prereadCharacters</code> is too long for the buffer.
-	 * @see BufferedPushbackReader
 	 */
 	public XMLReader(final Reader inReader, final StringBuffer prereadCharacters) throws IOException {
 		super(inReader, prereadCharacters); //allow the super class to do the constructing
@@ -79,7 +80,6 @@ public class XMLReader extends ParseReader {
 	 * @param inReader The reader that contains the data.
 	 * @param sourceObject The source of the data (e.g. a String, File, or URL).
 	 * @throws IOException Thrown if <code>prereadCharacters</code> is too long for the buffer.
-	 * @see BufferedPushbackReader
 	 */
 	public XMLReader(final Reader inReader, final Object sourceObject) throws IOException {
 		super(inReader, sourceObject); //allow the super class to do the constructing
@@ -92,7 +92,6 @@ public class XMLReader extends ParseReader {
 	 * @param prereadCharacters The characters that have already been read.
 	 * @param sourceObject The source of the data (e.g. a String, File, or URL).
 	 * @throws IOException Thrown if <code>prereadCharacters</code> is too long for the buffer.
-	 * @see BufferedPushbackReader
 	 */
 	public XMLReader(final Reader inReader, final StringBuffer prereadCharacters, final Object sourceObject) throws IOException {
 		super(inReader, prereadCharacters, sourceObject); //allow the super class to do the constructing
@@ -104,7 +103,7 @@ public class XMLReader extends ParseReader {
 	 * next time.
 	 * @param newDataBeginIndex The starting index of the newly fetched data.
 	 * @throws IOException Thrown when an I/O error occurs.
-	 * @see ProcessingBufferedReader#getFetchBufferIndex
+	 * @see #getFetchBufferIndex()
 	 */
 	protected void processBufferedData(final int newDataBeginIndex) throws IOException {
 		super.processBufferedData(newDataBeginIndex); //do the default processing of the data (this currently does nothing)

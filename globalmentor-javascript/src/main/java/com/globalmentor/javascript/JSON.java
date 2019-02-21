@@ -22,10 +22,11 @@ import java.io.IOException;
 import java.util.*;
 import java.util.regex.Pattern;
 
+import static java.util.Objects.*;
+
 import static com.globalmentor.java.Arrays.*;
 import static com.globalmentor.java.CharSequences.*;
 import static com.globalmentor.java.Conditions.*;
-import static com.globalmentor.java.Objects.*;
 import static com.globalmentor.java.StringBuilders.*;
 
 import com.globalmentor.model.ObjectHolder;
@@ -113,8 +114,9 @@ public class JSON {
 	 * <li>{@link Object} (string)</li>
 	 * <li><code>null</code></li>
 	 * </ul>
+	 * @param <A> The type of the appendable.
 	 * @param appendable The appendable object to accept the string.
-	 * @param object The object value to be appended, or <code>null</code>.
+	 * @param value The object value to be appended, or <code>null</code>.
 	 * @throws IOException if there is an error appending the information.
 	 * @return The appendable object.
 	 */
@@ -145,12 +147,13 @@ public class JSON {
 
 	/**
 	 * Appends a string value in the form <code>"<var>string</var>"</code>. The character sequence will first be encoded as necessary.
+	 * @param <A> The type of the appendable.
 	 * @param appendable The appendable object to accept the string.
 	 * @param charSequence The string characters to be appended.
 	 * @return The appendable object
 	 * @throws NullPointerException if the given character sequence is <code>null</code>.
 	 * @throws IOException if there is an error appending the information.
-	 * @see #encodeStringValue(StringBuilder)
+	 * @see #encodeStringValue(CharSequence)
 	 */
 	@SuppressWarnings("unchecked")
 	public static <A extends Appendable> A appendStringValue(final A appendable, final CharSequence charSequence) throws IOException {
@@ -159,6 +162,7 @@ public class JSON {
 
 	/**
 	 * Appends a boolean value.
+	 * @param <A> The type of the appendable.
 	 * @param appendable The appendable object to accept the string.
 	 * @param bool The boolean value to append.
 	 * @return The appendable object.
@@ -167,11 +171,12 @@ public class JSON {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <A extends Appendable> A appendBooleanValue(final A appendable, final Boolean bool) throws IOException {
-		return (A)appendable.append(checkInstance(bool, "Boolean value cannot be null.").toString()); //append and return boolean
+		return (A)appendable.append(requireNonNull(bool, "Boolean value cannot be null.").toString()); //append and return boolean
 	}
 
 	/**
 	 * Appends a number value.
+	 * @param <A> The type of the appendable.
 	 * @param appendable The appendable object to accept the string.
 	 * @param number The number to append.
 	 * @return The appendable object.
@@ -180,11 +185,12 @@ public class JSON {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <A extends Appendable> A appendNumberValue(final A appendable, final Number number) throws IOException {
-		return (A)appendable.append(checkInstance(number, "Number value cannot be null.").toString()); //append and return number
+		return (A)appendable.append(requireNonNull(number, "Number value cannot be null.").toString()); //append and return number
 	}
 
 	/**
 	 * Appends an array value.
+	 * @param <A> The type of the appendable.
 	 * @param appendable The appendable object to accept the string.
 	 * @param array The array to append.
 	 * @return The appendable object.
@@ -209,6 +215,7 @@ public class JSON {
 	/**
 	 * Appends an object (associative array) value in the form <code>{"<var>key</var>":<var>value</var>,...}</code>. The provided map must not have any
 	 * <code>null</code> keys.
+	 * @param <A> The type of the appendable.
 	 * @param <K> The type of keys stored in the map.
 	 * @param <V> The type of values stored in the map.
 	 * @param appendable The appendable object to accept the string.
@@ -242,20 +249,20 @@ public class JSON {
 	}
 
 	/**
-	 * Encodes a string value. The characters {@value JavaScript#STRING_ENCODE_CHARS} will be replaced with {@value JavaScript#STRING_ENCODE_REPLACEMENT_STRINGS},
+	 * Encodes a string value. The characters {@link JavaScript#STRING_ENCODE_CHARS} will be replaced with {@link JavaScript#STRING_ENCODE_REPLACEMENT_STRINGS},
 	 * respectively.
 	 * @param charSequence The characters to encode.
 	 * @return A string containing encoded characters.
 	 * @throws NullPointerException if the given character sequence is <code>null</code>.
 	 */
 	public static String encodeStringValue(final CharSequence charSequence) {
-		final StringBuilder stringBuilder = new StringBuilder(checkInstance(charSequence, "Character sequence cannot be null.")); //create a new string builder with the contents of the character sequence
+		final StringBuilder stringBuilder = new StringBuilder(requireNonNull(charSequence, "Character sequence cannot be null.")); //create a new string builder with the contents of the character sequence
 		replace(stringBuilder, JavaScript.STRING_ENCODE_CHARS, JavaScript.STRING_ENCODE_REPLACEMENT_STRINGS); //replace the encode characters with their encoded replacements
 		return stringBuilder.toString(); //return the encoded string
 	}
 
 	/**
-	 * Decodes a string value. Every instance of {@value JavaScript#ESCAPE} will be removed if followed by another character and the subsequent character will be
+	 * Decodes a string value. Every instance of {@value JavaScript#ESCAPE_CHAR} will be removed if followed by another character and the subsequent character will be
 	 * ignored.
 	 * @param charSequence The characters to encode.
 	 * @return A string containing encoded characters.
@@ -263,7 +270,7 @@ public class JSON {
 	 * @throws IllegalArgumentException if the character sequence ends with the given escape character.
 	 */
 	public static String decodeStringValue(final CharSequence charSequence) {
-		return unescape(new StringBuilder(checkInstance(charSequence, "Character sequence cannot be null.")), ESCAPE).toString(); //unescape the string
+		return unescape(new StringBuilder(requireNonNull(charSequence, "Character sequence cannot be null.")), ESCAPE).toString(); //unescape the string
 	}
 
 	/**
@@ -575,7 +582,7 @@ public class JSON {
 	 * Parses an object encoded in a JSON character sequence.
 	 * @param charSequence The character sequence to be parsed.
 	 * @param index The current parse index in the character sequence.
-	 * @param list The list in which the parsed array contents will be placed.
+	 * @param map The map in which the parsed array contents will be placed.
 	 * @return The new index at which to continue parsing after the object.
 	 * @throws NullPointerException if the given character sequence is <code>null</code>.
 	 * @throws ArgumentSyntaxException if the given character sequence does not represent a valid JSON string.

@@ -17,6 +17,7 @@
 package com.globalmentor.xml;
 
 import com.globalmentor.java.Objects;
+import com.globalmentor.model.DefaultNamed;
 import com.globalmentor.w3c.spec.XML;
 
 /**
@@ -53,7 +54,7 @@ public class XMLNamedObject { //TODO implement NamedObject or extend DefaultName
 	/** The namespace prefix, or <code>null</code> if there is no prefix. */
 	private String prefix = null;
 
-	/** Returns the namespace prefix, or <code>null</code> if there is no prefix. */
+	/** @return The namespace prefix, or <code>null</code> if there is no prefix. */
 	public String getPrefix() {
 		return prefix;
 	}
@@ -63,6 +64,7 @@ public class XMLNamedObject { //TODO implement NamedObject or extend DefaultName
 	 * <p>
 	 * Note that setting this attribute changes the qualified name.
 	 * </p>
+	 * @param prefix The namespace prefix of the node, or <code>null</code> for no prefix.
 	 * @see #setName(java.lang.String, java.lang.String)
 	 */
 	public void setPrefix(final String prefix) {
@@ -102,7 +104,6 @@ public class XMLNamedObject { //TODO implement NamedObject or extend DefaultName
 	/**
 	 * Sets the qualified name of the object, updating the prefix and local name as well.
 	 * @param qname The new qualified name of the object.
-	 * @see DefaultNamed#setName(Object)
 	 */
 	public void setQName(final String qname) {
 		this.qname = qname; //save the qualified name

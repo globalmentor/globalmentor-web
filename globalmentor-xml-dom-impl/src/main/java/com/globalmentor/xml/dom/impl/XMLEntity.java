@@ -22,7 +22,6 @@ import org.w3c.dom.Node;
  * An entity value, either parsed or unparsed, in an XML document. This does <em>not</em> model the entity declaration itself, only the entity value.
  * @author Garret Wilson
  * @see XMLNode
- * @see XMLEntityReference
  * @see org.w3c.dom.Entity
  * @deprecated
  */

@@ -120,7 +120,7 @@ public class XMLNamespacePrefixManager //TODO replace with XMLNamespaceLabelMana
 	 * <p>
 	 * The Java package name of any Java URIs ending in '.' will be used as the namespace prefix if possible, if none exists already.
 	 * </p>
-	 * @param namespace The namespace for which a prefix should be returned
+	 * @param namespaceURI The namespace for which a prefix should be returned
 	 * @param generatePrefix <code>true</code> if a prefix should be generated if no prefix is assigned to the given namespace URI.
 	 * @return A prefix for use with the given namespace, or <code>null</code> if no prefix is assigned to the given namespace URI and <var>generatePrefix</var>
 	 *         is <code>false</code>.

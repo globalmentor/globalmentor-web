@@ -28,6 +28,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.css.*;
 
 import com.globalmentor.xml.dom.impl.XMLDOMException;
+import com.globalmentor.xml.dom.impl.XMLDocument;
 
 /**
  * The class which represents a single rule set in a CSS stylesheet.
@@ -39,7 +40,6 @@ public class XMLCSSStyleRule extends XMLCSSRule implements CSSStyleRule {	//TODO
 
 	/**
 	 * Constructor which requires a parent stylesheet to be specified.
-	 * @param type The type of this CSS rule.
 	 * @param parentStyleSheet The parent of this stylesheet.
 	 * @see XMLDocument
 	 */
@@ -92,6 +92,8 @@ public class XMLCSSStyleRule extends XMLCSSRule implements CSSStyleRule {	//TODO
 	/**
 	 * Determines whether this contextual selector (represented by an array of selectors) applies to the specified element.
 	 * @param element The element this context array might apply to.
+	 * @param contextArray The array of nested contexts to compare to the element hierarchy.
+	 * @return <code>true</code> if the contextual selector applies to the given element.
 	 * @see XMLCSSSelector#appliesTo
 	 */
 	protected boolean appliesTo(Element element, final XMLCSSSelector[] contextArray) {
@@ -113,6 +115,7 @@ public class XMLCSSStyleRule extends XMLCSSRule implements CSSStyleRule {	//TODO
 	/**
 	 * Determines whether, based upon this style rule's selectors, this style applies to the specified element.
 	 * @param element The element this context array might apply to.
+	 * @return <code>true</code> if the contextual selector applies to the given element.
 	 * @see XMLCSSSelector#appliesTo
 	 */
 	public boolean appliesTo(Element element) {

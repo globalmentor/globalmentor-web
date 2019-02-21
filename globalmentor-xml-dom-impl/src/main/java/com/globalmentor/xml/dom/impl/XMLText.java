@@ -62,9 +62,9 @@ public class XMLText extends XMLCharacterData implements org.w3c.dom.Text {
 	}
 
 	/**
-	 * Returns the text of this node, which is the same as that returned by getNodeValue(). This function overrides and is used by XMLNode.getText() to
-	 * recursively return the text of all children of a node.
-	 * @see Node#getText
+	 * Returns the text of this node, which is the same as that returned by <code>getNodeValue()</code>. This function overrides and is used by XMLNode.getText()
+	 * to recursively return the text of all children of a node.
+	 * @see Node#getNodeValue
 	 */
 	public String getText() {
 		return getNodeValue(); //return the text of this node, which is the node value of this text node
@@ -76,7 +76,8 @@ public class XMLText extends XMLCharacterData implements org.w3c.dom.Text {
 	 * content at and after the <code>offset</code> point.
 	 * @param offset The 16-bit unit offset at which to split, starting from 0.
 	 * @return The new <code>XMLText</code> node.
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>INDEX_SIZE_ERR: Raised if the specified offset is negative or greater than the number of 16-bit units in <code>data</code>.</li>
 	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
 	 *           </ul>
@@ -112,9 +113,11 @@ public class XMLText extends XMLCharacterData implements org.w3c.dom.Text {
 	} //TODO fix for DOM 3
 
 	/**
-	 * Returns all text of <code>Text</code> nodes logically-adjacent text nodes to this node, concatenated in document order. <br>
+	 * Returns all text of <code>Text</code> nodes logically-adjacent text nodes to this node, concatenated in document order.
+	 * <p>
 	 * For instance, in the example below <code>wholeText</code> on the <code>Text</code> node that contains "bar" returns "barfoo", while on the
 	 * <code>Text</code> node that contains "foo" it returns "barfoo".
+	 * </p>
 	 * @since DOM Level 3
 	 */
 	public String getWholeText() {
@@ -123,23 +126,28 @@ public class XMLText extends XMLCharacterData implements org.w3c.dom.Text {
 
 	/**
 	 * Replaces the text of the current node and all logically-adjacent text nodes with the specified text. All logically-adjacent text nodes are removed
-	 * including the current node unless it was the recipient of the replacement text. <br>
-	 * This method returns the node which received the replacement text. The returned node is:
+	 * including the current node unless it was the recipient of the replacement text. This method returns the node which received the replacement text. The
+	 * returned node is:
 	 * <ul>
 	 * <li><code>null</code>, when the replacement text is the empty string;</li>
 	 * <li>the current node, except when the current node is read-only;</li>
 	 * <li>a new <code>Text</code> node of the same type ( <code>Text</code> or <code>CDATASection</code>) as the current node inserted at the location of the
 	 * replacement.</li>
 	 * </ul>
-	 * <br>
+	 * <p>
 	 * For instance, in the above example calling <code>replaceWholeText</code> on the <code>Text</code> node that contains "bar" with "yo" in argument results in
-	 * the following: <br>
+	 * the following:
+	 * </p>
+	 * <p>
 	 * Where the nodes to be removed are read-only descendants of an <code>EntityReference</code>, the <code>EntityReference</code> must be removed instead of the
 	 * read-only nodes. If any <code>EntityReference</code> to be removed has descendants that are not <code>EntityReference</code>, <code>Text</code>, or
 	 * <code>CDATASection</code> nodes, the <code>replaceWholeText</code> method must fail before performing any modification of the document, raising a
-	 * <code>DOMException</code> with the code <code>NO_MODIFICATION_ALLOWED_ERR</code>. <br>
+	 * <code>DOMException</code> with the code <code>NO_MODIFICATION_ALLOWED_ERR</code>.
+	 * </p>
+	 * <p>
 	 * For instance, in the example below calling <code>replaceWholeText</code> on the <code>Text</code> node that contains "bar" fails, because the
 	 * <code>EntityReference</code> node "ent" contains an <code>Element</code> node which cannot be removed.
+	 * <p>
 	 * @param content The content of the replacing <code>Text</code> node.
 	 * @return The <code>Text</code> node created with the specified content.
 	 * @throws DOMException NO_MODIFICATION_ALLOWED_ERR: Raised if one of the <code>Text</code> nodes being replaced is readonly.

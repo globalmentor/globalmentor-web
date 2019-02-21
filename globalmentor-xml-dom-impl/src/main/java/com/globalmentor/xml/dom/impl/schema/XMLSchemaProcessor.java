@@ -56,7 +56,7 @@ public class XMLSchemaProcessor {
 	/**
 	 * Retrieves a schema for the specified namespace. This schema may have been stored earlier in the map. If the schema is not already in the map and is a
 	 * recognized namespace for a default schema, that default schema is added to the map and returned.
-	 * @param targetNamspace The target namespace for which a relevant schema should be returned.
+	 * @param targetNamespace The target namespace for which a relevant schema should be returned.
 	 * @return A schema for the specified namespace, or <code>null</code> if no relevant schema could be found.
 	 */
 	public XMLSchema getSchema(final String targetNamespace) {
@@ -90,7 +90,7 @@ public class XMLSchemaProcessor {
 		}
 		//check for body components
 		while(schemaComponent != null) { //while there are schema components left
-		//TOD del if needed			final short componentType=schemaComponent.getComponentType(); //see which type of component this is
+			//TOD del if needed			final short componentType=schemaComponent.getComponentType(); //see which type of component this is
 			switch(schemaComponent.getComponentType()) { //see which type of component this is
 				case XMLSchemaComponent.ATTRIBUTE_COMPONENT:
 				case XMLSchemaComponent.ATTRIBUTE_GROUP_COMPONENT:
@@ -164,10 +164,11 @@ public class XMLSchemaProcessor {
 
 	/**
 	 * Processes an XML element in a schema that represents a named schema component. This function sets general properties (such as name and target namespace) of
-	 * a nmaed schema component, and is called from another, more specific <code>processXXX()</code> method. No checks are done to ensure this is indeed the
+	 * a named schema component, and is called from another, more specific <code>processXXX()</code> method. No checks are done to ensure this is indeed the
 	 * correct type of element.
 	 * @param ownerSchema The XML schema which will own the processed components.
 	 * @param element The XML element representing the schema component.
+	 * @param namedComponent The named schema component which can have an annotation.
 	 */
 	protected static void processSchemaNamedComponent(final XMLSchema ownerSchema, final Element element, final XMLSchemaNamedComponent namedComponent) {
 		namedComponent.setName(element.hasAttributeNS(null, ATTRIBUTE_NAME) ? element.getAttributeNS(null, ATTRIBUTE_NAME) : null); //get the name attribute, or null if there is no name attribute (one isn't required)
@@ -221,7 +222,7 @@ public class XMLSchemaProcessor {
 
 		/*TODO fix
 				while(schemaComponent!=null) {	//while there are schema components left
-
+		
 						//attribute groups can only hold attributes or other attribute groups
 					if(schemaComponent instanceof XMLSchemaAttribute || schemaComponent instanceof XMLSchemaAttributeGroup)
 					{

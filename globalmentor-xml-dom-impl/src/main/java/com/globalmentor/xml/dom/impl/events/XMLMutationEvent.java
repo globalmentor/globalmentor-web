@@ -190,7 +190,7 @@ public class XMLMutationEvent extends XMLEvent implements MutationEvent {
 
 	/**
 	 * Creates an event for node insertion into the document.
-	 * @param removedNode The node being inserted into the document.
+	 * @param insertedNode The node being inserted into the document.
 	 * @return The new event.
 	 */
 	public static XMLMutationEvent createDOMNodeInsertedIntoDocumentEvent(final XMLNode insertedNode) {

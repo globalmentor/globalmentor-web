@@ -161,7 +161,6 @@ public abstract class AbstractXMLCSSStylesheetApplier<D, E> implements URIInputS
 	 * @param document The document that references the stylesheets.
 	 * @param baseURI The base URI of the document, or <code>null</code> if the base URI is not known.
 	 * @param mediaType The media type of the document, or <code>null</code>. if the media type is unknown.
-	 * @param description An XPackage-compliant description of the document, or <code>null</code> if no description is available.
 	 * @return An array of stylesheets.
 	 */
 	public CSSStyleSheet[] getStylesheets(final D document, final URI baseURI, final ContentType mediaType/*TODO convert to something general, final RDFResource description*/) {
@@ -261,7 +260,6 @@ public abstract class AbstractXMLCSSStylesheetApplier<D, E> implements URIInputS
 	 * </ul>
 	 * @param document The document that contains the namespaces.
 	 * @param mediaType The media type of the document, or <code>null</code> if the media type is unknown.
-	 * @param description An XPackage-compliant description of the document, or <code>null</code> if no description is available.
 	 * @return A non-<code>null</code> array of namespace URIs.
 	 */
 	protected String[] getNamespaceURIs(final D document, final ContentType mediaType/*TODO convert to something general, final RDFResource description*/) { //TODO fix to actually look through all the namespaces, maybe, but that could be intensive -- on the other hand, a subclass could get that information from the OEB package, overriding the intensive part
@@ -285,7 +283,6 @@ public abstract class AbstractXMLCSSStylesheetApplier<D, E> implements URIInputS
 	 * <li>External stylesheets referenced from HTML/OEB link elements.</li>
 	 * </ul>
 	 * @param document The document in which the descriptors exist.
-	 * @param description An XPackage-compliant description of the document, or <code>null</code> if no description is available.
 	 * @return An array of style sheet descriptors, each referencing a stylesheet.
 	 */
 	protected XMLStyleSheetDescriptor[] getStylesheetDescriptors(final D document/*TODO convert to something general, final RDFResource description*/) {
@@ -407,6 +404,7 @@ public abstract class AbstractXMLCSSStylesheetApplier<D, E> implements URIInputS
 	 * @param cssStyleRule The style rule to check against.
 	 * @param element The element this style might apply to.
 	 * @param elementLocalName The element's local name for quick lookup.
+	 * @return <code>true</code> if the given style applies to the specified element.
 	 */
 	protected boolean isApplicable(final CSSStyleRule cssStyleRule, final E element, final String elementLocalName) {
 		final XMLCSSStyleRule xmlCSSStyleRule = (XMLCSSStyleRule)cssStyleRule; //TODO fix; right now we use special features of our CSS DOM implementation -- fix to use just the normal CSS DOM
@@ -424,6 +422,7 @@ public abstract class AbstractXMLCSSStylesheetApplier<D, E> implements URIInputS
 	 * @param contextArray The array of nested contexts to compare to the element hierarchy.
 	 * @param element The element this context array might apply to.
 	 * @param elementLocalName The element's local name for quick lookup.
+	 * @return <code>true</code> if the given styles applies to the specified element.
 	 */
 	protected boolean isApplicable(final XMLCSSSelector[] contextArray, E element, String elementLocalName) { //TODO this method may be modified or go away when we fully switch to the DOM
 		//first see if we can do a quick comparison on the most common type of selector: name-based selectors
@@ -456,6 +455,7 @@ public abstract class AbstractXMLCSSStylesheetApplier<D, E> implements URIInputS
 	 * @param selectorContext The description of this stop in the selector context path.
 	 * @param element The element whose name and class should match those contained in this selector.
 	 * @param elementLocalName The element's local name for quick lookup.
+	 * @return <code>true</code> if the given style applies to the specified element.
 	 */
 	protected boolean isApplicable(final XMLCSSSelector selectorContext, final E element, final String elementLocalName) { //TODO this method may be modified or go away when we fully switch to the DOM
 		//TODO later, add the CSS ID checking
