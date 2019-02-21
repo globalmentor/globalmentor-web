@@ -28,11 +28,12 @@ import com.globalmentor.io.*;
 
 import com.globalmentor.java.Arrays;
 import com.globalmentor.java.Objects;
-import com.globalmentor.log.Log;
 import com.globalmentor.model.ConfigurationException;
 import com.globalmentor.net.ContentType;
 import com.globalmentor.w3c.spec.HTML;
 import com.globalmentor.xml.XML;
+
+import io.clogr.Clogr;
 
 import static com.globalmentor.text.ASCII.*;
 import static com.globalmentor.w3c.spec.HTML.*;
@@ -287,7 +288,7 @@ public class XHTML {
 			try {
 				return ContentType.create(typeString); //parse the content type and return it
 			} catch(final IllegalArgumentException illegalArgumentException) { //if the content type isn't valid
-				Log.debug(illegalArgumentException);
+				Clogr.getLogger(XHTML.class).debug(illegalArgumentException.getMessage(), illegalArgumentException);
 			}
 		}
 		return null;

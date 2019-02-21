@@ -36,11 +36,12 @@ import com.globalmentor.io.Files;
 import com.globalmentor.io.ParseEOFException;
 import com.globalmentor.io.ParseUnexpectedDataException;
 import com.globalmentor.io.URIInputStreamable;
-import com.globalmentor.log.Log;
 import com.globalmentor.model.ObjectHolder;
 import com.globalmentor.net.URIs;
 import com.globalmentor.xml.XML;
 import com.globalmentor.xml.dom.impl.schema.XMLSchemaProcessor;
+
+import io.clogr.Clogged;
 
 //TODO del all the XMLUndefinedEntityReferenceException throws when we don't need them anymore, in favor of XMLWellFormednessException
 
@@ -84,7 +85,7 @@ import com.globalmentor.xml.dom.impl.schema.XMLSchemaProcessor;
  * @author Garret Wilson
  * @deprecated
  */
-public class XMLProcessor implements URIInputStreamable {
+public class XMLProcessor implements URIInputStreamable, Clogged {
 
 	/** Whether we should automatically tidy non-well-formed XML. */
 	private boolean tidy = false;
@@ -343,7 +344,7 @@ public class XMLProcessor implements URIInputStreamable {
 	protected XMLReader createEntityReader(final Object context, final XMLEntity entity) throws IOException {
 		XMLReader entityReader = null; //the reader which we will construct and return; we don't know what it will be, yet
 		if(entity.getSystemID() != null) { //if there is a system identifier for this entity, it's an external entity
-			Log.trace("Before creating reader for entity public ID", entity.getPublicId(), "system ID", entity.getSystemId());
+			getLogger().trace("Before creating reader for entity public ID {} system ID {}", entity.getPublicId(), entity.getSystemId());
 			return createReader(context, entity.getPublicID(), entity.getSystemID()); //TODO testing; comment
 		} else { //if this is an internal entity reference
 			entityReader = new XMLReader(entity.getText(), "Entity \"" + entity.getNodeName() + "\" from \"" + entity.getSourceName() + "\""); //create a string reader from the text of the entity, giving our entity name for the name of the reader TODO i18n TODO show whether this is a parameter or a general entity reference

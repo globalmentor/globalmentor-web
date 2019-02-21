@@ -21,8 +21,9 @@ import static com.globalmentor.w3c.spec.XMLSchema.*;
 import java.util.*;
 
 import com.globalmentor.collections.iterators.Iterators;
-import com.globalmentor.log.Log;
 import com.globalmentor.xml.XMLSerializer;
+
+import io.clogr.Clogr;
 
 import org.w3c.dom.*;
 
@@ -104,7 +105,7 @@ public class XMLSchemaProcessor {
 				case XMLSchemaComponent.ANNOTATION_COMPONENT:
 					break; //annotations can come at any time after normal components, but they will be the last components of the schema
 				default:
-					Log.error("Unrecognized component: " + schemaComponent); //TODO fix
+					Clogr.getLogger(XMLSchemaProcessor.class).error("Unrecognized component: {}" + schemaComponent); //TODO fix
 					break;
 			}
 			if(schemaComponent != null && schemaComponent.getComponentType() == schemaComponent.ANNOTATION_COMPONENT) //if this is an annotation
@@ -137,7 +138,7 @@ public class XMLSchemaProcessor {
 						schemaComponentList.add(schemaComponent); //add this schema component to the list
 					else
 						//TODO fix
-						Log.trace("Did not recognize element: ", childElement.getLocalName()); //TODO fix
+						Clogr.getLogger(XMLSchemaProcessor.class).trace("Did not recognize element: {}", childElement.getLocalName()); //TODO fix
 				}
 			}
 		}
@@ -195,7 +196,7 @@ public class XMLSchemaProcessor {
 			//TODO check to see if this is anyAttribute			else if
 			else
 				//if we don't recognize the component
-				Log.error("Unrecognized component: " + schemaComponent); //TODO fix, even for annotations out of order
+				Clogr.getLogger(XMLSchemaProcessor.class).error("Unrecognized component: {}" + schemaComponent); //TODO fix, even for annotations out of order
 			schemaComponent = (XMLSchemaComponent)Iterators.getNext(schemaComponentIterator); //get the next schema component, or null if there is no other one
 		}
 		return attributeGroup; //return the schema component we created
@@ -230,7 +231,7 @@ public class XMLSchemaProcessor {
 					}
 		//TODO check to see if this is anyAttribute			else if
 				  else  //if we don't recognize the component
-						Log.error("Unrecognized component: "+schemaComponent);  //TODO fix, even for annotations out of order
+						Clogr.getLogger(XMLSchemaProcessor.class).error("Unrecognized component: {}"+schemaComponent);  //TODO fix, even for annotations out of order
 				  schemaComponent=(XMLSchemaComponent)IteratorUtilities.getNext(schemaComponentIterator);  //get the next schema component, or null if there is no other one
 				}
 		*/
@@ -263,7 +264,7 @@ public class XMLSchemaProcessor {
 							annotation.addUserInformation(informationString); //add the user information
 					} else
 						//if this is not <appinfo> or <documentation>
-						Log.error("Illegal annotation element: " + childLocalName); //TODO fix
+						Clogr.getLogger(XMLSchemaProcessor.class).error("Illegal annotation element: {}" + childLocalName); //TODO fix
 				}
 			}
 		}

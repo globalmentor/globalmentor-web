@@ -26,7 +26,6 @@ import java.nio.charset.Charset;
 import org.junit.Test;
 
 import com.globalmentor.io.ByteOrderMark;
-import com.globalmentor.log.AbstractLoggedTest;
 import com.globalmentor.model.ObjectHolder;
 import com.globalmentor.xml.XML;
 
@@ -36,7 +35,7 @@ import com.globalmentor.xml.XML;
  * @author Garret Wilson
  *
  */
-public class XMLTest extends AbstractLoggedTest {
+public class XMLTest {
 
 	/** @see XML#detectXMLCharset(InputStream, ObjectHolder, ObjectHolder) */
 	@Test

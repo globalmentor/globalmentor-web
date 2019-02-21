@@ -22,9 +22,10 @@ import java.util.*;
 
 import com.globalmentor.io.*;
 import com.globalmentor.java.CharSequences;
-import com.globalmentor.log.Log;
 import com.globalmentor.text.*;
 import com.globalmentor.xml.XML;
+
+import io.clogr.Clogged;
 
 import org.w3c.dom.*;
 
@@ -36,7 +37,7 @@ import static java.nio.charset.StandardCharsets.*;
  * Allows creation of an XHTML document from a text document. Each group of lines is converted to an XHTML <code>&lt;p&gt;</code>.
  * @author Garret Wilson
  */
-public class XHTMLCreator {
+public class XHTMLCreator implements Clogged {
 
 	protected long totalLineCount = 0; //TODO testing; comment; tidy
 	protected long totalLineLengthSum = 0;
@@ -327,7 +328,7 @@ public class XHTMLCreator {
 			getLineBuffer().addLast(line); //add the line to the end of our buffer
 			line = bufferedReader.readLine(); //read another line from the buffer
 		}
-		Log.trace("primed buffer, number of lines: ", getLineBuffer().size());
+		getLogger().trace("primed buffer, number of lines: {}", getLineBuffer().size());
 	}
 
 	/**

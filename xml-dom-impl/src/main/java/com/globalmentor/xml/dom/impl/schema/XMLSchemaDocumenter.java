@@ -18,8 +18,9 @@ package com.globalmentor.xml.dom.impl.schema;
 
 import java.util.*;
 
-import com.globalmentor.log.Log;
 import com.globalmentor.xml.*;
+
+import io.clogr.Clogr;
 
 import static com.globalmentor.w3c.spec.HTML.*;
 
@@ -72,15 +73,15 @@ public class XMLSchemaDocumenter {
 	 * @see XMLSchemaNamedComponent#getAnnotation
 	 */
 	protected static void generateAnnotationDocumentation(final Element bodyElement, final XMLSchemaNamedComponent namedComponent) {
-		Log.trace("ready to generate annotation doc");
+		Clogr.getLogger(XMLSchemaDocumenter.class).trace("ready to generate annotation doc");
 		final XMLSchemaAnnotation annotation = namedComponent.getAnnotation(); //get the annotation for this component
 		if(annotation != null) { //if there is annotation information
-			Log.trace("found annotation");
+			Clogr.getLogger(XMLSchemaDocumenter.class).trace("found annotation");
 			final Iterator userInfoIterator = annotation.getUserInformation().iterator(); //get an iterator for the user information from the annotation
 			while(userInfoIterator.hasNext()) { //while there is more user information
 				//get the next user information
 				final XMLSchemaAnnotation.UserInformation userInfo = (XMLSchemaAnnotation.UserInformation)userInfoIterator.next();
-				Log.trace("found user info: ", userInfo.toString());
+				Clogr.getLogger(XMLSchemaDocumenter.class).trace("found user info: {}", userInfo.toString());
 				final Element userInfoParagraphElement = XML.appendElementNS(bodyElement, XHTML_NAMESPACE_URI.toString(), ELEMENT_P, null); //create the annotation documentation paragraph, but do not add any content
 				//TODO do something besides creating a new XML parser from scratch
 				//TODO see if we can do something besides casting the document to an XMLDocument
@@ -88,7 +89,7 @@ public class XMLSchemaDocumenter {
 					//parse the element content from the user info string, preserving the entire XML sub-tree
 					//TODO fix					new XMLProcessor().parseElementContent((XMLElement)userInfoParagraphElement, userInfo.toString());
 				} catch(Exception e) { //TODO fix these exceptions; let them bubble up
-					Log.error(e);
+					Clogr.getLogger(XMLSchemaDocumenter.class).error(e.getMessage(), e);
 				}
 				XML.appendText(bodyElement, "\n"); //append a newline to separate the information in the body
 			}

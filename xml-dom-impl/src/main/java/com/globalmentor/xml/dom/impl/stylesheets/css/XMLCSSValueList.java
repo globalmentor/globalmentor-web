@@ -19,9 +19,9 @@ package com.globalmentor.xml.dom.impl.stylesheets.css;
 import java.io.*;
 import java.util.*;
 
-import com.globalmentor.log.Log;
-
 import org.w3c.dom.css.*;
+
+import io.clogr.Clogr;
 
 /**
  * An ordered collection of CSS vlaues. An empty list is the same as a list that contains the medium <code>"all"</code>.
@@ -127,7 +127,7 @@ public class XMLCSSValueList extends XMLCSSValue implements CSSValueList {
 					valueList.valueList.add(value); //add this value to the list
 				}
 			} catch(IOException ioException) { //if we have a problem reading from the string
-				Log.warn(ioException); //warn than an error has occurred
+				Clogr.getLogger(XMLCSSValueList.class).warn(ioException.getMessage(), ioException); //warn than an error has occurred
 				return valueList; //stop processing the list and return it
 			}
 		}

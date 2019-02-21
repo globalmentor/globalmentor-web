@@ -22,7 +22,6 @@ import java.util.Arrays;
 
 import com.globalmentor.css.CSSTidier;
 import com.globalmentor.java.*;
-import com.globalmentor.log.Log;
 import com.globalmentor.net.ContentType;
 import com.globalmentor.text.Prose;
 import com.globalmentor.text.Unicode;
@@ -31,6 +30,8 @@ import com.globalmentor.w3c.spec.CSS;
 import com.globalmentor.w3c.spec.HTML;
 import com.globalmentor.w3c.spec.XML;
 import com.globalmentor.xml.xpath.XPath;
+
+import io.clogr.Clogged;
 
 import static com.globalmentor.java.Characters.*;
 import static com.globalmentor.net.ContentTypeConstants.*;
@@ -147,7 +148,7 @@ import org.w3c.dom.traversal.NodeFilter;
  * </ul>
  * @author Garret Wilson <!--TODO added stuff not commented: removed html attributes added OEB DOCTYPE-->
  */
-public class XHTMLTidier {
+public class XHTMLTidier implements Clogged {
 
 	/**
 	 * Whether underline tags (<code>&lt;u&gt;</code>) should be converted to italics tags (<code>&lt;i&gt;</code>).
@@ -1093,7 +1094,7 @@ public class XHTMLTidier {
 	 *         the content between the breaks.
 	 */
 	protected Element checkBreakElement(Element element) {
-		Log.trace("Checking break element: ", element.getNodeName());
+		getLogger().trace("Checking break element: {}", element.getNodeName());
 		final NodeList childNodeList = element.getChildNodes(); //get a reference to the child nodes
 		final int childNodeCount = childNodeList.getLength(); //see how many child nodes there are
 		if(childNodeCount > 0) { //if there are child nodes
