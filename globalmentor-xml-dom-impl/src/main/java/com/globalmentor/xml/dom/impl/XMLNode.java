@@ -1230,7 +1230,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	 * parsing is performed either, the input string is taken as pure textual content.
 	 * </p>
 	 * The string returned is made of the text content of this node depending on its type, as defined below:
-	 * <table summary="" border='1' cellpadding='3'>
+	 * <table border='1'><caption>Text Content for Node Type</caption>
 	 * <tr>
 	 * <th>Node type</th>
 	 * <th>Content</th>
@@ -1267,7 +1267,7 @@ public abstract class XMLNode extends XMLNamedObject implements Node, EventTarge
 	 * parsing is performed either, the input string is taken as pure textual content.
 	 * </p>
 	 * The string returned is made of the text content of this node depending on its type, as defined below:
-	 * <table summary="" border='1' cellpadding='3'>
+	 * <table border='1'><caption>Text Content for Node Type</caption>
 	 * <tr>
 	 * <th>Node type</th>
 	 * <th>Content</th>
