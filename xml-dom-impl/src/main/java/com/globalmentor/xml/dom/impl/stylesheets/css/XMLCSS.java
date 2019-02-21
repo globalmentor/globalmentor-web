@@ -24,7 +24,8 @@ import java.net.URL;
 import org.w3c.dom.css.*;
 
 import com.globalmentor.io.*;
-import com.globalmentor.log.Log;
+
+import io.clogr.Clogr;
 
 /** Constants and utilities for CSS used with the XML processor implementation. */
 public class XMLCSS {
@@ -60,7 +61,7 @@ public class XMLCSS {
 						styleSheetReader.close(); //always close the stylesheet reader
 					}
 				} catch(IOException ioException) { //if anything goes wrong reading the stylesheet, that's bad but shouldn't keep the program from continuing
-					Log.warn(ioException); //warn that there's was an IO problem
+					Clogr.getLogger(XMLCSS.class).warn(ioException.getMessage(), ioException); //warn that there's was an IO problem
 				}
 			}
 		}

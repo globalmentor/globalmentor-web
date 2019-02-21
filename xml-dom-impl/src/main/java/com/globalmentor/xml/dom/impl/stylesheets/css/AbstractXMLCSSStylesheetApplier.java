@@ -28,12 +28,13 @@ import static com.globalmentor.w3c.spec.XML.*;
 import static com.globalmentor.xml.XMLStyleSheets.*;
 
 import com.globalmentor.io.*;
-import com.globalmentor.log.Log;
 import com.globalmentor.model.NameValuePair;
 import com.globalmentor.net.ContentType;
 import com.globalmentor.net.URIs;
 import com.globalmentor.xml.XML;
 import com.globalmentor.xml.dom.impl.stylesheets.XMLStyleSheetDescriptor;
+
+import io.clogr.Clogged;
 
 import org.w3c.dom.css.*;
 
@@ -44,7 +45,7 @@ import org.w3c.dom.css.*;
  * @author Garret Wilson
  * @deprecated
  */
-public abstract class AbstractXMLCSSStylesheetApplier<D, E> implements URIInputStreamable {
+public abstract class AbstractXMLCSSStylesheetApplier<D, E> implements URIInputStreamable, Clogged {
 
 	/**
 	 * Determeins the base URI of the given document.
@@ -195,9 +196,9 @@ public abstract class AbstractXMLCSSStylesheetApplier<D, E> implements URIInputS
 						styleSheetReader.close(); //always close the stylesheet reader
 					}
 				} catch(IOException ioException) { //if there are any I/O exceptions
-					Log.warn(ioException); //TODO fix better
+					getLogger().warn(ioException.getMessage(), ioException); //TODO fix better
 				} catch(URISyntaxException uriSyntaxException) { //if there are any URI syntax errors
-					Log.warn(uriSyntaxException); //TODO fix better
+					getLogger().warn(uriSyntaxException.getMessage(), uriSyntaxException); //TODO fix better
 				}
 			}
 		}
@@ -234,7 +235,7 @@ public abstract class AbstractXMLCSSStylesheetApplier<D, E> implements URIInputS
 				final CSSStyleSheet stylesheet = cssProcessor.parseStyleSheet(styleText, descriptionString); //parse the stylesheet
 				styleSheetList.add(stylesheet); //add this stylesheet to the list
 			} catch(IOException ioException) { //if there are any I/O exceptions
-				Log.warn(ioException); //TODO fix better
+				getLogger().warn(ioException.getMessage(), ioException); //TODO fix better
 			}
 		} else { //if this is not a style element
 			final int childCount = getChildCount(element); //find out how many child elements there are
@@ -387,7 +388,7 @@ public abstract class AbstractXMLCSSStylesheetApplier<D, E> implements URIInputS
 				XMLCSSProcessor.parseRuleSet(styleReader, style); //read the style into our style declaration
 				importCSSStyle(element, style); //import this style into whatever style we've collected so far for this element, if any
 			} catch(final IOException ioException) { //if we have any errors reading the style
-				Log.warn(ioException); //warn that we don't understand the style
+				getLogger().warn(ioException.getMessage(), ioException); //warn that we don't understand the style
 			}
 		}
 		//apply local stylesheets to the child elements

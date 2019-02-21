@@ -28,8 +28,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.globalmentor</groupId>
-			<artifactId>globalmentor-log</artifactId>
+			<groupId>io.clogr</groupId>
+			<artifactId>clogr</artifactId>
 		</dependency>
 
 		<dependency>

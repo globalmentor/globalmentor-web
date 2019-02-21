@@ -16,7 +16,7 @@
 
 package com.globalmentor.xml.dom.impl.stylesheets.css;
 
-import com.globalmentor.log.Log;
+import io.clogr.Clogged;
 
 import org.w3c.dom.DOMException;
 import org.w3c.dom.css.*;
@@ -42,7 +42,7 @@ import org.w3c.dom.css.*;
  * @see org.w3c.dom.css.RGBColor
  * @deprecated
  */
-public class XMLCSSRGBColor implements RGBColor {
+public class XMLCSSRGBColor implements RGBColor, Clogged {
 
 	/** The red color component as a primitive value. */
 	final protected XMLCSSPrimitiveValue redPrimitiveValue;
@@ -70,7 +70,7 @@ public class XMLCSSRGBColor implements RGBColor {
 			greenPrimitiveValue = new XMLCSSPrimitiveValue(XMLCSSPrimitiveValue.CSS_NUMBER, green); //set the green value
 			bluePrimitiveValue = new XMLCSSPrimitiveValue(XMLCSSPrimitiveValue.CSS_NUMBER, blue); //set the blue value
 		} catch(DOMException e) { //there should never be a DOM exception here, because we know what values to set
-			Log.error(e); //this should never occur
+			getLogger().error(e.getMessage(), e); //this should never occur
 			throw e; //rethrow the exception
 		}
 	}

@@ -21,8 +21,9 @@ import static com.globalmentor.w3c.spec.CSS.*;
 import java.util.*;
 
 import com.globalmentor.java.Strings;
-import com.globalmentor.log.Log;
 import com.globalmentor.util.*;
+
+import io.clogr.Clogged;
 
 import org.w3c.dom.css.*;
 
@@ -41,7 +42,7 @@ import org.w3c.dom.css.*;
  * </ul>
  * @author Garret Wilson
  */
-public class CSSTidier { //TODO add a feature to remove empty style declarations
+public class CSSTidier implements Clogged { //TODO add a feature to remove empty style declarations
 
 	/** Whether font sizes should be made relative to a base font size. */
 	public static final String MAKE_FONT_SIZES_RELATIVE_OPTION = "makeFontSizesRelative";
@@ -158,7 +159,7 @@ public class CSSTidier { //TODO add a feature to remove empty style declarations
 		for(int propertyIndex = 0; propertyIndex < cssStyleDeclaration.getLength();) { //look at each property, checking the number of properties each time because we might delete one, thereby decreasing the number of properties
 			final String propertyName = cssStyleDeclaration.item(propertyIndex); //get the name of this property
 			if(shouldRemoveProperty(cssStyleDeclaration, propertyName)) { //if we should remove this property
-				Log.trace("we should remove property");
+				getLogger().trace("we should remove property");
 				cssStyleDeclaration.removeProperty(propertyName); //remove this property
 				continue; //continue without increasing the index, since the next property is now at this index
 			}
