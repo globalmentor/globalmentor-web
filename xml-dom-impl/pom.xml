@@ -12,14 +12,6 @@
 
 	<name>GlobalMentor XML DOM Implementation</name>
 	<description>GlobalMentor Java implementation of the XML DOM.</description>
-	<url>http://www.globalmentor.com/software/</url>
-	<inceptionYear>1996</inceptionYear>
-
-	<scm>
-		<connection>scm:git:https://bitbucket.org/globalmentor/globalmentor-xml-dom-impl.git</connection>
-		<developerConnection>scm:git:https://bitbucket.org/globalmentor/globalmentor-xml-dom-impl.git</developerConnection>
-		<url>https://bitbucket.org/globalmentor/globalmentor-xml-dom-impl</url>
-	</scm>
 
 	<dependencies>
 		<dependency>

@@ -12,14 +12,6 @@
 
 	<name>GlobalMentor W3C Specifications</name>
 	<description>GlobalMentor Java W3C specifications library.</description>
-	<url>http://www.globalmentor.com/software/</url>
-	<inceptionYear>1996</inceptionYear>
-
-	<scm>
-		<connection>scm:git:https://bitbucket.org/globalmentor/globalmentor-w3c-spec.git</connection>
-		<developerConnection>scm:git:https://bitbucket.org/globalmentor/globalmentor-w3c-spec.git</developerConnection>
-		<url>https://bitbucket.org/globalmentor/globalmentor-w3c-spec</url>
-	</scm>
 
 	<dependencies>
 		<dependency>
