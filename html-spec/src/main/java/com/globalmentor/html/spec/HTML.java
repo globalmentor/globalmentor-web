@@ -120,6 +120,61 @@ public class HTML {
 	public static final String XHTML_MATHML_SVG_SYSTEM_ID = "http://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd";
 
 	/**
+	 * Determines if the given content type is one representing HTML in some form.
+	 * <p>
+	 * HTML content types include:
+	 * </p>
+	 * <ul>
+	 * <li><code>text/html</code></li>
+	 * <li><code>application/xhtml+xml</code></li>
+	 * <li><code>application/xhtml+xml-external-parsed-entity</code> (not formally defined)</li>
+	 * </ul>
+	 * @param contentType The content type of a resource, or <code>null</code> for no content type.
+	 * @return <code>true</code> if the given media type is one of several HTML media types.
+	 */
+	public static boolean isHTML(final ContentType contentType) { //TODO maybe move this to an HTMLUtilities
+		if(contentType != null) { //if a media type is given
+			final String primaryType = contentType.getPrimaryType(); //get the primary type
+			final String subType = contentType.getSubType(); //get the sub type
+			if(ContentType.TEXT_PRIMARY_TYPE.equals(primaryType)) { //if this is "text/?"
+				if(HTML_SUBTYPE.equals(subType) //if this is "text/html"
+				/*TODO fix for OEB || OEB.X_OEB1_DOCUMENT_SUBTYPE.equals(subType)*/) { //if this is "text/x-oeb1-document"
+					return true; //show that this is HTML
+				}
+			}
+			if(ContentType.APPLICATION_PRIMARY_TYPE.equals(primaryType)) { //if this is "application/?"
+				//TODO probably add a parameter to specify whether we should allow fragments to qualify as XHTML---right now this behavior is not consistent with XMLUtilities.isXML(), which doesn't recognize fragments as XML
+				if(XHTML_XML_SUBTYPE.equals(subType) || XHTML_XML_EXTERNAL_PARSED_ENTITY_SUBTYPE.equals(subType)) { //if this is "application/xhtml+xml" or "application/xhtml+xml-external-parsed-entity"
+					return true; //show that this is HTML
+				}
+			}
+		}
+		return false; //this is not a media type we recognize as being HTML
+	}
+
+	/**
+	 * Determines if the given URI represents one of the HTML XML namespaces.
+	 * <p>
+	 * HTML namespaces include:
+	 * </p>
+	 * <ul>
+	 * <li><code>http://www.w3.org/1999/xhtml</code></li>
+	 * </ul>
+	 * @param namespaceURI A URI representing an XML namespace, or <code>null</code> for no namespace.
+	 * @return <code>true</code> if the given URI represents one of the HTML XML namespaces.
+	 * @deprecated It's better just to use the namespace URI directly; provide some pluggable means if OEB support is needed.
+	 */
+	@Deprecated
+	public static boolean isHTMLNamespaceURI(final URI namespaceURI) {
+		if(namespaceURI != null) { //if the namespace URI is valid
+			//if it's part of the XHTML namespace
+			if(XHTML_NAMESPACE_URI.equals(namespaceURI) /*TODO fix for OEB || OEB.OEB1_DOCUMENT_NAMESPACE_URI.equals(namespaceURI)*/)
+				return true; //show that this is an HTML namespace
+		}
+		return false; //show that we didn't recognize the namespace as HTML
+	}
+
+	/**
 	 * Characters considered <dfn>space characters</dfn> in HTML.
 	 * @see <a href="http://www.w3.org/TR/html5/infrastructure.html#space-character">HTML5 space characters</a>
 	 */

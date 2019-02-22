@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.globalmentor.xml.xhtml;
+package com.globalmentor.html;
 
 import java.io.*;
 import java.util.*;
@@ -148,7 +148,7 @@ import org.w3c.dom.traversal.NodeFilter;
  * </ul>
  * @author Garret Wilson <!--TODO added stuff not commented: removed html attributes added OEB DOCTYPE-->
  */
-public class XHTMLTidier implements Clogged {
+public class HtmlTidier implements Clogged {
 
 	/**
 	 * Whether underline tags (<code>&lt;u&gt;</code>) should be converted to italics tags (<code>&lt;i&gt;</code>).
@@ -355,14 +355,14 @@ public class XHTMLTidier implements Clogged {
 	}
 
 	/** Default constructor initialized with the default options. */
-	public XHTMLTidier() {
+	public HtmlTidier() {
 	}
 
 	/**
 	 * Constructs an XHTML tidier with a list of options.
 	 * @param options The properties which specify the tidy options.
 	 */
-	public XHTMLTidier(final Properties options) {
+	public HtmlTidier(final Properties options) {
 		setOptions(options); //set the options from the properties
 	}
 

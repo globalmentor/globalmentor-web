@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.globalmentor.xml.xhtml;
+package com.globalmentor.html;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -37,7 +37,7 @@ import static java.nio.charset.StandardCharsets.*;
  * Allows creation of an XHTML document from a text document. Each group of lines is converted to an XHTML <code>&lt;p&gt;</code>.
  * @author Garret Wilson
  */
-public class XHTMLCreator implements Clogged {
+public class HtmlCreator implements Clogged {
 
 	protected long totalLineCount = 0; //TODO testing; comment; tidy
 	protected long totalLineLengthSum = 0;
@@ -99,7 +99,7 @@ public class XHTMLCreator implements Clogged {
 	}
 
 	/** Default constructor. */
-	public XHTMLCreator() {
+	public HtmlCreator() {
 	}
 
 	/**
@@ -135,7 +135,7 @@ public class XHTMLCreator implements Clogged {
 	 * @throws IOException Thrown if there is an I/O error.
 	 */
 	protected void parseText(final Document document, final BufferedReader bufferedReader) throws IOException {
-		final Element bodyElement = XHTML.getBodyElement(document); //get a reference to the body element
+		final Element bodyElement = HtmlDom.getBodyElement(document); //get a reference to the body element
 		assert bodyElement != null : "Missing body element"; //we should always have a body element starting out
 		Element paragraphElement = parseParagraph(document, bodyElement.getNamespaceURI(), bufferedReader); //parse the first paragraph
 		while(paragraphElement != null) { //keep reading until we run out of paragraphs

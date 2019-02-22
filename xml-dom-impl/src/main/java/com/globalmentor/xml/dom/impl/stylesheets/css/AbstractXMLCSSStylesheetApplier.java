@@ -27,6 +27,7 @@ import static com.globalmentor.html.spec.HTML.*;
 import static com.globalmentor.xml.spec.XML.*;
 import static com.globalmentor.xml.spec.XMLStyleSheets.*;
 
+import com.globalmentor.html.spec.HTML;
 import com.globalmentor.io.*;
 import com.globalmentor.model.NameValuePair;
 import com.globalmentor.net.ContentType;
@@ -164,7 +165,8 @@ public abstract class AbstractXMLCSSStylesheetApplier<D, E> implements URIInputS
 	 * @param mediaType The media type of the document, or <code>null</code>. if the media type is unknown.
 	 * @return An array of stylesheets.
 	 */
-	public CSSStyleSheet[] getStylesheets(final D document, final URI baseURI, final ContentType mediaType/*TODO convert to something general, final RDFResource description*/) {
+	public CSSStyleSheet[] getStylesheets(final D document, final URI baseURI,
+			final ContentType mediaType/*TODO convert to something general, final RDFResource description*/) {
 		final List<CSSStyleSheet> styleSheetList = new ArrayList<CSSStyleSheet>(); //create a new list to hold the stylesheets
 		//get all default stylesheets
 		final String[] namespaceURIArray = getNamespaceURIs(document, mediaType/*TODO fix, description*/); //get all namespaces used in this document
@@ -249,6 +251,24 @@ public abstract class AbstractXMLCSSStylesheetApplier<D, E> implements URIInputS
 	}
 
 	/**
+	 * Determines the default XML namespace for the given MIME content type.
+	 * @param mediaType The media type for which a default namespace should be found, or <code>null</code> if the media type is not known.
+	 * @return The default XML namespace URI used by resources of the given content type, or <code>null</code> if there is no default namespace URI or the default
+	 *         namespace URI is not known.
+	 */
+	public static URI getDefaultNamespaceURI(final ContentType mediaType) {
+		if(mediaType != null) { //if we were given a valid media type
+			if(HTML.isHTML(mediaType)) //if this is one of the HTML media types
+				return HTML.XHTML_NAMESPACE_URI; //return the XHTML media type
+			/*TODO fix for OEB; create some sort of registration facility
+			else if(mediaType.match(ContentType.TEXT_PRIMARY_TYPE, OEB.X_OEB1_DOCUMENT_SUBTYPE)) //if this is an OEB 1.x document
+				return OEB.OEB1_DOCUMENT_NAMESPACE_URI; //return the OEB 1.x document namespace
+			*/
+		}
+		return null; //show that we can't find a default namespace URI
+	}
+
+	/**
 	 * Finds the namespaces used by the document.
 	 * <p>
 	 * This implementation gathers namespaces from the following locations:
@@ -270,7 +290,7 @@ public abstract class AbstractXMLCSSStylesheetApplier<D, E> implements URIInputS
 		if(documentElementNamespaceURI != null) { //if the document element has a namespace
 			namespaceURISet.add(documentElementNamespaceURI); //add the document element namespace to the namespace set
 		}
-		final URI mediaTypeNamespaceURI = XML.getDefaultNamespaceURI(mediaType); //see if we can find a default namespace for the media type
+		final URI mediaTypeNamespaceURI = getDefaultNamespaceURI(mediaType); //see if we can find a default namespace for the media type
 		if(mediaTypeNamespaceURI != null) { //if we found a namespace for the media type
 			namespaceURISet.add(mediaTypeNamespaceURI.toString()); //add the content type namespace to the namespace set
 		}

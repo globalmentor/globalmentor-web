@@ -36,8 +36,6 @@ import com.globalmentor.model.ObjectHolder;
 import com.globalmentor.net.ContentType;
 import com.globalmentor.net.URIs;
 import com.globalmentor.text.ASCII;
-import com.globalmentor.html.spec.HTML;
-import com.globalmentor.xml.xhtml.XHTML;
 
 import org.w3c.dom.*;
 import org.w3c.dom.traversal.*;
@@ -58,7 +56,7 @@ import static java.nio.charset.StandardCharsets.*;
  * Various XML manipulation functions, mostly using the DOM.
  * @author Garret Wilson
  */
-public class XML {
+public class XML { //TODO likely move all or part of this class to a Dom class, perhaps in another project
 
 	/**
 	 * The number of bytes to use when auto-detecting character encoding.
@@ -1669,24 +1667,6 @@ public class XML {
 	 */
 	public static String toString(final Element element) {
 		return new XMLSerializer(true).serialize(element); //serialize the element to a string, formatting the XML output
-	}
-
-	/**
-	 * Determines the default XML namespace for the given MIME content type.
-	 * @param mediaType The media type for which a default namespace should be found, or <code>null</code> if the media type is not known.
-	 * @return The default XML namespace URI used by resources of the given content type, or <code>null</code> if there is no default namespace URI or the default
-	 *         namespace URI is not known.
-	 */
-	public static URI getDefaultNamespaceURI(final ContentType mediaType) {
-		if(mediaType != null) { //if we were given a valid media type
-			if(XHTML.isHTML(mediaType)) //if this is one of the HTML media types
-				return HTML.XHTML_NAMESPACE_URI; //return the XHTML media type
-			/*TODO fix for OEB; create some sort of registration facility
-			else if(mediaType.match(ContentType.TEXT_PRIMARY_TYPE, OEB.X_OEB1_DOCUMENT_SUBTYPE)) //if this is an OEB 1.x document
-				return OEB.OEB1_DOCUMENT_NAMESPACE_URI; //return the OEB 1.x document namespace
-			*/
-		}
-		return null; //show that we can't find a default namespace URI
 	}
 
 	/**

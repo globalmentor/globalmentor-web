@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.globalmentor.xml.xhtml;
+package com.globalmentor.html;
 
 import java.util.*;
 
@@ -77,7 +77,7 @@ import org.w3c.dom.*;
  * </dl>
  * @author Garret Wilson
  */
-public class ProjectGutenbergXHTMLTidier {	//TODO move to different package
+public class ProjectGutenbergHtmlTidier {	//TODO move to different package
 
 	/**
 	 * The first part of the words "Project Gutenberg". Some works such as optns10.txt misspell this as "Project Gutenburg".
@@ -140,7 +140,7 @@ public class ProjectGutenbergXHTMLTidier {	//TODO move to different package
 	 * @return A document fragment that contains the text of the header that was removed from the document, or <code>null</code> if a header could not be found.
 	 */
 	public static DocumentFragment extractHeader(final Document document) {
-		final Element bodyElement = XHTML.getBodyElement(document); //get the <body> element of the XHTML document
+		final Element bodyElement = HtmlDom.getBodyElement(document); //get the <body> element of the XHTML document
 		int divIndex = -1; //we'll check for dividers, just in case we can't find the header
 		int sendMoneyIndex = -1; //we'll find the "send money" index in case we need it to be a divider
 		int smallPrintStartIndex = -1; //we'll check for the beginning of the small print, just in case we can't find the header
@@ -246,7 +246,7 @@ public class ProjectGutenbergXHTMLTidier {	//TODO move to different package
 	 * @return A document fragment that contains the text of the footer that was removed from the document, or <code>null</code> if a footer could not be found.
 	 */
 	public static DocumentFragment extractFooter(final Document document) {
-		final Element bodyElement = XHTML.getBodyElement(document); //get the <body> element of the XHTML document
+		final Element bodyElement = HtmlDom.getBodyElement(document); //get the <body> element of the XHTML document
 		final NodeList childNodes = bodyElement.getChildNodes(); //get the list of body child nodes
 		for(int i = childNodes.getLength() - 1; i >= 0; --i) { //look at each child node, starting at the end
 			final Node childNode = childNodes.item(i); //get this child node
@@ -266,7 +266,7 @@ public class ProjectGutenbergXHTMLTidier {	//TODO move to different package
 	 * @return The element containing the Project Gutenberg footer information, or <code>null</code> if a footer could not be found.
 	 */
 	public static Element getPGFooterElement(final Document document) {
-		final Element bodyElement = XHTML.getBodyElement(document); //get the <body> element of the XHTML document
+		final Element bodyElement = HtmlDom.getBodyElement(document); //get the <body> element of the XHTML document
 		final NodeList childNodes = bodyElement.getChildNodes(); //get the list of body child nodes
 		for(int i = childNodes.getLength() - 1; i >= 0; --i) { //look at each child node, starting at the end
 			final Node childNode = childNodes.item(i); //get this child node
@@ -801,7 +801,7 @@ public class ProjectGutenbergXHTMLTidier {	//TODO move to different package
 		//these three pairs of strings are the the ones to search for, in the order of lines given
 		final String[][] indicatorStrings = { { PROJECT_GUTENB, ETEXT }, { SMALL_PRINT, SMALL_PRINT_START }, { SMALL_PRINT, SMALL_PRINT_END } };
 		int indicatorIndex = 0;
-		final Element bodyElement = XHTML.getBodyElement(document); //get the <body> element of the XHTML document
+		final Element bodyElement = HtmlDom.getBodyElement(document); //get the <body> element of the XHTML document
 		if(bodyElement != null) { //if there is a body element
 			final NodeList childNodes = bodyElement.getChildNodes(); //get the list of body child nodes
 			for(int i = 0; i < childNodes.getLength(); ++i) { //look at each child node

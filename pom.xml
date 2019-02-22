@@ -26,6 +26,7 @@
 	<modules>
 		<module>css</module>
 		<module>css-spec</module>
+		<module>html</module>
 		<module>html-spec</module>
 		<module>mathml-spec</module>
 		<module>javascript</module>
