@@ -51,7 +51,7 @@ import static com.globalmentor.html.spec.HTML.*;
 import static com.globalmentor.mathml.spec.MathML.*;
 import static com.globalmentor.svg.spec.SVG.*;
 import static com.globalmentor.xml.spec.XML.*;
-import static com.globalmentor.xml.XMLStyleSheets.*;
+import static com.globalmentor.xml.spec.XMLStyleSheets.*;
 import static java.nio.charset.StandardCharsets.*;
 
 /**
