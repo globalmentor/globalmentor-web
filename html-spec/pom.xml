@@ -18,5 +18,10 @@
 			<groupId>com.globalmentor</groupId>
 			<artifactId>globalmentor-core</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>com.globalmentor</groupId>
+			<artifactId>globalmentor-xml-spec</artifactId>
+		</dependency>
 	</dependencies>
 </project>

@@ -26,18 +26,18 @@ import com.globalmentor.net.ContentType;
 import com.globalmentor.text.Prose;
 import com.globalmentor.text.Unicode;
 import com.globalmentor.util.*;
-import com.globalmentor.w3c.spec.CSS;
-import com.globalmentor.w3c.spec.HTML;
-import com.globalmentor.w3c.spec.XML;
+import com.globalmentor.css.spec.CSS;
+import com.globalmentor.html.spec.HTML;
+import com.globalmentor.xml.spec.XML;
 import com.globalmentor.xml.xpath.XPath;
 
 import io.clogr.Clogged;
 
 import static com.globalmentor.java.Characters.*;
 import static com.globalmentor.net.ContentTypeConstants.*;
-import static com.globalmentor.w3c.spec.CSS.*;
-import static com.globalmentor.w3c.spec.HTML.*;
-import static com.globalmentor.w3c.spec.XML.*;
+import static com.globalmentor.css.spec.CSS.*;
+import static com.globalmentor.html.spec.HTML.*;
+import static com.globalmentor.xml.spec.XML.*;
 import static com.globalmentor.xml.XML.*;
 
 import org.w3c.dom.*;

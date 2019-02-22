@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package com.globalmentor.w3c.spec;
+package com.globalmentor.mathml.spec;
 
 import java.net.URI;
 
 import com.globalmentor.net.ContentType;
+import com.globalmentor.xml.spec.XML;
 
 /**
  * Constants for MathML.

@@ -24,7 +24,7 @@ import static com.globalmentor.xml.XML.*;
 
 import com.globalmentor.model.IDed;
 import com.globalmentor.net.DefaultResource;
-import com.globalmentor.w3c.spec.XML;
+import com.globalmentor.xml.spec.XML;
 
 /**
  * Represents a qualified name (QName) of an XML element, including the namespace URI, the prefix, and the local name. The reference URI indicates the

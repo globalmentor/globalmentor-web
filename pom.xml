@@ -25,10 +25,14 @@
 
 	<modules>
 		<module>css</module>
+		<module>css-spec</module>
+		<module>html-spec</module>
+		<module>mathml-spec</module>
 		<module>javascript</module>
-		<module>w3c-spec</module>
+		<module>svg-spec</module>
 		<module>xml</module>
 		<module>xml-dom-impl</module>
+		<module>xml-spec</module>
 	</modules>
 
 	<dependencyManagement>
@@ -53,13 +57,37 @@
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
-				<artifactId>globalmentor-w3c-spec</artifactId>
+				<artifactId>globalmentor-css-spec</artifactId>
+				<version>0.6.0-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.globalmentor</groupId>
+				<artifactId>globalmentor-html-spec</artifactId>
+				<version>0.6.0-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.globalmentor</groupId>
+				<artifactId>globalmentor-mathml-spec</artifactId>
+				<version>0.6.0-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.globalmentor</groupId>
+				<artifactId>globalmentor-svg-spec</artifactId>
 				<version>0.6.0-SNAPSHOT</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-xml</artifactId>
+				<version>0.6.0-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.globalmentor</groupId>
+				<artifactId>globalmentor-xml-spec</artifactId>
 				<version>0.6.0-SNAPSHOT</version>
 			</dependency>
 		</dependencies>

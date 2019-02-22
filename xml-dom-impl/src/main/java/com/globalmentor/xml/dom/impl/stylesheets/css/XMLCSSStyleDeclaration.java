@@ -16,12 +16,12 @@
 
 package com.globalmentor.xml.dom.impl.stylesheets.css;
 
-import static com.globalmentor.w3c.spec.CSS.*;
+import static com.globalmentor.css.spec.CSS.*;
 
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
-import com.globalmentor.w3c.spec.CSS;
+import com.globalmentor.css.spec.CSS;
 import com.globalmentor.xml.dom.impl.XMLDOMException;
 
 import org.w3c.dom.DOMException;

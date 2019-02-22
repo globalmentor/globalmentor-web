@@ -16,7 +16,7 @@
 
 package com.globalmentor.xml.dom.impl;
 
-import static com.globalmentor.w3c.spec.XML.*;
+import static com.globalmentor.xml.spec.XML.*;
 
 /**
  * A comment in an XML document.

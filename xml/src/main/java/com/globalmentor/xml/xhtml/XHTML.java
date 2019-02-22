@@ -30,13 +30,13 @@ import com.globalmentor.java.Arrays;
 import com.globalmentor.java.Objects;
 import com.globalmentor.model.ConfigurationException;
 import com.globalmentor.net.ContentType;
-import com.globalmentor.w3c.spec.HTML;
+import com.globalmentor.html.spec.HTML;
 import com.globalmentor.xml.XML;
 
 import io.clogr.Clogr;
 
 import static com.globalmentor.text.ASCII.*;
-import static com.globalmentor.w3c.spec.HTML.*;
+import static com.globalmentor.html.spec.HTML.*;
 import static com.globalmentor.xml.XML.*;
 import static com.globalmentor.xml.xpath.XPath.*;
 

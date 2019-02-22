@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.globalmentor.w3c.spec;
+package com.globalmentor.html.spec;
 
 import java.net.URI;
 import java.util.*;
@@ -24,6 +24,7 @@ import static java.util.Objects.*;
 import com.globalmentor.java.Characters;
 import com.globalmentor.model.IDed;
 import com.globalmentor.net.ContentType;
+import com.globalmentor.xml.spec.XML;
 
 import static com.globalmentor.collections.Sets.*;
 import static com.globalmentor.java.Characters.*;

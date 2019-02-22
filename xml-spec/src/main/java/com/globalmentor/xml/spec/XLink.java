@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.globalmentor.w3c.spec;
+package com.globalmentor.xml.spec;
 
 import java.net.URI;
 
-import static com.globalmentor.w3c.spec.XML.*;
+import static com.globalmentor.xml.spec.XML.*;
 
 import org.w3c.dom.Element;
 

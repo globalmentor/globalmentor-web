@@ -23,7 +23,7 @@ import com.globalmentor.io.IO;
 import com.globalmentor.io.ParseReader;
 import com.globalmentor.io.ProcessingBufferedReader;
 
-import static com.globalmentor.w3c.spec.XML.*;
+import static com.globalmentor.xml.spec.XML.*;
 
 /**
  * Class for parsing XML data from a stream. This class lets <code>ParseReader</code> do most of the work, while overriding <code>processBufferedData()</code>

@@ -16,7 +16,7 @@
 
 package com.globalmentor.xml.dom.impl.stylesheets.css;
 
-import static com.globalmentor.w3c.spec.CSS.*;
+import static com.globalmentor.css.spec.CSS.*;
 
 import java.io.*;
 import java.net.URL;

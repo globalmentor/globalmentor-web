@@ -28,8 +28,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import static com.globalmentor.java.Characters.SPACE_CHAR;
-import static com.globalmentor.w3c.spec.XML.*;
 import static com.globalmentor.xml.XML.*;
+import static com.globalmentor.xml.spec.XML.*;
 
 import com.globalmentor.io.ByteOrderMark;
 import com.globalmentor.io.Filenames;

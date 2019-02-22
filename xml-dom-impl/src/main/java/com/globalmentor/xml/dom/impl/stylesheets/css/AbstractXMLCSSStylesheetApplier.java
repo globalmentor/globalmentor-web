@@ -23,9 +23,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
 
-import static com.globalmentor.w3c.spec.HTML.*;
-import static com.globalmentor.w3c.spec.XML.*;
+import static com.globalmentor.html.spec.HTML.*;
 import static com.globalmentor.xml.XMLStyleSheets.*;
+import static com.globalmentor.xml.spec.XML.*;
 
 import com.globalmentor.io.*;
 import com.globalmentor.model.NameValuePair;

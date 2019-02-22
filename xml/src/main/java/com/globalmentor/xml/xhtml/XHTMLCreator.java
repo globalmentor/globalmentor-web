@@ -30,7 +30,7 @@ import io.clogr.Clogged;
 import org.w3c.dom.*;
 
 import static com.globalmentor.java.Characters.*;
-import static com.globalmentor.w3c.spec.HTML.*;
+import static com.globalmentor.html.spec.HTML.*;
 import static java.nio.charset.StandardCharsets.*;
 
 /**
