@@ -374,7 +374,7 @@ public class HtmlDom {
 	}
 
 	/**
-	 * Determines if the specified element represents an empty element&mdash;an element that might be declared as <code>EMPTY</code> in a DTD.
+	 * Determines if the specified element represents an empty element—an element that might be declared as <code>EMPTY</code> in a DTD.
 	 * @param namespaceURI The element namespace.
 	 * @param localName The local name of the element.
 	 * @return <code>true</code> if the specified element should be empty.

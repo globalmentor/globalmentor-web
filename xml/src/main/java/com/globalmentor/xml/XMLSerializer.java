@@ -18,6 +18,9 @@ package com.globalmentor.xml;
 
 import java.io.*;
 import java.util.*;
+
+import javax.annotation.*;
+
 import java.nio.charset.Charset;
 
 import com.globalmentor.io.ByteOrderMark;
@@ -43,55 +46,55 @@ import org.w3c.dom.*;
 public class XMLSerializer {
 
 	/** Whether the output should be formatted. */
-	public static final String FORMAT_OUTPUT_OPTION = "formatOutput";
+	public static final String OPTION_FORMAT_OUTPUT = "formatOutput";
 
 	/** Default to unformatted output. */
-	public static final boolean FORMAT_OUTPUT_OPTION_DEFAULT = false;
+	public static final boolean OPTION_FORMAT_OUTPUT_DEFAULT = false;
 
 	/** Whether Unicode control characters should be XML-encoded. */
-	public static final String XML_ENCODE_CONTROL_OPTION = "xmlEncodeControl";
+	public static final String OPTION_XML_ENCODE_CONTROL = "xmlEncodeControl";
 
 	/** Default to not XML-encoding control characters. */
-	public static final boolean XML_ENCODE_CONTROL_OPTION_DEFAULT = false;
+	public static final boolean OPTION_XML_ENCODE_CONTROL_DEFAULT = false;
 
 	/** Whether extended characters (above 127) should be XML-encoded. */
-	public static final String XML_ENCODE_NON_ASCII_OPTION = "xmlEncodeNonASCII";
+	public static final String OPTION_XML_ENCODE_NON_ASCII = "xmlEncodeNonASCII";
 
 	/** Default to not XML-encoding extended characters. */
-	public static final boolean XML_ENCODE_NON_ASCII_OPTION_DEFAULT = false;
+	public static final boolean OPTION_XML_ENCODE_NON_ASCII_DEFAULT = false;
 
 	/** Whether private use Unicode characters should be XML-encoded. */
-	public static final String XML_ENCODE_PRIVATE_USE_OPTION = "xmlEncodePrivateUse";
+	public static final String OPTION_XML_ENCODE_PRIVATE_USE = "xmlEncodePrivateUse";
 
 	/** Default to not XML-encoding private use characters. */
-	public static final boolean XML_ENCODE_PRIVATE_USE_OPTION_DEFAULT = false;
+	public static final boolean OPTION_XML_ENCODE_PRIVATE_USE_DEFAULT = false;
 
-	/**
-	 * Whether characters which match a one-character predefined entity should be encoded using that entity.
-	 */
-	public static final String USE_ENTITIES_OPTION = "useEntities";
+	/** Whether characters which match a one-character predefined entity should be encoded using that entity. */
+	public static final String OPTION_USE_ENTITIES = "useEntities";
 
 	/** Default to using one-character predefined entities for encoding. */
-	public static final boolean USE_ENTITIES_OPTION_DEFAULT = true;
+	public static final boolean OPTION_USE_ENTITIES_DEFAULT = true;
 
-	/** Whether a byte order mark (BOM) is written. */
 	private boolean bomWritten = false;
 
-	/** @return Whether a byte order mark (BOM) is written. */
+	/**
+	 * Returns whether the serializer will write a byte order mark (BOM).
+	 * @return Whether a BOM is written.
+	 */
 	public boolean isBOMWritten() {
 		return bomWritten;
 	}
 
 	/**
 	 * Whether a byte order mark (BOM) is written.
-	 * @param bomWritten Whether a byte order mark (BOM) is written.
+	 * @implSpec This option is disabled by default.
+	 * @param bomWritten Whether a BOM is written.
 	 */
 	public void setBOMWritten(final boolean bomWritten) {
 		this.bomWritten = bomWritten;
 	}
 
-	/** Whether the output should be formatted. */
-	private boolean formatted = FORMAT_OUTPUT_OPTION_DEFAULT;
+	private boolean formatted = OPTION_FORMAT_OUTPUT_DEFAULT;
 
 	/** @return Whether the output should be formatted. */
 	public boolean isFormatted() {
@@ -100,18 +103,18 @@ public class XMLSerializer {
 
 	/**
 	 * Sets whether the output should be formatted.
+	 * @implSpec This option defaults to {@value #OPTION_FORMAT_OUTPUT_DEFAULT}.
 	 * @param newFormatted <code>true</code> if the output should be formatted, else <code>false</code>.
 	 */
 	public void setFormatted(final boolean newFormatted) {
 		formatted = newFormatted;
 	}
 
-	/** Whether Unicode control characters should be XML-encoded. */
-	private boolean xmlEncodeControl = XML_ENCODE_CONTROL_OPTION_DEFAULT;
+	private boolean xmlEncodeControl = OPTION_XML_ENCODE_CONTROL_DEFAULT;
 
 	/**
 	 * @return Whether Unicode control characters should be XML-encoded.
-	 * @see #isUseEntities
+	 * @see #isUseEntities()
 	 */
 	public boolean isXMLEncodeControl() {
 		return xmlEncodeControl;
@@ -119,39 +122,39 @@ public class XMLSerializer {
 
 	/**
 	 * Sets whether Unicode control characters should be XML-encoded.
+	 * @implSpec This option defaults to {@value #OPTION_XML_ENCODE_CONTROL_DEFAULT}.
 	 * @param newXMLEncodeControl <code>true</code> if control characters should be XML-encoded, else <code>false</code>.
-	 * @see setUseEntities
+	 * @see #setUseEntities(boolean)
 	 */
 	public void setXMLEncodeControl(final boolean newXMLEncodeControl) {
 		xmlEncodeControl = newXMLEncodeControl;
 	}
 
-	/** Whether extended characters (above 127) should be XML-encoded. */
-	private boolean xmlEncodeNonASCII = XML_ENCODE_NON_ASCII_OPTION_DEFAULT;
+	private boolean xmlEncodeNonASCII = OPTION_XML_ENCODE_NON_ASCII_DEFAULT;
 
 	/**
 	 * @return Whether extended characters (above 127) should be XML-encoded.
-	 * @see #isUseEntities
+	 * @see #isUseEntities()
 	 */
-	public boolean isXMLEncodeNonASCII() {
+	public boolean isXmlEncodeNonAscii() {
 		return xmlEncodeNonASCII;
 	}
 
 	/**
 	 * Sets whether extended characters (above 127) should be XML-encoded.
-	 * @param newXMLEncodeNonASCII <code>true</code> if extended characters should be XML-encoded, else <code>false</code>.
-	 * @see setUseEntities
+	 * @implSpec This option defaults to {@value #OPTION_XML_ENCODE_NON_ASCII_DEFAULT}.
+	 * @param newXmlEncodeNonAscii <code>true</code> if extended characters should be XML-encoded, else <code>false</code>.
+	 * @see #setUseEntities(boolean)
 	 */
-	public void setXMLEncodeNonASCII(final boolean newXMLEncodeNonASCII) {
-		xmlEncodeNonASCII = newXMLEncodeNonASCII;
+	public void setXMLEncodeNonASCII(final boolean newXmlEncodeNonAscii) {
+		xmlEncodeNonASCII = newXmlEncodeNonAscii;
 	}
 
-	/** Whether private use Unicode characters should be XML-encoded. */
-	private boolean xmlEncodePrivateUse = XML_ENCODE_PRIVATE_USE_OPTION_DEFAULT;
+	private boolean xmlEncodePrivateUse = OPTION_XML_ENCODE_PRIVATE_USE_DEFAULT;
 
 	/**
 	 * @return Whether private use Unicode characters should be XML-encoded.
-	 * @see #isUseEntities
+	 * @see #isUseEntities()
 	 */
 	public boolean isXMLEncodePrivateUse() {
 		return xmlEncodePrivateUse;
@@ -159,17 +162,15 @@ public class XMLSerializer {
 
 	/**
 	 * Sets whether private use Unicode characters should be XML-encoded.
-	 * @param newXMLEncodePrivateUse <code>true</code> if private use characters should be XML-encoded, else <code>false</code>.
+	 * @implSpec This option defaults to {@value #OPTION_XML_ENCODE_PRIVATE_USE_DEFAULT}.
+	 * @param newXmlEncodePrivateUse <code>true</code> if private use characters should be XML-encoded, else <code>false</code>.
 	 * @see #setUseEntities(boolean)
 	 */
-	public void setXMLEncodePrivateUse(final boolean newXMLEncodePrivateUse) {
-		xmlEncodePrivateUse = newXMLEncodePrivateUse;
+	public void setXMLEncodePrivateUse(final boolean newXmlEncodePrivateUse) {
+		xmlEncodePrivateUse = newXmlEncodePrivateUse;
 	}
 
-	/**
-	 * Whether characters which match a one-character predefined entity should be encoded using that entity.
-	 */
-	private boolean useEntities = USE_ENTITIES_OPTION_DEFAULT;
+	private boolean useEntities = OPTION_USE_ENTITIES_DEFAULT;
 
 	/**
 	 * @return Whether one-character entities will be used when possible.
@@ -182,6 +183,7 @@ public class XMLSerializer {
 	/**
 	 * Sets whether characters which match a one-character predefined entity should be encoded using that entity. This will override the XML-encoding settings
 	 * when applicable.
+	 * @implSpec This option defaults to {@value #OPTION_USE_ENTITIES_DEFAULT}.
 	 * @param newUseEntities <code>true</code> if available entities should be used to encode characters.
 	 * @see #setXMLEncodeControl(boolean)
 	 */
@@ -189,7 +191,6 @@ public class XMLSerializer {
 		useEntities = newUseEntities;
 	}
 
-	/** Whether missing namespaces declarations should be added. */
 	private boolean namespacesDeclarationsEnsured = true;
 
 	/** @return Whether missing namespaces declarations should be added. */
@@ -199,6 +200,7 @@ public class XMLSerializer {
 
 	/**
 	 * Sets whether missing namespace declarations are added.
+	 * @implSpec This option is enabled by default.
 	 * @param namespacesDeclarationsEnsured Whether missing namespaces declarations should be added.
 	 */
 	public void setNamespacesDeclarationsEnsured(final boolean namespacesDeclarationsEnsured) {
@@ -218,6 +220,7 @@ public class XMLSerializer {
 
 	/**
 	 * Sets whether missing namespace declarations are added to the document element if possible, or to the top-level element needing the declaration.
+	 * @implSpec This option is enabled by default.
 	 * @param namespacesDocumentElementDeclarations Whether missing namespaces declarations should be added to the document element if possible, rather than the
 	 *          top-level element needing the declaration.
 	 */
@@ -228,23 +231,22 @@ public class XMLSerializer {
 	/**
 	 * Sets the options based on the contents of the option properties.
 	 * @param options The properties which contain the options.
+	 * @deprecated Replace with Confound.
 	 */
-	public void setOptions(final Properties options) {
-		setFormatted(PropertiesUtilities.getBooleanProperty(options, FORMAT_OUTPUT_OPTION, FORMAT_OUTPUT_OPTION_DEFAULT));
-		setUseEntities(PropertiesUtilities.getBooleanProperty(options, USE_ENTITIES_OPTION, USE_ENTITIES_OPTION_DEFAULT));
-		setXMLEncodeControl(PropertiesUtilities.getBooleanProperty(options, XML_ENCODE_CONTROL_OPTION, XML_ENCODE_CONTROL_OPTION_DEFAULT));
-		setXMLEncodeNonASCII(PropertiesUtilities.getBooleanProperty(options, XML_ENCODE_NON_ASCII_OPTION, XML_ENCODE_NON_ASCII_OPTION_DEFAULT));
-		setXMLEncodePrivateUse(PropertiesUtilities.getBooleanProperty(options, XML_ENCODE_PRIVATE_USE_OPTION, XML_ENCODE_PRIVATE_USE_OPTION_DEFAULT));
+	@Deprecated
+	public void setOptions(@Nonnull final Properties options) {
+		setFormatted(PropertiesUtilities.getBooleanProperty(options, OPTION_FORMAT_OUTPUT, OPTION_FORMAT_OUTPUT_DEFAULT));
+		setUseEntities(PropertiesUtilities.getBooleanProperty(options, OPTION_USE_ENTITIES, OPTION_USE_ENTITIES_DEFAULT));
+		setXMLEncodeControl(PropertiesUtilities.getBooleanProperty(options, OPTION_XML_ENCODE_CONTROL, OPTION_XML_ENCODE_CONTROL_DEFAULT));
+		setXMLEncodeNonASCII(PropertiesUtilities.getBooleanProperty(options, OPTION_XML_ENCODE_NON_ASCII, OPTION_XML_ENCODE_NON_ASCII_DEFAULT));
+		setXMLEncodePrivateUse(PropertiesUtilities.getBooleanProperty(options, OPTION_XML_ENCODE_PRIVATE_USE, OPTION_XML_ENCODE_PRIVATE_USE_DEFAULT));
 	}
 
-	/**
-	 * The string to use for horizontally aligning the elements if formatting is turned on. Defaults to a single tab character.
-	 */
 	private String horizontalAlignString = "\t";
 
 	/**
 	 * @return The string to use for horizontally aligning the elements if formatting is turned on.
-	 * @see #isFormatted
+	 * @see #isFormatted()
 	 */
 	public String getHorizontalAlignString() {
 		return horizontalAlignString;
@@ -252,6 +254,7 @@ public class XMLSerializer {
 
 	/**
 	 * Sets the string to use for horizontally aligning the elements if formatting is turned on..
+	 * @implSpec The default is a single tab character.
 	 * @param newHorizontalAlignString The horizontal alignment string.
 	 * @see #setFormatted
 	 */
@@ -263,8 +266,8 @@ public class XMLSerializer {
 	protected int nestLevel = -1;
 
 	/**
-	 * The string representing one-character entity values. The <code>entityNames</code> array will contain the names of the corresponding entities, each at the
-	 * same index as the corresponding character value.
+	 * The string representing one-character entity values. The {@link #entityNames} array will contain the names of the corresponding entities, each at the same
+	 * index as the corresponding character value.
 	 * @see #entityNames
 	 */
 	private String entityCharacterValues;
@@ -305,11 +308,11 @@ public class XMLSerializer {
 	 * @throws IOException Thrown if an I/O error occurred.
 	 * @throws UnsupportedEncodingException Thrown if the UTF-8 encoding not recognized.
 	 */
-	public String serialize(final Document document) throws UnsupportedEncodingException, IOException {
+	public String serialize(@Nonnull final Document document) throws UnsupportedEncodingException, IOException {
 		try {
 			final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(); //create an output stream for receiving the XML data
 			serialize(document, byteArrayOutputStream, UTF_8); //serialize the document to the output stream using UTF-8 with no byte order mark
-			return byteArrayOutputStream.toString(UTF_8.name()); //convert the byte array to a string, using the UTF-8 encoding, and return it
+			return byteArrayOutputStream.toString(UTF_8); //convert the byte array to a string, using the UTF-8 encoding, and return it
 		} catch(final UnsupportedEncodingException unsupportedEncodingException) { //UTF-8 should always be supported
 			throw new AssertionError(unsupportedEncodingException);
 		} catch(final IOException ioException) { //there should never by an I/O exception writing to a byte array output stream
@@ -322,11 +325,11 @@ public class XMLSerializer {
 	 * @param documentFragment The XML document fragment to serialize.
 	 * @return A string containing the serialized XML data.
 	 */
-	public String serialize(final DocumentFragment documentFragment) {
+	public String serialize(@Nonnull final DocumentFragment documentFragment) {
 		try {
 			final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(); //create an output stream for receiving the XML data
 			serialize(documentFragment, byteArrayOutputStream, UTF_8); //serialize the document fragment to the output stream using UTF-8 with no byte order mark
-			return byteArrayOutputStream.toString(UTF_8.name()); //convert the byte array to a string, using the UTF-8 encoding, and return it
+			return byteArrayOutputStream.toString(UTF_8); //convert the byte array to a string, using the UTF-8 encoding, and return it
 		} catch(final UnsupportedEncodingException unsupportedEncodingException) { //UTF-8 should always be supported
 			throw new AssertionError(unsupportedEncodingException);
 		} catch(final IOException ioException) { //there should never by an I/O exception writing to a byte array output stream
@@ -339,11 +342,11 @@ public class XMLSerializer {
 	 * @param element The XML element to serialize.
 	 * @return A string containing the serialized XML data.
 	 */
-	public String serialize(final Element element) {
+	public String serialize(@Nonnull final Element element) {
 		try {
 			final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(); //create an output stream for receiving the XML data
 			serialize(element, byteArrayOutputStream, UTF_8); //serialize the element to the output stream using UTF-8 with no byte order mark
-			return byteArrayOutputStream.toString(UTF_8.name()); //convert the byte array to a string, using the UTF-8 encoding, and return it
+			return byteArrayOutputStream.toString(UTF_8); //convert the byte array to a string, using the UTF-8 encoding, and return it
 		} catch(final UnsupportedEncodingException unsupportedEncodingException) { //UTF-8 should always be supported
 			throw new AssertionError(unsupportedEncodingException);
 		} catch(final IOException ioException) { //there should never by an I/O exception writing to a byte array output stream
@@ -353,14 +356,14 @@ public class XMLSerializer {
 
 	/**
 	 * Serializes the content (all child nodes and their descendants) of a specified node to a string using the UTF-8 encoding with no byte order mark.
-	 * @param node The XML node the content of which to serialize&mdash;usually an element or document fragment.
+	 * @param node The XML node the content of which to serialize—usually an element or document fragment.
 	 * @return A string containing the serialized XML data.
 	 */
-	public String serializeContent(final Node node) {
+	public String serializeContent(@Nonnull final Node node) {
 		try {
 			final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(); //create an output stream for receiving the XML data
 			serializeContent(node, byteArrayOutputStream, UTF_8); //serialize the node content to the output stream using UTF-8 with no byte order mark
-			return byteArrayOutputStream.toString(UTF_8.name()); //convert the byte array to a string, using the UTF-8 encoding, and return it
+			return byteArrayOutputStream.toString(UTF_8); //convert the byte array to a string, using the UTF-8 encoding, and return it
 		} catch(final UnsupportedEncodingException unsupportedEncodingException) { //UTF-8 should always be supported
 			throw new AssertionError(unsupportedEncodingException);
 		} catch(final IOException ioException) { //there should never by an I/O exception writing to a byte array output stream
@@ -374,12 +377,8 @@ public class XMLSerializer {
 	 * @param outputStream The stream into which the document should be serialized.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 */
-	public void serialize(final Document document, final OutputStream outputStream) throws IOException {
-		try {
-			serialize(document, outputStream, UTF_8); //serialize the document, defaulting to UTF-8
-		} catch(final IOException ioException) { //there should never by an I/O exception writing to a byte array output stream
-			throw new AssertionError(ioException);
-		}
+	public void serialize(@Nonnull final Document document, @Nonnull final OutputStream outputStream) throws IOException {
+		serialize(document, outputStream, UTF_8); //serialize the document, defaulting to UTF-8
 	}
 
 	/**
@@ -391,12 +390,15 @@ public class XMLSerializer {
 	 * @throws IOException Thrown if an I/O error occurred.
 	 * @throws UnsupportedEncodingException Thrown if the specified encoding is not recognized.
 	 */
-	public void serialize(final Document document, final OutputStream outputStream, final Charset charset) throws IOException, UnsupportedEncodingException {
+	public void serialize(@Nonnull final Document document, @Nonnull final OutputStream outputStream, @Nonnull final Charset charset)
+			throws IOException, UnsupportedEncodingException {
 		nestLevel = 0; //show that we haven't started nesting yet
 		//TODO del if not needed		outputStream.write(charset.getByteOrderMark());	//write the byte order mark, which may be an empty array
 		if(isBOMWritten()) { //if we should write a BOM
 			final ByteOrderMark bom = ByteOrderMark.forCharset(charset); //get the byte order mark, if there is one
-			outputStream.write(bom.getBytes()); //write the byte order mark
+			if(bom != null) {
+				outputStream.write(bom.getBytes()); //write the byte order mark
+			}
 		}
 		final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, charset)); //create a new writer based on our encoding TODO see if the writer automatically writes the byte order mark already for non-UTF-8
 		writeProlog(document, writer, charset); //write the prolog
@@ -404,9 +406,9 @@ public class XMLSerializer {
 		if(documentType != null) { //if there is a document type
 			initializeEntityLookup(documentType.getEntities()); //initialize the entity lookup based on the provided entities
 			write(documentType, writer); //write the document type
-		} else
-			//if there is no document type
+		} else { //if there is no document type
 			initializeEntityLookup(null); //always initialize the entity lookup, so that at least the five XML entities will be included in the table
+		}
 		writeProcessingInstructions(document, writer); //write any processing instructions
 		final Element documentElement = document.getDocumentElement(); //get the document element
 		if(isNamespacesDeclarationsEnsured()) { //if we should ensure namespaces
@@ -428,7 +430,8 @@ public class XMLSerializer {
 	 * @throws IOException Thrown if an I/O error occurred.
 	 * @throws UnsupportedEncodingException Thrown if the UTF-8 encoding not recognized.
 	 */
-	public void serialize(final DocumentFragment documentFragment, final OutputStream outputStream) throws UnsupportedEncodingException, IOException {
+	public void serialize(@Nonnull final DocumentFragment documentFragment, @Nonnull final OutputStream outputStream)
+			throws UnsupportedEncodingException, IOException {
 		serialize(documentFragment, outputStream, UTF_8); //serialize the document, defaulting to UTF-8
 	}
 
@@ -441,8 +444,8 @@ public class XMLSerializer {
 	 * @throws IOException Thrown if an I/O error occurred.
 	 * @throws UnsupportedEncodingException Thrown if the specified encoding is not recognized.
 	 */
-	public void serialize(final DocumentFragment documentFragment, final OutputStream outputStream, final Charset charset) throws IOException,
-			UnsupportedEncodingException {
+	public void serialize(@Nonnull final DocumentFragment documentFragment, @Nonnull final OutputStream outputStream, @Nonnull final Charset charset)
+			throws IOException, UnsupportedEncodingException {
 		serializeContent(documentFragment, outputStream, charset); //serialize the content of the document fragment		
 	}
 
@@ -453,7 +456,7 @@ public class XMLSerializer {
 	 * @throws IOException Thrown if an I/O error occurred.
 	 * @throws UnsupportedEncodingException Thrown if the UTF-8 encoding is not recognized.
 	 */
-	public void serialize(final Element element, final OutputStream outputStream) throws IOException, UnsupportedEncodingException {
+	public void serialize(@Nonnull final Element element, @Nonnull final OutputStream outputStream) throws IOException, UnsupportedEncodingException {
 		serialize(element, outputStream, UTF_8); //serialize the element using UTF-8
 	}
 
@@ -466,12 +469,15 @@ public class XMLSerializer {
 	 * @throws IOException Thrown if an I/O error occurred.
 	 * @throws UnsupportedEncodingException Thrown if the specified encoding is not recognized.
 	 */
-	public void serialize(final Element element, final OutputStream outputStream, final Charset charset) throws IOException, UnsupportedEncodingException {
+	public void serialize(@Nonnull final Element element, @Nonnull final OutputStream outputStream, @Nonnull final Charset charset)
+			throws IOException, UnsupportedEncodingException {
 		nestLevel = 0; //show that we haven't started nesting yet
 		//TODO del if not needed		outputStream.write(charset.getByteOrderMark());	//write the byte order mark, which may be an empty array
 		if(isBOMWritten()) { //if we should write a BOM
 			final ByteOrderMark bom = ByteOrderMark.forCharset(charset); //get the byte order mark, if there is one
-			outputStream.write(bom.getBytes()); //write the byte order mark
+			if(bom != null) {
+				outputStream.write(bom.getBytes()); //write the byte order mark
+			}
 		}
 		final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, charset)); //create a new writer based on our encoding TODO see if the writer automatically writes the byte order mark already for non-UTF-8
 		write(element, writer); //write the element and all elements below it
@@ -484,30 +490,33 @@ public class XMLSerializer {
 	/**
 	 * Serializes the content (all child nodes and their descendants) of a specified node to the given output stream using the UTF-8 encoding with the UTF-8 byte
 	 * order mark.
-	 * @param node The XML node the content of which to serialize&mdash;usually an element or document fragment.
+	 * @param node The XML node the content of which to serialize—usually an element or document fragment.
 	 * @param outputStream The stream into which the element content should be serialized.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 * @throws UnsupportedEncodingException Thrown if the UTF-8 encoding is not recognized.
 	 */
-	protected void serializeContent(final Node node, final OutputStream outputStream) throws IOException, UnsupportedEncodingException {
+	protected void serializeContent(@Nonnull final Node node, @Nonnull final OutputStream outputStream) throws IOException, UnsupportedEncodingException {
 		serializeContent(node, outputStream, UTF_8); //serialize the content UTF-8
 	}
 
 	/**
 	 * Serializes the content (all child nodes and their descendants) of a specified node to the given output stream using the specified encoding. Any byte order
 	 * mark specified in the character encoding will be written to the stream.
-	 * @param node The XML node the content of which to serialize&mdash;usually an element or document fragment.
+	 * @param node The XML node the content of which to serialize—usually an element or document fragment.
 	 * @param outputStream The stream into which the element content should be serialized.
 	 * @param charset The charset to use when serializing.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 * @throws UnsupportedEncodingException Thrown if the specified encoding is not recognized.
 	 */
-	protected void serializeContent(final Node node, final OutputStream outputStream, final Charset charset) throws IOException, UnsupportedEncodingException {
+	protected void serializeContent(@Nonnull final Node node, @Nonnull final OutputStream outputStream, @Nonnull final Charset charset)
+			throws IOException, UnsupportedEncodingException {
 		nestLevel = 0; //show that we haven't started nesting yet
 		//TODO del if not needed		outputStream.write(charset.getByteOrderMark());	//write the byte order mark, which may be an empty array
 		if(isBOMWritten()) { //if we should write a BOM
 			final ByteOrderMark bom = ByteOrderMark.forCharset(charset); //get the byte order mark, if there is one
-			outputStream.write(bom.getBytes()); //write the byte order mark
+			if(bom != null) {
+				outputStream.write(bom.getBytes()); //write the byte order mark
+			}
 		}
 		final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, charset)); //create a new writer based on our encoding TODO see if the writer automatically writes the byte order mark already for non-UTF-8
 		writeContent(node, writer); //write all children of the node
@@ -528,7 +537,7 @@ public class XMLSerializer {
 	 * @see #isUseEntities
 	 * @see #setUseEntities
 	 */
-	protected void initializeEntityLookup(final NamedNodeMap entityMap) {
+	protected void initializeEntityLookup(@Nonnull final NamedNodeMap entityMap) {
 		final List<String> entityNameList = new ArrayList<String>(); //create an array to hold the entity names we use
 		final StringBuilder entityCharacterValueStringBuilder = new StringBuilder(); //create a buffer to hold all the character values
 		if(isUseEntities()) { //if we were asked to use their entities
@@ -580,13 +589,13 @@ public class XMLSerializer {
 	}
 
 	/**
-	 * Serializes the specified document's to the given writer.
+	 * Serializes the specified documents to the given writer.
 	 * @param document The XML document the prolog of which to serialize.
 	 * @param writer The writer into which the prolog should be written.
 	 * @param charset The charset in use.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 */
-	protected void writeProlog(final Document document, final BufferedWriter writer, final Charset charset) throws IOException {
+	protected void writeProlog(@Nonnull final Document document, @Nonnull final BufferedWriter writer, @Nonnull final Charset charset) throws IOException {
 		writer.write(XML_DECL_START + SPACE_CHAR + VERSIONINFO_NAME + EQUAL_CHAR + DOUBLE_QUOTE_CHAR + XML_VERSION + DOUBLE_QUOTE_CHAR + SPACE_CHAR
 				+ ENCODINGDECL_NAME + EQUAL_CHAR + DOUBLE_QUOTE_CHAR + charset.name() + DOUBLE_QUOTE_CHAR + XML_DECL_END); //write the XML prolog
 		if(isFormatted()) { //if we should write formatted output
@@ -600,7 +609,7 @@ public class XMLSerializer {
 	 * @param writer The writer into which the processing instructions should be written.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 */
-	protected void writeProcessingInstructions(final Document document, final BufferedWriter writer) throws IOException {
+	protected void writeProcessingInstructions(@Nonnull final Document document, @Nonnull final BufferedWriter writer) throws IOException {
 		final NodeList childNodeList = document.getChildNodes(); //get the list of document child nodes
 		final int childNodeCount = childNodeList.getLength(); //find out how many document child nodes there are
 		for(int childIndex = 0; childIndex < childNodeCount; childIndex++) { //look at each document child node
@@ -616,7 +625,7 @@ public class XMLSerializer {
 	 * @param writer The writer into which the document type should be written.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 */
-	protected void write(final DocumentType documentType, final BufferedWriter writer) throws IOException {
+	protected void write(@Nonnull final DocumentType documentType, @Nonnull final BufferedWriter writer) throws IOException {
 		writer.write(DOCTYPE_DECL_START + SPACE_CHAR + documentType.getName()); //write the beginning of the document type declaration
 		final String publicID = documentType.getPublicId(); //get the public ID, if there is one
 		final String systemID = documentType.getSystemId(); //get the system ID, if there is one 
@@ -642,7 +651,7 @@ public class XMLSerializer {
 	 * @param writer The writer into which the processing instruction should be written.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 */
-	protected void write(final ProcessingInstruction processingInstruction, final BufferedWriter writer) throws IOException {
+	protected void write(@Nonnull final ProcessingInstruction processingInstruction, @Nonnull final BufferedWriter writer) throws IOException {
 		//write the beginning of the processing instruction: "<?target "
 		writer.write(PROCESSING_INSTRUCTION_START + processingInstruction.getTarget() + SPACE_CHAR);
 		writer.write(processingInstruction.getData()); //write the processing instruction data
@@ -658,7 +667,7 @@ public class XMLSerializer {
 	 * @param writer The writer into which the element should be written.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 */
-	protected void write(final Element element, final BufferedWriter writer) throws IOException {
+	protected void write(@Nonnull final Element element, @Nonnull final BufferedWriter writer) throws IOException {
 		write(element, writer, isFormatted()); //write the element using the default formatting options
 	}
 
@@ -669,7 +678,7 @@ public class XMLSerializer {
 	 * @param formatted Whether this element and its contents, including any child elements, should be formatted.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 */
-	protected void write(final Element element, final BufferedWriter writer, boolean formatted) throws IOException {
+	protected void write(@Nonnull final Element element, @Nonnull final BufferedWriter writer, @Nonnull boolean formatted) throws IOException {
 		if(formatted) //if we should write formatted output
 			writeHorizontalAlignment(writer, nestLevel); //horizontally align the element
 		writer.write(TAG_START + element.getNodeName()); //write the beginning of the start tag
@@ -730,7 +739,8 @@ public class XMLSerializer {
 	 * @param writer The writer into which the attribute should be written.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 */
-	protected void writeAttribute(final String attributeName, final String attributeValue, final BufferedWriter writer) throws IOException {
+	protected void writeAttribute(@Nonnull final String attributeName, @Nonnull final String attributeValue, @Nonnull final BufferedWriter writer)
+			throws IOException {
 		//use a double quote character as a delimiter unless the value contains
 		//  a double quote; in that case, use a single quote TODO fix escaping---what if both double and single quotes are used?
 		final char valueDelimiter = attributeValue.indexOf(DOUBLE_QUOTE_CHAR) < 0 ? DOUBLE_QUOTE_CHAR : SINGLE_QUOTE_CHAR;
@@ -740,22 +750,22 @@ public class XMLSerializer {
 
 	/**
 	 * Serializes the content of the specified node to the given writer using the default formatting options.
-	 * @param node The XML node the content of which to serialize&mdash;usually an element or document fragment.
+	 * @param node The XML node the content of which to serialize—usually an element or document fragment.
 	 * @param writer The writer into which the element content should be written.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 */
-	protected void writeContent(final Node node, final BufferedWriter writer) throws IOException {
+	protected void writeContent(@Nonnull final Node node, @Nonnull final BufferedWriter writer) throws IOException {
 		writeContent(node, writer, isFormatted()); //write the content using the default formatting options
 	}
 
 	/**
 	 * Serializes the content of the specified element to the given writer.
-	 * @param node The XML node the content of which to serialize&mdash;usually an element or document fragment.
+	 * @param node The XML node the content of which to serialize—usually an element or document fragment.
 	 * @param writer The writer into which the element content should be written.
 	 * @param formatted Whether the contents of this element, including any child elements, should be formatted.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 */
-	protected void writeContent(final Node node, final BufferedWriter writer, final boolean formatted) throws IOException {
+	protected void writeContent(@Nonnull final Node node, @Nonnull final BufferedWriter writer, final boolean formatted) throws IOException {
 		for(int childIndex = 0; childIndex < node.getChildNodes().getLength(); childIndex++) { //look at each child node
 			final Node childNode = node.getChildNodes().item(childIndex); //look at this node
 			switch(childNode.getNodeType()) { //see which type of object this is
@@ -779,7 +789,7 @@ public class XMLSerializer {
 					writer.write(encodeContent(childNode.getNodeValue())); //write the text value of the node after encoding the string for XML
 					writer.write(CDATA_END); //write the end of the CDATA section
 					break;
-			//TODO see if there are any other types of nodes that need serialized
+				//TODO see if there are any other types of nodes that need serialized
 			}
 		}
 	}
@@ -790,7 +800,7 @@ public class XMLSerializer {
 	 * @param nestLevel The level of nesting for horizontal alignment.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 */
-	protected void writeHorizontalAlignment(final BufferedWriter writer, int nestLevel) throws IOException {
+	protected void writeHorizontalAlignment(@Nonnull final BufferedWriter writer, int nestLevel) throws IOException {
 		while(nestLevel > 0) { //while we haven't finished nesting
 			writer.write(getHorizontalAlignString()); //write another string for horizontal alignment
 			--nestLevel; //show that we have one less level to next
@@ -801,12 +811,12 @@ public class XMLSerializer {
 	 * Encodes content using the available entities and/or XML encoding for extended characters.
 	 * @param text The text to encode.
 	 * @return The encoded version of the content.
-	 * @see #isUseEntities
-	 * @see #isXMLEncodeControl
-	 * @see #isXMLEncodeNonASCII
-	 * @see #isXMLEncodePrivateUse
+	 * @see #isUseEntities()
+	 * @see #isXMLEncodeControl()
+	 * @see #isXmlEncodeNonAscii()
+	 * @see #isXMLEncodePrivateUse()
 	 */
-	protected String encodeContent(final String text) {
+	protected String encodeContent(@Nonnull final String text) {
 		return encodeContent(text, (char)0); //show that there is no delimiter character
 	}
 
@@ -816,14 +826,14 @@ public class XMLSerializer {
 	 * @param text The text to encode.
 	 * @param delimiter The character which should always be encoded, such as the delimiter character for attributes ('"' or '\''), or 0 if there is no delimiter.
 	 * @return The encoded version of the content.
-	 * @see #isUseEntities
-	 * @see #isXMLEncodeControl
-	 * @see #isXMLEncodeNonASCII
-	 * @see #isXMLEncodePrivateUse
+	 * @see #isUseEntities()
+	 * @see #isXMLEncodeControl()
+	 * @see #isXmlEncodeNonAscii()
+	 * @see #isXMLEncodePrivateUse()
 	 */
-	protected String encodeContent(final String text, final char delimiter) {
+	protected String encodeContent(@Nonnull final String text, final char delimiter) {
 		final boolean xmlEncodeControl = isXMLEncodeControl(); //see if we should XML-encode control characters
-		final boolean xmlEncodeNonASCII = isXMLEncodeNonASCII(); //see if we should XML-encode characters over 127
+		final boolean xmlEncodeNonASCII = isXmlEncodeNonAscii(); //see if we should XML-encode characters over 127
 		final boolean xmlEncodePrivateUse = isXMLEncodePrivateUse(); //see if we should XML-encode Unicode private use characters
 		final StringBuilder stringBuilder = new StringBuilder(text.length()); //we know that the output string will be at least as long as the input string
 		final int textLength = text.length(); //see how long the content is currently

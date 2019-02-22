@@ -33,7 +33,7 @@ import org.w3c.dom.css.*;
  * @author Garret Wilson
  * @deprecated
  */
-public class XMLCSSStylesheetApplier extends AbstractXMLCSSStylesheetApplier<Document, Element> implements CSSStyleManager {	//TODO do we really need this style manager interface? 
+public class XMLCSSStylesheetApplier extends AbstractXMLCSSStylesheetApplier<Document, Element> implements CSSStyleManager { //TODO do we really need this style manager interface? 
 
 	//TODO maybe move all the map storage stuff to the abstract version
 
@@ -49,8 +49,8 @@ public class XMLCSSStylesheetApplier extends AbstractXMLCSSStylesheetApplier<Doc
 
 	//TODO maybe delete this comment
 	/**
-	 * Retrieves the style of the given element. The returned style object is guaranteed to be non-<code>null</code>&mdash; if the requested element has no style
-	 * in the map, a default empty style is created and added to the map, keyed to the element.
+	 * Retrieves the style of the given element. The returned style object is guaranteed to be non-<code>null</code>; if the requested element has no style in the
+	 * map, a default empty style is created and added to the map, keyed to the element.
 	 * @param element The element for which a style should be returned.
 	 * @return A non-<code>null</code> style for the given element.
 	 */

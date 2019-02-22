@@ -23,6 +23,10 @@
 		<url>https://bitbucket.org/globalmentor/globalmentor-web-parent</url>
 	</scm>
 
+	<properties>
+		<maven.compiler.release>11</maven.compiler.release>
+	</properties>
+
 	<modules>
 		<module>css</module>
 		<module>css-spec</module>
