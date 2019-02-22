@@ -32,6 +32,7 @@ import com.globalmentor.java.Characters;
 
 import static com.globalmentor.xml.XML.*;
 import static com.globalmentor.xml.spec.XML.*;
+import static java.lang.System.lineSeparator;
 import static java.nio.charset.StandardCharsets.*;
 
 import com.globalmentor.util.PropertiesUtilities;
@@ -393,7 +394,6 @@ public class XMLSerializer {
 	public void serialize(@Nonnull final Document document, @Nonnull final OutputStream outputStream, @Nonnull final Charset charset)
 			throws IOException, UnsupportedEncodingException {
 		nestLevel = 0; //show that we haven't started nesting yet
-		//TODO del if not needed		outputStream.write(charset.getByteOrderMark());	//write the byte order mark, which may be an empty array
 		if(isBOMWritten()) { //if we should write a BOM
 			final ByteOrderMark bom = ByteOrderMark.forCharset(charset); //get the byte order mark, if there is one
 			if(bom != null) {
@@ -401,22 +401,22 @@ public class XMLSerializer {
 			}
 		}
 		final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, charset)); //create a new writer based on our encoding TODO see if the writer automatically writes the byte order mark already for non-UTF-8
-		writeProlog(document, writer, charset); //write the prolog
+		serializeProlog(writer, document, charset); //write the prolog
 		final DocumentType documentType = document.getDoctype(); //get the document type, if there is one
 		if(documentType != null) { //if there is a document type
 			initializeEntityLookup(documentType.getEntities()); //initialize the entity lookup based on the provided entities
-			write(documentType, writer); //write the document type
+			serialize(writer, documentType); //write the document type
 		} else { //if there is no document type
 			initializeEntityLookup(null); //always initialize the entity lookup, so that at least the five XML entities will be included in the table
 		}
-		writeProcessingInstructions(document, writer); //write any processing instructions
+		serializeProcessingInstructions(writer, document); //write any processing instructions
 		final Element documentElement = document.getDocumentElement(); //get the document element
 		if(isNamespacesDeclarationsEnsured()) { //if we should ensure namespaces
 			if(isNamespacesDocumentElementDeclarations()) { //if missing namespaces should be declared on the document element, process the entire document before writing
 				ensureNamespaceDeclarations(documentElement, documentElement, true); //make sure all namespaces are declared that all elements need (i.e. deep), declaring any missing elements on the document element
 			}
 		}
-		write(documentElement, writer); //write the document element and all elements below it
+		serialize(writer, documentElement); //write the document element and all elements below it
 		if(isFormatted()) { //if we should write formatted output
 			writer.newLine(); //add a newline in the default format
 		}
@@ -472,7 +472,6 @@ public class XMLSerializer {
 	public void serialize(@Nonnull final Element element, @Nonnull final OutputStream outputStream, @Nonnull final Charset charset)
 			throws IOException, UnsupportedEncodingException {
 		nestLevel = 0; //show that we haven't started nesting yet
-		//TODO del if not needed		outputStream.write(charset.getByteOrderMark());	//write the byte order mark, which may be an empty array
 		if(isBOMWritten()) { //if we should write a BOM
 			final ByteOrderMark bom = ByteOrderMark.forCharset(charset); //get the byte order mark, if there is one
 			if(bom != null) {
@@ -480,7 +479,7 @@ public class XMLSerializer {
 			}
 		}
 		final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, charset)); //create a new writer based on our encoding TODO see if the writer automatically writes the byte order mark already for non-UTF-8
-		write(element, writer); //write the element and all elements below it
+		serialize(writer, element); //write the element and all elements below it
 		if(isFormatted()) { //if we should write formatted output
 			writer.newLine(); //add a newline in the default format
 		}
@@ -511,7 +510,6 @@ public class XMLSerializer {
 	protected void serializeContent(@Nonnull final Node node, @Nonnull final OutputStream outputStream, @Nonnull final Charset charset)
 			throws IOException, UnsupportedEncodingException {
 		nestLevel = 0; //show that we haven't started nesting yet
-		//TODO del if not needed		outputStream.write(charset.getByteOrderMark());	//write the byte order mark, which may be an empty array
 		if(isBOMWritten()) { //if we should write a BOM
 			final ByteOrderMark bom = ByteOrderMark.forCharset(charset); //get the byte order mark, if there is one
 			if(bom != null) {
@@ -519,7 +517,7 @@ public class XMLSerializer {
 			}
 		}
 		final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, charset)); //create a new writer based on our encoding TODO see if the writer automatically writes the byte order mark already for non-UTF-8
-		writeContent(node, writer); //write all children of the node
+		serializeContent(writer, node); //write all children of the node
 		if(isFormatted()) { //if we should write formatted output
 			writer.newLine(); //add a newline in the default format
 		}
@@ -590,98 +588,111 @@ public class XMLSerializer {
 
 	/**
 	 * Serializes the specified documents to the given writer.
+	 * @param appendable The destination into which the prolog should be written.
 	 * @param document The XML document the prolog of which to serialize.
-	 * @param writer The writer into which the prolog should be written.
 	 * @param charset The charset in use.
+	 * @return The given appendable.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 */
-	protected void writeProlog(@Nonnull final Document document, @Nonnull final BufferedWriter writer, @Nonnull final Charset charset) throws IOException {
-		writer.write(XML_DECL_START + SPACE_CHAR + VERSIONINFO_NAME + EQUAL_CHAR + DOUBLE_QUOTE_CHAR + XML_VERSION + DOUBLE_QUOTE_CHAR + SPACE_CHAR
-				+ ENCODINGDECL_NAME + EQUAL_CHAR + DOUBLE_QUOTE_CHAR + charset.name() + DOUBLE_QUOTE_CHAR + XML_DECL_END); //write the XML prolog
+	protected Appendable serializeProlog(@Nonnull final Appendable appendable, @Nonnull final Document document, @Nonnull final Charset charset)
+			throws IOException {
+		appendable.append(XML_DECL_START).append(SPACE_CHAR).append(VERSIONINFO_NAME).append(EQUAL_CHAR).append(DOUBLE_QUOTE_CHAR).append(XML_VERSION)
+				.append(DOUBLE_QUOTE_CHAR).append(SPACE_CHAR).append(ENCODINGDECL_NAME).append(EQUAL_CHAR).append(DOUBLE_QUOTE_CHAR).append(charset.name())
+				.append(DOUBLE_QUOTE_CHAR).append(XML_DECL_END); //write the XML prolog
 		if(isFormatted()) { //if we should write formatted output
-			writer.newLine(); //add a newline in the default format
+			appendable.append(lineSeparator()); //add a newline in the default format
 		}
+		return appendable;
 	}
 
 	/**
 	 * Serializes the document's processing instructions to the given writer.
+	 * @param appendable The destination into which the processing instructions should be written.
 	 * @param document The XML document the processing instructions of which to serialize.
-	 * @param writer The writer into which the processing instructions should be written.
+	 * @return The given appendable.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 */
-	protected void writeProcessingInstructions(@Nonnull final Document document, @Nonnull final BufferedWriter writer) throws IOException {
+	protected Appendable serializeProcessingInstructions(@Nonnull final Appendable appendable, @Nonnull final Document document) throws IOException {
 		final NodeList childNodeList = document.getChildNodes(); //get the list of document child nodes
 		final int childNodeCount = childNodeList.getLength(); //find out how many document child nodes there are
 		for(int childIndex = 0; childIndex < childNodeCount; childIndex++) { //look at each document child node
 			final Node node = childNodeList.item(childIndex); //look at this document child node
 			if(node.getNodeType() == Node.PROCESSING_INSTRUCTION_NODE) //if this is a processing instruction
-				write((ProcessingInstruction)node, writer); //write the processing instruction node
+				serialize(appendable, (ProcessingInstruction)node); //write the processing instruction node
 		}
+		return appendable;
 	}
 
 	/**
 	 * Serializes the document type to the given writer.
+	 * @param appendable The destination into which the document type should be written.
 	 * @param documentType The XML document type to serialize.
-	 * @param writer The writer into which the document type should be written.
+	 * @return The given appendable.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 */
-	protected void write(@Nonnull final DocumentType documentType, @Nonnull final BufferedWriter writer) throws IOException {
-		writer.write(DOCTYPE_DECL_START + SPACE_CHAR + documentType.getName()); //write the beginning of the document type declaration
+	protected Appendable serialize(@Nonnull final Appendable appendable, @Nonnull final DocumentType documentType) throws IOException {
+		appendable.append(DOCTYPE_DECL_START).append(SPACE_CHAR).append(documentType.getName()); //write the beginning of the document type declaration
 		final String publicID = documentType.getPublicId(); //get the public ID, if there is one
 		final String systemID = documentType.getSystemId(); //get the system ID, if there is one 
 		if(publicID != null || systemID != null) { //if there is a public ID or a system ID
-			writer.write(SPACE_CHAR); //separate the identifiers from the doctype introduction
+			appendable.append(SPACE_CHAR); //separate the identifiers from the doctype introduction
 			if(publicID != null) { //if there is a public ID
-				writer.write(PUBLIC_ID_NAME + SPACE_CHAR + DOUBLE_QUOTE_CHAR + publicID + DOUBLE_QUOTE_CHAR + SPACE_CHAR); //write the public ID name and its public literal
+				appendable.append(PUBLIC_ID_NAME).append(SPACE_CHAR).append(DOUBLE_QUOTE_CHAR).append(publicID).append(DOUBLE_QUOTE_CHAR).append(SPACE_CHAR); //write the public ID name and its public literal
 				assert systemID != null : "A system ID is expected following a public ID.";
 			} else { //if there is no public ID
-				writer.write(SYSTEM_ID_NAME + SPACE_CHAR); //write the system ID name
+				appendable.append(SYSTEM_ID_NAME).append(SPACE_CHAR); //write the system ID name
 			}
-			writer.write(DOUBLE_QUOTE_CHAR + documentType.getSystemId() + DOUBLE_QUOTE_CHAR); //always write the system literal
+			appendable.append(DOUBLE_QUOTE_CHAR).append(documentType.getSystemId()).append(DOUBLE_QUOTE_CHAR); //always write the system literal
 		}
-		writer.write(DOCTYPE_DECL_END); //write the end of the document type declaration
+		appendable.append(DOCTYPE_DECL_END); //write the end of the document type declaration
 		if(isFormatted()) { //if we should write formatted output
-			writer.newLine(); //add a newline in the default format
+			appendable.append(lineSeparator()); //add a newline in the default format
 		}
+		return appendable;
 	}
 
 	/**
 	 * Serializes the given processing instruction to the given writer.
+	 * @param appendable The destination into which the processing instruction should be written.
 	 * @param processingInstruction The XML processing instruction to serialize.
-	 * @param writer The writer into which the processing instruction should be written.
+	 * @return The given appendable.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 */
-	protected void write(@Nonnull final ProcessingInstruction processingInstruction, @Nonnull final BufferedWriter writer) throws IOException {
+	protected Appendable serialize(@Nonnull final Appendable appendable, @Nonnull final ProcessingInstruction processingInstruction) throws IOException {
 		//write the beginning of the processing instruction: "<?target "
-		writer.write(PROCESSING_INSTRUCTION_START + processingInstruction.getTarget() + SPACE_CHAR);
-		writer.write(processingInstruction.getData()); //write the processing instruction data
-		writer.write(PROCESSING_INSTRUCTION_END); //write the end of the processing instruction
+		appendable.append(PROCESSING_INSTRUCTION_START).append(processingInstruction.getTarget()).append(SPACE_CHAR);
+		appendable.append(processingInstruction.getData()); //write the processing instruction data
+		appendable.append(PROCESSING_INSTRUCTION_END); //write the end of the processing instruction
 		if(isFormatted()) { //if we should write formatted output
-			writer.newLine(); //add a newline in the default format
+			appendable.append(lineSeparator()); //add a newline in the default format
 		}
+		return appendable;
 	}
 
 	/**
 	 * Serializes the specified element to the given writer, using the default formatting options.
+	 * @param appendable The destination into which the element should be written.
 	 * @param element The XML element to serialize.
-	 * @param writer The writer into which the element should be written.
+	 * @return The given appendable.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 */
-	protected void write(@Nonnull final Element element, @Nonnull final BufferedWriter writer) throws IOException {
-		write(element, writer, isFormatted()); //write the element using the default formatting options
+	protected Appendable serialize(@Nonnull final Appendable appendable, @Nonnull final Element element) throws IOException {
+		return serialize(appendable, element, isFormatted()); //write the element using the default formatting options
 	}
 
 	/**
 	 * Serializes the specified element to the given writer.
+	 * @param appendable The destination into which the element should be written.
 	 * @param element The XML element to serialize.
-	 * @param writer The writer into which the element should be written.
 	 * @param formatted Whether this element and its contents, including any child elements, should be formatted.
+	 * @return The given appendable.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 */
-	protected void write(@Nonnull final Element element, @Nonnull final BufferedWriter writer, @Nonnull boolean formatted) throws IOException {
-		if(formatted) //if we should write formatted output
-			writeHorizontalAlignment(writer, nestLevel); //horizontally align the element
-		writer.write(TAG_START + element.getNodeName()); //write the beginning of the start tag
+	protected Appendable serialize(@Nonnull final Appendable appendable, @Nonnull final Element element, @Nonnull boolean formatted) throws IOException {
+		if(formatted) { //if we should write formatted output
+			serializeHorizontalAlignment(appendable, nestLevel); //horizontally align the element
+		}
+		appendable.append(TAG_START).append(element.getNodeName()); //write the beginning of the start tag
 		if(isNamespacesDeclarationsEnsured()) { //if we should ensure namespaces
 			ensureNamespaceDeclarations(element, null, false); //make sure all namespaces are declared that just this element needs; if any are missing, we can't declare up the tree, as those nodes have already been serialized
 		}
@@ -700,10 +711,10 @@ public class XMLSerializer {
 		*/
 		for(int attributeIndex = 0; attributeIndex < element.getAttributes().getLength(); ++attributeIndex) { //look at each attribute
 			final Attr attribute = (Attr)element.getAttributes().item(attributeIndex); //get a reference to this attribute
-			writeAttribute(attribute.getName(), attribute.getValue(), writer); //write this attribute
+			serializeAttribute(appendable, attribute.getName(), attribute.getValue()); //write this attribute
 		}
 		if(element.getChildNodes().getLength() > 0) { //if there are child elements
-			writer.write(TAG_END); //write the end of the start tag
+			appendable.append(TAG_END); //write the end of the start tag
 			boolean contentFormatted = false; //we'll determine if we should format the content of the child nodes
 			//we'll only format the contents if there are only element children
 			if(formatted) { //if we've been told to format, we'll make sure there are element child nodes
@@ -717,125 +728,142 @@ public class XMLSerializer {
 					}
 				}
 			}
-			if(contentFormatted) //if we should write formatted output for the content
-				writer.newLine(); //add a newline after the element's starting tag
+			if(contentFormatted) { //if we should write formatted output for the content
+				appendable.append(lineSeparator()); //add a newline after the element's starting tag
+			}
 			++nestLevel; //show that we're nesting to the next level
-			writeContent(element, writer, contentFormatted);
+			serializeContent(appendable, element, contentFormatted);
 			--nestLevel; //show that we're finished with this level of the document hierarchy
-			if(contentFormatted) //if we should write formatted output for the content
-				writeHorizontalAlignment(writer, nestLevel); //horizontally align the element's ending tag
-			writer.write(TAG_START + '/' + element.getNodeName() + TAG_END); //write the ending tag TODO use a constant here
-		} else
-			//if there are no child elements, this is an empty element
-			writer.write(String.valueOf(SPACE_CHAR) + '/' + TAG_END); //write the end of the empty element tag, with an extra space for HTML browser compatibility TODO use a constant here
-		if(formatted) //if we should write formatted output
-			writer.newLine(); //add a newline after the element
+			if(contentFormatted) { //if we should write formatted output for the content
+				serializeHorizontalAlignment(appendable, nestLevel); //horizontally align the element's ending tag
+			}
+			appendable.append(TAG_START).append('/').append(element.getNodeName()).append(TAG_END); //write the ending tag TODO use a constant here
+		} else { //if there are no child elements, this is an empty element
+			appendable.append(SPACE_CHAR).append('/').append(TAG_END); //write the end of the empty element tag, with an extra space for HTML browser compatibility TODO use a constant here
+		}
+		if(formatted) { //if we should write formatted output
+			appendable.append(lineSeparator()); //add a newline after the element
+		}
+		return appendable;
 	}
 
 	/**
 	 * Serializes the specified attribute name and value to the given writer.
+	 * @param appendable The destination into which the attribute should be written.
 	 * @param attributeName The name of the XML attribute to serialize.
 	 * @param attributeValue The name of the XML attribute to serialize.
-	 * @param writer The writer into which the attribute should be written.
+	 * @return The given appendable.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 */
-	protected void writeAttribute(@Nonnull final String attributeName, @Nonnull final String attributeValue, @Nonnull final BufferedWriter writer)
+	protected Appendable serializeAttribute(@Nonnull final Appendable appendable, @Nonnull final String attributeName, @Nonnull final String attributeValue)
 			throws IOException {
 		//use a double quote character as a delimiter unless the value contains
 		//  a double quote; in that case, use a single quote TODO fix escaping---what if both double and single quotes are used?
 		final char valueDelimiter = attributeValue.indexOf(DOUBLE_QUOTE_CHAR) < 0 ? DOUBLE_QUOTE_CHAR : SINGLE_QUOTE_CHAR;
 		//write the attribute and its value after encoding it for XML; pass the delimiter in case this value has both a single and a double quote
-		writer.write(SPACE_CHAR + attributeName + EQUAL_CHAR + valueDelimiter + encodeContent(attributeValue, valueDelimiter) + valueDelimiter);
+		appendable.append(SPACE_CHAR).append(attributeName).append(EQUAL_CHAR).append(valueDelimiter);
+		encodeContent(appendable, attributeValue, valueDelimiter);
+		appendable.append(valueDelimiter);
+		return appendable;
 	}
 
 	/**
 	 * Serializes the content of the specified node to the given writer using the default formatting options.
+	 * @param appendable The destination into which the element content should be written.
 	 * @param node The XML node the content of which to serialize—usually an element or document fragment.
-	 * @param writer The writer into which the element content should be written.
+	 * @return The given appendable.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 */
-	protected void writeContent(@Nonnull final Node node, @Nonnull final BufferedWriter writer) throws IOException {
-		writeContent(node, writer, isFormatted()); //write the content using the default formatting options
+	protected Appendable serializeContent(@Nonnull final Appendable appendable, @Nonnull final Node node) throws IOException {
+		return serializeContent(appendable, node, isFormatted()); //write the content using the default formatting options
 	}
 
 	/**
 	 * Serializes the content of the specified element to the given writer.
+	 * @param appendable The destination into which the element content should be written.
 	 * @param node The XML node the content of which to serialize—usually an element or document fragment.
-	 * @param writer The writer into which the element content should be written.
 	 * @param formatted Whether the contents of this element, including any child elements, should be formatted.
+	 * @return The given appendable.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 */
-	protected void writeContent(@Nonnull final Node node, @Nonnull final BufferedWriter writer, final boolean formatted) throws IOException {
+	protected Appendable serializeContent(@Nonnull final Appendable appendable, @Nonnull final Node node, final boolean formatted) throws IOException {
 		for(int childIndex = 0; childIndex < node.getChildNodes().getLength(); childIndex++) { //look at each child node
 			final Node childNode = node.getChildNodes().item(childIndex); //look at this node
 			switch(childNode.getNodeType()) { //see which type of object this is
 				case Node.ELEMENT_NODE: //if this is an element
-					write((Element)childNode, writer, formatted); //write this element
+					serialize(appendable, (Element)childNode, formatted); //write this element
 					break;
 				case Node.TEXT_NODE: //if this is a text node
-					writer.write(encodeContent(childNode.getNodeValue())); //write the text value of the node after encoding the string for XML
+					encodeContent(appendable, childNode.getNodeValue()); //write the text value of the node after encoding the string for XML
 					break;
 				case Node.COMMENT_NODE: //if this is a comment node
 					if(formatted) //if we should write formatted output
-						writeHorizontalAlignment(writer, nestLevel); //horizontally align the element
-					writer.write(COMMENT_START); //write the start of the comment
-					writer.write(childNode.getNodeValue()); //write the text value of the node, but don't encode the string for XML since it's inside a comment
-					writer.write(COMMENT_END); //write the end of the comment
-					if(formatted) //if we should write formatted output
-						writer.newLine(); //add a newline after the element
+						serializeHorizontalAlignment(appendable, nestLevel); //horizontally align the element
+					appendable.append(COMMENT_START); //write the start of the comment
+					appendable.append(childNode.getNodeValue()); //write the text value of the node, but don't encode the string for XML since it's inside a comment
+					appendable.append(COMMENT_END); //write the end of the comment
+					if(formatted) { //if we should write formatted output
+						appendable.append(lineSeparator()); //add a newline after the element
+					}
 					break;
 				case Node.CDATA_SECTION_NODE: //if this is a CDATA section node
-					writer.write(CDATA_START); //write the start of the CDATA section
-					writer.write(encodeContent(childNode.getNodeValue())); //write the text value of the node after encoding the string for XML
-					writer.write(CDATA_END); //write the end of the CDATA section
+					appendable.append(CDATA_START); //write the start of the CDATA section
+					encodeContent(appendable, childNode.getNodeValue()); //write the text value of the node after encoding the string for XML
+					appendable.append(CDATA_END); //write the end of the CDATA section
 					break;
 				//TODO see if there are any other types of nodes that need serialized
 			}
 		}
+		return appendable;
 	}
 
 	/**
 	 * Creates the specified number of horizontal alignment strings.
-	 * @param writer The writer into which the element should be written.
+	 * @param appendable The destination into which the element should be written.
 	 * @param nestLevel The level of nesting for horizontal alignment.
+	 * @return The given appendable.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 */
-	protected void writeHorizontalAlignment(@Nonnull final BufferedWriter writer, int nestLevel) throws IOException {
+	protected Appendable serializeHorizontalAlignment(@Nonnull final Appendable appendable, int nestLevel) throws IOException {
 		while(nestLevel > 0) { //while we haven't finished nesting
-			writer.write(getHorizontalAlignString()); //write another string for horizontal alignment
+			appendable.append(getHorizontalAlignString()); //write another string for horizontal alignment
 			--nestLevel; //show that we have one less level to next
 		}
+		return appendable;
 	}
 
 	/**
 	 * Encodes content using the available entities and/or XML encoding for extended characters.
+	 * @param appendable The destination into which the encoded content should be written.
 	 * @param text The text to encode.
-	 * @return The encoded version of the content.
+	 * @return The given appendable.
+	 * @throws IOException Thrown if an I/O error occurred.
 	 * @see #isUseEntities()
 	 * @see #isXMLEncodeControl()
 	 * @see #isXmlEncodeNonAscii()
 	 * @see #isXMLEncodePrivateUse()
 	 */
-	protected String encodeContent(@Nonnull final String text) {
-		return encodeContent(text, (char)0); //show that there is no delimiter character
+	protected Appendable encodeContent(@Nonnull final Appendable appendable, @Nonnull final CharSequence text) throws IOException {
+		return encodeContent(appendable, text, (char)0); //show that there is no delimiter character
 	}
 
 	/**
 	 * Encodes content using the available entities and/or XML encoding for extended characters. If the delimiter character is not 0, it is unconditionally
 	 * encoded.
+	 * @param appendable The destination into which the encoded content should be written.
 	 * @param text The text to encode.
 	 * @param delimiter The character which should always be encoded, such as the delimiter character for attributes ('"' or '\''), or 0 if there is no delimiter.
-	 * @return The encoded version of the content.
+	 * @return The given appendable.
+	 * @throws IOException Thrown if an I/O error occurred.
 	 * @see #isUseEntities()
 	 * @see #isXMLEncodeControl()
 	 * @see #isXmlEncodeNonAscii()
 	 * @see #isXMLEncodePrivateUse()
 	 */
-	protected String encodeContent(@Nonnull final String text, final char delimiter) {
+	protected Appendable encodeContent(@Nonnull final Appendable appendable, @Nonnull final CharSequence text, final char delimiter) throws IOException {
 		final boolean xmlEncodeControl = isXMLEncodeControl(); //see if we should XML-encode control characters
 		final boolean xmlEncodeNonASCII = isXmlEncodeNonAscii(); //see if we should XML-encode characters over 127
 		final boolean xmlEncodePrivateUse = isXMLEncodePrivateUse(); //see if we should XML-encode Unicode private use characters
-		final StringBuilder stringBuilder = new StringBuilder(text.length()); //we know that the output string will be at least as long as the input string
 		final int textLength = text.length(); //see how long the content is currently
 		for(int i = 0; i < textLength; ++i) { //look at each character in the text
 			final char c = text.charAt(i); //get a reference to this character
@@ -844,9 +872,9 @@ public class XMLSerializer {
 			//  because the lookup table has already been set up appropriately
 			//  based on that option, and we *always* want to encode such things as '&'
 			if(entityIndex >= 0) { //if this character should be replaced by an entity
-				stringBuilder.append(ENTITY_REF_START); //append the start-of-entity
-				stringBuilder.append(entityNames[entityIndex]); //append the corresponding entity name
-				stringBuilder.append(ENTITY_REF_END); //append the end-of-entity
+				appendable.append(ENTITY_REF_START); //append the start-of-entity
+				appendable.append(entityNames[entityIndex]); //append the corresponding entity name
+				appendable.append(ENTITY_REF_END); //append the end-of-entity
 			}
 			//if we have no entity replacement for the character,
 			//  but it is an extended character and we should XML-encode such
@@ -856,16 +884,15 @@ public class XMLSerializer {
 					|| (xmlEncodePrivateUse && Character.getType(c) == Character.PRIVATE_USE) //if we should encode control characters, and this is a control character
 					|| (c == delimiter) //the delimiter character, if present, will *always* be encoded
 			) {
-				stringBuilder.append(CHARACTER_REF_START); //append the start-of-character-reference
-				stringBuilder.append('x'); //show that this will be a hexadecimal number TODO use a constant here
-				stringBuilder.append(Integer.toHexString(c).toUpperCase()); //append the hex representation of the character
-				//TODO del if not needed				stringBuilder.append(IntegerUtilities.toHexString(c, 4));  //append the character in four-digit hex format (i.g. &#XXXX;)
-				stringBuilder.append(CHARACTER_REF_END); //append the end-of-character-reference
+				appendable.append(CHARACTER_REF_START); //append the start-of-character-reference
+				appendable.append('x'); //show that this will be a hexadecimal number TODO use a constant here
+				appendable.append(Integer.toHexString(c).toUpperCase()); //append the hex representation of the character
+				appendable.append(CHARACTER_REF_END); //append the end-of-character-reference
 			} else { //if this character shouldn't be encoded
-				stringBuilder.append(c); //append the character normally
+				appendable.append(c); //append the character normally
 			}
 		}
-		return stringBuilder.toString(); //return the encoded version of the content
+		return appendable;
 	}
 
 }
