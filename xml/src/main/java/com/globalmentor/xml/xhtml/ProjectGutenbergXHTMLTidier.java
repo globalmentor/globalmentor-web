@@ -987,7 +987,7 @@ public class ProjectGutenbergXHTMLTidier {	//TODO move to different package
 		final int copyrightIndex = Strings.indexOfIgnoreCase(stringBuilder.toString(), COPYRIGHT); //TODO use a StringBuilders method
 		if(copyrightIndex >= 0) { //if "copyright" appears in the title
 			//if "copyright" is followed by a copyright character
-			if(CharSequences.charIndexOf(stringBuilder, new Characters('@', COPYRIGHT_SIGN), copyrightIndex + 1) >= 0
+			if(CharSequences.charIndexOf(stringBuilder, Characters.of('@', COPYRIGHT_SIGN), copyrightIndex + 1) >= 0
 					|| stringBuilder.indexOf("(c)", copyrightIndex + 1) >= 0 || stringBuilder.indexOf("(C)", copyrightIndex + 1) >= 0) {
 				tidyProperty(stringBuilder.delete(copyrightIndex, stringBuilder.length())); //remove "copyright" and everything after it TODO add a convenience routine like the one for strings
 			}
@@ -1056,7 +1056,7 @@ public class ProjectGutenbergXHTMLTidier {	//TODO move to different package
 		}
 		//see if "copyright 19" or "copyright 20" or "copyrihgt (", etc. appears in the string (e.g. efpap10.txt)
 		int copyrightIndex = Strings.indexOfIgnoreCase(stringBuilder.toString(), COPYRIGHT); //see if "copyright" appears in the string TODO change to StringBuilders
-		if(copyrightIndex >= 0 && (CharSequences.charIndexOf(stringBuilder, new Characters('@', COPYRIGHT_SIGN)) >= 0 //if "copyright" is followed by a copyright sign TODO use a constant
+		if(copyrightIndex >= 0 && (CharSequences.charIndexOf(stringBuilder, Characters.of('@', COPYRIGHT_SIGN)) >= 0 //if "copyright" is followed by a copyright sign TODO use a constant
 				|| stringBuilder.indexOf("(c)") >= 0 //if "copyright" is followed by (c) TODO use a constant
 				|| stringBuilder.indexOf("19") >= 0 //if "copyright" is followed by 19 TODO use a constant
 		|| stringBuilder.indexOf("20") >= 0 //if "copyright" is followed by 19 TODO use a constant
@@ -1207,7 +1207,7 @@ public class ProjectGutenbergXHTMLTidier {	//TODO move to different package
 	 */
 	public static String getID(final String filename) {
 		//get the name of the file and remove its extension
-		final StringBuilder stringBuilder = new StringBuilder(Files.removeExtension(filename));
+		final StringBuilder stringBuilder = new StringBuilder(Filenames.removeExtension(filename));
 		int versionEndIndex = stringBuilder.length(); //start assuming the version is at the end of the name
 		//find the first digit on the right
 		while(versionEndIndex > 0) { //while we haven't ran out of characters

@@ -32,7 +32,7 @@ import static com.globalmentor.w3c.spec.XML.*;
 import static com.globalmentor.xml.XML.*;
 
 import com.globalmentor.io.ByteOrderMark;
-import com.globalmentor.io.Files;
+import com.globalmentor.io.Filenames;
 import com.globalmentor.io.ParseEOFException;
 import com.globalmentor.io.ParseUnexpectedDataException;
 import com.globalmentor.io.URIInputStreamable;
@@ -320,9 +320,9 @@ public class XMLProcessor implements URIInputStreamable, Clogged {
 		try {
 			//create a URI for the system ID (there should always be one) in relation to our reader's context, if any
 			final URI uri = systemID != null ? URIs.createURI(context, systemID) : null;
-			//convert the public ID (if there is one) to a valid filaname and see if we can load this
+			//convert the public ID (if there is one) to a valid filename and see if we can load this
 			//  resource locally rather than from the literal file location
-			final String localFilename = publicID != null ? Files.encodeCrossPlatformFilename(publicID) : null; //get the name of the file if it were to be stored locally
+			final String localFilename = publicID != null ? Filenames.encodeCrossPlatformFilename(publicID) : null; //get the name of the file if it were to be stored locally
 			final InputStream localResourceInputStream = publicID != null ? getClass().getResourceAsStream(localFilename) : null;
 			//if we couldn't find the resource locally, create an input stream to the system ID URI we already created, using our input stream locator
 			final InputStream inputStream = localResourceInputStream != null ? localResourceInputStream : getURIInputStreamable().getInputStream(uri);

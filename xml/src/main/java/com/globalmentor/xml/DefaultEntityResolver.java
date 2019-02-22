@@ -20,7 +20,7 @@ import java.io.*;
 
 import org.xml.sax.*;
 
-import com.globalmentor.io.Files;
+import com.globalmentor.io.Filenames;
 
 /**
  * An entity resolver that looks up and returns special predefined entities, such as XHTML DTDs. This implementation searches for resource files within this
@@ -30,7 +30,7 @@ import com.globalmentor.io.Files;
  * This is a singleton class that cannot be publicly instantiated.
  * </p>
  * @author Garret Wilson
- * @see Files#encodeCrossPlatformFilename(String)
+ * @see Filenames#encodeCrossPlatformFilename(String)
  */
 public class DefaultEntityResolver implements EntityResolver {
 
@@ -56,7 +56,7 @@ public class DefaultEntityResolver implements EntityResolver {
 	 */
 	public InputSource resolveEntity(final String publicID, final String systemID) throws SAXException, IOException {
 		if(publicID != null) { //if there is a public ID
-			final String localFilename = Files.encodeCrossPlatformFilename(publicID); //get the name of the file if it were to be stored locally
+			final String localFilename = Filenames.encodeCrossPlatformFilename(publicID); //get the name of the file if it were to be stored locally
 			final InputStream localResourceInputStream = getClass().getResourceAsStream(localFilename); //see if we can get an input stream to the entity
 			if(localResourceInputStream != null) { //if we found the resource locally
 				final InputSource inputSource = new InputSource(localResourceInputStream); //create an input source to the input stream

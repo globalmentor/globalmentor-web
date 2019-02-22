@@ -42,7 +42,7 @@ public class XMLCSS {
 		//TODO do we want to cache stylesheets? probably not
 		if(namespaceURI != null) { //if a valid namespace was passed
 			//convert the namespace URI to a valid filename and add a "css" extension
-			final String cssFilename = Files.encodeCrossPlatformFilename(namespaceURI) + Files.FILENAME_EXTENSION_SEPARATOR + CSS_NAME_EXTENSION;
+			final String cssFilename = Filenames.encodeCrossPlatformFilename(namespaceURI) + Filenames.EXTENSION_SEPARATOR + CSS_NAME_EXTENSION;
 			final URL styleSheetURL = XMLCSS.class.getResource(cssFilename); //see if we can load this resource locally
 			if(styleSheetURL != null) { //if we were able to find a stylesheet stored as a resource
 				final XMLCSSStyleSheet styleSheet = new XMLCSSStyleSheet((com.globalmentor.xml.dom.impl.XMLNode)null); //create a new CSS stylesheet that has no owner TODO make this cast use a generic Node, or make a default constructor

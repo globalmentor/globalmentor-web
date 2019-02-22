@@ -122,7 +122,7 @@ public class HTML {
 	 * Characters considered <dfn>space characters</dfn> in HTML.
 	 * @see <a href="http://www.w3.org/TR/html5/infrastructure.html#space-character">HTML5 space characters</a>
 	 */
-	public static final Characters SPACE_CHARACTERS = new Characters(SPACE_CHAR, CHARACTER_TABULATION_CHAR, LINE_FEED_CHAR, FORM_FEED_CHAR, CARRIAGE_RETURN_CHAR);
+	public static final Characters SPACE_CHARACTERS = Characters.of(SPACE_CHAR, CHARACTER_TABULATION_CHAR, LINE_FEED_CHAR, FORM_FEED_CHAR, CARRIAGE_RETURN_CHAR);
 
 	//The XHTML 1.0 document element names.
 	//TODO fix; some are missing since these were copied from the OEB 1.0

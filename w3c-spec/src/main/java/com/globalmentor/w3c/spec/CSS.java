@@ -62,7 +62,7 @@ public class CSS {
 	/** A double quotation character. */
 	public static final char DOUBLE_QUOTE_CHAR = '"';
 	/** The characters considered by CSS to be digits. */
-	public static final Characters DIGIT_CHARS = Characters.range('0', '9'); //digits are the digits 0-9
+	public static final Characters DIGIT_CHARS = Characters.ofRange('0', '9'); //digits are the digits 0-9
 	/** The decimal character that separates a number from its fraction. */
 	public static final char DECIMAL_CHAR = '.';
 	/** The characters considered by CSS to be part of a number. */
@@ -544,8 +544,8 @@ public class CSS {
 		/** Indicates that the program is busy and the user should wait. Often rendered as a watch or hourglass. */
 		WAIT,
 		/**
-		 * A progress indicator. The program is performing some processing, but is different from {@link #WAIT} in that the user may still interact with the program.
-		 * Often rendered as a spinning beach ball, or an arrow with a watch or hourglass.
+		 * A progress indicator. The program is performing some processing, but is different from {@link #WAIT} in that the user may still interact with the
+		 * program. Often rendered as a spinning beach ball, or an arrow with a watch or hourglass.
 		 */
 		PROGRESS,
 		/** Help is available for the object under the cursor. Often rendered as a question mark or a balloon. */
@@ -620,10 +620,10 @@ public class CSS {
 	 */
 	public static boolean isDisplayInline(final CSSStyleDeclaration cssStyle) {
 		if(cssStyle != null) { //if a valid style is passed
-		/*TODO fix when our XMLCSSStyleDeclaration implements CSS2Properties
-					Debug.assert(cssStyle instanceof CSS2Properties, "DOM implementation does not support CSS2Properties interface for CSSStyleDeclaration"); //TODO do we want to take action if the style does not implement CSS2Properties?
-					final CSS2Properties cssProperties=(CSS2Properties)cssStyle;  //get the CSS2Properties interface, which is expected to be implemented by the DOM CSSStyleDeclaration
-		*/
+			/*TODO fix when our XMLCSSStyleDeclaration implements CSS2Properties
+						Debug.assert(cssStyle instanceof CSS2Properties, "DOM implementation does not support CSS2Properties interface for CSSStyleDeclaration"); //TODO do we want to take action if the style does not implement CSS2Properties?
+						final CSS2Properties cssProperties=(CSS2Properties)cssStyle;  //get the CSS2Properties interface, which is expected to be implemented by the DOM CSSStyleDeclaration
+			*/
 			final String displayString = cssStyle.getPropertyValue(CSS_PROP_DISPLAY); //get the display property
 			return displayString.length() == 0 || displayString.equals(CSS_DISPLAY_INLINE); //return true if there is no display string or it is equal to "inline"
 		}

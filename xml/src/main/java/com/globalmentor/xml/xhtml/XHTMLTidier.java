@@ -557,7 +557,7 @@ public class XHTMLTidier implements Clogged {
 
 	/** Characters which could conceivably be appended to a list marker. */
 	//TODO move this to the beginning, probably
-	protected static final Characters LIST_ITEM_MARKER_DELIMITER_CHARS = new Characters('.', ')', '-', EM_DASH_CHAR, EN_DASH_CHAR);
+	protected static final Characters LIST_ITEM_MARKER_DELIMITER_CHARS = Characters.of('.', ')', '-', EM_DASH_CHAR, EN_DASH_CHAR);
 	/** A string representation of the bullet character which will be converted to a list item marker. */
 	//TODO move this to the beginning, probably
 	protected static final String BULLET_STRING = String.valueOf(BULLET_CHAR);
