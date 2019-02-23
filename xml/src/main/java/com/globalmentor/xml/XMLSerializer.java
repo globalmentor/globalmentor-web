@@ -40,8 +40,8 @@ import com.globalmentor.util.PropertiesUtilities;
 import org.w3c.dom.*;
 
 /**
- * Class which serializes an XML document to a byte-oriented output stream. Has the option of automatically formatting the output in a hierarchical structure
- * with tabs or other strings.
+ * Serializes an XML document to a byte-oriented output stream. Has the option of automatically formatting the output in a hierarchical structure with tabs or
+ * other strings.
  * @author Garret Wilson
  */
 public class XMLSerializer {
@@ -82,7 +82,7 @@ public class XMLSerializer {
 	 * Returns whether the serializer will write a byte order mark (BOM).
 	 * @return Whether a BOM is written.
 	 */
-	public boolean isBOMWritten() {
+	public boolean isBomWritten() {
 		return bomWritten;
 	}
 
@@ -91,8 +91,27 @@ public class XMLSerializer {
 	 * @implSpec This option is disabled by default.
 	 * @param bomWritten Whether a BOM is written.
 	 */
-	public void setBOMWritten(final boolean bomWritten) {
+	public void setBomWritten(final boolean bomWritten) {
 		this.bomWritten = bomWritten;
+	}
+
+	private boolean prologWritten = true;
+
+	/**
+	 * Returns whether the serializer will write an XML prolog.
+	 * @return Whether an XML prolog is written.
+	 */
+	public boolean isPrologWritten() {
+		return prologWritten;
+	}
+
+	/**
+	 * Whether an XML prolog is written.
+	 * @implSpec This option is enabled by default.
+	 * @param prologWritten Whether an XML prolog is written.
+	 */
+	public void setPrologWritten(final boolean prologWritten) {
+		this.prologWritten = prologWritten;
 	}
 
 	private boolean formatted = OPTION_FORMAT_OUTPUT_DEFAULT;
@@ -394,14 +413,16 @@ public class XMLSerializer {
 	public void serialize(@Nonnull final Document document, @Nonnull final OutputStream outputStream, @Nonnull final Charset charset)
 			throws IOException, UnsupportedEncodingException {
 		nestLevel = 0; //show that we haven't started nesting yet
-		if(isBOMWritten()) { //if we should write a BOM
+		if(isBomWritten()) { //if we should write a BOM
 			final ByteOrderMark bom = ByteOrderMark.forCharset(charset); //get the byte order mark, if there is one
 			if(bom != null) {
 				outputStream.write(bom.getBytes()); //write the byte order mark
 			}
 		}
 		final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, charset)); //create a new writer based on our encoding TODO see if the writer automatically writes the byte order mark already for non-UTF-8
-		serializeProlog(writer, document, charset); //write the prolog
+		if(isPrologWritten()) {
+			serializeProlog(writer, document, charset); //write the prolog
+		}
 		final DocumentType documentType = document.getDoctype(); //get the document type, if there is one
 		if(documentType != null) { //if there is a document type
 			initializeEntityLookup(documentType.getEntities()); //initialize the entity lookup based on the provided entities
@@ -472,7 +493,7 @@ public class XMLSerializer {
 	public void serialize(@Nonnull final Element element, @Nonnull final OutputStream outputStream, @Nonnull final Charset charset)
 			throws IOException, UnsupportedEncodingException {
 		nestLevel = 0; //show that we haven't started nesting yet
-		if(isBOMWritten()) { //if we should write a BOM
+		if(isBomWritten()) { //if we should write a BOM
 			final ByteOrderMark bom = ByteOrderMark.forCharset(charset); //get the byte order mark, if there is one
 			if(bom != null) {
 				outputStream.write(bom.getBytes()); //write the byte order mark
@@ -510,7 +531,7 @@ public class XMLSerializer {
 	protected void serializeContent(@Nonnull final Node node, @Nonnull final OutputStream outputStream, @Nonnull final Charset charset)
 			throws IOException, UnsupportedEncodingException {
 		nestLevel = 0; //show that we haven't started nesting yet
-		if(isBOMWritten()) { //if we should write a BOM
+		if(isBomWritten()) { //if we should write a BOM
 			final ByteOrderMark bom = ByteOrderMark.forCharset(charset); //get the byte order mark, if there is one
 			if(bom != null) {
 				outputStream.write(bom.getBytes()); //write the byte order mark

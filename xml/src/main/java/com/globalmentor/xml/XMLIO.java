@@ -218,7 +218,7 @@ public class XMLIO extends DocumentBuilderFactory implements IO<Document> {
 	public static void writeXML(final OutputStream outputStream, final URI baseURI, final Document document, final boolean bomWritten, final boolean formatted)
 			throws IOException {
 		final XMLSerializer xmlSerializer = new XMLSerializer(formatted); //create a new XML serializer
-		xmlSerializer.setBOMWritten(bomWritten); //indicate whether the BOM should be written
+		xmlSerializer.setBomWritten(bomWritten); //indicate whether the BOM should be written
 		xmlSerializer.serialize(document, outputStream); //serialize the document to the output stream 
 	}
 
