@@ -27,7 +27,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.TypeInfo;
 
-import com.globalmentor.w3c.spec.XML;
+import com.globalmentor.xml.spec.XML;
 
 /**
  * An element in an XML document.

@@ -36,8 +36,6 @@ import com.globalmentor.model.ObjectHolder;
 import com.globalmentor.net.ContentType;
 import com.globalmentor.net.URIs;
 import com.globalmentor.text.ASCII;
-import com.globalmentor.w3c.spec.HTML;
-import com.globalmentor.xml.xhtml.XHTML;
 
 import org.w3c.dom.*;
 import org.w3c.dom.traversal.*;
@@ -47,18 +45,18 @@ import org.xml.sax.SAXException;
 import static com.globalmentor.java.Characters.*;
 import static com.globalmentor.java.Objects.*;
 import static com.globalmentor.net.ContentTypeConstants.*;
-import static com.globalmentor.w3c.spec.HTML.*;
-import static com.globalmentor.w3c.spec.MathML.*;
-import static com.globalmentor.w3c.spec.SVG.*;
-import static com.globalmentor.w3c.spec.XML.*;
-import static com.globalmentor.xml.XMLStyleSheets.*;
+import static com.globalmentor.html.spec.HTML.*;
+import static com.globalmentor.mathml.spec.MathML.*;
+import static com.globalmentor.svg.spec.SVG.*;
+import static com.globalmentor.xml.spec.XML.*;
+import static com.globalmentor.xml.spec.XMLStyleSheets.*;
 import static java.nio.charset.StandardCharsets.*;
 
 /**
  * Various XML manipulation functions, mostly using the DOM.
  * @author Garret Wilson
  */
-public class XML {
+public class XML { //TODO likely move all or part of this class to a Dom class, perhaps in another project
 
 	/**
 	 * The number of bytes to use when auto-detecting character encoding.
@@ -98,10 +96,10 @@ public class XML {
 	 * Attempts to automatically detect the character encoding of a particular input stream that supposedly contains XML data.
 	 * <ul>
 	 * <li>A byte order is attempted to be determined, either by an explicit byte order mark or by the order of the XML declaration start
-	 * {@link com.globalmentor.w3c.spec.XML#XML_DECL_START} . If no byte order can be determined, <code>null</code> is returned.</li>
+	 * {@link com.globalmentor.xml.spec.XML#XML_DECL_START} . If no byte order can be determined, <code>null</code> is returned.</li>
 	 * <li>Based upon the imputed byte order, an explicit encoding is searched for within the XML declaration. If no explicit encoding is found, the imputed byte
-	 * order's assumed charset is returned. If a start {@link com.globalmentor.w3c.spec.XML#XML_DECL_START} but not an end
-	 * {@link com.globalmentor.w3c.spec.XML#XML_DECL_END} of the XML declaration is found, an exception is thrown.</li>
+	 * order's assumed charset is returned. If a start {@link com.globalmentor.xml.spec.XML#XML_DECL_START} but not an end
+	 * {@link com.globalmentor.xml.spec.XML#XML_DECL_END} of the XML declaration is found, an exception is thrown.</li>
 	 * <li>If an explicit encoding declaration is found, it is returned, unless it is less specific than the imputed byte order. For example, if the imputed byte
 	 * order is UTF-16BE but the declared encoding is UTF-16, then the charset UTF-16BE is returned.</li>
 	 * <li>If there is no BOM and no XML declaration, <code>null</code> is returned; the caller should assume the default XML encoding of UTF-8.</li>
@@ -1669,24 +1667,6 @@ public class XML {
 	 */
 	public static String toString(final Element element) {
 		return new XMLSerializer(true).serialize(element); //serialize the element to a string, formatting the XML output
-	}
-
-	/**
-	 * Determines the default XML namespace for the given MIME content type.
-	 * @param mediaType The media type for which a default namespace should be found, or <code>null</code> if the media type is not known.
-	 * @return The default XML namespace URI used by resources of the given content type, or <code>null</code> if there is no default namespace URI or the default
-	 *         namespace URI is not known.
-	 */
-	public static URI getDefaultNamespaceURI(final ContentType mediaType) {
-		if(mediaType != null) { //if we were given a valid media type
-			if(XHTML.isHTML(mediaType)) //if this is one of the HTML media types
-				return HTML.XHTML_NAMESPACE_URI; //return the XHTML media type
-			/*TODO fix for OEB; create some sort of registration facility
-			else if(mediaType.match(ContentType.TEXT_PRIMARY_TYPE, OEB.X_OEB1_DOCUMENT_SUBTYPE)) //if this is an OEB 1.x document
-				return OEB.OEB1_DOCUMENT_NAMESPACE_URI; //return the OEB 1.x document namespace
-			*/
-		}
-		return null; //show that we can't find a default namespace URI
 	}
 
 	/**

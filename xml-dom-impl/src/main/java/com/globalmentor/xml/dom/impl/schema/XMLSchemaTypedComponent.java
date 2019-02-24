@@ -16,7 +16,7 @@
 
 package com.globalmentor.xml.dom.impl.schema;
 
-import com.globalmentor.w3c.spec.XMLSchema;
+import com.globalmentor.xml.spec.XMLSchema;
 
 /**
  * Represents one of the schema components that can be assigned a type:

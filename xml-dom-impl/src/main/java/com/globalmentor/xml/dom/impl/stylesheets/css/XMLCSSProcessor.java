@@ -16,13 +16,13 @@
 
 package com.globalmentor.xml.dom.impl.stylesheets.css;
 
-import static com.globalmentor.w3c.spec.CSS.*;
+import static com.globalmentor.css.spec.CSS.*;
 
 import java.io.*;
 import java.net.URI;
 
 import com.globalmentor.io.*;
-import com.globalmentor.w3c.spec.HTML;
+import com.globalmentor.html.spec.HTML;
 import com.globalmentor.xml.dom.impl.*;
 
 import org.w3c.dom.*;

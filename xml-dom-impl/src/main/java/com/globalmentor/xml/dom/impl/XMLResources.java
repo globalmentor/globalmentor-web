@@ -18,7 +18,7 @@ package com.globalmentor.xml.dom.impl;
 
 import java.util.ListResourceBundle;
 
-import com.globalmentor.w3c.spec.XML;
+import com.globalmentor.xml.spec.XML;
 
 /**
  * Resource bundle for XML.

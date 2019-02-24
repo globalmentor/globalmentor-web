@@ -21,7 +21,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.globalmentor.w3c.spec.XMLSchema;
+import com.globalmentor.xml.spec.XMLSchema;
 
 import io.clogr.Clogr;
 

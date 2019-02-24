@@ -20,8 +20,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import static com.globalmentor.net.URIs.*;
-import static com.globalmentor.w3c.spec.XML.*;
 import static com.globalmentor.xml.XML.*;
+import static com.globalmentor.xml.spec.XML.*;
 
 import org.w3c.dom.*;
 

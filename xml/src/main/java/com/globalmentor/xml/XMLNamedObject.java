@@ -18,10 +18,10 @@ package com.globalmentor.xml;
 
 import com.globalmentor.java.Objects;
 import com.globalmentor.model.DefaultNamed;
-import com.globalmentor.w3c.spec.XML;
+import com.globalmentor.xml.spec.XML;
 
 /**
- * The base class for XML objects that are named&mdash;identified by qname and/or namespace and local name.
+ * The base class for XML objects that are named—identified by qname and/or namespace and local name.
  * <p>
  * This class can be used independently of the rest of the W3C DOM implementations in this package.
  * </p>
