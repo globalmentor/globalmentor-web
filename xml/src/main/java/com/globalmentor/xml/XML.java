@@ -21,7 +21,10 @@ import java.lang.ref.*;
 import java.net.URI;
 import java.nio.charset.*;
 import java.util.*;
+import java.util.Objects;
+import java.util.stream.*;
 
+import javax.annotation.*;
 import javax.xml.parsers.*;
 
 import static com.globalmentor.io.Charsets.*;
@@ -29,7 +32,6 @@ import static com.globalmentor.io.InputStreams.*;
 
 import com.globalmentor.io.ByteOrderMark;
 import com.globalmentor.java.*;
-import com.globalmentor.java.Objects;
 import com.globalmentor.model.ConfigurationException;
 import com.globalmentor.model.NameValuePair;
 import com.globalmentor.model.ObjectHolder;
@@ -51,6 +53,8 @@ import static com.globalmentor.svg.spec.SVG.*;
 import static com.globalmentor.xml.spec.XML.*;
 import static com.globalmentor.xml.spec.XMLStyleSheets.*;
 import static java.nio.charset.StandardCharsets.*;
+import static java.util.Spliterators.*;
+import static java.util.stream.StreamSupport.*;
 
 /**
  * Various XML manipulation functions, mostly using the DOM.
@@ -983,7 +987,7 @@ public class XML { //TODO likely move all or part of this class to a Dom class, 
 	 * @return A new document fragment containing the extracted node.
 	 * @throws DOMException
 	 *           <ul>
-	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
+	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is read-only.</li>
 	 *           </ul>
 	 * @throws IllegalArgumentException if the given node has no owner document.
 	 * @throws IllegalArgumentException if the given node has no parent node.
@@ -1000,7 +1004,7 @@ public class XML { //TODO likely move all or part of this class to a Dom class, 
 	 * @return A new document fragment containing the extracted node.
 	 * @throws DOMException
 	 *           <ul>
-	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
+	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is read-only.</li>
 	 *           </ul>
 	 * @throws IllegalArgumentException if the given node has no owner document.
 	 * @throws IllegalArgumentException if the given node has no parent node.
@@ -1029,7 +1033,7 @@ public class XML { //TODO likely move all or part of this class to a Dom class, 
 	 * @return A new document fragment containing the extracted children.
 	 * @throws DOMException
 	 *           <ul>
-	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
+	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is read-only.</li>
 	 *           </ul>
 	 * @see #removeChildren
 	 */
@@ -1044,7 +1048,7 @@ public class XML { //TODO likely move all or part of this class to a Dom class, 
 	 * @return A new document fragment containing the extracted children.
 	 * @throws DOMException
 	 *           <ul>
-	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
+	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is read-only.</li>
 	 *           </ul>
 	 * @see #removeChildren
 	 */
@@ -1066,7 +1070,7 @@ public class XML { //TODO likely move all or part of this class to a Dom class, 
 	 * @throws ArrayIndexOutOfBoundsException if the given range is invalid for the given node's children.
 	 * @throws DOMException
 	 *           <ul>
-	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
+	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is read-only.</li>
 	 *           </ul>
 	 * @see #removeChildren(Node, int, int)
 	 */
@@ -1089,7 +1093,7 @@ public class XML { //TODO likely move all or part of this class to a Dom class, 
 	 * @throws ArrayIndexOutOfBoundsException if the given range is invalid for the given node's children.
 	 * @throws DOMException
 	 *           <ul>
-	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
+	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is read-only.</li>
 	 *           </ul>
 	 * @see #removeChildren(Node, int, int)
 	 */
@@ -1391,7 +1395,7 @@ public class XML { //TODO likely move all or part of this class to a Dom class, 
 	 * @throws DOMException
 	 *           <ul>
 	 *           <li>INDEX_SIZE_ERR: Raised if the specified offset is negative or greater than the number of 16-bit units in <code>data</code>.</li>
-	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
+	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is read-only.</li>
 	 *           </ul>
 	 */
 	public static Element insertElement(final Text textNode, final Element element, final int startIndex, final int endIndex) throws DOMException {
@@ -1411,7 +1415,7 @@ public class XML { //TODO likely move all or part of this class to a Dom class, 
 	 * @throws DOMException
 	 *           <ul>
 	 *           <li>INDEX_SIZE_ERR: Raised if the specified offset is negative or greater than the number of 16-bit units in <code>data</code>.</li>
-	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
+	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is read-only.</li>
 	 *           </ul>
 	 */
 	public static Text splitText(Text textNode, int startIndex, int endIndex) throws DOMException {
@@ -1451,7 +1455,7 @@ public class XML { //TODO likely move all or part of this class to a Dom class, 
 	 *           String.substring()?
 	 * @throws DOMException
 	 *           <ul>
-	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
+	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is read-only.</li>
 	 *           </ul>
 	 */
 	public static void removeChildren(final Node node, final int startChildIndex, final int endChildIndex) throws ArrayIndexOutOfBoundsException, DOMException {
@@ -1940,6 +1944,58 @@ public class XML { //TODO likely move all or part of this class to a Dom class, 
 		} catch(final IOException ioException) { //we should never get an I/O exception reading from a string
 			throw new AssertionError(ioException);
 		}
+	}
+
+	//#Node
+
+	/**
+	 * Removes all children of a node.
+	 * @implNote Implementation inspired by <a href="https://stackoverflow.com/a/20810451/421049">Stack Overflow post</a>.
+	 * @param <N> The type of parent node.
+	 * @param node The node from which child nodes should be removed.
+	 * @return The given node.
+	 * @throws DOMException
+	 *           <ul>
+	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is read-only.</li>
+	 *           </ul>
+	 */
+	public static <N extends Node> N removeChildren(@Nonnull final N node) throws DOMException {
+		while(node.hasChildNodes()) {
+			node.removeChild(node.getFirstChild());
+		}
+		return node;
+	}
+
+	//#NodeList
+
+	/**
+	 * Retrieves the optional first item of a node list.
+	 * @apiNote This method provides no new functionality, but is useful because it is often desirable just to get the first node, if any, in a returned list.
+	 * @param nodeList The node list to examine.
+	 * @return The first node in the list, which will not be present if the list is empty.
+	 */
+	public static Optional<Node> findFirst(@Nonnull final NodeList nodeList) {
+		return nodeList.getLength() > 0 ? Optional.of(nodeList.item(0)) : Optional.empty();
+	}
+
+	/**
+	 * Returns an iterable to iterate through the nodes in a node list. The returned iterator fails fast if it detects that the node list was modified during
+	 * iteration.
+	 * @param nodeList The node list to iterate through.
+	 * @return An iterable for iterating the nodes in the node list.
+	 */
+	public static Iterable<Node> iterableOf(@Nonnull final NodeList nodeList) {
+		return () -> new NodeListIterator(nodeList);
+	}
+
+	/**
+	 * Returns a stream to iterate through the nodes in a node list. The returned stream fails fast if it detects that the node list was modified during
+	 * iteration.
+	 * @param nodeList The node list to iterate through.
+	 * @return A stream for iterating the nodes in the node list.
+	 */
+	public static Stream<Node> streamOf(@Nonnull final NodeList nodeList) {
+		return stream(spliterator(new NodeListIterator(nodeList), nodeList.getLength(), Spliterator.ORDERED), false);
 	}
 
 }
