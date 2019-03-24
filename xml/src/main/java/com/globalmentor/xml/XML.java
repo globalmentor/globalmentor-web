@@ -1998,4 +1998,41 @@ public class XML { //TODO likely move all or part of this class to a Dom class, 
 		return stream(spliterator(new NodeListIterator(nodeList), nodeList.getLength(), Spliterator.ORDERED), false);
 	}
 
+	//#Element
+
+	/**
+	 * Retrieves an attribute value by name if it exists.
+	 * @implNote This method functions similarly to {@link Element#getAttribute(String)}, except that the attribute is guaranteed to exist to prevent ambiguity
+	 *           with the empty string, which earlier versions of the DOM were supposed to return if the attribute did not exist.
+	 * @param element The element for which an attribute should be returned.
+	 * @param name The name of the attribute to retrieve.
+	 * @return The attribute value as a string, which will not be present if the attribute does not have a specified or default value.
+	 */
+	public static Optional<String> findAttribute(@Nonnull final Element element, @Nonnull final String name) {
+		//use Optional.ofNullable() in case for whatever reason the DOM implementation returns null even if we checked that an attribute should exist
+		return element.hasAttribute(name) ? Optional.ofNullable(element.getAttribute(name)) : Optional.empty();
+	}
+
+	/**
+	 * Retrieves an attribute value by local name and namespace URI if it exists.
+	 * @implNote This method functions similarly to {@link Element#getAttributeNS(String, String)}, except that the attribute is guaranteed to exist to prevent
+	 *           ambiguity with the empty string, which earlier versions of the DOM were supposed to return if the attribute did not exist.
+	 * @param element The element for which an attribute should be returned.
+	 * @param namespaceURI The namespace URI of the attribute to retrieve.
+	 * @param localName The local name of the attribute to retrieve.
+	 * @return The attribute value as a string, which will not be present if the attribute does not have a specified or default value.
+	 * @throws DOMException
+	 *           <ul>
+	 *           <li>NOT_SUPPORTED_ERR: May be raised if the implementation does not support the feature <code>"XML"</code> and the language exposed through the
+	 *           Document does not support XML Namespaces (such as [<a href='http://www.w3.org/TR/1999/REC-html401-19991224/'>HTML 4.01</a>]).</li>
+	 *           </ul>
+	 * @see Element#hasAttributeNS(String, String)
+	 * @see Element#getAttributeNS(String, String)
+	 */
+	public static Optional<String> findAttributeNS(@Nonnull final Element element, @Nullable final String namespaceURI, @Nonnull final String localName)
+			throws DOMException {
+		//use Optional.ofNullable() in case for whatever reason the DOM implementation returns null even if we checked that an attribute should exist
+		return element.hasAttributeNS(namespaceURI, localName) ? Optional.ofNullable(element.getAttributeNS(namespaceURI, localName)) : Optional.empty();
+	}
+
 }
