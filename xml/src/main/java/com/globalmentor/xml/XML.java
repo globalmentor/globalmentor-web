@@ -2009,8 +2009,15 @@ public class XML { //TODO likely move all or part of this class to a Dom class, 
 	 * @return The attribute value as a string, which will not be present if the attribute does not have a specified or default value.
 	 */
 	public static Optional<String> findAttribute(@Nonnull final Element element, @Nonnull final String name) {
-		//use Optional.ofNullable() in case for whatever reason the DOM implementation returns null even if we checked that an attribute should exist
-		return element.hasAttribute(name) ? Optional.ofNullable(element.getAttribute(name)) : Optional.empty();
+		final String attribute = element.getAttribute(name);
+		//In previous versions of the DOM, a returned empty string was ambiguous as to whether the attribute was really missing,
+		//so clear up the ambiguity. Note that this approach would present a race condition, making it possible to return `""` that never
+		//actually existed as a value, but the DOM is already not thread-safe so it should only be used in a thread-safe context to begin with. 
+		if(attribute == null || (attribute.isEmpty() && !element.hasAttribute(name))) {
+			return Optional.empty();
+		}
+		assert attribute != null : "Already checked for null.";
+		return Optional.of(attribute);
 	}
 
 	/**
@@ -2031,8 +2038,15 @@ public class XML { //TODO likely move all or part of this class to a Dom class, 
 	 */
 	public static Optional<String> findAttributeNS(@Nonnull final Element element, @Nullable final String namespaceURI, @Nonnull final String localName)
 			throws DOMException {
-		//use Optional.ofNullable() in case for whatever reason the DOM implementation returns null even if we checked that an attribute should exist
-		return element.hasAttributeNS(namespaceURI, localName) ? Optional.ofNullable(element.getAttributeNS(namespaceURI, localName)) : Optional.empty();
+		final String attribute = element.getAttributeNS(namespaceURI, localName);
+		//In previous versions of the DOM, a returned empty string was ambiguous as to whether the attribute was really missing,
+		//so clear up the ambiguity. Note that this approach would present a race condition, making it possible to return `""` that never
+		//actually existed as a value, but the DOM is already not thread-safe so it should only be used in a thread-safe context to begin with. 
+		if(attribute == null || (attribute.isEmpty() && !element.hasAttributeNS(namespaceURI, localName))) {
+			return Optional.empty();
+		}
+		assert attribute != null : "Already checked for null.";
+		return Optional.of(attribute);
 	}
 
 }
