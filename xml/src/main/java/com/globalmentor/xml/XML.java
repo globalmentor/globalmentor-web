@@ -1998,4 +1998,55 @@ public class XML { //TODO likely move all or part of this class to a Dom class, 
 		return stream(spliterator(new NodeListIterator(nodeList), nodeList.getLength(), Spliterator.ORDERED), false);
 	}
 
+	//#Element
+
+	/**
+	 * Retrieves an attribute value by name if it exists.
+	 * @implNote This method functions similarly to {@link Element#getAttribute(String)}, except that the attribute is guaranteed to exist to prevent ambiguity
+	 *           with the empty string, which earlier versions of the DOM were supposed to return if the attribute did not exist.
+	 * @param element The element for which an attribute should be returned.
+	 * @param name The name of the attribute to retrieve.
+	 * @return The attribute value as a string, which will not be present if the attribute does not have a specified or default value.
+	 */
+	public static Optional<String> findAttribute(@Nonnull final Element element, @Nonnull final String name) {
+		final String attribute = element.getAttribute(name);
+		//In previous versions of the DOM, a returned empty string was ambiguous as to whether the attribute was really missing,
+		//so clear up the ambiguity. Note that this approach would present a race condition, making it possible to return `""` that never
+		//actually existed as a value, but the DOM is already not thread-safe so it should only be used in a thread-safe context to begin with. 
+		if(attribute == null || (attribute.isEmpty() && !element.hasAttribute(name))) {
+			return Optional.empty();
+		}
+		assert attribute != null : "Already checked for null.";
+		return Optional.of(attribute);
+	}
+
+	/**
+	 * Retrieves an attribute value by local name and namespace URI if it exists.
+	 * @implNote This method functions similarly to {@link Element#getAttributeNS(String, String)}, except that the attribute is guaranteed to exist to prevent
+	 *           ambiguity with the empty string, which earlier versions of the DOM were supposed to return if the attribute did not exist.
+	 * @param element The element for which an attribute should be returned.
+	 * @param namespaceURI The namespace URI of the attribute to retrieve.
+	 * @param localName The local name of the attribute to retrieve.
+	 * @return The attribute value as a string, which will not be present if the attribute does not have a specified or default value.
+	 * @throws DOMException
+	 *           <ul>
+	 *           <li>NOT_SUPPORTED_ERR: May be raised if the implementation does not support the feature <code>"XML"</code> and the language exposed through the
+	 *           Document does not support XML Namespaces (such as [<a href='http://www.w3.org/TR/1999/REC-html401-19991224/'>HTML 4.01</a>]).</li>
+	 *           </ul>
+	 * @see Element#hasAttributeNS(String, String)
+	 * @see Element#getAttributeNS(String, String)
+	 */
+	public static Optional<String> findAttributeNS(@Nonnull final Element element, @Nullable final String namespaceURI, @Nonnull final String localName)
+			throws DOMException {
+		final String attribute = element.getAttributeNS(namespaceURI, localName);
+		//In previous versions of the DOM, a returned empty string was ambiguous as to whether the attribute was really missing,
+		//so clear up the ambiguity. Note that this approach would present a race condition, making it possible to return `""` that never
+		//actually existed as a value, but the DOM is already not thread-safe so it should only be used in a thread-safe context to begin with. 
+		if(attribute == null || (attribute.isEmpty() && !element.hasAttributeNS(namespaceURI, localName))) {
+			return Optional.empty();
+		}
+		assert attribute != null : "Already checked for null.";
+		return Optional.of(attribute);
+	}
+
 }
