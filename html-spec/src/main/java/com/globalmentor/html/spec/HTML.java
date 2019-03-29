@@ -70,8 +70,11 @@ public class HTML {
 	/** The recommended prefix to the XHTML namespace. */
 	public static final String XHTML_NAMESPACE_PREFIX = "xhtml";
 
+	/** The string representing the XHTML namespace. */
+	public static final String XHTML_NAMESPACE_URI_STRING = "http://www.w3.org/1999/xhtml";
+
 	/** The URI to the XHTML namespace. */
-	public static final URI XHTML_NAMESPACE_URI = URI.create("http://www.w3.org/1999/xhtml");
+	public static final URI XHTML_NAMESPACE_URI = URI.create(XHTML_NAMESPACE_URI_STRING);
 
 	/** The public ID for the HTML 2.0 DTD. */
 	public static final String HTML_2_0_PUBLIC_ID = "-//IETF//DTD HTML 2.0//EN";
@@ -233,6 +236,7 @@ public class HTML {
 	public static final String ELEMENT_LABEL = "label";
 	public static final String ELEMENT_LEGEND = "legend";
 	public static final String ELEMENT_LINK = "link";
+	public static final String ELEMENT_MAIN = "main";
 	public static final String ELEMENT_MAP = "map";
 	public static final String ELEMENT_META = "meta";
 	public static final String ELEMENT_NAV = "nav";
