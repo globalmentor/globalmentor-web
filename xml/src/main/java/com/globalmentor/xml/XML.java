@@ -1212,8 +1212,8 @@ public class XML { //TODO likely move all or part of this class to a Dom class, 
 
 	/**
 	 * Returns a list of child nodes with a given type and node name. The special wildcard name "*" returns nodes of all names. If <code>deep</code> is set to
-	 * <code>true</code>, returns a list of all descendant nodes with a given name, in the order in which they would be encountered in a preorder traversal of the
-	 * node tree.
+	 * <code>true</code>, returns a list of all descendant nodes with a given name, in the order in which they would be encountered in a pre-order traversal of
+	 * the node tree.
 	 * @param node The node the child nodes of which will be searched.
 	 * @param nodeType The type of nodes to include.
 	 * @param nodeName The name of the node to match on. The special value "*" matches all nodes.
@@ -1221,7 +1221,7 @@ public class XML { //TODO likely move all or part of this class to a Dom class, 
 	 * @return A new iterator object containing all the matching nodes.
 	 */
 	public static List<Node> getNodesByName(final Node node, final int nodeType, final String nodeName, final boolean deep) {
-		final List<Node> nodeList = new ArrayList<Node>(); //crate a new node list to return
+		final List<Node> nodeList = new ArrayList<Node>(node.getChildNodes().getLength()); //crate a new node list to return
 		final boolean matchAllNodes = "*".equals(nodeName); //see if they passed us the wildcard character TODO use a constant here
 		final NodeList childNodeList = node.getChildNodes(); //get the list of child nodes
 		final int childNodeCount = childNodeList.getLength(); //get the number of child nodes
@@ -1240,7 +1240,7 @@ public class XML { //TODO likely move all or part of this class to a Dom class, 
 	/**
 	 * Returns a list of child nodes with a given type, namespace URI, and local name. The special wildcard name "*" returns nodes of all local names. If
 	 * <code>deep</code> is set to <code>true</code>, returns a list of all descendant nodes with a given name, in the order in which they would be encountered in
-	 * a preorder traversal of the node tree.
+	 * a pre-order traversal of the node tree.
 	 * @param node The node the child nodes of which will be searched.
 	 * @param nodeType The type of nodes to include.
 	 * @param namespaceURI The URI of the namespace of nodes to return. The special value "*" matches all namespaces.
@@ -1249,24 +1249,27 @@ public class XML { //TODO likely move all or part of this class to a Dom class, 
 	 * @return A new list containing all the matching nodes.
 	 */
 	public static List<Node> getNodesByNameNS(final Node node, final int nodeType, final String namespaceURI, final String localName, final boolean deep) {
-		return getNodesByNameNS(node, nodeType, namespaceURI, localName, deep, new ArrayList<Node>()); //gather the nodes into a list and return the list
+		return collectNodesByNameNS(node, nodeType, Node.class, namespaceURI, localName, deep, new ArrayList<Node>(node.getChildNodes().getLength())); //gather the nodes into a list and return the list
 	}
 
 	/**
-	 * Gathers child nodes with a given type, namespace URI, and local name. The special wildcard name "*" returns nodes of all local names. If <code>deep</code>
-	 * is set to <code>true</code>, returns a list of all descendant nodes with a given name, in the order in which they would be encountered in a preorder
+	 * Collects child nodes with a given type, namespace URI, and local name. The special wildcard name "*" returns nodes of all local names. If <code>deep</code>
+	 * is set to <code>true</code>, returns a list of all descendant nodes with a given name, in the order in which they would be encountered in a pre-order
 	 * traversal of the node tree.
+	 * @param <N> The type of node to collect.
 	 * @param <C> The type of the collection of nodes.
 	 * @param node The node the child nodes of which will be searched.
 	 * @param nodeType The type of nodes to include.
+	 * @param nodeClass The class representing the type of node to return.
 	 * @param namespaceURI The URI of the namespace of nodes to return. The special value "*" matches all namespaces.
 	 * @param localName The local name of the node to match on. The special value "*" matches all local names.
 	 * @param deep Whether or not matching child nodes of each matching child node, etc. should be included.
 	 * @param nodes The collection into which the nodes will be gathered.
 	 * @return A new list containing all the matching nodes.
+	 * @throws ClassCastException if one of the nodes of the indicated node type cannot be cast to the indicated node class.
 	 */
-	public static <C extends Collection<Node>> C getNodesByNameNS(final Node node, final int nodeType, final String namespaceURI, final String localName,
-			final boolean deep, final C nodes) {
+	public static <N extends Node, C extends Collection<N>> C collectNodesByNameNS(@Nonnull final Node node, final int nodeType,
+			@Nonnull final Class<N> nodeClass, @Nullable final String namespaceURI, @Nonnull final String localName, final boolean deep, final C nodes) {
 		final boolean matchAllNamespaces = "*".equals(namespaceURI); //see if they passed us the wildcard character for the namespace URI TODO use a constant here
 		final boolean matchAllLocalNames = "*".equals(localName); //see if they passed us the wildcard character for the local name TODO use a constant here
 		final NodeList childNodeList = node.getChildNodes(); //get the list of child nodes
@@ -1278,11 +1281,11 @@ public class XML { //TODO likely move all or part of this class to a Dom class, 
 				final String nodeLocalName = childNode.getLocalName(); //get the node's local name
 				if(matchAllNamespaces || Objects.equals(namespaceURI, nodeNamespaceURI)) { //if we should match all namespaces, or the namespaces match
 					if(matchAllLocalNames || localName.equals(nodeLocalName)) { //if we should match all local names, or the local names match
-						nodes.add(childNode); //add this node to the list
+						nodes.add(nodeClass.cast(childNode)); //add this node to the list
 					}
 				}
 				if(deep) { //if each of the children should check for matching nodes as well
-					getNodesByNameNS(childNode, nodeType, namespaceURI, localName, deep, nodes); //get this node's matching child nodes by name and add them to our collection
+					collectNodesByNameNS(childNode, nodeType, nodeClass, namespaceURI, localName, deep, nodes); //get this node's matching child nodes by name and add them to our collection
 				}
 			}
 		}
@@ -1964,6 +1967,18 @@ public class XML { //TODO likely move all or part of this class to a Dom class, 
 			node.removeChild(node.getFirstChild());
 		}
 		return node;
+	}
+
+	/**
+	 * Returns a stream of direct child elements with a given namespace URI and local name, in order.
+	 * @param node The node the child nodes of which will be searched.
+	 * @param namespaceURI The URI of the namespace of nodes to return.
+	 * @param localName The local name of the node to match on.
+	 * @return A stream containing all the matching child elements.
+	 */
+	public static Stream<Element> childElementsByNameNS(@Nonnull final Node node, @Nullable final String namespaceURI, @Nonnull final String localName) {
+		return collectNodesByNameNS(node, Node.ELEMENT_NODE, Element.class, namespaceURI, localName, false, new ArrayList<>(node.getChildNodes().getLength()))
+				.stream();
 	}
 
 	//#NodeList
