@@ -35,7 +35,7 @@ import com.globalmentor.xml.XmlDom;
  * @author Garret Wilson
  *
  */
-public class XMLTest {
+public class XmlDomTest {
 
 	/** @see XmlDom#detectXMLCharset(InputStream, ObjectHolder, ObjectHolder) */
 	@Test
