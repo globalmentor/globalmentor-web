@@ -16,10 +16,15 @@
 
 package com.globalmentor.html;
 
+import static java.util.Objects.*;
+import static java.util.function.Predicate.*;
+
 import java.io.*;
 import java.net.URI;
 import java.util.*;
+import java.util.stream.Stream;
 
+import javax.annotation.*;
 import javax.xml.parsers.*;
 
 import org.w3c.dom.*;
@@ -30,18 +35,20 @@ import com.globalmentor.java.Arrays;
 import com.globalmentor.java.Objects;
 import com.globalmentor.model.ConfigurationException;
 import com.globalmentor.net.ContentType;
+import com.globalmentor.text.ASCII;
 import com.globalmentor.html.spec.HTML;
-import com.globalmentor.xml.XML;
+import com.globalmentor.xml.XmlDom;
 
 import io.clogr.Clogr;
 
 import static com.globalmentor.text.ASCII.*;
 import static com.globalmentor.html.spec.HTML.*;
-import static com.globalmentor.xml.XML.*;
-import static com.globalmentor.xml.xpath.XPath.*;
+import static com.globalmentor.xml.XmlDom.*;
 
 /**
  * Utilities for working with XHTML DOM documents.
+ * @implSpec The methods in this class assume that HTML elements are the in {@value HTML#XHTML_NAMESPACE_URI_STRING} namespace, which at least on the web should
+ *           occur <a href="https://www.w3.org/TR/html52/infrastructure.html#xml">even for HTML documents</a>.
  * @author Garret Wilson
  * @see <a href="http://www.pibil.org/technology/writing/xhtml-media-type.html">XHTML: An XML Application</a>
  * @see <a href="http://www.w3.org/TR/xhtml-media-types/">XHTML Media Types</a>
@@ -157,152 +164,195 @@ public class HtmlDom {
 	}
 
 	/**
-	 * Finds the XHTML <code>&lt;body&gt;</code> element.
+	 * Finds the root {@code <html>} element in the XHTML namespace.
 	 * @param document The XHTML document tree.
-	 * @return A reference to the <code>&lt;body&gt;</code> element, or <code>null</code> if there is such element.
+	 * @return The root element only if it is the XHTML {@code <html>} element.
+	 * @see HTML#XHTML_NAMESPACE_URI
+	 * @see HTML#ELEMENT_HTML
 	 */
-	public static Element getBodyElement(final Document document) {
-		return (Element)getNode(document, LOCATION_STEP_SEPARATOR_CHAR + ELEMENT_BODY);
+	public static Optional<Element> findHtmlElement(@Nonnull final Document document) {
+		return Optional.ofNullable(document.getDocumentElement())
+				.filter(documentElement -> XHTML_NAMESPACE_URI_STRING.equals(documentElement.getNamespaceURI()) && documentElement.getLocalName().equals(ELEMENT_HTML));
 	}
 
 	/**
-	 * Finds the XHTML {@code <head>} element.
+	 * Finds the {@code <html><body>} element in the XHTML namespace.
 	 * @param document The XHTML document tree.
-	 * @return A reference to the {@code <head>} element, or <code>null</code> if there is no such element.
+	 * @return A reference to the {@code <html><body>} element if it exists in the tree.
+	 * @see HTML#XHTML_NAMESPACE_URI
+	 * @see HTML#ELEMENT_BODY
 	 */
-	public static Element getHeadElement(final Document document) {
-		return (Element)getNode(document, LOCATION_STEP_SEPARATOR_CHAR + ELEMENT_HEAD);
+	public static Optional<Element> findHtmlBodyElement(@Nonnull final Document document) {
+		return findHtmlElement(document).flatMap(htmlElement -> findFirstChildElementByNameNS(htmlElement, XHTML_NAMESPACE_URI_STRING, ELEMENT_BODY));
 	}
 
 	/**
-	 * Finds the XHTML {@code <head><title>} element.
+	 * Finds the {@code <html><head>} element in the XHTML namespace.
 	 * @param document The XHTML document tree.
-	 * @return A reference to the {@code <head><title>} element, or <code>null</code> if there is no such element.
+	 * @return A reference to the {@code <html><head>} element if it exists in the tree.
+	 * @see HTML#XHTML_NAMESPACE_URI
+	 * @see HTML#ELEMENT_HEAD
 	 */
-	public static Element getHeadTitleElement(final Document document) {
-		return (Element)getNode(document, LOCATION_STEP_SEPARATOR_CHAR + ELEMENT_HEAD + LOCATION_STEP_SEPARATOR_CHAR + ELEMENT_TITLE);
+	public static Optional<Element> findHtmlHeadElement(@Nonnull final Document document) {
+		return findHtmlElement(document).flatMap(htmlElement -> findFirstChildElementByNameNS(htmlElement, XHTML_NAMESPACE_URI_STRING, ELEMENT_HEAD));
 	}
 
 	/**
-	 * Finds all XHTML {@code <head><meta>} elements.
+	 * Finds the {@code <html><head><title>} element in the XHTML namespace.
 	 * @param document The XHTML document tree.
-	 * @return A list of all {@code <head><meta>} elements, if any.
+	 * @return A reference to the {@code <html><head><title>} element if it exists in the tree.
+	 * @see HTML#XHTML_NAMESPACE_URI
+	 * @see HTML#ELEMENT_TITLE
 	 */
-	@SuppressWarnings("unchecked")
-	public static List<Element> getHeadMetaElements(final Document document) {
-		//		final Element headElement=getHeadElement(document);	//TODO improve XPath processor to extract elements
-
-		return getElements((List<Node>)evaluatePathExpression(document.getDocumentElement(), ELEMENT_HEAD + LOCATION_STEP_SEPARATOR_CHAR + ELEMENT_META));
+	public static Optional<Element> findHtmlHeadTitleElement(@Nonnull final Document document) {
+		return findHtmlHeadElement(document).flatMap(htmlElement -> findFirstChildElementByNameNS(htmlElement, XHTML_NAMESPACE_URI_STRING, ELEMENT_TITLE));
 	}
 
 	/**
-	 * Finds the first XHTML {@code <head><meta>} element with the given name. The meta name is matched in a case insensitive manner.
+	 * Finds the {@code <html><head><meta>} elements in an HTML document.
+	 * @param document The XHTML document tree.
+	 * @return A stream of {@code <html><head><meta>} elements if they exist in the tree.
+	 * @see HTML#XHTML_NAMESPACE_URI
+	 * @see HTML#ELEMENT_META
+	 */
+	public static Stream<Element> htmlHeadMetaElements(@Nonnull final Document document) {
+		return findHtmlHeadElement(document).map(headElement -> childElementsByNameNS(headElement, XHTML_NAMESPACE_URI_STRING, ELEMENT_META))
+				.orElse(Stream.empty());
+	}
+
+	/**
+	 * Finds the first {@code <html><head><meta>} element with the given name. The meta name is matched in an ASCII case insensitive manner.
 	 * @param document The XHTML document tree.
 	 * @param metaName The name of the meta element to return.
-	 * @return The first {@code <head><meta>} element with the given name, case insensitive, or <code>null</code> if no such meta element can be found.
+	 * @return The first {@code <html><head><meta>} element with the given name, ASCII case insensitive, if found.
 	 * @throws NullPointerException if the given document and/or name is <code>null</code>.
 	 * @see HTML#ELEMENT_META_ATTRIBUTE_NAME
+	 * @see ASCII#equalsIgnoreCase(CharSequence, CharSequence)
+	 * @see <a href="https://www.w3.org/TR/html52/document-metadata.html#the-meta-element">HTML 5.2 § 4.2.5. The meta element</a>
 	 */
-	public static Element getHeadMetaElement(final Document document, final String metaName) {
-		for(final Element element : getHeadMetaElements(document)) { //get all the meta elements
-			if(metaName.equalsIgnoreCase(element.getAttribute(ELEMENT_META_ATTRIBUTE_NAME))) { //if this meta element has the correct name
-				return element;
-			}
-		}
-		return null; //we coudn't find such a named meta element
+	public static Optional<Element> findHtmlHeadMetaElement(@Nonnull final Document document, @Nonnull final String metaName) {
+		requireNonNull(metaName);
+		return htmlHeadMetaElements(document).filter(metaElement -> {
+			final String metaElementName = metaElement.getAttributeNS(null, ELEMENT_META_ATTRIBUTE_NAME);
+			return metaElementName != null && ASCII.equalsIgnoreCase(metaName, metaElementName);
+		}).findFirst();
 	}
 
 	/**
-	 * Finds the first XHTML {@code <head><meta>} element with the given name and returns its <code>content</code> attribute. The meta name is matched in a case
-	 * insensitive manner.
+	 * Finds the first XHTML {@code <html><head><meta>} element with the given name and returns its {@value HTML#ELEMENT_META_ATTRIBUTE_CONTENT} attribute. The
+	 * meta name is matched in an ASCII case insensitive manner.
 	 * @param document The XHTML document tree.
 	 * @param metaName The name of the meta element to return.
-	 * @return The <code>content</code> attribute of the first {@code <head><meta>} element with the given name, case insensitive, or <code>null</code> if no such
-	 *         meta element can be found.
+	 * @return The {@value HTML#ELEMENT_META_ATTRIBUTE_CONTENT} attribute of the first {@code <html><head><meta>} element with the given name, ASCII case
+	 *         insensitive.
 	 * @throws NullPointerException if the given document and/or name is <code>null</code>.
 	 * @see HTML#ELEMENT_META_ATTRIBUTE_NAME
 	 * @see HTML#ELEMENT_META_ATTRIBUTE_CONTENT
+	 * @see ASCII#equalsIgnoreCase(CharSequence, CharSequence)
+	 * @see <a href="https://www.w3.org/TR/html52/document-metadata.html#the-meta-element">HTML 5.2 § 4.2.5. The meta element</a>
 	 */
-	public static String getHeadMetaElementContent(final Document document, final String metaName) {
-		final Element metaElement = getHeadMetaElement(document, metaName);
-		return metaElement != null ? metaElement.getAttribute(ELEMENT_META_ATTRIBUTE_CONTENT) : null;
+	public static Optional<String> findHtmlHeadMetaElementContent(@Nonnull final Document document, @Nonnull final String metaName) {
+		return findHtmlHeadMetaElement(document, metaName).map(metaElement -> metaElement.getAttributeNS(null, ELEMENT_META_ATTRIBUTE_CONTENT))
+				.filter(not(String::isEmpty)); //filter out the empty string, as getAttributeNS() is supposed to return an empty string for missing content
+	}
+
+	/**
+	 * Determines the reference to the image file represented by the element, assuming the element (an "img" or "object" element) does in fact represent an image.
+	 * For "img", this return the "src" attribute. For objects, the value of the "data" attribute is returned. The {@value HTML#XHTML_NAMESPACE_URI_STRING}
+	 * namespace is used.
+	 * @implSpec This method delegates to {@link #findImageElementHRef(Element, String)}.
+	 * @param element The element which contains the image information.
+	 * @return The reference to the image file.
+	 * @throws NullPointerException if the given element is <code>null</code>.
+	 */
+	public static Optional<String> findImageElementHRef(@Nonnull final Element element) {
+		return findImageElementHRef(element, XHTML_NAMESPACE_URI_STRING);
 	}
 
 	/**
 	 * Determines the reference to the image file represented by the element, assuming the element (an "img" or "object" element) does in fact represent an image.
 	 * For "img", this return the "src" attribute. For objects, the value of the "data" attribute is returned.
-	 * @param xhtmlNamespaceURI The XHTML namespace.
 	 * @param element The element which contains the image information.
-	 * @return The reference to the image file, or <code>null</code> if no reference could be found.
+	 * @param htmlNamespaceURI The HTML namespace.
+	 * @return The reference to the image file.
+	 * @throws NullPointerException if the given element is <code>null</code>.
 	 */
-	public static String getImageElementHRef(final String xhtmlNamespaceURI, final Element element) {
-		if(element != null) { //if a valid element is passed
-			final String namespaceURI = element.getNamespaceURI(); //get the element's namespace URI
-			//if this element is in the correct namespace
-			if((xhtmlNamespaceURI == null && namespaceURI == null) || namespaceURI.equals(xhtmlNamespaceURI)) {
-				final String elementName = element.getLocalName(); //get the element's name
-				//see if this is an <img> or <object> element
-				if(elementName.equals(ELEMENT_IMG)) { //if the corresponding element is an img element
-					//get the src attribute, representing the href of the image, or null if not present
-					return getDefinedAttributeNS(element, null, ELEMENT_IMG_ATTRIBUTE_SRC);
-				} else if(elementName.equals(ELEMENT_OBJECT)) { //if the corresponding element is an object element
-					//get the data attribute, representing the href of the image, or null if not present
-					return getDefinedAttributeNS(element, null, ELEMENT_OBJECT_ATTRIBUTE_DATA);
-				}
+	public static Optional<String> findImageElementHRef(@Nonnull final Element element, @Nullable final String htmlNamespaceURI) {
+		final String namespaceURI = element.getNamespaceURI(); //get the element's namespace URI
+		//if this element is in the correct namespace
+		if(Objects.equals(htmlNamespaceURI, namespaceURI)) {
+			final String elementName = element.getLocalName(); //get the element's name
+			//see if this is an <img> or <object> element
+			if(elementName.equals(ELEMENT_IMG)) { //if the corresponding element is an img element
+				//get the src attribute, representing the href of the image, or null if not present
+				return findAttributeNS(element, null, ELEMENT_IMG_ATTRIBUTE_SRC);
+			} else if(elementName.equals(ELEMENT_OBJECT)) { //if the corresponding element is an object element
+				//get the data attribute, representing the href of the image, or null if not present
+				return findAttributeNS(element, null, ELEMENT_OBJECT_ATTRIBUTE_DATA);
 			}
 		}
-		return null; //show that we couldn't find an image reference
+		return Optional.empty(); //show that we couldn't find an image reference
+	}
+
+	/**
+	 * Determines if the specified element represents a link, and if so attempts to find the link element's reference. The
+	 * {@value HTML#XHTML_NAMESPACE_URI_STRING} namespace is used.
+	 * @implSpec This method delegates to {@link #findLinkElementHRef(Element, String)}.
+	 * @param element The element which might represent a link.
+	 * @return The reference of the link, which will not be present if the specified element does not represent a link or has no reference.
+	 * @throws NullPointerException if the given element is <code>null</code>.
+	 */
+	public static Optional<String> findLinkElementHRef(@Nonnull final Element element) { //TODO fix to call XLink and see if this is an XLink link
+		return findLinkElementHRef(element, XHTML_NAMESPACE_URI_STRING);
 	}
 
 	/**
 	 * Determines if the specified element represents a link, and if so attempts to find the link element's reference.
-	 * @param xhtmlNamespaceURI The XHTML namespace.
 	 * @param element The element which might represent a link.
-	 * @return The reference of the link, or <code>null</code> if the specified element does not represent a link or has no reference.
+	 * @param htmlNamespaceURI The HTML namespace.
+	 * @return The reference of the link, which will not be present if the specified element does not represent a link or has no reference.
+	 * @throws NullPointerException if the given element is <code>null</code>.
 	 */
-	public static String getLinkElementHRef(final String xhtmlNamespaceURI, final Element element) { //TODO fix to call XLink and see if this is an XLink link
-		if(element != null) { //if a valid element was passed
-			final String namespaceURI = element.getNamespaceURI(); //get the element's namespace URI
-			//if this element is in the correct namespace
-			if(Objects.equals(xhtmlNamespaceURI, namespaceURI)) {
-				final String elementName = element.getLocalName(); //get the element's name
-				if(elementName.equals(ELEMENT_A)) { //if this is an <a> element
-					return getDefinedAttributeNS(element, null, ELEMENT_A_ATTRIBUTE_HREF); //return the value of the href attribute, if there is one
-				}
+	public static Optional<String> findLinkElementHRef(@Nonnull final Element element, @Nullable final String htmlNamespaceURI) { //TODO fix to call XLink and see if this is an XLink link
+		final String namespaceURI = element.getNamespaceURI(); //get the element's namespace URI
+		//if this element is in the correct namespace
+		if(Objects.equals(htmlNamespaceURI, namespaceURI)) {
+			final String elementName = element.getLocalName(); //get the element's name
+			if(elementName.equals(ELEMENT_A)) { //if this is an <a> element
+				return findAttributeNS(element, null, ELEMENT_A_ATTRIBUTE_HREF); //return the value of the href attribute, if there is one
 			}
 		}
-		return null; //show that we couldn't find an href or this wasn't even a link
+		return Optional.empty(); //show that we couldn't find an href or this wasn't even a link
 	}
 
 	/**
 	 * Determines the content type indicated by the given link element.
-	 * @param element The element, presumably a link ({@code<a>}, {@code<area>}, or {@code<link>}).
-	 * @return The content type specified by the link element, or <code>null</code> if no content type was specified or the content type was not syntactically
-	 *         correct.
+	 * @param element The element, presumably a link ({@code <a>}, {@code <area>}, or {@code <link>}).
+	 * @return The content type specified by the link element, which will not be present if no content type was specified or the content type was not
+	 *         syntactically correct.
 	 * @see HTML#LINK_ATTRIBUTE_TYPE
 	 * @see <a href="http://www.w3.org/TR/html5/links.html#attr-hyperlink-type">HTML5 Link MIME type</a>
 	 */
-	public static ContentType getLinkContentType(final Element element) {
-		final String typeString = element.getAttributeNS(null, LINK_ATTRIBUTE_TYPE); //get the value of the type attribute
-		if(!typeString.isEmpty()) { //if there is a type specified
+	public static Optional<ContentType> findLinkContentType(@Nonnull final Element element) {
+		return findAttributeNS(element, null, LINK_ATTRIBUTE_TYPE).flatMap(link -> { //if there is a type specified
 			try {
-				return ContentType.create(typeString); //parse the content type and return it
+				return Optional.of(ContentType.create(link)); //parse the content type and return it
 			} catch(final IllegalArgumentException illegalArgumentException) { //if the content type isn't valid
 				Clogr.getLogger(HtmlDom.class).debug(illegalArgumentException.getMessage(), illegalArgumentException);
+				return Optional.empty();
 			}
-		}
-		return null;
+		});
 	}
 
 	/**
 	 * Checks to see if the given link's {@value HTML#LINK_ATTRIBUTE_REL} attribute contains the given link type with ASCII case insensitivity.
-	 * @param element The element, presumably a link ({@code<a>}, {@code<area>}, or {@code<link>}).
+	 * @param element The element, presumably a link ({@code <a>}, {@code <area>}, or {@code <link>}).
 	 * @param linkType The type of link to look for.
 	 * @return <code>true</code> if the given element has a {@value HTML#LINK_ATTRIBUTE_REL} attribute with one of the given link types.
 	 * @see HTML#LINK_ATTRIBUTE_REL
 	 * @see <a href="http://www.w3.org/TR/html5/links.html#linkTypes">HTML5 Link Types</a>
 	 */
-	public static boolean hasLinkType(final Element element, final LinkType linkType) {
+	public static boolean hasLinkType(@Nonnull final Element element, @Nonnull final LinkType linkType) {
 		return hasLinkType(element, linkType.getID());
 	}
 
@@ -313,41 +363,54 @@ public class HtmlDom {
 	 * @return <code>true</code> if the given element has a {@value HTML#LINK_ATTRIBUTE_REL} attribute with one of the given link types.
 	 * @see HTML#LINK_ATTRIBUTE_REL
 	 */
-	public static boolean hasLinkType(final Element element, final String linkType) {
+	public static boolean hasLinkType(@Nonnull final Element element, @Nonnull final String linkType) {
 		return containsTokenIgnoreCase(element.getAttributeNS(null, LINK_ATTRIBUTE_REL), SPACE_CHARACTERS, linkType); //see if the given link type ID is one of the tokens in the "rel" attribute value
 	}
 
 	/**
 	 * Determines if the specified element represents an image. Specifically, this returns <code>true</code> if the element's name is "img"; or if the element's
-	 * name is "object" and the type attribute is an image or the data attribute references an image file.
-	 * @param xhtmlNamespaceURI The XHTML namespace.
+	 * name is "object" and the type attribute is an image or the data attribute references an image file. The {@value HTML#XHTML_NAMESPACE_URI_STRING} namespace
+	 * is used.
+	 * @implSpec This method delegates to {@link #isImageElement(Element, String)}.
 	 * @param element The element which might represent an image.
 	 * @return <code>true</code> if the specified element represents an image.
+	 * @throws NullPointerException if the given element is <code>null</code>.
 	 */
-	public static boolean isImageElement(final String xhtmlNamespaceURI, final Element element) {
-		if(element != null) { //if a valid element was passed
-			final String namespaceURI = element.getNamespaceURI(); //get the element's namespace URI
-			//if this element is in the correct namespace
-			if(Objects.equals(xhtmlNamespaceURI, namespaceURI)) {
-				//TODO fix				final String elementName=element.getLocalName();  //get the element's name
-				final String elementName = element.getLocalName(); //get the element's name
-				if(elementName.equals(ELEMENT_IMG)) //if this is an <img> element
-					return true; //show that this is an image object
-				else if(elementName.equals(ELEMENT_OBJECT)) { //if this is an <object> element
-					//see if there is a type attribute
-					if(element.hasAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_TYPE)) { //if there is a type attribute
-						final String type = element.getAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_TYPE); //get the type
-						final ContentType mediaType = ContentType.create(type); //create a media type from the given type
-						if(mediaType.getPrimaryType().equals(ContentType.IMAGE_PRIMARY_TYPE)) //if this is an image
-							return true; //show that this is an image object
-					}
-					//see if there is a data attribute, since there is no type specified
-					if(element.hasAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_DATA)) { //if there is a data attribute
-						final String data = element.getAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_DATA); //get the data
-						final ContentType mediaType = Files.getContentType(new File(data)); //try to get a media type from the file
-						if(mediaType != null && mediaType.getPrimaryType().equals(ContentType.IMAGE_PRIMARY_TYPE)) //if this is an image
-							return true; //show that this is an image object
-					}
+	public static boolean isImageElement(@Nonnull final Element element) {
+		return isImageElement(element, XHTML_NAMESPACE_URI_STRING);
+	}
+
+	/**
+	 * Determines if the specified element represents an image. Specifically, this returns <code>true</code> if the element's name is "img"; or if the element's
+	 * name is "object" and the type attribute is an image or the data attribute references an image file.
+	 * @param htmlNamespaceURI The XHTML namespace.
+	 * @param element The element which might represent an image.
+	 * @return <code>true</code> if the specified element represents an image.
+	 * @throws NullPointerException if the given element is <code>null</code>.
+	 */
+	public static boolean isImageElement(@Nonnull final Element element, @Nullable final String htmlNamespaceURI) {
+		final String namespaceURI = element.getNamespaceURI(); //get the element's namespace URI
+		//if this element is in the correct namespace
+		if(Objects.equals(htmlNamespaceURI, namespaceURI)) {
+			//TODO fix				final String elementName=element.getLocalName();  //get the element's name
+			final String elementName = element.getLocalName(); //get the element's name
+			if(elementName.equals(ELEMENT_IMG)) //if this is an <img> element
+				return true; //show that this is an image object
+			else if(elementName.equals(ELEMENT_OBJECT)) { //if this is an <object> element
+				//see if there is a type attribute
+				if(element.hasAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_TYPE)) { //if there is a type attribute
+					final String type = element.getAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_TYPE); //get the type
+					final ContentType mediaType = ContentType.create(type); //create a media type from the given type
+					//TODO catch possible exception here
+					if(mediaType.getPrimaryType().equals(ContentType.IMAGE_PRIMARY_TYPE)) //if this is an image
+						return true; //show that this is an image object
+				}
+				//see if there is a data attribute, since there is no type specified
+				if(element.hasAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_DATA)) { //if there is a data attribute
+					final String data = element.getAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_DATA); //get the data
+					final ContentType mediaType = Files.getContentType(new File(data)); //try to get a media type from the file
+					if(mediaType != null && mediaType.getPrimaryType().equals(ContentType.IMAGE_PRIMARY_TYPE)) //if this is an image
+						return true; //show that this is an image object
 				}
 			}
 		}
@@ -355,20 +418,31 @@ public class HtmlDom {
 	}
 
 	/**
-	 * Determines if the specified element represents a link. Specifically, this returns <code>true</code> if the element's name is "a".
-	 * @param xhtmlNamespaceURI The XHTML namespace.
+	 * Determines if the specified element represents a link. Specifically, this returns <code>true</code> if the element's name is "a". The
+	 * {@value HTML#XHTML_NAMESPACE_URI_STRING} namespace is used.
+	 * @implSpec This method delegates to {@link #isLinkElement(Element, String)}.
 	 * @param element The element which might represent a link.
 	 * @return <code>true</code> if the specified element represents a link.
+	 * @throws NullPointerException if the given element is <code>null</code>.
 	 */
-	public static boolean isLinkElement(final String xhtmlNamespaceURI, final Element element) { //TODO fix to call XLink and see if this is an XLink link
-		if(element != null) { //if a valid element was passed
-			final String namespaceURI = element.getNamespaceURI(); //get the element's namespace URI
-			//if this element is in the correct namespace
-			if(Objects.equals(xhtmlNamespaceURI, namespaceURI)) {
-				final String elementName = element.getLocalName(); //get the element's name
-				if(elementName.equals(ELEMENT_A)) //if this is an <a> element
-					return true; //show that this is a link element
-			}
+	public static boolean isLinkElement(@Nonnull final Element element) { //TODO fix to call XLink and see if this is an XLink link
+		return isLinkElement(element, XHTML_NAMESPACE_URI_STRING);
+	}
+
+	/**
+	 * Determines if the specified element represents a link. Specifically, this returns <code>true</code> if the element's name is "a".
+	 * @param htmlNamespaceURI The XHTML namespace.
+	 * @param element The element which might represent a link.
+	 * @return <code>true</code> if the specified element represents a link.
+	 * @throws NullPointerException if the given element is <code>null</code>.
+	 */
+	public static boolean isLinkElement(@Nonnull final Element element, @Nullable final String htmlNamespaceURI) { //TODO fix to call XLink and see if this is an XLink link
+		final String namespaceURI = element.getNamespaceURI(); //get the element's namespace URI
+		//if this element is in the correct namespace
+		if(Objects.equals(htmlNamespaceURI, namespaceURI)) {
+			final String elementName = element.getLocalName(); //get the element's name
+			if(elementName.equals(ELEMENT_A)) //if this is an <a> element
+				return true; //show that this is a link element
 		}
 		return false; //this does not appear to be a link element
 	}
@@ -379,10 +453,10 @@ public class HtmlDom {
 	 * @param localName The local name of the element.
 	 * @return <code>true</code> if the specified element should be empty.
 	 */
-	public static boolean isEmptyElement(final URI namespaceURI, final String localName) {
+	public static boolean isEmptyElement(@Nullable final URI namespaceURI, @Nonnull final String localName) {
 		//TODO make this static---placed here because it was causing a compile error due to an Eclipse bug
-		final String[] EMPTY_ELEMENT_LOCAL_NAMES = new String[] { ELEMENT_BASE, ELEMENT_META, ELEMENT_LINK, ELEMENT_HR, ELEMENT_BR, ELEMENT_PARAM, ELEMENT_IMG,
-				ELEMENT_AREA, ELEMENT_INPUT, ELEMENT_COL }; //TODO probably put these in a better place, either in a hash set for faster lookup or put this constant in XHTMLConstants
+		final String[] EMPTY_ELEMENT_LOCAL_NAMES = new String[] {ELEMENT_BASE, ELEMENT_META, ELEMENT_LINK, ELEMENT_HR, ELEMENT_BR, ELEMENT_PARAM, ELEMENT_IMG,
+				ELEMENT_AREA, ELEMENT_INPUT, ELEMENT_COL}; //TODO probably put these in a better place, either in a hash set for faster lookup or put this constant in XHTMLConstants
 		if(localName != null && (namespaceURI == null || isHTMLNamespaceURI(namespaceURI))) { //if this element has an HTML namespace or no namespace
 			return Arrays.indexOf(EMPTY_ELEMENT_LOCAL_NAMES, localName) >= 0; //return whether the local name is one of the empty element local names
 		}
@@ -391,35 +465,34 @@ public class HtmlDom {
 
 	/**
 	 * Determines if the specified element represents a link, and if so sets the link element's reference.
-	 * @param xhtmlNamespaceURI The XHTML namespace.
 	 * @param element The element which represents a link.
+	 * @param htmlNamespaceURI The XHTML namespace.
 	 * @param href The new reference to add to the link.
+	 * @throws NullPointerException if the given element is <code>null</code>.
+	 * @deprecated This doesn't seem like a good approach in light of modern best practices.
 	 */
-	public static void setLinkElementHRef(final String xhtmlNamespaceURI, final Element element, final String href) { //TODO fix to call XLink and see if this is an XLink link
-		if(element != null) { //if a valid element was passed
-			final String namespaceURI = element.getNamespaceURI(); //get the element's namespace URI
-			//if this element is in the correct namespace
-			if(Objects.equals(xhtmlNamespaceURI, namespaceURI)) {
-				final String elementName = element.getLocalName(); //get the element's name
-				if(elementName.equals(ELEMENT_A)) { //if this is an <a> element
-					element.setAttributeNS(null, ELEMENT_A_ATTRIBUTE_HREF, href); //set the href attribute TODO what if they were using an attribute prefix?
-				}
+	@Deprecated
+	public static void setLinkElementHRef(@Nonnull final Element element, @Nullable final String htmlNamespaceURI, @Nonnull final String href) { //TODO fix to call XLink and see if this is an XLink link
+		final String namespaceURI = element.getNamespaceURI(); //get the element's namespace URI
+		//if this element is in the correct namespace
+		if(Objects.equals(htmlNamespaceURI, namespaceURI)) {
+			final String elementName = element.getLocalName(); //get the element's name
+			if(elementName.equals(ELEMENT_A)) { //if this is an <a> element
+				element.setAttributeNS(null, ELEMENT_A_ATTRIBUTE_HREF, href); //set the href attribute TODO what if they were using an attribute prefix?
 			}
 		}
 	}
 
 	/**
 	 * Retrieves the text of the node contained in child nodes of type {@link Node#TEXT_NODE}, extracting text deeply.
-	 * <p>
-	 * This HTML-specific version adds whitespace to separate block elements.
-	 * </p>
+	 * @apiNote This HTML-specific version adds whitespace to separate block elements.
 	 * @param node The node from which text will be retrieved.
 	 * @return The data of all <code>Text</code> descendant nodes, which may be the empty string.
-	 * @see XML#getText(Node, Set)
+	 * @see XmlDom#getText(Node, Set)
 	 * @see HTML#BLOCK_ELEMENTS
 	 */
-	public static String getText(final Node node) {
-		return XML.getText(node, BLOCK_ELEMENTS);
+	public static String getText(final Node node) { //TODO transfer to some higher-layer content manipulation class 
+		return XmlDom.getText(node, BLOCK_ELEMENTS);
 	}
 
 	/**
@@ -430,11 +503,11 @@ public class HtmlDom {
 	 * </p>
 	 * @param node The node from which text will be retrieved.
 	 * @param stringBuilder The buffer to which text will be added.
-	 * @see XML#getText(Node, Set, boolean, StringBuilder)
+	 * @see XmlDom#getText(Node, Set, boolean, StringBuilder)
 	 * @see HTML#BLOCK_ELEMENTS
 	 */
-	public static void getText(final Node node, final StringBuilder stringBuilder) {
-		XML.getText(node, BLOCK_ELEMENTS, true, stringBuilder);
+	public static void getText(final Node node, final StringBuilder stringBuilder) { //TODO transfer to some higher-layer content manipulation class
+		XmlDom.getText(node, BLOCK_ELEMENTS, true, stringBuilder);
 	}
 
 }

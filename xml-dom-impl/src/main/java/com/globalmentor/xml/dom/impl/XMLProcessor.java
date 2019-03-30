@@ -28,7 +28,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import static com.globalmentor.java.Characters.SPACE_CHAR;
-import static com.globalmentor.xml.XML.*;
+import static com.globalmentor.xml.XmlDom.*;
 import static com.globalmentor.xml.spec.XML.*;
 
 import com.globalmentor.io.ByteOrderMark;
@@ -38,7 +38,7 @@ import com.globalmentor.io.ParseUnexpectedDataException;
 import com.globalmentor.io.URIInputStreamable;
 import com.globalmentor.model.ObjectHolder;
 import com.globalmentor.net.URIs;
-import com.globalmentor.xml.XML;
+import com.globalmentor.xml.XmlDom;
 import com.globalmentor.xml.dom.impl.schema.XMLSchemaProcessor;
 
 import io.clogr.Clogged;
@@ -272,7 +272,7 @@ public class XMLProcessor implements URIInputStreamable, Clogged {
 	protected XMLReader createReader(final InputStream xmlInputStream, final Object sourceObject) throws IOException { //TODO comment exceptions
 		final ObjectHolder<ByteOrderMark> bom = new ObjectHolder<>();
 		final ObjectHolder<String> declaredEncodingName = new ObjectHolder<>();
-		Charset charset = XML.detectXMLCharset(xmlInputStream, bom, declaredEncodingName);
+		Charset charset = XmlDom.detectXMLCharset(xmlInputStream, bom, declaredEncodingName);
 		if(charset != null) {
 			/*TODO fix
 			if(!isTidy() && UTF_16.equalsIgnoreCase(characterEncoding.getFamily()) && characterEncoding.getByteOrderMark().length == 0)

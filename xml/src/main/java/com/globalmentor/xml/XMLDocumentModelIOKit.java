@@ -70,7 +70,7 @@ public class XMLDocumentModelIOKit extends AbstractIOKit<XMLNodeModel<Document>>
 	 */
 	public XMLNodeModel<Document> load(final InputStream inputStream, final URI baseURI) throws IOException {
 		inputStream.mark(Integer.MAX_VALUE); //TODO testing
-		final Document xml = XML.parse(inputStream, baseURI, true, new URIInputStreamableXMLEntityResolver(this)); //create a new XML processor that knows how to access streams from URIs and parse the XML
+		final Document xml = XmlDom.parse(inputStream, baseURI, true, new URIInputStreamableXMLEntityResolver(this)); //create a new XML processor that knows how to access streams from URIs and parse the XML
 		return new XMLNodeModel<Document>(xml, baseURI, this); //return a new XML document model
 		//TODO check for XML DOM exceptions---not just here, but throughout the code; update the XMLProcessor, too
 	}

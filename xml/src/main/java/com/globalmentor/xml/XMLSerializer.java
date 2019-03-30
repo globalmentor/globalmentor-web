@@ -30,7 +30,7 @@ import static com.globalmentor.java.Characters.SPACE_CHAR;
 
 import com.globalmentor.java.Characters;
 
-import static com.globalmentor.xml.XML.*;
+import static com.globalmentor.xml.XmlDom.*;
 import static com.globalmentor.xml.spec.XML.*;
 import static java.lang.System.lineSeparator;
 import static java.nio.charset.StandardCharsets.*;

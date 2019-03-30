@@ -27,7 +27,7 @@ import org.junit.Test;
 
 import com.globalmentor.io.ByteOrderMark;
 import com.globalmentor.model.ObjectHolder;
-import com.globalmentor.xml.XML;
+import com.globalmentor.xml.XmlDom;
 
 /**
  * Tests of XML utilities.
@@ -35,16 +35,16 @@ import com.globalmentor.xml.XML;
  * @author Garret Wilson
  *
  */
-public class XMLTest {
+public class XmlDomTest {
 
-	/** @see XML#detectXMLCharset(InputStream, ObjectHolder, ObjectHolder) */
+	/** @see XmlDom#detectXMLCharset(InputStream, ObjectHolder, ObjectHolder) */
 	@Test
 	public void testDetectISO_8859_1() throws IOException {
 		final InputStream inputStream = new BufferedInputStream(getClass().getResourceAsStream("hello-world-iso-8859-1.xml"));
 		try {
 			final ObjectHolder<ByteOrderMark> bom = new ObjectHolder<>();
 			final ObjectHolder<String> declaredEncodingName = new ObjectHolder<>();
-			final Charset charset = XML.detectXMLCharset(inputStream, bom, declaredEncodingName);
+			final Charset charset = XmlDom.detectXMLCharset(inputStream, bom, declaredEncodingName);
 			assertThat(charset, is(ISO_8859_1));
 			assertFalse(bom.isPresent());
 			assertThat(declaredEncodingName.getObject(), is(ISO_8859_1.name()));
@@ -53,14 +53,14 @@ public class XMLTest {
 		}
 	}
 
-	/** @see XML#detectXMLCharset(InputStream, ObjectHolder, ObjectHolder) */
+	/** @see XmlDom#detectXMLCharset(InputStream, ObjectHolder, ObjectHolder) */
 	@Test
 	public void testDetectUTF_8() throws IOException {
 		final InputStream inputStream = new BufferedInputStream(getClass().getResourceAsStream("hello-world-utf-8.xml"));
 		try {
 			final ObjectHolder<ByteOrderMark> bom = new ObjectHolder<>();
 			final ObjectHolder<String> declaredEncodingName = new ObjectHolder<>();
-			final Charset charset = XML.detectXMLCharset(inputStream, bom, declaredEncodingName);
+			final Charset charset = XmlDom.detectXMLCharset(inputStream, bom, declaredEncodingName);
 			assertThat(charset, is(UTF_8));
 			assertFalse(bom.isPresent());
 			assertThat(declaredEncodingName.getObject(), is(UTF_8.name()));
@@ -69,14 +69,14 @@ public class XMLTest {
 		}
 	}
 
-	/** @see XML#detectXMLCharset(InputStream, ObjectHolder, ObjectHolder) */
+	/** @see XmlDom#detectXMLCharset(InputStream, ObjectHolder, ObjectHolder) */
 	@Test
 	public void testDetectUTF_8BOM() throws IOException {
 		final InputStream inputStream = new BufferedInputStream(getClass().getResourceAsStream("hello-world-utf-8-bom.xml"));
 		try {
 			final ObjectHolder<ByteOrderMark> bom = new ObjectHolder<>();
 			final ObjectHolder<String> declaredEncodingName = new ObjectHolder<>();
-			final Charset charset = XML.detectXMLCharset(inputStream, bom, declaredEncodingName);
+			final Charset charset = XmlDom.detectXMLCharset(inputStream, bom, declaredEncodingName);
 			assertThat(charset, is(UTF_8));
 			assertThat(bom.getObject(), is(ByteOrderMark.UTF_8));
 			assertThat(declaredEncodingName.getObject(), is(UTF_8.name()));
@@ -85,14 +85,14 @@ public class XMLTest {
 		}
 	}
 
-	/** @see XML#detectXMLCharset(InputStream, ObjectHolder, ObjectHolder) */
+	/** @see XmlDom#detectXMLCharset(InputStream, ObjectHolder, ObjectHolder) */
 	@Test
 	public void testDetectUTF_8NoEcodingDeclaration() throws IOException {
 		final InputStream inputStream = new BufferedInputStream(getClass().getResourceAsStream("hello-world-utf-8-no-encoding-declaration.xml"));
 		try {
 			final ObjectHolder<ByteOrderMark> bom = new ObjectHolder<>();
 			final ObjectHolder<String> declaredEncodingName = new ObjectHolder<>();
-			final Charset charset = XML.detectXMLCharset(inputStream, bom, declaredEncodingName);
+			final Charset charset = XmlDom.detectXMLCharset(inputStream, bom, declaredEncodingName);
 			assertThat(charset, is(UTF_8));
 			assertFalse(bom.isPresent());
 			assertFalse(declaredEncodingName.isPresent());
@@ -101,14 +101,14 @@ public class XMLTest {
 		}
 	}
 
-	/** @see XML#detectXMLCharset(InputStream, ObjectHolder, ObjectHolder) */
+	/** @see XmlDom#detectXMLCharset(InputStream, ObjectHolder, ObjectHolder) */
 	@Test
 	public void testDetectNothing() throws IOException {
 		final InputStream inputStream = new BufferedInputStream(getClass().getResourceAsStream("hello-world-utf-8-no-xml-declaration.xml"));
 		try {
 			final ObjectHolder<ByteOrderMark> bom = new ObjectHolder<>();
 			final ObjectHolder<String> declaredEncodingName = new ObjectHolder<>();
-			final Charset charset = XML.detectXMLCharset(inputStream, bom, declaredEncodingName);
+			final Charset charset = XmlDom.detectXMLCharset(inputStream, bom, declaredEncodingName);
 			assertThat(charset, is(nullValue()));
 			assertFalse(bom.isPresent());
 			assertFalse(declaredEncodingName.isPresent());
@@ -117,14 +117,14 @@ public class XMLTest {
 		}
 	}
 
-	/** @see XML#detectXMLCharset(InputStream, ObjectHolder, ObjectHolder) */
+	/** @see XmlDom#detectXMLCharset(InputStream, ObjectHolder, ObjectHolder) */
 	@Test
 	public void testDetectUTF_16LE() throws IOException {
 		final InputStream inputStream = new BufferedInputStream(getClass().getResourceAsStream("hello-world-utf-16le.xml"));
 		try {
 			final ObjectHolder<ByteOrderMark> bom = new ObjectHolder<>();
 			final ObjectHolder<String> declaredEncodingName = new ObjectHolder<>();
-			final Charset charset = XML.detectXMLCharset(inputStream, bom, declaredEncodingName);
+			final Charset charset = XmlDom.detectXMLCharset(inputStream, bom, declaredEncodingName);
 			assertThat(charset, is(UTF_16LE));
 			assertFalse(bom.isPresent());
 			assertThat(declaredEncodingName.getObject(), is(UTF_16.name()));
@@ -133,14 +133,14 @@ public class XMLTest {
 		}
 	}
 
-	/** @see XML#detectXMLCharset(InputStream, ObjectHolder, ObjectHolder) */
+	/** @see XmlDom#detectXMLCharset(InputStream, ObjectHolder, ObjectHolder) */
 	@Test
 	public void testDetectUTF_16LE_BOM() throws IOException {
 		final InputStream inputStream = new BufferedInputStream(getClass().getResourceAsStream("hello-world-utf-16le-bom.xml"));
 		try {
 			final ObjectHolder<ByteOrderMark> bom = new ObjectHolder<>();
 			final ObjectHolder<String> declaredEncodingName = new ObjectHolder<>();
-			final Charset charset = XML.detectXMLCharset(inputStream, bom, declaredEncodingName);
+			final Charset charset = XmlDom.detectXMLCharset(inputStream, bom, declaredEncodingName);
 			assertThat(charset, is(UTF_16LE));
 			assertThat(bom.getObject(), is(ByteOrderMark.UTF_16LE));
 			assertThat(declaredEncodingName.getObject(), is(UTF_16.name()));

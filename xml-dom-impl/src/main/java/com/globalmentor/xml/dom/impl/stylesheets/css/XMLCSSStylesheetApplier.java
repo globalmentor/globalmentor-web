@@ -23,7 +23,7 @@ import java.util.*;
 import com.globalmentor.css.CSSStyleManager;
 import com.globalmentor.io.*;
 import com.globalmentor.model.NameValuePair;
-import com.globalmentor.xml.XML;
+import com.globalmentor.xml.XmlDom;
 
 import org.w3c.dom.*;
 import org.w3c.dom.css.*;
@@ -120,7 +120,7 @@ public class XMLCSSStylesheetApplier extends AbstractXMLCSSStylesheetApplier<Doc
 	 * @return A non-<code>null</code> array of name-value pairs representing processing instructions.
 	 */
 	protected NameValuePair[] getDocumentProcessingInstructions(final Document document) {
-		final List processingInstructionList = XML.getNodesByName(document, Node.PROCESSING_INSTRUCTION_NODE, "*", false); //get a list of all the processing instructions in the document TODO use a constant for the wildcard
+		final List processingInstructionList = XmlDom.getNodesByName(document, Node.PROCESSING_INSTRUCTION_NODE, "*", false); //get a list of all the processing instructions in the document TODO use a constant for the wildcard
 		final NameValuePair[] processingInstructions = new NameValuePair[processingInstructionList.size()]; //create an array large enough to hold all the processing instructions
 		for(int i = 0; i < processingInstructionList.size(); ++i) { //look at each of the nodes representing a style sheet link
 			final ProcessingInstruction processingInstruction = (ProcessingInstruction)processingInstructionList.get(i); //get a reference to this processing instruction
@@ -156,7 +156,7 @@ public class XMLCSSStylesheetApplier extends AbstractXMLCSSStylesheetApplier<Doc
 	 * @return The value of the specified attribute, or <code>null</code> if there is no such attribute.
 	 */
 	protected String getElementAttributeValue(final Element element, final String attributeNamespaceURI, final String attributeLocalName) {
-		return element instanceof Element ? XML.getDefinedAttributeNS(element, attributeNamespaceURI, attributeLocalName) : null; //return the attribute value only if it is defined
+		return element instanceof Element ? XmlDom.findAttributeNS(element, attributeNamespaceURI, attributeLocalName).orElse(null) : null; //return the attribute value only if it is defined TODO propagate Optional
 	}
 
 	/**
@@ -209,7 +209,7 @@ public class XMLCSSStylesheetApplier extends AbstractXMLCSSStylesheetApplier<Doc
 	 * @return The text content of the element.
 	 */
 	protected String getElementText(final Element element) {
-		return XML.getText(element, true); //return all the child text of the element
+		return XmlDom.getText(element, true); //return all the child text of the element
 	}
 
 	/**

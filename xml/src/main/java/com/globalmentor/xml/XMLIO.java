@@ -16,7 +16,7 @@
 
 package com.globalmentor.xml;
 
-import static com.globalmentor.xml.XML.*;
+import static com.globalmentor.xml.XmlDom.*;
 
 import java.io.*;
 import java.net.*;

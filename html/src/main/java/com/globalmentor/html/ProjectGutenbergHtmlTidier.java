@@ -20,8 +20,9 @@ import java.util.*;
 
 import com.globalmentor.io.*;
 import com.globalmentor.java.*;
-import com.globalmentor.xml.XML;
+import com.globalmentor.xml.XmlDom;
 
+import static com.globalmentor.html.HtmlDom.*;
 import static com.globalmentor.java.Characters.*;
 
 import org.w3c.dom.*;
@@ -77,7 +78,7 @@ import org.w3c.dom.*;
  * </dl>
  * @author Garret Wilson
  */
-public class ProjectGutenbergHtmlTidier {	//TODO move to different package
+public class ProjectGutenbergHtmlTidier { //TODO move to different package
 
 	/**
 	 * The first part of the words "Project Gutenberg". Some works such as optns10.txt misspell this as "Project Gutenburg".
@@ -129,7 +130,7 @@ public class ProjectGutenbergHtmlTidier {	//TODO move to different package
 		{
 			final Element bodyElement=XHTMLUtilities.getBodyElement();  //get the
 	//TODO fix XMLUtilities.extractChildren()
-
+	
 		}
 	*/
 
@@ -140,7 +141,7 @@ public class ProjectGutenbergHtmlTidier {	//TODO move to different package
 	 * @return A document fragment that contains the text of the header that was removed from the document, or <code>null</code> if a header could not be found.
 	 */
 	public static DocumentFragment extractHeader(final Document document) {
-		final Element bodyElement = HtmlDom.getBodyElement(document); //get the <body> element of the XHTML document
+		final Element bodyElement = findHtmlBodyElement(document).orElseThrow(() -> new IllegalArgumentException("Missing <body> element.")); //get the <body> element of the XHTML document
 		int divIndex = -1; //we'll check for dividers, just in case we can't find the header
 		int sendMoneyIndex = -1; //we'll find the "send money" index in case we need it to be a divider
 		int smallPrintStartIndex = -1; //we'll check for the beginning of the small print, just in case we can't find the header
@@ -149,7 +150,7 @@ public class ProjectGutenbergHtmlTidier {	//TODO move to different package
 			final Node childNode = childNodes.item(i); //get this child node
 			if(childNode.getNodeType() == Node.ELEMENT_NODE) { //if this is an element
 				final Element childElement = (Element)childNode; //get a reference to this element
-				final String text = XML.getText(childElement, true).trim(); //get the text of the element
+				final String text = XmlDom.getText(childElement, true).trim(); //get the text of the element
 				if(text.equals("***") && divIndex < 0) { //if this is a divider and it's the first division we've found TODO use a constant
 					divIndex = i; //save the index of the divider in case we need it
 				}
@@ -172,12 +173,12 @@ public class ProjectGutenbergHtmlTidier {	//TODO move to different package
 					if(divIndex < 0 || sendMoneyIndex < divIndex + 50) //if we didn't find a divider, or the divider is close to the send money index TODO use a constant
 						divIndex = sendMoneyIndex; //use the send money index as the divider
 					if(i < childNodes.getLength() - 5) //if the end of the header is not too close to the end of the document
-						return XML.extractChildren(bodyElement, 0, i + 1); //extract all the header elements, including this one
+						return XmlDom.extractChildren(bodyElement, 0, i + 1); //extract all the header elements, including this one
 					else if(divIndex >= 0) { //if the header takes up the whole document, but we've found a divider before
 						//if the small print starts before the divider, just after the
 						//  divider, or if we didn't find the start of the small print
 						if(smallPrintStartIndex < divIndex + 10) {
-							return XML.extractChildren(bodyElement, 0, divIndex + 1); //extract all the header elements up to the divider
+							return XmlDom.extractChildren(bodyElement, 0, divIndex + 1); //extract all the header elements up to the divider
 						} else
 						//if the start of the small print comes significantly after the divider,
 						//  we'll assume there's content between the header and the small print
@@ -185,9 +186,9 @@ public class ProjectGutenbergHtmlTidier {	//TODO move to different package
 						//TODO fix for ffn110.txt						else if(divIndex<childNodes.getLength()/2 && smallPrintStartIndex>childNodes.getLength()/2)
 						{
 							//get the first part of the document, up to the divider
-							final DocumentFragment headerFragment = XML.extractChildren(bodyElement, 0, divIndex + 1);
+							final DocumentFragment headerFragment = XmlDom.extractChildren(bodyElement, 0, divIndex + 1);
 							//extract the small print, which comes at the end (compensating for removing the header)
-							final DocumentFragment smallPrintFragment = XML.extractChildren(bodyElement, smallPrintStartIndex - (divIndex + 1), i - divIndex);
+							final DocumentFragment smallPrintFragment = XmlDom.extractChildren(bodyElement, smallPrintStartIndex - (divIndex + 1), i - divIndex);
 							headerFragment.appendChild(smallPrintFragment); //combine the two fragments
 							return headerFragment; //return the combined header fragment
 						}
@@ -246,15 +247,15 @@ public class ProjectGutenbergHtmlTidier {	//TODO move to different package
 	 * @return A document fragment that contains the text of the footer that was removed from the document, or <code>null</code> if a footer could not be found.
 	 */
 	public static DocumentFragment extractFooter(final Document document) {
-		final Element bodyElement = HtmlDom.getBodyElement(document); //get the <body> element of the XHTML document
+		final Element bodyElement = findHtmlBodyElement(document).orElseThrow(() -> new IllegalArgumentException("Missing <body> element.")); //get the <body> element of the XHTML document
 		final NodeList childNodes = bodyElement.getChildNodes(); //get the list of body child nodes
 		for(int i = childNodes.getLength() - 1; i >= 0; --i) { //look at each child node, starting at the end
 			final Node childNode = childNodes.item(i); //get this child node
 			if(childNode.getNodeType() == Node.ELEMENT_NODE) { //if this is an element
 				final Element childElement = (Element)childNode; //get a reference to this element
-				final String text = XML.getText(childElement, true); //get the text of the element
+				final String text = XmlDom.getText(childElement, true); //get the text of the element
 				if(isPGFooterEnd(text)) //if this is the end of the Project Gutenberg footer
-					return XML.extractChildren(bodyElement, i, childNodes.getLength()); //extract all the footer elements from here on
+					return XmlDom.extractChildren(bodyElement, i, childNodes.getLength()); //extract all the footer elements from here on
 			}
 		}
 		return null; //show that we couldn't find a PG footer
@@ -266,13 +267,13 @@ public class ProjectGutenbergHtmlTidier {	//TODO move to different package
 	 * @return The element containing the Project Gutenberg footer information, or <code>null</code> if a footer could not be found.
 	 */
 	public static Element getPGFooterElement(final Document document) {
-		final Element bodyElement = HtmlDom.getBodyElement(document); //get the <body> element of the XHTML document
+		final Element bodyElement = findHtmlBodyElement(document).orElseThrow(() -> new IllegalArgumentException("Missing <body> element.")); //get the <body> element of the XHTML document
 		final NodeList childNodes = bodyElement.getChildNodes(); //get the list of body child nodes
 		for(int i = childNodes.getLength() - 1; i >= 0; --i) { //look at each child node, starting at the end
 			final Node childNode = childNodes.item(i); //get this child node
 			if(childNode.getNodeType() == Node.ELEMENT_NODE) { //if this is an element
 				final Element childElement = (Element)childNode; //get a reference to this element
-				final String text = XML.getText(childElement, true); //get the text of the element
+				final String text = XmlDom.getText(childElement, true); //get the text of the element
 				if(isPGFooterEnd(text)) { //if this is the end of the Project Gutenberg footer
 					return childElement; //return this footer element
 				}
@@ -319,7 +320,7 @@ public class ProjectGutenbergHtmlTidier {	//TODO move to different package
 				final Node childNode = childNodes.item(childNodeIndex); //get this child node
 				if(childNode.getNodeType() == Node.ELEMENT_NODE) { //if this is an element
 					final Element childElement = (Element)childNode; //get a reference to this element
-					final String text = XML.getText(childElement, true); //get the text of the header
+					final String text = XmlDom.getText(childElement, true); //get the text of the header
 					if(isPGHeaderElement(childElement)) { //if this is a header element
 						final StringTokenizer lineTokenizer = new StringTokenizer(text, EOL_CHARACTERS.toString()); //create a tokenizer to look at each line
 						while(lineTokenizer.hasMoreTokens()) { //while there are more lines
@@ -365,12 +366,10 @@ public class ProjectGutenbergHtmlTidier {	//TODO move to different package
 								//get the first non-whitespace character
 								final char firstChar = line.charAt(CharSequences.notCharIndexOf(line, TRIM_CHARACTERS));
 								//if this is the correct line, and there's whitespace or dependent punctuation after the etext string
-								if(eTextStringIndex >= 0
-										&& eTextStringIndex + eTextString.length() < line.length()
-										&& (firstChar == '*' //TODO test with original problem etext, use constant
-												|| isSpecialFirstPGHeader //we don't need to check for etext for the special header that has no etext
-												|| Characters.isWhitespace(line.charAt(eTextStringIndex + eTextString.length())) || DEPENDENT_PUNCTUATION_CHARACTERS.contains(line
-												.charAt(eTextStringIndex + eTextString.length())))) {
+								if(eTextStringIndex >= 0 && eTextStringIndex + eTextString.length() < line.length() && (firstChar == '*' //TODO test with original problem etext, use constant
+										|| isSpecialFirstPGHeader //we don't need to check for etext for the special header that has no etext
+										|| Characters.isWhitespace(line.charAt(eTextStringIndex + eTextString.length()))
+										|| DEPENDENT_PUNCTUATION_CHARACTERS.contains(line.charAt(eTextStringIndex + eTextString.length())))) {
 									//remove the header string and everything before it, and tidy the title
 									String remainingText = tidyTitle(line.substring(eTextStringIndex + eTextString.length()));
 									final boolean hasOf; //we'll see if this heading has "of", which gives it more weight
@@ -402,12 +401,11 @@ public class ProjectGutenbergHtmlTidier {	//TODO move to different package
 											//  (e.g. marbo10.txt), and there are more lines, we'll
 											//  add the next line to our title (but only if the
 											//  author doesn't appear on this line)
-											if(lineTokenizer.hasMoreTokens()
-													&& byIndex < 0
-													&& (DEPENDENT_PUNCTUATION_CHARACTERS.contains(originalLastChar)
-															|| (originalFirstChar == '*' && originalLastChar != originalFirstChar) || title.endsWith(" " + OF) || title.endsWith(" in") //(e.g. frnrd10.txt) //TODO use a constant
+											if(lineTokenizer.hasMoreTokens() && byIndex < 0
+													&& (DEPENDENT_PUNCTUATION_CHARACTERS.contains(originalLastChar) || (originalFirstChar == '*' && originalLastChar != originalFirstChar)
+															|| title.endsWith(" " + OF) || title.endsWith(" in") //(e.g. frnrd10.txt) //TODO use a constant
 															|| title.endsWith(" and") //(e.g. miltp10.txt, although that text will get these lines separated if paragraph sensing is turned on) //TODO use a constant
-													|| title.endsWith(" de"))) { //TODO use a constant
+															|| title.endsWith(" de"))) { //TODO use a constant
 												final String nextLine = lineTokenizer.nextToken(); //get the next line
 												if(!isFileLine(nextLine)) { //if this is not the file line
 													if(DEPENDENT_PUNCTUATION_CHARACTERS.contains(originalLastChar)) //if the line ended with dependent punctuation
@@ -429,7 +427,7 @@ public class ProjectGutenbergHtmlTidier {	//TODO move to different package
 													&& !isFileLine(nextLine) && getByIndex(line) < 0 //if the current line has "by" in it, the title on the first line was probably correct (e.g. acrdi10.txt)
 													//if the first line has "of" appearing before the almost-end
 													&& ((Strings.indexOfIgnoreCase(line, " of ") < 0 || Strings.indexOfIgnoreCase(line, " of ") > (line.length() * 3 / 4)) //it's risky going to the next line---make sure we want to go there (e.g. berne10.txt)
-													|| CharSequences.endsWithIgnoreCase(remainingText, " folio") //if the title ends in "folio" (e.g. 0ws??10.txt), the actual title is probably on the next line
+															|| CharSequences.endsWithIgnoreCase(remainingText, " folio") //if the title ends in "folio" (e.g. 0ws??10.txt), the actual title is probably on the next line
 													)) {
 												remainingText = tidyTitle(nextLine); //tidy the remaining line
 												if(CharSequences.containsLetterOrDigit(remainingText)) //if the trimmed string is a title
@@ -483,11 +481,11 @@ public class ProjectGutenbergHtmlTidier {	//TODO move to different package
 			author = null; //we really didn't find an author
 		}
 		if(author == null) { //if we couldn't find the author property
-		/*TODO fix
-				}
-		//TODO del; testing		if(author==null) //if we still couldn't find the author property
-				{
-		*/
+			/*TODO fix
+					}
+			//TODO del; testing		if(author==null) //if we still couldn't find the author property
+					{
+			*/
 			boolean foundByAuthor = false; //this indicates if we've used "by XXX" to get the author
 			boolean foundPGByAuthor = false; //this indicates if we've used a Project Gutenberg "by XXX" to get the author
 			String titlePossessionAuthor = null; //if nothing else, we may be able to the author's name in the title
@@ -497,7 +495,7 @@ public class ProjectGutenbergHtmlTidier {	//TODO move to different package
 				final Node childNode = childNodes.item(childNodeIndex); //get this child node
 				if(childNode.getNodeType() == Node.ELEMENT_NODE) { //if this is an element
 					final Element childElement = (Element)childNode; //get a reference to this element
-					final String text = XML.getText(childElement, true); //get the text of the element
+					final String text = XmlDom.getText(childElement, true); //get the text of the element
 					boolean isNextLineByAuthor = false; //we don't know yet if the author is on the next line
 					if(isPGHeaderElement(childElement)) { //if this is a header element
 						final StringTokenizer lineTokenizer = new StringTokenizer(text, EOL_CHARACTERS.toString()); //create a tokenizer to look at each line
@@ -509,10 +507,9 @@ public class ProjectGutenbergHtmlTidier {	//TODO move to different package
 								//get the index of the etext string, if there was one
 								final int eTextStringIndex = eTextString != null ? Strings.indexOfIgnoreCase(line, eTextString) : -1;
 								//if this is the correct line, and there's whitespace after the etext string
-								if(eTextStringIndex >= 0
-										&& eTextStringIndex + eTextString.length() < line.length()
-										&& (Characters.isWhitespace(line.charAt(eTextStringIndex + eTextString.length())) || DEPENDENT_PUNCTUATION_CHARACTERS.contains(line
-												.charAt(eTextStringIndex + eTextString.length())))) {
+								if(eTextStringIndex >= 0 && eTextStringIndex + eTextString.length() < line.length()
+										&& (Characters.isWhitespace(line.charAt(eTextStringIndex + eTextString.length()))
+												|| DEPENDENT_PUNCTUATION_CHARACTERS.contains(line.charAt(eTextStringIndex + eTextString.length())))) {
 									//remove the header string and everything before it
 									String remainingText = line.substring(eTextStringIndex + eTextString.length());
 									final int byIndex = getByIndex(remainingText); //see if there is a "by" on the line
@@ -553,7 +550,7 @@ public class ProjectGutenbergHtmlTidier {	//TODO move to different package
 									final int usedIndex = Strings.indexOfIgnoreCase(line, "used "); //TODO use a constant
 									//remove the "by" and everything before it, and tidy the property
 									String remainingText = byIndex >= 0 //if we found by
-									? tidyAuthor(line.substring(byIndex + BY.length())) //use everything after by
+											? tidyAuthor(line.substring(byIndex + BY.length())) //use everything after by
 											: line; //if we didn't find by but we know the author should be on this line, use the whole line
 									if(CharSequences.containsLetterOrDigit(remainingText) //if we have anything remaining
 											&& (isNextLineByAuthor || usedIndex < 0 || usedIndex != byIndex - "used ".length())) { //make sure this isn't "used by" (e.g. brnte10.txt)
@@ -639,7 +636,7 @@ public class ProjectGutenbergHtmlTidier {	//TODO move to different package
 		final Element headerElement = getHeaderElement(headerFragment); //get the header element
 		if(headerElement != null) { //if we found the header element
 			final StringBuilder descriptionStringBuilder = new StringBuilder(); //create a new string buffer to hold the description we consruct
-			final String headerText = XML.getText(headerElement, true); //get the text of the header
+			final String headerText = XmlDom.getText(headerElement, true); //get the text of the header
 			final StringTokenizer lineTokenizer = new StringTokenizer(headerText, EOL_CHARACTERS.toString()); //create a tokenizer to look at each line
 			while(lineTokenizer.hasMoreTokens()) { //while there are more lines
 				final String line = lineTokenizer.nextToken(); //get the next line
@@ -690,7 +687,7 @@ public class ProjectGutenbergHtmlTidier {	//TODO move to different package
 	 * @return <code>true</code> if this element contains the header information.
 	 */
 	public static boolean isPGHeaderElement(final Element element) {
-		final String text = XML.getText(element, true); //get the text of the element
+		final String text = XmlDom.getText(element, true); //get the text of the element
 		final StringTokenizer lineTokenizer = new StringTokenizer(text, EOL_CHARACTERS.toString()); //create a tokenizer to look at each line
 		final int lineCount = lineTokenizer.countTokens(); //see how many lines we have
 		//if this paragraph is four lines or less
@@ -715,7 +712,7 @@ public class ProjectGutenbergHtmlTidier {	//TODO move to different package
 				if(projectGutenbergIndex >= 0 && eTextStringIndex >= 0 && copyrightIndex < 0) { //if this element contains the header text
 					//make sure "etext" comes after "project gutenberg" (although it may come in the middle for "gutenberg's")
 					if(eTextStringIndex > projectGutenbergIndex
-					//make sure there's not too much between "project gutenberg" and "etext"
+							//make sure there's not too much between "project gutenberg" and "etext"
 							&& eTextStringIndex < projectGutenbergIndex + projectGutenbergString.length() + 4) { //TODO use a constant
 						//the line with "PROJECT GUTENBERG-tm" talks about using or reading the work, and is not the header (e.g. alad10.txt)
 						//TODO del if not needed						if(StringUtilities.startsWithIgnoreCase(line.substring(projectGutenbergIndex), "PROJECT GUTENBERG-tm"))
@@ -725,10 +722,9 @@ public class ProjectGutenbergHtmlTidier {	//TODO move to different package
 							//if the line doesn't start with '*', make sure there's whitespace or
 							//  dependent punctuation after "etext" (e.g. it's not "...the first
 							//  nine Project Gutenberg Etexts...")
-							if(eTextStringIndex + eTextString.length() < line.length()
-									&& (firstChar == '*' //TODO check with original problem etext; use constant
-											|| Characters.isWhitespace(line.charAt(eTextStringIndex + eTextString.length())) || DEPENDENT_PUNCTUATION_CHARACTERS.contains(text
-											.charAt(eTextStringIndex + eTextString.length()))))
+							if(eTextStringIndex + eTextString.length() < line.length() && (firstChar == '*' //TODO check with original problem etext; use constant
+									|| Characters.isWhitespace(line.charAt(eTextStringIndex + eTextString.length()))
+									|| DEPENDENT_PUNCTUATION_CHARACTERS.contains(text.charAt(eTextStringIndex + eTextString.length()))))
 
 							{
 								return true; //this is a header element
@@ -775,7 +771,7 @@ public class ProjectGutenbergHtmlTidier {	//TODO move to different package
 			final Node childNode = childNodes.item(i); //get this child node
 			if(childNode.getNodeType() == Node.ELEMENT_NODE) { //if this is an element
 				final Element childElement = (Element)childNode; //get a reference to this element
-				final String text = XML.getText(childElement, true).trim(); //get the trimmed text of the element
+				final String text = XmlDom.getText(childElement, true).trim(); //get the trimmed text of the element
 				//if there are no ends-of-line in this text
 				//TODO del; did we ever need this?				if(StringUtilities.charIndexOf(text, EOL_CHARS)<0)  //make sure CR/LF isn't present
 				{
@@ -799,16 +795,16 @@ public class ProjectGutenbergHtmlTidier {	//TODO move to different package
 	 */
 	public static boolean isProjectGutenbergEText(final Document document) {
 		//these three pairs of strings are the the ones to search for, in the order of lines given
-		final String[][] indicatorStrings = { { PROJECT_GUTENB, ETEXT }, { SMALL_PRINT, SMALL_PRINT_START }, { SMALL_PRINT, SMALL_PRINT_END } };
+		final String[][] indicatorStrings = {{PROJECT_GUTENB, ETEXT}, {SMALL_PRINT, SMALL_PRINT_START}, {SMALL_PRINT, SMALL_PRINT_END}};
 		int indicatorIndex = 0;
-		final Element bodyElement = HtmlDom.getBodyElement(document); //get the <body> element of the XHTML document
+		final Element bodyElement = findHtmlBodyElement(document).orElse(null); //get the <body> element of the XHTML document
 		if(bodyElement != null) { //if there is a body element
 			final NodeList childNodes = bodyElement.getChildNodes(); //get the list of body child nodes
 			for(int i = 0; i < childNodes.getLength(); ++i) { //look at each child node
 				final Node childNode = childNodes.item(i); //get this child node
 				if(childNode.getNodeType() == Node.ELEMENT_NODE) { //if this is an element
 					final Element childElement = (Element)childNode; //get a reference to this element
-					final String text = XML.getText(childElement, true); //get the text of the element
+					final String text = XmlDom.getText(childElement, true); //get the text of the element
 					if(indicatorIndex == 0) { //if this is the first indicator, do special checking
 						//if the text contains both "Project Gutenberg" and "EText", "Edition", or "EBook"
 						if(Strings.indexOfIgnoreCase(text, PROJECT_GUTENB) >= 0 && getETextString(text) != null) {
@@ -875,7 +871,7 @@ public class ProjectGutenbergHtmlTidier {	//TODO move to different package
 								{
 		Log.trace("found small print end");
 								  hasSmallPrintEnd=true;  //show that we found the end of the small print
-
+		
 								}
 							}
 						}
@@ -914,7 +910,7 @@ public class ProjectGutenbergHtmlTidier {	//TODO move to different package
 		//if the string starts with a variant of "Project Gutenberg" or "The Project Gutenberg"
 		if(projectGutenbergString != null
 				&& (StringBuilders.startsWith(stringBuilder, projectGutenbergString) || StringBuilders.startsWith(stringBuilder, "The " + projectGutenbergString) //TODO use a constant
-				|| StringBuilders.startsWith(stringBuilder, "This is the " + projectGutenbergString) //TODO use a constant
+						|| StringBuilders.startsWith(stringBuilder, "This is the " + projectGutenbergString) //TODO use a constant
 				)) {
 			tidyProperty(stringBuilder.delete(0, projectGutenbergIndex + projectGutenbergString.length())); //remove the beginning "'s " and tidy the string TODO use a constant
 			final String eTextString = getETextString(stringBuilder.toString()); //get the etext string in the string
@@ -934,8 +930,7 @@ public class ProjectGutenbergHtmlTidier {	//TODO move to different package
 		//if the string starts with "in" (but only in lowercase), remove it (e.g. "in French of...", 8plno07.txt)
 		if(StringBuilders.startsWith(stringBuilder, "in")) { //TODO use a constant
 			if(stringBuilder.indexOf("French") >= 0 //TODO use a constant; do stricter order checking
-					|| stringBuilder.indexOf("Spanish") >= 0 || stringBuilder.indexOf("German") >= 0
-					|| stringBuilder.indexOf("Italian") >= 0
+					|| stringBuilder.indexOf("Spanish") >= 0 || stringBuilder.indexOf("German") >= 0 || stringBuilder.indexOf("Italian") >= 0
 					|| stringBuilder.indexOf("Latin") >= 0) {
 				final int ofIndex = stringBuilder.indexOf(OF); //find out where "of" appears
 				if(ofIndex >= 0) { //if "of" is present, we think the string begins with something line "in French of"
@@ -1015,10 +1010,10 @@ public class ProjectGutenbergHtmlTidier {	//TODO move to different package
 				//if "by" is surrounded by whitespace or asterisks TODO fix; right now, this removes parts of titles if those titles have "by" in them
 				if((byIndex == 0 //if "by" is at the first of the string
 						|| Character.isWhitespace(string.charAt(byIndex - 1)) //or is after whitespace
-				|| string.charAt(byIndex - 1) == '*') //or is after an asterisk TODO use a constant
+						|| string.charAt(byIndex - 1) == '*') //or is after an asterisk TODO use a constant
 
-						&& (byIndex + BY.length() == string.length() || (byIndex + BY.length() < string.length() && Character.isWhitespace(string.charAt(byIndex
-								+ BY.length()))))) { //if there is whitespace after "by"
+						&& (byIndex + BY.length() == string.length()
+								|| (byIndex + BY.length() < string.length() && Character.isWhitespace(string.charAt(byIndex + BY.length()))))) { //if there is whitespace after "by"
 					return byIndex; //return this index
 				}
 				startSearchIndex = byIndex + BY.length(); //start searching after the last occurrence of "by"
@@ -1059,8 +1054,8 @@ public class ProjectGutenbergHtmlTidier {	//TODO move to different package
 		if(copyrightIndex >= 0 && (CharSequences.charIndexOf(stringBuilder, Characters.of('@', COPYRIGHT_SIGN)) >= 0 //if "copyright" is followed by a copyright sign TODO use a constant
 				|| stringBuilder.indexOf("(c)") >= 0 //if "copyright" is followed by (c) TODO use a constant
 				|| stringBuilder.indexOf("19") >= 0 //if "copyright" is followed by 19 TODO use a constant
-		|| stringBuilder.indexOf("20") >= 0 //if "copyright" is followed by 19 TODO use a constant
-				)) {
+				|| stringBuilder.indexOf("20") >= 0 //if "copyright" is followed by 19 TODO use a constant
+		)) {
 			tidyProperty(stringBuilder.delete(copyrightIndex, stringBuilder.length())); //remove that text and tidy the string
 		}
 		//if the author contains ", this is..." (e.g. email025.txt) TODO use a constant
@@ -1155,7 +1150,7 @@ public class ProjectGutenbergHtmlTidier {	//TODO move to different package
 	 * @return The matched string, or <code>null</code> if there was no match.
 	 */
 	protected static String getProjectGutenbergString(final String text) {
-		final String[] pgStrings = { "PG", "Project Gutenburg", "Project Gutenberg" }; //any of these strings will work TODO use constants
+		final String[] pgStrings = {"PG", "Project Gutenburg", "Project Gutenberg"}; //any of these strings will work TODO use constants
 		for(int i = pgStrings.length - 1; i >= 0; --i) { //look at each of the etext strings
 			final String pgString = pgStrings[i]; //get this string
 			//see if the string is in the text
@@ -1176,7 +1171,7 @@ public class ProjectGutenbergHtmlTidier {	//TODO move to different package
 	 * @return The matched string, or <code>null</code> if there was no match.
 	 */
 	protected static String getETextString(final String text) {
-		final String[] eTextStrings = { "Gutenberg's", BOOK, EDITION, EBOOK, ETEXT }; //any of these eText strings will work TODO test "Gutenberg's", use constant
+		final String[] eTextStrings = {"Gutenberg's", BOOK, EDITION, EBOOK, ETEXT}; //any of these eText strings will work TODO test "Gutenberg's", use constant
 		for(int i = eTextStrings.length - 1; i >= 0; --i) { //look at each of the etext strings
 			final String eTextString = eTextStrings[i]; //get this etext string
 			//see if the etext string is in the text
