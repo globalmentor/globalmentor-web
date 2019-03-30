@@ -1218,23 +1218,41 @@ public class XML { //TODO likely move all or part of this class to a Dom class, 
 	 * @param nodeType The type of nodes to include.
 	 * @param nodeName The name of the node to match on. The special value "*" matches all nodes.
 	 * @param deep Whether or not matching child nodes of each matching child node, etc. should be included.
-	 * @return A new iterator object containing all the matching nodes.
+	 * @return A new list containing all the matching nodes.
 	 */
-	public static List<Node> getNodesByName(final Node node, final int nodeType, final String nodeName, final boolean deep) {
-		final List<Node> nodeList = new ArrayList<Node>(node.getChildNodes().getLength()); //crate a new node list to return
+	public static List<Node> getNodesByName(@Nonnull final Node node, final int nodeType, @Nonnull final String nodeName, final boolean deep) {
+		return collectNodesByName(node, nodeType, Node.class, nodeName, deep, new ArrayList<Node>(node.getChildNodes().getLength())); //gather the nodes into a list and return the list
+	}
+
+	/**
+	 * Collects child nodes with a given type and node name. The special wildcard name "*" returns nodes of all names. If <code>deep</code> is set to
+	 * <code>true</code>, returns a list of all descendant nodes with a given name, in the order in which they would be encountered in a pre-order traversal of
+	 * the node tree.
+	 * @param node The node the child nodes of which will be searched.
+	 * @param nodeType The type of nodes to include.
+	 * @param nodeClass The class representing the type of node to return.
+	 * @param nodeName The name of the node to match on. The special value "*" matches all nodes.
+	 * @param deep Whether or not matching child nodes of each matching child node, etc. should be included.
+	 * @param nodes The collection into which the nodes will be gathered.
+	 * @return The given collection, now containing all the matching nodes.
+	 */
+	public static <N extends Node, C extends Collection<N>> C collectNodesByName(@Nonnull final Node node, final int nodeType, @Nonnull final Class<N> nodeClass,
+			@Nonnull final String nodeName, final boolean deep, final C nodes) {
 		final boolean matchAllNodes = "*".equals(nodeName); //see if they passed us the wildcard character TODO use a constant here
 		final NodeList childNodeList = node.getChildNodes(); //get the list of child nodes
 		final int childNodeCount = childNodeList.getLength(); //get the number of child nodes
 		for(int childIndex = 0; childIndex < childNodeCount; childIndex++) { //look at each child node
 			final Node childNode = childNodeList.item(childIndex); //get a reference to this node
 			if(childNode.getNodeType() == nodeType) { //if this is a node of the correct type
-				if((matchAllNodes || childNode.getNodeName().equals(nodeName))) //if node has the correct name (or they passed us the wildcard character)
-					nodeList.add(childNode); //add this node to the list
-				if(deep) //if each of the children should check for matching nodes as well
-					nodeList.addAll(getNodesByName(childNode, nodeType, nodeName, deep)); //get this node's matching child nodes by name and add them to our list
+				if((matchAllNodes || childNode.getNodeName().equals(nodeName))) { //if node has the correct name (or they passed us the wildcard character)
+					nodes.add(nodeClass.cast(childNode)); //add this node to the collection
+				}
+				if(deep) { //if each of the children should check for matching nodes as well
+					collectNodesByName(childNode, nodeType, nodeClass, nodeName, deep, nodes); //get this node's matching child nodes by name and add them to our collection
+				}
 			}
 		}
-		return nodeList; //return the list we created and filled
+		return nodes; //return the collection we filled
 	}
 
 	/**
@@ -1248,7 +1266,8 @@ public class XML { //TODO likely move all or part of this class to a Dom class, 
 	 * @param deep Whether or not matching child nodes of each matching child node, etc. should be included.
 	 * @return A new list containing all the matching nodes.
 	 */
-	public static List<Node> getNodesByNameNS(final Node node, final int nodeType, final String namespaceURI, final String localName, final boolean deep) {
+	public static List<Node> getNodesByNameNS(@Nonnull final Node node, final int nodeType, @Nullable final String namespaceURI, @Nonnull final String localName,
+			final boolean deep) {
 		return collectNodesByNameNS(node, nodeType, Node.class, namespaceURI, localName, deep, new ArrayList<Node>(node.getChildNodes().getLength())); //gather the nodes into a list and return the list
 	}
 
@@ -1265,7 +1284,7 @@ public class XML { //TODO likely move all or part of this class to a Dom class, 
 	 * @param localName The local name of the node to match on. The special value "*" matches all local names.
 	 * @param deep Whether or not matching child nodes of each matching child node, etc. should be included.
 	 * @param nodes The collection into which the nodes will be gathered.
-	 * @return A new list containing all the matching nodes.
+	 * @return The given collection, now containing all the matching nodes.
 	 * @throws ClassCastException if one of the nodes of the indicated node type cannot be cast to the indicated node class.
 	 */
 	public static <N extends Node, C extends Collection<N>> C collectNodesByNameNS(@Nonnull final Node node, final int nodeType,
@@ -1967,6 +1986,16 @@ public class XML { //TODO likely move all or part of this class to a Dom class, 
 			node.removeChild(node.getFirstChild());
 		}
 		return node;
+	}
+
+	/**
+	 * Returns a stream of direct child elements with a given name, in order.
+	 * @param node The node the child nodes of which will be searched.
+	 * @param name The name of the node to match on.
+	 * @return A stream containing all the matching child elements.
+	 */
+	public static Stream<Element> childElementsByName(@Nonnull final Node node, @Nonnull final String localName) {
+		return collectNodesByName(node, Node.ELEMENT_NODE, Element.class, localName, false, new ArrayList<>(node.getChildNodes().getLength())).stream();
 	}
 
 	/**
