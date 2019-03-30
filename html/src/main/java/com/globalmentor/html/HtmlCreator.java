@@ -30,6 +30,7 @@ import io.clogr.Clogged;
 import org.w3c.dom.*;
 
 import static com.globalmentor.java.Characters.*;
+import static com.globalmentor.html.HtmlDom.*;
 import static com.globalmentor.html.spec.HTML.*;
 import static java.nio.charset.StandardCharsets.*;
 
@@ -135,8 +136,7 @@ public class HtmlCreator implements Clogged {
 	 * @throws IOException Thrown if there is an I/O error.
 	 */
 	protected void parseText(final Document document, final BufferedReader bufferedReader) throws IOException {
-		final Element bodyElement = HtmlDom.getBodyElement(document); //get a reference to the body element
-		assert bodyElement != null : "Missing body element"; //we should always have a body element starting out
+		final Element bodyElement = findHtmlBodyElement(document).orElseThrow(() -> new IllegalArgumentException("Missing <body> element.")); //get a reference to the body element
 		Element paragraphElement = parseParagraph(document, bodyElement.getNamespaceURI(), bufferedReader); //parse the first paragraph
 		while(paragraphElement != null) { //keep reading until we run out of paragraphs
 			XML.appendText(bodyElement, "\n"); //append a newline to separate the paragraphs

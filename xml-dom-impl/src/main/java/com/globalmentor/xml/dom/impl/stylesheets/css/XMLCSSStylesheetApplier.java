@@ -156,7 +156,7 @@ public class XMLCSSStylesheetApplier extends AbstractXMLCSSStylesheetApplier<Doc
 	 * @return The value of the specified attribute, or <code>null</code> if there is no such attribute.
 	 */
 	protected String getElementAttributeValue(final Element element, final String attributeNamespaceURI, final String attributeLocalName) {
-		return element instanceof Element ? XML.getDefinedAttributeNS(element, attributeNamespaceURI, attributeLocalName) : null; //return the attribute value only if it is defined
+		return element instanceof Element ? XML.findAttributeNS(element, attributeNamespaceURI, attributeLocalName).orElse(null) : null; //return the attribute value only if it is defined TODO propagate Optional
 	}
 
 	/**

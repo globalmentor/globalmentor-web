@@ -1279,7 +1279,7 @@ public class HtmlTidier implements Clogged {
 	 */
 	//TODO document the element name normalization in the file header comments
 	protected Element tidyClassAttribute(Element element) {
-		final String classValue = getDefinedAttributeNS(element, null, ATTRIBUTE_CLASS); //get the class attribute if it is defined
+		final String classValue = findAttributeNS(element, null, ATTRIBUTE_CLASS).orElse(null); //get the class attribute if it is defined
 		if(classValue != null) { //if there is a class defined
 			final String elementName = element.getNodeName(); //get the element's name TODO fix for namespaces
 			if(classValue.trim().equalsIgnoreCase(elementName)) //if the class name and the element name are identical

@@ -40,7 +40,7 @@ public class XMLBase {
 	 * @return The string value of the <code>xml:base</code> attribute, or <code>null</code> if the element has no such attribute.
 	 */
 	public static String getXMLBaseAttributeValue(final Element element) {
-		return getDefinedAttributeNS(element, XML_NAMESPACE_URI.toString(), ATTRIBUTE_BASE); //return the xml:base attribute value, if it exists
+		return findAttributeNS(element, XML_NAMESPACE_URI.toString(), ATTRIBUTE_BASE).orElse(null); //return the xml:base attribute value, if it exists TODO propagate Optional
 	}
 
 	/**
