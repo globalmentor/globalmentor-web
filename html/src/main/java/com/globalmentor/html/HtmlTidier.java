@@ -38,7 +38,7 @@ import static com.globalmentor.net.ContentTypeConstants.*;
 import static com.globalmentor.css.spec.CSS.*;
 import static com.globalmentor.html.spec.HTML.*;
 import static com.globalmentor.xml.spec.XML.*;
-import static com.globalmentor.xml.XML.*;
+import static com.globalmentor.xml.XmlDom.*;
 
 import org.w3c.dom.*;
 import org.w3c.dom.traversal.NodeFilter;

@@ -23,7 +23,7 @@ import java.util.*;
 import com.globalmentor.io.*;
 import com.globalmentor.java.CharSequences;
 import com.globalmentor.text.*;
-import com.globalmentor.xml.XML;
+import com.globalmentor.xml.XmlDom;
 
 import io.clogr.Clogged;
 
@@ -139,12 +139,12 @@ public class HtmlCreator implements Clogged {
 		final Element bodyElement = findHtmlBodyElement(document).orElseThrow(() -> new IllegalArgumentException("Missing <body> element.")); //get a reference to the body element
 		Element paragraphElement = parseParagraph(document, bodyElement.getNamespaceURI(), bufferedReader); //parse the first paragraph
 		while(paragraphElement != null) { //keep reading until we run out of paragraphs
-			XML.appendText(bodyElement, "\n"); //append a newline to separate the paragraphs
+			XmlDom.appendText(bodyElement, "\n"); //append a newline to separate the paragraphs
 			bodyElement.appendChild(paragraphElement); //add the paragraph element to our document
 			paragraphElement = parseParagraph(document, bodyElement.getNamespaceURI(), bufferedReader); //parse the next paragraph
 		}
-		XML.appendText(bodyElement, "\n"); //append a newline to end the content of the body element
-		XML.appendText(document.getDocumentElement(), "\n"); //append a newline to end the content of the html element
+		XmlDom.appendText(bodyElement, "\n"); //append a newline to end the content of the body element
+		XmlDom.appendText(document.getDocumentElement(), "\n"); //append a newline to end the content of the html element
 	}
 
 	/**
@@ -171,14 +171,14 @@ public class HtmlCreator implements Clogged {
 		int headingType = Prose.NO_HEADING; //we don't think this paragraph is a heading
 		while(line != null && !isLastLine) { //keep reading until we read the end of the data or we we hit the last line of the paragraph
 			//make sure all the characters are valid XML characters
-			line = XML.createValidString(line);
+			line = XmlDom.createValidString(line);
 			if(CharSequences.notCharIndexOf(line, TRIM_CHARACTERS) >= 0) { //if there is text for this line
 				if(Prose.isBreak(line) && line.length() > 10) { //if the line we want to append is a break
 					if(lineCount > 0) { //if we already have lines accumulated
 						ungetLine(line); //put the line back in the buffer
 						break; //return what we have so far, and come back later for this break
 					} else { //if we haven't accumulated any lines
-						XML.appendText(element, line); //append the break text to the element
+						XmlDom.appendText(element, line); //append the break text to the element
 						break; //return the break element
 					}
 				}
@@ -260,8 +260,8 @@ public class HtmlCreator implements Clogged {
 				}
 				if(line != null) { //if we have a line to add (that is, we haven't thrown the line away)
 					if(lineCount > 0) //if we've already added lines
-						XML.appendText(element, "\n"); //append a newline to the paragraph TODO is there something more efficient and more spatially economic
-					XML.appendText(element, line); //append the line of text to the element
+						XmlDom.appendText(element, "\n"); //append a newline to the paragraph TODO is there something more efficient and more spatially economic
+					XmlDom.appendText(element, line); //append the line of text to the element
 					++lineCount; //show that we have more lines in the paragraph
 					++totalLineCount; //update our total line count
 					lineNumber = 2; //we're back to the first line in the linespacing (actually, this was the first line---the next will be the second)

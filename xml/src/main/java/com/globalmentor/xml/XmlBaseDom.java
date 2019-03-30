@@ -20,7 +20,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import static com.globalmentor.net.URIs.*;
-import static com.globalmentor.xml.XML.*;
+import static com.globalmentor.xml.XmlDom.*;
 import static com.globalmentor.xml.spec.XML.*;
 
 import org.w3c.dom.*;
@@ -29,7 +29,7 @@ import org.w3c.dom.*;
  * Class that allows discovery of a base URI according to XML Base, <a href="http://www.w3.org/TR/xmlbase/">http://www.w3.org/TR/xmlbase/</a>.
  * @author Garret Wilson
  */
-public class XMLBase {
+public class XmlBaseDom {
 
 	/** The local name of the <code>xml:base</code> attribute. */
 	public static final String ATTRIBUTE_BASE = "base";

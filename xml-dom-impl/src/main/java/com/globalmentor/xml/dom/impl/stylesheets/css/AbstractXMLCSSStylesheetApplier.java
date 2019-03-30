@@ -32,7 +32,7 @@ import com.globalmentor.io.*;
 import com.globalmentor.model.NameValuePair;
 import com.globalmentor.net.ContentType;
 import com.globalmentor.net.URIs;
-import com.globalmentor.xml.XML;
+import com.globalmentor.xml.XmlDom;
 import com.globalmentor.xml.dom.impl.stylesheets.XMLStyleSheetDescriptor;
 
 import io.clogr.Clogged;

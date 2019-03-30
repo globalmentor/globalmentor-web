@@ -60,7 +60,7 @@ import static java.util.stream.StreamSupport.*;
  * Various XML manipulation functions, mostly using the DOM.
  * @author Garret Wilson
  */
-public class XML { //TODO likely move all or part of this class to a Dom class, perhaps in another project
+public class XmlDom { //TODO likely move the non-DOM-related methods to another class
 
 	/**
 	 * The number of bytes to use when auto-detecting character encoding.

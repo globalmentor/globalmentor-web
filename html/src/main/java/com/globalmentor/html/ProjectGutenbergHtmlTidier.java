@@ -20,7 +20,7 @@ import java.util.*;
 
 import com.globalmentor.io.*;
 import com.globalmentor.java.*;
-import com.globalmentor.xml.XML;
+import com.globalmentor.xml.XmlDom;
 
 import static com.globalmentor.html.HtmlDom.*;
 import static com.globalmentor.java.Characters.*;
@@ -150,7 +150,7 @@ public class ProjectGutenbergHtmlTidier { //TODO move to different package
 			final Node childNode = childNodes.item(i); //get this child node
 			if(childNode.getNodeType() == Node.ELEMENT_NODE) { //if this is an element
 				final Element childElement = (Element)childNode; //get a reference to this element
-				final String text = XML.getText(childElement, true).trim(); //get the text of the element
+				final String text = XmlDom.getText(childElement, true).trim(); //get the text of the element
 				if(text.equals("***") && divIndex < 0) { //if this is a divider and it's the first division we've found TODO use a constant
 					divIndex = i; //save the index of the divider in case we need it
 				}
@@ -173,12 +173,12 @@ public class ProjectGutenbergHtmlTidier { //TODO move to different package
 					if(divIndex < 0 || sendMoneyIndex < divIndex + 50) //if we didn't find a divider, or the divider is close to the send money index TODO use a constant
 						divIndex = sendMoneyIndex; //use the send money index as the divider
 					if(i < childNodes.getLength() - 5) //if the end of the header is not too close to the end of the document
-						return XML.extractChildren(bodyElement, 0, i + 1); //extract all the header elements, including this one
+						return XmlDom.extractChildren(bodyElement, 0, i + 1); //extract all the header elements, including this one
 					else if(divIndex >= 0) { //if the header takes up the whole document, but we've found a divider before
 						//if the small print starts before the divider, just after the
 						//  divider, or if we didn't find the start of the small print
 						if(smallPrintStartIndex < divIndex + 10) {
-							return XML.extractChildren(bodyElement, 0, divIndex + 1); //extract all the header elements up to the divider
+							return XmlDom.extractChildren(bodyElement, 0, divIndex + 1); //extract all the header elements up to the divider
 						} else
 						//if the start of the small print comes significantly after the divider,
 						//  we'll assume there's content between the header and the small print
@@ -186,9 +186,9 @@ public class ProjectGutenbergHtmlTidier { //TODO move to different package
 						//TODO fix for ffn110.txt						else if(divIndex<childNodes.getLength()/2 && smallPrintStartIndex>childNodes.getLength()/2)
 						{
 							//get the first part of the document, up to the divider
-							final DocumentFragment headerFragment = XML.extractChildren(bodyElement, 0, divIndex + 1);
+							final DocumentFragment headerFragment = XmlDom.extractChildren(bodyElement, 0, divIndex + 1);
 							//extract the small print, which comes at the end (compensating for removing the header)
-							final DocumentFragment smallPrintFragment = XML.extractChildren(bodyElement, smallPrintStartIndex - (divIndex + 1), i - divIndex);
+							final DocumentFragment smallPrintFragment = XmlDom.extractChildren(bodyElement, smallPrintStartIndex - (divIndex + 1), i - divIndex);
 							headerFragment.appendChild(smallPrintFragment); //combine the two fragments
 							return headerFragment; //return the combined header fragment
 						}
@@ -253,9 +253,9 @@ public class ProjectGutenbergHtmlTidier { //TODO move to different package
 			final Node childNode = childNodes.item(i); //get this child node
 			if(childNode.getNodeType() == Node.ELEMENT_NODE) { //if this is an element
 				final Element childElement = (Element)childNode; //get a reference to this element
-				final String text = XML.getText(childElement, true); //get the text of the element
+				final String text = XmlDom.getText(childElement, true); //get the text of the element
 				if(isPGFooterEnd(text)) //if this is the end of the Project Gutenberg footer
-					return XML.extractChildren(bodyElement, i, childNodes.getLength()); //extract all the footer elements from here on
+					return XmlDom.extractChildren(bodyElement, i, childNodes.getLength()); //extract all the footer elements from here on
 			}
 		}
 		return null; //show that we couldn't find a PG footer
@@ -273,7 +273,7 @@ public class ProjectGutenbergHtmlTidier { //TODO move to different package
 			final Node childNode = childNodes.item(i); //get this child node
 			if(childNode.getNodeType() == Node.ELEMENT_NODE) { //if this is an element
 				final Element childElement = (Element)childNode; //get a reference to this element
-				final String text = XML.getText(childElement, true); //get the text of the element
+				final String text = XmlDom.getText(childElement, true); //get the text of the element
 				if(isPGFooterEnd(text)) { //if this is the end of the Project Gutenberg footer
 					return childElement; //return this footer element
 				}
@@ -320,7 +320,7 @@ public class ProjectGutenbergHtmlTidier { //TODO move to different package
 				final Node childNode = childNodes.item(childNodeIndex); //get this child node
 				if(childNode.getNodeType() == Node.ELEMENT_NODE) { //if this is an element
 					final Element childElement = (Element)childNode; //get a reference to this element
-					final String text = XML.getText(childElement, true); //get the text of the header
+					final String text = XmlDom.getText(childElement, true); //get the text of the header
 					if(isPGHeaderElement(childElement)) { //if this is a header element
 						final StringTokenizer lineTokenizer = new StringTokenizer(text, EOL_CHARACTERS.toString()); //create a tokenizer to look at each line
 						while(lineTokenizer.hasMoreTokens()) { //while there are more lines
@@ -495,7 +495,7 @@ public class ProjectGutenbergHtmlTidier { //TODO move to different package
 				final Node childNode = childNodes.item(childNodeIndex); //get this child node
 				if(childNode.getNodeType() == Node.ELEMENT_NODE) { //if this is an element
 					final Element childElement = (Element)childNode; //get a reference to this element
-					final String text = XML.getText(childElement, true); //get the text of the element
+					final String text = XmlDom.getText(childElement, true); //get the text of the element
 					boolean isNextLineByAuthor = false; //we don't know yet if the author is on the next line
 					if(isPGHeaderElement(childElement)) { //if this is a header element
 						final StringTokenizer lineTokenizer = new StringTokenizer(text, EOL_CHARACTERS.toString()); //create a tokenizer to look at each line
@@ -636,7 +636,7 @@ public class ProjectGutenbergHtmlTidier { //TODO move to different package
 		final Element headerElement = getHeaderElement(headerFragment); //get the header element
 		if(headerElement != null) { //if we found the header element
 			final StringBuilder descriptionStringBuilder = new StringBuilder(); //create a new string buffer to hold the description we consruct
-			final String headerText = XML.getText(headerElement, true); //get the text of the header
+			final String headerText = XmlDom.getText(headerElement, true); //get the text of the header
 			final StringTokenizer lineTokenizer = new StringTokenizer(headerText, EOL_CHARACTERS.toString()); //create a tokenizer to look at each line
 			while(lineTokenizer.hasMoreTokens()) { //while there are more lines
 				final String line = lineTokenizer.nextToken(); //get the next line
@@ -687,7 +687,7 @@ public class ProjectGutenbergHtmlTidier { //TODO move to different package
 	 * @return <code>true</code> if this element contains the header information.
 	 */
 	public static boolean isPGHeaderElement(final Element element) {
-		final String text = XML.getText(element, true); //get the text of the element
+		final String text = XmlDom.getText(element, true); //get the text of the element
 		final StringTokenizer lineTokenizer = new StringTokenizer(text, EOL_CHARACTERS.toString()); //create a tokenizer to look at each line
 		final int lineCount = lineTokenizer.countTokens(); //see how many lines we have
 		//if this paragraph is four lines or less
@@ -771,7 +771,7 @@ public class ProjectGutenbergHtmlTidier { //TODO move to different package
 			final Node childNode = childNodes.item(i); //get this child node
 			if(childNode.getNodeType() == Node.ELEMENT_NODE) { //if this is an element
 				final Element childElement = (Element)childNode; //get a reference to this element
-				final String text = XML.getText(childElement, true).trim(); //get the trimmed text of the element
+				final String text = XmlDom.getText(childElement, true).trim(); //get the trimmed text of the element
 				//if there are no ends-of-line in this text
 				//TODO del; did we ever need this?				if(StringUtilities.charIndexOf(text, EOL_CHARS)<0)  //make sure CR/LF isn't present
 				{
@@ -804,7 +804,7 @@ public class ProjectGutenbergHtmlTidier { //TODO move to different package
 				final Node childNode = childNodes.item(i); //get this child node
 				if(childNode.getNodeType() == Node.ELEMENT_NODE) { //if this is an element
 					final Element childElement = (Element)childNode; //get a reference to this element
-					final String text = XML.getText(childElement, true); //get the text of the element
+					final String text = XmlDom.getText(childElement, true); //get the text of the element
 					if(indicatorIndex == 0) { //if this is the first indicator, do special checking
 						//if the text contains both "Project Gutenberg" and "EText", "Edition", or "EBook"
 						if(Strings.indexOfIgnoreCase(text, PROJECT_GUTENB) >= 0 && getETextString(text) != null) {

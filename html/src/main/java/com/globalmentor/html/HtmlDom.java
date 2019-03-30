@@ -37,13 +37,13 @@ import com.globalmentor.model.ConfigurationException;
 import com.globalmentor.net.ContentType;
 import com.globalmentor.text.ASCII;
 import com.globalmentor.html.spec.HTML;
-import com.globalmentor.xml.XML;
+import com.globalmentor.xml.XmlDom;
 
 import io.clogr.Clogr;
 
 import static com.globalmentor.text.ASCII.*;
 import static com.globalmentor.html.spec.HTML.*;
-import static com.globalmentor.xml.XML.*;
+import static com.globalmentor.xml.XmlDom.*;
 
 /**
  * Utilities for working with XHTML DOM documents.
@@ -488,11 +488,11 @@ public class HtmlDom {
 	 * @apiNote This HTML-specific version adds whitespace to separate block elements.
 	 * @param node The node from which text will be retrieved.
 	 * @return The data of all <code>Text</code> descendant nodes, which may be the empty string.
-	 * @see XML#getText(Node, Set)
+	 * @see XmlDom#getText(Node, Set)
 	 * @see HTML#BLOCK_ELEMENTS
 	 */
 	public static String getText(final Node node) { //TODO transfer to some higher-layer content manipulation class 
-		return XML.getText(node, BLOCK_ELEMENTS);
+		return XmlDom.getText(node, BLOCK_ELEMENTS);
 	}
 
 	/**
@@ -503,11 +503,11 @@ public class HtmlDom {
 	 * </p>
 	 * @param node The node from which text will be retrieved.
 	 * @param stringBuilder The buffer to which text will be added.
-	 * @see XML#getText(Node, Set, boolean, StringBuilder)
+	 * @see XmlDom#getText(Node, Set, boolean, StringBuilder)
 	 * @see HTML#BLOCK_ELEMENTS
 	 */
 	public static void getText(final Node node, final StringBuilder stringBuilder) { //TODO transfer to some higher-layer content manipulation class
-		XML.getText(node, BLOCK_ELEMENTS, true, stringBuilder);
+		XmlDom.getText(node, BLOCK_ELEMENTS, true, stringBuilder);
 	}
 
 }

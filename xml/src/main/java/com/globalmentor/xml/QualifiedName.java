@@ -20,7 +20,7 @@ import java.net.URI;
 
 import static java.util.Objects.*;
 
-import static com.globalmentor.xml.XML.*;
+import static com.globalmentor.xml.XmlDom.*;
 
 import com.globalmentor.model.IDed;
 import com.globalmentor.net.DefaultResource;
