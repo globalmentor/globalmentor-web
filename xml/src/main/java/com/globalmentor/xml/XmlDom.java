@@ -1946,55 +1946,109 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	//#Node
 
 	/**
+	 * Adds a node as the first child of the given parent node.
+	 * @apiNote This functionality is analogous to {@link Deque#addFirst(Object)}.
+	 * @param <N> The type of child node to add.
+	 * @param parentNode The parent node to which the node should be added.
+	 * @param newChildNode The node to add at the parent node.
+	 * @return The added child.
+	 * @see #addLast(Node, Node)
+	 */
+	public static <N extends Node> N addFirst(@Nonnull final Node parentNode, @Nonnull final N newChildNode) {
+		//insert before the first child; or, if there are no children, append at the end
+		findFirstChild(parentNode).ifPresentOrElse(firstNode -> parentNode.insertBefore(newChildNode, firstNode), () -> parentNode.appendChild(newChildNode));
+		return newChildNode;
+	}
+
+	/**
+	 * Adds a node as the last child of the given parent node.
+	 * @apiNote This method functions identically to {@link Node#appendChild(Node)}, but conveniently returns the added child node as the correct type.
+	 * @apiNote This functionality is analogous to {@link Deque#addLast(Object)}.
+	 * @param <N> The type of child node to add.
+	 * @param parentNode The parent node to which the node should be added.
+	 * @param newChildNode The node to add at the parent node.
+	 * @return The added child.
+	 * @see Node#appendChild(Node)
+	 * @see #addFirst(Node, Node)
+	 */
+	public static <N extends Node> N addLast(@Nonnull final Node parentNode, @Nonnull final N newChildNode) {
+		parentNode.appendChild(newChildNode);
+		return newChildNode;
+	}
+
+	/**
 	 * Returns a stream of direct child elements with a given name, in order.
-	 * @param node The node the child nodes of which will be searched.
+	 * @param parentNode The node the child nodes of which will be searched.
 	 * @param name The name of the node to match on.
 	 * @return A stream containing all the matching child elements.
+	 * @return The added child.
 	 */
-	public static Stream<Element> childElementsByName(@Nonnull final Node node, @Nonnull final String name) {
-		return collectNodesByName(node, Node.ELEMENT_NODE, Element.class, name, false, new ArrayList<>(node.getChildNodes().getLength())).stream();
+	public static Stream<Element> childElementsByName(@Nonnull final Node parentNode, @Nonnull final String name) {
+		return collectNodesByName(parentNode, Node.ELEMENT_NODE, Element.class, name, false, new ArrayList<>(parentNode.getChildNodes().getLength())).stream();
 	}
 
 	/**
 	 * Returns a stream of direct child elements with a given namespace URI and local name, in order.
-	 * @param node The node the child nodes of which will be searched.
+	 * @param parentNode The node the child nodes of which will be searched.
 	 * @param namespaceURI The URI of the namespace of nodes to return.
 	 * @param localName The local name of the node to match on.
 	 * @return A stream containing all the matching child elements.
 	 */
-	public static Stream<Element> childElementsByNameNS(@Nonnull final Node node, @Nullable final String namespaceURI, @Nonnull final String localName) {
-		return collectNodesByNameNS(node, Node.ELEMENT_NODE, Element.class, namespaceURI, localName, false, new ArrayList<>(node.getChildNodes().getLength()))
-				.stream();
+	public static Stream<Element> childElementsByNameNS(@Nonnull final Node parentNode, @Nullable final String namespaceURI, @Nonnull final String localName) {
+		return collectNodesByNameNS(parentNode, Node.ELEMENT_NODE, Element.class, namespaceURI, localName, false,
+				new ArrayList<>(parentNode.getChildNodes().getLength())).stream();
+	}
+
+	/**
+	 * Retrieves the optional first child of a node.
+	 * @apiNote This method provides no new functionality, but is useful because it is often desirable just to get the first child as an {@link Optional}.
+	 * @param parentNode The parent node to examine.
+	 * @return The first child node of the parent node, if any.
+	 * @see Node#getFirstChild()
+	 */
+	public static Optional<Node> findFirstChild(@Nonnull final Node parentNode) {
+		return Optional.ofNullable(parentNode.getFirstChild());
 	}
 
 	/**
 	 * Returns the first direct child element with a given namespace URI and local name.
-	 * @param node The node the child nodes of which will be searched.
+	 * @param parentNode The node the child nodes of which will be searched.
 	 * @param namespaceURI The URI of the namespace of nodes to return.
 	 * @param localName The local name of the node to match on.
 	 * @return The first matching element, if any.
 	 */
-	public static Optional<Element> findFirstChildElementByNameNS(@Nonnull final Node node, @Nullable final String namespaceURI,
+	public static Optional<Element> findFirstChildElementByNameNS(@Nonnull final Node parentNode, @Nullable final String namespaceURI,
 			@Nonnull final String localName) {
-		return findFirstElementByNameNS(node.getChildNodes(), namespaceURI, localName);
+		return findFirstElementByNameNS(parentNode.getChildNodes(), namespaceURI, localName);
+	}
+
+	/**
+	 * Retrieves the optional last child of a node.
+	 * @apiNote This method provides no new functionality, but is useful because it is often desirable just to get the last child as an {@link Optional}.
+	 * @param parentNode The parent node to examine.
+	 * @return The last child node of the parent node, if any.
+	 * @see Node#getLastChild()
+	 */
+	public static Optional<Node> findLastChild(@Nonnull final Node parentNode) {
+		return Optional.ofNullable(parentNode.getLastChild());
 	}
 
 	/**
 	 * Removes all children of a node.
 	 * @implNote Implementation inspired by <a href="https://stackoverflow.com/a/20810451/421049">Stack Overflow post</a>.
 	 * @param <N> The type of parent node.
-	 * @param node The node from which child nodes should be removed.
+	 * @param parentNode The node from which child nodes should be removed.
 	 * @return The given node.
 	 * @throws DOMException
 	 *           <ul>
 	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is read-only.</li>
 	 *           </ul>
 	 */
-	public static <N extends Node> N removeChildren(@Nonnull final N node) throws DOMException {
-		while(node.hasChildNodes()) {
-			node.removeChild(node.getFirstChild());
+	public static <N extends Node> N removeChildren(@Nonnull final N parentNode) throws DOMException {
+		while(parentNode.hasChildNodes()) {
+			parentNode.removeChild(parentNode.getFirstChild());
 		}
-		return node;
+		return parentNode;
 	}
 
 	//#NodeList

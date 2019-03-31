@@ -43,6 +43,7 @@ import io.clogr.Clogr;
 
 import static com.globalmentor.text.ASCII.*;
 import static com.globalmentor.html.spec.HTML.*;
+import static com.globalmentor.java.Conditions.*;
 import static com.globalmentor.xml.XmlDom.*;
 
 /**
@@ -218,42 +219,6 @@ public class HtmlDom {
 	public static Stream<Element> htmlHeadMetaElements(@Nonnull final Document document) {
 		return findHtmlHeadElement(document).map(headElement -> childElementsByNameNS(headElement, XHTML_NAMESPACE_URI_STRING, ELEMENT_META))
 				.orElse(Stream.empty());
-	}
-
-	/**
-	 * Finds the first {@code <html><head><meta>} element with the given name. The meta name is matched in an ASCII case insensitive manner.
-	 * @param document The XHTML document tree.
-	 * @param metaName The name of the meta element to return.
-	 * @return The first {@code <html><head><meta>} element with the given name, ASCII case insensitive, if found.
-	 * @throws NullPointerException if the given document and/or name is <code>null</code>.
-	 * @see HTML#ELEMENT_META_ATTRIBUTE_NAME
-	 * @see ASCII#equalsIgnoreCase(CharSequence, CharSequence)
-	 * @see <a href="https://www.w3.org/TR/html52/document-metadata.html#the-meta-element">HTML 5.2 § 4.2.5. The meta element</a>
-	 */
-	public static Optional<Element> findHtmlHeadMetaElement(@Nonnull final Document document, @Nonnull final String metaName) {
-		requireNonNull(metaName);
-		return htmlHeadMetaElements(document).filter(metaElement -> {
-			final String metaElementName = metaElement.getAttributeNS(null, ELEMENT_META_ATTRIBUTE_NAME);
-			return metaElementName != null && ASCII.equalsIgnoreCase(metaName, metaElementName);
-		}).findFirst();
-	}
-
-	/**
-	 * Finds the first XHTML {@code <html><head><meta>} element with the given name and returns its {@value HTML#ELEMENT_META_ATTRIBUTE_CONTENT} attribute. The
-	 * meta name is matched in an ASCII case insensitive manner.
-	 * @param document The XHTML document tree.
-	 * @param metaName The name of the meta element to return.
-	 * @return The {@value HTML#ELEMENT_META_ATTRIBUTE_CONTENT} attribute of the first {@code <html><head><meta>} element with the given name, ASCII case
-	 *         insensitive.
-	 * @throws NullPointerException if the given document and/or name is <code>null</code>.
-	 * @see HTML#ELEMENT_META_ATTRIBUTE_NAME
-	 * @see HTML#ELEMENT_META_ATTRIBUTE_CONTENT
-	 * @see ASCII#equalsIgnoreCase(CharSequence, CharSequence)
-	 * @see <a href="https://www.w3.org/TR/html52/document-metadata.html#the-meta-element">HTML 5.2 § 4.2.5. The meta element</a>
-	 */
-	public static Optional<String> findHtmlHeadMetaElementContent(@Nonnull final Document document, @Nonnull final String metaName) {
-		return findHtmlHeadMetaElement(document, metaName).map(metaElement -> metaElement.getAttributeNS(null, ELEMENT_META_ATTRIBUTE_CONTENT))
-				.filter(not(String::isEmpty)); //filter out the empty string, as getAttributeNS() is supposed to return an empty string for missing content
 	}
 
 	/**
@@ -482,6 +447,110 @@ public class HtmlDom {
 			}
 		}
 	}
+
+	//#metadata
+
+	/**
+	 * Finds the {@code <html><head><meta>} elements that have a <code>name</code>, returning the name and <code>content</code> as name-value pairs. Note that
+	 * while a named {@code <meta>} element is supposed to have a <code>content</code> attribute as per
+	 * <a href="https://www.w3.org/TR/html52/document-metadata.html#the-meta-element"><cite>HTML 5.2 § 4.2.5. The meta element</cite></a>, because HTML documents
+	 * may in practice not include a <code>content</code> attribute the returned name-value pairs may each have <code>null</code> as a value.
+	 * <p>
+	 * For convenience, because HTML metadata names are ASCII case-insensitive, the returned names are normalized to ASCII lowercase.
+	 * </p>
+	 * @param document The XHTML document tree.
+	 * @return A stream of name-value pairs representing the {@code <html><head><meta>} elements that contain <code>name</code> attributes.
+	 * @see #htmlHeadMetaElements(Document)
+	 */
+	public static Stream<Map.Entry<String, String>> namedMetadata(@Nonnull final Document document) {
+		return htmlHeadMetaElements(document).filter(metaElement -> metaElement.hasAttributeNS(null, ELEMENT_META_ATTRIBUTE_NAME))
+				.map(metaElement -> new AbstractMap.SimpleImmutableEntry<>(ASCII.toLowerCase(metaElement.getAttributeNS(null, ELEMENT_META_ATTRIBUTE_NAME)).toString(), //normalize names
+						findAttributeNS(metaElement, null, ELEMENT_META_ATTRIBUTE_CONTENT).orElse(null))); //values can be null 
+	}
+
+	/**
+	 * Sets named metadata of an HTML document based on the given map entry. If an existing {@code <html><head><meta>} element exist with the given ASCII
+	 * case-insensitive <code>name</code>, its <code>content</code> attribute is updated to the given value (and its name is not changed); otherwise, a new
+	 * metadata element is added with the given name and value.
+	 * @param document The XHTML document tree.
+	 * @param meta The name-value pair representing the metadata name and content to set.
+	 * @return The {@code <html><head><meta>} element that was added or updated.
+	 * @throws IllegalArgumentException if the given document has no {@code <html><head>} element.
+	 * @see HTML#ELEMENT_META
+	 * @see HTML#ELEMENT_META_ATTRIBUTE_NAME
+	 * @see HTML#ELEMENT_META_ATTRIBUTE_CONTENT
+	 * @see #setNamedMetata(Document, String, String)
+	 * @throws IllegalArgumentException if the given name-value pair has no key name.
+	 */
+	public static Element setNamedMetata(@Nonnull Document document, @Nonnull Map.Entry<String, String> meta) {
+		checkArgument(meta.getKey() != null, "No metadata name given.");
+		return setNamedMetata(document, meta.getKey(), meta.getValue());
+	}
+
+	/**
+	 * Sets named metadata of an HTML document. If an existing {@code <html><head><meta>} element exist with the given ASCII case-insensitive <code>name</code>,
+	 * its <code>content</code> attribute is updated to the given value (and its name is not changed); otherwise, a new metadata element is added with the given
+	 * name and value.
+	 * @param document The XHTML document tree.
+	 * @param metaName The name of the metadata to set.
+	 * @param metaContent The metadata value to set.
+	 * @return The {@code <html><head><meta>} element that was added or updated.
+	 * @throws IllegalArgumentException if the given document has no {@code <html><head>} element.
+	 * @see HTML#ELEMENT_META
+	 * @see HTML#ELEMENT_META_ATTRIBUTE_NAME
+	 * @see HTML#ELEMENT_META_ATTRIBUTE_CONTENT
+	 */
+	public static Element setNamedMetata(@Nonnull Document document, @Nonnull final String metaName, @Nonnull final String metaContent) {
+		requireNonNull(metaName);
+		requireNonNull(metaContent);
+		final Element metaElement = findHtmlHeadMetaElementByName(document, metaName).orElseGet(() -> {
+			final Element headElement = findHtmlHeadElement(document)
+					.orElseThrow(() -> new IllegalArgumentException("Missing <html><head> element for adding child <meta> element."));
+			final Element newMetaElement = addLast(headElement, document.createElementNS(XHTML_NAMESPACE_URI_STRING, ELEMENT_META)); //add a new <meta> element as the last child
+			newMetaElement.setAttributeNS(null, ELEMENT_META_ATTRIBUTE_NAME, metaName); //initialize the name of the new <meta> element
+			return newMetaElement;
+		});
+		metaElement.setAttributeNS(null, ELEMENT_META_ATTRIBUTE_CONTENT, metaContent);
+		return metaElement;
+	}
+
+	/**
+	 * Finds the first {@code <html><head><meta>} element with the given name. The meta name is matched in an ASCII case insensitive manner.
+	 * @param document The XHTML document tree.
+	 * @param metaName The name of the meta element to return.
+	 * @return The first {@code <html><head><meta>} element with the given name, ASCII case insensitive, if found.
+	 * @throws NullPointerException if the given document and/or name is <code>null</code>.
+	 * @see HTML#ELEMENT_META_ATTRIBUTE_NAME
+	 * @see ASCII#equalsIgnoreCase(CharSequence, CharSequence)
+	 * @see <a href="https://www.w3.org/TR/html52/document-metadata.html#the-meta-element">HTML 5.2 § 4.2.5. The meta element</a>
+	 */
+	public static Optional<Element> findHtmlHeadMetaElementByName(@Nonnull final Document document, @Nonnull final String metaName) {
+		requireNonNull(metaName);
+		return htmlHeadMetaElements(document).filter(metaElement -> {
+			final String metaElementName = metaElement.getAttributeNS(null, ELEMENT_META_ATTRIBUTE_NAME);
+			return metaElementName != null && ASCII.equalsIgnoreCase(metaName, metaElementName);
+		}).findFirst();
+	}
+
+	/**
+	 * Finds the first XHTML {@code <html><head><meta>} element with the given name and returns its {@value HTML#ELEMENT_META_ATTRIBUTE_CONTENT} attribute. The
+	 * meta name is matched in an ASCII case insensitive manner.
+	 * @param document The XHTML document tree.
+	 * @param metaName The name of the meta element to return.
+	 * @return The {@value HTML#ELEMENT_META_ATTRIBUTE_CONTENT} attribute of the first {@code <html><head><meta>} element with the given name, ASCII case
+	 *         insensitive.
+	 * @throws NullPointerException if the given document and/or name is <code>null</code>.
+	 * @see HTML#ELEMENT_META_ATTRIBUTE_NAME
+	 * @see HTML#ELEMENT_META_ATTRIBUTE_CONTENT
+	 * @see ASCII#equalsIgnoreCase(CharSequence, CharSequence)
+	 * @see <a href="https://www.w3.org/TR/html52/document-metadata.html#the-meta-element">HTML 5.2 § 4.2.5. The meta element</a>
+	 */
+	public static Optional<String> findHtmlHeadMetaElementContent(@Nonnull final Document document, @Nonnull final String metaName) {
+		return findHtmlHeadMetaElementByName(document, metaName).map(metaElement -> metaElement.getAttributeNS(null, ELEMENT_META_ATTRIBUTE_CONTENT))
+				.filter(not(String::isEmpty)); //filter out the empty string, as getAttributeNS() is supposed to return an empty string for missing content
+	}
+
+	//#text
 
 	/**
 	 * Retrieves the text of the node contained in child nodes of type {@link Node#TEXT_NODE}, extracting text deeply.
