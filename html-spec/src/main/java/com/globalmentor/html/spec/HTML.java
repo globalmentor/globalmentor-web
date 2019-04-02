@@ -191,6 +191,7 @@ public class HTML {
 	public static final String ELEMENT_AREA = "area";
 	public static final String ELEMENT_ARTICLE = "article";
 	public static final String ELEMENT_ASIDE = "aside";
+	public static final String ELEMENT_AUDIO = "audio";
 	public static final String ELEMENT_B = "b";
 	public static final String ELEMENT_BASE = "base";
 	public static final String ELEMENT_BIG = "big";
@@ -253,6 +254,7 @@ public class HTML {
 	public static final String ELEMENT_SECTION = "section";
 	public static final String ELEMENT_SELECT = "select";
 	public static final String ELEMENT_SMALL = "small";
+	public static final String ELEMENT_SOURCE = "source";
 	public static final String ELEMENT_SPAN = "span";
 	public static final String ELEMENT_STRIKE = "strike";
 	public static final String ELEMENT_STRONG = "strong";
@@ -268,10 +270,12 @@ public class HTML {
 	public static final String ELEMENT_TFOOT = "tfoot";
 	public static final String ELEMENT_TITLE = "title";
 	public static final String ELEMENT_TR = "tr";
+	public static final String ELEMENT_TRACK = "track";
 	public static final String ELEMENT_TT = "tt";
 	public static final String ELEMENT_U = "u";
 	public static final String ELEMENT_UL = "ul";
 	public static final String ELEMENT_VAR = "var";
+	public static final String ELEMENT_VIDEO = "video";
 
 	//attributes
 
@@ -377,6 +381,12 @@ public class HTML {
 	public static final String ELEMENT_APPLET_ATTRIBUTE_CODE = "code";
 	public static final String ELEMENT_APPLET_ATTRIBUTE_HEIGHT = "height";
 	public static final String ELEMENT_APPLET_ATTRIBUTE_WIDTH = "width";
+
+	//attributes for <area>
+	public static final String ELEMENT_AREA_ATTRIBUTE_HREF = "href";
+
+	//attributes for <audio>
+	public static final String ELEMENT_AUDIO_ATTRIBUTE_SRC = "src";
 
 	//attributes for <button>
 	public static final String ELEMENT_BUTTON_ATTRIBUTE_TYPE = "type";
@@ -484,6 +494,9 @@ public class HTML {
 	public static final String SELECT_MULTIPLE_MULTIPLE = "multiple";
 	public static final String ELEMENT_SELECT_ATTRIBUTE_SIZE = "size";
 
+	//attributes for <source>
+	public static final String ELEMENT_SOURCE_ATTRIBUTE_SRC = "src";
+
 	//attributes for <td>
 	public static final String ELEMENT_TD_ATTRIBUTE_ALIGN = "align";
 	public static final String TD_ALIGN_LEFT = "left";
@@ -497,16 +510,6 @@ public class HTML {
 	public static final String ELEMENT_TD_ATTRIBUTE_ROWSPAN = "rowspan";
 	public static final String ELEMENT_TD_ATTRIBUTE_SCOPE = "scope";
 	public static final String TD_SCOPE_COLGROUP = "colgroup";
-
-	//attributes for <tr>
-	public static final String ELEMENT_TR_ATTRIBUTE_ALIGN = "align";
-	public static final String TR_ALIGN_LEFT = "left";
-	public static final String TR_ALIGN_CENTER = "center";
-	public static final String TR_ALIGN_RIGHT = "right";
-	public static final String ELEMENT_TR_ATTRIBUTE_VALIGN = "valign";
-	public static final String TR_VALIGN_TOP = "top";
-	public static final String TR_VALIGN_MIDDLE = "middle";
-	public static final String TR_VALIGN_BOTTOM = "bottom";
 
 	//attributes for <textarea>
 	public static final String ELEMENT_TEXTAREA_ATTRIBUTE_COLS = "cols";
@@ -523,6 +526,22 @@ public class HTML {
 	public static final String TEXTAREA_DISABLED_DISABLED = "disabled";
 	public static final String ELEMENT_TEXTAREA_ATTRIBUTE_READONLY = "readonly";
 	public static final String TEXTAREA_READONLY_READONLY = "readonly";
+
+	//attributes for <tr>
+	public static final String ELEMENT_TR_ATTRIBUTE_ALIGN = "align";
+	public static final String TR_ALIGN_LEFT = "left";
+	public static final String TR_ALIGN_CENTER = "center";
+	public static final String TR_ALIGN_RIGHT = "right";
+	public static final String ELEMENT_TR_ATTRIBUTE_VALIGN = "valign";
+	public static final String TR_VALIGN_TOP = "top";
+	public static final String TR_VALIGN_MIDDLE = "middle";
+	public static final String TR_VALIGN_BOTTOM = "bottom";
+
+	//attributes for <track>
+	public static final String ELEMENT_TRACK_ATTRIBUTE_SRC = "src";
+
+	//attributes for <video>
+	public static final String ELEMENT_VIDEO_ATTRIBUTE_SRC = "src";
 
 	/**
 	 * The XHTML elements that by default have <code>display:block</code> CSS style.
