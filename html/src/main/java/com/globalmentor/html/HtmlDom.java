@@ -451,10 +451,23 @@ public class HtmlDom {
 	//#metadata
 
 	/**
-	 * Finds the {@code <html><head><meta>} elements that have a <code>name</code>, returning the name and <code>content</code> as name-value pairs. Note that
-	 * while a named {@code <meta>} element is supposed to have a <code>content</code> attribute as per
-	 * <a href="https://www.w3.org/TR/html52/document-metadata.html#the-meta-element"><cite>HTML 5.2 § 4.2.5. The meta element</cite></a>, because HTML documents
-	 * may in practice not include a <code>content</code> attribute the returned name-value pairs may each have <code>null</code> as a value.
+	 * Finds the text contents of the {@code <html><head><title>} element in the XHTML namespace.
+	 * @param document The XHTML document tree.
+	 * @return The text content of the {@code <html><head><title>} element if it exists in the tree.
+	 * @see HTML#XHTML_NAMESPACE_URI
+	 * @see HTML#ELEMENT_TITLE
+	 * @see Element#getTextContent()
+	 */
+	public static Optional<String> findTitle(@Nonnull final Document document) {
+		return findHtmlHeadTitleElement(document).map(Element::getTextContent);
+	}
+
+	/**
+	 * Finds the {@code <html><head><meta>} elements that have a <code>name</code>, returning the name and <code>content</code> as name-value pairs. Note that it
+	 * is possible for a returned metadata name to be the empty string. Note also that while a named {@code <meta>} element is supposed to have a
+	 * <code>content</code> attribute as per <a href="https://www.w3.org/TR/html52/document-metadata.html#the-meta-element"><cite>HTML 5.2 § 4.2.5. The meta
+	 * element</cite></a>, because HTML documents may in practice not include a <code>content</code> attribute the returned name-value pairs may each have
+	 * <code>null</code> as a value.
 	 * <p>
 	 * For convenience, because HTML metadata names are ASCII case-insensitive, the returned names are normalized to ASCII lowercase.
 	 * </p>
