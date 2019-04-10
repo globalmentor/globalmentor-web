@@ -1981,7 +1981,6 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @param parentNode The node the child nodes of which will be searched.
 	 * @param name The name of the node to match on.
 	 * @return A stream containing all the matching child elements.
-	 * @return The added child.
 	 */
 	public static Stream<Element> childElementsByName(@Nonnull final Node parentNode, @Nonnull final String name) {
 		return collectNodesByName(parentNode, Node.ELEMENT_NODE, Element.class, name, false, new ArrayList<>(parentNode.getChildNodes().getLength())).stream();
