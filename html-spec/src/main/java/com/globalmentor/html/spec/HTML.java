@@ -276,6 +276,7 @@ public class HTML {
 	public static final String ELEMENT_UL = "ul";
 	public static final String ELEMENT_VAR = "var";
 	public static final String ELEMENT_VIDEO = "video";
+	public static final String ELEMENT_WBR = "wbr";
 
 	//attributes
 
@@ -549,6 +550,13 @@ public class HTML {
 	 */
 	public static final Set<String> BLOCK_ELEMENTS = immutableSetOf(ELEMENT_ADDRESS, ELEMENT_BLOCKCODE, ELEMENT_BLOCKQUOTE, ELEMENT_DIV, ELEMENT_H1, ELEMENT_H2,
 			ELEMENT_H3, ELEMENT_H4, ELEMENT_H5, ELEMENT_H6, ELEMENT_HR, ELEMENT_P, ELEMENT_PRE, ELEMENT_SECTION);
+
+	/**
+	 * The HTML 5 <a href="https://www.w3.org/TR/html5/syntax.html#void-elements"><dfn>void elements</dfn></a>.
+	 * @see <a href="https://www.w3.org/TR/html5/syntax.html#writing-html-documents-elements">HTML 5.2 § 8.1.2. Elements</a>
+	 */
+	public static final Set<String> VOID_ELEMENTS = immutableSetOf(ELEMENT_AREA, ELEMENT_BASE, ELEMENT_BR, ELEMENT_COL, ELEMENT_EMBED, ELEMENT_HR, ELEMENT_IMG,
+			ELEMENT_INPUT, ELEMENT_LINK, ELEMENT_META, ELEMENT_PARAM, ELEMENT_SOURCE, ELEMENT_TRACK, ELEMENT_WBR);
 
 	/**
 	 * Parses out the HTML CSS class IDs from the given classes character sequence.
