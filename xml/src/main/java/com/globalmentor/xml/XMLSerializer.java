@@ -734,13 +734,15 @@ public class XMLSerializer {
 			final Attr attribute = (Attr)element.getAttributes().item(attributeIndex); //get a reference to this attribute
 			serializeAttribute(appendable, attribute.getName(), attribute.getValue()); //write this attribute
 		}
-		if(element.getChildNodes().getLength() > 0) { //if there are child elements
+		if(isEmptyElementTag(element)) { //if we should serialize the element as an empty element tag, e.g. <foo />
+			appendable.append(SPACE_CHAR).append('/').append(TAG_END); //write the end of the empty element tag, with an extra space for HTML browser compatibility TODO use a constant here
+		} else {
 			appendable.append(TAG_END); //write the end of the start tag
 			boolean contentFormatted = false; //we'll determine if we should format the content of the child nodes
 			//we'll only format the contents if there are only element children
 			if(formatted) { //if we've been told to format, we'll make sure there are element child nodes
 				for(int childIndex = 0; childIndex < element.getChildNodes().getLength(); childIndex++) { //look at each child node
-					final int childNodeType = element.getChildNodes().item(childIndex).getNodeType(); //get thic child's type of node
+					final int childNodeType = element.getChildNodes().item(childIndex).getNodeType(); //get this child's type of node
 					if(childNodeType == Node.ELEMENT_NODE) { //if this is an element child node
 						contentFormatted = true; //show that we should format the element content
 					} else if(childNodeType == Node.TEXT_NODE) { //if this is text
@@ -759,13 +761,23 @@ public class XMLSerializer {
 				serializeHorizontalAlignment(appendable, nestLevel); //horizontally align the element's ending tag
 			}
 			appendable.append(TAG_START).append('/').append(element.getNodeName()).append(TAG_END); //write the ending tag TODO use a constant here
-		} else { //if there are no child elements, this is an empty element
-			appendable.append(SPACE_CHAR).append('/').append(TAG_END); //write the end of the empty element tag, with an extra space for HTML browser compatibility TODO use a constant here
 		}
 		if(formatted) { //if we should write formatted output
 			appendable.append(lineSeparator()); //add a newline after the element
 		}
 		return appendable;
+	}
+
+	/**
+	 * Indicates whether the given element should be serialized as an empty element tag.
+	 * @implSpec The default implementation returns <code>false</code> if the given element has any children.
+	 * @param element The element being serialized.
+	 * @return <code>true</code> if the XML empty-element tag form should be used to serialize the tag.
+	 * @see <a href="https://www.w3.org/TR/xml/#sec-starttags">Extensible Markup Language (XML) 1.0 (Fifth Edition) § 3.1 Start-Tags, End-Tags, and Empty-Element
+	 *      Tags</a>
+	 */
+	protected boolean isEmptyElementTag(@Nonnull final Element element) {
+		return element.getChildNodes().getLength() == 0;
 	}
 
 	/**
