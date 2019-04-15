@@ -16,16 +16,19 @@
 
 package com.globalmentor.html;
 
+import static com.globalmentor.html.spec.HTML.*;
 import static com.globalmentor.java.Characters.SPACE_CHAR;
 
 import java.io.IOException;
 
 import javax.annotation.Nonnull;
 
+import org.w3c.dom.Element;
+
 import com.globalmentor.xml.XMLSerializer;
 
 /**
- * Serializes a document as HTML. Has features to serialize features in an HTML-oriented way, such as empty attributes:
+ * Serializes a document as HTML. Has features to serialize features in an HTML-oriented way, such as void elements and empty attributes:
  * 
  * <pre>
  * {@code <button disabled/>}
@@ -73,11 +76,25 @@ public class HtmlSerializer extends XMLSerializer {
 	}
 
 	/**
-	 * {@inheritDoc} @implSpec This version will write an empty attribute if that option is enabled and the attribute value is the same as its name. For example:
+	 * {@inheritDoc}
+	 * @implSpec This version only serializes elements using an empty element tag if the element is an HTML <dfn>void element</dfn>.
+	 * @implNote This implementation results in an empty element tag for void elements even if the element has children, as HTML void elements are not allowed to
+	 *           have children.
+	 */
+	@Override
+	protected boolean isEmptyElementTag(final Element element) {
+		final boolean isVoidElement = XHTML_NAMESPACE_URI_STRING.equals(element.getNamespaceURI()) && VOID_ELEMENTS.contains(element.getLocalName());
+		//TODO log a warning or throw an exception if a void element has children
+		return isVoidElement;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * @implSpec This version will write an empty attribute if that option is enabled and the attribute value is the same as its name. For example:
 	 * 
-	 * <pre>
+	 *           <pre>
 	 * {@code <button disabled/>}
-	 * </pre>
+	 *           </pre>
 	 * 
 	 * @see #isUseEmptyAttributes()
 	 */
