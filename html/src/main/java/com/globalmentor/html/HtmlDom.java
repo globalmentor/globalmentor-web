@@ -22,6 +22,7 @@ import static java.util.function.Predicate.*;
 import java.io.*;
 import java.net.URI;
 import java.util.*;
+import java.util.function.BiFunction;
 import java.util.stream.Stream;
 
 import javax.annotation.*;
@@ -471,14 +472,35 @@ public class HtmlDom {
 	 * <p>
 	 * For convenience, because HTML metadata names are ASCII case-insensitive, the returned names are normalized to ASCII lowercase.
 	 * </p>
+	 * @implSpec This implementation delegates to {@link #namedMetadata(Document, BiFunction, BiFunction)}.
 	 * @param document The XHTML document tree.
 	 * @return A stream of name-value pairs representing the {@code <html><head><meta>} elements that contain <code>name</code> attributes.
 	 * @see #htmlHeadMetaElements(Document)
 	 */
 	public static Stream<Map.Entry<String, String>> namedMetadata(@Nonnull final Document document) {
+		return namedMetadata(document, (element, name) -> name, (element, value) -> value);
+	}
+
+	/**
+	 * Finds the {@code <html><head><meta>} elements that have a <code>name</code>, returning the name and <code>content</code> as name-value pairs after applying
+	 * some mapping. Note that it is possible for a provided metadata name to be the empty string. Note also that while a named {@code <meta>} element is supposed
+	 * to have a <code>content</code> attribute as per <a href="https://www.w3.org/TR/html52/document-metadata.html#the-meta-element"><cite>HTML 5.2 § 4.2.5. The
+	 * meta element</cite></a>, because HTML documents may in practice not include a <code>content</code> attribute the provided value may be <code>null</code>.
+	 * @param document The XHTML document tree.
+	 * @param nameMapper The function for mapping the string metadata names, in the context of some element, to metadata keys. The provided element will indicate
+	 *          on which element the metadata was found. Because HTML metadata names are ASCII case-insensitive, the provided metadata name is normalized to ASCII
+	 *          lowercase. It is possible for a metadata name to be the empty string, will never be <code>null</code>.
+	 * @param valueMapper The function for mapping the string metadata values, in the context of some element, to metadata values. The provided element will
+	 *          indicate on which element the metadata was found. The provided metadata value may be <code>null</code>.
+	 * @return A stream of name-value pairs representing the {@code <html><head><meta>} elements that contain <code>name</code> attributes.
+	 * @see #htmlHeadMetaElements(Document)
+	 */
+	public static <N, V> Stream<Map.Entry<N, V>> namedMetadata(@Nonnull final Document document, @Nonnull final BiFunction<Element, String, N> nameMapper,
+			@Nonnull final BiFunction<Element, String, V> valueMapper) {
 		return htmlHeadMetaElements(document).filter(metaElement -> metaElement.hasAttributeNS(null, ELEMENT_META_ATTRIBUTE_NAME))
-				.map(metaElement -> new AbstractMap.SimpleImmutableEntry<>(ASCII.toLowerCase(metaElement.getAttributeNS(null, ELEMENT_META_ATTRIBUTE_NAME)).toString(), //normalize names
-						findAttributeNS(metaElement, null, ELEMENT_META_ATTRIBUTE_CONTENT).orElse(null))); //values can be null 
+				.map(metaElement -> new AbstractMap.SimpleImmutableEntry<>(
+						nameMapper.apply(metaElement, ASCII.toLowerCase(metaElement.getAttributeNS(null, ELEMENT_META_ATTRIBUTE_NAME)).toString()), //normalize names
+						valueMapper.apply(metaElement, findAttributeNS(metaElement, null, ELEMENT_META_ATTRIBUTE_CONTENT).orElse(null)))); //values can be null 
 	}
 
 	/**
