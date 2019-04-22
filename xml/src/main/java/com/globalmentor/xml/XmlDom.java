@@ -2050,6 +2050,29 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 		return parentNode;
 	}
 
+	//#NamedNodeMap
+
+	/**
+	 * Returns an iterable to iterate through the nodes in a named node map. The returned iterator fails fast if it detects that the named node map was modified
+	 * during iteration.
+	 * @param namedNodeMap The named node map to iterate through.
+	 * @return An iterable for iterating the nodes in the named node map.
+	 */
+	public static Iterable<Node> iterableOf(@Nonnull final NamedNodeMap namedNodeMap) {
+		return () -> new NamedNodeMapIterator(namedNodeMap);
+	}
+
+	/**
+	 * Returns a stream to iterate through the nodes in a named node map. The returned stream fails fast if it detects that the named node map was modified during
+	 * iteration.
+	 * @param namedNodeMap The named node map to iterate through.
+	 * @return A stream for iterating the nodes in the named node map.
+	 */
+	public static Stream<Node> streamOf(@Nonnull final NamedNodeMap namedNodeMap) {
+		return stream(spliterator(new NamedNodeMapIterator(namedNodeMap), namedNodeMap.getLength(), Spliterator.SIZED | Spliterator.DISTINCT | Spliterator.NONNULL),
+				false);
+	}
+
 	//#NodeList
 
 	/**
@@ -2104,10 +2127,19 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @return A stream for iterating the nodes in the node list.
 	 */
 	public static Stream<Node> streamOf(@Nonnull final NodeList nodeList) {
-		return stream(spliterator(new NodeListIterator(nodeList), nodeList.getLength(), Spliterator.ORDERED), false);
+		return stream(spliterator(new NodeListIterator(nodeList), nodeList.getLength(), Spliterator.SIZED | Spliterator.ORDERED | Spliterator.NONNULL), false);
 	}
 
 	//#Element
+
+	/**
+	 * Retrieves the attributes of the given element as a stream of attribute nodes.
+	 * @param element The element for which attributes should be returned.
+	 * @return A stream of the element's attributes.
+	 */
+	public static Stream<Attr> attributesOf(@Nonnull final Element element) {
+		return streamOf(element.getAttributes()).map(Attr.class::cast); //the nodes should all be instances of Attr in this named node map
+	}
 
 	/**
 	 * Retrieves an attribute value by name if it exists.
