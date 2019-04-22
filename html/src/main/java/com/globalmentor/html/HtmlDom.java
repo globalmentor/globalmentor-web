@@ -486,6 +486,8 @@ public class HtmlDom {
 	 * some mapping. Note that it is possible for a provided metadata name to be the empty string. Note also that while a named {@code <meta>} element is supposed
 	 * to have a <code>content</code> attribute as per <a href="https://www.w3.org/TR/html52/document-metadata.html#the-meta-element"><cite>HTML 5.2 § 4.2.5. The
 	 * meta element</cite></a>, because HTML documents may in practice not include a <code>content</code> attribute the provided value may be <code>null</code>.
+	 * @param <N> The type the metadata name will be mapped to.
+	 * @param <V> The type the metadata value will be mapped to.
 	 * @param document The XHTML document tree.
 	 * @param nameMapper The function for mapping the string metadata names, in the context of some element, to metadata keys. The provided element will indicate
 	 *          on which element the metadata was found. Because HTML metadata names are ASCII case-insensitive, the provided metadata name is normalized to ASCII
