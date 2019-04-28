@@ -16,9 +16,6 @@
 
 package com.globalmentor.xml;
 
-import static com.globalmentor.java.Conditions.checkState;
-import static java.util.Objects.*;
-
 import java.util.*;
 
 import javax.annotation.*;
@@ -35,75 +32,27 @@ import org.w3c.dom.*;
  * @author Garret Wilson
  * @see NamedNodeMap
  */
-public class NamedNodeMapIterator implements Iterator<Node> {
+public class NamedNodeMapIterator extends AbstractNodeIterator {
 
 	private final NamedNodeMap namedNodeMap;
-
-	private int length;
-
-	private int index = 0;
-
-	Node node = null;
 
 	/**
 	 * Constructor.
 	 * @param namedNodeMap The named node map to iterate through.
 	 */
 	public NamedNodeMapIterator(@Nonnull final NamedNodeMap namedNodeMap) {
-		this.namedNodeMap = requireNonNull(namedNodeMap);
-		this.length = namedNodeMap.getLength();
+		super(namedNodeMap.getLength());
+		this.namedNodeMap = namedNodeMap;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * @throws ConcurrentModificationException if the size of the original named node map has changed.
-	 */
 	@Override
-	public boolean hasNext() {
-		if(namedNodeMap.getLength() != length) {
-			throw new ConcurrentModificationException("Underlying named node map was modified during iteration.");
-		}
-		return index < length;
+	protected int getLength() {
+		return namedNodeMap.getLength();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * @throws ConcurrentModificationException if the size of the original named node map has changed.
-	 */
 	@Override
-	public Node next() {
-		if(!hasNext()) {
-			throw new NoSuchElementException();
-		}
-		node = namedNodeMap.item(index++);
-		return node;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * @implSpec This method delegates to {@link #removeImpl()} for actual node removal.
-	 */
-	@Override
-	public void remove() {
-		checkState(node != null, "Attempt to remove from iterator without iterating to next element.");
-		removeImpl(node);
-		index--; //the next node is now back where we looked before
-		length--; //the list has grown smaller
-		//if removing the node results in a new one being created, the length discrepancy will be detected
-		node = null; //there is no longer a node to remove
-	}
-
-	/**
-	 * Implementation that actually removes the node from the named node map.
-	 * <p>
-	 * This method must not change any iterator state variables.
-	 * </p>
-	 * @implSpec The default implementation throws an instance of {@link UnsupportedOperationException} and performs no other action.
-	 * @param node The node to remove, or <code>null</code> if there is no node available for removal.
-	 * @throws UnsupportedOperationException if the {@link #remove()} operation is not supported by this iterator
-	 */
-	protected void removeImpl(@Nonnull final Node node) {
-		throw new UnsupportedOperationException("remove");
+	protected Node getNode(final int index) {
+		return namedNodeMap.item(index);
 	}
 
 }

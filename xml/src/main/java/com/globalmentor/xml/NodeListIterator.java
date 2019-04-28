@@ -16,9 +16,6 @@
 
 package com.globalmentor.xml;
 
-import static com.globalmentor.java.Conditions.*;
-import static java.util.Objects.*;
-
 import java.util.*;
 
 import javax.annotation.*;
@@ -32,73 +29,31 @@ import org.w3c.dom.*;
  * @author Garret Wilson
  * @see NodeList
  */
-public class NodeListIterator implements Iterator<Node> {
+public class NodeListIterator extends AbstractNodeIterator {
 
 	private final NodeList nodeList;
-
-	private int length;
-
-	private int index = 0;
-
-	Node node = null;
 
 	/**
 	 * Constructor.
 	 * @param nodeList The node list to iterate through.
 	 */
 	public NodeListIterator(@Nonnull final NodeList nodeList) {
-		this.nodeList = requireNonNull(nodeList);
-		this.length = nodeList.getLength();
+		super(nodeList.getLength());
+		this.nodeList = nodeList;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * @throws ConcurrentModificationException if the size of the original node list has changed.
-	 */
 	@Override
-	public boolean hasNext() {
-		if(nodeList.getLength() != length) {
-			throw new ConcurrentModificationException("Underlying node list was modified during iteration.");
-		}
-		return index < length;
+	protected int getLength() {
+		return nodeList.getLength();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * @throws ConcurrentModificationException if the size of the original node list has changed.
-	 */
 	@Override
-	public Node next() {
-		if(!hasNext()) {
-			throw new NoSuchElementException();
-		}
-		node = nodeList.item(index++);
-		return node;
+	protected Node getNode(final int index) {
+		return nodeList.item(index);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * @implSpec This method delegates to {@link #removeImpl()} for actual node removal.
-	 */
 	@Override
-	public void remove() {
-		checkState(node != null, "Attempt to remove from iterator without iterating to next element.");
-		removeImpl(node);
-		index--; //the next node is now back where we looked before
-		length--; //the list has grown smaller
-		node = null; //there is no longer a node to remove
-	}
-
-	/**
-	 * Implementation that actually removes the node from the node list.
-	 * <p>
-	 * This method must not change any iterator state variables.
-	 * </p>
-	 * @apiNote This method is provided for consistency with {@link NamedNodeMapIterator#removeImpl()}.
-	 * @param node The node to remove.
-	 * @throws UnsupportedOperationException if the {@link #remove()} operation is not supported by this iterator.
-	 */
-	protected void removeImpl(@Nonnull final Node node) {
+	protected void removeImpl(final Node node) {
 		final Node parentNode = node.getParentNode();
 		if(parentNode == null) {
 			throw new UnsupportedOperationException("This node list does not allow removal.");
