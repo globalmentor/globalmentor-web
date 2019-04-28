@@ -16,6 +16,7 @@
 
 package com.globalmentor.xml;
 
+import static com.globalmentor.java.Conditions.checkState;
 import static java.util.Objects.*;
 
 import java.util.*;
@@ -28,6 +29,9 @@ import org.w3c.dom.*;
  * Iterates through the nodes in a {@link NamedNodeMap}. The original named node map must not be modified during iteration.
  * @implSpec This implementation fails fast, throwing a {@link ConcurrentModificationException} if it determines on a best-effort basis that the original named
  *           node map has been modified.
+ * @implSpec This implementation does not support {@link #remove()}.
+ * @implNote This implementation does not support attribute named node maps that create a new attribute when one is deleted; this will result in a
+ *           {@link ConcurrentModificationException}.
  * @author Garret Wilson
  * @see NamedNodeMap
  */
@@ -35,9 +39,11 @@ public class NamedNodeMapIterator implements Iterator<Node> {
 
 	private final NamedNodeMap namedNodeMap;
 
-	private final int length;
+	private int length;
 
 	private int index = 0;
+
+	Node node = null;
 
 	/**
 	 * Constructor.
@@ -69,7 +75,35 @@ public class NamedNodeMapIterator implements Iterator<Node> {
 		if(!hasNext()) {
 			throw new NoSuchElementException();
 		}
-		return namedNodeMap.item(index++);
+		node = namedNodeMap.item(index++);
+		return node;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * @implSpec This method delegates to {@link #removeImpl()} for actual node removal.
+	 */
+	@Override
+	public void remove() {
+		checkState(node != null, "Attempt to remove from iterator without iterating to next element.");
+		removeImpl(node);
+		index--; //the next node is now back where we looked before
+		length--; //the list has grown smaller
+		//if removing the node results in a new one being created, the length discrepancy will be detected
+		node = null; //there is no longer a node to remove
+	}
+
+	/**
+	 * Implementation that actually removes the node from the named node map.
+	 * <p>
+	 * This method must not change any iterator state variables.
+	 * </p>
+	 * @implSpec The default implementation throws an instance of {@link UnsupportedOperationException} and performs no other action.
+	 * @param node The node to remove, or <code>null</code> if there is no node available for removal.
+	 * @throws UnsupportedOperationException if the {@link #remove()} operation is not supported by this iterator
+	 */
+	protected void removeImpl(@Nonnull final Node node) {
+		throw new UnsupportedOperationException("remove");
 	}
 
 }
