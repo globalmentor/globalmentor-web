@@ -2134,7 +2134,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 
 	/**
 	 * Retrieves an iterator to the children of the given element. The iterator supports removal.
-	 * @mplSpec The returned iterator supports {@link Iterator#remove()}.
+	 * @implSpec The returned iterator supports {@link Iterator#remove()}.
 	 * @param element The element for which child nodes should be returned.
 	 * @return An iterator of the element's child nodes.
 	 */
@@ -2153,7 +2153,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 
 	/**
 	 * Retrieves an iterator to the attributes of the given element.
-	 * @mplSpec The returned iterator supports {@link Iterator#remove()}.
+	 * @implSpec The returned iterator supports {@link Iterator#remove()}.
 	 * @param element The element for which attributes should be returned.
 	 * @return An iterator of the element's attributes.
 	 */

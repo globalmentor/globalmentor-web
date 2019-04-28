@@ -91,7 +91,7 @@ public abstract class AbstractNodeIterator<N extends Node> implements Iterator<N
 
 	/**
 	 * {@inheritDoc}
-	 * @implSpec This method delegates to {@link #removeImpl()} for actual node removal.
+	 * @implSpec This method delegates to {@link #removeImpl(Node)} for actual node removal.
 	 */
 	@Override
 	public void remove() {
