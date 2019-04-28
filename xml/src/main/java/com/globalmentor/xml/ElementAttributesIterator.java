@@ -33,7 +33,7 @@ import org.w3c.dom.*;
  * @see Element
  * @see Element#getAttributes()
  */
-public class ElementAttributesIterator extends NamedNodeMapIterator {
+public class ElementAttributesIterator extends AbstractNamedNodeMapIterator<Attr> {
 
 	private final Element element;
 
@@ -55,9 +55,9 @@ public class ElementAttributesIterator extends NamedNodeMapIterator {
 	 * @see Element#removeAttributeNode(Attr)
 	 */
 	@Override
-	protected void removeImpl(final Node node) {
+	protected void removeImpl(final Attr node) {
 		try {
-			element.removeAttributeNode((Attr)node);
+			element.removeAttributeNode(node);
 		} catch(final DOMException domException) { //likely `NO_MODIFICATION_ALLOWED_ERR` 
 			throw new UnsupportedOperationException(domException); //"unsupported operation" is semantically correct for likely DOM exceptions
 		}

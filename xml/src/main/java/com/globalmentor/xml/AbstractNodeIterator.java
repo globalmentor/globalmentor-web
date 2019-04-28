@@ -29,15 +29,16 @@ import org.w3c.dom.*;
  * @implSpec This implementation fails fast, throwing a {@link ConcurrentModificationException} if it determines on a best-effort basis that the original data
  *           structure has been modified.
  * @implSpec This implementation does not support {@link #remove()}.
+ * @param <N> The type of node supported.
  * @author Garret Wilson
  */
-public abstract class AbstractNodeIterator implements Iterator<Node> {
+public abstract class AbstractNodeIterator<N extends Node> implements Iterator<N> {
 
 	private int length;
 
 	private int index = 0;
 
-	Node node = null;
+	N node = null;
 
 	/**
 	 * Constructor.
@@ -68,7 +69,7 @@ public abstract class AbstractNodeIterator implements Iterator<Node> {
 	 * @throws ConcurrentModificationException if the size of the underlying data structure has changed.
 	 */
 	@Override
-	public Node next() {
+	public N next() {
 		if(!hasNext()) {
 			throw new NoSuchElementException();
 		}
@@ -86,7 +87,7 @@ public abstract class AbstractNodeIterator implements Iterator<Node> {
 	 * @param index The index of the node to retrieve.
 	 * @return The node at the given index, or <code>null</code> if the index is not valid.
 	 */
-	protected abstract @Nullable Node getNode(final int index);
+	protected abstract @Nullable N getNode(final int index);
 
 	/**
 	 * {@inheritDoc}
@@ -111,7 +112,7 @@ public abstract class AbstractNodeIterator implements Iterator<Node> {
 	 * @param node The node to remove.
 	 * @throws UnsupportedOperationException if the {@link #remove()} operation is not supported by this iterator
 	 */
-	protected void removeImpl(@Nonnull final Node node) {
+	protected void removeImpl(@Nonnull final N node) {
 		throw new UnsupportedOperationException("remove");
 	}
 

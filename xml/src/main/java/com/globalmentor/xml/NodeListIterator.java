@@ -29,7 +29,7 @@ import org.w3c.dom.*;
  * @author Garret Wilson
  * @see NodeList
  */
-public class NodeListIterator extends AbstractNodeIterator {
+public class NodeListIterator extends AbstractNodeIterator<Node> {
 
 	private final NodeList nodeList;
 
