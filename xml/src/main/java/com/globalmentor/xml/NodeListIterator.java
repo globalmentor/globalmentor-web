@@ -23,7 +23,7 @@ import javax.annotation.*;
 import org.w3c.dom.*;
 
 /**
- * Iterates through the nodes in a {@link NodeList}. The original node list must not be modified during iteration.
+ * Iterates through the nodes in a {@link NodeList}. The original node list must not be modified externally during iteration.
  * @implSpec This implementation fails fast, throwing a {@link ConcurrentModificationException} if it determines on a best-effort basis that the original node
  *           list has been modified.
  * @author Garret Wilson
@@ -52,6 +52,11 @@ public class NodeListIterator extends AbstractNodeIterator {
 		return nodeList.item(index);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * @implSpec This implementation removes the attribute node by calling {@link Node#removeChild(Node)} on the node's parent node.
+	 * @see Node#removeChild(Node)
+	 */
 	@Override
 	protected void removeImpl(final Node node) {
 		final Node parentNode = node.getParentNode();

@@ -23,12 +23,10 @@ import javax.annotation.*;
 import org.w3c.dom.*;
 
 /**
- * Iterates through the nodes in a {@link NamedNodeMap}. The original named node map must not be modified during iteration.
+ * Iterates through the nodes in a {@link NamedNodeMap}. The original named node map must not be modified externally during iteration.
  * @implSpec This implementation fails fast, throwing a {@link ConcurrentModificationException} if it determines on a best-effort basis that the original named
  *           node map has been modified.
  * @implSpec This implementation does not support {@link #remove()}.
- * @implNote This implementation does not support attribute named node maps that create a new attribute when one is deleted; this will result in a
- *           {@link ConcurrentModificationException}.
  * @author Garret Wilson
  * @see NamedNodeMap
  */
