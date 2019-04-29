@@ -23,21 +23,38 @@ import javax.annotation.*;
 import org.w3c.dom.*;
 
 /**
- * Iterates through the nodes in a {@link NamedNodeMap}. The original named node map must not be modified externally during iteration.
+ * Abstract base class for an iterator to iterate through the nodes in a {@link NamedNodeMap}, supporting different types of nodes. The original named node map
+ * must not be modified externally during iteration.
  * @implSpec This implementation fails fast, throwing a {@link ConcurrentModificationException} if it determines on a best-effort basis that the original named
  *           node map has been modified.
  * @implSpec This implementation does not support {@link #remove()}.
+ * @implNote This implementation has no way to check that the given named node map will in fact return nodes of the generic type indicated.
+ * @param <N> The type of node supported.
  * @author Garret Wilson
  * @see NamedNodeMap
  */
-public class NamedNodeMapIterator extends AbstractNamedNodeMapIterator<Node> {
+public class AbstractNamedNodeMapIterator<N extends Node> extends AbstractNodeIterator<N> {
+
+	private final NamedNodeMap namedNodeMap;
 
 	/**
 	 * Constructor.
 	 * @param namedNodeMap The named node map to iterate through.
 	 */
-	public NamedNodeMapIterator(@Nonnull final NamedNodeMap namedNodeMap) {
-		super(namedNodeMap);
+	public AbstractNamedNodeMapIterator(@Nonnull final NamedNodeMap namedNodeMap) {
+		super(namedNodeMap.getLength());
+		this.namedNodeMap = namedNodeMap;
+	}
+
+	@Override
+	protected int getLength() {
+		return namedNodeMap.getLength();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	protected N getNode(final int index) {
+		return (N)namedNodeMap.item(index);
 	}
 
 }

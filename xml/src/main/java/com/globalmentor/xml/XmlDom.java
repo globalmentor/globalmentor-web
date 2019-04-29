@@ -2133,6 +2133,35 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	//#Element
 
 	/**
+	 * Retrieves an iterator to the children of the given element. The iterator supports removal.
+	 * @implSpec The returned iterator supports {@link Iterator#remove()}.
+	 * @param element The element for which child nodes should be returned.
+	 * @return An iterator of the element's child nodes.
+	 */
+	public static Iterator<Node> childElementsIterator(@Nonnull final Element element) {
+		return new NodeListIterator(element.getChildNodes());
+	}
+
+	/**
+	 * Retrieves the children of the given element as a stream of nodes.
+	 * @param element The element for which child nodes should be returned.
+	 * @return A stream of the element's child nodes.
+	 */
+	public static Stream<Node> childElementsOf(@Nonnull final Element element) {
+		return streamOf(element.getChildNodes());
+	}
+
+	/**
+	 * Retrieves an iterator to the attributes of the given element.
+	 * @implSpec The returned iterator supports {@link Iterator#remove()}.
+	 * @param element The element for which attributes should be returned.
+	 * @return An iterator of the element's attributes.
+	 */
+	public static Iterator<Attr> attributesIterator(@Nonnull final Element element) {
+		return new ElementAttributesIterator(element);
+	}
+
+	/**
 	 * Retrieves the attributes of the given element as a stream of attribute nodes.
 	 * @param element The element for which attributes should be returned.
 	 * @return A stream of the element's attributes.

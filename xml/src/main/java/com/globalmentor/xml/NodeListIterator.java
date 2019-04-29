@@ -16,8 +16,6 @@
 
 package com.globalmentor.xml;
 
-import static java.util.Objects.*;
-
 import java.util.*;
 
 import javax.annotation.*;
@@ -25,51 +23,51 @@ import javax.annotation.*;
 import org.w3c.dom.*;
 
 /**
- * Iterates through the nodes in a {@link NodeList}. The original node list must not be modified during iteration.
+ * Iterates through the nodes in a {@link NodeList}. The original node list must not be modified externally during iteration.
  * @implSpec This implementation fails fast, throwing a {@link ConcurrentModificationException} if it determines on a best-effort basis that the original node
  *           list has been modified.
  * @author Garret Wilson
  * @see NodeList
  */
-public class NodeListIterator implements Iterator<Node> {
+public class NodeListIterator extends AbstractNodeIterator<Node> {
 
 	private final NodeList nodeList;
-
-	private final int length;
-
-	private int index = 0;
 
 	/**
 	 * Constructor.
 	 * @param nodeList The node list to iterate through.
 	 */
 	public NodeListIterator(@Nonnull final NodeList nodeList) {
-		this.nodeList = requireNonNull(nodeList);
-		this.length = nodeList.getLength();
+		super(nodeList.getLength());
+		this.nodeList = nodeList;
+	}
+
+	@Override
+	protected int getLength() {
+		return nodeList.getLength();
+	}
+
+	@Override
+	protected Node getNode(final int index) {
+		return nodeList.item(index);
 	}
 
 	/**
 	 * {@inheritDoc}
-	 * @throws ConcurrentModificationException if the size of the original node list has changed.
+	 * @implSpec This implementation removes the attribute node by calling {@link Node#removeChild(Node)} on the node's parent node.
+	 * @see Node#removeChild(Node)
 	 */
 	@Override
-	public boolean hasNext() {
-		if(nodeList.getLength() != length) {
-			throw new ConcurrentModificationException("Underlying node list was modified during iteration.");
+	protected void removeImpl(final Node node) {
+		final Node parentNode = node.getParentNode();
+		if(parentNode == null) {
+			throw new UnsupportedOperationException("This node list does not allow removal.");
 		}
-		return index < length;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * @throws ConcurrentModificationException if the size of the original node list has changed.
-	 */
-	@Override
-	public Node next() {
-		if(!hasNext()) {
-			throw new NoSuchElementException();
+		try {
+			parentNode.removeChild(node);
+		} catch(final DOMException domException) { //likely `NO_MODIFICATION_ALLOWED_ERR` or `NOT_SUPPORTED_ERR` 
+			throw new UnsupportedOperationException(domException); //"unsupported operation" is semantically correct for likely DOM exceptions
 		}
-		return nodeList.item(index++);
 	}
 
 }
