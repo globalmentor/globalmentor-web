@@ -44,12 +44,12 @@ public class XMLSchemaDocumenter {
 	public static Document generateDocumentation(final XMLSchema schema) {
 		final DOMImplementation domImplementation = XmlDom.createDocumentBuilder(true).getDOMImplementation();
 		final DocumentType documentType = domImplementation.createDocumentType(ELEMENT_HTML, XHTML_1_0_STRICT_PUBLIC_ID, XHTML_1_0_STRICT_SYSTEM_ID); //create an XHTML document type TODO perhaps put this in an OEB class
-		final Document document = domImplementation.createDocument(XHTML_NAMESPACE_URI.toString(), ELEMENT_HTML, documentType); //create an XHTML document TODO perhaps put this in an OEB class
+		final Document document = domImplementation.createDocument(XHTML_NAMESPACE_URI_STRING, ELEMENT_HTML, documentType); //create an XHTML document TODO perhaps put this in an OEB class
 		//TODO check about whether we need to add a <head> and <title>
 		final Element htmlElement = document.getDocumentElement(); //get the html element
 		XmlDom.appendText(htmlElement, "\n"); //append a newline to start the content of the html element
 		document.appendChild(htmlElement); //add the html element to the document
-		final Element bodyElement = document.createElementNS(XHTML_NAMESPACE_URI.toString(), ELEMENT_BODY); //create the body element
+		final Element bodyElement = document.createElementNS(XHTML_NAMESPACE_URI_STRING, ELEMENT_BODY); //create the body element
 		XmlDom.appendText(bodyElement, "\n"); //append a newline to separate the information in the body
 		generateAttributeGroupDocumentation(schema, bodyElement); //generate the attribute group documentation
 		/*TODO fix
@@ -82,7 +82,7 @@ public class XMLSchemaDocumenter {
 				//get the next user information
 				final XMLSchemaAnnotation.UserInformation userInfo = (XMLSchemaAnnotation.UserInformation)userInfoIterator.next();
 				Clogr.getLogger(XMLSchemaDocumenter.class).trace("found user info: {}", userInfo.toString());
-				final Element userInfoParagraphElement = XmlDom.appendElementNS(bodyElement, XHTML_NAMESPACE_URI.toString(), ELEMENT_P, null); //create the annotation documentation paragraph, but do not add any content
+				final Element userInfoParagraphElement = XmlDom.appendElementNS(bodyElement, XHTML_NAMESPACE_URI_STRING, ELEMENT_P, null); //create the annotation documentation paragraph, but do not add any content
 				//TODO do something besides creating a new XML parser from scratch
 				//TODO see if we can do something besides casting the document to an XMLDocument
 				try {
@@ -106,7 +106,7 @@ public class XMLSchemaDocumenter {
 		final Collection attributeGroupCollection = schema.getComponents(schema.getTargetNamespace(), XMLSchemaSymbolTable.ATTRIBUTE_GROUP_SYMBOL_SPACE_NAME);
 		if(attributeGroupCollection.size() > 0) { //if there are global attribute groups
 			//<h2>Global Attribute Groups</h2>
-			final Element headingElement = XmlDom.appendElementNS(bodyElement, XHTML_NAMESPACE_URI.toString(), ELEMENT_H2, "Global Attribute Groups"); //create the heading TODO i18n
+			final Element headingElement = XmlDom.appendElementNS(bodyElement, XHTML_NAMESPACE_URI_STRING, ELEMENT_H2, "Global Attribute Groups"); //create the heading TODO i18n
 			XmlDom.appendText(bodyElement, "\n"); //append a newline to separate the information in the body
 			final Iterator attributeGroupIterator = attributeGroupCollection.iterator(); //get an iterator to look through the attribute groups
 			while(attributeGroupIterator.hasNext()) { //while there are more attribute groups
@@ -124,7 +124,7 @@ public class XMLSchemaDocumenter {
 	 */
 	public static void generateDocumentation(final XMLSchema schema, final Element bodyElement, final XMLSchemaAttributeGroup attributeGroup) {
 		//<h3>Attribute Group Name</h3>
-		final Element attributeGroupHeadingElement = XmlDom.appendElementNS(bodyElement, XHTML_NAMESPACE_URI.toString(), ELEMENT_H3, attributeGroup.getName()); //create the heading for the attribute group
+		final Element attributeGroupHeadingElement = XmlDom.appendElementNS(bodyElement, XHTML_NAMESPACE_URI_STRING, ELEMENT_H3, attributeGroup.getName()); //create the heading for the attribute group
 		//set the "id" attribute to identify this attribute
 		attributeGroupHeadingElement.setAttributeNS(null, ATTRIBUTE_ID, "attributeGroup_" + attributeGroup.getName());
 		XmlDom.appendText(bodyElement, "\n"); //append a newline to separate the information in the body

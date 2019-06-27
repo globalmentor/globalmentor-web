@@ -131,7 +131,7 @@ public class XMLSchemaProcessor {
 				final Element childElement = (Element)node; //cast the node to an element
 				final String childNamespaceURI = childElement.getNamespaceURI(); //find out which namespace this element is in
 				//if this element is in the XML schema namespace
-				if(childNamespaceURI != null && childNamespaceURI.equals(XML_SCHEMA_NAMESPACE_URI.toString())) {
+				if(childNamespaceURI != null && childNamespaceURI.equals(XML_SCHEMA_NAMESPACE_URI_STRING)) {
 					//process the element which contains the schema component
 					final XMLSchemaComponent schemaComponent = processSchemaComponent(ownerSchema, childElement);
 					if(schemaComponent != null) //if we received a valid schema component
@@ -253,7 +253,7 @@ public class XMLSchemaProcessor {
 				final Element childElement = (Element)node; //cast the node to an element
 				final String childNamespaceURI = childElement.getNamespaceURI(); //find out which namespace this element is in
 				//if this element is in the XML schema namespace
-				if(childNamespaceURI != null && childNamespaceURI.equals(XML_SCHEMA_NAMESPACE_URI.toString())) {
+				if(childNamespaceURI != null && childNamespaceURI.equals(XML_SCHEMA_NAMESPACE_URI_STRING)) {
 					final String childLocalName = childElement.getLocalName(); //get the element's local name
 					//if this is <appinfo> or <documentation>
 					if(childLocalName.equals(ELEMENT_APPINFO) || childLocalName.equals(ELEMENT_DOCUMENTATION)) {

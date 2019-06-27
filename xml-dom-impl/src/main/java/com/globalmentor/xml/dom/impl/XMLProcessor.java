@@ -2047,7 +2047,7 @@ public class XMLProcessor implements URIInputStreamable, Clogged {
 				final String attributeLocalName = getLocalName(attributeName); //get the local name encoded in the attribute name
 				//TODO del				final String namespaceURI=XMLNode.getLocalName(attributeName);  //get the local name of this attribute, which is the namespace prefix being defined
 				//TODO maybe combine all this into something that automatically updates attributes
-				xmlAttribute.setNamespaceURI(XMLNS_NAMESPACE_URI.toString()); //attributes with an "xmlns:" prefix always have the "http://www.w3.org/2000/xmlns/" namespace URI
+				xmlAttribute.setNamespaceURI(XMLNS_NAMESPACE_URI_STRING); //attributes with an "xmlns:" prefix always have the "http://www.w3.org/2000/xmlns/" namespace URI
 				xmlAttribute.setNodeName(attributePrefix, attributeLocalName); //set the prefix and the local name
 				xmlnsAttributeIterator.remove(); //remove the attribute from the original map
 				newAttributeNamedNodeMap.setNamedItemNS(xmlAttribute); //add the attribute to our new named node map, this time taking into account its namespace values

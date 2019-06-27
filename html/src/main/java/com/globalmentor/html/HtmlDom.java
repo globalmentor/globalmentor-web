@@ -138,25 +138,25 @@ public class HtmlDom {
 		} else { //if we should not add a document type
 			documentType = null; //don't use a document type
 		}
-		final Document document = domImplementation.createDocument(XHTML_NAMESPACE_URI.toString(), ELEMENT_HTML, documentType); //create an XHTML document
+		final Document document = domImplementation.createDocument(XHTML_NAMESPACE_URI_STRING, ELEMENT_HTML, documentType); //create an XHTML document
 		//TODO check about whether we need to add a <head> and <title>
 		final Element htmlElement = document.getDocumentElement(); //get the html element
 		if(formatted) { //if we should format the document
 			appendText(htmlElement, "\n"); //append a newline to start the content of the html element
 		}
-		final Element headElement = document.createElementNS(XHTML_NAMESPACE_URI.toString(), ELEMENT_HEAD); //create the head element
+		final Element headElement = document.createElementNS(XHTML_NAMESPACE_URI_STRING, ELEMENT_HEAD); //create the head element
 		htmlElement.appendChild(headElement); //add the head element to the html element
 		if(formatted) { //if we should format the document
 			appendText(headElement, "\n"); //append a newline to start the content in the head
 			appendText(htmlElement, "\n"); //append a newline to separate the content of the html element
 		}
-		final Element titleElement = document.createElementNS(XHTML_NAMESPACE_URI.toString(), ELEMENT_TITLE); //create the title element
+		final Element titleElement = document.createElementNS(XHTML_NAMESPACE_URI_STRING, ELEMENT_TITLE); //create the title element
 		headElement.appendChild(titleElement); //add the title element to the head element
 		appendText(titleElement, title); //append the title text to the title element 
 		if(formatted) { //if we should format the document
 			appendText(headElement, "\n"); //append a newline to separate the informtaion after the title
 		}
-		final Element bodyElement = document.createElementNS(XHTML_NAMESPACE_URI.toString(), ELEMENT_BODY); //create the body element
+		final Element bodyElement = document.createElementNS(XHTML_NAMESPACE_URI_STRING, ELEMENT_BODY); //create the body element
 		htmlElement.appendChild(bodyElement); //add the body element to the html element
 		if(formatted) { //if we should format the document
 			appendText(bodyElement, "\n"); //append a newline to separate the information in the body
@@ -169,7 +169,7 @@ public class HtmlDom {
 	 * Finds the root {@code <html>} element in the XHTML namespace.
 	 * @param document The XHTML document tree.
 	 * @return The root element only if it is the XHTML {@code <html>} element.
-	 * @see HTML#XHTML_NAMESPACE_URI
+	 * @see HTML#XHTML_NAMESPACE_URI_STRING
 	 * @see HTML#ELEMENT_HTML
 	 */
 	public static Optional<Element> findHtmlElement(@Nonnull final Document document) {

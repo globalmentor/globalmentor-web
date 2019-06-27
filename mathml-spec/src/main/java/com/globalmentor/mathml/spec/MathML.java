@@ -38,8 +38,11 @@ public class MathML {
 	/** The recommended prefix to the MathML namespace. */
 	public static final String MATHML_NAMESPACE_PREFIX = "mathml";
 
+	/** The string representing the the MathML namespace. */
+	public static final String MATHML_NAMESPACE_URI_STRING = "http://www.w3.org/1998/Math/MathML";
+	
 	/** The URI to the MathML namespace. */
-	public static final URI MATHML_NAMESPACE_URI = URI.create("http://www.w3.org/1998/Math/MathML");
+	public static final URI MATHML_NAMESPACE_URI = URI.create(MATHML_NAMESPACE_URI_STRING);
 
 	/** The system ID for the MathML 1.01 DTD. */
 	public static final String MATHML_1_01_SYSTEM_ID = "http://www.w3.org/Math/DTD/mathml1/mathml.dtd";

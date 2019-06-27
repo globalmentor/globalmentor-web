@@ -1158,9 +1158,9 @@ public class HtmlTidier implements Clogged {
 		//change any "lang" attribute to "xml:lang"
 		if(element.hasAttributeNS(null, HTML.ATTRIBUTE_LANG)) { //if there is a lang attribute defined
 			final String langValue = element.getAttributeNS(null, HTML.ATTRIBUTE_LANG); //get the lang attribute value
-			if(!element.hasAttributeNS(XML_NAMESPACE_URI.toString(), XML.ATTRIBUTE_LANG)) { //if there is no xml:lang attribute TODO use a constant, use namespaces
+			if(!element.hasAttributeNS(XML_NAMESPACE_URI_STRING, XML.ATTRIBUTE_LANG)) { //if there is no xml:lang attribute TODO use a constant, use namespaces
 				//create an xml:lang attribute with the value of the lang attribute TODO use a constant here, use namespaces
-				element.setAttributeNS(XML_NAMESPACE_URI.toString(), createQName(XML_NAMESPACE_PREFIX, XML.ATTRIBUTE_LANG), langValue);
+				element.setAttributeNS(XML_NAMESPACE_URI_STRING, createQName(XML_NAMESPACE_PREFIX, XML.ATTRIBUTE_LANG), langValue);
 				element.removeAttributeNS(null, HTML.ATTRIBUTE_LANG); //remove the lang attribute
 			}
 		}
@@ -1607,7 +1607,7 @@ public class HtmlTidier implements Clogged {
 				final Element stylePromotionElement = (Element)promotionNode; //cast the node to an element
 				if(stylePromotionElement.getChildNodes().getLength() == 1) { //if we're removing the only child TODO is this even useful?
 					//promote "xml:lang", "class", and "style" attributes
-					copyAttributeValue(stylePromotionElement, element, XML_NAMESPACE_URI.toString(), "lang"); //TODO use a constant here
+					copyAttributeValue(stylePromotionElement, element, XML_NAMESPACE_URI_STRING, "lang"); //TODO use a constant here
 					copyAttributeValue(stylePromotionElement, element, null, ATTRIBUTE_CLASS);
 					//TODO del; this is not useful, and can cause harm (by moving up the symbol font property, for example)					copyAttributeValue(stylePromotionElement, element, null, ATTRIBUTE_STYLE);
 				}
