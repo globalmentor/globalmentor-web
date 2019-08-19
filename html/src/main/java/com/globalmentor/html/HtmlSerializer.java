@@ -56,7 +56,7 @@ public class HtmlSerializer extends XMLSerializer {
 	 * @implSpec This option defaults to {@value #OPTION_USE_EMPTY_ATTRIBUTES_DEFAULT}.
 	 * @param useEmptyAttributes <code>true</code> if HTML attributes should be used in serialization when possible.
 	 */
-	public void setUseEntities(final boolean useEmptyAttributes) {
+	public void setUseEmptyAttributes(final boolean useEmptyAttributes) {
 		this.useEmptyAttributes = useEmptyAttributes;
 	}
 
