@@ -831,7 +831,7 @@ public class XMLSerializer {
 	}
 
 	/**
-	 * Serializes the content of the specified element to the given writer.
+	 * Serializes the content of the specified node to the given writer.
 	 * @param appendable The destination into which the element content should be written.
 	 * @param node The XML node the content of which to serialize—usually an element or document fragment.
 	 * @param formatted Whether the contents of this element, including any child elements, should be formatted.
@@ -846,7 +846,11 @@ public class XMLSerializer {
 					serialize(appendable, (Element)childNode, formatted); //write this element
 					break;
 				case Node.TEXT_NODE: //if this is a text node
-					encodeContent(appendable, childNode.getNodeValue()); //write the text value of the node after encoding the string for XML
+					if(isChildTextEncoded(node)) {
+						encodeContent(appendable, childNode.getNodeValue()); //write the text value of the node after encoding the string for XML
+					} else {
+						appendable.append(childNode.getNodeValue()); //write the text value of the node without encoding
+					}
 					break;
 				case Node.COMMENT_NODE: //if this is a comment node
 					if(formatted) { //if we should write formatted output
@@ -870,6 +874,16 @@ public class XMLSerializer {
 			}
 		}
 		return appendable;
+	}
+
+	/**
+	 * Determines whether content of child text nodes of a given parent node should be encoded.
+	 * @implSpec The default implementation returns <code>true</code> for all parent nodes.
+	 * @param parentNode The parent node which has child text nodes.
+	 * @return <code>true</code> if immediate text content of the given parent node should be encoded.
+	 */
+	protected boolean isChildTextEncoded(@Nonnull final Node parentNode) {
+		return true;
 	}
 
 	/**
