@@ -28,8 +28,10 @@ public class XMLSchema {
 
 	/** The Default XML schema namespace prefix. */
 	public static final String XML_SCHEMA_NAMESPACE_PREFIX = "xsd";
+	/** The string representing the XML schema namespace URI. */
+	public static final String XML_SCHEMA_NAMESPACE_URI_STRING = "http://www.w3.org/2001/XMLSchema";
 	/** The URI to the XML schema namespace. */
-	public static final URI XML_SCHEMA_NAMESPACE_URI = URI.create("http://www.w3.org/2001/XMLSchema");
+	public static final URI XML_SCHEMA_NAMESPACE_URI = URI.create(XML_SCHEMA_NAMESPACE_URI_STRING);
 
 	//XML schema elements
 	public static final String ELEMENT_ANNOTATION = "annotation";

@@ -38,8 +38,11 @@ public class SVG {
 	/** The recommended prefix to the SVG namespace. */
 	public static final String SVG_NAMESPACE_PREFIX = "svg";
 
+	/** The string representing the SVG namespace. */
+	public static final String SVG_NAMESPACE_URI_STRING = "http://www.w3.org/2000/svg";
+
 	/** The URI to the SVG namespace. */
-	public static final URI SVG_NAMESPACE_URI = URI.create("http://www.w3.org/2000/svg");
+	public static final URI SVG_NAMESPACE_URI = URI.create(SVG_NAMESPACE_URI_STRING);
 
 	/** The public ID for the SVG 1.0 DTD. */
 	public static final String SVG_1_0_PUBLIC_ID = "-//W3C//DTD SVG 1.0//EN";
