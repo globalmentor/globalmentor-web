@@ -849,9 +849,11 @@ public class XMLSerializer {
 					encodeContent(appendable, childNode.getNodeValue()); //write the text value of the node after encoding the string for XML
 					break;
 				case Node.COMMENT_NODE: //if this is a comment node
-					if(formatted) //if we should write formatted output
+					if(formatted) { //if we should write formatted output
 						serializeHorizontalAlignment(appendable, nestLevel); //horizontally align the element
+					}
 					appendable.append(COMMENT_START); //write the start of the comment
+					//TODO check content for disallowed sequence
 					appendable.append(childNode.getNodeValue()); //write the text value of the node, but don't encode the string for XML since it's inside a comment
 					appendable.append(COMMENT_END); //write the end of the comment
 					if(formatted) { //if we should write formatted output
@@ -860,7 +862,8 @@ public class XMLSerializer {
 					break;
 				case Node.CDATA_SECTION_NODE: //if this is a CDATA section node
 					appendable.append(CDATA_START); //write the start of the CDATA section
-					encodeContent(appendable, childNode.getNodeValue()); //write the text value of the node after encoding the string for XML
+					//TODO check content for disallowed sequence
+					appendable.append(childNode.getNodeValue()); //write the text value of the node, but don't encode the string for XML since it's inside a CDATA section
 					appendable.append(CDATA_END); //write the end of the CDATA section
 					break;
 				//TODO see if there are any other types of nodes that need serialized
@@ -908,6 +911,7 @@ public class XMLSerializer {
 	 * @return The given appendable.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 * @see #isUseDefinedEntities()
+	 * @see #getUsePredefinedEntities()
 	 * @see #isXMLEncodeControl()
 	 * @see #isXmlEncodeNonAscii()
 	 * @see #isXMLEncodePrivateUse()
