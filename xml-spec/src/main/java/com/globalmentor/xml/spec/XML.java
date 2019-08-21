@@ -359,6 +359,37 @@ public class XML {
 	/** The quot entity value. */
 	public static final char ENTITY_QUOT_VALUE = '"';
 
+	/** The character values of the predefined entities. */
+	public static final Characters PREDEFINED_ENTITY_CHARACTERS = Characters.of(ENTITY_LT_VALUE, ENTITY_GT_VALUE, ENTITY_AMP_VALUE, ENTITY_APOS_VALUE,
+			ENTITY_QUOT_VALUE);
+
+	/**Determines the name of the predefined entity associated with the given character.
+	 * @param c The character to be replaced by a predefined entity.
+	 * @return The name of the predefined entity for the given character.
+	 * @throws IllegalArgumentException if the given character does not have a predefined entity as per the XML specification.
+	 * @see #PREDEFINED_ENTITY_CHARACTERS
+	 */
+	public static final String getPredefinedEntityName(final char c) {
+		switch(c) {
+			case ENTITY_LT_VALUE:
+				return ENTITY_LT_NAME;
+			case ENTITY_GT_VALUE:
+				return ENTITY_GT_NAME;
+			case ENTITY_AMP_VALUE:
+				return ENTITY_AMP_NAME;
+			case ENTITY_APOS_VALUE:
+				return ENTITY_APOS_NAME;
+			case ENTITY_QUOT_VALUE:
+				return ENTITY_QUOT_NAME;
+			default:
+				throw new IllegalArgumentException(
+						String.format("Character %s is not one of the characters %s with a predefined entity.", c, PREDEFINED_ENTITY_CHARACTERS));
+		}
+	}
+
+	/** Characters that must be encoded under normal circumstances (e.g. not in a CDATA section). */
+	public static final Characters REQUIRED_ENCODE_CHRACTERS = Characters.of(ENTITY_LT_VALUE, ENTITY_GT_VALUE, ENTITY_AMP_VALUE);
+
 	/** The character used for indicating namespaces. */
 	public static final char NAMESPACE_DIVIDER = ':';
 

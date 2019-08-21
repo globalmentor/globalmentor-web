@@ -25,8 +25,9 @@ import java.nio.charset.Charset;
 
 import com.globalmentor.io.ByteOrderMark;
 
-import static com.globalmentor.java.CharSequences.*;
 import static com.globalmentor.java.Characters.SPACE_CHAR;
+import static com.globalmentor.java.Conditions.*;
+import static com.globalmentor.java.Objects.*;
 
 import com.globalmentor.java.Characters;
 
@@ -34,6 +35,7 @@ import static com.globalmentor.xml.XmlDom.*;
 import static com.globalmentor.xml.spec.XML.*;
 import static java.lang.System.lineSeparator;
 import static java.nio.charset.StandardCharsets.*;
+import static java.util.Objects.*;
 
 import com.globalmentor.util.PropertiesUtilities;
 
@@ -70,11 +72,27 @@ public class XMLSerializer {
 	/** Default to not XML-encoding private use characters. */
 	public static final boolean OPTION_XML_ENCODE_PRIVATE_USE_DEFAULT = false;
 
-	/** Whether characters which match a one-character predefined entity should be encoded using that entity. */
-	public static final String OPTION_USE_ENTITIES = "useEntities";
+	/** Whether characters that match a one-character defined entity should be encoded using that entity. */
+	public static final String OPTION_USE_DEFINED_ENTITIES = "useDefinedEntities";
 
 	/** Default to using one-character predefined entities for encoding. */
-	public static final boolean OPTION_USE_ENTITIES_DEFAULT = true;
+	public static final boolean OPTION_USE_DEFINED_ENTITIES_DEFAULT = true;
+
+	/** Whether characters that match a one-character predefined entity should be encoded using that entity. */
+	public enum PredefinedEntitiesUse {
+		/** Predefined entities will be used whenever possible. */
+		ALWAYS,
+		/** Predefined entities will be used when a character needs to be encoded. */
+		AS_NEEDED,
+		/** Predefined entities will never be used; a character reference will be used when a character needs to be encoded. */
+		NEVER;
+	}
+
+	/** Whether characters that match a one-character predefined entity should be encoded using that entity. */
+	public static final String OPTION_USE_PREDEFINED_ENTITIES = "usePredefinedEntities";
+
+	/** Default to using one-character predefined entities for encoding as needed. */
+	public static final PredefinedEntitiesUse OPTION_USE_PREDEFINED_ENTITIES_DEFAULT = PredefinedEntitiesUse.AS_NEEDED;
 
 	private boolean bomWritten = false;
 
@@ -134,7 +152,7 @@ public class XMLSerializer {
 
 	/**
 	 * @return Whether Unicode control characters should be XML-encoded.
-	 * @see #isUseEntities()
+	 * @see #isUseDefinedEntities()
 	 */
 	public boolean isXMLEncodeControl() {
 		return xmlEncodeControl;
@@ -144,7 +162,7 @@ public class XMLSerializer {
 	 * Sets whether Unicode control characters should be XML-encoded.
 	 * @implSpec This option defaults to {@value #OPTION_XML_ENCODE_CONTROL_DEFAULT}.
 	 * @param newXMLEncodeControl <code>true</code> if control characters should be XML-encoded, else <code>false</code>.
-	 * @see #setUseEntities(boolean)
+	 * @see #setUseDefinedEntities(boolean)
 	 */
 	public void setXMLEncodeControl(final boolean newXMLEncodeControl) {
 		xmlEncodeControl = newXMLEncodeControl;
@@ -154,7 +172,7 @@ public class XMLSerializer {
 
 	/**
 	 * @return Whether extended characters (above 127) should be XML-encoded.
-	 * @see #isUseEntities()
+	 * @see #isUseDefinedEntities()
 	 */
 	public boolean isXmlEncodeNonAscii() {
 		return xmlEncodeNonASCII;
@@ -164,7 +182,7 @@ public class XMLSerializer {
 	 * Sets whether extended characters (above 127) should be XML-encoded.
 	 * @implSpec This option defaults to {@value #OPTION_XML_ENCODE_NON_ASCII_DEFAULT}.
 	 * @param newXmlEncodeNonAscii <code>true</code> if extended characters should be XML-encoded, else <code>false</code>.
-	 * @see #setUseEntities(boolean)
+	 * @see #setUseDefinedEntities(boolean)
 	 */
 	public void setXMLEncodeNonASCII(final boolean newXmlEncodeNonAscii) {
 		xmlEncodeNonASCII = newXmlEncodeNonAscii;
@@ -174,7 +192,7 @@ public class XMLSerializer {
 
 	/**
 	 * @return Whether private use Unicode characters should be XML-encoded.
-	 * @see #isUseEntities()
+	 * @see #isUseDefinedEntities()
 	 */
 	public boolean isXMLEncodePrivateUse() {
 		return xmlEncodePrivateUse;
@@ -184,31 +202,52 @@ public class XMLSerializer {
 	 * Sets whether private use Unicode characters should be XML-encoded.
 	 * @implSpec This option defaults to {@value #OPTION_XML_ENCODE_PRIVATE_USE_DEFAULT}.
 	 * @param newXmlEncodePrivateUse <code>true</code> if private use characters should be XML-encoded, else <code>false</code>.
-	 * @see #setUseEntities(boolean)
+	 * @see #setUseDefinedEntities(boolean)
 	 */
 	public void setXMLEncodePrivateUse(final boolean newXmlEncodePrivateUse) {
 		xmlEncodePrivateUse = newXmlEncodePrivateUse;
 	}
 
-	private boolean useEntities = OPTION_USE_ENTITIES_DEFAULT;
+	private boolean useDefinedEntities = OPTION_USE_DEFINED_ENTITIES_DEFAULT;
 
 	/**
 	 * @return Whether one-character entities will be used when possible.
 	 * @see #isXMLEncodeControl()
 	 */
-	public boolean isUseEntities() {
-		return useEntities;
+	public boolean isUseDefinedEntities() {
+		return useDefinedEntities;
 	}
 
 	/**
-	 * Sets whether characters which match a one-character predefined entity should be encoded using that entity. This will override the XML-encoding settings
-	 * when applicable.
-	 * @implSpec This option defaults to {@value #OPTION_USE_ENTITIES_DEFAULT}.
-	 * @param newUseEntities <code>true</code> if available entities should be used to encode characters.
+	 * Sets whether characters that match a one-character entity should be encoded using that entity. This will override the XML-encoding settings when
+	 * applicable.
+	 * @implSpec This option defaults to {@value #OPTION_USE_DEFINED_ENTITIES_DEFAULT}.
+	 * @param newUseDefinedEntities <code>true</code> if available entities should be used to encode characters.
 	 * @see #setXMLEncodeControl(boolean)
 	 */
-	public void setUseEntities(final boolean newUseEntities) {
-		useEntities = newUseEntities;
+	public void setUseDefinedEntities(final boolean newUseDefinedEntities) {
+		useDefinedEntities = newUseDefinedEntities;
+	}
+
+	private PredefinedEntitiesUse usePredefinedEntities = OPTION_USE_PREDEFINED_ENTITIES_DEFAULT;
+
+	/**
+	 * @return Whether one-character entities will be used.
+	 * @see #isXMLEncodeControl()
+	 */
+	public PredefinedEntitiesUse getUsePredefinedEntities() {
+		return usePredefinedEntities;
+	}
+
+	/**
+	 * Sets whether characters that match a one-character predefined entity should be encoded using that entity. This will override the XML-encoding settings when
+	 * applicable.
+	 * @implSpec This option defaults to {@link #OPTION_USE_PREDEFINED_ENTITIES_DEFAULT}.
+	 * @param newUsePredefinedEntities <code>true</code> if predefined entities should be used to encode characters.
+	 * @see #setXMLEncodeControl(boolean)
+	 */
+	public void setUsePredefinedEntities(@Nonnull final PredefinedEntitiesUse newUsePredefinedEntities) {
+		usePredefinedEntities = requireNonNull(newUsePredefinedEntities);
 	}
 
 	private boolean namespacesDeclarationsEnsured = true;
@@ -256,7 +295,10 @@ public class XMLSerializer {
 	@Deprecated
 	public void setOptions(@Nonnull final Properties options) {
 		setFormatted(PropertiesUtilities.getBooleanProperty(options, OPTION_FORMAT_OUTPUT, OPTION_FORMAT_OUTPUT_DEFAULT));
-		setUseEntities(PropertiesUtilities.getBooleanProperty(options, OPTION_USE_ENTITIES, OPTION_USE_ENTITIES_DEFAULT));
+		setUseDefinedEntities(PropertiesUtilities.getBooleanProperty(options, OPTION_USE_DEFINED_ENTITIES, OPTION_USE_DEFINED_ENTITIES_DEFAULT));
+		setUsePredefinedEntities(
+				asInstance(options.getOrDefault(OPTION_USE_PREDEFINED_ENTITIES, OPTION_USE_PREDEFINED_ENTITIES_DEFAULT), PredefinedEntitiesUse.class)
+						.orElse(OPTION_USE_PREDEFINED_ENTITIES_DEFAULT));
 		setXMLEncodeControl(PropertiesUtilities.getBooleanProperty(options, OPTION_XML_ENCODE_CONTROL, OPTION_XML_ENCODE_CONTROL_DEFAULT));
 		setXMLEncodeNonASCII(PropertiesUtilities.getBooleanProperty(options, OPTION_XML_ENCODE_NON_ASCII, OPTION_XML_ENCODE_NON_ASCII_DEFAULT));
 		setXMLEncodePrivateUse(PropertiesUtilities.getBooleanProperty(options, OPTION_XML_ENCODE_PRIVATE_USE, OPTION_XML_ENCODE_PRIVATE_USE_DEFAULT));
@@ -286,8 +328,8 @@ public class XMLSerializer {
 	protected int nestLevel = -1;
 
 	/**
-	 * The string representing one-character entity values. The {@link #entityNames} array will contain the names of the corresponding entities, each at the same
-	 * index as the corresponding character value.
+	 * The string representing one-character entity values defined in the document. The {@link #entityNames} array will contain the names of the corresponding
+	 * entities, each at the same index as the corresponding character value.
 	 * @see #entityNames
 	 */
 	private String entityCharacterValues;
@@ -547,19 +589,17 @@ public class XMLSerializer {
 
 	/**
 	 * Initializes the internal entity lookup with the entities defined in the specified map. The given entities will only be placed in the lookup table if the
-	 * "useEntities" option is turned on, and then only entities which represent one-character entities will be used. If "useEntities" is turned on, the five
-	 * entities guaranteed to be available in XML (<code>&lt;&amp;amp;&gt;</code>, <code>&lt;&amp;lt;&gt;</code>, <code>&lt;&amp;gt;&gt;</code>,
-	 * <code>&lt;&amp;apos;&gt;</code>, <code>&lt;&amp;quot;&gt;</code>) will be included in the internal lookup table if these entities do not exist in the
-	 * specified entity map, using their default XML values.
+	 * "useDefinedEntities" option is turned on, and then only entities which represent one-character entities will be used.
 	 * @param entityMap The entity map which contains the entities to be placed in the internal lookup table, or <code>null</code> if entities are not available,
 	 *          in which case only the default XML entities will be used.
-	 * @see #isUseEntities
-	 * @see #setUseEntities
+	 * @throws IllegalArgumentException if a predefined entity was overridden using a different value.
+	 * @see #isUseDefinedEntities()
+	 * @see #setUseDefinedEntities(boolean)
 	 */
 	protected void initializeEntityLookup(@Nonnull final NamedNodeMap entityMap) {
 		final List<String> entityNameList = new ArrayList<String>(); //create an array to hold the entity names we use
 		final StringBuilder entityCharacterValueStringBuilder = new StringBuilder(); //create a buffer to hold all the character values
-		if(isUseEntities()) { //if we were asked to use their entities
+		if(isUseDefinedEntities()) { //if we were asked to use their entities
 			if(entityMap != null) { //if we were provided a valid entity map
 				final int entityCount = entityMap.getLength(); //find out how many entities there are
 				for(int i = 0; i < entityCount; ++i) { //look at each of the entities
@@ -570,37 +610,16 @@ public class XMLSerializer {
 						if(entityChildNode.getNodeType() == Node.TEXT_NODE) { //if this is a text node
 							final String entityValue = ((Text)entityChildNode).getData(); //get the data of the node, which represents the replacement value of the entity
 							if(entityValue.length() == 1) { //if this entity represents exactly one character
-								entityNameList.add(entity.getNodeName()); //add the entity's name to the list
-								entityCharacterValueStringBuilder.append(entityValue.charAt(0)); //add the one-character value to the value buffer
+								final char c = entityValue.charAt(0);
+								final String entityName = entity.getNodeName();
+								//if they defined a predefined entity, make sure they didn't redefine it to something else
+								checkArgument(!PREDEFINED_ENTITY_CHARACTERS.contains(c) || getPredefinedEntityName(c).equals(entityName));
+								entityNameList.add(entityName); //add the entity's name to the list
+								entityCharacterValueStringBuilder.append(c); //add the one-character value to the value buffer
 							}
 						}
 					}
 				}
-			}
-			//add the "amp" entity if needed
-			if(indexOf(entityCharacterValueStringBuilder, ENTITY_AMP_VALUE) < 0) { //if this entity value isn't defined
-				entityNameList.add(ENTITY_AMP_NAME); //add the default entity name
-				entityCharacterValueStringBuilder.append(ENTITY_AMP_VALUE); //add the default entity value
-			}
-			//add the "lt" entity if needed
-			if(indexOf(entityCharacterValueStringBuilder, ENTITY_LT_VALUE) < 0) { //if this entity value isn't defined
-				entityNameList.add(ENTITY_LT_NAME); //add the default entity name
-				entityCharacterValueStringBuilder.append(ENTITY_LT_VALUE); //add the default entity value
-			}
-			//add the "gt" entity if needed
-			if(indexOf(entityCharacterValueStringBuilder, ENTITY_GT_VALUE) < 0) { //if this entity value isn't defined
-				entityNameList.add(ENTITY_GT_NAME); //add the default entity name
-				entityCharacterValueStringBuilder.append(ENTITY_GT_VALUE); //add the default entity value
-			}
-			//add the "apos" entity if needed
-			if(indexOf(entityCharacterValueStringBuilder, ENTITY_APOS_VALUE) < 0) { //if this entity value isn't defined
-				entityNameList.add(ENTITY_APOS_NAME); //add the default entity name
-				entityCharacterValueStringBuilder.append(ENTITY_APOS_VALUE); //add the default entity value
-			}
-			//add the "quot" entity if needed
-			if(indexOf(entityCharacterValueStringBuilder, ENTITY_QUOT_VALUE) < 0) { //if this entity value isn't defined
-				entityNameList.add(ENTITY_QUOT_NAME); //add the default entity name
-				entityCharacterValueStringBuilder.append(ENTITY_QUOT_VALUE); //add the default entity value
 			}
 		}
 		entityNames = entityNameList.toArray(new String[entityNameList.size()]); //convert the entities in the list to an array
@@ -812,7 +831,7 @@ public class XMLSerializer {
 	}
 
 	/**
-	 * Serializes the content of the specified element to the given writer.
+	 * Serializes the content of the specified node to the given writer.
 	 * @param appendable The destination into which the element content should be written.
 	 * @param node The XML node the content of which to serialize—usually an element or document fragment.
 	 * @param formatted Whether the contents of this element, including any child elements, should be formatted.
@@ -827,12 +846,18 @@ public class XMLSerializer {
 					serialize(appendable, (Element)childNode, formatted); //write this element
 					break;
 				case Node.TEXT_NODE: //if this is a text node
-					encodeContent(appendable, childNode.getNodeValue()); //write the text value of the node after encoding the string for XML
+					if(isChildTextEncoded(node)) {
+						encodeContent(appendable, childNode.getNodeValue()); //write the text value of the node after encoding the string for XML
+					} else {
+						appendable.append(childNode.getNodeValue()); //write the text value of the node without encoding
+					}
 					break;
 				case Node.COMMENT_NODE: //if this is a comment node
-					if(formatted) //if we should write formatted output
+					if(formatted) { //if we should write formatted output
 						serializeHorizontalAlignment(appendable, nestLevel); //horizontally align the element
+					}
 					appendable.append(COMMENT_START); //write the start of the comment
+					//TODO check content for disallowed sequence
 					appendable.append(childNode.getNodeValue()); //write the text value of the node, but don't encode the string for XML since it's inside a comment
 					appendable.append(COMMENT_END); //write the end of the comment
 					if(formatted) { //if we should write formatted output
@@ -841,13 +866,24 @@ public class XMLSerializer {
 					break;
 				case Node.CDATA_SECTION_NODE: //if this is a CDATA section node
 					appendable.append(CDATA_START); //write the start of the CDATA section
-					encodeContent(appendable, childNode.getNodeValue()); //write the text value of the node after encoding the string for XML
+					//TODO check content for disallowed sequence
+					appendable.append(childNode.getNodeValue()); //write the text value of the node, but don't encode the string for XML since it's inside a CDATA section
 					appendable.append(CDATA_END); //write the end of the CDATA section
 					break;
 				//TODO see if there are any other types of nodes that need serialized
 			}
 		}
 		return appendable;
+	}
+
+	/**
+	 * Determines whether content of child text nodes of a given parent node should be encoded.
+	 * @implSpec The default implementation returns <code>true</code> for all parent nodes.
+	 * @param parentNode The parent node which has child text nodes.
+	 * @return <code>true</code> if immediate text content of the given parent node should be encoded.
+	 */
+	protected boolean isChildTextEncoded(@Nonnull final Node parentNode) {
+		return true;
 	}
 
 	/**
@@ -871,7 +907,7 @@ public class XMLSerializer {
 	 * @param text The text to encode.
 	 * @return The given appendable.
 	 * @throws IOException Thrown if an I/O error occurred.
-	 * @see #isUseEntities()
+	 * @see #isUseDefinedEntities()
 	 * @see #isXMLEncodeControl()
 	 * @see #isXmlEncodeNonAscii()
 	 * @see #isXMLEncodePrivateUse()
@@ -888,7 +924,8 @@ public class XMLSerializer {
 	 * @param delimiter The character which should always be encoded, such as the delimiter character for attributes ('"' or '\''), or 0 if there is no delimiter.
 	 * @return The given appendable.
 	 * @throws IOException Thrown if an I/O error occurred.
-	 * @see #isUseEntities()
+	 * @see #isUseDefinedEntities()
+	 * @see #getUsePredefinedEntities()
 	 * @see #isXMLEncodeControl()
 	 * @see #isXmlEncodeNonAscii()
 	 * @see #isXMLEncodePrivateUse()
@@ -901,28 +938,33 @@ public class XMLSerializer {
 		for(int i = 0; i < textLength; ++i) { //look at each character in the text
 			final char c = text.charAt(i); //get a reference to this character
 			final int entityIndex = entityCharacterValues.indexOf(c); //see if this character matches an entity value
-			//always replace entities, regardless of the status of isXMLEncode(),
+			//always replace entities, regardless of the status of the settings
 			//  because the lookup table has already been set up appropriately
-			//  based on that option, and we *always* want to encode such things as '&'
+			//  based on that option TODO always populate the table, but check the flag here
 			if(entityIndex >= 0) { //if this character should be replaced by an entity
 				appendable.append(ENTITY_REF_START); //append the start-of-entity
 				appendable.append(entityNames[entityIndex]); //append the corresponding entity name
 				appendable.append(ENTITY_REF_END); //append the end-of-entity
-			}
-			//if we have no entity replacement for the character,
-			//  but it is an extended character and we should XML-encode such
-			//  characters (note that the ampersand and less-than/greater-than should *always* be encoded)
-			else if(((xmlEncodeNonASCII && !Characters.isASCII(c)) || c == ENTITY_AMP_VALUE || c == ENTITY_LT_VALUE || c == ENTITY_GT_VALUE)
-					|| (xmlEncodeControl && Character.isISOControl(c)) //if we should encode control characters, and this is a control character
-					|| (xmlEncodePrivateUse && Character.getType(c) == Character.PRIVATE_USE) //if we should encode control characters, and this is a control character
-					|| (c == delimiter) //the delimiter character, if present, will *always* be encoded
-			) {
-				appendable.append(CHARACTER_REF_START); //append the start-of-character-reference
-				appendable.append('x'); //show that this will be a hexadecimal number TODO use a constant here
-				appendable.append(Integer.toHexString(c).toUpperCase()); //append the hex representation of the character
-				appendable.append(CHARACTER_REF_END); //append the end-of-character-reference
-			} else { //if this character shouldn't be encoded
-				appendable.append(c); //append the character normally
+			} else {
+				final boolean hasPredefinedEntity = PREDEFINED_ENTITY_CHARACTERS.contains(c);
+				final boolean shouldEncode = REQUIRED_ENCODE_CHRACTERS.contains(c)
+						|| (hasPredefinedEntity && getUsePredefinedEntities() == PredefinedEntitiesUse.ALWAYS) || c == delimiter
+						|| (xmlEncodeNonASCII && !Characters.isASCII(c)) || (xmlEncodeControl && Character.isISOControl(c))
+						|| (xmlEncodePrivateUse && Character.getType(c) == Character.PRIVATE_USE);
+				if(shouldEncode) { //if we should encode, use a predefined entity if we can
+					if(hasPredefinedEntity && getUsePredefinedEntities() != PredefinedEntitiesUse.NEVER) {
+						appendable.append(ENTITY_REF_START); //append the start-of-entity
+						appendable.append(getPredefinedEntityName(c)); //append the corresponding predefined entity name
+						appendable.append(ENTITY_REF_END); //append the end-of-entity
+					} else { //as a last resort append a character reference
+						appendable.append(CHARACTER_REF_START); //append the start-of-character-reference
+						appendable.append('x'); //show that this will be a hexadecimal number TODO use a constant here
+						appendable.append(Integer.toHexString(c).toUpperCase()); //append the hex representation of the character
+						appendable.append(CHARACTER_REF_END); //append the end-of-character-reference
+					}
+				} else { //if this character shouldn't be encoded
+					appendable.append(c); //append the character normally
+				}
 			}
 		}
 		return appendable;

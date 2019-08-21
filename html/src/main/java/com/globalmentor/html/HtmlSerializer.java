@@ -23,7 +23,7 @@ import java.io.IOException;
 
 import javax.annotation.Nonnull;
 
-import org.w3c.dom.Element;
+import org.w3c.dom.*;
 
 import com.globalmentor.xml.XMLSerializer;
 
@@ -56,7 +56,7 @@ public class HtmlSerializer extends XMLSerializer {
 	 * @implSpec This option defaults to {@value #OPTION_USE_EMPTY_ATTRIBUTES_DEFAULT}.
 	 * @param useEmptyAttributes <code>true</code> if HTML attributes should be used in serialization when possible.
 	 */
-	public void setUseEntities(final boolean useEmptyAttributes) {
+	public void setUseEmptyAttributes(final boolean useEmptyAttributes) {
 		this.useEmptyAttributes = useEmptyAttributes;
 	}
 
@@ -105,6 +105,23 @@ public class HtmlSerializer extends XMLSerializer {
 			return appendable.append(SPACE_CHAR).append(attributeName); //append just the attribute name
 		}
 		return super.serializeAttribute(appendable, attributeName, attributeValue); //otherwise serialize the attribute normally as per XML
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * @implSpec This implementation disables encoding for HTML {@code <script>} elements.
+	 * @see <a href="https://www.w3.org/TR/html52/semantics-scripting.html#script-content-restrictions">HTML 5.2 § 4.12.1.3. Restrictions for contents of script
+	 *      elements</a>
+	 */
+	@Override
+	protected boolean isChildTextEncoded(final Node parentNode) {
+		if(parentNode instanceof Element) {
+			final Element parentElement = (Element)parentNode;
+			if(XHTML_NAMESPACE_URI_STRING.equals(parentElement.getNamespaceURI()) && ELEMENT_SCRIPT.equals(parentElement.getLocalName())) {
+				return false; //turn off encoding for <script>
+			}
+		}
+		return super.isChildTextEncoded(parentNode);
 	}
 
 }
