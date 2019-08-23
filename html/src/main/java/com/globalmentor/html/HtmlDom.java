@@ -16,6 +16,7 @@
 
 package com.globalmentor.html;
 
+import static java.util.Collections.*;
 import static java.util.Objects.*;
 import static java.util.function.Predicate.*;
 
@@ -44,6 +45,7 @@ import io.clogr.Clogr;
 
 import static com.globalmentor.text.ASCII.*;
 import static com.globalmentor.html.spec.HTML.*;
+import static com.globalmentor.java.Characters.SPACE_CHAR;
 import static com.globalmentor.java.Conditions.*;
 import static com.globalmentor.xml.XmlDom.*;
 
@@ -585,6 +587,61 @@ public class HtmlDom {
 	public static Optional<String> findHtmlHeadMetaElementContent(@Nonnull final Document document, @Nonnull final String metaName) {
 		return findHtmlHeadMetaElementByName(document, metaName).map(metaElement -> metaElement.getAttributeNS(null, ELEMENT_META_ATTRIBUTE_CONTENT))
 				.filter(not(String::isEmpty)); //filter out the empty string, as getAttributeNS() is supposed to return an empty string for missing content
+	}
+
+	//#attributes
+
+	/**
+	 * Merges the attributes of some element into the target element in an HTML-aware manner. If an attribute exists in the other element, its value will replace
+	 * the value, if any, in the target element. Any target element attributes not present in the other element will remain. If the target element is an HTML
+	 * element, the {@value HTML#ATTRIBUTE_CLASS} attribute, if any, will be merged by the individual class names, not by the entire attribute value.
+	 * @apiNote This method functions similarly to {@link XmlDom#mergeAttributesNS(Element, Element)} except that the {@value HTML#ATTRIBUTE_CLASS} attribute is
+	 *          treated specially.
+	 * @implNote Any attribute value set or updated by this method will use the namespace prefix of the other element, which means that even if the target element
+	 *           contains an attribute with the same value, its namespace prefix may change. Although the namespace URI is guaranteed to be correct, no checks are
+	 *           performed to ensure that the target document has defined the new namespace prefix, if any.
+	 * @param targetElement The element into which the attributes will be merged.
+	 * @param element The element the attributes of which will be merged into the target element.
+	 * @see Element#setAttributeNS(String, String, String)
+	 * @see HTML#ATTRIBUTE_CLASS
+	 */
+	public static void mergeAttributes(@Nonnull final Element targetElement, @Nonnull final Element element) {
+		final boolean isTargetHtml = XHTML_NAMESPACE_URI_STRING.equals(targetElement.getNamespaceURI());
+		Stream<Attr> attributes = attributesOf(element);
+		if(isTargetHtml) { //skip the class attribute if this is HTML, to treat it specially later
+			attributes = attributes.filter(attr -> !attr.getLocalName().equals(ATTRIBUTE_CLASS) || attr.getNamespaceURI() != null);
+		}
+		mergeAttributesNS(targetElement, attributes);
+		if(isTargetHtml) { //for HTML, merge the contents of the class attribute as individual class name tokens
+			final Set<String> targetClasses = getClasses(targetElement);
+			final Set<String> classes = getClasses(element);
+			if(!targetClasses.isEmpty() || !classes.isEmpty()) { //if there are no classes on either side, there is nothing to merge
+				final Set<String> mergedClasses = new LinkedHashSet<>(targetClasses); //maintain order for aesthetics
+				mergedClasses.addAll(classes);
+				targetElement.setAttributeNS(null, ATTRIBUTE_CLASS, String.join(String.valueOf(SPACE_CHAR), mergedClasses));
+			}
+		}
+	}
+
+	//##class
+
+	/**
+	 * Retrieves all class names, the tokens that appear in the <code>class</code> attribute. If there is no HTML <code>class</code> attribute (that is, no a
+	 * <code>class</code> attribute appearing with no namespace), an empty set is returned.
+	 * @apiNote The HTML specifications indicates that <code>class</code> attribute should only be interpreted as a set of space-separated tokens when specified
+	 *          on an HTML element, but this method makes no checks of whether the given element is in the XHTML namespace or not.
+	 * @implSpec The returned set will maintain the order of the class names.
+	 * @param element The element on which a <code>class</code> attribute may be defined.
+	 * @return The set of class name tokens in the <code>class</code> attribute, if any, of the given element.
+	 * @see <a href="https://www.w3.org/TR/html52/dom.html#element-attrdef-global-class">HTML global class attribute</a>
+	 * @see HTML#ATTRIBUTE_CLASS
+	 * @see HTML#SPACE_CHARACTERS
+	 */
+	public static Set<String> getClasses(@Nonnull final Element element) {
+		if(!element.hasAttributeNS(null, ATTRIBUTE_CLASS)) {
+			return emptySet();
+		}
+		return new LinkedHashSet<>(SPACE_CHARACTERS.split(element.getAttributeNS(null, ATTRIBUTE_CLASS)));
 	}
 
 	//#text

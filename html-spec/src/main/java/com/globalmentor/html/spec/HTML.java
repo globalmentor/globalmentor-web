@@ -558,30 +558,4 @@ public class HTML {
 	public static final Set<String> VOID_ELEMENTS = immutableSetOf(ELEMENT_AREA, ELEMENT_BASE, ELEMENT_BR, ELEMENT_COL, ELEMENT_EMBED, ELEMENT_HR, ELEMENT_IMG,
 			ELEMENT_INPUT, ELEMENT_LINK, ELEMENT_META, ELEMENT_PARAM, ELEMENT_SOURCE, ELEMENT_TRACK, ELEMENT_WBR);
 
-	/**
-	 * Parses out the HTML CSS class IDs from the given classes character sequence.
-	 * @param htmlClass The classes character sequence to split.
-	 * @return The HTML CSS class identifiers, if any.
-	 * @see #ATTRIBUTE_CLASS
-	 * @see #splitSpaces(CharSequence)
-	 * @see <a href="http://www.w3.org/TR/html5/dom.html#classes">The <code>class</code> attribute</a>
-	 */
-	public static Set<CharSequence> getClasses(final CharSequence htmlClass) {
-		return immutableSetOf(splitSpaces(htmlClass)); //remove duplicates
-	}
-
-	/**
-	 * Splits a string on spaces according to the HTML specification. Essentially this involves trimming the string of Unicode whitespace characters and then
-	 * splitting the resulting string on HTML {@link #SPACE_CHARACTERS}, although Unicode whitespace is not allowed to begin the resulting tokens.
-	 * <p>
-	 * TODO This implementation does not yet support full splitting on Unicode whitespace.
-	 * </p>
-	 * @param charSequence The character sequence to split.
-	 * @return The tokens resulting from the split-string-on-spaces operation.
-	 * @see <a href="http://www.w3.org/TR/html5/infrastructure.html#split-a-string-on-spaces">split a string on spaces</a>
-	 */
-	public static List<CharSequence> splitSpaces(final CharSequence charSequence) {
-		return SPACE_CHARACTERS.split(charSequence); //split on character
-	}
-
 }
