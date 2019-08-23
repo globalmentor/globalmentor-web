@@ -2219,4 +2219,33 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 		return Optional.of(attribute);
 	}
 
+	/**
+	 * Merges the attributes of some element into the target element in a namespace-aware manner. If an attribute exists in the other element, its value will
+	 * replace the value, if any, in the target element. Any target element attributes not present in the other element will remain.
+	 * @implSpec This implementation delegates to {@link #mergeAttributesNS(Element, Stream)}.
+	 * @implNote Any attribute value set or updated by this method will use the namespace prefix of the other element, which means that even if the target element
+	 *           contains an attribute with the same value, its namespace prefix may change. Although the namespace URI is guaranteed to be correct, no checks are
+	 *           performed to ensure that the target document has defined the new namespace prefix, if any.
+	 * @param targetElement The element into which the attributes will be merged.
+	 * @param element The element the attributes of which will be merged into the target element.
+	 * @see Element#setAttributeNS(String, String, String)
+	 */
+	public static void mergeAttributesNS(@Nonnull final Element targetElement, @Nonnull final Element element) {
+		mergeAttributesNS(targetElement, attributesOf(element));
+	}
+
+	/**
+	 * Merges attributes the target element in a namespace-aware manner. Any attribute's value will replace the value, if any, in the target element. Any target
+	 * element attributes not present in the other attributes will remain.
+	 * @implNote Any attribute value set or updated by this method will use the namespace prefix of the other attributes, which means that even if the target
+	 *           element contains an attribute with the same value, its namespace prefix may change. Although the namespace URI is guaranteed to be correct, no
+	 *           checks are performed to ensure that the target document has defined the new namespace prefix, if any.
+	 * @param targetElement The element into which the attributes will be merged.
+	 * @param attributes The attributes to be merged into the target element.
+	 * @see Element#setAttributeNS(String, String, String)
+	 */
+	public static void mergeAttributesNS(@Nonnull final Element targetElement, @Nonnull final Stream<Attr> attributes) {
+		attributes.forEach(attr -> targetElement.setAttributeNS(attr.getNamespaceURI(), attr.getName(), attr.getValue()));
+	}
+
 }

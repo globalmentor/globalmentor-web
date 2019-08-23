@@ -16,24 +16,29 @@
 
 package com.globalmentor.xml;
 
+import static com.globalmentor.xml.XmlDom.*;
 import static java.nio.charset.StandardCharsets.*;
+import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.*;
 import java.nio.charset.Charset;
+import java.util.stream.Stream;
 
-import org.junit.Test;
+import javax.xml.parsers.DocumentBuilder;
+
+import org.junit.jupiter.api.*;
+import org.w3c.dom.*;
 
 import com.globalmentor.io.ByteOrderMark;
 import com.globalmentor.model.ObjectHolder;
 import com.globalmentor.xml.XmlDom;
 
 /**
- * Tests of XML utilities.
+ * Tests of XML DOM utilities.
  * 
  * @author Garret Wilson
- *
  */
 public class XmlDomTest {
 
@@ -148,4 +153,54 @@ public class XmlDomTest {
 			inputStream.close();
 		}
 	}
+
+	/**
+	 * @see XmlDom#mergeAttributesNS(Element, Element)
+	 * @see XmlDom#mergeAttributesNS(Element, Stream)
+	 */
+	@Test
+	public void testMergeAttributesNS() {
+		final String FOOBAR_NS_URI_STRING = "http://foo.bar/";
+		final String EXAMPLE_NS_URI_STRING = "http://example.com/";
+		final DocumentBuilder documentBuilder = createDocumentBuilder(true);
+		final DOMImplementation domImplementation = documentBuilder.getDOMImplementation();
+
+		final Document document1 = domImplementation.createDocument(FOOBAR_NS_URI_STRING, "foobar", null);
+		final Element element1 = document1.getDocumentElement();
+		element1.setAttributeNS(null, "old", "123"); //existing
+		element1.setAttributeNS(null, "test", "foo"); //to be replaced
+		element1.setAttributeNS(EXAMPLE_NS_URI_STRING, "ex1:value", "same");
+		element1.setAttributeNS(EXAMPLE_NS_URI_STRING, "ex1:change", "before");
+
+		final Document document2 = domImplementation.createDocument(FOOBAR_NS_URI_STRING, "foobar", null);
+		final Element element2 = document2.getDocumentElement();
+		element2.setAttributeNS(null, "new", "456");
+		element2.setAttributeNS(null, "test", "bar"); //to replace
+		element2.setAttributeNS(EXAMPLE_NS_URI_STRING, "ex2:value", "same");
+		element2.setAttributeNS(EXAMPLE_NS_URI_STRING, "ex2:change", "after");
+		element2.setAttributeNS(EXAMPLE_NS_URI_STRING, "new:one", "two");
+
+		XmlDom.mergeAttributesNS(element1, element2);
+
+		assertThat(element1.getAttributes().getLength(), is(6));
+		assertThat(element1.getAttributeNS(null, "old"), is("123"));
+		assertThat(element1.getAttributeNS(null, "test"), is("bar"));
+		assertThat(element1.getAttributeNS(EXAMPLE_NS_URI_STRING, "value"), is("same"));
+		assertThat(element1.getAttributeNodeNS(EXAMPLE_NS_URI_STRING, "value").getName(), is("ex2:value"));
+		assertThat(element1.getAttributeNS(EXAMPLE_NS_URI_STRING, "change"), is("after"));
+		assertThat(element1.getAttributeNodeNS(EXAMPLE_NS_URI_STRING, "change").getName(), is("ex2:change"));
+		assertThat(element1.getAttributeNS(EXAMPLE_NS_URI_STRING, "one"), is("two"));
+		assertThat(element1.getAttributeNodeNS(EXAMPLE_NS_URI_STRING, "one").getName(), is("new:one"));
+
+		assertThat(element2.getAttributes().getLength(), is(5));
+		assertThat(element2.getAttributeNS(null, "new"), is("456"));
+		assertThat(element2.getAttributeNS(null, "test"), is("bar"));
+		assertThat(element2.getAttributeNS(EXAMPLE_NS_URI_STRING, "value"), is("same"));
+		assertThat(element2.getAttributeNodeNS(EXAMPLE_NS_URI_STRING, "value").getName(), is("ex2:value"));
+		assertThat(element2.getAttributeNS(EXAMPLE_NS_URI_STRING, "change"), is("after"));
+		assertThat(element2.getAttributeNodeNS(EXAMPLE_NS_URI_STRING, "change").getName(), is("ex2:change"));
+		assertThat(element2.getAttributeNS(EXAMPLE_NS_URI_STRING, "one"), is("two"));
+		assertThat(element2.getAttributeNodeNS(EXAMPLE_NS_URI_STRING, "one").getName(), is("new:one"));
+	}
+
 }
