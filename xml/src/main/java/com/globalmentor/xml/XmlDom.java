@@ -2133,22 +2133,34 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	//#Element
 
 	/**
-	 * Retrieves an iterator to the children of the given element. The iterator supports removal.
+	 * Retrieves an iterator to the direct children of the given element. The iterator supports removal.
 	 * @implSpec The returned iterator supports {@link Iterator#remove()}.
 	 * @param element The element for which child nodes should be returned.
 	 * @return An iterator of the element's child nodes.
 	 */
-	public static Iterator<Node> childElementsIterator(@Nonnull final Element element) {
+	public static Iterator<Node> childNodesIterator(@Nonnull final Element element) {
 		return new NodeListIterator(element.getChildNodes());
 	}
 
 	/**
-	 * Retrieves the children of the given element as a stream of nodes.
+	 * Retrieves the direct children of the given element as a stream of nodes.
 	 * @param element The element for which child nodes should be returned.
 	 * @return A stream of the element's child nodes.
 	 */
-	public static Stream<Node> childElementsOf(@Nonnull final Element element) {
+	public static Stream<Node> childNodesOf(@Nonnull final Element element) {
 		return streamOf(element.getChildNodes());
+	}
+
+	/**
+	 * Retrieves the direct child elements of the given element as a stream of elements.
+	 * @implSpec This is a convenience method that delegates to {@link #childNodesOf(Element)} and filters out all nodes except those of node type
+	 *           {@link Node#ELEMENT_NODE}.
+	 * @param element The element for which child elements should be returned.
+	 * @return A stream of the element's direct child elements.
+	 * @see Node#ELEMENT_NODE
+	 */
+	public static Stream<Element> childElementsOf(@Nonnull final Element element) {
+		return childNodesOf(element).filter(node -> node.getNodeType() == Node.ELEMENT_NODE).map(Element.class::cast);
 	}
 
 	/**
