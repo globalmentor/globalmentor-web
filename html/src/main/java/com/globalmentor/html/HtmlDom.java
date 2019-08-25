@@ -18,7 +18,6 @@ package com.globalmentor.html;
 
 import static java.util.Collections.*;
 import static java.util.Objects.*;
-import static java.util.function.Predicate.*;
 
 import java.io.*;
 import java.net.URI;
@@ -573,7 +572,8 @@ public class HtmlDom {
 
 	/**
 	 * Finds the first XHTML {@code <html><head><meta>} element with the given name and returns its {@value HTML#ELEMENT_META_ATTRIBUTE_CONTENT} attribute. The
-	 * meta name is matched in an ASCII case insensitive manner.
+	 * meta name is matched in an ASCII case insensitive manner. If a metadata element has a name but no content attribute, an empty string is returned as per the
+	 * HTML specification.
 	 * @param document The XHTML document tree.
 	 * @param metaName The name of the meta element to return.
 	 * @return The {@value HTML#ELEMENT_META_ATTRIBUTE_CONTENT} attribute of the first {@code <html><head><meta>} element with the given name, ASCII case
@@ -585,8 +585,8 @@ public class HtmlDom {
 	 * @see <a href="https://www.w3.org/TR/html52/document-metadata.html#the-meta-element">HTML 5.2 § 4.2.5. The meta element</a>
 	 */
 	public static Optional<String> findHtmlHeadMetaElementContent(@Nonnull final Document document, @Nonnull final String metaName) {
-		return findHtmlHeadMetaElementByName(document, metaName).map(metaElement -> metaElement.getAttributeNS(null, ELEMENT_META_ATTRIBUTE_CONTENT))
-				.filter(not(String::isEmpty)); //filter out the empty string, as getAttributeNS() is supposed to return an empty string for missing content
+		//getAttributeNS() is supposed to return an empty string for missing content, which matches the HTML default "" for no specified content
+		return findHtmlHeadMetaElementByName(document, metaName).map(metaElement -> metaElement.getAttributeNS(null, ELEMENT_META_ATTRIBUTE_CONTENT));
 	}
 
 	//#attributes
