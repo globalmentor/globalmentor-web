@@ -49,14 +49,13 @@ public class HTML {
 			+ XML.XML_EXTERNAL_PARSED_ENTITY_SUBTYPE_SUFFIX;
 
 	/** The content type for HTML: <code>text/html</code>. */
-	public static final ContentType HTML_CONTENT_TYPE = ContentType.create(ContentType.TEXT_PRIMARY_TYPE, HTML_SUBTYPE);
+	public static final ContentType HTML_CONTENT_TYPE = ContentType.of(ContentType.TEXT_PRIMARY_TYPE, HTML_SUBTYPE);
 
 	/** The content type for XHTML: <code>application/xhtml+xml</code>. */
-	public static final ContentType XHTML_CONTENT_TYPE = ContentType.create(ContentType.APPLICATION_PRIMARY_TYPE, XHTML_XML_SUBTYPE);
+	public static final ContentType XHTML_CONTENT_TYPE = ContentType.of(ContentType.APPLICATION_PRIMARY_TYPE, XHTML_XML_SUBTYPE);
 
 	/** The content type for an XHTML fragment: <code>application/xhtml+xml-external-parsed-entity</code>. */
-	public static final ContentType XHTML_FRAGMENT_CONTENT_TYPE = ContentType.create(ContentType.APPLICATION_PRIMARY_TYPE,
-			XHTML_XML_EXTERNAL_PARSED_ENTITY_SUBTYPE);
+	public static final ContentType XHTML_FRAGMENT_CONTENT_TYPE = ContentType.of(ContentType.APPLICATION_PRIMARY_TYPE, XHTML_XML_EXTERNAL_PARSED_ENTITY_SUBTYPE);
 
 	/** The old extension for HTML resource names. */
 	public static final String HTM_NAME_EXTENSION = "htm";
@@ -399,10 +398,9 @@ public class HTML {
 	public static final String ELEMENT_FORM_ATTRIBUTE_ACTION = "action";
 	public static final String ELEMENT_FORM_ATTRIBUTE_ENCTYPE = "enctype";
 	/** The "application/x-www-form-urlencoded" encoding type; see <a href="http://www.rfc-editor.org/rfc/rfc1867.txt">RFC 1867</a>. */
-	public static final ContentType APPLICATION_X_WWW_FORM_URLENCODED_CONTENT_TYPE = ContentType.create(ContentType.APPLICATION_PRIMARY_TYPE,
-			X_WWW_FORM_URLENCODED);
+	public static final ContentType APPLICATION_X_WWW_FORM_URLENCODED_CONTENT_TYPE = ContentType.of(ContentType.APPLICATION_PRIMARY_TYPE, X_WWW_FORM_URLENCODED);
 	/** The "multipart/form-data" encoding type; see <a href="http://www.rfc-editor.org/rfc/rfc1867.txt">RFC 1867</a>. */
-	public static final ContentType MULTIPART_FORM_DATA_CONTENT_TYPE = ContentType.create(ContentType.MULTIPART_PRIMARY_TYPE, FORM_DATA_SUBTYPE);
+	public static final ContentType MULTIPART_FORM_DATA_CONTENT_TYPE = ContentType.of(ContentType.MULTIPART_PRIMARY_TYPE, FORM_DATA_SUBTYPE);
 
 	public static final String ELEMENT_FORM_ATTRIBUTE_METHOD = "method";
 	public static final String FORM_METHOD_GET = "get";
@@ -464,7 +462,15 @@ public class HTML {
 	//attributes for <meta>
 	public static final String ELEMENT_META_ATTRIBUTE_CONTENT = "content";
 	public static final String ELEMENT_META_ATTRIBUTE_NAME = "name";
-	public static final String ELEMENT_META_ATTRIBUTE_PROPERTY = "property"; //TODO Facebook OpenGraph specific; document and move; see https://developers.facebook.com/docs/opengraph/ 
+	public static final String ELEMENT_META_ATTRIBUTE_PROPERTY = "property"; //TODO Facebook OpenGraph specific; document and move; see https://developers.facebook.com/docs/opengraph/
+
+	//standard metadata names as per https://www.w3.org/TR/html52/document-metadata.html#standard-metadata-names
+	public static final String META_NAME_APPLICATION_NAME = "application-name";
+	public static final String META_NAME_AUTHOR = "author";
+	public static final String META_NAME_DESCRIPTION = "description";
+	public static final String META_NAME_GENERATOR = "generator";
+	public static final String META_NAME_KEYWORDS = "keywords";
+	public static final String META_NAME_REFERRER = "referrer";
 
 	//attributes for <object>
 	public static final String ELEMENT_OBJECT_ATTRIBUTE_CLASSID = "classid";
