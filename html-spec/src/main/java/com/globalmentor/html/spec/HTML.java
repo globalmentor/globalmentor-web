@@ -464,7 +464,15 @@ public class HTML {
 	//attributes for <meta>
 	public static final String ELEMENT_META_ATTRIBUTE_CONTENT = "content";
 	public static final String ELEMENT_META_ATTRIBUTE_NAME = "name";
-	public static final String ELEMENT_META_ATTRIBUTE_PROPERTY = "property"; //TODO Facebook OpenGraph specific; document and move; see https://developers.facebook.com/docs/opengraph/ 
+	public static final String ELEMENT_META_ATTRIBUTE_PROPERTY = "property"; //TODO Facebook OpenGraph specific; document and move; see https://developers.facebook.com/docs/opengraph/
+
+	//standard metadata names as per https://www.w3.org/TR/html52/document-metadata.html#standard-metadata-names
+	public static final String META_NAME_APPLICATION_NAME = "application-name";
+	public static final String META_NAME_AUTHOR = "author";
+	public static final String META_NAME_DESCRIPTION = "description";
+	public static final String META_NAME_GENERATOR = "generator";
+	public static final String META_NAME_KEYWORDS = "keywords";
+	public static final String META_NAME_REFERRER = "referrer";
 
 	//attributes for <object>
 	public static final String ELEMENT_OBJECT_ATTRIBUTE_CLASSID = "classid";
