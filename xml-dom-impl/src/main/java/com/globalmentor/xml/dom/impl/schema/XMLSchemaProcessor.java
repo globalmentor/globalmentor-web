@@ -83,11 +83,11 @@ public class XMLSchemaProcessor {
 		schema.setTargetNamespace(element.hasAttributeNS(null, ATTRIBUTE_TARGET_NAMESPACE) ? element.getAttributeNS(null, ATTRIBUTE_TARGET_NAMESPACE) : null); //get the target namespace attribute, or null if there is no target namespace attribute (one isn't required)
 		final Iterator schemaComponentIterator = processSchemaComponents(schema, element).iterator(); //get a list of child schema components, and get an iterator to look through them
 		//get the next element, or null if there is no next element
-		XMLSchemaComponent schemaComponent = (XMLSchemaComponent)Iterators.getNext(schemaComponentIterator);
+		XMLSchemaComponent schemaComponent = (XMLSchemaComponent)Iterators.findNext(schemaComponentIterator).orElse(null);
 		//check for an annotation TODO also check for an include, import, or a redefine
 		while(schemaComponent != null && schemaComponent.getComponentType() == schemaComponent.ANNOTATION_COMPONENT) { //if there is a schema component, and it's an annotation TODO change other instances to reflect the new ComponentType property
 			//TODO process the schema component
-			schemaComponent = (XMLSchemaComponent)Iterators.getNext(schemaComponentIterator); //get the next schema component, or null if there is no other one
+			schemaComponent = (XMLSchemaComponent)Iterators.findNext(schemaComponentIterator).orElse(null); //get the next schema component, or null if there is no other one
 		}
 		//check for body components
 		while(schemaComponent != null) { //while there are schema components left
@@ -110,7 +110,7 @@ public class XMLSchemaProcessor {
 			}
 			if(schemaComponent != null && schemaComponent.getComponentType() == schemaComponent.ANNOTATION_COMPONENT) //if this is an annotation
 				break; //we're finished with the body components
-			schemaComponent = (XMLSchemaComponent)Iterators.getNext(schemaComponentIterator); //get the next schema component, or null if there is no other one
+			schemaComponent = (XMLSchemaComponent)Iterators.findNext(schemaComponentIterator).orElse(null); //get the next schema component, or null if there is no other one
 		}
 		//TODO read the rest of the annotations
 		return schema; //return the schema we created
@@ -197,7 +197,7 @@ public class XMLSchemaProcessor {
 			else
 				//if we don't recognize the component
 				Clogr.getLogger(XMLSchemaProcessor.class).error("Unrecognized component: {}" + schemaComponent); //TODO fix, even for annotations out of order
-			schemaComponent = (XMLSchemaComponent)Iterators.getNext(schemaComponentIterator); //get the next schema component, or null if there is no other one
+			schemaComponent = (XMLSchemaComponent)Iterators.findNext(schemaComponentIterator).orElse(null); //get the next schema component, or null if there is no other one
 		}
 		return attributeGroup; //return the schema component we created
 	}
@@ -217,7 +217,7 @@ public class XMLSchemaProcessor {
 		if(schemaComponent != null) { //if there is a schema component, see if it is a simple or complex type
 			if(schemaComponent instanceof XMLSchemaTypeComponent) { //if this is a component representing type
 				schemaElement.setType((XMLSchemaTypeComponent)schemaComponent); //set the type of the element
-				schemaComponent = (XMLSchemaComponent)Iterators.getNext(schemaComponentIterator); //get the next schema component, or null if there is no other one
+				schemaComponent = (XMLSchemaComponent)Iterators.findNext(schemaComponentIterator).orElse(null); //get the next schema component, or null if there is no other one
 			}
 		}
 
@@ -280,12 +280,12 @@ public class XMLSchemaProcessor {
 	 */
 	protected static XMLSchemaComponent assignAnnotation(final XMLSchemaNamedComponent namedComponent, final Iterator schemaComponentIterator) {
 		//get the next element, or null if there is no next element
-		XMLSchemaComponent schemaComponent = (XMLSchemaComponent)Iterators.getNext(schemaComponentIterator);
+		XMLSchemaComponent schemaComponent = (XMLSchemaComponent)Iterators.findNext(schemaComponentIterator).orElse(null);
 		//check for an annotation
 		if(schemaComponent != null) { //if there is a schema component
 			if(schemaComponent instanceof XMLSchemaAnnotation) { //if this is an annotation
 				namedComponent.setAnnotation((XMLSchemaAnnotation)schemaComponent); //set this component's annotation
-				schemaComponent = (XMLSchemaComponent)Iterators.getNext(schemaComponentIterator); //get the next schema component, or null if there is no other one
+				schemaComponent = (XMLSchemaComponent)Iterators.findNext(schemaComponentIterator).orElse(null); //get the next schema component, or null if there is no other one
 			}
 		}
 		return schemaComponent; //return the next schema component
