@@ -1,5 +1,5 @@
 /*
- * Copyright © 1996-2008 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ * Copyright © 1996-2019 GlobalMentor, Inc. <http://www.globalmentor.com/>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.globalmentor.net;
+package com.globalmentor.vocab;
 
 import java.net.URI;
 import java.util.*;
@@ -35,7 +35,7 @@ import com.globalmentor.collections.MapDecorator;
  * </p>
  * @author Garret Wilson
  */
-public abstract class AbstractNamespaceLabelManager extends MapDecorator<URI, String> {
+public abstract class VocabularyManager extends MapDecorator<URI, String> {
 
 	/** The set of known namespace URIs. */
 	public static final Set<URI> KNOWN_NAMESPACE_URIS;
@@ -91,7 +91,7 @@ public abstract class AbstractNamespaceLabelManager extends MapDecorator<URI, St
 	}
 
 	/** Default constructor using a hash map. */
-	public AbstractNamespaceLabelManager() {
+	public VocabularyManager() {
 		this(new HashMap<URI, String>()); //construct the class with a hash map
 	}
 
@@ -100,7 +100,7 @@ public abstract class AbstractNamespaceLabelManager extends MapDecorator<URI, St
 	 * @param map The map this map should decorate.
 	 * @throws NullPointerException if the provided map is <code>null</code>.
 	 */
-	public AbstractNamespaceLabelManager(final Map<URI, String> map) {
+	public VocabularyManager(final Map<URI, String> map) {
 		super(map); //construct the parent class
 	}
 
