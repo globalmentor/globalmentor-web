@@ -16,164 +16,149 @@
 
 package com.globalmentor.vocab;
 
-import java.net.URI;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicLong;
-
-import static java.util.Objects.*;
-
+import static java.util.Arrays.*;
 import static java.util.Collections.*;
 
-import static com.globalmentor.net.URIs.*;
+import java.net.URI;
+import java.util.*;
+import java.util.Map.Entry;
 
-import com.globalmentor.collections.MapDecorator;
+import javax.annotation.*;
 
 /**
- * Map managing namespace URIs and labels for serialization. Mapping labels to the <code>null</code> namespace or to the <code>null</code> label is allowed.
+ * Map of vocabulary namespaces and their associated prefixes.
  * <p>
- * This class is not thread safe.
+ * Each vocabulary namespace may be associated with more than one prefix, but each vocabulary namespace will have at most one prefix officially registered for
+ * it.
  * </p>
+ * @apiNote A prefix is a token used as a substitute for the namespace URI in serializations such as XML and RDFa.
+ * @see <a href="https://www.w3.org/TR/rdfa-core/#s_curies">RDFa Core 1.1, 6. CURIE Syntax Definition</a>
+ * @see <a href="https://www.w3.org/TR/xml-names/">Namespaces in XML 1.0</a>
  * @author Garret Wilson
  */
-public abstract class VocabularyRegistry extends MapDecorator<URI, String> {
+public interface VocabularyRegistry {
 
-	/** The set of known namespace URIs. */
-	public static final Set<URI> KNOWN_NAMESPACE_URIS;
-
-	static { //add the default namespaces
-		final Set<URI> knownNamespaceURIs = new HashSet<URI>(); //create a temporary set to fill
-		knownNamespaceURIs.add(URI.create("http://apache.org/dav/props/")); //Apache WebDAV properties
-		knownNamespaceURIs.add(URI.create("http://example.com/example/")); //example
-		knownNamespaceURIs.add(URI.create("http://xmlns.com/foaf/0.1/")); //FOAF
-		//TODO move many of these out into application-specific initializations
-		knownNamespaceURIs.add(URI.create("http://urf.name/urf/")); //URF
-		knownNamespaceURIs.add(URI.create("http://urf.name/default/")); //URF default
-		knownNamespaceURIs.add(URI.create("http://urf.name/content/")); //URF Content
-		knownNamespaceURIs.add(URI.create("http://urf.name/select/")); //URF Select
-		knownNamespaceURIs.add(URI.create("http://urf.name/vcard/")); //URF VCard
-		KNOWN_NAMESPACE_URIS = unmodifiableSet(knownNamespaceURIs); //store a static read-only set
+	/**
+	 * Creates a read-only vocabulary with the given registrations.
+	 * @param vocabulariesByPrefix Vocabulary prefixes and vocabulary namespace URIs associated with them. If a prefix is mapped to more than one namespace, only
+	 *          the first prefix will be reverse-mapped back to the namespace.
+	 * @throws NullPointerException if a namespace is <code>null</code>.
+	 */
+	public static VocabularyRegistry of(@Nonnull final Iterable<Map.Entry<String, URI>> vocabulariesByPrefix) {
+		return new DefaultVocabularyRegistry(vocabulariesByPrefix);
 	}
 
-	/** The default map of namespace-label mappings. */
-	public static final Map<URI, String> DEFAULT_NAMESPACE_URI_LABEL_MAP;
+	/**
+	 * Creates a read-only vocabulary with the given registrations.
+	 * @param vocabulariesByPrefix Vocabulary prefixes and vocabulary namespace URIs associated with them. If a prefix is mapped to more than one namespace, only
+	 *          the first prefix will be reverse-mapped back to the namespace.
+	 * @throws NullPointerException if a namespace is <code>null</code>.
+	 */
+	@SafeVarargs
+	public static VocabularyRegistry of(final Map.Entry<String, URI>... vocabulariesByPrefix) {
+		return of(asList(vocabulariesByPrefix));
+	}
 
-	static { //add the default labels TODO move definitions to resource file
-		final Map<URI, String> tempNamespaceURILabelMap = new HashMap<URI, String>(); //create a temporary map to fill
-		//add default labels for special namespace URIs
-		tempNamespaceURILabelMap.put(URI.create("http://globalmentor.com/namespaces/2003/dicto#"), "dicto"); //Dicto
-		tempNamespaceURILabelMap.put(URI.create("http://purl.org/dc/elements/1.1/"), "dc"); //Dublin Core
-		tempNamespaceURILabelMap.put(URI.create("http://xmlns.com/foaf/0.1/"), "foaf"); //FOAF
-		//TODO convert to URF		tempNamespaceURILabelMap.put(MAQRO.MAQRO_NAMESPACE_URI, MAQRO.MAQRO_NAMESPACE_PREFIX); //MAQRO
-		tempNamespaceURILabelMap.put(URI.create("http://openebook.org/namespaces/oeb-document/1.0/"), "oeb1"); //OEB 1
-		tempNamespaceURILabelMap.put(URI.create("http://globalmentor.com/namespaces/marmot#"), "marmot"); //Marmot TODO link to Marmot constants when Marmot is included in normal libraries
-		tempNamespaceURILabelMap.put(URI.create("http://marmox.net/namespaces/content#"), "content"); //Marmox content
-		//TODO del		tempNamespaceURIPrefixMap.put(PLOOP.PLOOP_PROPERTY_NAMESPACE_URI, PLOOP.PLOOP_PROPERTY_NAMESPACE_PREFIX); //PLOOP property
-		//TODO fix		tempNamespaceURILabelMap.put(URI.create(QTIConstants.QTI_1_1_NAMESPACE_URI), QTIConstants.QTI_NAMESPACE_PREFIX); //QTI
-		tempNamespaceURILabelMap.put(URI.create("http://www.w3.org/1999/02/22-rdf-syntax-ns#"), "rdf"); //RDF
-		tempNamespaceURILabelMap.put(URI.create("http://www.w3.org/2000/01/rdf-schema#"), "rdfs"); //RDFS
-		//TODO add SOAP
-		//TODO del		tempNamespaceURILabelMap.put(VCard.VCARD_NAMESPACE_URI, VCard.VCARD_NAMESPACE_PREFIX); //vCard
-		tempNamespaceURILabelMap.put(URI.create("http://globalmentor.com/namespaces/2003/version#"), "ver"); //version
-		tempNamespaceURILabelMap.put(URI.create("http://www.w3.org/2001/XMLSchema"), "xsd"); //XML Schema
-		tempNamespaceURILabelMap.put(URI.create("http://www.w3.org/1999/xhtml"), "xhtml"); //XHTML
-		tempNamespaceURILabelMap.put(URI.create("http://www.w3.org/1999/xlink"), "xlink"); //XLink
-		tempNamespaceURILabelMap.put(URI.create("http://www.w3.org/XML/1998/namespace"), "xml"); //XML
-		tempNamespaceURILabelMap.put(URI.create("http://www.w3.org/2000/xmlns/"), "xmlns"); //XML namespaces
-		//TODO del		tempNamespaceURIPrefixMap.put(FileOntologyConstants.FILE_ONTOLOGY_NAMESPACE_URI, FileOntologyConstants.FILE_ONTOLOGY_NAMESPACE_PREFIX); //XPackage file ontology
-		//TODO add XPackage Unicode ontology
-		//TODO del		tempNamespaceURIPrefixMap.put(MIMEOntologyConstants.MIME_ONTOLOGY_NAMESPACE_URI, MIMEOntologyConstants.MIME_ONTOLOGY_NAMESPACE_PREFIX); //XPackage MIME ontology
-		for(final URI knownNamespaceURI : KNOWN_NAMESPACE_URIS) { //for each known namespace
-			if(!tempNamespaceURILabelMap.containsKey(knownNamespaceURI)) { //if we haven't added a special namespace label for this namespace
-				tempNamespaceURILabelMap.put(knownNamespaceURI, getName(knownNamespaceURI)); //use the name of this known namespace as its label
-			}
+	/**
+	 * Creates a read-only vocabulary with the given registrations.
+	 * @param vocabulariesByPrefix Vocabulary prefixes and vocabulary namespace URIs associated with them. If a prefix is mapped to more than one namespace, only
+	 *          the first prefix will be reverse-mapped back to the namespace.
+	 * @throws NullPointerException if a namespace is <code>null</code>.
+	 */
+	public static VocabularyRegistry of(@Nonnull final Map<String, URI> vocabulariesByPrefix) {
+		return of(vocabulariesByPrefix.entrySet());
+	}
+
+	/**
+	 * Determines whether the given prefix is registered with a vocabulary.
+	 * @param prefix A prefix that may be associated with a vocabulary namespace.
+	 * @return <code>true</code> if the given prefix has been associated with a vocabulary.
+	 */
+	public boolean isPrefixRegistered(@Nullable final String prefix);
+
+	/**
+	 * Determines whether the given namespace URI is registered with a prefix.
+	 * @apiNote A vocabulary may be registered with multiple prefixes.
+	 * @param namespace A namespace URI identifying a vocabulary.
+	 * @return <code>true</code> if a prefix has been associated with the given namespace.
+	 * @throws NullPointerException if the given namespace is <code>null</code>.
+	 */
+	public boolean isVocabularyRegistered(@Nonnull final URI namespace);
+
+	/**
+	 * Finds a registered vocabulary by its prefix.
+	 * @apiNote The same namespace may be associated with several prefixes.
+	 * @param prefix The prefix of the vocabulary to return.
+	 * @return The namespace URI identifying the vocabulary, if one is registered.
+	 */
+	public Optional<URI> findVocabularyByPrefix(@Nullable final String prefix);
+
+	/**
+	 * Retrieves the prefix to use for the given vocabulary namespace.
+	 * @apiNote At most one prefix will be associated with a namespace.
+	 * @param namespace The URI of the namespace for which a prefix should be returned
+	 * @return A prefix for use with the given namespace, if one is registered; may be <code>null</code>.
+	 * @throws NullPointerException if the given namespace is <code>null</code>.
+	 */
+	public Optional<String> findPrefixForVocabulary(@Nonnull final URI namespace);
+
+	/**
+	 * Returns the registered vocabularies and their associated prefixes. No two vocabularies will have the same associated prefix. The returned set will be
+	 * read-only and iteration will not throw {@link ConcurrentModificationException}, but it may reflect changes made concurrently by the registry.
+	 * @apiNote This method may not include all the prefixes returned by {@link #getRegisteredVocabulariesByPrefix()}, as that method allows multiple prefixes to
+	 *          be mapped to the same namespace.
+	 * @return A set of vocabulary namespace URI values and the prefixes with which they are associated.
+	 */
+	public Set<Map.Entry<URI, String>> getRegisteredPrefixesByVocabulary();
+
+	/**
+	 * Returns the registered vocabularies associated with their registered prefixes. Some vocabularies may be associated with multiple prefixes. The returned set
+	 * will be read-only and iteration will not throw {@link ConcurrentModificationException}, but it may reflect changes made concurrently by the registry.
+	 * @return A set of vocabulary namespace URI values and the prefixes with which they are associated.
+	 */
+	public Set<Map.Entry<String, URI>> getRegisteredVocabulariesByPrefix();
+
+	/**
+	 * Retrieves the namespace, if it can be determined, identifying the vocabulary the term is in.
+	 * @param term The URI identifying the term in a vocabulary.
+	 * @return The namespace representing the vocabulary of the term, or <code>null</code> if no vocabulary could be determined.
+	 * @throws NullPointerException if the given namespace is <code>null</code>.
+	 */
+	//TODO public Optional<URI> findTermVocabulary(@Nonnull final URI term);
+
+	/** An immutable empty vocabulary registry. */
+	public static final VocabularyRegistry EMPTY = new VocabularyRegistry() {
+
+		@Override
+		public boolean isPrefixRegistered(final String prefix) {
+			return false;
 		}
-		DEFAULT_NAMESPACE_URI_LABEL_MAP = unmodifiableMap(tempNamespaceURILabelMap); //store a static read-only map
-	}
 
-	/** Default constructor using a hash map. */
-	public VocabularyRegistry() {
-		this(new HashMap<URI, String>()); //construct the class with a hash map
-	}
-
-	/**
-	 * Map constructor.
-	 * @param map The map this map should decorate.
-	 * @throws NullPointerException if the provided map is <code>null</code>.
-	 */
-	public VocabularyRegistry(final Map<URI, String> map) {
-		super(map); //construct the parent class
-	}
-
-	/** The atomic variable used to generate labels. */
-	private final AtomicLong generatedLabelCount = new AtomicLong(0);
-
-	/**
-	 * Generates a new label unique to this manager.
-	 * @return A new label unique to this manager.
-	 */
-	private String generateLabel() {
-		return "namespace" + generatedLabelCount.incrementAndGet(); //atomically get the next counter value and use it in generating a new labek
-	}
-
-	/**
-	 * Determines whether the given namespace URI is that of a recognized namespace. A namespace is recognized if a label has been associated with the given
-	 * namespace URI or the default namespace URI label map has a record of this namespace.
-	 * @param namespaceURI A namespace URId
-	 * @return <code>true</code> if a label has been associated with the given namespace URI or if a label is known that could be associated with this namespace
-	 *         URI.
-	 * @see #DEFAULT_NAMESPACE_URI_LABEL_MAP
-	 */
-	public boolean isRecognized(final URI namespaceURI) {
-		return containsKey(namespaceURI) || DEFAULT_NAMESPACE_URI_LABEL_MAP.containsKey(namespaceURI); //return whether this map or the default namespace map recognizes the given namespace URI
-	}
-
-	/**
-	 * Adds a namespace URI and associates it with a default label.
-	 * @param namespaceURI The namespace URI to add.
-	 * @return <code>true</code> if the namespace was not previously known.
-	 * @throws NullPointerException if the given namespace URI is <code>null</code>.
-	 */
-	public boolean addNamespaceURI(final URI namespaceURI) {
-		if(!containsKey(requireNonNull(namespaceURI, "Namespace URI cannot be null."))) { //if we don't know about this namespace
-			determineNamespaceLabel(namespaceURI); //determine a label for this namespace
-			return true; //indicate that this is a new namespace
-		} else { //if we already know about this namespace
-			return false; //indicate that we already know about this namespace
+		@Override
+		public boolean isVocabularyRegistered(final URI namespace) {
+			return false;
 		}
-	}
 
-	/**
-	 * Retrieves the label to use for the given namespace. If a namespace is unrecognized (i.e. no label, including the <code>null</code> label, has been
-	 * registered with the given namespace), a new one will be created and stored in the map for future use. The last package segment of any hierarchical URIs
-	 * will be used as the namespace label if possible.
-	 * @param namespaceURI The namespace URI for which a label should be returned
-	 * @return A label for use with the given namespace, or <code>null</code> if the <code>null</code> label is assigned to the given namespace.
-	 * @see #isLabel(String)
-	 */
-	public String determineNamespaceLabel(final URI namespaceURI) {
-		String label = get(namespaceURI); //get the label keyed by the namespace, if any
-		if(label == null && !containsKey(namespaceURI)) { //if we didn't find a label because the namespace wasn't registered, generate a label
-			label = DEFAULT_NAMESPACE_URI_LABEL_MAP.get(namespaceURI); //look up the namespace in the map of default label mappings
-			if(label == null) { //if there is still no label for this namespace, get the name of the URI
-				final String name = getName(namespaceURI); //get the name identified by the URI (the last URI path sequence)
-				if(name != null && isLabel(name) && !containsValue(name)) { //if the name is a valid label that we haven't yet used
-					label = name; //use the name as the label
-				}
-				if(label == null) { //if we didn't find a label from the URI name
-					label = generateLabel(); //generate a unique namespace label
-				}
-			}
-			put(namespaceURI, label); //store the label in the map
+		@Override
+		public Optional<URI> findVocabularyByPrefix(final String prefix) {
+			return Optional.empty();
 		}
-		return label; //return the label we found or created
-	}
 
-	/**
-	 * Determines whether the given string is a valid label
-	 * @param string The string to check for being a label.
-	 * @return <code>true</code> if the given string represents a valid label.
-	 * @throws NullPointerException if the given string is <code>null</code>.
-	 */
-	protected abstract boolean isLabel(final String string);
+		@Override
+		public Optional<String> findPrefixForVocabulary(final URI namespace) {
+			return Optional.empty();
+		}
+
+		@Override
+		public Set<Entry<URI, String>> getRegisteredPrefixesByVocabulary() {
+			return emptySet();
+		}
+
+		@Override
+		public Set<Entry<String, URI>> getRegisteredVocabulariesByPrefix() {
+			return emptySet();
+		}
+
+	};
 
 }
