@@ -108,8 +108,8 @@ public interface VocabularyRegistry {
 	public Optional<Map.Entry<URI, String>> findPrefixRegistrationForVocabulary(@Nonnull final URI namespace);
 
 	/**
-	 * Returns the registered vocabularies and their associated prefixes. No two vocabularies will have the same associated prefix. The returned set will be
-	 * read-only and iteration will not throw {@link ConcurrentModificationException}, but it may reflect changes made concurrently by the registry.
+	 * Returns the registered vocabularies and their associated prefixes. No two vocabularies will have the same associated prefix. The returned set may be live;
+	 * if the consumer intends to update the registry during iteration, a defensive copy should be made.
 	 * @apiNote This method may not include all the prefixes returned by {@link #getRegisteredVocabulariesByPrefix()}, as that method allows multiple prefixes to
 	 *          be mapped to the same namespace.
 	 * @return A set of vocabulary namespace URI values and the prefixes with which they are associated.
@@ -118,7 +118,7 @@ public interface VocabularyRegistry {
 
 	/**
 	 * Returns the registered vocabularies associated with their registered prefixes. Some vocabularies may be associated with multiple prefixes. The returned set
-	 * will be read-only and iteration will not throw {@link ConcurrentModificationException}, but it may reflect changes made concurrently by the registry.
+	 * may be live; if the consumer intends to update the registry during iteration, a defensive copy should be made.
 	 * @return A set of vocabulary namespace URI values and the prefixes with which they are associated.
 	 */
 	public Set<Map.Entry<String, URI>> getRegisteredVocabulariesByPrefix();

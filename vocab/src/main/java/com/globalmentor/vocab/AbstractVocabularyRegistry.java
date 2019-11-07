@@ -18,7 +18,8 @@ package com.globalmentor.vocab;
 
 import java.net.URI;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+
+import com.globalmentor.collections.NameValuePairMapEntry;
 
 import static java.util.Collections.*;
 import static java.util.Objects.*;
@@ -31,16 +32,14 @@ import static java.util.Objects.*;
  */
 public abstract class AbstractVocabularyRegistry implements VocabularyRegistry {
 
-	/** @implSpec Use a concurrent hash map to allow updating registry during iteration without {@link ConcurrentModificationException}. */
-	private final Map<String, URI> namespacesByPrefix = new ConcurrentHashMap<>();
+	private final Map<String, URI> namespacesByPrefix = new HashMap<>();
 
 	/** @return The internal map of registered prefixes and their associated namespaces. */
 	protected Map<String, URI> getNamespacesByPrefix() {
 		return namespacesByPrefix;
 	}
 
-	/** @implSpec Use a concurrent hash map to allow updating registry during iteration without {@link ConcurrentModificationException}. */
-	private final Map<URI, String> prefixesByNamespace = new ConcurrentHashMap<>();
+	private final Map<URI, String> prefixesByNamespace = new HashMap<>();
 
 	/** @return The internal map of registered namespaces and their associated prefixes. */
 	protected Map<URI, String> getPrefixesByNamespace() {
@@ -69,7 +68,7 @@ public abstract class AbstractVocabularyRegistry implements VocabularyRegistry {
 		if(prefix == null && !prefixesByNamespace.containsKey(namespace)) { //see if null means null or missing
 			return Optional.empty();
 		}
-		return Optional.of(Map.entry(namespace, prefix)); //prefix may be null
+		return Optional.of(new NameValuePairMapEntry<>(namespace, prefix)); //prefix may be null
 	}
 
 	@Override
