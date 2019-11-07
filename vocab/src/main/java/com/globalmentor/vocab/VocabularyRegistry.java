@@ -31,6 +31,9 @@ import javax.annotation.*;
  * Each vocabulary namespace may be associated with more than one prefix, but each vocabulary namespace will have at most one prefix officially registered for
  * it.
  * </p>
+ * <p>
+ * A prefix will never have a <code>null</code> namespace associated with it, but depending on the implementation, a namespace may be mapped to a
+ * <code>null</code> prefix indicating no prefix (e.g. <code>bar</code>) as opposed to a prefix of the empty string (e.g. <code>:bar</code>).
  * @apiNote A prefix is a token used as a substitute for the namespace URI in serializations such as XML and RDFa.
  * @see <a href="https://www.w3.org/TR/rdfa-core/#s_curies">RDFa Core 1.1, 6. CURIE Syntax Definition</a>
  * @see <a href="https://www.w3.org/TR/xml-names/">Namespaces in XML 1.0</a>
@@ -96,11 +99,13 @@ public interface VocabularyRegistry {
 	/**
 	 * Retrieves the prefix to use for the given vocabulary namespace.
 	 * @apiNote At most one prefix will be associated with a namespace.
+	 * @apiNote This method returns a {@link Map.Entry} "registration" rather than only the prefix to distinguish between no registered prefix and a registered
+	 *          prefix of <code>null</code>.
 	 * @param namespace The URI of the namespace for which a prefix should be returned
-	 * @return A prefix for use with the given namespace, if one is registered; may be <code>null</code>.
+	 * @return A prefix for use with the given namespace, if one is registered; the prefix value itself may be <code>null</code>.
 	 * @throws NullPointerException if the given namespace is <code>null</code>.
 	 */
-	public Optional<String> findPrefixForVocabulary(@Nonnull final URI namespace);
+	public Optional<Map.Entry<URI, String>> findPrefixRegistrationForVocabulary(@Nonnull final URI namespace);
 
 	/**
 	 * Returns the registered vocabularies and their associated prefixes. No two vocabularies will have the same associated prefix. The returned set will be
@@ -145,7 +150,7 @@ public interface VocabularyRegistry {
 		}
 
 		@Override
-		public Optional<String> findPrefixForVocabulary(final URI namespace) {
+		public Optional<Map.Entry<URI, String>> findPrefixRegistrationForVocabulary(final URI namespace) {
 			return Optional.empty();
 		}
 

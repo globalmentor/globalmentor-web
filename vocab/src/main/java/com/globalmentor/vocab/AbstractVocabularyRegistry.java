@@ -63,12 +63,13 @@ public abstract class AbstractVocabularyRegistry implements VocabularyRegistry {
 	}
 
 	@Override
-	public Optional<String> findPrefixForVocabulary(final URI namespace) {
-		final String prefix = getPrefixesByNamespace().get(requireNonNull(namespace));
-		if(prefix == null && !getPrefixesByNamespace().containsKey(namespace)) { //see if null means null or missing
+	public Optional<Map.Entry<URI, String>> findPrefixRegistrationForVocabulary(final URI namespace) {
+		final Map<URI, String> prefixesByNamespace = getPrefixesByNamespace();
+		final String prefix = prefixesByNamespace.get(requireNonNull(namespace));
+		if(prefix == null && !prefixesByNamespace.containsKey(namespace)) { //see if null means null or missing
 			return Optional.empty();
 		}
-		return Optional.ofNullable(prefix); //TODO decide how to handle the "`null`" or "default" prefix; this doesn't work
+		return Optional.of(Map.entry(namespace, prefix)); //prefix may be null
 	}
 
 	@Override

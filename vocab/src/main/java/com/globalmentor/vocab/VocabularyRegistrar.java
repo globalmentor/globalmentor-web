@@ -38,7 +38,7 @@ public interface VocabularyRegistrar extends VocabularyRegistry {
 	/**
 	 * Indicates whether the auto-register feature has been turned on.
 	 * @return <code>true</code> if vocabularies and prefixes will be registered automatically when searching if they are recognized.
-	 * @see #findPrefixForVocabulary(URI)
+	 * @see #findPrefixRegistrationForVocabulary(URI)
 	 */
 	public boolean isAutoRegister();
 
@@ -71,12 +71,12 @@ public interface VocabularyRegistrar extends VocabularyRegistry {
 	 * @see #isVocabularyRecognized(URI)
 	 */
 	@Override
-	public Optional<String> findPrefixForVocabulary(@Nonnull final URI namespace);
+	public Optional<Map.Entry<URI, String>> findPrefixRegistrationForVocabulary(@Nonnull final URI namespace);
 
 	/**
 	 * {@inheritDoc}
 	 * @apiNote If auto-register has been turned on, this method may not return all the vocabularies that would be supported by
-	 *          {@link #findPrefixForVocabulary(URI)}, as that method included recognized vocabularies not registered.
+	 *          {@link #findPrefixRegistrationForVocabulary(URI)}, as that method included recognized vocabularies not registered.
 	 */
 	@Override
 	public Set<Map.Entry<URI, String>> getRegisteredPrefixesByVocabulary();
@@ -84,7 +84,7 @@ public interface VocabularyRegistrar extends VocabularyRegistry {
 	/**
 	 * {@inheritDoc}
 	 * @apiNote If auto-register has been turned on, this method may not return all the vocabularies that would be supported by
-	 *          {@link #findPrefixForVocabulary(URI)}, as that method included recognized vocabularies not registered.
+	 *          {@link #findPrefixRegistrationForVocabulary(URI)}, as that method included recognized vocabularies not registered.
 	 */
 	@Override
 	public Set<Map.Entry<String, URI>> getRegisteredVocabulariesByPrefix();
@@ -109,21 +109,37 @@ public interface VocabularyRegistrar extends VocabularyRegistry {
 	 * Adds a vocabulary and associates the given prefix with it, so that any vocabulary lookup by namespace will retrieve the given prefix. The vocabulary will
 	 * also be associated with the prefix, so that any later vocabulary lookup by prefix will return the given namespace.
 	 * @apiNote This method overrides any previous namespaces associated with the given prefix, as well as any previous prefixes associated with the given
-	 *          namespace, unlike {@link #registerPrefix(String, URI)}, which does not override any existing prefixes associated with the given namespace.
-	 * @param namespace The URI of the namespace of the vocabulary to register.
-	 * @param prefix The prefix to associate with the vocabulary.
-	 * @return The prefix, if any, that was previously associated with the given namespace..
+	 *          namespace, unlike {@link #registerPrefix(Map.Entry)}, which does not override any existing prefixes associated with the given namespace.
+	 * @implSpec The default implementation delegates to {@link #registerVocabulary(URI, String)}.
+	 * @param prefixForNamespace The The URI of the namespace of the vocabulary to register, along with the prefix to associate with the vocabulary.
+	 * @return The prefix registration, if any, that was previously made with the given namespace.
 	 * @throws NullPointerException if the given namespace is <code>null</code>.
 	 * @throws IllegalArgumentException if the given prefix is not valid.
 	 * @see #getPrefixSpecification()
 	 */
-	public Optional<String> registerVocabulary(@Nonnull final URI namespace, @Nullable final String prefix);
+	public default Optional<Map.Entry<URI, String>> registerVocabulary(@Nonnull Map.Entry<URI, String> prefixForNamespace) {
+		return registerVocabulary(prefixForNamespace.getKey(), prefixForNamespace.getValue());
+	}
+
+	/**
+	 * Adds a vocabulary and associates the given prefix with it, so that any vocabulary lookup by namespace will retrieve the given prefix. The vocabulary will
+	 * also be associated with the prefix, so that any later vocabulary lookup by prefix will return the given namespace.
+	 * @apiNote This method overrides any previous namespaces associated with the given prefix, as well as any previous prefixes associated with the given
+	 *          namespace, unlike {@link #registerPrefix(String, URI)}, which does not override any existing prefixes associated with the given namespace.
+	 * @param namespace The URI of the namespace of the vocabulary to register.
+	 * @param prefix The prefix to associate with the vocabulary.
+	 * @return The prefix registration, if any, that was previously made with the given namespace.
+	 * @throws NullPointerException if the given namespace is <code>null</code>.
+	 * @throws IllegalArgumentException if the given prefix is not valid.
+	 * @see #getPrefixSpecification()
+	 */
+	public Optional<Map.Entry<URI, String>> registerVocabulary(@Nonnull final URI namespace, @Nullable final String prefix);
 
 	/**
 	 * Adds a prefix associates the indicated vocabulary with it, so that any vocabulary lookup by prefix will retrieve the given namespace. If the prefix has not
 	 * already been associated with another vocabulary, it will also be associated with the vocabulary, so that any later vocabulary lookup by prefix will return
 	 * the given namespace.
-	 * @implSpec This implementation delegates to {@link #registerPrefix(String, URI)}.
+	 * @implSpec The default implementation delegates to {@link #registerPrefix(String, URI)}.
 	 * @param namespaceByPrefix The prefix key to register, along with the the URI value of the namespace of the vocabulary to associate with the prefix.
 	 * @return The namespace of the vocabulary, if any, that was previously associated with the given prefix.
 	 * @throws NullPointerException if the given namespace value is <code>null</code>.
@@ -178,32 +194,33 @@ public interface VocabularyRegistrar extends VocabularyRegistry {
 	 * Retrieves the prefix to use for the indicated vocabulary. If a namespace is unregistered (i.e. no prefix, including the <code>null</code> prefix, has been
 	 * registered with the indicated vocabulary), a new prefix will be determined and registered with the vocabulary. Thus when this method returns, the
 	 * vocabulary is guaranteed to have been registered. Otherwise it delegates to {@link #generatePrefix()}
-	 * @apiNote This method is similar to {@link #findPrefixForVocabulary(URI)} except that this method will always return a prefix, generating a new one if needed.
+	 * @apiNote This method is similar to {@link #findPrefixRegistrationForVocabulary(URI)} except that this method will always return a prefix, generating a new
+	 *          one if needed.
 	 * @implSpec The default implementation attempts to use the last URI segment as a prefix, if it is valid and has not yet been registered with another
 	 *           namespace.
 	 * @param namespace A namespace URI identifying a vocabulary.
 	 * @return A prefix for use with the identified vocabulary, which may be <code>null</code> if the <code>null</code> prefix is assigned to the given
 	 *         vocabulary.
 	 * @throws NullPointerException if the given namespace is <code>null</code>.
-	 * @see #findPrefixForVocabulary(URI)
+	 * @see #findPrefixRegistrationForVocabulary(URI)
 	 * @see #generatePrefix()
 	 * @see VocabularyPrefixSpecification#isValid(String)
 	 */
 	public default String determineVocabularyPrefix(@Nonnull final URI namespace) {
-		Optional<String> optionalPrefix = findPrefixForVocabulary(namespace);
-		if(optionalPrefix.isEmpty()) { //TODO use Java 9 Optional.or() here and below
+		Optional<Map.Entry<URI, String>> optionalPrefixRegistration = findPrefixRegistrationForVocabulary(namespace);
+		if(optionalPrefixRegistration.isEmpty()) { //TODO use Java 9 Optional.or() here and below
 			final String name = getName(namespace); //get the name identified by the URI (the last URI path sequence) TODO add URIs.findName()
 			if(name != null && getPrefixSpecification().isValid(name) && !isPrefixRegistered(name)) { //if the name is a valid prefix that we haven't yet used
-				optionalPrefix = Optional.of(name); //use the name as the prefix
+				optionalPrefixRegistration = Optional.of(Map.entry(namespace, name)); //use the name as the prefix
 			}
-			if(optionalPrefix.isEmpty()) { //if we didn't find a label from the URI name
-				optionalPrefix = Optional.of(generatePrefix()); //generate a unique vocabulary prefix
+			if(optionalPrefixRegistration.isEmpty()) { //if we didn't find a label from the URI name
+				optionalPrefixRegistration = Optional.of(Map.entry(namespace, generatePrefix())); //generate a unique vocabulary prefix
 			}
-			assert optionalPrefix.isPresent();
-			registerVocabulary(namespace, optionalPrefix.get()); //associate the prefix and namespace
+			assert optionalPrefixRegistration.isPresent();
+			registerVocabulary(optionalPrefixRegistration.get()); //associate the prefix and namespace
 		}
-		assert optionalPrefix.isPresent();
-		return optionalPrefix.get(); //return the prefix we found or created
+		assert optionalPrefixRegistration.isPresent();
+		return optionalPrefixRegistration.get().getValue(); //return the prefix we found or created
 	}
 
 }

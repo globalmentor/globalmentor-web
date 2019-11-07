@@ -40,7 +40,7 @@ final class DefaultVocabularyRegistry extends AbstractVocabularyRegistry {
 	 */
 	public DefaultVocabularyRegistry(@Nonnull final Iterable<Map.Entry<String, URI>> vocabulariesByPrefix) {
 		for(final Map.Entry<String, URI> vocabularyByPrefix : vocabulariesByPrefix) {
-			final String prefix = vocabularyByPrefix.getKey(); //TODO eventually check for null?
+			final String prefix = vocabularyByPrefix.getKey();
 			final URI namespace = requireNonNull(vocabularyByPrefix.getValue());
 			getNamespacesByPrefix().put(prefix, namespace);
 			getPrefixesByNamespace().putIfAbsent(namespace, prefix); //don't override a prefix already associated with the namespace

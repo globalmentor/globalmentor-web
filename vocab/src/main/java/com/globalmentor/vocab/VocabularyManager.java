@@ -130,13 +130,13 @@ public class VocabularyManager extends AbstractVocabularyRegistry implements Voc
 	}
 
 	@Override
-	public Optional<String> findPrefixForVocabulary(final URI namespace) {
-		Optional<String> optionalPrefix = super.findPrefixForVocabulary(namespace);
-		if(optionalPrefix.isEmpty() && isAutoRegister()) {
-			optionalPrefix = knownVocabularies.findPrefixForVocabulary(namespace);
-			optionalPrefix.ifPresent(prefix -> registerVocabulary(namespace, prefix));
+	public Optional<Map.Entry<URI, String>> findPrefixRegistrationForVocabulary(final URI namespace) {
+		Optional<Map.Entry<URI, String>> optionalPrefixRegistration = super.findPrefixRegistrationForVocabulary(namespace);
+		if(optionalPrefixRegistration.isEmpty() && isAutoRegister()) {
+			optionalPrefixRegistration = knownVocabularies.findPrefixRegistrationForVocabulary(namespace);
+			optionalPrefixRegistration.ifPresent(this::registerVocabulary);
 		}
-		return optionalPrefix;
+		return optionalPrefixRegistration;
 	}
 
 	/** The atomic variable used to generate prefixes. */
@@ -153,13 +153,14 @@ public class VocabularyManager extends AbstractVocabularyRegistry implements Voc
 	}
 
 	@Override
-	public Optional<String> registerVocabulary(final URI namespace, final String prefix) {
+	public Optional<Map.Entry<URI, String>> registerVocabulary(final URI namespace, final String prefix) {
 		requireNonNull(namespace);
 		getPrefixSpecification().checkArgumentValidPrefix(prefix);
-		//TODO decide how to handle the "`null`" or "default" prefix
-		final Optional<String> previousPrefix = Optional.ofNullable(getPrefixesByNamespace().put(namespace, prefix));
+		final Map<URI, String> prefixesByNamespace = getPrefixesByNamespace();
+		final boolean hadPrefixRegistration = prefixesByNamespace.containsKey(namespace); //check first to distinguish between no mapping and null value
+		final String previousPrefix = getPrefixesByNamespace().put(namespace, prefix);
 		getNamespacesByPrefix().put(prefix, namespace); //update the prefix-namespace mapping as well 
-		return previousPrefix;
+		return hadPrefixRegistration ? Optional.of(Map.entry(namespace, previousPrefix)) : Optional.empty();
 	}
 
 	@Override

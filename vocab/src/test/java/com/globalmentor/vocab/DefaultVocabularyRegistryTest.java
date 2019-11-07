@@ -37,7 +37,7 @@ public class DefaultVocabularyRegistryTest {
 		assertThat(registry.isPrefixRegistered("foo"), is(false));
 		assertThat(registry.isVocabularyRegistered(URI.create("http://purl.org/dc/terms/")), is(false));
 		assertThat(registry.findVocabularyByPrefix("foo"), isEmpty());
-		assertThat(registry.findPrefixForVocabulary(URI.create("http://purl.org/dc/terms/")), isEmpty());
+		assertThat(registry.findPrefixRegistrationForVocabulary(URI.create("http://purl.org/dc/terms/")), isEmpty());
 		assertThat(registry.findVocabularyByPrefix("foo"), isEmpty());
 		assertThat(registry.getRegisteredPrefixesByVocabulary(), is(emptySet()));
 		assertThat(registry.getRegisteredVocabulariesByPrefix(), is(emptySet()));
