@@ -28,8 +28,6 @@ import java.util.Map;
 
 import org.junit.jupiter.api.*;
 
-import com.globalmentor.collections.NameValuePairMapEntry;
-
 /**
  * Tests of {@link DefaultVocabularyRegistry}.
  * @author Garret Wilson
@@ -42,25 +40,26 @@ public class DefaultVocabularyRegistryTest {
 
 	@Test
 	public void testEmptyRegistry() {
-		final DefaultVocabularyRegistry registry = new DefaultVocabularyRegistry(emptySet());
+		final DefaultVocabularyRegistry registry = new DefaultVocabularyRegistry(null, emptySet());
 		assertThat(registry.isPrefixRegistered("foo"), is(false));
 		assertThat(registry.isVocabularyRegistered(DC_NAMESPACE), is(false));
 		assertThat(registry.findVocabularyByPrefix("foo"), isEmpty());
-		assertThat(registry.findPrefixRegistrationForVocabulary(DC_NAMESPACE), isEmpty());
+		assertThat(registry.findPrefixForVocabulary(DC_NAMESPACE), isEmpty());
 		assertThat(registry.findVocabularyByPrefix("foo"), isEmpty());
 		assertThat(registry.getRegisteredPrefixesByVocabulary(), is(emptySet()));
 		assertThat(registry.getRegisteredVocabulariesByPrefix(), is(emptySet()));
 	}
 
-	/** Tests simple registrations and retrieval. <code>null</code> prefixes are tested as well. */
+	/** Tests basic registrations and retrieval. */
 	@Test
-	public void testRegistrations() {
-		final DefaultVocabularyRegistry registry = new DefaultVocabularyRegistry(
-				asList(Map.entry("dc", DC_NAMESPACE), new NameValuePairMapEntry<>(null, EG_NAMESPACE), Map.entry("og", OG_NAMESPACE)));
+	public void testBasicRegistrations() {
+		final DefaultVocabularyRegistry registry = new DefaultVocabularyRegistry(EG_NAMESPACE,
+				asList(Map.entry("dc", DC_NAMESPACE), Map.entry("og", OG_NAMESPACE)));
+
+		assertThat(registry.getDefaultVocabulary(), isPresentAndIs(EG_NAMESPACE));
 
 		assertThat(registry.isPrefixRegistered("dc"), is(true));
 		assertThat(registry.isPrefixRegistered("foo"), is(false));
-		assertThat(registry.isPrefixRegistered(null), is(true));
 		assertThat(registry.isPrefixRegistered("og"), is(true));
 
 		assertThat(registry.isVocabularyRegistered(DC_NAMESPACE), is(true));
@@ -68,21 +67,18 @@ public class DefaultVocabularyRegistryTest {
 		assertThat(registry.isVocabularyRegistered(EG_NAMESPACE), is(true));
 		assertThat(registry.isVocabularyRegistered(OG_NAMESPACE), is(true));
 
-		assertThat(registry.findPrefixRegistrationForVocabulary(DC_NAMESPACE), isPresentAndIs(Map.entry(DC_NAMESPACE, "dc")));
-		assertThat(registry.findPrefixRegistrationForVocabulary(URI.create("http://example.com/ns/")), isEmpty());
-		assertThat(registry.findPrefixRegistrationForVocabulary(EG_NAMESPACE), isPresentAndIs(new NameValuePairMapEntry<>(EG_NAMESPACE, null)));
-		assertThat(registry.findPrefixRegistrationForVocabulary(OG_NAMESPACE), isPresentAndIs(Map.entry(OG_NAMESPACE, "og")));
+		assertThat(registry.findPrefixForVocabulary(DC_NAMESPACE), isPresentAndIs("dc"));
+		assertThat(registry.findPrefixForVocabulary(URI.create("http://example.com/ns/")), isEmpty());
+		assertThat(registry.findPrefixForVocabulary(EG_NAMESPACE), isEmpty());
+		assertThat(registry.findPrefixForVocabulary(OG_NAMESPACE), isPresentAndIs("og"));
 
 		assertThat(registry.findVocabularyByPrefix("dc"), isPresentAndIs(DC_NAMESPACE));
 		assertThat(registry.findVocabularyByPrefix("foo"), isEmpty());
-		assertThat(registry.findVocabularyByPrefix(null), isPresentAndIs(EG_NAMESPACE));
 		assertThat(registry.findVocabularyByPrefix("og"), isPresentAndIs(OG_NAMESPACE));
 
-		assertThat(registry.getRegisteredPrefixesByVocabulary(),
-				is(new HashSet<>(asList(Map.entry(DC_NAMESPACE, "dc"), new NameValuePairMapEntry<>(EG_NAMESPACE, null), Map.entry(OG_NAMESPACE, "og")))));
+		assertThat(registry.getRegisteredPrefixesByVocabulary(), is(new HashSet<>(asList(Map.entry(DC_NAMESPACE, "dc"), Map.entry(OG_NAMESPACE, "og")))));
 
-		assertThat(registry.getRegisteredVocabulariesByPrefix(),
-				is(new HashSet<>(asList(Map.entry("dc", DC_NAMESPACE), new NameValuePairMapEntry<>(null, EG_NAMESPACE), Map.entry("og", OG_NAMESPACE)))));
+		assertThat(registry.getRegisteredVocabulariesByPrefix(), is(new HashSet<>(asList(Map.entry("dc", DC_NAMESPACE), Map.entry("og", OG_NAMESPACE)))));
 	}
 
 }

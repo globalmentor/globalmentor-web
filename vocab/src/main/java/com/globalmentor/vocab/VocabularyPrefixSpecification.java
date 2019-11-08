@@ -32,13 +32,13 @@ public interface VocabularyPrefixSpecification {
 
 	/**
 	 * The default specification for prefixes.
-	 * @implSpec This implementation allows <code>null</code> or any string that does not contain Unicode whitespace.
+	 * @implSpec This implementation allows any string that does not contain Unicode whitespace.
 	 * @see Characters#WHITESPACE_CHARACTERS
 	 */
 	public static final VocabularyPrefixSpecification DEFAULT = new BaseVocabularyPrefixSpecification() {
 		@Override
 		public boolean isValid(final String prefix) {
-			return prefix == null || contains(prefix, WHITESPACE_CHARACTERS);
+			return contains(prefix, WHITESPACE_CHARACTERS);
 		}
 	};
 
@@ -48,16 +48,17 @@ public interface VocabularyPrefixSpecification {
 	 * @return <code>true</code> if the given string represents a valid label.
 	 * @throws NullPointerException if the given string is <code>null</code>.
 	 */
-	public boolean isValid(@Nullable final String prefix);
+	public boolean isValid(@Nonnull final String prefix);
 
 	/**
 	 * Checks to ensure the given prefix is valid.
 	 * @implSpec The default implementation delegates to {@link #isValid(String)}.
 	 * @param prefix The string to check for being a valid prefix.
 	 * @return The given prefix.
+	 * @throws NullPointerException if the given string is <code>null</code>.
 	 * @throws IllegalArgumentException if the given prefix is not valid.
 	 */
-	public default String checkArgumentValidPrefix(@Nullable final String prefix) {
+	public default String checkArgumentValidPrefix(@Nonnull final String prefix) {
 		checkArgument(isValid(prefix), "The string `%s` is not a valid vocabulary prefix.", prefix);
 		return prefix;
 	}

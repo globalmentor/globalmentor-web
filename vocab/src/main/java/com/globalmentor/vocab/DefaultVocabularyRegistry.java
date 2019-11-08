@@ -34,11 +34,15 @@ final class DefaultVocabularyRegistry extends AbstractVocabularyRegistry {
 
 	/**
 	 * Existing prefix-vocabulary registrations constructor.
+	 * @param defaultVocabulary The namespace URI of the default vocabulary, or <code>null</code> if there is no default.
 	 * @param vocabulariesByPrefix Vocabulary prefixes and vocabulary namespace URIs associated with them. If a prefix key appears more than once, the last one
 	 *          one will take affect. If a prefix is mapped to more than one namespace, only the first prefix will be reverse-mapped back to the namespace.
 	 * @throws NullPointerException if a namespace is <code>null</code>.
 	 */
-	public DefaultVocabularyRegistry(@Nonnull final Iterable<Map.Entry<String, URI>> vocabulariesByPrefix) {
+	public DefaultVocabularyRegistry(@Nullable URI defaultVocabulary, @Nonnull final Iterable<Map.Entry<String, URI>> vocabulariesByPrefix) {
+		if(defaultVocabulary != null) {
+			setDefaultVocabulary(defaultVocabulary);
+		}
 		for(final Map.Entry<String, URI> vocabularyByPrefix : vocabulariesByPrefix) {
 			final String prefix = vocabularyByPrefix.getKey();
 			final URI namespace = requireNonNull(vocabularyByPrefix.getValue());

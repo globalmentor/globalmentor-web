@@ -19,8 +19,9 @@ package com.globalmentor.vocab;
 import java.net.URI;
 import java.util.*;
 
-import com.globalmentor.collections.NameValuePairMapEntry;
+import javax.annotation.Nonnull;
 
+import static com.globalmentor.util.Optionals.*;
 import static java.util.Collections.*;
 import static java.util.Objects.*;
 
@@ -32,6 +33,9 @@ import static java.util.Objects.*;
  */
 public abstract class AbstractVocabularyRegistry implements VocabularyRegistry {
 
+	private URI defaultNamespace = null;
+
+	/** @implSpec <code>null</code> is not allowed as a key or as a value. */
 	private final Map<String, URI> namespacesByPrefix = new HashMap<>();
 
 	/** @return The internal map of registered prefixes and their associated namespaces. */
@@ -39,11 +43,29 @@ public abstract class AbstractVocabularyRegistry implements VocabularyRegistry {
 		return namespacesByPrefix;
 	}
 
+	/** @implSpec <code>null</code> is not allowed as a key or as a value. */
 	private final Map<URI, String> prefixesByNamespace = new HashMap<>();
 
 	/** @return The internal map of registered namespaces and their associated prefixes. */
 	protected Map<URI, String> getPrefixesByNamespace() {
 		return prefixesByNamespace;
+	}
+
+	/**
+	 * Sets the default vocabulary.
+	 * @param namespace The namespace URI of the new default vocabulary.
+	 * @return The old default vocabulary, if any.
+	 * @throws NullPointerException if the given namespace is <code>null</code>.
+	 */
+	protected Optional<URI> setDefaultVocabulary(@Nonnull final URI namespace) {
+		final URI oldDefaultNamespace = defaultNamespace;
+		defaultNamespace = requireNonNull(namespace);
+		return Optional.ofNullable(oldDefaultNamespace);
+	}
+
+	@Override
+	public Optional<URI> getDefaultVocabulary() {
+		return Optional.ofNullable(defaultNamespace);
 	}
 
 	@Override
@@ -53,22 +75,17 @@ public abstract class AbstractVocabularyRegistry implements VocabularyRegistry {
 
 	@Override
 	public boolean isVocabularyRegistered(final URI namespace) {
-		return getPrefixesByNamespace().containsKey(requireNonNull(namespace));
+		return getPrefixesByNamespace().containsKey(requireNonNull(namespace)) || isPresentAndEquals(getDefaultVocabulary(), namespace);
 	}
 
 	@Override
 	public Optional<URI> findVocabularyByPrefix(final String prefix) {
-		return Optional.ofNullable(getNamespacesByPrefix().get(prefix));
+		return Optional.ofNullable(getNamespacesByPrefix().get(requireNonNull(prefix)));
 	}
 
 	@Override
-	public Optional<Map.Entry<URI, String>> findPrefixRegistrationForVocabulary(final URI namespace) {
-		final Map<URI, String> prefixesByNamespace = getPrefixesByNamespace();
-		final String prefix = prefixesByNamespace.get(requireNonNull(namespace));
-		if(prefix == null && !prefixesByNamespace.containsKey(namespace)) { //see if null means null or missing
-			return Optional.empty();
-		}
-		return Optional.of(new NameValuePairMapEntry<>(namespace, prefix)); //prefix may be null
+	public Optional<String> findPrefixForVocabulary(final URI namespace) {
+		return Optional.ofNullable(getPrefixesByNamespace().get(requireNonNull(namespace)));
 	}
 
 	@Override

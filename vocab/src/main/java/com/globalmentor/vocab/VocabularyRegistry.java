@@ -18,6 +18,7 @@ package com.globalmentor.vocab;
 
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
+import static java.util.Objects.*;
 
 import java.net.URI;
 import java.util.*;
@@ -32,8 +33,10 @@ import javax.annotation.*;
  * it.
  * </p>
  * <p>
- * A prefix will never have a <code>null</code> namespace associated with it, but depending on the implementation, a namespace may be mapped to a
- * <code>null</code> prefix indicating no prefix (e.g. <code>bar</code>) as opposed to a prefix of the empty string (e.g. <code>:bar</code>).
+ * A prefix will never have a <code>null</code> namespace associated with it, and a namespace will never be mapped to a <code>null</code> prefix. However the
+ * registry allows one namespace to be specified as a <dfn>default</dfn> namespace, indicating it is is the namespace intended if no prefix is indicated, and
+ * that no prefix need be used for that namespace.
+ * </p>
  * @apiNote A prefix is a token used as a substitute for the namespace URI in serializations such as XML and RDFa.
  * @see <a href="https://www.w3.org/TR/rdfa-core/#s_curies">RDFa Core 1.1, 6. CURIE Syntax Definition</a>
  * @see <a href="https://www.w3.org/TR/xml-names/">Namespaces in XML 1.0</a>
@@ -42,19 +45,46 @@ import javax.annotation.*;
 public interface VocabularyRegistry {
 
 	/**
-	 * Creates a read-only vocabulary with the given registrations.
+	 * Creates a read-only vocabulary with the indicated default vocabulary and given registrations.
+	 * @param defaultVocabulary The namespace URI of the default vocabulary.
 	 * @param vocabulariesByPrefix Vocabulary prefixes and vocabulary namespace URIs associated with them. If a prefix is mapped to more than one namespace, only
 	 *          the first prefix will be reverse-mapped back to the namespace.
+	 * @return An immutable vocabulary registry with the indicated registrations.
 	 * @throws NullPointerException if a namespace is <code>null</code>.
 	 */
-	public static VocabularyRegistry of(@Nonnull final Iterable<Map.Entry<String, URI>> vocabulariesByPrefix) {
-		return new DefaultVocabularyRegistry(vocabulariesByPrefix);
+	public static VocabularyRegistry of(@Nonnull URI defaultVocabulary, @Nonnull final Iterable<Map.Entry<String, URI>> vocabulariesByPrefix) {
+		return new DefaultVocabularyRegistry(requireNonNull(defaultVocabulary), vocabulariesByPrefix);
 	}
 
 	/**
 	 * Creates a read-only vocabulary with the given registrations.
 	 * @param vocabulariesByPrefix Vocabulary prefixes and vocabulary namespace URIs associated with them. If a prefix is mapped to more than one namespace, only
 	 *          the first prefix will be reverse-mapped back to the namespace.
+	 * @return An immutable vocabulary registry with the indicated registrations.
+	 * @throws NullPointerException if a namespace is <code>null</code>.
+	 */
+	public static VocabularyRegistry of(@Nonnull final Iterable<Map.Entry<String, URI>> vocabulariesByPrefix) {
+		return new DefaultVocabularyRegistry(null, vocabulariesByPrefix);
+	}
+
+	/**
+	 * Creates a read-only vocabulary with the indicated default vocabulary and the given registrations.
+	 * @param defaultVocabulary The namespace URI of the default vocabulary.
+	 * @param vocabulariesByPrefix Vocabulary prefixes and vocabulary namespace URIs associated with them. If a prefix is mapped to more than one namespace, only
+	 *          the first prefix will be reverse-mapped back to the namespace.
+	 * @return An immutable vocabulary registry with the indicated registrations.
+	 * @throws NullPointerException if a namespace is <code>null</code>.
+	 */
+	@SafeVarargs
+	public static VocabularyRegistry of(@Nonnull URI defaultVocabulary, final Map.Entry<String, URI>... vocabulariesByPrefix) {
+		return of(defaultVocabulary, asList(vocabulariesByPrefix));
+	}
+
+	/**
+	 * Creates a read-only vocabulary with the given registrations.
+	 * @param vocabulariesByPrefix Vocabulary prefixes and vocabulary namespace URIs associated with them. If a prefix is mapped to more than one namespace, only
+	 *          the first prefix will be reverse-mapped back to the namespace.
+	 * @return An immutable vocabulary registry with the indicated registrations.
 	 * @throws NullPointerException if a namespace is <code>null</code>.
 	 */
 	@SafeVarargs
@@ -63,14 +93,34 @@ public interface VocabularyRegistry {
 	}
 
 	/**
+	 * Creates a read-only vocabulary with the indicated default vocabulary and the given registrations.
+	 * @param defaultVocabulary The namespace URI of the default vocabulary.
+	 * @param vocabulariesByPrefix Vocabulary prefixes and vocabulary namespace URIs associated with them. If a prefix is mapped to more than one namespace, only
+	 *          the first prefix will be reverse-mapped back to the namespace.
+	 * @return An immutable vocabulary registry with the indicated registrations.
+	 * @throws NullPointerException if a namespace is <code>null</code>.
+	 */
+	public static VocabularyRegistry of(@Nonnull URI defaultVocabulary, @Nonnull final Map<String, URI> vocabulariesByPrefix) {
+		return of(defaultVocabulary, vocabulariesByPrefix.entrySet());
+	}
+
+	/**
 	 * Creates a read-only vocabulary with the given registrations.
 	 * @param vocabulariesByPrefix Vocabulary prefixes and vocabulary namespace URIs associated with them. If a prefix is mapped to more than one namespace, only
 	 *          the first prefix will be reverse-mapped back to the namespace.
+	 * @return An immutable vocabulary registry with the indicated registrations.
 	 * @throws NullPointerException if a namespace is <code>null</code>.
 	 */
 	public static VocabularyRegistry of(@Nonnull final Map<String, URI> vocabulariesByPrefix) {
 		return of(vocabulariesByPrefix.entrySet());
 	}
+
+	/**
+	 * Returns the default namespace.
+	 * @apiNote The default namespace is semantically equivalent to the namespace associated with the <code>null</code> prefix, if that were to be allowed.
+	 * @return The default namespace, if one is assigned.
+	 */
+	public Optional<URI> getDefaultVocabulary();
 
 	/**
 	 * Determines whether the given prefix is registered with a vocabulary.
@@ -80,11 +130,12 @@ public interface VocabularyRegistry {
 	public boolean isPrefixRegistered(@Nullable final String prefix);
 
 	/**
-	 * Determines whether the given namespace URI is registered with a prefix.
+	 * Determines whether the given vocabulary namespace URI is registered with a prefix, or has been specified as the default.
 	 * @apiNote A vocabulary may be registered with multiple prefixes.
 	 * @param namespace A namespace URI identifying a vocabulary.
 	 * @return <code>true</code> if a prefix has been associated with the given namespace.
 	 * @throws NullPointerException if the given namespace is <code>null</code>.
+	 * @see #getDefaultVocabulary()
 	 */
 	public boolean isVocabularyRegistered(@Nonnull final URI namespace);
 
@@ -93,23 +144,23 @@ public interface VocabularyRegistry {
 	 * @apiNote The same namespace may be associated with several prefixes.
 	 * @param prefix The prefix of the vocabulary to return.
 	 * @return The namespace URI identifying the vocabulary, if one is registered.
+	 * @throws NullPointerException if the given prefix is <code>null</code>.
 	 */
-	public Optional<URI> findVocabularyByPrefix(@Nullable final String prefix);
+	public Optional<URI> findVocabularyByPrefix(@Nonnull final String prefix);
 
 	/**
 	 * Retrieves the prefix to use for the given vocabulary namespace.
 	 * @apiNote At most one prefix will be associated with a namespace.
-	 * @apiNote This method returns a {@link Map.Entry} "registration" rather than only the prefix to distinguish between no registered prefix and a registered
-	 *          prefix of <code>null</code>.
 	 * @param namespace The URI of the namespace for which a prefix should be returned
-	 * @return A prefix for use with the given namespace, if one is registered; the prefix value itself may be <code>null</code>.
+	 * @return A prefix for use with the given namespace, if one is registered.
 	 * @throws NullPointerException if the given namespace is <code>null</code>.
 	 */
-	public Optional<Map.Entry<URI, String>> findPrefixRegistrationForVocabulary(@Nonnull final URI namespace);
+	public Optional<String> findPrefixForVocabulary(@Nonnull final URI namespace);
 
 	/**
-	 * Returns the registered vocabularies and their associated prefixes. No two vocabularies will have the same associated prefix. The returned set may be live;
-	 * if the consumer intends to update the registry during iteration, a defensive copy should be made.
+	 * Returns the registered vocabularies and their associated prefixes, neither of which will be <code>null</code> for any registration. No two vocabularies
+	 * will have the same associated prefix. The returned set may be live; if the consumer intends to update the registry during iteration, a defensive copy
+	 * should be made.
 	 * @apiNote This method may not include all the prefixes returned by {@link #getRegisteredVocabulariesByPrefix()}, as that method allows multiple prefixes to
 	 *          be mapped to the same namespace.
 	 * @return A set of vocabulary namespace URI values and the prefixes with which they are associated.
@@ -117,8 +168,9 @@ public interface VocabularyRegistry {
 	public Set<Map.Entry<URI, String>> getRegisteredPrefixesByVocabulary();
 
 	/**
-	 * Returns the registered vocabularies associated with their registered prefixes. Some vocabularies may be associated with multiple prefixes. The returned set
-	 * may be live; if the consumer intends to update the registry during iteration, a defensive copy should be made.
+	 * Returns the registered vocabularies associated with their registered prefixes, neither of which will be <code>null</code> for any registration. Some
+	 * vocabularies may be associated with multiple prefixes. The returned set may be live; if the consumer intends to update the registry during iteration, a
+	 * defensive copy should be made.
 	 * @return A set of vocabulary namespace URI values and the prefixes with which they are associated.
 	 */
 	public Set<Map.Entry<String, URI>> getRegisteredVocabulariesByPrefix();
@@ -135,22 +187,31 @@ public interface VocabularyRegistry {
 	public static final VocabularyRegistry EMPTY = new VocabularyRegistry() {
 
 		@Override
+		public Optional<URI> getDefaultVocabulary() {
+			return Optional.empty();
+		}
+
+		@Override
 		public boolean isPrefixRegistered(final String prefix) {
+			requireNonNull(prefix);
 			return false;
 		}
 
 		@Override
 		public boolean isVocabularyRegistered(final URI namespace) {
+			requireNonNull(namespace);
 			return false;
 		}
 
 		@Override
 		public Optional<URI> findVocabularyByPrefix(final String prefix) {
+			requireNonNull(prefix);
 			return Optional.empty();
 		}
 
 		@Override
-		public Optional<Map.Entry<URI, String>> findPrefixRegistrationForVocabulary(final URI namespace) {
+		public Optional<String> findPrefixForVocabulary(final URI namespace) {
+			requireNonNull(namespace);
 			return Optional.empty();
 		}
 

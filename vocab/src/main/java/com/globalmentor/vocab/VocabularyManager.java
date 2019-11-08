@@ -110,6 +110,11 @@ public class VocabularyManager extends AbstractVocabularyRegistry implements Voc
 		this.autoRegister = autoRegister;
 	}
 
+	@Override
+	public Optional<URI> setDefaultVocabulary(URI namespace) {
+		return super.setDefaultVocabulary(namespace);
+	}
+
 	/**
 	 * {@inheritDoc}
 	 * @implSpec This implementation returns <code>true</code> if the vocabulary has been registered or if it is one of the known namespaces for this manager.
@@ -130,13 +135,13 @@ public class VocabularyManager extends AbstractVocabularyRegistry implements Voc
 	}
 
 	@Override
-	public Optional<Map.Entry<URI, String>> findPrefixRegistrationForVocabulary(final URI namespace) {
-		Optional<Map.Entry<URI, String>> optionalPrefixRegistration = super.findPrefixRegistrationForVocabulary(namespace);
-		if(optionalPrefixRegistration.isEmpty() && isAutoRegister()) {
-			optionalPrefixRegistration = knownVocabularies.findPrefixRegistrationForVocabulary(namespace);
-			optionalPrefixRegistration.ifPresent(this::registerVocabulary);
+	public Optional<String> findPrefixForVocabulary(final URI namespace) {
+		Optional<String> optionalPrefix = super.findPrefixForVocabulary(namespace);
+		if(optionalPrefix.isEmpty() && isAutoRegister()) {
+			optionalPrefix = knownVocabularies.findPrefixForVocabulary(namespace);
+			optionalPrefix.ifPresent(prefix -> registerVocabulary(namespace, prefix));
 		}
-		return optionalPrefixRegistration;
+		return optionalPrefix;
 	}
 
 	/** The atomic variable used to generate prefixes. */
