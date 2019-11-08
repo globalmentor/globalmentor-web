@@ -38,7 +38,7 @@ public interface VocabularyPrefixSpecification {
 	public static final VocabularyPrefixSpecification DEFAULT = new BaseVocabularyPrefixSpecification() {
 		@Override
 		public boolean isValid(final String prefix) {
-			return contains(prefix, WHITESPACE_CHARACTERS);
+			return !contains(prefix, WHITESPACE_CHARACTERS);
 		}
 	};
 
