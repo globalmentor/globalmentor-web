@@ -28,8 +28,8 @@ import static com.globalmentor.net.URIs.*;
  * <p>
  * A vocabulary registry distinguishes between namespace/prefix associations that have actually been registered, and <dfn>recognized</dfn> vocabularies which
  * the include those the registry knows about by default. Recognized vocabularies are used when a determining a prefix using
- * {@link #determineVocabularyPrefix(URI)}. Recognized vocabularies aren't usually used when looking up vocabularies and prefixes unless auto-register has been
- * turned on.
+ * {@link #determinePrefixForVocabulary(URI)}. Recognized vocabularies aren't usually used when looking up vocabularies and prefixes unless auto-register has
+ * been turned on.
  * </p>
  * @author Garret Wilson
  */
@@ -46,6 +46,13 @@ public interface VocabularyRegistrar extends VocabularyRegistry {
 	public VocabularyPrefixSpecification getPrefixSpecification();
 
 	/**
+	 * Returns the registry of known but not necessarily registered vocabularies.
+	 * @apiNote Recognized vocabularies are the union of known and registered vocabularies.
+	 * @return The vocabularies that are already known, independent from registration.
+	 */
+	public VocabularyRegistry getKnownVocabularies();
+
+	/**
 	 * Sets the default vocabulary.
 	 * @param namespace The namespace URI of the new default vocabulary.
 	 * @return The old default vocabulary, if any.
@@ -54,15 +61,20 @@ public interface VocabularyRegistrar extends VocabularyRegistry {
 	public Optional<URI> setDefaultVocabulary(@Nonnull final URI namespace);
 
 	/**
-	 * Determines whether the given namespace URI is that of a recognized vocabulary. A vocabulary is recognized if it has been registered, or if there is a
-	 * default prefix that would be assigned if one were needed, e.g. by calling {@link #determineVocabularyPrefix(URI)}.
+	 * Determines whether the given namespace URI is that of a recognized vocabulary. A vocabulary is <dfn>recognized</dfn> if it has been registered, or if there
+	 * is a default prefix that is <dfn>known</dfn> that would be assigned if one were needed, e.g. by calling {@link #determinePrefixForVocabulary(URI)}.
 	 * @apiNote Not every recognized vocabulary will have been registered. Some are recognized by default, such as by some initial context, depending on the
 	 *          implementation.
+	 * @implSpec The default implementation returns <code>true</code> if the vocabulary has been registered as per {@link #isVocabularyRegistered(URI)} or
+	 *           registered in {@link #getKnownVocabularies()}.
 	 * @param namespace A namespace URI identifying a vocabulary.
 	 * @return <code>true</code> if a prefix has been associated with the given vocabulary namespace or one could be determined if needed.
 	 * @see #isVocabularyRegistered(URI)
+	 * @see #getKnownVocabularies()
 	 */
-	public boolean isVocabularyRecognized(@Nonnull final URI namespace);
+	public default boolean isVocabularyRecognized(@Nonnull final URI namespace) {
+		return isVocabularyRegistered(namespace) || getKnownVocabularies().isVocabularyRegistered(namespace);
+	}
 
 	/**
 	 * {@inheritDoc} If auto-register has been turned on, a vocabulary will be registered and returned if the prefix recognized, even if it was not registered
@@ -105,7 +117,7 @@ public interface VocabularyRegistrar extends VocabularyRegistry {
 	 */
 	public default boolean registerVocabulary(@Nonnull final URI namespace) {
 		if(!isVocabularyRegistered(namespace)) { //if we don't know about this vocabulary
-			determineVocabularyPrefix(namespace); //determine a prefix for this namespace, which will register it
+			determinePrefixForVocabulary(namespace); //determine a prefix for this namespace, which will register it
 			assert isVocabularyRegistered(namespace);
 			return true; //indicate that this is a new namespace
 		} else { //if we already know about this vocabulary
@@ -207,23 +219,25 @@ public interface VocabularyRegistrar extends VocabularyRegistry {
 	 * @implSpec The default implementation attempts to use the last URI segment as a prefix, if it is valid and has not yet been registered with another
 	 *           namespace.
 	 * @param namespace A namespace URI identifying a vocabulary.
-	 * @return A prefix for use with the identified vocabulary, which may be <code>null</code> if the <code>null</code> prefix is assigned to the given
-	 *         vocabulary.
+	 * @return A prefix for use with the identified vocabulary.
 	 * @throws NullPointerException if the given namespace is <code>null</code>.
 	 * @see #findPrefixForVocabulary(URI)
 	 * @see #generatePrefix()
 	 * @see VocabularyPrefixSpecification#isValid(String)
 	 * @see #registerVocabulary(URI, String)
 	 */
-	public default String determineVocabularyPrefix(@Nonnull final URI namespace) {
+	public default String determinePrefixForVocabulary(@Nonnull final URI namespace) {
 		Optional<String> optionalPrefix = findPrefixForVocabulary(namespace);
 		if(optionalPrefix.isEmpty()) { //TODO use Java 9 Optional.or() here and below
-			final String name = getName(namespace); //get the name identified by the URI (the last URI path sequence) TODO add URIs.findName()
-			if(name != null && getPrefixSpecification().isValid(name) && !isPrefixRegistered(name)) { //if the name is a valid prefix that we haven't yet used
-				optionalPrefix = Optional.of(name); //use the name as the prefix
-			}
-			if(optionalPrefix.isEmpty()) { //if we didn't find a label from the URI name
-				optionalPrefix = Optional.of(generatePrefix()); //generate a unique vocabulary prefix
+			optionalPrefix = getKnownVocabularies().findPrefixForVocabulary(namespace);
+			if(optionalPrefix.isEmpty()) {
+				final String name = getName(namespace); //get the name identified by the URI (the last URI path sequence) TODO add URIs.findName()
+				if(name != null && getPrefixSpecification().isValid(name) && !isPrefixRegistered(name)) { //if the name is a valid prefix that we haven't yet used
+					optionalPrefix = Optional.of(name); //use the name as the prefix
+				}
+				if(optionalPrefix.isEmpty()) { //if we didn't find a label from the URI name
+					optionalPrefix = Optional.of(generatePrefix()); //generate a unique vocabulary prefix
+				}
 			}
 			assert optionalPrefix.isPresent();
 			registerVocabulary(namespace, optionalPrefix.get()); //associate the prefix and namespace

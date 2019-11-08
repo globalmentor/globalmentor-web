@@ -24,7 +24,7 @@ import static com.globalmentor.java.Conditions.*;
  */
 public abstract class BaseVocabularyPrefixSpecification implements VocabularyPrefixSpecification {
 
-	private static final String PREFIX_PREFIX = "ns";
+	public static final String PREFIX_PREFIX = "ns";
 
 	/**
 	 * {@inheritDoc}

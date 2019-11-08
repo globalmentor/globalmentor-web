@@ -25,13 +25,20 @@ import javax.annotation.*;
 import static java.util.Objects.*;
 
 /**
- * Map managing namespace URIs and labels for serialization. Mapping labels to the <code>null</code> namespace or to the <code>null</code> label is allowed.
- * @implSpec This implementation allows a <code>null</code> prefix, but <code>null</code> namespace prefixes are not allowed.
+ * Map managing namespace URIs and prefixes for serialization. As a manager is also a {@link VocabularyRegistry}, <code>null</code> namespaces and
+ * <code>null</code> prefixes are not allowed, but a default vocabulary may be specified using {@link #setDefaultVocabulary(URI)}.
  * @implSpec This implementation supports namespaces that are recognized but not registered; that is, default namespace/prefix associations.
  * @implSpec This class is not thread safe.
  * @author Garret Wilson
  */
 public class VocabularyManager extends AbstractVocabularyRegistry implements VocabularyRegistrar {
+
+	private final boolean autoRegister;
+
+	@Override
+	public boolean isAutoRegister() {
+		return autoRegister;
+	}
 
 	private final VocabularyPrefixSpecification prefixSpecification;
 
@@ -42,11 +49,9 @@ public class VocabularyManager extends AbstractVocabularyRegistry implements Voc
 
 	private final VocabularyRegistry knownVocabularies;
 
-	private final boolean autoRegister;
-
 	@Override
-	public boolean isAutoRegister() {
-		return autoRegister;
+	public VocabularyRegistry getKnownVocabularies() {
+		return knownVocabularies;
 	}
 
 	/**
@@ -115,20 +120,11 @@ public class VocabularyManager extends AbstractVocabularyRegistry implements Voc
 		return super.setDefaultVocabulary(namespace);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * @implSpec This implementation returns <code>true</code> if the vocabulary has been registered or if it is one of the known namespaces for this manager.
-	 */
-	@Override
-	public boolean isVocabularyRecognized(final URI namespace) {
-		return isVocabularyRegistered(namespace) || knownVocabularies.isVocabularyRegistered(namespace);
-	}
-
 	@Override
 	public Optional<URI> findVocabularyByPrefix(final String prefix) {
 		Optional<URI> optionalNamespace = super.findVocabularyByPrefix(prefix);
 		if(optionalNamespace.isEmpty() && isAutoRegister()) {
-			optionalNamespace = knownVocabularies.findVocabularyByPrefix(prefix);
+			optionalNamespace = getKnownVocabularies().findVocabularyByPrefix(prefix);
 			optionalNamespace.ifPresent(namespace -> registerPrefix(prefix, namespace));
 		}
 		return optionalNamespace;
@@ -138,7 +134,7 @@ public class VocabularyManager extends AbstractVocabularyRegistry implements Voc
 	public Optional<String> findPrefixForVocabulary(final URI namespace) {
 		Optional<String> optionalPrefix = super.findPrefixForVocabulary(namespace);
 		if(optionalPrefix.isEmpty() && isAutoRegister()) {
-			optionalPrefix = knownVocabularies.findPrefixForVocabulary(namespace);
+			optionalPrefix = getKnownVocabularies().findPrefixForVocabulary(namespace);
 			optionalPrefix.ifPresent(prefix -> registerVocabulary(namespace, prefix));
 		}
 		return optionalPrefix;
