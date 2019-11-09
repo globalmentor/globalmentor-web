@@ -46,6 +46,7 @@ public interface VocabularyRegistry {
 
 	/**
 	 * Creates a read-only vocabulary with the indicated default vocabulary and given registrations.
+	 * @implSpec The {@link VocabularySpecification#DEFAULT} vocabulary specification is used.
 	 * @param defaultVocabulary The namespace URI of the default vocabulary.
 	 * @param vocabulariesByPrefix Vocabulary prefixes and vocabulary namespace URIs associated with them. If a prefix is mapped to more than one namespace, only
 	 *          the first prefix will be reverse-mapped back to the namespace.
@@ -58,6 +59,7 @@ public interface VocabularyRegistry {
 
 	/**
 	 * Creates a read-only vocabulary with the given registrations.
+	 * @implSpec The {@link VocabularySpecification#DEFAULT} vocabulary specification is used.
 	 * @param vocabulariesByPrefix Vocabulary prefixes and vocabulary namespace URIs associated with them. If a prefix is mapped to more than one namespace, only
 	 *          the first prefix will be reverse-mapped back to the namespace.
 	 * @return An immutable vocabulary registry with the indicated registrations.
@@ -69,6 +71,7 @@ public interface VocabularyRegistry {
 
 	/**
 	 * Creates a read-only vocabulary with the indicated default vocabulary and the given registrations.
+	 * @implSpec The {@link VocabularySpecification#DEFAULT} vocabulary specification is used.
 	 * @param defaultVocabulary The namespace URI of the default vocabulary.
 	 * @param vocabulariesByPrefix Vocabulary prefixes and vocabulary namespace URIs associated with them. If a prefix is mapped to more than one namespace, only
 	 *          the first prefix will be reverse-mapped back to the namespace.
@@ -82,6 +85,7 @@ public interface VocabularyRegistry {
 
 	/**
 	 * Creates a read-only vocabulary with the given registrations.
+	 * @implSpec The {@link VocabularySpecification#DEFAULT} vocabulary specification is used.
 	 * @param vocabulariesByPrefix Vocabulary prefixes and vocabulary namespace URIs associated with them. If a prefix is mapped to more than one namespace, only
 	 *          the first prefix will be reverse-mapped back to the namespace.
 	 * @return An immutable vocabulary registry with the indicated registrations.
@@ -94,6 +98,7 @@ public interface VocabularyRegistry {
 
 	/**
 	 * Creates a read-only vocabulary with the indicated default vocabulary and the given registrations.
+	 * @implSpec The {@link VocabularySpecification#DEFAULT} vocabulary specification is used.
 	 * @param defaultVocabulary The namespace URI of the default vocabulary.
 	 * @param vocabulariesByPrefix Vocabulary prefixes and vocabulary namespace URIs associated with them. If a prefix is mapped to more than one namespace, only
 	 *          the first prefix will be reverse-mapped back to the namespace.
@@ -106,6 +111,7 @@ public interface VocabularyRegistry {
 
 	/**
 	 * Creates a read-only vocabulary with the given registrations.
+	 * @implSpec The {@link VocabularySpecification#DEFAULT} vocabulary specification is used.
 	 * @param vocabulariesByPrefix Vocabulary prefixes and vocabulary namespace URIs associated with them. If a prefix is mapped to more than one namespace, only
 	 *          the first prefix will be reverse-mapped back to the namespace.
 	 * @return An immutable vocabulary registry with the indicated registrations.
@@ -114,6 +120,9 @@ public interface VocabularyRegistry {
 	public static VocabularyRegistry of(@Nonnull final Map<String, URI> vocabulariesByPrefix) {
 		return of(vocabulariesByPrefix.entrySet());
 	}
+
+	/** @return The specification governing vocabularies for this registry. */
+	public VocabularySpecification getVocabularySpecification();
 
 	/**
 	 * Returns the default namespace.
@@ -158,6 +167,50 @@ public interface VocabularyRegistry {
 	public Optional<String> findPrefixForVocabulary(@Nonnull final URI namespace);
 
 	/**
+	 * Retrieves the prefix to use for the given term.
+	 * @implSpec The default implementation determines the namespace and name using {@link #asVocabularyTerm(URI)} and then determines the prefix by delegating to
+	 *           {@link #findPrefixForVocabulary(URI)}.
+	 * @param term The absolute URI identifying a term in a vocabulary.
+	 * @return A prefix for use with the given term, if the given URI can be converted to a term and if a prefix is registered.
+	 * @throws NullPointerException if the given term is <code>null</code>.
+	 * @throws IllegalArgumentException if the given URI is not absolute.
+	 */
+	public default Optional<Map.Entry<VocabularyTerm, String>> findPrefixForTerm(@Nonnull final URI term) {
+		return asVocabularyTerm(term)
+				.flatMap(vocabularyTerm -> findPrefixForVocabulary(vocabularyTerm.getNamespace()).map(prefix -> Map.entry(vocabularyTerm, prefix)));
+	}
+
+	/**
+	 * Determines a vocabulary term from a given term URI based upon the vocabulary specification rules.
+	 * @apiNote This method is for retrieving term components from a URI, possibly with help from recognized vocabularies, but there is no guarantee that the
+	 *          returned term is from a registered or even recognized vocabulary.
+	 * @implSpec The default implementation delegates to {@link VocabularySpecification#isNamespaceRegular(URI)}.
+	 * @implSpec This method can only determine namespaces that are <dfn>regular</dfn> as per {@link VocabularySpecification#isNamespaceRegular(URI)}.
+	 * @implNote If it is ever necessary to retrieve irregular namespaces (e.g. <code>http://www.w3.org/XML/1998/namespace</code>), this can be implemented in the
+	 *           following manner in {@link AbstractVocabularyRegistry}:
+	 *           <ol>
+	 *           <li>As each namespace is added, determine if it is regular.</li>
+	 *           <li>Add irregular namespaces to a separate set.</li>
+	 *           <li>When this method is called, first check to see if the term has any of the irregular namespaces as a proper prefix (an expensive operation if
+	 *           there are many irregular namespaces).</li>
+	 *           </ol>
+	 * @param term The absolute URI identifying a term in a vocabulary.
+	 * @return The namespace and name of the term, which may be empty if the namespace could not be determined or the given string itself is a regular namespace.
+	 * @throws NullPointerException if the given term is <code>null</code>.
+	 * @throws IllegalArgumentException if the given URI is not absolute.
+	 * @see #getVocabularySpecification()
+	 */
+	public default Optional<VocabularyTerm> asVocabularyTerm(@Nonnull final URI term) {
+		return getVocabularySpecification().findTermNamespace(term).map(namespace -> {
+			final String termString = term.toString();
+			final String namespaceString = namespace.toString();
+			assert termString.startsWith(namespaceString);
+			final int namespaceLength = namespaceString.length();
+			return VocabularyTerm.of(namespace, termString.substring(namespaceLength));
+		});
+	}
+
+	/**
 	 * Returns the registered vocabularies and their associated prefixes, neither of which will be <code>null</code> for any registration. No two vocabularies
 	 * will have the same associated prefix. The returned set may be live; if the consumer intends to update the registry during iteration, a defensive copy
 	 * should be made.
@@ -175,16 +228,13 @@ public interface VocabularyRegistry {
 	 */
 	public Set<Map.Entry<String, URI>> getRegisteredVocabulariesByPrefix();
 
-	/**
-	 * Retrieves the namespace, if it can be determined, identifying the vocabulary the term is in.
-	 * @param term The URI identifying the term in a vocabulary.
-	 * @return The namespace representing the vocabulary of the term, or <code>null</code> if no vocabulary could be determined.
-	 * @throws NullPointerException if the given namespace is <code>null</code>.
-	 */
-	//TODO public Optional<URI> findTermVocabulary(@Nonnull final URI term);
-
-	/** An immutable empty vocabulary registry. */
+	/** An immutable empty vocabulary registry using the {@link VocabularySpecification#DEFAULT} default vocabulary specification. */
 	public static final VocabularyRegistry EMPTY = new VocabularyRegistry() {
+
+		@Override
+		public VocabularySpecification getVocabularySpecification() {
+			return VocabularySpecification.DEFAULT;
+		}
 
 		@Override
 		public Optional<URI> getDefaultVocabulary() {

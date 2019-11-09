@@ -17,6 +17,7 @@
 package com.globalmentor.vocab;
 
 import static com.github.npathai.hamcrestopt.OptionalMatchers.*;
+import static com.globalmentor.net.URIs.*;
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
 import static org.hamcrest.MatcherAssert.*;
@@ -33,6 +34,7 @@ import org.junit.jupiter.api.*;
  */
 public class VocabularyManagerTest {
 
+	private static final URI CC_NAMESPACE = URI.create("http://creativecommons.org/ns#");
 	private static final URI DC_NAMESPACE = URI.create("http://purl.org/dc/terms/");
 	private static final URI OG_NAMESPACE = URI.create("http://ogp.me/ns#");
 	private static final URI EG_NAMESPACE = URI.create("https://example.com/ns/");
@@ -103,6 +105,13 @@ public class VocabularyManagerTest {
 
 	/** @see VocabularyManager#determinePrefixForVocabulary(URI) */
 	@Test
+	public void testDetermineVocabularyPrefixDoesNotUseRootPath() {
+		final VocabularyManager manager = new VocabularyManager();
+		assertThat(manager.determinePrefixForVocabulary(URI.create("http://example.com/")), not(ROOT_PATH));
+	}
+
+	/** @see VocabularyManager#determinePrefixForVocabulary(URI) */
+	@Test
 	public void testDetermineVocabularyPrefixUsesCollectionPathComponent() {
 		final VocabularyManager manager = new VocabularyManager();
 		assertThat(manager.isPrefixRegistered("bar"), is(false));
@@ -116,7 +125,7 @@ public class VocabularyManagerTest {
 		final VocabularyManager manager = new VocabularyManager();
 		manager.registerPrefix("bar", URI.create("http://example.com/some/other/namespace"));
 		assertThat(manager.isPrefixRegistered("bar"), is(true));
-		final String generatedPrefix = BaseVocabularyPrefixSpecification.PREFIX_PREFIX + "1";
+		final String generatedPrefix = BaseVocabularySpecification.PREFIX_PREFIX + "1";
 		assertThat(manager.isPrefixRegistered(generatedPrefix), is(false));
 		assertThat(manager.determinePrefixForVocabulary(URI.create("http://example.com/foo/bar")), is(generatedPrefix));
 		assertThat(manager.isPrefixRegistered(generatedPrefix), is(true));
@@ -126,7 +135,7 @@ public class VocabularyManagerTest {
 	@Test
 	public void testDetermineVocabularyPrefixGeneratesPrefixWhenCannotBeAutoDeterminedFromURI() {
 		final VocabularyManager manager = new VocabularyManager();
-		final String generatedPrefix = BaseVocabularyPrefixSpecification.PREFIX_PREFIX + "1";
+		final String generatedPrefix = BaseVocabularySpecification.PREFIX_PREFIX + "1";
 		assertThat(manager.isPrefixRegistered(generatedPrefix), is(false));
 		assertThat(manager.determinePrefixForVocabulary(URI.create("http://example.com/foo%20bar")), is(generatedPrefix));
 		assertThat(manager.isPrefixRegistered(generatedPrefix), is(true));
@@ -136,18 +145,18 @@ public class VocabularyManagerTest {
 	@Test
 	public void testDetermineVocabularyPrefixGeneratesUniquePrefixes() {
 		final VocabularyManager manager = new VocabularyManager();
-		assertThat(manager.determinePrefixForVocabulary(URI.create("http://example.com/foo%20bar")), is(BaseVocabularyPrefixSpecification.PREFIX_PREFIX + "1"));
-		assertThat(manager.determinePrefixForVocabulary(URI.create("http://example.com/bar%20foo")), is(BaseVocabularyPrefixSpecification.PREFIX_PREFIX + "2"));
+		assertThat(manager.determinePrefixForVocabulary(URI.create("http://example.com/foo%20bar")), is(BaseVocabularySpecification.PREFIX_PREFIX + "1"));
+		assertThat(manager.determinePrefixForVocabulary(URI.create("http://example.com/bar%20foo")), is(BaseVocabularySpecification.PREFIX_PREFIX + "2"));
 	}
 
 	/** @see VocabularyManager#determinePrefixForVocabulary(URI) */
 	@Test
 	public void testDetermineVocabularyPrefixGeneratesAnotherPrefixGeneratedPrefixAlreadyRegistered() {
 		final VocabularyManager manager = new VocabularyManager();
-		final String generatedPrefix1 = BaseVocabularyPrefixSpecification.PREFIX_PREFIX + "1";
+		final String generatedPrefix1 = BaseVocabularySpecification.PREFIX_PREFIX + "1";
 		manager.registerPrefix(generatedPrefix1, URI.create("http://example.com/some/other/namespace"));
 		assertThat(manager.isPrefixRegistered(generatedPrefix1), is(true));
-		final String generatedPrefix2 = BaseVocabularyPrefixSpecification.PREFIX_PREFIX + "2";
+		final String generatedPrefix2 = BaseVocabularySpecification.PREFIX_PREFIX + "2";
 		assertThat(manager.isPrefixRegistered(generatedPrefix2), is(false));
 		assertThat(manager.determinePrefixForVocabulary(URI.create("http://example.com/foo%20bar")), is(generatedPrefix2));
 		assertThat(manager.isPrefixRegistered(generatedPrefix2), is(true));
@@ -193,6 +202,29 @@ public class VocabularyManagerTest {
 		assertThat(manager.isPrefixRegistered("bar"), is(false));
 		assertThat(manager.findPrefixForVocabulary(fooNamespace), isPresentAndIs("bar"));
 		assertThat(manager.isPrefixRegistered("bar"), is(true));
+	}
+
+	/** @see VocabularyManager#determinePrefixForTerm(URI) */
+	@Test
+	public void testDeterminePrefixForTerm() {
+		final VocabularyRegistry knownVocabularies = VocabularyRegistry.of(Map.entry("cc", CC_NAMESPACE));
+		final VocabularyManager manager = new VocabularyManager(knownVocabularies);
+		manager.setDefaultVocabulary(URI.create("http://example.com/"));
+		manager.registerPrefix("dc", DC_NAMESPACE);
+		manager.registerPrefix("og", OG_NAMESPACE);
+
+		assertThat(manager.determinePrefixForTerm(URI.create("http://example.com/")), isEmpty()); //not a term
+		assertThat(manager.determinePrefixForTerm(URI.create("http://example.com/foo")),
+				isPresentAndIs(Map.entry(VocabularyTerm.of(URI.create("http://example.com/"), "foo"), BaseVocabularySpecification.PREFIX_PREFIX + "1"))); //set as default; prefix has to be generated
+		assertThat(manager.determinePrefixForTerm(URI.create("https://example.com/foo")),
+				isPresentAndIs(Map.entry(VocabularyTerm.of(URI.create("https://example.com/"), "foo"), BaseVocabularySpecification.PREFIX_PREFIX + "2"))); //not registered; prefix has to be generated
+		assertThat(manager.determinePrefixForTerm(URI.create("http://example.com/foo/bar")),
+				isPresentAndIs(Map.entry(VocabularyTerm.of(URI.create("http://example.com/foo/"), "bar"), "foo"))); //not registered; prefix from path
+		assertThat(manager.determinePrefixForTerm(URI.create("http://purl.org/dc/terms/creator")),
+				isPresentAndIs(Map.entry(VocabularyTerm.of(DC_NAMESPACE, "creator"), "dc")));
+		assertThat(manager.determinePrefixForTerm(URI.create("http://ogp.me/ns#title")), isPresentAndIs(Map.entry(VocabularyTerm.of(OG_NAMESPACE, "title"), "og")));
+		assertThat(manager.determinePrefixForTerm(URI.create("http://creativecommons.org/ns#permits")),
+				isPresentAndIs(Map.entry(VocabularyTerm.of(CC_NAMESPACE, "permits"), "cc"))); //not registered; known vocabulary
 	}
 
 }

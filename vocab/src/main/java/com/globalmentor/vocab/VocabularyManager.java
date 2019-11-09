@@ -40,13 +40,6 @@ public class VocabularyManager extends AbstractVocabularyRegistry implements Voc
 		return autoRegister;
 	}
 
-	private final VocabularyPrefixSpecification prefixSpecification;
-
-	@Override
-	public VocabularyPrefixSpecification getPrefixSpecification() {
-		return prefixSpecification;
-	}
-
 	private final VocabularyRegistry knownVocabularies;
 
 	@Override
@@ -56,25 +49,25 @@ public class VocabularyManager extends AbstractVocabularyRegistry implements Voc
 
 	/**
 	 * Default vocabulary manager constructor.
-	 * @implSpec The {@link VocabularyPrefixSpecification#DEFAULT} prefix specification is used.
+	 * @implSpec The {@link VocabularySpecification#DEFAULT} vocabulary specification is used.
 	 * @implSpec Auto-register will be disabled.
 	 */
 	public VocabularyManager() {
-		this(VocabularyPrefixSpecification.DEFAULT);
+		this(VocabularySpecification.DEFAULT);
 	}
 
 	/**
-	 * Prefix specification constructor.
-	 * @param prefixSpecification The specification governing allowed prefix for this registry.
+	 * Vocabulary specification constructor.
+	 * @param vocabularySpecification The specification governing vocabularies in this registry.
 	 * @implSpec Auto-register will be disabled.
 	 */
-	public VocabularyManager(@Nonnull VocabularyPrefixSpecification prefixSpecification) {
-		this(prefixSpecification, VocabularyRegistry.EMPTY);
+	public VocabularyManager(@Nonnull VocabularySpecification vocabularySpecification) {
+		this(vocabularySpecification, VocabularyRegistry.EMPTY);
 	}
 
 	/**
 	 * Known vocabularies constructor.
-	 * @implSpec The {@link VocabularyPrefixSpecification#DEFAULT} prefix specification is used.
+	 * @implSpec The {@link VocabularySpecification#DEFAULT} vocabulary specification is used.
 	 * @implSpec Auto-register will be disabled.
 	 * @param knownVocabularies The vocabularies that are already recognized outside of any registrations.
 	 */
@@ -84,33 +77,33 @@ public class VocabularyManager extends AbstractVocabularyRegistry implements Voc
 
 	/**
 	 * Known vocabularies and auto-register constructor.
-	 * @implSpec The {@link VocabularyPrefixSpecification#DEFAULT} prefix specification is used.
+	 * @implSpec The {@link VocabularySpecification#DEFAULT} vocabulary specification is used.
 	 * @param knownVocabularies The vocabularies that are already recognized outside of any registrations.
 	 * @param autoRegister <code>true</code> if known vocabularies should be registered automatically upon lookup.
 	 */
 	public VocabularyManager(@Nonnull final VocabularyRegistry knownVocabularies, final boolean autoRegister) {
-		this(VocabularyPrefixSpecification.DEFAULT, knownVocabularies, autoRegister);
+		this(VocabularySpecification.DEFAULT, knownVocabularies, autoRegister);
 	}
 
 	/**
-	 * Prefix specification and known vocabularies constructor.
+	 * Vocabulary specification and known vocabularies constructor.
 	 * @implSpec Auto-register will be disabled.
-	 * @param prefixSpecification The specification governing allowed prefix for this registry.
+	 * @param vocabularySpecification The specification governing vocabularies in this registry.
 	 * @param knownVocabularies The vocabularies that are already recognized outside of any registrations.
 	 */
-	public VocabularyManager(@Nonnull VocabularyPrefixSpecification prefixSpecification, @Nonnull final VocabularyRegistry knownVocabularies) {
-		this(prefixSpecification, knownVocabularies, false);
+	public VocabularyManager(@Nonnull VocabularySpecification vocabularySpecification, @Nonnull final VocabularyRegistry knownVocabularies) {
+		this(vocabularySpecification, knownVocabularies, false);
 	}
 
 	/**
 	 * Full constructor.
-	 * @param prefixSpecification The specification governing allowed prefix for this registry.
+	 * @param vocabularySpecification The specification governing vocabularies in this registry.
 	 * @param knownVocabularies The vocabularies that are already recognized outside of any registrations.
 	 * @param autoRegister <code>true</code> if known vocabularies should be registered automatically upon lookup.
 	 */
-	public VocabularyManager(@Nonnull VocabularyPrefixSpecification prefixSpecification, @Nonnull final VocabularyRegistry knownVocabularies,
+	public VocabularyManager(@Nonnull VocabularySpecification vocabularySpecification, @Nonnull final VocabularyRegistry knownVocabularies,
 			final boolean autoRegister) {
-		this.prefixSpecification = requireNonNull(prefixSpecification);
+		super(vocabularySpecification);
 		this.knownVocabularies = requireNonNull(knownVocabularies);
 		this.autoRegister = autoRegister;
 	}
@@ -147,7 +140,7 @@ public class VocabularyManager extends AbstractVocabularyRegistry implements Voc
 	public String generatePrefix() {
 		String prefix;
 		do {
-			prefix = getPrefixSpecification().generatePrefix(generatedPrefixCount.incrementAndGet());
+			prefix = getVocabularySpecification().generatePrefix(generatedPrefixCount.incrementAndGet());
 		} while(isPrefixRegistered(prefix)); //keep generating prefixes until one isn't already registered
 		assert !isPrefixRegistered(prefix);
 		return prefix;
@@ -156,7 +149,7 @@ public class VocabularyManager extends AbstractVocabularyRegistry implements Voc
 	@Override
 	public Optional<Map.Entry<URI, String>> registerVocabulary(final URI namespace, final String prefix) {
 		requireNonNull(namespace);
-		getPrefixSpecification().checkArgumentValidPrefix(prefix);
+		getVocabularySpecification().checkArgumentValidPrefix(prefix);
 		final Map<URI, String> prefixesByNamespace = getPrefixesByNamespace();
 		final boolean hadPrefixRegistration = prefixesByNamespace.containsKey(namespace); //check first to distinguish between no mapping and null value
 		final String previousPrefix = getPrefixesByNamespace().put(namespace, prefix);
@@ -166,7 +159,7 @@ public class VocabularyManager extends AbstractVocabularyRegistry implements Voc
 
 	@Override
 	public Optional<URI> registerPrefix(final String prefix, final URI namespace) {
-		getPrefixSpecification().checkArgumentValidPrefix(prefix);
+		getVocabularySpecification().checkArgumentValidPrefix(prefix);
 		requireNonNull(namespace);
 		final Optional<URI> previousNamespace = Optional.ofNullable(getNamespacesByPrefix().put(prefix, namespace));
 		getPrefixesByNamespace().putIfAbsent(namespace, prefix); //don't override a prefix already associated with the namespace 

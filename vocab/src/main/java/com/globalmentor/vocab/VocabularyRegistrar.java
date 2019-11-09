@@ -42,9 +42,6 @@ public interface VocabularyRegistrar extends VocabularyRegistry {
 	 */
 	public boolean isAutoRegister();
 
-	/** @return The specification governing allowed prefix for this registry. */
-	public VocabularyPrefixSpecification getPrefixSpecification();
-
 	/**
 	 * Returns the registry of known but not necessarily registered vocabularies.
 	 * @apiNote Recognized vocabularies are the union of known and registered vocabularies.
@@ -135,7 +132,7 @@ public interface VocabularyRegistrar extends VocabularyRegistry {
 	 * @return The prefix registration, if any, that was previously made with the given namespace.
 	 * @throws NullPointerException if the given namespace is <code>null</code>.
 	 * @throws IllegalArgumentException if the given prefix is not valid.
-	 * @see #getPrefixSpecification()
+	 * @see #getVocabularySpecification()
 	 */
 	public default Optional<Map.Entry<URI, String>> registerVocabulary(@Nonnull Map.Entry<URI, String> prefixForNamespace) {
 		return registerVocabulary(prefixForNamespace.getKey(), prefixForNamespace.getValue());
@@ -151,7 +148,7 @@ public interface VocabularyRegistrar extends VocabularyRegistry {
 	 * @return The prefix registration, if any, that was previously made with the given namespace.
 	 * @throws NullPointerException if the given namespace is <code>null</code>.
 	 * @throws IllegalArgumentException if the given prefix is not valid.
-	 * @see #getPrefixSpecification()
+	 * @see #getVocabularySpecification()
 	 */
 	public Optional<Map.Entry<URI, String>> registerVocabulary(@Nonnull final URI namespace, @Nullable final String prefix);
 
@@ -164,7 +161,7 @@ public interface VocabularyRegistrar extends VocabularyRegistry {
 	 * @return The namespace of the vocabulary, if any, that was previously associated with the given prefix.
 	 * @throws NullPointerException if the given namespace value is <code>null</code>.
 	 * @throws IllegalArgumentException if the given prefix is not valid.
-	 * @see #getPrefixSpecification()
+	 * @see #getVocabularySpecification()
 	 */
 	public default Optional<URI> registerPrefix(@Nonnull Map.Entry<String, URI> namespaceByPrefix) {
 		return registerPrefix(namespaceByPrefix.getKey(), namespaceByPrefix.getValue());
@@ -182,7 +179,7 @@ public interface VocabularyRegistrar extends VocabularyRegistry {
 	 * @return The namespace of the vocabulary, if any, that was previously associated with the given prefix.
 	 * @throws NullPointerException if the given namespace is <code>null</code>.
 	 * @throws IllegalArgumentException if the given prefix is not valid.
-	 * @see #getPrefixSpecification()
+	 * @see #getVocabularySpecification()
 	 */
 	public Optional<URI> registerPrefix(@Nullable final String prefix, @Nonnull final URI namespace);
 
@@ -194,7 +191,7 @@ public interface VocabularyRegistrar extends VocabularyRegistry {
 	 * @return This registrar.
 	 * @throws NullPointerException if the given registry is <code>null</code>.
 	 * @throws IllegalArgumentException if one of the given prefixes is not valid.
-	 * @see #getPrefixSpecification()
+	 * @see #getVocabularySpecification()
 	 */
 	public default VocabularyRegistrar registerAll(@Nonnull final VocabularyRegistry registry) {
 		registry.getRegisteredVocabulariesByPrefix().forEach(this::registerPrefix);
@@ -202,28 +199,29 @@ public interface VocabularyRegistrar extends VocabularyRegistry {
 	}
 
 	/**
-	 * Generates a new vocabulary prefix unique to this manager. The generated prefix will be valid as per {@link VocabularyPrefixSpecification#isValid(String)}
+	 * Generates a new vocabulary prefix unique to this manager. The generated prefix will be valid as per {@link VocabularySpecification#isValidPrefix(String)}
 	 * and will not be registered.
 	 * @return A new prefix unique to this manager.
-	 * @see #getPrefixSpecification()
+	 * @see #getVocabularySpecification()
 	 * @see #isPrefixRegistered(String)
 	 */
 	public String generatePrefix();
 
 	/**
-	 * Retrieves the prefix to use for the indicated vocabulary. If a namespace is unregistered (i.e. no prefix, including the <code>null</code> prefix, has been
-	 * registered with the indicated vocabulary), a new prefix will be determined and registered with the vocabulary. Thus when this method returns, the
-	 * vocabulary is guaranteed to have been registered. Otherwise it delegates to {@link #generatePrefix()}
+	 * Retrieves the prefix to use for the indicated vocabulary. If a vocabulary has no prefix registered, a new prefix will be determined and registered with the
+	 * vocabulary. Thus when this method returns, the vocabulary is guaranteed to have been registered.
+	 * @apiNote If a default vocabulary is supported, a caller may first want to check if the given namespace indicates default vocabulary using
+	 *          {@link #getDefaultVocabulary()}.
 	 * @apiNote This method is similar to {@link #findPrefixForVocabulary(URI)} except that this method will always return a prefix, generating a new one if
 	 *          needed.
 	 * @implSpec The default implementation attempts to use the last URI segment as a prefix, if it is valid and has not yet been registered with another
-	 *           namespace.
+	 *           namespace. Otherwise it delegates to {@link #generatePrefix()}.
 	 * @param namespace A namespace URI identifying a vocabulary.
 	 * @return A prefix for use with the identified vocabulary.
 	 * @throws NullPointerException if the given namespace is <code>null</code>.
 	 * @see #findPrefixForVocabulary(URI)
 	 * @see #generatePrefix()
-	 * @see VocabularyPrefixSpecification#isValid(String)
+	 * @see VocabularySpecification#isValidPrefix(String)
 	 * @see #registerVocabulary(URI, String)
 	 */
 	public default String determinePrefixForVocabulary(@Nonnull final URI namespace) {
@@ -232,7 +230,7 @@ public interface VocabularyRegistrar extends VocabularyRegistry {
 			optionalPrefix = getKnownVocabularies().findPrefixForVocabulary(namespace);
 			if(optionalPrefix.isEmpty()) {
 				final String name = getName(namespace); //get the name identified by the URI (the last URI path sequence) TODO add URIs.findName()
-				if(name != null && getPrefixSpecification().isValid(name) && !isPrefixRegistered(name)) { //if the name is a valid prefix that we haven't yet used
+				if(name != null && !name.equals(ROOT_PATH) && getVocabularySpecification().isValidPrefix(name) && !isPrefixRegistered(name)) { //if the name is a valid prefix that we haven't yet used
 					optionalPrefix = Optional.of(name); //use the name as the prefix
 				}
 				if(optionalPrefix.isEmpty()) { //if we didn't find a label from the URI name
@@ -244,6 +242,26 @@ public interface VocabularyRegistrar extends VocabularyRegistry {
 		}
 		assert optionalPrefix.isPresent();
 		return optionalPrefix.get(); //return the prefix we found or created
+	}
+
+	/**
+	 * Retrieves the prefix to use for the vocabulary term. If the term vocabulary has no prefix registered, a new prefix will be determined and registered with
+	 * the vocabulary. Thus when this method returns, the vocabulary is guaranteed to have been registered.
+	 * @apiNote This method is similar to {@link #findPrefixForTerm(URI)} except that this method will always return a prefix, generating a new one if needed.
+	 * @implSpec The default implementation delegates to {@link #determinePrefixForVocabulary(URI)}.
+	 * @param term The absolute URI identifying a term in a vocabulary.
+	 * @return A prefix for use with the given term, if the given URI can be converted to a term and if a prefix is registered.
+	 * @throws NullPointerException if the given term is <code>null</code>.
+	 * @throws IllegalArgumentException if the given URI is not absolute.
+	 * @see #asVocabularyTerm(URI)
+	 * @see #determinePrefixForVocabulary(URI)
+	 * @see #findPrefixForTerm(URI)
+	 * @see #generatePrefix()
+	 * @see VocabularySpecification#isValidPrefix(String)
+	 * @see #registerVocabulary(URI, String)
+	 */
+	public default Optional<Map.Entry<VocabularyTerm, String>> determinePrefixForTerm(@Nonnull final URI term) {
+		return asVocabularyTerm(term).map(vocabularyTerm -> Map.entry(vocabularyTerm, determinePrefixForVocabulary(vocabularyTerm.getNamespace())));
 	}
 
 }

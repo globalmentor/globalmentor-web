@@ -33,6 +33,13 @@ import static java.util.Objects.*;
  */
 public abstract class AbstractVocabularyRegistry implements VocabularyRegistry {
 
+	private final VocabularySpecification vocabularySpecification;
+
+	@Override
+	public VocabularySpecification getVocabularySpecification() {
+		return vocabularySpecification;
+	}
+
 	private URI defaultNamespace = null;
 
 	/** @implSpec <code>null</code> is not allowed as a key or as a value. */
@@ -49,6 +56,14 @@ public abstract class AbstractVocabularyRegistry implements VocabularyRegistry {
 	/** @return The internal map of registered namespaces and their associated prefixes. */
 	protected Map<URI, String> getPrefixesByNamespace() {
 		return prefixesByNamespace;
+	}
+
+	/**
+	 * Vocabulary specification constructor.
+	 * @param vocabularySpecification The specification governing vocabularies in this registry.
+	 */
+	public AbstractVocabularyRegistry(@Nonnull VocabularySpecification vocabularySpecification) {
+		this.vocabularySpecification = requireNonNull(vocabularySpecification);
 	}
 
 	/**

@@ -25,26 +25,46 @@ import javax.annotation.*;
 
 /**
  * Default read-only implementation of vocabulary registry.
- * @apiNote Normally consumers will not create this class directly, but instead call one of the static factory methods in {@link VocabularyRegistry}.
+ * @apiNote Unless a custom vocabulary specification is to be used, normally consumers will not create this class directly, but instead call one of the static
+ *          factory methods in {@link VocabularyRegistry}.
  * @implSpec This implementation allows a <code>null</code> prefix, but <code>null</code> namespace prefixes are not allowed.
  * @implSpec This class is thread safe.
  * @author Garret Wilson
  */
-final class DefaultVocabularyRegistry extends AbstractVocabularyRegistry {
+public final class DefaultVocabularyRegistry extends AbstractVocabularyRegistry {
 
 	/**
 	 * Existing prefix-vocabulary registrations constructor.
+	 * @implSpec The {@link VocabularySpecification#DEFAULT} vocabulary specification is used.
 	 * @param defaultVocabulary The namespace URI of the default vocabulary, or <code>null</code> if there is no default.
 	 * @param vocabulariesByPrefix Vocabulary prefixes and vocabulary namespace URIs associated with them. If a prefix key appears more than once, the last one
 	 *          one will take affect. If a prefix is mapped to more than one namespace, only the first prefix will be reverse-mapped back to the namespace.
 	 * @throws NullPointerException if a namespace is <code>null</code>.
+	 * @throws IllegalArgumentException if one of the given prefixes is not valid as per the vocabulary specification.
+	 * @see VocabularySpecification#isValidPrefix(String)
 	 */
 	public DefaultVocabularyRegistry(@Nullable URI defaultVocabulary, @Nonnull final Iterable<Map.Entry<String, URI>> vocabulariesByPrefix) {
+		this(VocabularySpecification.DEFAULT, defaultVocabulary, vocabulariesByPrefix);
+	}
+
+	/**
+	 * Vocabulary specification and existing prefix-vocabulary registrations constructor.
+	 * @param vocabularySpecification The specification governing vocabularies in this registry.
+	 * @param defaultVocabulary The namespace URI of the default vocabulary, or <code>null</code> if there is no default.
+	 * @param vocabulariesByPrefix Vocabulary prefixes and vocabulary namespace URIs associated with them. If a prefix key appears more than once, the last one
+	 *          one will take affect. If a prefix is mapped to more than one namespace, only the first prefix will be reverse-mapped back to the namespace.
+	 * @throws NullPointerException if a namespace is <code>null</code>.
+	 * @throws IllegalArgumentException if one of the given prefixes is not valid as per the vocabulary specification.
+	 * @see VocabularySpecification#isValidPrefix(String)
+	 */
+	public DefaultVocabularyRegistry(@Nonnull VocabularySpecification vocabularySpecification, @Nullable URI defaultVocabulary,
+			@Nonnull final Iterable<Map.Entry<String, URI>> vocabulariesByPrefix) {
+		super(vocabularySpecification);
 		if(defaultVocabulary != null) {
 			setDefaultVocabulary(defaultVocabulary);
 		}
 		for(final Map.Entry<String, URI> vocabularyByPrefix : vocabulariesByPrefix) {
-			final String prefix = vocabularyByPrefix.getKey();
+			final String prefix = vocabularySpecification.checkArgumentValidPrefix(vocabularyByPrefix.getKey());
 			final URI namespace = requireNonNull(vocabularyByPrefix.getValue());
 			getNamespacesByPrefix().put(prefix, namespace);
 			getPrefixesByNamespace().putIfAbsent(namespace, prefix); //don't override a prefix already associated with the namespace

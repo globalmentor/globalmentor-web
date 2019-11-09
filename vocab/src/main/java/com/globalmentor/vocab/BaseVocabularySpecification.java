@@ -19,10 +19,10 @@ package com.globalmentor.vocab;
 import static com.globalmentor.java.Conditions.*;
 
 /**
- * A base vocabulary prefix specification with useful functionality.
+ * A base vocabulary specification with useful functionality.
  * @author Garret Wilson
  */
-public abstract class BaseVocabularyPrefixSpecification implements VocabularyPrefixSpecification {
+public abstract class BaseVocabularySpecification implements VocabularySpecification {
 
 	public static final String PREFIX_PREFIX = "ns";
 

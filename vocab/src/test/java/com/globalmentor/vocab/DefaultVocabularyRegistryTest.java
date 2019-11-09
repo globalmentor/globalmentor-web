@@ -34,6 +34,7 @@ import org.junit.jupiter.api.*;
  */
 public class DefaultVocabularyRegistryTest {
 
+	private static final URI CC_NAMESPACE = URI.create("http://creativecommons.org/ns#");
 	private static final URI DC_NAMESPACE = URI.create("http://purl.org/dc/terms/");
 	private static final URI OG_NAMESPACE = URI.create("http://ogp.me/ns#");
 	private static final URI EG_NAMESPACE = URI.create("https://example.com/ns/");
@@ -79,6 +80,31 @@ public class DefaultVocabularyRegistryTest {
 		assertThat(registry.getRegisteredPrefixesByVocabulary(), is(new HashSet<>(asList(Map.entry(DC_NAMESPACE, "dc"), Map.entry(OG_NAMESPACE, "og")))));
 
 		assertThat(registry.getRegisteredVocabulariesByPrefix(), is(new HashSet<>(asList(Map.entry("dc", DC_NAMESPACE), Map.entry("og", OG_NAMESPACE)))));
+	}
+
+	/** @see DefaultVocabularyRegistry#asVocabularyTerm(URI) */
+	@Test
+	public void testAsVocabularyTerm() {
+		final DefaultVocabularyRegistry registry = new DefaultVocabularyRegistry(EG_NAMESPACE,
+				asList(Map.entry("dc", DC_NAMESPACE), Map.entry("og", OG_NAMESPACE)));
+		assertThat(registry.asVocabularyTerm(URI.create("http://example.com/")), isEmpty());
+		assertThat(registry.asVocabularyTerm(URI.create("http://purl.org/dc/terms/creator")), isPresentAndIs(VocabularyTerm.of(DC_NAMESPACE, "creator")));
+		assertThat(registry.asVocabularyTerm(URI.create("http://ogp.me/ns#title")), isPresentAndIs(VocabularyTerm.of(OG_NAMESPACE, "title")));
+		assertThat(registry.asVocabularyTerm(URI.create("http://creativecommons.org/ns#permits")), isPresentAndIs(VocabularyTerm.of(CC_NAMESPACE, "permits")));
+	}
+
+	/** @see DefaultVocabularyRegistry#findPrefixForTerm(URI) */
+	@Test
+	public void testFindPrefixForTerm() {
+		final DefaultVocabularyRegistry registry = new DefaultVocabularyRegistry(EG_NAMESPACE,
+				asList(Map.entry("dc", DC_NAMESPACE), Map.entry("og", OG_NAMESPACE)));
+		assertThat(registry.findPrefixForTerm(URI.create("http://example.com/")), isEmpty()); //not a term
+		assertThat(registry.findPrefixForTerm(URI.create("http://example.com/foo")), isEmpty()); //not registered
+		assertThat(registry.findPrefixForTerm(URI.create("http://example.com/foo/bar")), isEmpty()); //not registered
+		assertThat(registry.findPrefixForTerm(URI.create("http://purl.org/dc/terms/creator")),
+				isPresentAndIs(Map.entry(VocabularyTerm.of(DC_NAMESPACE, "creator"), "dc")));
+		assertThat(registry.findPrefixForTerm(URI.create("http://ogp.me/ns#title")), isPresentAndIs(Map.entry(VocabularyTerm.of(OG_NAMESPACE, "title"), "og")));
+		assertThat(registry.findPrefixForTerm(URI.create("http://creativecommons.org/ns#permits")), isEmpty());
 	}
 
 }
