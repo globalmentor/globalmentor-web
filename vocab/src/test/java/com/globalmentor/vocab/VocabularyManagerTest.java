@@ -84,7 +84,52 @@ public class VocabularyManagerTest {
 		assertThat(manager.getRegisteredVocabulariesByPrefix(), is(new HashSet<>(asList(Map.entry("dc", DC_NAMESPACE), Map.entry("og", OG_NAMESPACE)))));
 	}
 
-	//TODO test reverse registrations with multiple prefixes for same namespace
+	/** @see VocabularyManager#registerPrefix(String, URI) */
+	@Test
+	public void testMultiplePrefixRegistrationsWithSameVocabulary() {
+		final VocabularyManager manager = new VocabularyManager();
+		assertThat(manager.findVocabularyByPrefix("foo"), isEmpty());
+		assertThat(manager.findVocabularyByPrefix("bar"), isEmpty());
+		assertThat(manager.findPrefixForVocabulary(EG_NAMESPACE), isEmpty());
+		manager.registerPrefix("foo", EG_NAMESPACE);
+		assertThat(manager.findVocabularyByPrefix("foo"), isPresentAndIs(EG_NAMESPACE));
+		assertThat(manager.findVocabularyByPrefix("bar"), isEmpty());
+		assertThat(manager.findPrefixForVocabulary(EG_NAMESPACE), isPresentAndIs("foo"));
+		manager.registerPrefix("bar", EG_NAMESPACE);
+		assertThat(manager.findVocabularyByPrefix("foo"), isPresentAndIs(EG_NAMESPACE));
+		assertThat(manager.findVocabularyByPrefix("bar"), isPresentAndIs(EG_NAMESPACE));
+		assertThat(manager.findPrefixForVocabulary(EG_NAMESPACE), isPresentAndIs("foo"));
+	}
+
+	/** @see VocabularyManager#registerPrefix(String, URI) */
+	@Test
+	public void testVocabularyRegistrationOverridesPrefix() {
+		final VocabularyManager manager = new VocabularyManager();
+		assertThat(manager.findVocabularyByPrefix("foo"), isEmpty());
+		assertThat(manager.findVocabularyByPrefix("bar"), isEmpty());
+		assertThat(manager.findPrefixForVocabulary(EG_NAMESPACE), isEmpty());
+		manager.registerVocabulary(EG_NAMESPACE, "foo");
+		assertThat(manager.findVocabularyByPrefix("foo"), isPresentAndIs(EG_NAMESPACE));
+		assertThat(manager.findVocabularyByPrefix("bar"), isEmpty());
+		assertThat(manager.findPrefixForVocabulary(EG_NAMESPACE), isPresentAndIs("foo"));
+		manager.registerVocabulary(EG_NAMESPACE, "bar");
+		assertThat(manager.findVocabularyByPrefix("foo"), isPresentAndIs(EG_NAMESPACE));
+		assertThat(manager.findVocabularyByPrefix("bar"), isPresentAndIs(EG_NAMESPACE));
+		assertThat(manager.findPrefixForVocabulary(EG_NAMESPACE), isPresentAndIs("bar"));
+	}
+
+	/** @see VocabularyManager#registerAll(VocabularyRegistry) */
+	@Test
+	public void testRegisterAllMaintainsMultiplePrefixRegistrationsWithSameVocabulary() {
+		final VocabularyManager manager1 = new VocabularyManager();
+		manager1.registerPrefix("foo", EG_NAMESPACE);
+		manager1.registerPrefix("bar", EG_NAMESPACE);
+		final VocabularyManager manager2 = new VocabularyManager();
+		manager2.registerAll(manager1);
+		assertThat(manager2.findVocabularyByPrefix("foo"), isPresentAndIs(EG_NAMESPACE));
+		assertThat(manager2.findVocabularyByPrefix("bar"), isPresentAndIs(EG_NAMESPACE));
+		assertThat(manager2.findPrefixForVocabulary(EG_NAMESPACE), isPresentAndIs("foo"));
+	}
 
 	/** @see VocabularyManager#determinePrefixForVocabulary(URI) */
 	@Test

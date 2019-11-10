@@ -69,7 +69,20 @@ public final class DefaultVocabularyRegistry extends AbstractVocabularyRegistry 
 			getNamespacesByPrefix().put(prefix, namespace);
 			getPrefixesByNamespace().putIfAbsent(namespace, prefix); //don't override a prefix already associated with the namespace
 		}
-		;
+	}
+
+	/**
+	 * Copy constructor to create an instance with the same vocabulary specification, default vocabulary, and mappings as the given registry.
+	 * @param registry The vocabulary registry with the values to copy.
+	 * @throws NullPointerException if the given vocabulary registry is <code>null</code>.
+	 */
+	public DefaultVocabularyRegistry(@Nonnull VocabularyRegistry registry) {
+		super(registry.getVocabularySpecification());
+		registry.getDefaultVocabulary().ifPresent(this::setDefaultVocabulary);
+		final Map<URI, String> prefixesByNamespace = getPrefixesByNamespace();
+		registry.getRegisteredPrefixesByVocabulary().forEach(entry -> prefixesByNamespace.put(entry.getKey(), entry.getValue()));
+		final Map<String, URI> namespacesByPrefix = getNamespacesByPrefix();
+		registry.getRegisteredVocabulariesByPrefix().forEach(entry -> namespacesByPrefix.put(entry.getKey(), entry.getValue()));
 	}
 
 }

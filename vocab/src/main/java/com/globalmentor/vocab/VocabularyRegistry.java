@@ -228,6 +228,33 @@ public interface VocabularyRegistry {
 	 */
 	public Set<Map.Entry<String, URI>> getRegisteredVocabulariesByPrefix();
 
+	/**
+	 * Creates a builder.
+	 * @implSpec The {@link VocabularySpecification#DEFAULT} vocabulary specification is used.
+	 * @return A new builder with the default vocabulary specification.
+	 */
+	public static Builder builder() {
+		return builder(VocabularySpecification.DEFAULT);
+	}
+
+	/**
+	 * Creates a builder with the given specification.
+	 * @param vocabularySpecification The specification governing vocabularies in the registry being built.
+	 * @return A new builder with the given vocabulary specification.
+	 */
+	public static Builder builder(@Nonnull VocabularySpecification vocabularySpecification) {
+		return new VocabularyRegistryBuilderImpl(vocabularySpecification);
+	}
+
+	/**
+	 * Creates a builder with values copied from an existing vocabulary registry.
+	 * @param vocabularyRegistry The vocabulary registry with the values to copy.
+	 * @return A new builder with the same vocabulary specification, default vocabulary, and mappings as the given registry.
+	 */
+	public static Builder builder(@Nonnull VocabularyRegistry vocabularyRegistry) {
+		return new VocabularyRegistryBuilderImpl(vocabularyRegistry);
+	}
+
 	/** An immutable empty vocabulary registry using the {@link VocabularySpecification#DEFAULT} default vocabulary specification. */
 	public static final VocabularyRegistry EMPTY = new VocabularyRegistry() {
 
@@ -276,5 +303,65 @@ public interface VocabularyRegistry {
 		}
 
 	};
+
+	/**
+	 * Builder for a vocabulary registry.
+	 * @author Garret Wilson
+	 */
+	public interface Builder {
+
+		/**
+		 * Sets the default vocabulary.
+		 * @param namespace The namespace URI of the new default vocabulary.
+		 * @return This builder.
+		 * @throws NullPointerException if the given namespace is <code>null</code>.
+		 */
+		public Builder setDefaultVocabulary(@Nonnull final URI namespace);
+
+		/**
+		 * Adds a vocabulary and associates the given prefix with it, so that any vocabulary lookup by namespace will retrieve the given prefix. The vocabulary will
+		 * also be associated with the prefix, so that any later vocabulary lookup by prefix will return the given namespace.
+		 * @apiNote This method overrides any previous namespaces associated with the given prefix, as well as any previous prefixes associated with the given
+		 *          namespace, unlike {@link #registerPrefix(String, URI)}, which does not override any existing prefixes associated with the given namespace.
+		 * @param namespace The URI of the namespace of the vocabulary to register.
+		 * @param prefix The prefix to associate with the vocabulary.
+		 * @return This builder.
+		 * @throws NullPointerException if the given namespace is <code>null</code>.
+		 * @throws IllegalArgumentException if the given prefix is not valid.
+		 */
+		public Builder registerVocabulary(@Nonnull final URI namespace, @Nullable final String prefix);
+
+		/**
+		 * Adds a prefix associates the indicated vocabulary with it, so that any vocabulary lookup by prefix will retrieve the given namespace. If the prefix has
+		 * not already been associated with another vocabulary, it will also be associated with the vocabulary, so that any later vocabulary lookup by prefix will
+		 * return the given namespace.
+		 * @apiNote This method differs from {@link #registerVocabulary(URI, String)} in that this method will not change any namespace to prefix mapping if it
+		 *          already exists, allowing multiple prefixes to map to the same prefix. If it is desired to set the canonical prefix for a vocabulary, even if one
+		 *          has already been registered, call {@link #registerVocabulary(URI, String)}.
+		 * @param prefix The prefix to register.
+		 * @param namespace The URI of the namespace of the vocabulary to associate with the prefix.
+		 * @return This builder.
+		 * @throws NullPointerException if the given namespace is <code>null</code>.
+		 * @throws IllegalArgumentException if the given prefix is not valid.
+		 */
+		public Builder registerPrefix(@Nullable final String prefix, @Nonnull final URI namespace);
+
+		/**
+		 * Registers all registered vocabularies in the given registry by adding the same namespace to prefix and prefix to namespace mappings as the given
+		 * registry.
+		 * @param registry The registry containing the registrations to register.
+		 * @return This builder.
+		 * @throws NullPointerException if the given registry is <code>null</code>.
+		 * @throws IllegalArgumentException if one of the given prefixes in the given registry is not valid.
+		 */
+		public Builder registerAll(@Nonnull final VocabularyRegistry registry);
+
+		/**
+		 * Builds a vocabulary registry the state of this builder.
+		 * @return A new read-only vocabulary registry with the current values.
+		 */
+		public VocabularyRegistry build();
+
+	}
 
 }

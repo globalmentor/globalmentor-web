@@ -166,4 +166,12 @@ public class VocabularyManager extends AbstractVocabularyRegistry implements Voc
 		return previousNamespace;
 	}
 
+	@Override
+	public VocabularyRegistrar registerAll(final VocabularyRegistry registry) {
+		final Map<URI, String> prefixesByNamespace = getPrefixesByNamespace();
+		registry.getRegisteredPrefixesByVocabulary().forEach(entry -> prefixesByNamespace.put(entry.getKey(), entry.getValue()));
+		final Map<String, URI> namespacesByPrefix = getNamespacesByPrefix();
+		registry.getRegisteredVocabulariesByPrefix().forEach(entry -> namespacesByPrefix.put(entry.getKey(), entry.getValue()));
+		return this;
+	}
 }

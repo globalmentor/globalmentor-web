@@ -184,19 +184,14 @@ public interface VocabularyRegistrar extends VocabularyRegistry {
 	public Optional<URI> registerPrefix(@Nullable final String prefix, @Nonnull final URI namespace);
 
 	/**
-	 * Registers all registered vocabularies in the given registry.
-	 * @implSpec The default implementation registers the registrations returned by #VocabularyRegistry{@link #getRegisteredVocabulariesByPrefix()} and registers
-	 *           them in this registry using {@link #registerPrefix(java.util.Map.Entry)}.
+	 * Registers all registered vocabularies in the given registry by adding the same namespace to prefix and prefix to namespace mappings as the given registry.
 	 * @param registry The registry containing the registrations to register.
 	 * @return This registrar.
 	 * @throws NullPointerException if the given registry is <code>null</code>.
-	 * @throws IllegalArgumentException if one of the given prefixes is not valid.
+	 * @throws IllegalArgumentException if one of the given prefixes in the given registry is not valid.
 	 * @see #getVocabularySpecification()
 	 */
-	public default VocabularyRegistrar registerAll(@Nonnull final VocabularyRegistry registry) {
-		registry.getRegisteredVocabulariesByPrefix().forEach(this::registerPrefix);
-		return this;
-	}
+	public VocabularyRegistrar registerAll(@Nonnull final VocabularyRegistry registry);
 
 	/**
 	 * Generates a new vocabulary prefix unique to this manager. The generated prefix will be valid as per {@link VocabularySpecification#isValidPrefix(String)}
