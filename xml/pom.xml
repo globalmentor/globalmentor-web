@@ -41,6 +41,11 @@
 
 		<dependency>
 			<groupId>com.globalmentor</groupId>
+			<artifactId>globalmentor-vocab</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.globalmentor</groupId>
 			<artifactId>globalmentor-xml-spec</artifactId>
 		</dependency>
 	</dependencies>
