@@ -56,6 +56,7 @@ public final class VocabularyTerm {
 	 * @throws NullPointerException if the given namespace and/or term is <code>null</code>.
 	 * @throws IllegalArgumentException if the given namespace is not absolute.
 	 * @throws IllegalArgumentException if the given term is the empty string.
+	 * @throws IllegalArgumentException if the concatenation of the namespace and name is not a valid {@link URI}.
 	 */
 	public static VocabularyTerm of(@Nonnull final URI namespace, @Nonnull final String name) {
 		return new VocabularyTerm(namespace, name);
@@ -68,11 +69,13 @@ public final class VocabularyTerm {
 	 * @throws NullPointerException if the given namespace and/or term is <code>null</code>.
 	 * @throws IllegalArgumentException if the given namespace is not absolute.
 	 * @throws IllegalArgumentException if the given term is the empty string.
+	 * @throws IllegalArgumentException if the concatenation of the namespace and name is not a valid {@link URI}.
 	 */
 	private VocabularyTerm(@Nonnull final URI namespace, @Nonnull final String name) {
 		this.namespace = checkAbsolute(namespace);
 		this.name = requireNonNull(name);
 		checkArgument(!name.isEmpty(), "Vocabulary term name cannot be empty.");
+		URI.create(namespace.toString() + name); //make sure the resulting URI is valid
 	}
 
 	@Override
@@ -95,6 +98,7 @@ public final class VocabularyTerm {
 	/**
 	 * {@inheritDoc}
 	 * @implSpec This implementation returns a concatenation of the string form of the term namespace and the term name.
+	 * @implNote The implementation of {@link #toURI()} depends on this implementation.
 	 * @see #getNamespace()
 	 * @see #getName()
 	 */
@@ -102,4 +106,17 @@ public final class VocabularyTerm {
 	public String toString() {
 		return getNamespace().toString() + getName();
 	}
+
+	/**
+	 * Returns the URI form of the vocabulary term.
+	 * @implSpec The URI is formed by simple concatenation of the namespace and name by delegation to {@link #toString()}.
+	 * @return The URI representing the vocabulary term.
+	 * @see #getNamespace()
+	 * @see #getName()
+	 * @see <a href="https://stackoverflow.com/q/17230712/421049">Correctly expanding xml namespaces without defined end character into valid URIs</a>
+	 */
+	public URI toURI() {
+		return URI.create(toString());
+	}
+
 }
