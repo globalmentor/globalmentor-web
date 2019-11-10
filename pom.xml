@@ -35,6 +35,7 @@
 		<module>mathml-spec</module>
 		<module>javascript</module>
 		<module>svg-spec</module>
+		<module>vocab</module>
 		<module>xml</module>
 		<module>xml-dom-impl</module>
 		<module>xml-spec</module>
@@ -69,6 +70,12 @@
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-svg-spec</artifactId>
+				<version>0.6.3-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.globalmentor</groupId>
+				<artifactId>globalmentor-vocab</artifactId>
 				<version>0.6.3-SNAPSHOT</version>
 			</dependency>
 

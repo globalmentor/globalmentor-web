@@ -31,7 +31,7 @@ import static com.globalmentor.net.URIs.*;
  * @author Garret Wilson
  * @deprecated
  */
-public class XMLNamespacePrefixManager //TODO replace with XMLNamespaceLabelManager
+public class XMLNamespacePrefixManager //TODO replace with VocabularyManager
 {
 
 	/**
