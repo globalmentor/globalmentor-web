@@ -16,7 +16,15 @@
 
 package com.globalmentor.vocab;
 
+import static com.globalmentor.java.CharSequences.*;
 import static com.globalmentor.java.Conditions.*;
+import static com.globalmentor.net.URIs.*;
+
+import java.net.*;
+import java.util.Optional;
+
+import com.globalmentor.java.Characters;
+import com.globalmentor.net.URIs;
 
 /**
  * A base vocabulary specification with useful functionality.
@@ -24,7 +32,13 @@ import static com.globalmentor.java.Conditions.*;
  */
 public abstract class BaseVocabularySpecification implements VocabularySpecification {
 
+	/** The beginning string to use when generating new prefixes. */
 	public static final String PREFIX_PREFIX = "ns";
+
+	/**
+	 * The delimiter characters for determining a regular namespace from a term.
+	 */
+	public static final Characters REGULAR_NAMESPACE_DELIMITER_CHARACTERS = Characters.of(PATH_SEPARATOR, FRAGMENT_SEPARATOR);
 
 	/**
 	 * {@inheritDoc}
@@ -34,6 +48,40 @@ public abstract class BaseVocabularySpecification implements VocabularySpecifica
 	public String generatePrefix(final long uniquenessGuarantee) {
 		checkArgumentNotNegative(uniquenessGuarantee);
 		return PREFIX_PREFIX + uniquenessGuarantee;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * @implSpec This implementation considers a namespace "regular" if the string form of the URI ends with a forward slash {@value URIs#PATH_SEPARATOR}
+	 *           character or a number sign {@value URIs#FRAGMENT_SEPARATOR} character.
+	 * @see #REGULAR_NAMESPACE_DELIMITER_CHARACTERS
+	 */
+	@Override
+	public boolean isNamespaceRegular(final URI namespace) {
+		return endsWith(checkAbsolute(namespace).toString(), REGULAR_NAMESPACE_DELIMITER_CHARACTERS);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * @implSpec This implementation finds the longest string ending with a forward slash {@value URIs#PATH_SEPARATOR} character or a number sign
+	 *           {@value URIs#FRAGMENT_SEPARATOR} character, that is a valid URI and is not the given term itself.
+	 * @see #REGULAR_NAMESPACE_DELIMITER_CHARACTERS
+	 */
+	@Override
+	public Optional<URI> findTermNamespace(final URI term) {
+		final String termString = checkAbsolute(term).toString();
+		final int delimiterIndex = lastIndexOf(termString, REGULAR_NAMESPACE_DELIMITER_CHARACTERS);
+		if(delimiterIndex > 0 && delimiterIndex < termString.length() - 1) { //make sure the term itself (i.e. the entire string) is not a namespace
+			final URI namespace;
+			try {
+				namespace = new URI(termString.substring(0, delimiterIndex + 1)); //include the delimiter
+			} catch(final URISyntaxException uriSyntaxException) { //the thing that looked like a namespace (e.g. `http://`) wasn't really a URI
+				return Optional.empty();
+			}
+			return Optional.of(namespace);
+		} else {
+			return Optional.empty();
+		}
 	}
 
 }
