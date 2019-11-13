@@ -82,6 +82,7 @@ public final class Curie {
 	 * Static factory method.
 	 * @param prefix The CURIE prefix, or <code>null</code> if there is no prefix.
 	 * @param reference The CURIE reference.
+	 * @return A CURIE with the indicated optional prefix and reference.
 	 * @throws NullPointerException if the reference is <code>null</code>.
 	 * @throws IllegalArgumentException if the prefix and/or reference is the empty string.
 	 * @throws IllegalArgumentException if the prefix begins with {@value #SAFE_BEGIN}.
@@ -164,6 +165,7 @@ public final class Curie {
 	 * @apiNote The prefix and reference should not begin or end with the safe CURIE delimiters {@value #SAFE_BEGIN} and {@value #SAFE_END}, respectively.
 	 * @param prefix The CURIE prefix, or <code>null</code> if there is no prefix.
 	 * @param reference The CURIE reference.
+	 * @return A string of a CURIE with the indicated optional prefix and reference.
 	 * @throws NullPointerException if the reference is <code>null</code>.
 	 */
 	public static String toString(@Nullable String prefix, @Nonnull String reference) {
@@ -177,6 +179,7 @@ public final class Curie {
 	 * @param prefix The CURIE prefix, or <code>null</code> if there is no prefix.
 	 * @param reference The CURIE reference.
 	 * @param safe <code>true</code> if a safe CURIE should be generated in the general form <code>[foo:bar]</code>.
+	 * @return A string of a CURIE with the indicated optional prefix and reference, optionally using the safe CURIE form.
 	 * @throws NullPointerException if the reference is <code>null</code>.
 	 */
 	public static String toString(@Nullable String prefix, @Nonnull String reference, final boolean safe) {
