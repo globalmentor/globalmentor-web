@@ -272,4 +272,21 @@ public class VocabularyManagerTest {
 				isPresentAndIs(Map.entry(VocabularyTerm.of(CC_NAMESPACE, "permits"), "cc"))); //not registered; known vocabulary
 	}
 
+	/** @see VocabularyManager#determineCurie(VocabularyTerm) */
+	@Test
+	public void testDetermineCurie() {
+		final VocabularyRegistry knownVocabularies = VocabularyRegistry.of(Map.entry("cc", CC_NAMESPACE));
+		final VocabularyManager manager = new VocabularyManager(knownVocabularies);
+		manager.setDefaultVocabulary(EG_NAMESPACE);
+		manager.registerPrefix("dc", DC_NAMESPACE);
+		manager.registerPrefix("og", OG_NAMESPACE);
+		assertThat(manager.determineCurie(VocabularyTerm.of(EG_NAMESPACE, "bar")), is(Curie.parse("bar"))); //default namespace, no registered prefix
+		assertThat(manager.determineCurie(VocabularyTerm.of(URI.create("http://example.com/foo/"), "bar")), is(Curie.parse("foo:bar"))); //prefix has to be registered
+		assertThat(manager.determineCurie(VocabularyTerm.of(URI.create("http://example.com/not%20registered/"), "test")),
+				is(Curie.parse(BaseVocabularySpecification.PREFIX_PREFIX + "1:test"))); //prefix has to be generated
+		assertThat(manager.determineCurie(VocabularyTerm.of(DC_NAMESPACE, "creator")), is(Curie.parse("dc:creator")));
+		assertThat(manager.determineCurie(VocabularyTerm.of(OG_NAMESPACE, "title")), is(Curie.parse("og:title")));
+		assertThat(manager.determineCurie(VocabularyTerm.of(CC_NAMESPACE, "permits")), is(Curie.parse("cc:permits"))); //known namespace
+	}
+
 }

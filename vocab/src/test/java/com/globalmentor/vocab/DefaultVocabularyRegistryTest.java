@@ -82,17 +82,6 @@ public class DefaultVocabularyRegistryTest {
 		assertThat(registry.getRegisteredVocabulariesByPrefix(), is(new HashSet<>(asList(Map.entry("dc", DC_NAMESPACE), Map.entry("og", OG_NAMESPACE)))));
 	}
 
-	/** @see DefaultVocabularyRegistry#asVocabularyTerm(URI) */
-	@Test
-	public void testAsVocabularyTerm() {
-		final DefaultVocabularyRegistry registry = new DefaultVocabularyRegistry(EG_NAMESPACE,
-				asList(Map.entry("dc", DC_NAMESPACE), Map.entry("og", OG_NAMESPACE)));
-		assertThat(registry.asVocabularyTerm(URI.create("http://example.com/")), isEmpty());
-		assertThat(registry.asVocabularyTerm(URI.create("http://purl.org/dc/terms/creator")), isPresentAndIs(VocabularyTerm.of(DC_NAMESPACE, "creator")));
-		assertThat(registry.asVocabularyTerm(URI.create("http://ogp.me/ns#title")), isPresentAndIs(VocabularyTerm.of(OG_NAMESPACE, "title")));
-		assertThat(registry.asVocabularyTerm(URI.create("http://creativecommons.org/ns#permits")), isPresentAndIs(VocabularyTerm.of(CC_NAMESPACE, "permits")));
-	}
-
 	/** @see DefaultVocabularyRegistry#findPrefixForTerm(URI) */
 	@Test
 	public void testFindPrefixForTerm() {
@@ -105,6 +94,70 @@ public class DefaultVocabularyRegistryTest {
 				isPresentAndIs(Map.entry(VocabularyTerm.of(DC_NAMESPACE, "creator"), "dc")));
 		assertThat(registry.findPrefixForTerm(URI.create("http://ogp.me/ns#title")), isPresentAndIs(Map.entry(VocabularyTerm.of(OG_NAMESPACE, "title"), "og")));
 		assertThat(registry.findPrefixForTerm(URI.create("http://creativecommons.org/ns#permits")), isEmpty());
+	}
+
+	/** @see DefaultVocabularyRegistry#asVocabularyTerm(URI) */
+	@Test
+	public void testAsVocabularyTerm() {
+		final DefaultVocabularyRegistry registry = new DefaultVocabularyRegistry(EG_NAMESPACE,
+				asList(Map.entry("dc", DC_NAMESPACE), Map.entry("og", OG_NAMESPACE)));
+		assertThat(registry.asVocabularyTerm(URI.create("http://example.com/")), isEmpty());
+		assertThat(registry.asVocabularyTerm(URI.create("http://purl.org/dc/terms/creator")), isPresentAndIs(VocabularyTerm.of(DC_NAMESPACE, "creator")));
+		assertThat(registry.asVocabularyTerm(URI.create("http://ogp.me/ns#title")), isPresentAndIs(VocabularyTerm.of(OG_NAMESPACE, "title")));
+		assertThat(registry.asVocabularyTerm(URI.create("http://creativecommons.org/ns#permits")), isPresentAndIs(VocabularyTerm.of(CC_NAMESPACE, "permits")));
+	}
+
+	/** @see DefaultVocabularyRegistry#findVocabularyTerm(Curie) */
+	@Test
+	public void testFindVocabularyTermWithoutDefaultNamespace() {
+		final DefaultVocabularyRegistry registry = new DefaultVocabularyRegistry(null, asList(Map.entry("dc", DC_NAMESPACE), Map.entry("og", OG_NAMESPACE)));
+		assertThat(registry.findVocabularyTerm(Curie.parse("foo:bar")), isEmpty());
+		assertThat(registry.findVocabularyTerm(Curie.parse("bar")), isEmpty());
+		assertThat(registry.findVocabularyTerm(Curie.parse("dc:creator")), isPresentAndIs(VocabularyTerm.of(DC_NAMESPACE, "creator")));
+		assertThat(registry.findVocabularyTerm(Curie.parse("og:title")), isPresentAndIs(VocabularyTerm.of(OG_NAMESPACE, "title")));
+	}
+
+	/** @see DefaultVocabularyRegistry#findVocabularyTerm(Curie) */
+	@Test
+	public void testFindVocabularyTermWithDefaultNamespace() {
+		final DefaultVocabularyRegistry registry = new DefaultVocabularyRegistry(EG_NAMESPACE,
+				asList(Map.entry("dc", DC_NAMESPACE), Map.entry("og", OG_NAMESPACE)));
+		assertThat(registry.findVocabularyTerm(Curie.parse("foo:bar")), isEmpty());
+		assertThat(registry.findVocabularyTerm(Curie.parse("bar")), isPresentAndIs(VocabularyTerm.of(EG_NAMESPACE, "bar")));
+		assertThat(registry.findVocabularyTerm(Curie.parse("dc:creator")), isPresentAndIs(VocabularyTerm.of(DC_NAMESPACE, "creator")));
+		assertThat(registry.findVocabularyTerm(Curie.parse("og:title")), isPresentAndIs(VocabularyTerm.of(OG_NAMESPACE, "title")));
+	}
+
+	/** @see DefaultVocabularyRegistry#findCurie(VocabularyTerm) */
+	@Test
+	public void testFindCurieWithoutDefaultNamespace() {
+		final DefaultVocabularyRegistry registry = new DefaultVocabularyRegistry(null, asList(Map.entry("dc", DC_NAMESPACE), Map.entry("og", OG_NAMESPACE)));
+		assertThat(registry.findCurie(VocabularyTerm.of(CC_NAMESPACE, "permits")), isEmpty());
+		assertThat(registry.findCurie(VocabularyTerm.of(EG_NAMESPACE, "bar")), isEmpty());
+		assertThat(registry.findCurie(VocabularyTerm.of(DC_NAMESPACE, "creator")), isPresentAndIs(Curie.parse("dc:creator")));
+		assertThat(registry.findCurie(VocabularyTerm.of(OG_NAMESPACE, "title")), isPresentAndIs(Curie.parse("og:title")));
+	}
+
+	/** @see DefaultVocabularyRegistry#findCurie(VocabularyTerm) */
+	@Test
+	public void testFindCurieWithDefaultNamespace() {
+		final DefaultVocabularyRegistry registry = new DefaultVocabularyRegistry(EG_NAMESPACE,
+				asList(Map.entry("dc", DC_NAMESPACE), Map.entry("og", OG_NAMESPACE)));
+		assertThat(registry.findCurie(VocabularyTerm.of(CC_NAMESPACE, "permits")), isEmpty());
+		assertThat(registry.findCurie(VocabularyTerm.of(EG_NAMESPACE, "bar")), isPresentAndIs(Curie.parse("bar")));
+		assertThat(registry.findCurie(VocabularyTerm.of(DC_NAMESPACE, "creator")), isPresentAndIs(Curie.parse("dc:creator")));
+		assertThat(registry.findCurie(VocabularyTerm.of(OG_NAMESPACE, "title")), isPresentAndIs(Curie.parse("og:title")));
+	}
+
+	/** @see DefaultVocabularyRegistry#findCurie(VocabularyTerm) */
+	@Test
+	public void testFindCuriePrefersRegisteredNamespaceOverDefaultNamespace() {
+		final DefaultVocabularyRegistry registry = new DefaultVocabularyRegistry(EG_NAMESPACE,
+				asList(Map.entry("dc", DC_NAMESPACE), Map.entry("eg", EG_NAMESPACE), Map.entry("og", OG_NAMESPACE)));
+		assertThat(registry.findCurie(VocabularyTerm.of(CC_NAMESPACE, "permits")), isEmpty());
+		assertThat(registry.findCurie(VocabularyTerm.of(EG_NAMESPACE, "bar")), isPresentAndIs(Curie.parse("eg:bar")));
+		assertThat(registry.findCurie(VocabularyTerm.of(DC_NAMESPACE, "creator")), isPresentAndIs(Curie.parse("dc:creator")));
+		assertThat(registry.findCurie(VocabularyTerm.of(OG_NAMESPACE, "title")), isPresentAndIs(Curie.parse("og:title")));
 	}
 
 }
