@@ -26,7 +26,7 @@ import com.globalmentor.xml.spec.XML;
 public class XmlVocabularySpecification extends BaseVocabularySpecification {
 
 	/** The shared, singleton instance of this specification. */
-	public XmlVocabularySpecification INSTANCE = new XmlVocabularySpecification();
+	public static XmlVocabularySpecification INSTANCE = new XmlVocabularySpecification();
 
 	/** This specification cannot be instantiated publicly. */
 	private XmlVocabularySpecification() {
