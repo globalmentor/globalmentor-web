@@ -17,9 +17,13 @@
 package com.globalmentor.vocab;
 
 import static com.github.npathai.hamcrestopt.OptionalMatchers.*;
+import static com.globalmentor.lex.CompoundTokenization.*;
+import static java.util.function.Function.*;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.function.Function;
 
 import org.junit.jupiter.api.*;
 
@@ -71,6 +75,16 @@ public class CurieTest {
 		assertThrows(IllegalArgumentException.class, () -> Curie.parse("[[bar]]", true));
 		assertThrows(IllegalArgumentException.class, () -> Curie.parse("[[:bar]]", true));
 		assertThrows(IllegalArgumentException.class, () -> Curie.parse("[[foo:bar]]", true));
+	}
+
+	/** @see Curie#mapReference(Function) */
+	@Test
+	public void testMapReference() {
+		assertThat(Curie.parse("bar").mapReference(identity()), is(Curie.parse("bar")));
+		assertThat(Curie.parse("bar").mapReference(String::toUpperCase), is(Curie.parse("BAR")));
+		assertThat(Curie.parse("foo:bar").mapReference(identity()), is(Curie.parse("foo:bar")));
+		assertThat(Curie.parse("foo:bar").mapReference(String::toUpperCase), is(Curie.parse("foo:BAR")));
+		assertThat(Curie.parse("test:fooBar").mapReference(CAMEL_CASE::toKebabCase), is(Curie.parse("test:foo-bar")));
 	}
 
 	/**

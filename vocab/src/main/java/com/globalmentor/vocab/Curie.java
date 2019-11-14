@@ -21,6 +21,7 @@ import static com.globalmentor.java.Conditions.*;
 import static java.util.Objects.*;
 
 import java.util.*;
+import java.util.function.Function;
 
 import javax.annotation.*;
 
@@ -89,6 +90,24 @@ public final class Curie {
 	 */
 	public static Curie of(@Nullable String prefix, @Nonnull String reference) {
 		return new Curie(prefix, reference);
+	}
+
+	/**
+	 * Maps this CURIE to another CURIE by applying some mapping function to the CURIE reference.
+	 * @apiNote This method is useful for transforming the reference, that is the property name, from <code>camelCase</code> to <code>kebab-case</code>, for
+	 *          example.
+	 * @param mapper The mapping function to apply to the reference.
+	 * @return An CURIE with the same prefix, if any, and the transformed reference.
+	 * @throws NullPointerException if the mapping function is <code>null</code>.
+	 * @see #getReference()
+	 */
+	public Curie mapReference(@Nonnull Function<? super String, ? extends CharSequence> mapper) {
+		final String oldReference = getReference();
+		final String newReference = mapper.apply(getReference()).toString();
+		if(oldReference.equals(newReference)) { //if no change, no need to make a new CURIE
+			return this;
+		}
+		return Curie.of(prefix, newReference);
 	}
 
 	@Override
