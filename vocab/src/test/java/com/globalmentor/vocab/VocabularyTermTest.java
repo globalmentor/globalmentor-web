@@ -29,12 +29,21 @@ import org.junit.jupiter.api.*;
  */
 public class VocabularyTermTest {
 
+	/** @see VocabularyTerm#toURI() */
 	@Test
 	public void testToURI() {
 		assertThat(VocabularyTerm.of(URI.create("http://purl.org/dc/terms/"), "creator").toURI(), is(URI.create("http://purl.org/dc/terms/creator")));
 		assertThat(VocabularyTerm.of(URI.create("http://ogp.me/ns#"), "title").toURI(), is(URI.create("http://ogp.me/ns#title")));
 		assertThat(VocabularyTerm.of(URI.create("http://www.w3.org/XML/1998/namespace"), "lang").toURI(),
 				is(URI.create("http://www.w3.org/XML/1998/namespacelang")));
+	}
+
+	/** @see VocabularyTerm#toURI(URI, String) */
+	@Test
+	public void testStaticToURI() {
+		assertThat(VocabularyTerm.toURI(URI.create("http://purl.org/dc/terms/"), "creator"), is(URI.create("http://purl.org/dc/terms/creator")));
+		assertThat(VocabularyTerm.toURI(URI.create("http://ogp.me/ns#"), "title"), is(URI.create("http://ogp.me/ns#title")));
+		assertThat(VocabularyTerm.toURI(URI.create("http://www.w3.org/XML/1998/namespace"), "lang"), is(URI.create("http://www.w3.org/XML/1998/namespacelang")));
 	}
 
 }
