@@ -517,12 +517,12 @@ public class HtmlDom {
 	 * @see HTML#ELEMENT_META
 	 * @see HTML#ELEMENT_META_ATTRIBUTE_NAME
 	 * @see HTML#ELEMENT_META_ATTRIBUTE_CONTENT
-	 * @see #setNamedMetata(Document, String, String)
+	 * @see #setNamedMetadata(Document, String, String)
 	 * @throws IllegalArgumentException if the given name-value pair has no key name.
 	 */
-	public static Element setNamedMetata(@Nonnull Document document, @Nonnull Map.Entry<String, String> meta) {
+	public static Element setNamedMetadata(@Nonnull Document document, @Nonnull Map.Entry<String, String> meta) {
 		checkArgument(meta.getKey() != null, "No metadata name given.");
-		return setNamedMetata(document, meta.getKey(), meta.getValue());
+		return setNamedMetadata(document, meta.getKey(), meta.getValue());
 	}
 
 	/**
@@ -538,7 +538,7 @@ public class HtmlDom {
 	 * @see HTML#ELEMENT_META_ATTRIBUTE_NAME
 	 * @see HTML#ELEMENT_META_ATTRIBUTE_CONTENT
 	 */
-	public static Element setNamedMetata(@Nonnull Document document, @Nonnull final String metaName, @Nonnull final String metaContent) {
+	public static Element setNamedMetadata(@Nonnull Document document, @Nonnull final String metaName, @Nonnull final String metaContent) {
 		requireNonNull(metaName);
 		requireNonNull(metaContent);
 		final Element metaElement = findHtmlHeadMetaElementByName(document, metaName).orElseGet(() -> {
@@ -548,6 +548,25 @@ public class HtmlDom {
 			newMetaElement.setAttributeNS(null, ELEMENT_META_ATTRIBUTE_NAME, metaName); //initialize the name of the new <meta> element
 			return newMetaElement;
 		});
+		metaElement.setAttributeNS(null, ELEMENT_META_ATTRIBUTE_CONTENT, metaContent);
+		return metaElement;
+	}
+
+	/**
+	 * Adds named metadata of an HTML document element.
+	 * @param headElement The parent element on which to set metadata; normally the {@code <head>} element.
+	 * @param metaName The name of the metadata to add.
+	 * @param metaContent The metadata value to add.
+	 * @return The {@code <meta>} element that was added.
+	 * @see HTML#ELEMENT_META
+	 * @see HTML#ELEMENT_META_ATTRIBUTE_NAME
+	 * @see HTML#ELEMENT_META_ATTRIBUTE_CONTENT
+	 */
+	public static Element addNamedMetadata(@Nonnull Element headElement, @Nonnull final String metaName, @Nonnull final String metaContent) {
+		requireNonNull(metaName);
+		requireNonNull(metaContent);
+		final Element metaElement = addLast(headElement, headElement.getOwnerDocument().createElementNS(XHTML_NAMESPACE_URI_STRING, ELEMENT_META));
+		metaElement.setAttributeNS(null, ELEMENT_META_ATTRIBUTE_NAME, metaName);
 		metaElement.setAttributeNS(null, ELEMENT_META_ATTRIBUTE_CONTENT, metaContent);
 		return metaElement;
 	}

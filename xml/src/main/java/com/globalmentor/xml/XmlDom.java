@@ -865,9 +865,9 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @param element The element to which text should be added. This element must have a valid owner document.
 	 * @param textCharacter The character to add to the element.
 	 * @return The new text node that was created.
+	 * @throws DOMException if there was an error appending the text.
 	 */
-	//TODO list exceptions
-	public static Text appendText(final Element element, final char textCharacter) {
+	public static Text appendText(final Element element, final char textCharacter) throws DOMException {
 		return appendText(element, String.valueOf(textCharacter)); //convert the character to a string and append it to the element
 	}
 
@@ -883,6 +883,19 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 		final Text textNode = element.getOwnerDocument().createTextNode(textString); //create a new text node with the specified text
 		element.appendChild(textNode); //append the text node to our paragraph
 		return textNode; //return the text node we created
+	}
+
+	/**
+	 * Sets the a text node with the specified text as the child of the specified element, <em>removing all other children</em>.
+	 * @param element The element to which text should be added. This element must have a valid owner document.
+	 * @param textString The text to add to the element.
+	 * @return The new text node that was created.
+	 * @throws NullPointerException if the given element and/or text string is <code>null</code>.
+	 * @throws DOMException if there was an error appending the text.
+	 * @see #removeChildren(Node)
+	 */
+	public static Text setText(final Element element, final String textString) throws DOMException {
+		return appendText(removeChildren(element), textString);
 	}
 
 	/**
