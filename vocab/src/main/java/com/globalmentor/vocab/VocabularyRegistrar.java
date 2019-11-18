@@ -259,4 +259,34 @@ public interface VocabularyRegistrar extends VocabularyRegistry {
 		return asVocabularyTerm(term).map(vocabularyTerm -> Map.entry(vocabularyTerm, determinePrefixForVocabulary(vocabularyTerm.getNamespace())));
 	}
 
+	/**
+	 * Determines the CURIE that would represent the given vocabulary term using the registered vocabularies, registering a new prefix if needed. If the term
+	 * namespace is set as the default namespace, a CURIE with no prefix is returned. When this method returns, the vocabulary is guaranteed to have been
+	 * registered.
+	 * @implSpec The default implementation delegates to {@link #findCurie(VocabularyTerm)} and, if a CURIE could not be determined, determines a prefix by
+	 *           calling {@link #determinePrefixForVocabulary(URI)}.
+	 * @param vocabularyTerm The vocabulary term for which a CURIE should be determined.
+	 * @return The CURIE to represent the given vocabulary term.
+	 * @see #determinePrefixForVocabulary(URI)
+	 * @see #findCurie(VocabularyTerm)
+	 */
+	public default Curie determineCurie(@Nonnull final VocabularyTerm vocabularyTerm) {
+		return findCurie(vocabularyTerm).orElseGet(() -> Curie.of(determinePrefixForVocabulary(vocabularyTerm.getNamespace()), vocabularyTerm.getName()));
+	}
+
+	/**
+	 * Determines the CURIE that would represent the given term using the registered vocabularies, registering a new prefix if needed. If the term namespace is
+	 * set as the default namespace, a CURIE with no prefix is returned. When this method returns, the vocabulary is guaranteed to have been registered.
+	 * @implSpec The default implementation calls {@link #asVocabularyTerm(URI)} and then delegates to {@link #determineCurie(VocabularyTerm)}.
+	 * @param term The absolute URI identifying a term in a vocabulary.
+	 * @return The CURIE to represent the given term, which may be empty if the namespace could not be determined or the given string itself is a regular
+	 *         namespace.
+	 * @throws NullPointerException if the given term is <code>null</code>.
+	 * @throws IllegalArgumentException if the given URI is not absolute.
+	 * @see #determinePrefixForVocabulary(URI)
+	 */
+	public default Optional<Curie> determineCurieForTerm(@Nonnull final URI term) {
+		return asVocabularyTerm(term).map(this::determineCurie);
+	}
+
 }

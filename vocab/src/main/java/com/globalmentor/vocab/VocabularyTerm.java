@@ -119,4 +119,21 @@ public final class VocabularyTerm {
 		return URI.create(toString());
 	}
 
+	/**
+	 * Returns the URI form of a vocabulary term.
+	 * @param namespace The term namespace, which must be absolute.
+	 * @param name The term name, which must not be the empty string.
+	 * @implSpec The URI is formed by simple concatenation of the namespace and name.
+	 * @return The URI representing the vocabulary term.
+	 * @see <a href="https://stackoverflow.com/q/17230712/421049">Correctly expanding xml namespaces without defined end character into valid URIs</a>
+	 * @throws NullPointerException if the given namespace and/or term is <code>null</code>.
+	 * @throws IllegalArgumentException if the given namespace is not absolute.
+	 * @throws IllegalArgumentException if the given term is the empty string.
+	 * @throws IllegalArgumentException if the concatenation of the namespace and name is not a valid {@link URI}.
+	 */
+	public static URI toURI(@Nonnull final URI namespace, @Nonnull final String name) {
+		checkArgument(!name.isEmpty(), "Vocabulary term name cannot be empty.");
+		return URI.create(checkAbsolute(namespace).toString() + name);
+	}
+
 }

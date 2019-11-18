@@ -16,6 +16,7 @@
 
 package com.globalmentor.vocab;
 
+import static com.globalmentor.util.Optionals.*;
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
 import static java.util.Objects.*;
@@ -208,6 +209,50 @@ public interface VocabularyRegistry {
 			final int namespaceLength = namespaceString.length();
 			return VocabularyTerm.of(namespace, termString.substring(namespaceLength));
 		});
+	}
+
+	/**
+	 * Finds the vocabulary term the given CURIE represents by looking the namespace registered with its prefix or, if the CURIE does not indicate a prefix, the
+	 * namespace registered as the default namespace, if any.
+	 * @param curie The CURIE to use for looking up a vocabulary term.
+	 * @return The vocabulary term the CURIE represents if the indicated or default prefix is registered.
+	 * @throws IllegalArgumentException if the CURIE's reference combined with the registered vocabulary namespace does not form a valid URI.
+	 * @see #findVocabularyByPrefix(String)
+	 * @see #getDefaultVocabulary()
+	 */
+	public default Optional<VocabularyTerm> findVocabularyTerm(@Nonnull final Curie curie) {
+		return curie.getPrefix().map(this::findVocabularyByPrefix).orElseGet(this::getDefaultVocabulary)
+				.map(namespace -> VocabularyTerm.of(namespace, curie.getReference()));
+	}
+
+	/**
+	 * Finds the CURIE that would represent the given vocabulary term using the registered vocabularies. If a prefix is registered for the term namespace, it is
+	 * used. Otherwise if the term namespace is set as the default namespace, a CURIE with no prefix is returned.
+	 * @implSpec The default implementation calls {@link #findPrefixForVocabulary(URI)}.
+	 * @param vocabularyTerm The vocabulary term for which a CURIE should be found.
+	 * @return The CURIE to represent the given vocabulary term, which may not be present if no prefix was registered with the vocabulary term namespace.
+	 * @see #getDefaultVocabulary()
+	 */
+	public default Optional<Curie> findCurie(@Nonnull final VocabularyTerm vocabularyTerm) {
+		final URI namespace = vocabularyTerm.getNamespace();
+		final String prefix = findPrefixForVocabulary(vocabularyTerm.getNamespace()).orElse(null); //prefer mapped prefixes over the default
+		if(prefix == null) { //if there was no registered prefix, we only want to create a CURIE if the namespace is the default
+			if(!isPresentAndEquals(getDefaultVocabulary(), namespace)) {
+				return Optional.empty();
+			}
+		}
+		return Optional.of(Curie.of(prefix, vocabularyTerm.getName())); //here a null prefix indicates the namespace was the default
+	}
+
+	/**
+	 * Finds the CURIE that would represent the given term using the registered vocabularies. If a prefix is registered for the term namespace, it is used.
+	 * Otherwise if the term namespace is set as the default namespace, a CURIE with no prefix is returned.
+	 * @implSpec The default implementation calls {@link #asVocabularyTerm(URI)} and then delegates to {@link #findCurie(VocabularyTerm)}.
+	 * @param term The absolute URI identifying a term in a vocabulary.
+	 * @return The CURIE to represent the given term, which may not be present if no prefix was registered with the vocabulary term namespace.
+	 */
+	public default Optional<Curie> findCurieForTerm(@Nonnull final URI term) {
+		return asVocabularyTerm(term).flatMap(this::findCurie);
 	}
 
 	/**
