@@ -178,7 +178,8 @@ public class HTML {
 
 	/**
 	 * Characters considered <dfn>space characters</dfn> in HTML.
-	 * @see <a href="http://www.w3.org/TR/html5/infrastructure.html#space-character">HTML5 space characters</a>
+	 * @apiNote These are not to be confused with <dfn>whitespace</dfn> characters, which are those characters in the Unicode <code>White_Space</code> category.
+	 * @see <a href="https://www.w3.org/TR/html52/infrastructure.html#space-characters">HTML 5.2, § 2.4.1. Common parser idioms: space characters</a>
 	 */
 	public static final Characters SPACE_CHARACTERS = Characters.of(SPACE_CHAR, CHARACTER_TABULATION_CHAR, LINE_FEED_CHAR, FORM_FEED_CHAR, CARRIAGE_RETURN_CHAR);
 

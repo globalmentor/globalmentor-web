@@ -25,6 +25,7 @@ import java.nio.charset.Charset;
 
 import com.globalmentor.io.ByteOrderMark;
 
+import static com.globalmentor.java.CharSequences.*;
 import static com.globalmentor.java.Characters.SPACE_CHAR;
 import static com.globalmentor.java.Conditions.*;
 import static com.globalmentor.java.Objects.*;
@@ -968,6 +969,59 @@ public class XMLSerializer {
 			}
 		}
 		return appendable;
+	}
+
+	/**
+	 * Normalizes space in the given text by removing all space characters from the beginning and ending of the text, and collapsing all runs of space characters
+	 * (including single characters that are not already the normalized space character itself) to a single normalized space character.
+	 * @param text The text to normalize.
+	 * @param spaceCharacters The characters considers space characters for purposes of normalization.
+	 * @param normalizedSpaceChar The character to which to normalize runs of space characters; typically the space <code>' '</code> character itself.
+	 * @return A character sequence with no beginning or trailing space characters, and all space character runs normalized to a single normalized space
+	 *         character.
+	 */
+	public static CharSequence normalizeSpace(@Nonnull final CharSequence text, @Nonnull final Characters spaceCharacters, final char normalizedSpaceChar) {
+		//There are two types of normalizing we may need to do:
+		//* collapse runs - If we need to do this, we do it with a string builder and include trimming as well.
+		//* trim - If we only need to trim and not collapse runs, we just return a subsequence at the end.
+		final int start = indexNotOf(text, spaceCharacters);
+		if(start < 0) { //all space characters
+			return "";
+		}
+		final int end = lastIndexNotOf(text, spaceCharacters) + 1; //ending index is exclusive
+		assert end > 0 : "String of all space characters should have already been detected.";
+		StringBuilder runCollapseStringBuilder = null; //we'll only need to copy if we are collapsing runs
+		int copyStart = start; //if we ever start copying, we'll copy starting at the start index
+		int searchStart = start; //the search position will be updated for every search cycle
+		while(searchStart < end) {
+			final int spaceRunStart = indexOf(text, spaceCharacters, searchStart); //find the next space character
+			if(spaceRunStart < 0 || spaceRunStart >= end) { //no more space characters within the range
+				break;
+			}
+			final int spaceRunEnd = indexNotOf(text, spaceCharacters, spaceRunStart + 1); //find the end of the space character run
+			assert spaceRunEnd != -1 : "There has to be another non-space character or we would have ran past the end of our trimmed subsequence already.";
+			final int spaceRunLength = spaceRunEnd - spaceRunStart;
+			//collapse runs of space characters, as well as any space character that is not actually normalized space character
+			if(spaceRunLength > 1 || text.charAt(spaceRunStart) != normalizedSpaceChar) {
+				if(runCollapseStringBuilder == null) {
+					runCollapseStringBuilder = new StringBuilder(); //lazily create the string builder
+				}
+				runCollapseStringBuilder.append(text, copyStart, spaceRunStart); //append everything since our last copy up to the beginning of the space run
+				runCollapseStringBuilder.append(normalizedSpaceChar); //collapse to a single space
+				copyStart = spaceRunEnd; //when we need to copy again, we'll start copying after this run
+			}
+			searchStart = spaceRunEnd; //start searching after the run of space characters, but leave our copy start where it was until we actually need to copy
+		}
+		if(runCollapseStringBuilder == null) { //if no runs were collapsed
+			if(start > 0 || end < text.length()) { //it's still possible we trimmed without collapsing
+				return text.subSequence(start, end); //returning a subsequence is probably more efficient than copying
+			}
+			return text; //no trimming or run collapsing
+		}
+		if(copyStart < end) { //if we had to normalize and we have uncopied text at the end
+			runCollapseStringBuilder.append(text, copyStart, end); //append all remaining text
+		}
+		return runCollapseStringBuilder; //return the string builder; the caller may not need to convert it to a string, thus increasing efficiency
 	}
 
 }

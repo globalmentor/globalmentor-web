@@ -44,10 +44,10 @@ public class XML {
 	public static final String XML_EXTERNAL_PARSED_ENTITY_SUBTYPE_SUFFIX = "xml-external-parsed-entity";
 
 	/** The content type for generic XML: <code>text/xml</code>. */
-	public static final ContentType CONTENT_TYPE = ContentType.create(ContentType.TEXT_PRIMARY_TYPE, XML_SUBTYPE);
+	public static final ContentType CONTENT_TYPE = ContentType.of(ContentType.TEXT_PRIMARY_TYPE, XML_SUBTYPE);
 
 	/** The content type for a generic XML fragment: <code>text/xml-external-parsed-entity</code>. */
-	public static final ContentType EXTERNAL_PARSED_ENTITY_CONTENT_TYPE = ContentType.create(ContentType.TEXT_PRIMARY_TYPE, XML_EXTERNAL_PARSED_ENTITY_SUBTYPE);
+	public static final ContentType EXTERNAL_PARSED_ENTITY_CONTENT_TYPE = ContentType.of(ContentType.TEXT_PRIMARY_TYPE, XML_EXTERNAL_PARSED_ENTITY_SUBTYPE);
 
 	/** The default charset to assume if none is indicated. */
 	public static final Charset DEFAULT_CHARSET = UTF_8;
@@ -151,8 +151,18 @@ public class XML {
 	public static final char SINGLE_QUOTE_CHAR = '\'';
 	/** A double quote character. */
 	public static final char DOUBLE_QUOTE_CHAR = '"';
-	/** The characters considered by XML to be whitespace. */
-	public static final String WHITESPACE_CHARS = "" + SPACE_CHAR + TAB_CHAR + CR_CHAR + LF_CHAR; //whitespace characters in XML are space, tab, CR, and LF TODO upgrade to use Characters
+	/**
+	 * The characters considered by XML to be "whitespace": space, tab, <code>CR</code>, and <code>LF</code>.
+	 * @see <a href="https://www.w3.org/TR/xml/#AVNormalize">Extensible Markup Language (XML) 1.0 (Fifth Edition), § 3.3.3 Attribute-Value Normalization</a>
+	 */
+	public static final Characters WHITESPACE_CHARACTERS = Characters.of(SPACE_CHAR, TAB_CHAR, CR_CHAR, LF_CHAR);
+
+	/**
+	 * The characters considered by XML to be whitespace, as a string.
+	 * @deprecated Switch to using {@link #WHITESPACE_CHARACTERS}.
+	 */
+	@Deprecated
+	public static final String WHITESPACE_CHARS = WHITESPACE_CHARACTERS.toString();
 	/** Public ID characters. */
 	public static final String PUBLIC_ID_CHARS = SPACE_CHAR + CR_CHAR + LF_CHAR
 			+ "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-'()+,./:=?;!*#@$_%";
@@ -363,7 +373,8 @@ public class XML {
 	public static final Characters PREDEFINED_ENTITY_CHARACTERS = Characters.of(ENTITY_LT_VALUE, ENTITY_GT_VALUE, ENTITY_AMP_VALUE, ENTITY_APOS_VALUE,
 			ENTITY_QUOT_VALUE);
 
-	/**Determines the name of the predefined entity associated with the given character.
+	/**
+	 * Determines the name of the predefined entity associated with the given character.
 	 * @param c The character to be replaced by a predefined entity.
 	 * @return The name of the predefined entity for the given character.
 	 * @throws IllegalArgumentException if the given character does not have a predefined entity as per the XML specification.
