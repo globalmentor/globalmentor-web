@@ -972,48 +972,67 @@ public class XMLSerializer {
 	}
 
 	/**
-	 * Normalizes space in the given text by removing all space characters from the beginning and ending of the text, and collapsing all runs of space characters
-	 * (including single characters that are not already the normalized space character itself) to a single normalized space character.
+	 * Collapses all runs of given characters (including single characters that are not already the normalized character itself) to a single normalized character.
+	 * Optionally removes all run characters from the beginning and ending of the text.
+	 * @implNote This method is useful to normalize runs of "space" characters such as whitespace to a single space <code>' '</code> character.
 	 * @param text The text to normalize.
-	 * @param spaceCharacters The characters considers space characters for purposes of normalization.
-	 * @param normalizedSpaceChar The character to which to normalize runs of space characters; typically the space <code>' '</code> character itself.
-	 * @return A character sequence with no beginning or trailing space characters, and all space character runs normalized to a single normalized space
-	 *         character.
+	 * @param runCharacters The characters considers characters for purposes of collapsing runs, such as whitespace characters.
+	 * @param normalizedChar The character to which to runs of characters; e.g. the space <code>' '</code> character itself.
+	 * @return A character sequence with no beginning and/or trailing run characters, if start and/or end trimming was indicated, respectively; and all character
+	 *         runs normalized to a single normalized character.
 	 */
-	public static CharSequence normalizeSpace(@Nonnull final CharSequence text, @Nonnull final Characters spaceCharacters, final char normalizedSpaceChar) {
+	public static CharSequence collapseRuns(@Nonnull final CharSequence text, @Nonnull final Characters runCharacters, final char normalizedChar,
+			final boolean trimStart, final boolean trimEnd) {
 		//There are two types of normalizing we may need to do:
 		//* collapse runs - If we need to do this, we do it with a string builder and include trimming as well.
 		//* trim - If we only need to trim and not collapse runs, we just return a subsequence at the end.
-		final int start = indexNotOf(text, spaceCharacters);
-		if(start < 0) { //all space characters
+		final int length = text.length();
+		final int start;
+		if(trimStart) {
+			start = indexNotOf(text, runCharacters);
+			if(start < 0) { //string is only made up of run characters
+				return "";
+			}
+		} else {
+			start = 0;
+		}
+
+		final int end; //ending index is exclusive
+		if(trimEnd) {
+			end = lastIndexNotOf(text, runCharacters) + 1; //0 will be used if not found; end will never be -1
+		} else {
+			end = length;
+		}
+		if(end - start < 1) { //if there is no content to process
 			return "";
 		}
-		final int end = lastIndexNotOf(text, spaceCharacters) + 1; //ending index is exclusive
-		assert end > 0 : "String of all space characters should have already been detected.";
 		StringBuilder runCollapseStringBuilder = null; //we'll only need to copy if we are collapsing runs
 		int copyStart = start; //if we ever start copying, we'll copy starting at the start index
 		int searchStart = start; //the search position will be updated for every search cycle
 		while(searchStart < end) {
-			final int spaceRunStart = indexOf(text, spaceCharacters, searchStart); //find the next space character
-			if(spaceRunStart < 0 || spaceRunStart >= end) { //no more space characters within the range
+			final int runStart = indexOf(text, runCharacters, searchStart); //find the next run character
+			if(runStart < 0 || runStart >= end) { //no more run characters within the range
 				break;
 			}
-			final int spaceRunEnd = indexNotOf(text, spaceCharacters, spaceRunStart + 1); //find the end of the space character run
-			assert spaceRunEnd != -1 : "There has to be another non-space character or we would have ran past the end of our trimmed subsequence already.";
-			final int spaceRunLength = spaceRunEnd - spaceRunStart;
-			//collapse runs of space characters, as well as any space character that is not actually normalized space character
-			if(spaceRunLength > 1 || text.charAt(spaceRunStart) != normalizedSpaceChar) {
+			final int runEnd;
+			{
+				final int rawRunEnd = indexNotOf(text, runCharacters, runStart + 1); //find the end of the character run
+				runEnd = rawRunEnd >= 0 ? rawRunEnd : length; //compensate if we didn't trim the end and the run goes to the end
+			}
+			final int runLength = runEnd - runStart;
+			//collapse runs of characters, as well as any character that is not already the normalized space character
+			if(runLength > 1 || text.charAt(runStart) != normalizedChar) {
 				if(runCollapseStringBuilder == null) {
 					runCollapseStringBuilder = new StringBuilder(); //lazily create the string builder
 				}
-				runCollapseStringBuilder.append(text, copyStart, spaceRunStart); //append everything since our last copy up to the beginning of the space run
-				runCollapseStringBuilder.append(normalizedSpaceChar); //collapse to a single space
-				copyStart = spaceRunEnd; //when we need to copy again, we'll start copying after this run
+				runCollapseStringBuilder.append(text, copyStart, runStart); //append everything since our last copy up to the beginning of the run
+				runCollapseStringBuilder.append(normalizedChar); //collapse to a single normalized character
+				copyStart = runEnd; //when we need to copy again, we'll start copying after this run
 			}
-			searchStart = spaceRunEnd; //start searching after the run of space characters, but leave our copy start where it was until we actually need to copy
+			searchStart = runEnd; //start searching after the run of characters, but leave our copy start where it was until we actually need to copy
 		}
 		if(runCollapseStringBuilder == null) { //if no runs were collapsed
-			if(start > 0 || end < text.length()) { //it's still possible we trimmed without collapsing
+			if(start > 0 || end < length) { //it's still possible we trimmed without collapsing
 				return text.subSequence(start, end); //returning a subsequence is probably more efficient than copying
 			}
 			return text; //no trimming or run collapsing

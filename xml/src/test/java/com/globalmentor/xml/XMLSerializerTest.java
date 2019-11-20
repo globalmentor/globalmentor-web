@@ -20,6 +20,7 @@ import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.junit.jupiter.api.*;
 
@@ -113,67 +114,134 @@ public class XMLSerializerTest {
 
 	/**
 	 * @implSpec This test uses non-space characters for less ambiguity and visibility.
-	 * @see XMLSerializer#normalizeSpace(CharSequence, Characters, char)
+	 * @see XMLSerializer#collapseRuns(CharSequence, Characters, char, boolean, boolean)
 	 */
 	@Test
-	public void testNormalizeSpace() {
+	public void testCollapseRuns() {
 		final Characters spaceCharacters = Characters.of('X', 'Y', 'Z');
 
 		//empty string
-		assertThat(XMLSerializer.normalizeSpace("", spaceCharacters, 'X').toString(), is(""));
-		assertThat(XMLSerializer.normalizeSpace("X", spaceCharacters, 'X').toString(), is(""));
-		assertThat(XMLSerializer.normalizeSpace("XX", spaceCharacters, 'X').toString(), is(""));
-		assertThat(XMLSerializer.normalizeSpace("XXX", spaceCharacters, 'X').toString(), is(""));
-		assertThat(XMLSerializer.normalizeSpace("XXXX", spaceCharacters, 'X').toString(), is(""));
-		assertThat(XMLSerializer.normalizeSpace("Y", spaceCharacters, 'X').toString(), is(""));
-		assertThat(XMLSerializer.normalizeSpace("YY", spaceCharacters, 'X').toString(), is(""));
-		assertThat(XMLSerializer.normalizeSpace("ZXXY", spaceCharacters, 'X').toString(), is(""));
+		assertThat(XMLSerializer.collapseRuns("", spaceCharacters, 'X', false, false).toString(), is(""));
+		assertThat(XMLSerializer.collapseRuns("", spaceCharacters, 'X', true, false).toString(), is(""));
+		assertThat(XMLSerializer.collapseRuns("", spaceCharacters, 'X', false, true).toString(), is(""));
+		assertThat(XMLSerializer.collapseRuns("", spaceCharacters, 'X', true, true).toString(), is(""));
 
-		//nothing to normalize
-		assertThat(XMLSerializer.normalizeSpace("a", spaceCharacters, 'X').toString(), is("a"));
-		assertThat(XMLSerializer.normalizeSpace("aa", spaceCharacters, 'X').toString(), is("aa"));
-		assertThat(XMLSerializer.normalizeSpace("aaa", spaceCharacters, 'X').toString(), is("aaa"));
-		assertThat(XMLSerializer.normalizeSpace("ab", spaceCharacters, 'X').toString(), is("ab"));
-		assertThat(XMLSerializer.normalizeSpace("abc", spaceCharacters, 'X').toString(), is("abc"));
+		assertThat(XMLSerializer.collapseRuns("X", spaceCharacters, 'X', false, false).toString(), is("X"));
+		assertThat(XMLSerializer.collapseRuns("X", spaceCharacters, 'X', true, false).toString(), is(""));
+		assertThat(XMLSerializer.collapseRuns("X", spaceCharacters, 'X', false, true).toString(), is(""));
+		assertThat(XMLSerializer.collapseRuns("X", spaceCharacters, 'X', true, true).toString(), is(""));
+
+		assertThat(XMLSerializer.collapseRuns("XX", spaceCharacters, 'X', false, false).toString(), is("X"));
+		assertThat(XMLSerializer.collapseRuns("XX", spaceCharacters, 'X', true, false).toString(), is(""));
+		assertThat(XMLSerializer.collapseRuns("XX", spaceCharacters, 'X', false, true).toString(), is(""));
+		assertThat(XMLSerializer.collapseRuns("XX", spaceCharacters, 'X', true, true).toString(), is(""));
+
+		assertThat(XMLSerializer.collapseRuns("XXX", spaceCharacters, 'X', false, false).toString(), is("X"));
+		assertThat(XMLSerializer.collapseRuns("XXX", spaceCharacters, 'X', true, false).toString(), is(""));
+		assertThat(XMLSerializer.collapseRuns("XXX", spaceCharacters, 'X', false, true).toString(), is(""));
+		assertThat(XMLSerializer.collapseRuns("XXX", spaceCharacters, 'X', true, true).toString(), is(""));
+
+		assertThat(XMLSerializer.collapseRuns("XXXX", spaceCharacters, 'X', true, true).toString(), is(""));
+		assertThat(XMLSerializer.collapseRuns("Y", spaceCharacters, 'X', true, true).toString(), is(""));
+		assertThat(XMLSerializer.collapseRuns("YY", spaceCharacters, 'X', true, true).toString(), is(""));
+
+		assertThat(XMLSerializer.collapseRuns("ZXXY", spaceCharacters, 'X', false, false).toString(), is("X"));
+		assertThat(XMLSerializer.collapseRuns("ZXXY", spaceCharacters, 'X', true, false).toString(), is(""));
+		assertThat(XMLSerializer.collapseRuns("ZXXY", spaceCharacters, 'X', false, true).toString(), is(""));
+		assertThat(XMLSerializer.collapseRuns("ZXXY", spaceCharacters, 'X', true, true).toString(), is(""));
+
+		//nothing to collapse or trim
+		for(final boolean trimStart : List.of(false, true)) {
+			for(final boolean trimEnd : List.of(false, true)) {
+				assertThat(XMLSerializer.collapseRuns("a", spaceCharacters, 'X', trimStart, trimEnd).toString(), is("a"));
+				assertThat(XMLSerializer.collapseRuns("aa", spaceCharacters, 'X', trimStart, trimEnd).toString(), is("aa"));
+				assertThat(XMLSerializer.collapseRuns("aaa", spaceCharacters, 'X', trimStart, trimEnd).toString(), is("aaa"));
+				assertThat(XMLSerializer.collapseRuns("ab", spaceCharacters, 'X', trimStart, trimEnd).toString(), is("ab"));
+				assertThat(XMLSerializer.collapseRuns("abc", spaceCharacters, 'X', trimStart, trimEnd).toString(), is("abc"));
+			}
+		}
 
 		//beginning space
-		assertThat(XMLSerializer.normalizeSpace("Xabc", spaceCharacters, 'X').toString(), is("abc"));
-		assertThat(XMLSerializer.normalizeSpace("Yabc", spaceCharacters, 'X').toString(), is("abc"));
-		assertThat(XMLSerializer.normalizeSpace("XYYZabc", spaceCharacters, 'X').toString(), is("abc"));
+		assertThat(XMLSerializer.collapseRuns("Xabc", spaceCharacters, 'X', false, false).toString(), is("Xabc"));
+		assertThat(XMLSerializer.collapseRuns("Xabc", spaceCharacters, 'X', true, false).toString(), is("abc"));
+		assertThat(XMLSerializer.collapseRuns("Xabc", spaceCharacters, 'X', false, true).toString(), is("Xabc"));
+		assertThat(XMLSerializer.collapseRuns("Xabc", spaceCharacters, 'X', true, true).toString(), is("abc"));
+
+		assertThat(XMLSerializer.collapseRuns("Yabc", spaceCharacters, 'X', false, false).toString(), is("Xabc"));
+		assertThat(XMLSerializer.collapseRuns("Yabc", spaceCharacters, 'X', true, false).toString(), is("abc"));
+		assertThat(XMLSerializer.collapseRuns("Yabc", spaceCharacters, 'X', false, true).toString(), is("Xabc"));
+		assertThat(XMLSerializer.collapseRuns("Yabc", spaceCharacters, 'X', true, true).toString(), is("abc"));
+
+		assertThat(XMLSerializer.collapseRuns("XYYZabc", spaceCharacters, 'X', false, false).toString(), is("Xabc"));
+		assertThat(XMLSerializer.collapseRuns("XYYZabc", spaceCharacters, 'X', true, false).toString(), is("abc"));
+		assertThat(XMLSerializer.collapseRuns("XYYZabc", spaceCharacters, 'X', false, true).toString(), is("Xabc"));
+		assertThat(XMLSerializer.collapseRuns("XYYZabc", spaceCharacters, 'X', true, true).toString(), is("abc"));
 
 		//ending space
-		assertThat(XMLSerializer.normalizeSpace("abcX", spaceCharacters, 'X').toString(), is("abc"));
-		assertThat(XMLSerializer.normalizeSpace("abcY", spaceCharacters, 'X').toString(), is("abc"));
-		assertThat(XMLSerializer.normalizeSpace("abcXYYZ", spaceCharacters, 'X').toString(), is("abc"));
+		assertThat(XMLSerializer.collapseRuns("abcX", spaceCharacters, 'X', false, false).toString(), is("abcX"));
+		assertThat(XMLSerializer.collapseRuns("abcX", spaceCharacters, 'X', true, false).toString(), is("abcX"));
+		assertThat(XMLSerializer.collapseRuns("abcX", spaceCharacters, 'X', false, true).toString(), is("abc"));
+		assertThat(XMLSerializer.collapseRuns("abcX", spaceCharacters, 'X', true, true).toString(), is("abc"));
+
+		assertThat(XMLSerializer.collapseRuns("abcY", spaceCharacters, 'X', false, false).toString(), is("abcX"));
+		assertThat(XMLSerializer.collapseRuns("abcY", spaceCharacters, 'X', true, false).toString(), is("abcX"));
+		assertThat(XMLSerializer.collapseRuns("abcY", spaceCharacters, 'X', false, true).toString(), is("abc"));
+		assertThat(XMLSerializer.collapseRuns("abcY", spaceCharacters, 'X', true, true).toString(), is("abc"));
+
+		assertThat(XMLSerializer.collapseRuns("abcXYYZ", spaceCharacters, 'X', false, false).toString(), is("abcX"));
+		assertThat(XMLSerializer.collapseRuns("abcXYYZ", spaceCharacters, 'X', true, false).toString(), is("abcX"));
+		assertThat(XMLSerializer.collapseRuns("abcXYYZ", spaceCharacters, 'X', false, true).toString(), is("abc"));
+		assertThat(XMLSerializer.collapseRuns("abcXYYZ", spaceCharacters, 'X', true, true).toString(), is("abc"));
 
 		//beginning and ending space
-		assertThat(XMLSerializer.normalizeSpace("XabcX", spaceCharacters, 'X').toString(), is("abc"));
-		assertThat(XMLSerializer.normalizeSpace("XabcY", spaceCharacters, 'X').toString(), is("abc"));
-		assertThat(XMLSerializer.normalizeSpace("XYZZabcZXYY", spaceCharacters, 'X').toString(), is("abc"));
+		assertThat(XMLSerializer.collapseRuns("XabcX", spaceCharacters, 'X', false, false).toString(), is("XabcX"));
+		assertThat(XMLSerializer.collapseRuns("XabcX", spaceCharacters, 'X', true, false).toString(), is("abcX"));
+		assertThat(XMLSerializer.collapseRuns("XabcX", spaceCharacters, 'X', false, true).toString(), is("Xabc"));
+		assertThat(XMLSerializer.collapseRuns("XabcX", spaceCharacters, 'X', true, true).toString(), is("abc"));
 
-		//single spaces not needing normalizing
-		assertThat(XMLSerializer.normalizeSpace("aXb", spaceCharacters, 'X').toString(), is("aXb"));
-		assertThat(XMLSerializer.normalizeSpace("aXbXc", spaceCharacters, 'X').toString(), is("aXbXc"));
-		assertThat(XMLSerializer.normalizeSpace("abcXdeXfg", spaceCharacters, 'X').toString(), is("abcXdeXfg"));
+		assertThat(XMLSerializer.collapseRuns("XabcY", spaceCharacters, 'X', false, false).toString(), is("XabcX"));
+		assertThat(XMLSerializer.collapseRuns("XabcY", spaceCharacters, 'X', true, false).toString(), is("abcX"));
+		assertThat(XMLSerializer.collapseRuns("XabcY", spaceCharacters, 'X', false, true).toString(), is("Xabc"));
+		assertThat(XMLSerializer.collapseRuns("XabcY", spaceCharacters, 'X', true, true).toString(), is("abc"));
 
-		//single spaces needing normalizing
-		assertThat(XMLSerializer.normalizeSpace("aYb", spaceCharacters, 'X').toString(), is("aXb"));
-		assertThat(XMLSerializer.normalizeSpace("aXbYc", spaceCharacters, 'X').toString(), is("aXbXc"));
-		assertThat(XMLSerializer.normalizeSpace("abcYdeZfg", spaceCharacters, 'X').toString(), is("abcXdeXfg"));
+		assertThat(XMLSerializer.collapseRuns("XYZZabcZXYY", spaceCharacters, 'X', false, false).toString(), is("XabcX"));
+		assertThat(XMLSerializer.collapseRuns("XYZZabcZXYY", spaceCharacters, 'X', true, false).toString(), is("abcX"));
+		assertThat(XMLSerializer.collapseRuns("XYZZabcZXYY", spaceCharacters, 'X', false, true).toString(), is("Xabc"));
+		assertThat(XMLSerializer.collapseRuns("XYZZabcZXYY", spaceCharacters, 'X', true, true).toString(), is("abc"));
 
-		//normalizing runs of spaces
-		assertThat(XMLSerializer.normalizeSpace("aXXb", spaceCharacters, 'X').toString(), is("aXb"));
-		assertThat(XMLSerializer.normalizeSpace("aXYb", spaceCharacters, 'X').toString(), is("aXb"));
-		assertThat(XMLSerializer.normalizeSpace("aYZb", spaceCharacters, 'X').toString(), is("aXb"));
-		assertThat(XMLSerializer.normalizeSpace("aXXXb", spaceCharacters, 'X').toString(), is("aXb"));
-		assertThat(XMLSerializer.normalizeSpace("aXYYb", spaceCharacters, 'X').toString(), is("aXb"));
-		assertThat(XMLSerializer.normalizeSpace("aXYZb", spaceCharacters, 'X').toString(), is("aXb"));
-		assertThat(XMLSerializer.normalizeSpace("aYYZYb", spaceCharacters, 'X').toString(), is("aXb"));
-		assertThat(XMLSerializer.normalizeSpace("abXcdeXYfghijYYZZZZZYYlmnopXYZqrstuXXXXvYYYwxyz", spaceCharacters, 'X').toString(),
-				is("abXcdeXfghijXlmnopXqrstuXvXwxyz"));
+		for(final boolean trimStart : List.of(false, true)) {
+			for(final boolean trimEnd : List.of(false, true)) {
+				//single spaces not needing normalizing
+				assertThat(XMLSerializer.collapseRuns("aXb", spaceCharacters, 'X', trimStart, trimEnd).toString(), is("aXb"));
+				assertThat(XMLSerializer.collapseRuns("aXbXc", spaceCharacters, 'X', trimStart, trimEnd).toString(), is("aXbXc"));
+				assertThat(XMLSerializer.collapseRuns("abcXdeXfg", spaceCharacters, 'X', trimStart, trimEnd).toString(), is("abcXdeXfg"));
+
+				//single spaces needing normalizing
+				assertThat(XMLSerializer.collapseRuns("aYb", spaceCharacters, 'X', trimStart, trimEnd).toString(), is("aXb"));
+				assertThat(XMLSerializer.collapseRuns("aXbYc", spaceCharacters, 'X', trimStart, trimEnd).toString(), is("aXbXc"));
+				assertThat(XMLSerializer.collapseRuns("abcYdeZfg", spaceCharacters, 'X', trimStart, trimEnd).toString(), is("abcXdeXfg"));
+
+				//normalizing runs of spaces
+				assertThat(XMLSerializer.collapseRuns("aXXb", spaceCharacters, 'X', trimStart, trimEnd).toString(), is("aXb"));
+				assertThat(XMLSerializer.collapseRuns("aXYb", spaceCharacters, 'X', trimStart, trimEnd).toString(), is("aXb"));
+				assertThat(XMLSerializer.collapseRuns("aYZb", spaceCharacters, 'X', trimStart, trimEnd).toString(), is("aXb"));
+				assertThat(XMLSerializer.collapseRuns("aXXXb", spaceCharacters, 'X', trimStart, trimEnd).toString(), is("aXb"));
+				assertThat(XMLSerializer.collapseRuns("aXYYb", spaceCharacters, 'X', trimStart, trimEnd).toString(), is("aXb"));
+				assertThat(XMLSerializer.collapseRuns("aXYZb", spaceCharacters, 'X', trimStart, trimEnd).toString(), is("aXb"));
+				assertThat(XMLSerializer.collapseRuns("aYYZYb", spaceCharacters, 'X', trimStart, trimEnd).toString(), is("aXb"));
+				assertThat(XMLSerializer.collapseRuns("abXcdeXYfghijYYZZZZZYYlmnopXYZqrstuXXXXvYYYwxyz", spaceCharacters, 'X', trimStart, trimEnd).toString(),
+						is("abXcdeXfghijXlmnopXqrstuXvXwxyz"));
+			}
+		}
 
 		//beginning space, ending space, and space runs
-		assertThat(XMLSerializer.normalizeSpace("ZZZYYXabXcdeXYfghijYYZZZZZYYlmnopXYZqrstuXXXXvYYYwxyzXXXYYZ", spaceCharacters, 'X').toString(),
+		assertThat(XMLSerializer.collapseRuns("ZZZYYXabXcdeXYfghijYYZZZZZYYlmnopXYZqrstuXXXXvYYYwxyzXXXYYZ", spaceCharacters, 'X', false, false).toString(),
+				is("XabXcdeXfghijXlmnopXqrstuXvXwxyzX"));
+		assertThat(XMLSerializer.collapseRuns("ZZZYYXabXcdeXYfghijYYZZZZZYYlmnopXYZqrstuXXXXvYYYwxyzXXXYYZ", spaceCharacters, 'X', true, false).toString(),
+				is("abXcdeXfghijXlmnopXqrstuXvXwxyzX"));
+		assertThat(XMLSerializer.collapseRuns("ZZZYYXabXcdeXYfghijYYZZZZZYYlmnopXYZqrstuXXXXvYYYwxyzXXXYYZ", spaceCharacters, 'X', false, true).toString(),
+				is("XabXcdeXfghijXlmnopXqrstuXvXwxyz"));
+		assertThat(XMLSerializer.collapseRuns("ZZZYYXabXcdeXYfghijYYZZZZZYYlmnopXYZqrstuXXXXvYYYwxyzXXXYYZ", spaceCharacters, 'X', true, true).toString(),
 				is("abXcdeXfghijXlmnopXqrstuXvXwxyz"));
 	}
 }
