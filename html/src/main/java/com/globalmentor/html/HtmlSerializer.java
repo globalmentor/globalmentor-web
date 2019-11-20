@@ -26,6 +26,7 @@ import javax.annotation.Nonnull;
 import org.w3c.dom.*;
 
 import com.globalmentor.xml.XMLSerializer;
+import com.globalmentor.xml.XmlFormatProfile;
 
 /**
  * Serializes a document as HTML. Has features to serialize features in an HTML-oriented way, such as void elements and empty attributes:
@@ -62,17 +63,25 @@ public class HtmlSerializer extends XMLSerializer {
 
 	/** Default constructor for unformatted output with no XML prolog. */
 	public HtmlSerializer() {
-		super();
-		setPrologWritten(false);
+		this(false);
+	}
+
+	/**
+	 * Constructor for an optionally formatted serializer with no XML prolog, using the {@link XmlFormatProfile#DEFAULT} format profile.
+	 * @param formatted Whether the serializer should be formatted.
+	 */
+	public HtmlSerializer(final boolean formatted) {
+		this(formatted, XmlFormatProfile.DEFAULT); //TODO change to use HTML format profile
 	}
 
 	/**
 	 * Constructor for an optionally formatted serializer with no XML prolog.
 	 * @param formatted Whether the serializer should be formatted.
+	 * @param formatProfile The profile to use to guide formatting.
 	 */
-	public HtmlSerializer(final boolean formatted) {
-		this(); //do the default construction
-		setFormatted(formatted); //set whether the output should be formatted
+	public HtmlSerializer(final boolean formatted, @Nonnull final XmlFormatProfile formatProfile) {
+		super(formatted, formatProfile);
+		setPrologWritten(false);
 	}
 
 	/**

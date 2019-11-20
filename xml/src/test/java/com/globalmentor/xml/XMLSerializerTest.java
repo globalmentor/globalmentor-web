@@ -16,15 +16,22 @@
 
 package com.globalmentor.xml;
 
+import static com.globalmentor.xml.XmlDom.parse;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.List;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
+
+import javax.annotation.*;
 
 import org.junit.jupiter.api.*;
+import org.w3c.dom.Document;
 
 import com.globalmentor.java.Characters;
+import com.globalmentor.xml.spec.XML;
 
 public class XMLSerializerTest {
 
@@ -111,6 +118,8 @@ public class XMLSerializerTest {
 		xmlSerializer.setUsePredefinedEntities(XMLSerializer.PredefinedEntitiesUse.NEVER);
 		assertThat(xmlSerializer.encodeContent(new StringBuilder(), "<>&'\"", '"').toString(), is("&#x3C;&#x3E;&#x26;'&#x22;"));
 	}
+
+	//formatting
 
 	/**
 	 * @implSpec This test uses non-space characters for less ambiguity and visibility.
@@ -244,4 +253,31 @@ public class XMLSerializerTest {
 		assertThat(XMLSerializer.collapseRuns("ZZZYYXabXcdeXYfghijYYZZZZZYYlmnopXYZqrstuXXXXvYYYwxyzXXXYYZ", spaceCharacters, 'X', true, true).toString(),
 				is("abXcdeXfghijXlmnopXqrstuXvXwxyz"));
 	}
+
+	public static final XmlFormatProfile BLOCK_INLINE_FORMAT_PROFILE = new SimpleXmlFormatProfile(XML.WHITESPACE_CHARACTERS, Set.of(NsName.of("block")));
+
+	@Test
+	public void testSpacesNormalized() throws IOException {
+		assertThat(reformat("<foo>bar</foo>", BLOCK_INLINE_FORMAT_PROFILE), is("<foo xmlns=\"\">bar</foo>\n\n"));
+		assertThat(reformat("<foo>abc def\thijk\r\n  lmnop\n\t\tqrstuv\n\n\n\nwxyz</foo>", BLOCK_INLINE_FORMAT_PROFILE),
+				is("<foo xmlns=\"\">abc def hijk lmnop qrstuv wxyz</foo>\n\n"));
+	}
+
+	/**
+	 * Parses and re-serializes an XML document from a string.
+	 * @implSpec No prolog is written.
+	 * @implSpec The single newline character <code>'\n'</code> is used as a line separator.
+	 * @param text The text to parse and re-serialize.
+	 * @param formatProfile The formatting characterization of the document.
+	 * @return The re-serialized form of the document, with no XML prolog.
+	 * @throws IOException if an error occurs parsing or serializing the document.
+	 */
+	protected static String reformat(@Nonnull final String text, @Nonnull final XmlFormatProfile formatProfile) throws IOException {
+		final Document document = parse(new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8)), true);
+		final XMLSerializer serializer = new XMLSerializer(true, formatProfile);
+		serializer.setPrologWritten(false);
+		serializer.setLineSeparator("\n");
+		return serializer.serialize(document);
+	}
+
 }

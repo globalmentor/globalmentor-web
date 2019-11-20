@@ -34,7 +34,6 @@ import com.globalmentor.java.Characters;
 
 import static com.globalmentor.xml.XmlDom.*;
 import static com.globalmentor.xml.spec.XML.*;
-import static java.lang.System.lineSeparator;
 import static java.nio.charset.StandardCharsets.*;
 import static java.util.Objects.*;
 
@@ -319,10 +318,31 @@ public class XMLSerializer {
 	 * Sets the string to use for horizontally aligning the elements if formatting is turned on..
 	 * @implSpec The default is a single tab character.
 	 * @param newHorizontalAlignString The horizontal alignment string.
-	 * @see #setFormatted
+	 * @see #setFormatted(boolean)
 	 */
 	public void setHorizontalAlignString(final String newHorizontalAlignString) {
 		horizontalAlignString = newHorizontalAlignString;
+	}
+
+	private String lineSeparator = System.lineSeparator();
+
+	/**
+	 * Returns the character or characters to use to separate lines; that is, for newlines or line breaks.
+	 * @return The newline delimiter to use.
+	 * @see System#lineSeparator()
+	 */
+	public String getLineSeparator() {
+		return lineSeparator;
+	}
+
+	/**
+	 * Sets the character or characters to use to separate lines; that is, for newlines or line breaks.
+	 * @implSpec The default is the system line separator {@link System#lineSeparator()}.
+	 * @param lineSeparator The newline delimiter to use.
+	 * @see System#lineSeparator()
+	 */
+	public void setLineSeparator(@Nonnull final String lineSeparator) {
+		this.lineSeparator = requireNonNull(lineSeparator);
 	}
 
 	/** The current level of nesting during document serialization if output is formatted. */
@@ -343,7 +363,7 @@ public class XMLSerializer {
 
 	/** Default constructor for unformatted output. */
 	public XMLSerializer() {
-		initializeEntityLookup(null); //always initialize the entity lookup, so that at least the five XML entities will be included in the table in case they serialize only part of a document TODO fix better so that serializing part of the document somehow initializes these
+		this(false);
 	}
 
 	/**
@@ -351,17 +371,34 @@ public class XMLSerializer {
 	 * @param options The options to use for serialization.
 	 */
 	public XMLSerializer(final Properties options) {
-		this(); //do the default construction
+		this(false); //do the default construction
 		setOptions(options); //set the options from the properties
+	}
+
+	/**
+	 * Constructor for an optionally formatted serializer using the {@link XmlFormatProfile#DEFAULT} format profile.
+	 * @param formatted Whether the serializer should be formatted.
+	 */
+	public XMLSerializer(final boolean formatted) {
+		this(formatted, XmlFormatProfile.DEFAULT);
+	}
+
+	private final XmlFormatProfile formatProfile;
+
+	/** @return The characterization of the content for formatting purposes. */
+	protected XmlFormatProfile getFormatProfile() {
+		return formatProfile;
 	}
 
 	/**
 	 * Constructor for an optionally formatted serializer.
 	 * @param formatted Whether the serializer should be formatted.
+	 * @param formatProfile The profile to use to guide formatting.
 	 */
-	public XMLSerializer(final boolean formatted) {
-		this(); //do the default construction
+	public XMLSerializer(final boolean formatted, @Nonnull final XmlFormatProfile formatProfile) {
+		initializeEntityLookup(null); //always initialize the entity lookup, so that at least the five XML entities will be included in the table in case they serialize only part of a document TODO fix better so that serializing part of the document somehow initializes these
 		setFormatted(formatted); //set whether the output should be formatted
+		this.formatProfile = requireNonNull(formatProfile);
 	}
 
 	/**
@@ -482,7 +519,7 @@ public class XMLSerializer {
 		}
 		serialize(writer, documentElement); //write the document element and all elements below it
 		if(isFormatted()) { //if we should write formatted output
-			writer.newLine(); //add a newline in the default format
+			writer.append(getLineSeparator()); //newline
 		}
 		writer.flush(); //flush any data we've buffered
 	}
@@ -545,7 +582,7 @@ public class XMLSerializer {
 		final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, charset)); //create a new writer based on our encoding TODO see if the writer automatically writes the byte order mark already for non-UTF-8
 		serialize(writer, element); //write the element and all elements below it
 		if(isFormatted()) { //if we should write formatted output
-			writer.newLine(); //add a newline in the default format
+			writer.append(getLineSeparator()); //newline
 		}
 		writer.flush(); //flush any data we've buffered
 	}
@@ -583,7 +620,7 @@ public class XMLSerializer {
 		final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, charset)); //create a new writer based on our encoding TODO see if the writer automatically writes the byte order mark already for non-UTF-8
 		serializeContent(writer, node); //write all children of the node
 		if(isFormatted()) { //if we should write formatted output
-			writer.newLine(); //add a newline in the default format
+			writer.append(getLineSeparator()); //newline
 		}
 		writer.flush(); //flush any data we've buffered
 	}
@@ -641,7 +678,7 @@ public class XMLSerializer {
 				.append(DOUBLE_QUOTE_CHAR).append(SPACE_CHAR).append(ENCODINGDECL_NAME).append(EQUAL_CHAR).append(DOUBLE_QUOTE_CHAR).append(charset.name())
 				.append(DOUBLE_QUOTE_CHAR).append(XML_DECL_END); //write the XML prolog
 		if(isFormatted()) { //if we should write formatted output
-			appendable.append(lineSeparator()); //add a newline in the default format
+			appendable.append(getLineSeparator()); //newline
 		}
 		return appendable;
 	}
@@ -687,7 +724,7 @@ public class XMLSerializer {
 		}
 		appendable.append(DOCTYPE_DECL_END); //write the end of the document type declaration
 		if(isFormatted()) { //if we should write formatted output
-			appendable.append(lineSeparator()); //add a newline in the default format
+			appendable.append(getLineSeparator()); //newline
 		}
 		return appendable;
 	}
@@ -705,7 +742,7 @@ public class XMLSerializer {
 		appendable.append(processingInstruction.getData()); //write the processing instruction data
 		appendable.append(PROCESSING_INSTRUCTION_END); //write the end of the processing instruction
 		if(isFormatted()) { //if we should write formatted output
-			appendable.append(lineSeparator()); //add a newline in the default format
+			appendable.append(getLineSeparator()); //newline
 		}
 		return appendable;
 	}
@@ -758,32 +795,38 @@ public class XMLSerializer {
 			appendable.append(SPACE_CHAR).append('/').append(TAG_END); //write the end of the empty element tag, with an extra space for HTML browser compatibility TODO use a constant here
 		} else {
 			appendable.append(TAG_END); //write the end of the start tag
-			boolean contentFormatted = false; //we'll determine if we should format the content of the child nodes
-			//we'll only format the contents if there are only element children
-			if(formatted) { //if we've been told to format, we'll make sure there are element child nodes
-				for(int childIndex = 0; childIndex < element.getChildNodes().getLength(); childIndex++) { //look at each child node
-					final int childNodeType = element.getChildNodes().item(childIndex).getNodeType(); //get this child's type of node
-					if(childNodeType == Node.ELEMENT_NODE) { //if this is an element child node
-						contentFormatted = true; //show that we should format the element content
-					} else if(childNodeType == Node.TEXT_NODE) { //if this is text
-						contentFormatted = false; //text or mixed content is always unformatted
-						break; //we know we shouldn't format; stop looking at the children
+			/*TODO fix; update for formatting overhaul
+				boolean contentFormatted = false; //we'll determine if we should format the content of the child nodes
+				//we'll only format the contents if there are only element children
+				if(formatted) { //if we've been told to format, we'll make sure there are element child nodes
+					for(int childIndex = 0; childIndex < element.getChildNodes().getLength(); childIndex++) { //look at each child node
+						final int childNodeType = element.getChildNodes().item(childIndex).getNodeType(); //get this child's type of node
+						if(childNodeType == Node.ELEMENT_NODE) { //if this is an element child node
+							contentFormatted = true; //show that we should format the element content
+						} else if(childNodeType == Node.TEXT_NODE) { //if this is text
+							contentFormatted = false; //text or mixed content is always unformatted
+							break; //we know we shouldn't format; stop looking at the children
+						}
 					}
 				}
+			*/
+			/*TODO move to formatting of children
+			if(isFormatted()) { //if we should write formatted output for the content
+				appendable.append(getLineSeparator()); //add a newline after the element's starting tag
 			}
-			if(contentFormatted) { //if we should write formatted output for the content
-				appendable.append(lineSeparator()); //add a newline after the element's starting tag
-			}
+			*/
 			++nestLevel; //show that we're nesting to the next level
-			serializeContent(appendable, element, contentFormatted);
+			serializeContent(appendable, element, isFormatted()); //TODO do we still need to indicate formatted setting after formatting overhaul?
 			--nestLevel; //show that we're finished with this level of the document hierarchy
-			if(contentFormatted) { //if we should write formatted output for the content
+			/*TODO move to formatting of children
+			if(isFormatted()) { //if we should write formatted output for the content
 				serializeHorizontalAlignment(appendable, nestLevel); //horizontally align the element's ending tag
 			}
+			*/
 			appendable.append(TAG_START).append('/').append(element.getNodeName()).append(TAG_END); //write the ending tag TODO use a constant here
 		}
 		if(formatted) { //if we should write formatted output
-			appendable.append(lineSeparator()); //add a newline after the element
+			appendable.append(getLineSeparator()); //add a newline after the element
 		}
 		return appendable;
 	}
@@ -847,11 +890,21 @@ public class XMLSerializer {
 					serialize(appendable, (Element)childNode, formatted); //write this element
 					break;
 				case Node.TEXT_NODE: //if this is a text node
-					if(isChildTextEncoded(node)) {
-						encodeContent(appendable, childNode.getNodeValue()); //write the text value of the node after encoding the string for XML
+				{
+					final String textNodeValue = childNode.getNodeValue();
+					final CharSequence text;
+					if(formatted) {
+						//TODO check formatting profile to see if this a context that allows formatting
+						text = collapseRuns(textNodeValue, getFormatProfile().getSpaceNormalizationCharacters(), SPACE_CHAR, false, false); //TODO determine whether to trim based upon context
 					} else {
-						appendable.append(childNode.getNodeValue()); //write the text value of the node without encoding
+						text = textNodeValue;
 					}
+					if(isChildTextEncoded(node)) {
+						encodeContent(appendable, text); //write the text value of the node after encoding the string for XML
+					} else {
+						appendable.append(text); //write the text value of the node without encoding
+					}
+				}
 					break;
 				case Node.COMMENT_NODE: //if this is a comment node
 					if(formatted) { //if we should write formatted output
@@ -862,7 +915,7 @@ public class XMLSerializer {
 					appendable.append(childNode.getNodeValue()); //write the text value of the node, but don't encode the string for XML since it's inside a comment
 					appendable.append(COMMENT_END); //write the end of the comment
 					if(formatted) { //if we should write formatted output
-						appendable.append(lineSeparator()); //add a newline after the element
+						appendable.append(getLineSeparator()); //add a newline after the comment
 					}
 					break;
 				case Node.CDATA_SECTION_NODE: //if this is a CDATA section node
@@ -976,6 +1029,8 @@ public class XMLSerializer {
 	 * Optionally removes all run characters from the beginning and ending of the text.
 	 * @implNote This method is useful to normalize runs of "space" characters such as whitespace to a single space <code>' '</code> character.
 	 * @param text The text to normalize.
+	 * @param trimStart Whether all run characters should be trimmed from the start of the string rather than collapsed.
+	 * @param trimEnd Whether all run characters should be trimmed from the end of the string rather than collapsed.
 	 * @param runCharacters The characters considers characters for purposes of collapsing runs, such as whitespace characters.
 	 * @param normalizedChar The character to which to runs of characters; e.g. the space <code>' '</code> character itself.
 	 * @return A character sequence with no beginning and/or trailing run characters, if start and/or end trimming was indicated, respectively; and all character
