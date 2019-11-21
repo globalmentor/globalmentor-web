@@ -304,49 +304,77 @@ public class XMLSerializer {
 		setXMLEncodePrivateUse(PropertiesUtilities.getBooleanProperty(options, OPTION_XML_ENCODE_PRIVATE_USE, OPTION_XML_ENCODE_PRIVATE_USE_DEFAULT));
 	}
 
-	private String horizontalAlignString = "\t";
+	private CharSequence horizontalAligner = "\t";
 
 	/**
-	 * @return The string to use for horizontally aligning the elements if formatting is turned on.
+	 * @return The character sequence to use for horizontally aligning the elements if formatting is turned on.
 	 * @see #isFormatted()
 	 */
-	public String getHorizontalAlignString() {
-		return horizontalAlignString;
+	public CharSequence getHorizontalAligner() {
+		return horizontalAligner;
 	}
 
 	/**
-	 * Sets the string to use for horizontally aligning the elements if formatting is turned on..
+	 * Sets the character sequence to use for horizontally aligning the elements if formatting is turned on..
 	 * @implSpec The default is a single tab character.
-	 * @param newHorizontalAlignString The horizontal alignment string.
+	 * @param horizontalAligner The horizontal alignment character sequence.
 	 * @see #setFormatted(boolean)
 	 */
-	public void setHorizontalAlignString(final String newHorizontalAlignString) {
-		horizontalAlignString = newHorizontalAlignString;
+	public void setHorizontalAligner(final CharSequence horizontalAligner) {
+		this.horizontalAligner = horizontalAligner;
 	}
 
-	private String lineSeparator = System.lineSeparator();
+	private CharSequence lineSeparator = System.lineSeparator();
 
 	/**
-	 * Returns the character or characters to use to separate lines; that is, for newlines or line breaks.
+	 * Returns the character sequence to use to separate lines; that is, for newlines or line breaks.
 	 * @return The newline delimiter to use.
 	 * @see System#lineSeparator()
 	 */
-	public String getLineSeparator() {
+	public CharSequence getLineSeparator() {
 		return lineSeparator;
 	}
 
 	/**
-	 * Sets the character or characters to use to separate lines; that is, for newlines or line breaks.
+	 * Sets the character sequence to use to separate lines; that is, for newlines or line breaks.
 	 * @implSpec The default is the system line separator {@link System#lineSeparator()}.
 	 * @param lineSeparator The newline delimiter to use.
 	 * @see System#lineSeparator()
 	 */
-	public void setLineSeparator(@Nonnull final String lineSeparator) {
+	public void setLineSeparator(@Nonnull final CharSequence lineSeparator) {
 		this.lineSeparator = requireNonNull(lineSeparator);
 	}
 
-	/** The current level of nesting during document serialization if output is formatted. */
-	protected int nestLevel = -1;
+	/** The current level of indenting during document serialization if output is formatted. */
+	private int indent = -1;
+
+	/** @return The current indent level, or <code>0<code> indicating no indention. */
+	protected int getIndent() {
+		return indent;
+	}
+
+	/**
+	 * Increases the indent level;
+	 * @return The new indent level;
+	 */
+	protected int indent() {
+		return ++indent;
+	}
+
+	/**
+	 * Reduces the indent level.
+	 * @return The new indent level.
+	 * @throws IllegalStateException If the indent level is already at zero.
+	 */
+	protected int unindent() {
+		checkState(indent > 0, "Attempted to negatively indent.");
+		return --indent;
+	}
+
+	/** Resets the indent level to zero. */
+	protected void resetIndent() {
+		indent = 0;
+	}
 
 	/**
 	 * The string representing one-character entity values defined in the document. The {@link #entityNames} array will contain the names of the corresponding
@@ -492,7 +520,7 @@ public class XMLSerializer {
 	 */
 	public void serialize(@Nonnull final Document document, @Nonnull final OutputStream outputStream, @Nonnull final Charset charset)
 			throws IOException, UnsupportedEncodingException {
-		nestLevel = 0; //show that we haven't started nesting yet
+		resetIndent();
 		if(isBomWritten()) { //if we should write a BOM
 			final ByteOrderMark bom = ByteOrderMark.forCharset(charset); //get the byte order mark, if there is one
 			if(bom != null) {
@@ -572,7 +600,7 @@ public class XMLSerializer {
 	 */
 	public void serialize(@Nonnull final Element element, @Nonnull final OutputStream outputStream, @Nonnull final Charset charset)
 			throws IOException, UnsupportedEncodingException {
-		nestLevel = 0; //show that we haven't started nesting yet
+		resetIndent();
 		if(isBomWritten()) { //if we should write a BOM
 			final ByteOrderMark bom = ByteOrderMark.forCharset(charset); //get the byte order mark, if there is one
 			if(bom != null) {
@@ -610,7 +638,7 @@ public class XMLSerializer {
 	 */
 	protected void serializeContent(@Nonnull final Node node, @Nonnull final OutputStream outputStream, @Nonnull final Charset charset)
 			throws IOException, UnsupportedEncodingException {
-		nestLevel = 0; //show that we haven't started nesting yet
+		resetIndent();
 		if(isBomWritten()) { //if we should write a BOM
 			final ByteOrderMark bom = ByteOrderMark.forCharset(charset); //get the byte order mark, if there is one
 			if(bom != null) {
@@ -812,19 +840,7 @@ public class XMLSerializer {
 					}
 				}
 			*/
-			/*TODO move to formatting of children
-			if(isFormatted()) { //if we should write formatted output for the content
-				appendable.append(getLineSeparator()); //add a newline after the element's starting tag
-			}
-			*/
-			++nestLevel; //show that we're nesting to the next level
-			serializeContent(appendable, element, isFormatted()); //TODO do we still need to indicate formatted setting after formatting overhaul?
-			--nestLevel; //show that we're finished with this level of the document hierarchy
-			/*TODO move to formatting of children
-			if(isFormatted()) { //if we should write formatted output for the content
-				serializeHorizontalAlignment(appendable, nestLevel); //horizontally align the element's ending tag
-			}
-			*/
+			serializeContent(appendable, element, isFormatted());
 			appendable.append(TAG_START).append('/').append(element.getNodeName()).append(TAG_END); //write the ending tag TODO use a constant here
 		}
 		/*TODO delete
@@ -903,7 +919,22 @@ public class XMLSerializer {
 			final Node childNode = childNodes.item(childIndex); //look at this node
 			switch(childNode.getNodeType()) { //see which type of object this is
 				case Node.ELEMENT_NODE: //if this is an element
-					serialize(appendable, (Element)childNode, formatted); //write this element
+				{
+					final Element childElement = (Element)childNode;
+					final boolean isChildFormatted = formatted && !getFormatProfile().isPreserved(childElement);
+					final boolean isChildBlockFormatted = isChildFormatted && getFormatProfile().isBlock(childElement);
+					if(isChildBlockFormatted) {
+						appendable.append(getLineSeparator());
+						indent();
+						serializeHorizontalAlignment(appendable, getIndent()); //horizontally align the element
+					}
+					serialize(appendable, childElement, isChildBlockFormatted); //write this element
+					if(isChildBlockFormatted) {
+						appendable.append(getLineSeparator());
+						unindent();
+						serializeHorizontalAlignment(appendable, getIndent());
+					}
+				}
 					break;
 				case Node.TEXT_NODE: //if this is a text node
 				{
@@ -927,7 +958,7 @@ public class XMLSerializer {
 					break;
 				case Node.COMMENT_NODE: //if this is a comment node
 					if(formatted) { //if we should write formatted output
-						serializeHorizontalAlignment(appendable, nestLevel); //horizontally align the element
+						serializeHorizontalAlignment(appendable, getIndent()); //horizontally align the element
 					}
 					appendable.append(COMMENT_START); //write the start of the comment
 					//TODO check content for disallowed sequence
@@ -968,7 +999,7 @@ public class XMLSerializer {
 	 */
 	protected Appendable serializeHorizontalAlignment(@Nonnull final Appendable appendable, int nestLevel) throws IOException {
 		while(nestLevel > 0) { //while we haven't finished nesting
-			appendable.append(getHorizontalAlignString()); //write another string for horizontal alignment
+			appendable.append(getHorizontalAligner()); //write another string for horizontal alignment
 			--nestLevel; //show that we have one less level to next
 		}
 		return appendable;

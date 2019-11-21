@@ -259,39 +259,89 @@ public class XMLSerializerTest {
 
 	@Test
 	public void testSpacesNormalized() throws IOException {
-		assertThat(reformat("<block>bar</block>", BLOCK_PRE_FORMAT_PROFILE), is("<block xmlns=\"\">bar</block>\n"));
-		assertThat(reformat("<block>abc def\thijk\r\n  lmnop\n\t\tqrstuv\n\n\n\nwxyz</block>", BLOCK_PRE_FORMAT_PROFILE),
-				is("<block xmlns=\"\">abc def hijk lmnop qrstuv wxyz</block>\n"));
+		assertThat(reformat("<block>bar</block>", BLOCK_PRE_FORMAT_PROFILE, "", ""), is("<block xmlns=\"\">bar</block>"));
+		assertThat(reformat("<block>abc def\thijk\r\n  lmnop\n\t\tqrstuv\n\n\n\nwxyz</block>", BLOCK_PRE_FORMAT_PROFILE, "", ""),
+				is("<block xmlns=\"\">abc def hijk lmnop qrstuv wxyz</block>"));
 	}
 
 	@Test
 	public void testBlockStartChildTextTrimmed() throws IOException {
-		assertThat(reformat("<block>\n\tfoo<inline>bar</inline>\t\t\tfoobar</block>", BLOCK_PRE_FORMAT_PROFILE),
-				is("<block xmlns=\"\">foo<inline>bar</inline> foobar</block>\n"));
-		assertThat(reformat("<inline>\n\tfoo</inline>", BLOCK_PRE_FORMAT_PROFILE), is("<inline xmlns=\"\"> foo</inline>\n"));
+		assertThat(reformat("<block>\n\tfoo<inline>bar</inline>\t\t\tfoobar</block>", BLOCK_PRE_FORMAT_PROFILE, "", ""),
+				is("<block xmlns=\"\">foo<inline>bar</inline> foobar</block>"));
+		assertThat(reformat("<inline>\n\tfoo</inline>", BLOCK_PRE_FORMAT_PROFILE, "", ""), is("<inline xmlns=\"\"> foo</inline>"));
 	}
 
 	@Test
 	public void testChildTextAfterBlockTrimmed() throws IOException {
-		assertThat(reformat("<block>foo<inline>bar</inline>\t\t\tfoobar</block>", BLOCK_PRE_FORMAT_PROFILE),
-				is("<block xmlns=\"\">foo<inline>bar</inline> foobar</block>\n"));
-		assertThat(reformat("<block>foo<block>bar</block>\t\t\tfoobar</block>", BLOCK_PRE_FORMAT_PROFILE),
-				is("<block xmlns=\"\">foo<block>bar</block>foobar</block>\n"));
+		assertThat(reformat("<block>foo<inline>bar</inline>\t\t\tfoobar</block>", BLOCK_PRE_FORMAT_PROFILE, "", ""),
+				is("<block xmlns=\"\">foo<inline>bar</inline> foobar</block>"));
+		assertThat(reformat("<block>foo<block>bar</block>\t\t\tfoobar</block>", BLOCK_PRE_FORMAT_PROFILE, "", ""),
+				is("<block xmlns=\"\">foo<block>bar</block>foobar</block>"));
 	}
 
 	@Test
 	public void testBlockEndChildTextTrimmed() throws IOException {
-		assertThat(reformat("<block>foo\t\t\t<inline>bar</inline>foobar\n\t</block>", BLOCK_PRE_FORMAT_PROFILE),
-				is("<block xmlns=\"\">foo <inline>bar</inline>foobar</block>\n"));
-		assertThat(reformat("<inline>foo\n\t</inline>", BLOCK_PRE_FORMAT_PROFILE), is("<inline xmlns=\"\">foo </inline>\n"));
+		assertThat(reformat("<block>foo\t\t\t<inline>bar</inline>foobar\n\t</block>", BLOCK_PRE_FORMAT_PROFILE, "", ""),
+				is("<block xmlns=\"\">foo <inline>bar</inline>foobar</block>"));
+		assertThat(reformat("<inline>foo\n\t</inline>", BLOCK_PRE_FORMAT_PROFILE, "", ""), is("<inline xmlns=\"\">foo </inline>"));
 	}
 
 	@Test
 	public void testChildTextBeforeBlockTrimmed() throws IOException {
-		assertThat(reformat("<block>foo\t\t\t<inline>bar</inline>foobar</block>", BLOCK_PRE_FORMAT_PROFILE),
-				is("<block xmlns=\"\">foo <inline>bar</inline>foobar</block>\n"));
-		assertThat(reformat("<block>foo\t\t\t<block>bar</block>foobar</block>", BLOCK_PRE_FORMAT_PROFILE),
-				is("<block xmlns=\"\">foo<block>bar</block>foobar</block>\n"));
+		assertThat(reformat("<block>foo\t\t\t<inline>bar</inline>foobar</block>", BLOCK_PRE_FORMAT_PROFILE, "", ""),
+				is("<block xmlns=\"\">foo <inline>bar</inline>foobar</block>"));
+		assertThat(reformat("<block>foo\t\t\t<block>bar</block>foobar</block>", BLOCK_PRE_FORMAT_PROFILE, "", ""),
+				is("<block xmlns=\"\">foo<block>bar</block>foobar</block>"));
+	}
+
+	@Test
+	public void testNewlinesAroundBlock() throws IOException {
+		assertThat(reformat("<block>foo<inline>foobar</inline>bar</block>", BLOCK_PRE_FORMAT_PROFILE, "\n", ""),
+				is("<block xmlns=\"\">foo<inline>foobar</inline>bar</block>\n"));
+		assertThat(reformat("<block><block>foobar</block>bar</block>", BLOCK_PRE_FORMAT_PROFILE, "\n", ""),
+				is("<block xmlns=\"\">\n<block>foobar</block>\nbar</block>\n"));
+		assertThat(reformat("<block>foo<block>foobar</block></block>", BLOCK_PRE_FORMAT_PROFILE, "\n", ""),
+				is("<block xmlns=\"\">foo\n<block>foobar</block>\n</block>\n"));
+		assertThat(reformat("<block>foo<block>foobar</block>bar</block>", BLOCK_PRE_FORMAT_PROFILE, "\n", ""),
+				is("<block xmlns=\"\">foo\n<block>foobar</block>\nbar</block>\n"));
+	}
+
+	@Test
+	public void testBlockIndented() throws IOException {
+		assertThat(reformat("<block>foo<inline>foobar</inline>bar</block>", BLOCK_PRE_FORMAT_PROFILE, "", "\t"),
+				is("<block xmlns=\"\">foo<inline>foobar</inline>bar</block>"));
+		assertThat(reformat("<block><block>foobar</block>bar</block>", BLOCK_PRE_FORMAT_PROFILE, "", "\t"),
+				is("<block xmlns=\"\">\t<block>foobar</block>bar</block>"));
+		assertThat(reformat("<block>foo<block>foobar</block></block>", BLOCK_PRE_FORMAT_PROFILE, "", "\t"),
+				is("<block xmlns=\"\">foo\t<block>foobar</block></block>"));
+		assertThat(reformat("<block>foo<block>foobar</block>bar</block>", BLOCK_PRE_FORMAT_PROFILE, "", "\t"),
+				is("<block xmlns=\"\">foo\t<block>foobar</block>bar</block>"));
+	}
+
+	@Test
+	public void testBlockNewlinesAndIndents() throws IOException {
+		assertThat(reformat("<block>foo<inline>foobar</inline>bar</block>", BLOCK_PRE_FORMAT_PROFILE),
+				is("<block xmlns=\"\">foo<inline>foobar</inline>bar</block>\n"));
+		assertThat(reformat("<block><block>foobar</block>bar</block>", BLOCK_PRE_FORMAT_PROFILE), is("<block xmlns=\"\">\n\t<block>foobar</block>\nbar</block>\n"));
+		assertThat(reformat("<block>foo<block>foobar</block></block>", BLOCK_PRE_FORMAT_PROFILE), is("<block xmlns=\"\">foo\n\t<block>foobar</block>\n</block>\n"));
+		assertThat(reformat("<block>foo<block>foobar</block>bar</block>", BLOCK_PRE_FORMAT_PROFILE),
+				is("<block xmlns=\"\">foo\n\t<block>foobar</block>\nbar</block>\n"));
+		assertThat(reformat("<block>foo<block>foobar</block>bar<block>left<block>nest</block>right</block>end</block>", BLOCK_PRE_FORMAT_PROFILE),
+				is("<block xmlns=\"\">foo\n\t<block>foobar</block>\nbar\n\t<block>left\n\t\t<block>nest</block>\n\tright</block>\nend</block>\n"));
+	}
+
+	/**
+	 * Parses and re-serializes an XML document from a string.
+	 * @implSpec No prolog is written.
+	 * @implSpec A single newline character <code>'\n'</code> is used as a line separator.
+	 * @implSpec A single tab character <code>'\t'</code> is used as a horizontal aligner.
+	 * @param text The text to parse and re-serialize.
+	 * @param formatProfile The formatting characterization of the document.
+	 * @return The re-serialized form of the document, with no XML prolog.
+	 * @throws IOException if an error occurs parsing or serializing the document.
+	 */
+	protected static String reformat(@Nonnull final String text, @Nonnull final XmlFormatProfile formatProfile) throws IOException {
+		return reformat(text, formatProfile, "\n", "\t");
 	}
 
 	/**
@@ -300,14 +350,18 @@ public class XMLSerializerTest {
 	 * @implSpec The single newline character <code>'\n'</code> is used as a line separator.
 	 * @param text The text to parse and re-serialize.
 	 * @param formatProfile The formatting characterization of the document.
+	 * @param lineSeparator The newline delimiter to use.
+	 * @param horizontalAligner The horizontal alignment character sequence.
 	 * @return The re-serialized form of the document, with no XML prolog.
 	 * @throws IOException if an error occurs parsing or serializing the document.
 	 */
-	protected static String reformat(@Nonnull final String text, @Nonnull final XmlFormatProfile formatProfile) throws IOException {
+	protected static String reformat(@Nonnull final String text, @Nonnull final XmlFormatProfile formatProfile, @Nonnull final String lineSeparator,
+			@Nonnull final String horizontalAligner) throws IOException {
 		final Document document = parse(new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8)), true);
 		final XMLSerializer serializer = new XMLSerializer(true, formatProfile);
 		serializer.setPrologWritten(false);
-		serializer.setLineSeparator("\n");
+		serializer.setLineSeparator(lineSeparator);
+		serializer.setHorizontalAligner(horizontalAligner);
 		return serializer.serialize(document);
 	}
 
