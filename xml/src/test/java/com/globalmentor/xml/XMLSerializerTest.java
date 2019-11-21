@@ -254,13 +254,44 @@ public class XMLSerializerTest {
 				is("abXcdeXfghijXlmnopXqrstuXvXwxyz"));
 	}
 
-	public static final XmlFormatProfile BLOCK_INLINE_FORMAT_PROFILE = new SimpleXmlFormatProfile(XML.WHITESPACE_CHARACTERS, Set.of(NsName.of("block")));
+	public static final XmlFormatProfile BLOCK_PRE_FORMAT_PROFILE = new SimpleXmlFormatProfile(XML.WHITESPACE_CHARACTERS, Set.of(NsName.of("block")),
+			Set.of(NsName.of("pre")));
 
 	@Test
 	public void testSpacesNormalized() throws IOException {
-		assertThat(reformat("<foo>bar</foo>", BLOCK_INLINE_FORMAT_PROFILE), is("<foo xmlns=\"\">bar</foo>\n\n"));
-		assertThat(reformat("<foo>abc def\thijk\r\n  lmnop\n\t\tqrstuv\n\n\n\nwxyz</foo>", BLOCK_INLINE_FORMAT_PROFILE),
-				is("<foo xmlns=\"\">abc def hijk lmnop qrstuv wxyz</foo>\n\n"));
+		assertThat(reformat("<block>bar</block>", BLOCK_PRE_FORMAT_PROFILE), is("<block xmlns=\"\">bar</block>\n"));
+		assertThat(reformat("<block>abc def\thijk\r\n  lmnop\n\t\tqrstuv\n\n\n\nwxyz</block>", BLOCK_PRE_FORMAT_PROFILE),
+				is("<block xmlns=\"\">abc def hijk lmnop qrstuv wxyz</block>\n"));
+	}
+
+	@Test
+	public void testBlockStartChildTextTrimmed() throws IOException {
+		assertThat(reformat("<block>\n\tfoo<inline>bar</inline>\t\t\tfoobar</block>", BLOCK_PRE_FORMAT_PROFILE),
+				is("<block xmlns=\"\">foo<inline>bar</inline> foobar</block>\n"));
+		assertThat(reformat("<inline>\n\tfoo</inline>", BLOCK_PRE_FORMAT_PROFILE), is("<inline xmlns=\"\"> foo</inline>\n"));
+	}
+
+	@Test
+	public void testChildTextAfterBlockTrimmed() throws IOException {
+		assertThat(reformat("<block>foo<inline>bar</inline>\t\t\tfoobar</block>", BLOCK_PRE_FORMAT_PROFILE),
+				is("<block xmlns=\"\">foo<inline>bar</inline> foobar</block>\n"));
+		assertThat(reformat("<block>foo<block>bar</block>\t\t\tfoobar</block>", BLOCK_PRE_FORMAT_PROFILE),
+				is("<block xmlns=\"\">foo<block>bar</block>foobar</block>\n"));
+	}
+
+	@Test
+	public void testBlockEndChildTextTrimmed() throws IOException {
+		assertThat(reformat("<block>foo\t\t\t<inline>bar</inline>foobar\n\t</block>", BLOCK_PRE_FORMAT_PROFILE),
+				is("<block xmlns=\"\">foo <inline>bar</inline>foobar</block>\n"));
+		assertThat(reformat("<inline>foo\n\t</inline>", BLOCK_PRE_FORMAT_PROFILE), is("<inline xmlns=\"\">foo </inline>\n"));
+	}
+
+	@Test
+	public void testChildTextBeforeBlockTrimmed() throws IOException {
+		assertThat(reformat("<block>foo\t\t\t<inline>bar</inline>foobar</block>", BLOCK_PRE_FORMAT_PROFILE),
+				is("<block xmlns=\"\">foo <inline>bar</inline>foobar</block>\n"));
+		assertThat(reformat("<block>foo\t\t\t<block>bar</block>foobar</block>", BLOCK_PRE_FORMAT_PROFILE),
+				is("<block xmlns=\"\">foo<block>bar</block>foobar</block>\n"));
 	}
 
 	/**

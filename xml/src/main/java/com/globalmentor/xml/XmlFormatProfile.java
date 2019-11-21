@@ -34,7 +34,7 @@ public interface XmlFormatProfile {
 	/**
 	 * Default XML formatting profile which uses {@link XML#WHITESPACE_CHARACTERS} as space normalization characters, and considers all elements block elements.
 	 */
-	public static final XmlFormatProfile DEFAULT = new XmlFormatProfile() {
+	public static final XmlFormatProfile DEFAULT = new BaseXmlFormatProfile() {
 		@Override
 		public Characters getSpaceNormalizationCharacters() {
 			return XML.WHITESPACE_CHARACTERS;
@@ -60,5 +60,15 @@ public interface XmlFormatProfile {
 	 * @return <code>true</code> if the element should be formatted as a block element.
 	 */
 	public boolean isBlock(@Nonnull final Element element);
+
+	/**
+	 * Indicates whether the given element retains its format, that is, it should not be formatted independent of any formatting setting. If an element preserves
+	 * formatting, this is setting is applied to all its children.
+	 * @apiNote XML elements with the attribute <code>xml:space</code> set to <code>preserve</code> and the HTML {@code <pre>} element are examples of elements
+	 *          that typically retain their formatting.
+	 * @param element A DOM element.
+	 * @return <code>true</code> if the element should retain its formatting and should therefore not be formatted.
+	 */
+	public boolean isPreserved(@Nonnull final Element element);
 
 }

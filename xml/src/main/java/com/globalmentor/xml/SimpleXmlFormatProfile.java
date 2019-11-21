@@ -36,14 +36,19 @@ public class SimpleXmlFormatProfile implements XmlFormatProfile {
 
 	private final Set<NsName> blockElements;
 
+	private final Set<NsName> preservedElements;
+
 	/**
 	 * Constructor.
 	 * @param spaceNormalizationCharacters The characters this profile considers "spaces" for the purpose of normalization.
 	 * @param blockElements The elements considered block elements for purposes of formatting.
+	 * @param preservedElements The elements which will be excluded from formatting.
 	 */
-	public SimpleXmlFormatProfile(@Nonnull final Characters spaceNormalizationCharacters, @Nonnull final Set<NsName> blockElements) {
+	public SimpleXmlFormatProfile(@Nonnull final Characters spaceNormalizationCharacters, @Nonnull final Set<NsName> blockElements,
+			@Nonnull final Set<NsName> preservedElements) {
 		this.spaceNormalizationCharacters = requireNonNull(spaceNormalizationCharacters);
 		this.blockElements = requireNonNull(blockElements);
+		this.preservedElements = requireNonNull(preservedElements);
 	}
 
 	@Override
@@ -54,6 +59,11 @@ public class SimpleXmlFormatProfile implements XmlFormatProfile {
 	@Override
 	public boolean isBlock(final Element element) {
 		return blockElements.contains(NsName.ofNode(element));
+	}
+
+	@Override
+	public boolean isPreserved(final Element element) {
+		return preservedElements.contains(NsName.ofNode(element));
 	}
 
 }

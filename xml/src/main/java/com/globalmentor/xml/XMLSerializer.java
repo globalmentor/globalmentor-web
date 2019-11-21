@@ -767,9 +767,11 @@ public class XMLSerializer {
 	 * @throws IOException Thrown if an I/O error occurred.
 	 */
 	protected Appendable serialize(@Nonnull final Appendable appendable, @Nonnull final Element element, @Nonnull boolean formatted) throws IOException {
+		/*TODO delete
 		if(formatted) { //if we should write formatted output
 			serializeHorizontalAlignment(appendable, nestLevel); //horizontally align the element
 		}
+		*/
 		appendable.append(TAG_START).append(element.getNodeName()); //write the beginning of the start tag
 		if(isNamespacesDeclarationsEnsured()) { //if we should ensure namespaces
 			ensureNamespaceDeclarations(element, null, false); //make sure all namespaces are declared that just this element needs; if any are missing, we can't declare up the tree, as those nodes have already been serialized
@@ -825,9 +827,11 @@ public class XMLSerializer {
 			*/
 			appendable.append(TAG_START).append('/').append(element.getNodeName()).append(TAG_END); //write the ending tag TODO use a constant here
 		}
+		/*TODO delete
 		if(formatted) { //if we should write formatted output
 			appendable.append(getLineSeparator()); //add a newline after the element
 		}
+		*/
 		return appendable;
 	}
 
@@ -876,6 +880,15 @@ public class XMLSerializer {
 
 	/**
 	 * Serializes the content of the specified node to the given writer.
+	 * @apiNote Passing <code>false</code> as the <code><var>formatted</var></code> value is a way to turn off formatting for an entire subtree of content.
+	 *          <p>
+	 *          If formatting is enabled, child text content is normalized in the following manner:
+	 *          </p>
+	 *          <ul>
+	 *          <li>Text space runs of {@link XmlFormatProfile#getSpaceNormalizationCharacters()} are normalized to a single space.</li>
+	 *          <li>Text is left trimmed if it is the first child of block content, or if it appears directly after a block element sibling.</li>
+	 *          <li>Text is right trimmed if it is the last child of block content, or if it appears directly before a block element sibling.</li>
+	 *          </ul>
 	 * @param appendable The destination into which the element content should be written.
 	 * @param node The XML node the content of which to serialize—usually an element or document fragment.
 	 * @param formatted Whether the contents of this element, including any child elements, should be formatted.
@@ -883,8 +896,11 @@ public class XMLSerializer {
 	 * @throws IOException Thrown if an I/O error occurred.
 	 */
 	protected Appendable serializeContent(@Nonnull final Appendable appendable, @Nonnull final Node node, final boolean formatted) throws IOException {
-		for(int childIndex = 0; childIndex < node.getChildNodes().getLength(); childIndex++) { //look at each child node
-			final Node childNode = node.getChildNodes().item(childIndex); //look at this node
+		final boolean isBlockElement = node instanceof Element && getFormatProfile().isBlock(((Element)node));
+		final NodeList childNodes = node.getChildNodes();
+		final int childNodeCount = node.getChildNodes().getLength();
+		for(int childIndex = 0; childIndex < childNodeCount; childIndex++) { //look at each child node
+			final Node childNode = childNodes.item(childIndex); //look at this node
 			switch(childNode.getNodeType()) { //see which type of object this is
 				case Node.ELEMENT_NODE: //if this is an element
 					serialize(appendable, (Element)childNode, formatted); //write this element
@@ -894,8 +910,11 @@ public class XMLSerializer {
 					final String textNodeValue = childNode.getNodeValue();
 					final CharSequence text;
 					if(formatted) {
-						//TODO check formatting profile to see if this a context that allows formatting
-						text = collapseRuns(textNodeValue, getFormatProfile().getSpaceNormalizationCharacters(), SPACE_CHAR, false, false); //TODO determine whether to trim based upon context
+						final boolean trimStart = isBlockElement && childIndex == 0 //text is first child of block,
+								|| childIndex > 0 && asElement(childNodes.item(childIndex - 1)).map(getFormatProfile()::isBlock).orElse(false); //or text comes after a block child element
+						final boolean trimEnd = isBlockElement && childIndex == childNodeCount - 1 //text is last child of block,
+								|| childIndex < childNodeCount - 1 && asElement(childNodes.item(childIndex + 1)).map(getFormatProfile()::isBlock).orElse(false); //or text comes before a block child element
+						text = collapseRuns(textNodeValue, getFormatProfile().getSpaceNormalizationCharacters(), SPACE_CHAR, trimStart, trimEnd);
 					} else {
 						text = textNodeValue;
 					}
@@ -1051,7 +1070,6 @@ public class XMLSerializer {
 		} else {
 			start = 0;
 		}
-
 		final int end; //ending index is exclusive
 		if(trimEnd) {
 			end = lastIndexNotOf(text, runCharacters) + 1; //0 will be used if not found; end will never be -1

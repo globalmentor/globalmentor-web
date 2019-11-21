@@ -70,6 +70,16 @@ public class XML {
 	/** The local name of the language attribute <code>xml:lang</code>. */
 	public static final String ATTRIBUTE_LANG = "lang";
 
+	/**
+	 * The local name of the space attribute <code>xml:space</code>.
+	 * @see <a href="https://www.w3.org/TR/xml/#sec-white-space">Extensible Markup Language (XML) 1.0 (Fifth Edition), § 2.10 White Space Handling</a>
+	 */
+	public static final String ATTRIBUTE_SPACE = "space";
+	/** The <code>xml:space</code> value indicating default whitespace handling. */
+	public static final String ATTRIBUTE_SPACE_DEFAULT = "default";
+	/** The <code>xml:space</code> value indicating whitespace should be preserved. */
+	public static final String ATTRIBUTE_SPACE_PRESERVE = "preserve";
+
 	/** The local name of the XML namespace attribute <code>xmlns</code>. */
 	public static final String ATTRIBUTE_XMLNS = "xmlns";
 

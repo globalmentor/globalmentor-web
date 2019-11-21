@@ -2063,6 +2063,16 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 		return parentNode;
 	}
 
+	/**
+	 * Convenience method to determine if a node is an element and if so, return it as an element.
+	 * @param node The node to examine.
+	 * @return The node as an element, which will be empty if the node is not an instance of {@link Element}.
+	 * @see Element
+	 */
+	public static Optional<Element> asElement(@Nonnull final Node node) {
+		return asInstance(node, Element.class);
+	}
+
 	//#NamedNodeMap
 
 	/**
