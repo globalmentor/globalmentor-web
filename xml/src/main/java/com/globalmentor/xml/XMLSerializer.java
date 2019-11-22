@@ -348,7 +348,7 @@ public class XMLSerializer {
 	/** The current level of indenting during document serialization if output is formatted. */
 	private int indent = -1;
 
-	/** @return The current indent level, or <code>0<code> indicating no indention. */
+	/** @return The current indent level, or <code>0</code> indicating no indention. */
 	protected int getIndent() {
 		return indent;
 	}
@@ -788,18 +788,14 @@ public class XMLSerializer {
 
 	/**
 	 * Serializes the specified element to the given writer.
+	 * @apiNote Attributes will always be formatted independent of the <code><var>isContentFormatted</var></code>.
 	 * @param appendable The destination into which the element should be written.
 	 * @param element The XML element to serialize.
-	 * @param formatted Whether this element and its contents, including any child elements, should be formatted.
+	 * @param isContentFormatted Whether this element's contents, including any child nodes, should be formatted.
 	 * @return The given appendable.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 */
-	protected Appendable serialize(@Nonnull final Appendable appendable, @Nonnull final Element element, @Nonnull boolean formatted) throws IOException {
-		/*TODO delete
-		if(formatted) { //if we should write formatted output
-			serializeHorizontalAlignment(appendable, nestLevel); //horizontally align the element
-		}
-		*/
+	protected Appendable serialize(@Nonnull final Appendable appendable, @Nonnull final Element element, @Nonnull boolean isContentFormatted) throws IOException {
 		appendable.append(TAG_START).append(element.getNodeName()); //write the beginning of the start tag
 		if(isNamespacesDeclarationsEnsured()) { //if we should ensure namespaces
 			ensureNamespaceDeclarations(element, null, false); //make sure all namespaces are declared that just this element needs; if any are missing, we can't declare up the tree, as those nodes have already been serialized
@@ -825,29 +821,9 @@ public class XMLSerializer {
 			appendable.append(SPACE_CHAR).append('/').append(TAG_END); //write the end of the empty element tag, with an extra space for HTML browser compatibility TODO use a constant here
 		} else {
 			appendable.append(TAG_END); //write the end of the start tag
-			/*TODO fix; update for formatting overhaul
-				boolean contentFormatted = false; //we'll determine if we should format the content of the child nodes
-				//we'll only format the contents if there are only element children
-				if(formatted) { //if we've been told to format, we'll make sure there are element child nodes
-					for(int childIndex = 0; childIndex < element.getChildNodes().getLength(); childIndex++) { //look at each child node
-						final int childNodeType = element.getChildNodes().item(childIndex).getNodeType(); //get this child's type of node
-						if(childNodeType == Node.ELEMENT_NODE) { //if this is an element child node
-							contentFormatted = true; //show that we should format the element content
-						} else if(childNodeType == Node.TEXT_NODE) { //if this is text
-							contentFormatted = false; //text or mixed content is always unformatted
-							break; //we know we shouldn't format; stop looking at the children
-						}
-					}
-				}
-			*/
-			serializeContent(appendable, element, isFormatted());
+			serializeContent(appendable, element, isContentFormatted);
 			appendable.append(TAG_START).append('/').append(element.getNodeName()).append(TAG_END); //write the ending tag TODO use a constant here
 		}
-		/*TODO delete
-		if(formatted) { //if we should write formatted output
-			appendable.append(getLineSeparator()); //add a newline after the element
-		}
-		*/
 		return appendable;
 	}
 
@@ -896,51 +872,89 @@ public class XMLSerializer {
 
 	/**
 	 * Serializes the content of the specified node to the given writer.
-	 * @apiNote Passing <code>false</code> as the <code><var>formatted</var></code> value is a way to turn off formatting for an entire subtree of content.
-	 *          <p>
-	 *          If formatting is enabled, child text content is normalized in the following manner:
-	 *          </p>
-	 *          <ul>
-	 *          <li>Text space runs of {@link XmlFormatProfile#getSpaceNormalizationCharacters()} are normalized to a single space.</li>
-	 *          <li>Text is left trimmed if it is the first child of block content, or if it appears directly after a block element sibling.</li>
-	 *          <li>Text is right trimmed if it is the last child of block content, or if it appears directly before a block element sibling.</li>
-	 *          </ul>
+	 * <p>
+	 * If formatting is enabled, child text content is normalized in the following manner:
+	 * </p>
+	 * <ul>
+	 * <li>Text space runs of {@link XmlFormatProfile#getSpaceNormalizationCharacters()} are normalized to a single space.</li>
+	 * <li>Text is left trimmed if it is the first child of block content, or if it appears directly after a block element sibling.</li>
+	 * <li>Text is right trimmed if it is the last child of block content, or if it appears directly before a block element sibling.</li>
+	 * </ul>
+	 * <p>
+	 * If formatting is enabled, child nodes are formatted in the following way:
+	 * </p>
+	 * <ul>
+	 * <li>TODO</li>
+	 * </ul>
+	 * @apiNote Attributes will always be formatted independent of the <code><var>isContentFormatted</var></code>.
 	 * @param appendable The destination into which the element content should be written.
 	 * @param node The XML node the content of which to serialize—usually an element or document fragment.
-	 * @param formatted Whether the contents of this element, including any child elements, should be formatted.
+	 * @param isContentFormatted Whether the contents of this node, including any child nodes, should be formatted.
 	 * @return The given appendable.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 */
-	protected Appendable serializeContent(@Nonnull final Appendable appendable, @Nonnull final Node node, final boolean formatted) throws IOException {
+	protected Appendable serializeContent(@Nonnull final Appendable appendable, @Nonnull final Node node, final boolean isContentFormatted) throws IOException {
+
+		/*
+		 * Whether content will always begin with a newline if there are any newlines.
+		 * This is a possible future configurable setting.
+		 */
+		//TODO enable in future: final boolean settingAlwaysBeginningNewlineIfAny = false;
+
+		/*
+		 * Whether content will always end with a newline before closing tag for indented content.
+		 * Put another way, this setting determines whether ending tags are always aligned with beginning tags.
+		 * This is a possible future configurable setting.
+		 */
+		final boolean settingAlwaysEndingNewlineIfAny = true;
+
 		final boolean isBlockElement = node instanceof Element && getFormatProfile().isBlock(((Element)node));
+
+		boolean lastChildBrokeLine = false; //keep track of whether we had a line break for the previous child
+		boolean hasChildNewline = false; //keep track of whether any child had a line break
 		final NodeList childNodes = node.getChildNodes();
 		final int childNodeCount = node.getChildNodes().getLength();
 		for(int childIndex = 0; childIndex < childNodeCount; childIndex++) { //look at each child node
 			final Node childNode = childNodes.item(childIndex); //look at this node
+
+			final boolean isFormatBlock;
+			final boolean isFormatIndent;
+			final boolean isFormatNewlineAfter;
+			if(isContentFormatted) {
+				isFormatBlock = childNode instanceof Element && getFormatProfile().isBlock((Element)childNode);
+				//we should force a first "block" child if the beginning newline setting is turned on and we know we'll need to indent (untested)
+				//TODO enable in future: || (settingAlwaysBeginningNewlineIfAny && childIndex==0 && childElementsOf(node).filter(getFormatProfile()::isBlock).findAny().isPresent())
+				isFormatIndent = lastChildBrokeLine || isFormatBlock;
+				isFormatNewlineAfter = isFormatBlock || (settingAlwaysEndingNewlineIfAny && hasChildNewline && childIndex == childNodeCount - 1);
+			} else {
+				isFormatBlock = false;
+				isFormatIndent = false;
+				isFormatNewlineAfter = false;
+			}
+			if(isFormatBlock) {
+				appendable.append(getLineSeparator());
+			}
+			if(isFormatIndent) {
+				serializeHorizontalAlignment(appendable, indent());
+			}
+			lastChildBrokeLine = isFormatNewlineAfter;
+			if(lastChildBrokeLine) {
+				hasChildNewline = true;
+			}
+
 			switch(childNode.getNodeType()) { //see which type of object this is
 				case Node.ELEMENT_NODE: //if this is an element
 				{
 					final Element childElement = (Element)childNode;
-					final boolean isChildFormatted = formatted && !getFormatProfile().isPreserved(childElement);
-					final boolean isChildBlockFormatted = isChildFormatted && getFormatProfile().isBlock(childElement);
-					if(isChildBlockFormatted) {
-						appendable.append(getLineSeparator());
-						indent();
-						serializeHorizontalAlignment(appendable, getIndent()); //horizontally align the element
-					}
-					serialize(appendable, childElement, isChildBlockFormatted); //write this element
-					if(isChildBlockFormatted) {
-						appendable.append(getLineSeparator());
-						unindent();
-						serializeHorizontalAlignment(appendable, getIndent());
-					}
+					final boolean isChildContentFormatted = isContentFormatted && !getFormatProfile().isPreserved(childElement);
+					serialize(appendable, childElement, isChildContentFormatted);
 				}
 					break;
 				case Node.TEXT_NODE: //if this is a text node
 				{
 					final String textNodeValue = childNode.getNodeValue();
 					final CharSequence text;
-					if(formatted) {
+					if(isContentFormatted) {
 						final boolean trimStart = isBlockElement && childIndex == 0 //text is first child of block,
 								|| childIndex > 0 && asElement(childNodes.item(childIndex - 1)).map(getFormatProfile()::isBlock).orElse(false); //or text comes after a block child element
 						final boolean trimEnd = isBlockElement && childIndex == childNodeCount - 1 //text is last child of block,
@@ -957,25 +971,32 @@ public class XMLSerializer {
 				}
 					break;
 				case Node.COMMENT_NODE: //if this is a comment node
-					if(formatted) { //if we should write formatted output
-						serializeHorizontalAlignment(appendable, getIndent()); //horizontally align the element
-					}
+				{
 					appendable.append(COMMENT_START); //write the start of the comment
 					//TODO check content for disallowed sequence
 					appendable.append(childNode.getNodeValue()); //write the text value of the node, but don't encode the string for XML since it's inside a comment
 					appendable.append(COMMENT_END); //write the end of the comment
-					if(formatted) { //if we should write formatted output
-						appendable.append(getLineSeparator()); //add a newline after the comment
-					}
+				}
 					break;
 				case Node.CDATA_SECTION_NODE: //if this is a CDATA section node
+				{
 					appendable.append(CDATA_START); //write the start of the CDATA section
 					//TODO check content for disallowed sequence
 					appendable.append(childNode.getNodeValue()); //write the text value of the node, but don't encode the string for XML since it's inside a CDATA section
 					appendable.append(CDATA_END); //write the end of the CDATA section
+				}
 					break;
 				//TODO see if there are any other types of nodes that need serialized
 			}
+			if(isFormatNewlineAfter) {
+				appendable.append(getLineSeparator());
+			}
+			if(isFormatIndent) {
+				unindent();
+			}
+		}
+		if(lastChildBrokeLine) { //if the last child had a newline after, add an indent before the ending tag; this is part of child content, too! 
+			serializeHorizontalAlignment(appendable, getIndent()); //format the current indention level; do not increase the indention level
 		}
 		return appendable;
 	}

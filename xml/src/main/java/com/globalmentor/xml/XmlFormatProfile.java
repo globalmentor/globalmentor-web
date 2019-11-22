@@ -62,12 +62,13 @@ public interface XmlFormatProfile {
 	public boolean isBlock(@Nonnull final Element element);
 
 	/**
-	 * Indicates whether the given element retains its format, that is, it should not be formatted independent of any formatting setting. If an element preserves
-	 * formatting, this is setting is applied to all its children.
+	 * Indicates whether the given element retains the format of its content. That is, the content should not be formatted independent of any formatting setting.
+	 * If an element preserves formatting, this setting is applied to all its children.
+	 * @apiNote These elements may still have their attributes reformatted.
 	 * @apiNote XML elements with the attribute <code>xml:space</code> set to <code>preserve</code> and the HTML {@code <pre>} element are examples of elements
 	 *          that typically retain their formatting.
 	 * @param element A DOM element.
-	 * @return <code>true</code> if the element should retain its formatting and should therefore not be formatted.
+	 * @return <code>true</code> if the element should retain its content formatting and should therefore not be formatted.
 	 */
 	public boolean isPreserved(@Nonnull final Element element);
 

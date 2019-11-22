@@ -42,13 +42,13 @@ public class SimpleXmlFormatProfile implements XmlFormatProfile {
 	 * Constructor.
 	 * @param spaceNormalizationCharacters The characters this profile considers "spaces" for the purpose of normalization.
 	 * @param blockElements The elements considered block elements for purposes of formatting.
-	 * @param preservedElements The elements which will be excluded from formatting.
+	 * @param contentPreservedElements The elements which will be excluded from formatting content, although attributes will still be formatted.
 	 */
 	public SimpleXmlFormatProfile(@Nonnull final Characters spaceNormalizationCharacters, @Nonnull final Set<NsName> blockElements,
-			@Nonnull final Set<NsName> preservedElements) {
+			@Nonnull final Set<NsName> contentPreservedElements) {
 		this.spaceNormalizationCharacters = requireNonNull(spaceNormalizationCharacters);
 		this.blockElements = requireNonNull(blockElements);
-		this.preservedElements = requireNonNull(preservedElements);
+		this.preservedElements = requireNonNull(contentPreservedElements);
 	}
 
 	@Override

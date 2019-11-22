@@ -299,11 +299,25 @@ public class XMLSerializerTest {
 		assertThat(reformat("<block>foo<inline>foobar</inline>bar</block>", BLOCK_PRE_FORMAT_PROFILE, "\n", ""),
 				is("<block xmlns=\"\">foo<inline>foobar</inline>bar</block>\n"));
 		assertThat(reformat("<block><block>foobar</block>bar</block>", BLOCK_PRE_FORMAT_PROFILE, "\n", ""),
-				is("<block xmlns=\"\">\n<block>foobar</block>\nbar</block>\n"));
+				is("<block xmlns=\"\">\n<block>foobar</block>\nbar\n</block>\n"));
 		assertThat(reformat("<block>foo<block>foobar</block></block>", BLOCK_PRE_FORMAT_PROFILE, "\n", ""),
 				is("<block xmlns=\"\">foo\n<block>foobar</block>\n</block>\n"));
 		assertThat(reformat("<block>foo<block>foobar</block>bar</block>", BLOCK_PRE_FORMAT_PROFILE, "\n", ""),
-				is("<block xmlns=\"\">foo\n<block>foobar</block>\nbar</block>\n"));
+				is("<block xmlns=\"\">foo\n<block>foobar</block>\nbar\n</block>\n"));
+	}
+
+	@Test
+	public void testSubsequentInlinesDoNotBreakLine() throws IOException {
+		assertThat(
+				reformat("<block>foo<block>foobar</block><inline>inside</inline><inline>inside</inline>beside<block>another</block>bar</block>",
+						BLOCK_PRE_FORMAT_PROFILE, "\n", ""),
+				is("<block xmlns=\"\">foo\n<block>foobar</block>\n<inline>inside</inline><inline>inside</inline>beside\n<block>another</block>\nbar\n</block>\n"));
+	}
+
+	@Test
+	public void testTrailingInlineAfterBlockHasNewline() throws IOException {
+		assertThat(reformat("<block><block>foobar</block>bar</block>", BLOCK_PRE_FORMAT_PROFILE, "\n", ""),
+				is("<block xmlns=\"\">\n<block>foobar</block>\nbar\n</block>\n"));
 	}
 
 	@Test
@@ -311,23 +325,28 @@ public class XMLSerializerTest {
 		assertThat(reformat("<block>foo<inline>foobar</inline>bar</block>", BLOCK_PRE_FORMAT_PROFILE, "", "\t"),
 				is("<block xmlns=\"\">foo<inline>foobar</inline>bar</block>"));
 		assertThat(reformat("<block><block>foobar</block>bar</block>", BLOCK_PRE_FORMAT_PROFILE, "", "\t"),
-				is("<block xmlns=\"\">\t<block>foobar</block>bar</block>"));
+				is("<block xmlns=\"\">\t<block>foobar</block>\tbar</block>"));
 		assertThat(reformat("<block>foo<block>foobar</block></block>", BLOCK_PRE_FORMAT_PROFILE, "", "\t"),
 				is("<block xmlns=\"\">foo\t<block>foobar</block></block>"));
 		assertThat(reformat("<block>foo<block>foobar</block>bar</block>", BLOCK_PRE_FORMAT_PROFILE, "", "\t"),
-				is("<block xmlns=\"\">foo\t<block>foobar</block>bar</block>"));
+				is("<block xmlns=\"\">foo\t<block>foobar</block>\tbar</block>"));
 	}
 
 	@Test
 	public void testBlockNewlinesAndIndents() throws IOException {
 		assertThat(reformat("<block>foo<inline>foobar</inline>bar</block>", BLOCK_PRE_FORMAT_PROFILE),
 				is("<block xmlns=\"\">foo<inline>foobar</inline>bar</block>\n"));
-		assertThat(reformat("<block><block>foobar</block>bar</block>", BLOCK_PRE_FORMAT_PROFILE), is("<block xmlns=\"\">\n\t<block>foobar</block>\nbar</block>\n"));
+		assertThat(reformat("<block><block>foobar</block>bar</block>", BLOCK_PRE_FORMAT_PROFILE),
+				is("<block xmlns=\"\">\n\t<block>foobar</block>\n\tbar\n</block>\n"));
 		assertThat(reformat("<block>foo<block>foobar</block></block>", BLOCK_PRE_FORMAT_PROFILE), is("<block xmlns=\"\">foo\n\t<block>foobar</block>\n</block>\n"));
 		assertThat(reformat("<block>foo<block>foobar</block>bar</block>", BLOCK_PRE_FORMAT_PROFILE),
-				is("<block xmlns=\"\">foo\n\t<block>foobar</block>\nbar</block>\n"));
+				is("<block xmlns=\"\">foo\n\t<block>foobar</block>\n\tbar\n</block>\n"));
 		assertThat(reformat("<block>foo<block>foobar</block>bar<block>left<block>nest</block>right</block>end</block>", BLOCK_PRE_FORMAT_PROFILE),
-				is("<block xmlns=\"\">foo\n\t<block>foobar</block>\nbar\n\t<block>left\n\t\t<block>nest</block>\n\tright</block>\nend</block>\n"));
+				is("<block xmlns=\"\">foo\n\t<block>foobar</block>\n\tbar\n\t<block>left\n\t\t<block>nest</block>\n\t\tright\n\t</block>\n\tend\n</block>\n"));
+		assertThat(
+				reformat("<block>foo<block>foobar</block><inline>inside</inline><inline>inside</inline>beside<block>another</block>bar</block>",
+						BLOCK_PRE_FORMAT_PROFILE),
+				is("<block xmlns=\"\">foo\n\t<block>foobar</block>\n\t<inline>inside</inline><inline>inside</inline>beside\n\t<block>another</block>\n\tbar\n</block>\n"));
 	}
 
 	/**
