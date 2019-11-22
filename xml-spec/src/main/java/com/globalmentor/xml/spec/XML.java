@@ -161,6 +161,13 @@ public class XML {
 	public static final char SINGLE_QUOTE_CHAR = '\'';
 	/** A double quote character. */
 	public static final char DOUBLE_QUOTE_CHAR = '"';
+
+	/**
+	 * The character to which any line break sequence is normalized during XML processing.
+	 * @see <a href="https://www.w3.org/TR/xml/#sec-line-ends">Extensible Markup Language (XML) 1.0 (Fifth Edition), § 2.11 End-of-Line Handling</a>
+	 */
+	public static final char NORMALIZED_LINE_BREAK_CHAR = LF_CHAR;
+
 	/**
 	 * The characters considered by XML to be "whitespace": space, tab, <code>CR</code>, and <code>LF</code>.
 	 * @see <a href="https://www.w3.org/TR/xml/#AVNormalize">Extensible Markup Language (XML) 1.0 (Fifth Edition), § 3.3.3 Attribute-Value Normalization</a>

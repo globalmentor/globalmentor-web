@@ -16,7 +16,7 @@
 
 package com.globalmentor.xml;
 
-import static com.globalmentor.xml.XmlDom.parse;
+import static com.globalmentor.xml.XmlDom.*;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
@@ -28,7 +28,7 @@ import java.util.*;
 import javax.annotation.*;
 
 import org.junit.jupiter.api.*;
-import org.w3c.dom.Document;
+import org.w3c.dom.*;
 
 import com.globalmentor.java.Characters;
 import com.globalmentor.xml.spec.XML;
@@ -254,9 +254,11 @@ public class XMLSerializerTest {
 				is("abXcdeXfghijXlmnopXqrstuXvXwxyz"));
 	}
 
-	public static final XmlFormatProfile BLOCK_PRE_FORMAT_PROFILE = new SimpleXmlFormatProfile(XML.WHITESPACE_CHARACTERS, Set.of(NsName.of("block")),
-			Set.of(NsName.of("pre")));
+	/** An XML profile with block elements {@code <block>} and {@code <pre>}, and preserved element {@code <pre>}. */
+	public static final XmlFormatProfile BLOCK_PRE_FORMAT_PROFILE = new SimpleXmlFormatProfile(XML.WHITESPACE_CHARACTERS,
+			Set.of(NsName.of("block"), NsName.of("pre")), Set.of(NsName.of("pre")));
 
+	/** @see XmlFormatProfile#getSpaceNormalizationCharacters() */
 	@Test
 	public void testSpacesNormalized() throws IOException {
 		assertThat(reformat("<block>bar</block>", BLOCK_PRE_FORMAT_PROFILE, "", ""), is("<block xmlns=\"\">bar</block>"));
@@ -264,6 +266,10 @@ public class XMLSerializerTest {
 				is("<block xmlns=\"\">abc def hijk lmnop qrstuv wxyz</block>"));
 	}
 
+	/**
+	 * @see XmlFormatProfile#getSpaceNormalizationCharacters()
+	 * @see XmlFormatProfile#isBlock(Element)
+	 */
 	@Test
 	public void testBlockStartChildTextTrimmed() throws IOException {
 		assertThat(reformat("<block>\n\tfoo<inline>bar</inline>\t\t\tfoobar</block>", BLOCK_PRE_FORMAT_PROFILE, "", ""),
@@ -271,6 +277,10 @@ public class XMLSerializerTest {
 		assertThat(reformat("<inline>\n\tfoo</inline>", BLOCK_PRE_FORMAT_PROFILE, "", ""), is("<inline xmlns=\"\"> foo</inline>"));
 	}
 
+	/**
+	 * @see XmlFormatProfile#getSpaceNormalizationCharacters()
+	 * @see XmlFormatProfile#isBlock(Element)
+	 */
 	@Test
 	public void testChildTextAfterBlockTrimmed() throws IOException {
 		assertThat(reformat("<block>foo<inline>bar</inline>\t\t\tfoobar</block>", BLOCK_PRE_FORMAT_PROFILE, "", ""),
@@ -279,6 +289,10 @@ public class XMLSerializerTest {
 				is("<block xmlns=\"\">foo<block>bar</block>foobar</block>"));
 	}
 
+	/**
+	 * @see XmlFormatProfile#getSpaceNormalizationCharacters()
+	 * @see XmlFormatProfile#isBlock(Element)
+	 */
 	@Test
 	public void testBlockEndChildTextTrimmed() throws IOException {
 		assertThat(reformat("<block>foo\t\t\t<inline>bar</inline>foobar\n\t</block>", BLOCK_PRE_FORMAT_PROFILE, "", ""),
@@ -286,6 +300,10 @@ public class XMLSerializerTest {
 		assertThat(reformat("<inline>foo\n\t</inline>", BLOCK_PRE_FORMAT_PROFILE, "", ""), is("<inline xmlns=\"\">foo </inline>"));
 	}
 
+	/**
+	 * @see XmlFormatProfile#getSpaceNormalizationCharacters()
+	 * @see XmlFormatProfile#isBlock(Element)
+	 */
 	@Test
 	public void testChildTextBeforeBlockTrimmed() throws IOException {
 		assertThat(reformat("<block>foo\t\t\t<inline>bar</inline>foobar</block>", BLOCK_PRE_FORMAT_PROFILE, "", ""),
@@ -294,6 +312,7 @@ public class XMLSerializerTest {
 				is("<block xmlns=\"\">foo<block>bar</block>foobar</block>"));
 	}
 
+	/** @see XmlFormatProfile#isBlock(Element) */
 	@Test
 	public void testNewlinesAroundBlock() throws IOException {
 		assertThat(reformat("<block>foo<inline>foobar</inline>bar</block>", BLOCK_PRE_FORMAT_PROFILE, "\n", ""),
@@ -306,6 +325,7 @@ public class XMLSerializerTest {
 				is("<block xmlns=\"\">foo\n<block>foobar</block>\nbar\n</block>\n"));
 	}
 
+	/** @see XmlFormatProfile#isBlock(Element) */
 	@Test
 	public void testSubsequentInlinesDoNotBreakLine() throws IOException {
 		assertThat(
@@ -314,12 +334,14 @@ public class XMLSerializerTest {
 				is("<block xmlns=\"\">foo\n<block>foobar</block>\n<inline>inside</inline><inline>inside</inline>beside\n<block>another</block>\nbar\n</block>\n"));
 	}
 
+	/** @see XmlFormatProfile#isBlock(Element) */
 	@Test
 	public void testTrailingInlineAfterBlockHasNewline() throws IOException {
 		assertThat(reformat("<block><block>foobar</block>bar</block>", BLOCK_PRE_FORMAT_PROFILE, "\n", ""),
 				is("<block xmlns=\"\">\n<block>foobar</block>\nbar\n</block>\n"));
 	}
 
+	/** @see XmlFormatProfile#isBlock(Element) */
 	@Test
 	public void testBlockIndented() throws IOException {
 		assertThat(reformat("<block>foo<inline>foobar</inline>bar</block>", BLOCK_PRE_FORMAT_PROFILE, "", "\t"),
@@ -332,6 +354,7 @@ public class XMLSerializerTest {
 				is("<block xmlns=\"\">foo\t<block>foobar</block>\tbar</block>"));
 	}
 
+	/** @see XmlFormatProfile#isBlock(Element) */
 	@Test
 	public void testBlockNewlinesAndIndents() throws IOException {
 		assertThat(reformat("<block>foo<inline>foobar</inline>bar</block>", BLOCK_PRE_FORMAT_PROFILE),
@@ -347,6 +370,27 @@ public class XMLSerializerTest {
 				reformat("<block>foo<block>foobar</block><inline>inside</inline><inline>inside</inline>beside<block>another</block>bar</block>",
 						BLOCK_PRE_FORMAT_PROFILE),
 				is("<block xmlns=\"\">foo\n\t<block>foobar</block>\n\t<inline>inside</inline><inline>inside</inline>beside\n\t<block>another</block>\n\tbar\n</block>\n"));
+	}
+
+	/** @see XmlFormatProfile#isPreserved(Element) */
+	@Test
+	public void testPreservedNotFormatted() throws IOException {
+		assertThat(reformat("<pre>abc def\thijk\n  lmnop\n\t\tqrstuv\n\n\n\nwxyz</pre>", BLOCK_PRE_FORMAT_PROFILE),
+				is("<pre xmlns=\"\">abc def\thijk\n  lmnop\n\t\tqrstuv\n\n\n\nwxyz</pre>\n"));
+		assertThat(reformat(
+				"<block> before\t\n\n<pre>\t x\n\n\tThere are <nested>inline \t\t things</nested> and \n\t\t<block>several    spaces</block>\n\t here.\t\t</pre>\t  after\n</block>",
+				BLOCK_PRE_FORMAT_PROFILE),
+				is("<block xmlns=\"\">before\n\t<pre>\t x\n\n\tThere are <nested>inline \t\t things</nested> and \n\t\t<block>several    spaces</block>\n\t here.\t\t</pre>\n\tafter\n</block>\n"));
+	}
+
+	/**
+	 * @see XmlFormatProfile#isPreserved(Element)
+	 * @see <a href="https://www.w3.org/TR/xml/#sec-line-ends">Extensible Markup Language (XML) 1.0 (Fifth Edition), § 2.11 End-of-Line Handling</a>
+	 */
+	@Test
+	public void testPreservedNormalizesNewlines() throws IOException {
+		assertThat(reformat("<pre>abc\r\r\r\rdef\n\n\n\nhij\r\n\r\nklmn\r\n\n\rop</pre>", BLOCK_PRE_FORMAT_PROFILE, "XY", "\t"),
+				is("<pre xmlns=\"\">abcXYXYXYXYdefXYXYXYXYhijXYXYklmnXYXYXYop</pre>XY"));
 	}
 
 	/**

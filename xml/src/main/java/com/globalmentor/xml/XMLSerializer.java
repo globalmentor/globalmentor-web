@@ -30,6 +30,7 @@ import static com.globalmentor.java.Characters.SPACE_CHAR;
 import static com.globalmentor.java.Conditions.*;
 import static com.globalmentor.java.Objects.*;
 
+import com.globalmentor.java.CharSequences;
 import com.globalmentor.java.Characters;
 
 import static com.globalmentor.xml.XmlDom.*;
@@ -38,6 +39,7 @@ import static java.nio.charset.StandardCharsets.*;
 import static java.util.Objects.*;
 
 import com.globalmentor.util.PropertiesUtilities;
+import com.globalmentor.xml.spec.XML;
 
 import org.w3c.dom.*;
 
@@ -818,11 +820,12 @@ public class XMLSerializer {
 			serializeAttribute(appendable, attribute.getName(), attribute.getValue()); //write this attribute
 		}
 		if(isEmptyElementTag(element)) { //if we should serialize the element as an empty element tag, e.g. <foo />
-			appendable.append(SPACE_CHAR).append('/').append(TAG_END); //write the end of the empty element tag, with an extra space for HTML browser compatibility TODO use a constant here
+			appendable.append(SPACE_CHAR).append(END_TAG_IDENTIFIER_CHAR).append(TAG_END); //write the end of the empty element tag, with an extra space for HTML browser compatibility
 		} else {
 			appendable.append(TAG_END); //write the end of the start tag
-			serializeContent(appendable, element, isContentFormatted);
-			appendable.append(TAG_START).append('/').append(element.getNodeName()).append(TAG_END); //write the ending tag TODO use a constant here
+			final boolean isChildContentFormatted = isContentFormatted && !getFormatProfile().isPreserved(element); //override formatting for preserved elements
+			serializeContent(appendable, element, isChildContentFormatted);
+			appendable.append(TAG_START).append(END_TAG_IDENTIFIER_CHAR).append(element.getNodeName()).append(TAG_END); //write the ending tag
 		}
 		return appendable;
 	}
@@ -871,6 +874,13 @@ public class XMLSerializer {
 	}
 
 	/**
+	 * The string form of the character to which any line break sequence is normalized during XML processing.
+	 * @see <a href="https://www.w3.org/TR/xml/#sec-line-ends">Extensible Markup Language (XML) 1.0 (Fifth Edition), § 2.11 End-of-Line Handling</a>
+	 * @see XML#NORMALIZED_LINE_BREAK_CHAR
+	 */
+	private static final String NORMALIZED_LINE_BREAK_STRING = String.valueOf(NORMALIZED_LINE_BREAK_CHAR);
+
+	/**
 	 * Serializes the content of the specified node to the given writer.
 	 * <p>
 	 * If formatting is enabled, child text content is normalized in the following manner:
@@ -884,9 +894,15 @@ public class XMLSerializer {
 	 * If formatting is enabled, child nodes are formatted in the following way:
 	 * </p>
 	 * <ul>
-	 * <li>TODO</li>
+	 * <li>A child element marked as {@link XmlFormatProfile#isBlock(Element)} have a line break appended before and after, and be indented.</li>
+	 * <li>If a child node comes after a child causing a line break, it will be indented as well, whether it is a block element or not.
+	 * <li>If any child element was indented, the last child will have a line break appended after it.</li>
 	 * </ul>
 	 * @apiNote Attributes will always be formatted independent of the <code><var>isContentFormatted</var></code>.
+	 * @apiNote End of line sequences will always be normalized to {@link #getLineSeparator()} even if <code><var>isContentFormatted</var></code> is disabled.
+	 * @implNote The current implementation assumes that all newlines in preserved content have been normalized to {@link XML#NORMALIZED_LINE_BREAK_CHAR} as if
+	 *           parsed using an XML processor. If a DOM tree is constructed manually with different non-normalized line endings, they may not get converted to
+	 *           the currently set line separated.
 	 * @param appendable The destination into which the element content should be written.
 	 * @param node The XML node the content of which to serialize—usually an element or document fragment.
 	 * @param isContentFormatted Whether the contents of this node, including any child nodes, should be formatted.
@@ -894,7 +910,6 @@ public class XMLSerializer {
 	 * @throws IOException Thrown if an I/O error occurred.
 	 */
 	protected Appendable serializeContent(@Nonnull final Appendable appendable, @Nonnull final Node node, final boolean isContentFormatted) throws IOException {
-
 		/*
 		 * Whether content will always begin with a newline if there are any newlines.
 		 * This is a possible future configurable setting.
@@ -944,11 +959,7 @@ public class XMLSerializer {
 
 			switch(childNode.getNodeType()) { //see which type of object this is
 				case Node.ELEMENT_NODE: //if this is an element
-				{
-					final Element childElement = (Element)childNode;
-					final boolean isChildContentFormatted = isContentFormatted && !getFormatProfile().isPreserved(childElement);
-					serialize(appendable, childElement, isChildContentFormatted);
-				}
+					serialize(appendable, (Element)childNode, isContentFormatted); //content formatting may get overridden inside the element
 					break;
 				case Node.TEXT_NODE: //if this is a text node
 				{
@@ -960,8 +971,14 @@ public class XMLSerializer {
 						final boolean trimEnd = isBlockElement && childIndex == childNodeCount - 1 //text is last child of block,
 								|| childIndex < childNodeCount - 1 && asElement(childNodes.item(childIndex + 1)).map(getFormatProfile()::isBlock).orElse(false); //or text comes before a block child element
 						text = collapseRuns(textNodeValue, getFormatProfile().getSpaceNormalizationCharacters(), SPACE_CHAR, trimStart, trimEnd);
-					} else {
-						text = textNodeValue;
+					} else { //even non-formatted content needs the end-of-line sequences normalized and converted to the requested sequence
+						//TODO first normalize newlines in the text in case the text was placed in the tree manually (that is, it didn't originate from an XML processor)
+						final CharSequence lineSeparator = getLineSeparator();
+						if(!CharSequences.equals(lineSeparator, NORMALIZED_LINE_BREAK_CHAR)) { //if the requested line separator is something other than the XML normalized newline 
+							text = textNodeValue.replace(NORMALIZED_LINE_BREAK_STRING, lineSeparator); //replace the normalized line breaks with the requested line separator
+						} else {
+							text = textNodeValue;
+						}
 					}
 					if(isChildTextEncoded(node)) {
 						encodeContent(appendable, text); //write the text value of the node after encoding the string for XML
