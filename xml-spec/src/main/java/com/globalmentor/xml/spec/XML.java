@@ -20,6 +20,8 @@ import java.net.URI;
 import java.nio.charset.*;
 import java.util.*;
 
+import javax.annotation.*;
+
 import com.globalmentor.java.*;
 import com.globalmentor.net.ContentType;
 
@@ -440,7 +442,7 @@ public class XML {
 	 * @return The namespace prefix, or <code>null</code> if no prefix is present.
 	 * @throws NullPointerException if the given qualified name is <code>null</code>.
 	 */
-	public static String getPrefix(final String qualifiedName) {
+	public static @Nullable String getPrefix(final String qualifiedName) {
 		final int prefixDividerIndex = qualifiedName.indexOf(NAMESPACE_DIVIDER); //see if there is a prefix
 		if(prefixDividerIndex >= 0) //if there is a prefix
 			return qualifiedName.substring(0, prefixDividerIndex); //return the prefix
@@ -455,7 +457,7 @@ public class XML {
 	 * @return The local name without a prefix.
 	 * @throws NullPointerException if the given qualified name is <code>null</code>.
 	 */
-	public static String getLocalName(final String qualifiedName) {
+	public static @Nonnull String getLocalName(final String qualifiedName) {
 		final int namespaceDividerIndex = qualifiedName.indexOf(NAMESPACE_DIVIDER); //find where the namespace divider is in the name
 		return namespaceDividerIndex >= 0 ? //if there is a namespace prefix
 				qualifiedName.substring(namespaceDividerIndex + 1) : //remove the namespace prefix

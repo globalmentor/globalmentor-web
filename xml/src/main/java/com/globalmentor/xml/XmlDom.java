@@ -38,6 +38,7 @@ import com.globalmentor.model.ObjectHolder;
 import com.globalmentor.net.ContentType;
 import com.globalmentor.net.URIs;
 import com.globalmentor.text.ASCII;
+import com.globalmentor.xml.spec.XML;
 
 import org.w3c.dom.*;
 import org.w3c.dom.traversal.*;
@@ -58,6 +59,8 @@ import static java.util.stream.StreamSupport.*;
 
 /**
  * Various XML manipulation functions, mostly using the DOM.
+ * @apiNote Note that the XML DOM considers the {@value XML#ATTRIBUTE_XMLNS} attribute to be in the {@value XML#XMLNS_NAMESPACE_URI_STRING} namespace, even
+ *          though it has no prefix.
  * @author Garret Wilson
  */
 public class XmlDom { //TODO likely move the non-DOM-related methods to another class
@@ -1685,8 +1688,8 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 
 	/**
 	 * Searches the attributes of the given node for a definition of a namespace URI for the given prefix. If the prefix is not defined for the given element, its
-	 * ancestors are searched if requested. If the prefix is not defined anywhere up the hieararchy, <code>null</code> is returned. If the prefix is defined, it
-	 * is returned logically: a blank declared namespace will return <code>null</code>.
+	 * ancestors are searched if requested. If the prefix is not defined anywhere up the hierarchy, <code>null</code> is returned. If the prefix is defined, it is
+	 * returned logically: a blank declared namespace will return <code>null</code>.
 	 * @param element The element which should be searched for a namespace definition, along with its ancestors.
 	 * @param prefix The namespace prefix for which a definition should be found, or <code>null</code> for a default attribute.
 	 * @param resolve Whether the entire tree hierarchy should be searched.
@@ -1694,7 +1697,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 */
 	public static String getNamespaceURI(final Element element, final String prefix, final boolean resolve) {
 		//get the namespace URI declared for this prefix
-		final String namespaceURI = getDeclaredNamespaceURI(element, prefix, resolve);
+		final String namespaceURI = getDefinedNamespaceURI(element, prefix, resolve);
 		if(namespaceURI != null && namespaceURI.length() > 0) { //if a namespace is defined that isn't the empty string
 			return namespaceURI; //return that namespace URI
 		} else { //if the namespace is null or is the empty string
@@ -1704,36 +1707,46 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 
 	/**
 	 * Searches the attributes of the given node for a definition of a namespace URI for the given prefix. If the prefix is not defined for the given element, its
-	 * ancestors are searched if requested. If the prefix is not defined anywhere up the hieararchy, <code>null</code> is returned. If the prefix is defined, it
-	 * is returned literally: a blank declared namespace will return the empty string. This allows differentiation between a declared empty namespace and no
-	 * declared namespace.
+	 * ancestors are searched if requested. If the prefix is not defined anywhere up the hierarchy, <code>null</code> is returned. If the prefix is defined, it is
+	 * returned literally: a blank declared namespace will return the empty string. This allows differentiation between a declared empty namespace and no declared
+	 * namespace.
+	 * <p>
+	 * Some prefixes such as {@value XML#XML_NAMESPACE_URI_STRING} are considered to be implicitly defined. Likewise if <code><var>resolve</var></code> is
+	 * <code>true</code> and the given prefix is not defined anywhere up the hierarchy, the empty string is returned because the <code>null</code> prefix
+	 * indicates no namespace.
+	 * </p>
 	 * @param element The element which should be searched for a namespace definition, along with its ancestors.
 	 * @param prefix The namespace prefix for which a definition should be found, or <code>null</code> for a default attribute.
 	 * @param resolve Whether the entire tree hierarchy should be searched.
 	 * @return The defined namespace URI for the given prefix, or <code>null</code> if none is defined.
 	 */
-	public static String getDeclaredNamespaceURI(final Element element, final String prefix, final boolean resolve) {
+	public static String getDefinedNamespaceURI(final Element element, final String prefix, final boolean resolve) {
 		String namespaceURI = null; //assume we won't find a matching namespace
 		if(prefix != null) { //if they specified a prefix
-			if(prefix.equals(XMLNS_NAMESPACE_PREFIX)) //if this is the "xmlns" prefix
-				return XMLNS_NAMESPACE_URI_STRING; //return the namespace URI for "xmlns:"
-			else if(prefix.equals(XML_NAMESPACE_PREFIX)) //if this is the "xml" prefix
-				return XML_NAMESPACE_URI_STRING; //return the namespace URI for "xml:"
-			//see if this element has "xmlns:prefix" defined, and if so, retrieve it
-			if(element.hasAttributeNS(XMLNS_NAMESPACE_URI_STRING, prefix)) //TODO fix for empty namespace strings
+			if(prefix.equals(XMLNS_NAMESPACE_PREFIX)) { //if this is the `xmlns` prefix
+				return XMLNS_NAMESPACE_URI_STRING; //return the namespace URI for `xmlns:`; it is implicitly declared
+			} else if(prefix.equals(XML_NAMESPACE_PREFIX)) { //if this is the `xml` prefix
+				return XML_NAMESPACE_URI_STRING; //return the namespace URI for `xml:`; it is implicitly declared
+			}
+			//see if this element has "xmlns:prefix" defined in the <http://www.w3.org/2000/xmlns/> namespace, and if so, retrieve it
+			if(element.hasAttributeNS(XMLNS_NAMESPACE_URI_STRING, prefix)) { //TODO fix for empty namespace strings
 				namespaceURI = element.getAttributeNS(XMLNS_NAMESPACE_URI_STRING, prefix);
+			}
 		} else { //if no prefix was specified
-			//see if there is an "xmlns" attribute defined in the "http://www.w3.org/2000/xmlns/" namespace
-			if(element.hasAttributeNS(XMLNS_NAMESPACE_URI_STRING, XMLNS_NAMESPACE_PREFIX))
-				namespaceURI = element.getAttributeNS(XMLNS_NAMESPACE_URI_STRING, XMLNS_NAMESPACE_PREFIX);
+			//see if there is an `xmlns` attribute defined in the <http://www.w3.org/2000/xmlns/"> namespace
+			if(element.hasAttributeNS(XMLNS_NAMESPACE_URI_STRING, ATTRIBUTE_XMLNS)) {
+				namespaceURI = element.getAttributeNS(XMLNS_NAMESPACE_URI_STRING, ATTRIBUTE_XMLNS);
+			}
 		}
 		//if we didn't find a matching namespace definition for this node, search up the chain
 		//(unless no prefix was specified, and we can't use the default namespace)
-		if(namespaceURI == null) {
+		if(namespaceURI == null && resolve) {
 			final Node parentNode = element.getParentNode(); //get the parent node
 			//if we should resolve, there is a parent, and it's an element (not the document)
-			if(resolve && parentNode != null && parentNode.getNodeType() == Node.ELEMENT_NODE) {
-				namespaceURI = getDeclaredNamespaceURI((Element)parentNode, prefix, resolve); //continue the search up the chain
+			if(parentNode != null && parentNode.getNodeType() == Node.ELEMENT_NODE) {
+				namespaceURI = getDefinedNamespaceURI((Element)parentNode, prefix, resolve); //continue the search up the chain
+			} else if(prefix == null) {
+				namespaceURI = ""; //the `xmlns` attribute effectively defaults to "" on the root element TODO document
 			}
 		}
 		return namespaceURI; //return the namespace URI we found
@@ -1757,7 +1770,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @param deep Whether all children and their descendants are also recursively checked for namespace declarations.
 	 */
 	public static void ensureNamespaceDeclarations(final Element element, final Element declarationElement, final boolean deep) {
-		final NameValuePair<String, String>[] prefixNamespacePairs = getUndeclaredNamespaces(element); //get the undeclared namespaces for this element
+		final NameValuePair<String, String>[] prefixNamespacePairs = getUndefinedNamespaces(element); //get the undeclared namespaces for this element
 		declareNamespaces(declarationElement != null ? declarationElement : element, prefixNamespacePairs); //declare the undeclared namespaces, using the declaration element if provided
 		if(deep) { //if we should recursively check the children of this element
 			final NodeList childElementList = element.getChildNodes(); //get a list of the child nodes
@@ -1801,12 +1814,12 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 			final Node childNode = childElementList.item(childIndex); //get a reference to this node
 			if(childNode.getNodeType() == Node.ELEMENT_NODE) { //if this is an element
 				final Element childElement = (Element)childNode; //cast the node to an element
-				final NameValuePair<String, String>[] prefixNamespacePairs = getUndeclaredNamespaces(childElement); //get the undeclared namespaces for the child element
+				final NameValuePair<String, String>[] prefixNamespacePairs = getUndefinedNamespaces(childElement); //get the undeclared namespaces for the child element
 				for(int i = 0; i < prefixNamespacePairs.length; ++i) { //look at each name/value pair
 					final NameValuePair<String, String> prefixNamespacePair = prefixNamespacePairs[i]; //get this name/value pair representing a prefix and a namespace
 					final String prefix = prefixNamespacePair.getName(); //get the prefix
 					final String namespaceURI = prefixNamespacePair.getValue(); //get the namespace
-					if(getDeclaredNamespaceURI(rootElement, prefix, true) == null) { //if the rooot element does not have this prefix defined, it's OK to add it to the parent element
+					if(getDefinedNamespaceURI(rootElement, prefix, true) == null) { //if the rooot element does not have this prefix defined, it's OK to add it to the parent element
 						declareNamespace(rootElement, prefix, namespaceURI); //declare this namespace on the root element
 					} else { //if the parent element has already defined this namespace
 						declareNamespace(childElement, prefix, namespaceURI); //declare the namespace on the child element
@@ -1819,17 +1832,17 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 
 	/**
 	 * Gets the namespace declarations this element needs so that all namespaces for the element and its attributes are properly declared using the appropriate
-	 * <code>xmlns=</code> or <code>xmlns:prefix=</code> attribute declaration. The children of this element are optionally checked.
+	 * <code>xmlns=</code> or <code>xmlns:prefix=</code> attribute declaration or are implicitly defined. The children of this element are optionally checked.
 	 * @param element The element for which namespace declarations should be checked.
 	 * @return An array of name/value pairs. The name of each is the the prefix to declare, or <code>null</code> if no prefix is used. The value of each is the
 	 *         URI string of the namespace being defined, or <code>null</code> if no namespace is used.
 	 */
-	@SuppressWarnings("unchecked")
-	//we create an array from a generic list, creating this warning to suppress
-	public static NameValuePair<String, String>[] getUndeclaredNamespaces(final Element element) {
+	@SuppressWarnings("unchecked") //we create an array from a generic list, creating this warning to suppress
+	public static NameValuePair<String, String>[] getUndefinedNamespaces(final Element element) {
 		final List<NameValuePair<String, String>> prefixNamespacePairList = new ArrayList<NameValuePair<String, String>>(); //create a new list in which to store name/value pairs of prefixes and namespaces
-		if(!isNamespaceDeclared(element, element.getPrefix(), element.getNamespaceURI())) //if the element doesn't have the needed declarations
+		if(!isNamespaceDefined(element, element.getPrefix(), element.getNamespaceURI())) { //if the element doesn't have the needed declarations
 			prefixNamespacePairList.add(new NameValuePair<String, String>(element.getPrefix(), element.getNamespaceURI())); //add this prefix and namespace to the list of namespaces needing to be declared
+		}
 		final NamedNodeMap attributeNamedNodeMap = element.getAttributes(); //get the map of attributes
 		final int attributeCount = attributeNamedNodeMap.getLength(); //find out how many attributes there are
 		for(int i = 0; i < attributeCount; ++i) { //look at each attribute
@@ -1838,7 +1851,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 			//  declarations for attributes if they have neither prefix nor
 			//  namespace declared
 			if(attribute.getPrefix() != null || attribute.getNamespaceURI() != null) {
-				if(!isNamespaceDeclared(element, attribute.getPrefix(), attribute.getNamespaceURI())) //if the attribute doesn't have the needed declarations
+				if(!isNamespaceDefined(element, attribute.getPrefix(), attribute.getNamespaceURI())) //if the attribute doesn't have the needed declarations
 					prefixNamespacePairList.add(new NameValuePair<String, String>(attribute.getPrefix(), attribute.getNamespaceURI())); //add this prefix and namespace to the list of namespaces needing to be declared
 			}
 		}
@@ -1856,7 +1869,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @param namespaceURI The namespace being defined, or <code>null</code> if no namespace is used.
 	 */
 	public static void ensureNamespaceDeclaration(final Element element, final String prefix, final String namespaceURI) {
-		if(!isNamespaceDeclared(element, prefix, namespaceURI)) { //if this namespace isn't declared for this element
+		if(!isNamespaceDefined(element, prefix, namespaceURI)) { //if this namespace isn't declared for this element
 			declareNamespace(element, prefix, namespaceURI); //declare the namespace
 		}
 	}
@@ -1865,22 +1878,31 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * Determines if the given namespace is declared using the appropriate <code>xmlns=</code> or <code>xmlns:prefix=</code> attribute declaration either on the
 	 * given element or on any element up the tree.
 	 * <p>
-	 * The "xmlns" and "xml" prefixes and namespaces always result in <code>true</code> being returned, because they never need to be declared.
+	 * The <code>xmlns</code> and <code>xml</code> prefixes and namespaces always result in <code>true</code> being returned, because they never need to be
+	 * declared.
+	 * </p>
+	 * <p>
+	 * Some prefixes such as {@value XML#XML_NAMESPACE_URI_STRING} are considered to be implicitly defined. Likewise the given prefix is not defined anywhere up
+	 * the hierarchy, it is considered to indicate no namespace, so that a prefix of <code>null</code> and a namespace of <code>null</code> will considered to be
+	 * defined.
 	 * </p>
 	 * @param element The element for which the namespace should be declared.
 	 * @param prefix The prefix to declare, or <code>null</code> if no prefix is used.
 	 * @param namespaceURI The namespace being defined, or <code>null</code> if no namespace is used.
 	 * @return <code>true</code> if the namespace is sufficiently declared, either on the given element or somewhere up the element hierarchy.
 	 */
-	public static boolean isNamespaceDeclared(final Element element, final String prefix, final String namespaceURI) {
-		if(XMLNS_NAMESPACE_PREFIX.equals(prefix) && XMLNS_NAMESPACE_URI_STRING.equals(namespaceURI)) //we don't need to define the "xmlns:" prefix
+	public static boolean isNamespaceDefined(final Element element, final String prefix, final String namespaceURI) {
+		if(XMLNS_NAMESPACE_PREFIX.equals(prefix) && XMLNS_NAMESPACE_URI_STRING.equals(namespaceURI)) { //we don't need to define the `xmlns:` prefix
 			return true;
-		if(prefix == null && XMLNS_NAMESPACE_URI_STRING.equals(namespaceURI)) //we don't need to define the "xmlns" name
+		}
+		if(prefix == null && XMLNS_NAMESPACE_URI_STRING.equals(namespaceURI)) { //we don't need to define the `xmlns` name
 			return true;
-		if(XML_NAMESPACE_PREFIX.equals(prefix) && XML_NAMESPACE_URI_STRING.equals(namespaceURI)) //we don't need to define the "xml" prefix
+		}
+		if(XML_NAMESPACE_PREFIX.equals(prefix) && XML_NAMESPACE_URI_STRING.equals(namespaceURI)) { //we don't need to define the `xml` prefix
 			return true;
+		}
 		//find out what namespace is defined for the prefix anywhere up the hierarchy
-		final String declaredNamespaceURI = getDeclaredNamespaceURI(element, prefix, true);
+		final String declaredNamespaceURI = getDefinedNamespaceURI(element, prefix, true);
 		if(declaredNamespaceURI != null) { //if some element declared a namespace for this prefix
 			if(declaredNamespaceURI.length() == 0) { //if an empty namespace was declared
 				if(namespaceURI == null) { //if we expected a null namespace
@@ -1914,21 +1936,37 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @param prefix The prefix to declare, or <code>null</code> if no prefix is used.
 	 * @param namespaceURI The namespace being defined, or <code>null</code> if no namespace is used.
 	 */
+	//TODO delete	
+	//	public static void declareNamespace(final Element declarationElement, final String prefix, String namespaceURI) {
+	//		
+	//	}
+
+	/**
+	 * Declares a prefix for the given namespace using the appropriate <code>xmlns=</code> or <code>xmlns:prefix=</code> attribute declaration for the given
+	 * element.
+	 * @param declarationElement The element on which the namespace should be declared.
+	 * @param prefix The prefix to declare, or <code>null</code> if no prefix is used.
+	 * @param namespaceURI The namespace being defined, or <code>null</code> if no namespace is used.
+	 */
 	public static void declareNamespace(final Element declarationElement, final String prefix, String namespaceURI) {
-		if(XMLNS_NAMESPACE_PREFIX.equals(prefix) && XMLNS_NAMESPACE_URI_STRING.equals(namespaceURI)) //we don't need to define the "xmlns" prefix
+		if(XMLNS_NAMESPACE_PREFIX.equals(prefix) && XMLNS_NAMESPACE_URI_STRING.equals(namespaceURI)) { //we don't need to define the `xmlns` prefix
 			return;
-		if(prefix == null && XMLNS_NAMESPACE_URI_STRING.equals(namespaceURI)) //we don't need to define the "xmlns" name
+		}
+		if(prefix == null && XMLNS_NAMESPACE_URI_STRING.equals(namespaceURI)) { //we don't need to define the `xmlns` name
 			return;
-		if(XML_NAMESPACE_PREFIX.equals(prefix) && XML_NAMESPACE_URI_STRING.equals(namespaceURI)) //we don't need to define the "xml" prefix
+		}
+		if(XML_NAMESPACE_PREFIX.equals(prefix) && XML_NAMESPACE_URI_STRING.equals(namespaceURI)) { //we don't need to define the `xml` prefix
 			return;
-		if(namespaceURI == null) //if no namespace URI was given
+		}
+		if(namespaceURI == null) { //if no namespace URI was given
 			namespaceURI = ""; //we'll declare an empty namespace URI
+		}
 		if(prefix != null) { //if we were given a prefix
-			//create an attribute in the form, xmlns:prefix="namespaceURI" TODO fix for attributes that may use the same prefix for different namespace URIs
+			//create an attribute in the form `xmlns:prefix="namespaceURI"` TODO fix for attributes that may use the same prefix for different namespace URIs
 			declarationElement.setAttributeNS(XMLNS_NAMESPACE_URI_STRING, createQName(XMLNS_NAMESPACE_PREFIX, prefix), namespaceURI);
 		} else { //if we weren't given a prefix
-			//create an attribute in the form, xmlns="namespaceURI" TODO fix for attributes that may use the same prefix for different namesapce URIs
-			declarationElement.setAttributeNS(XMLNS_NAMESPACE_URI_STRING, XMLNS_NAMESPACE_PREFIX, namespaceURI);
+			//create an attribute in the form `xmlns="namespaceURI"` TODO fix for attributes that may use the same prefix for different namespace URIs
+			declarationElement.setAttributeNS(XMLNS_NAMESPACE_URI_STRING, ATTRIBUTE_XMLNS, namespaceURI);
 		}
 	}
 
