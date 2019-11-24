@@ -55,6 +55,16 @@ import org.w3c.dom.*;
  */
 public class XMLSerializer {
 
+	/**
+	 * Default XML formatting profile which uses {@link XML#WHITESPACE_CHARACTERS} as space normalization characters, and considers all elements block elements.
+	 */
+	public static final XmlFormatProfile DEFAULT_XML_FORMAT_PROFILE = new BaseXmlFormatProfile() {
+		@Override
+		public boolean isBlock(final Element element) {
+			return true;
+		}
+	};
+
 	/** Whether the output should be formatted. */
 	public static final String OPTION_FORMAT_OUTPUT = "formatOutput";
 
@@ -411,11 +421,11 @@ public class XMLSerializer {
 	}
 
 	/**
-	 * Constructor for an optionally formatted serializer using the {@link XmlFormatProfile#DEFAULT} format profile.
+	 * Constructor for an optionally formatted serializer using the {@link #DEFAULT_XML_FORMAT_PROFILE} format profile.
 	 * @param formatted Whether the serializer should be formatted.
 	 */
 	public XMLSerializer(final boolean formatted) {
-		this(formatted, XmlFormatProfile.DEFAULT);
+		this(formatted, DEFAULT_XML_FORMAT_PROFILE);
 	}
 
 	private final XmlFormatProfile formatProfile;

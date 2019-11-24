@@ -24,7 +24,6 @@ import org.w3c.dom.*;
 
 import com.globalmentor.java.Characters;
 import com.globalmentor.xml.spec.NsName;
-import com.globalmentor.xml.spec.XML;
 
 /**
  * Specifies a strategy for characterizing an XML document for XML serialization by indicating how different elements are classified for formatting.
@@ -33,21 +32,6 @@ import com.globalmentor.xml.spec.XML;
  * @author Garret Wilson
  */
 public interface XmlFormatProfile {
-
-	/**
-	 * Default XML formatting profile which uses {@link XML#WHITESPACE_CHARACTERS} as space normalization characters, and considers all elements block elements.
-	 */
-	public static final XmlFormatProfile DEFAULT = new BaseXmlFormatProfile() {
-		@Override
-		public Characters getSpaceNormalizationCharacters() {
-			return XML.WHITESPACE_CHARACTERS;
-		}
-
-		@Override
-		public boolean isBlock(final Element element) {
-			return true;
-		}
-	};
 
 	/**
 	 * Returns the characters considered "space characters" for normalizations.

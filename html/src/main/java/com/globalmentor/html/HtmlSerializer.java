@@ -27,6 +27,7 @@ import org.w3c.dom.*;
 
 import com.globalmentor.xml.XMLSerializer;
 import com.globalmentor.xml.XmlFormatProfile;
+import com.globalmentor.xml.spec.NsName;
 
 /**
  * Serializes a document as HTML. Has features to serialize features in an HTML-oriented way, such as void elements and empty attributes:
@@ -38,6 +39,14 @@ import com.globalmentor.xml.XmlFormatProfile;
  * @author Garret Wilson
  */
 public class HtmlSerializer extends XMLSerializer {
+
+	/** The default HTML formatting profile, which uses categories specified by the HTML specification as well as some useful defaults. */
+	public static XmlFormatProfile DEFAULT_HTML_FORMAT_PROFILE = new BaseHtmlFormatProfile() {
+		@Override
+		public boolean isBlock(Element element) {
+			return true; //TODO fix
+		}
+	};
 
 	/** Whether an attribute that has a value equal to its name should be serialized in empty attribute form. */
 	public static final String OPTION_USE_EMPTY_ATTRIBUTES = "useEmptyAttributes"; //TODO use with property setting when integrated with Confound
@@ -67,11 +76,11 @@ public class HtmlSerializer extends XMLSerializer {
 	}
 
 	/**
-	 * Constructor for an optionally formatted serializer with no XML prolog, using the {@link XmlFormatProfile#DEFAULT} format profile.
+	 * Constructor for an optionally formatted serializer with no XML prolog, using the {@link #DEFAULT_HTML_FORMAT_PROFILE} format profile.
 	 * @param formatted Whether the serializer should be formatted.
 	 */
 	public HtmlSerializer(final boolean formatted) {
-		this(formatted, XmlFormatProfile.DEFAULT); //TODO change to use HTML format profile
+		this(formatted, DEFAULT_HTML_FORMAT_PROFILE);
 	}
 
 	/**
@@ -92,7 +101,7 @@ public class HtmlSerializer extends XMLSerializer {
 	 */
 	@Override
 	protected boolean isEmptyElementTag(final Element element) {
-		final boolean isVoidElement = XHTML_NAMESPACE_URI_STRING.equals(element.getNamespaceURI()) && VOID_ELEMENTS.contains(element.getLocalName());
+		final boolean isVoidElement = VOID_ELEMENTS.contains(NsName.ofNode(element));
 		//TODO log a warning or throw an exception if a void element has children
 		return isVoidElement;
 	}
