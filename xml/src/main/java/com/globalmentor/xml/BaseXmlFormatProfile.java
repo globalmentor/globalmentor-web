@@ -17,6 +17,9 @@
 package com.globalmentor.xml;
 
 import static com.globalmentor.xml.spec.XML.*;
+import static java.util.Collections.*;
+
+import java.util.List;
 
 import org.w3c.dom.*;
 
@@ -51,6 +54,15 @@ public abstract class BaseXmlFormatProfile implements XmlFormatProfile {
 	@Override
 	public boolean isPreserved(final Element element) {
 		return ATTRIBUTE_SPACE_PRESERVE.equals(element.getAttributeNS(XML_NAMESPACE_URI_STRING, ATTRIBUTE_SPACE));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * @implSpec This implementation returns an empty list.
+	 */
+	@Override
+	public List<NsName> getAttributeOrder(final Element element) {
+		return emptyList(); //TODO add support for xml:id
 	}
 
 }

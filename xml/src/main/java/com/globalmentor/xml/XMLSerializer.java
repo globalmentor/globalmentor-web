@@ -18,6 +18,7 @@ package com.globalmentor.xml;
 
 import java.io.*;
 import java.util.*;
+import java.util.stream.Stream;
 
 import javax.annotation.*;
 
@@ -25,6 +26,7 @@ import java.nio.charset.Charset;
 
 import com.globalmentor.io.ByteOrderMark;
 
+import static com.globalmentor.collections.comparators.ExplicitOrderComparator.*;
 import static com.globalmentor.java.CharSequences.*;
 import static com.globalmentor.java.Characters.SPACE_CHAR;
 import static com.globalmentor.java.Conditions.*;
@@ -35,7 +37,9 @@ import com.globalmentor.java.Characters;
 
 import static com.globalmentor.xml.XmlDom.*;
 import static com.globalmentor.xml.spec.XML.*;
+import static java.lang.String.CASE_INSENSITIVE_ORDER;
 import static java.nio.charset.StandardCharsets.*;
+import static java.util.Comparator.*;
 import static java.util.Objects.*;
 
 import com.globalmentor.util.PropertiesUtilities;
@@ -695,7 +699,7 @@ public class XMLSerializer {
 	}
 
 	/**
-	 * Serializes the specified documents to the given writer.
+	 * Serializes the specified documents to the given appendable.
 	 * @param appendable The destination into which the prolog should be written.
 	 * @param document The XML document the prolog of which to serialize.
 	 * @param charset The charset in use.
@@ -714,7 +718,7 @@ public class XMLSerializer {
 	}
 
 	/**
-	 * Serializes the document's processing instructions to the given writer.
+	 * Serializes the document's processing instructions to the given appendable.
 	 * @param appendable The destination into which the processing instructions should be written.
 	 * @param document The XML document the processing instructions of which to serialize.
 	 * @return The given appendable.
@@ -732,7 +736,7 @@ public class XMLSerializer {
 	}
 
 	/**
-	 * Serializes the document type to the given writer.
+	 * Serializes the document type to the given appendable.
 	 * @param appendable The destination into which the document type should be written.
 	 * @param documentType The XML document type to serialize.
 	 * @return The given appendable.
@@ -760,7 +764,7 @@ public class XMLSerializer {
 	}
 
 	/**
-	 * Serializes the given processing instruction to the given writer.
+	 * Serializes the given processing instruction to the given appendable.
 	 * @param appendable The destination into which the processing instruction should be written.
 	 * @param processingInstruction The XML processing instruction to serialize.
 	 * @return The given appendable.
@@ -778,7 +782,7 @@ public class XMLSerializer {
 	}
 
 	/**
-	 * Serializes the specified element to the given writer, using the default formatting options.
+	 * Serializes the specified element to the given appendable, using the default formatting options.
 	 * @param appendable The destination into which the element should be written.
 	 * @param element The XML element to serialize.
 	 * @return The given appendable.
@@ -789,7 +793,7 @@ public class XMLSerializer {
 	}
 
 	/**
-	 * Serializes the specified element to the given writer.
+	 * Serializes the specified element to the given appendable.
 	 * @apiNote Attributes will always be formatted independent of the <code><var>isContentFormatted</var></code>.
 	 * @param appendable The destination into which the element should be written.
 	 * @param element The XML element to serialize.
@@ -815,10 +819,7 @@ public class XMLSerializer {
 					writeAttribute(attributeName, namespaceURI, writer);	//write this namespace attribute attribute
 				}
 		*/
-		for(int attributeIndex = 0; attributeIndex < element.getAttributes().getLength(); ++attributeIndex) { //look at each attribute
-			final Attr attribute = (Attr)element.getAttributes().item(attributeIndex); //get a reference to this attribute
-			serializeAttribute(appendable, attribute.getName(), attribute.getValue()); //write this attribute
-		}
+		serializeAttributes(appendable, element, attributesOf(element));
 		if(isEmptyElementTag(element)) { //if we should serialize the element as an empty element tag, e.g. <foo />
 			appendable.append(SPACE_CHAR).append(END_TAG_IDENTIFIER_CHAR).append(TAG_END); //write the end of the empty element tag, with an extra space for HTML browser compatibility
 		} else {
@@ -826,6 +827,106 @@ public class XMLSerializer {
 			final boolean isChildContentFormatted = isContentFormatted && !getFormatProfile().isPreserved(element); //override formatting for preserved elements
 			serializeContent(appendable, element, isChildContentFormatted);
 			appendable.append(TAG_START).append(END_TAG_IDENTIFIER_CHAR).append(element.getNodeName()).append(TAG_END); //write the ending tag
+		}
+		return appendable;
+	}
+
+	/**
+	 * A comparator for ordering namespace-declaring attributes specially.
+	 * <ol>
+	 * <li>The {@value XML#ATTRIBUTE_XMLNS} is sorted first.</li>
+	 * <li>Any attribute with the {@value XML#XMLNS_NAMESPACE_PREFIX} prefix is sorted based upon the case-insensitive local name (<code>xmlns:first</code>,
+	 * <code>xmlns:second</code>) and placed before any other prefixed attributes, but not before non-prefixed attributes.</li>
+	 * </ol>
+	 * @implNote {@link String#CASE_INSENSITIVE_ORDER} is used for comparison, which may not properly sort all languages but will produce desirable results for
+	 *           virtually all attributes in use in the real world.
+	 */
+	private final static Comparator<Attr> XMLNS_ATTR_NAME_COMPARATOR = new Comparator<Attr>() {
+
+		@Override
+		public int compare(final Attr attr1, final Attr attr2) {
+			final String attr1Name = attr1.getName();
+			final String attr2Name = attr2.getName();
+
+			//`xmlns`
+			if(ATTRIBUTE_XMLNS.equals(attr1Name)) {
+				if(ATTRIBUTE_XMLNS.equals(attr2Name)) {
+					return 0; //both are `xmlns`
+				} else {
+					return -1; //only the first is `xmln`
+				}
+			} else if(ATTRIBUTE_XMLNS.equals(attr2Name)) {
+				assert !ATTRIBUTE_XMLNS.equals(attr1Name);
+				return 1; //only the second is `xmlns`
+			}
+
+			//`xmlns:foo`
+			final String attr1Prefix = attr1.getPrefix();
+			final String attr2Prefix = attr2.getPrefix();
+			if(attr1Prefix != null && attr2Prefix != null) { //sort the namespace declarations but do _not_ place them before non-prefixed attributes
+				if(XMLNS_NAMESPACE_PREFIX.equals(attr1Prefix)) {
+					if(XMLNS_NAMESPACE_PREFIX.equals(attr2Prefix)) {
+						return CASE_INSENSITIVE_ORDER.compare(attr1.getLocalName(), attr2.getLocalName()); //both are `xmlns:foo`; sort by local name
+					} else {
+						return -1; //only the first is `xmlns:foo`
+					}
+				} else if(XMLNS_NAMESPACE_PREFIX.equals(attr2Prefix)) {
+					return 1; //only the second is `xmlns:foo`
+				}
+			}
+
+			return 0; //any other combination is "equal" for the purposes of this comparator
+		}
+	};
+
+	/**
+	 * A general comparator for ordering attributes by name.
+	 * <ol>
+	 * <li>Names with no prefix are sorted first (e.g. <code>bar</code>, <code>foo:bar</code>).</li>
+	 * <li>Names are then sorted by prefix in a case-insensitive order (e.g. <code>foo:bar</code>, <code>other:att</code>).</li>
+	 * <li>Names are then sorted by local name in a case-insensitive order (e.g. <code>foo:first</code>, <code>foo:second</code>).</li>
+	 * </ol>
+	 * @implNote {@link String#CASE_INSENSITIVE_ORDER} is used for comparison, which may not properly sort all languages but will produce desirable results for
+	 *           virtually all attributes in use in the real world.
+	 */
+	private final static Comparator<Attr> ATTR_NAME_COMPARATOR = comparing(Attr::getPrefix, nullsFirst(CASE_INSENSITIVE_ORDER))
+			.thenComparing(attr -> attr.getLocalName(), CASE_INSENSITIVE_ORDER);
+
+	/**
+	 * Serializes the attributes of the specified element to the given appendable.
+	 * @apiNote The given attributes may not necessarily be exactly the attributes that would be retrieved directly from the element.
+	 * @implSpec This implementation sorts attributes in the following order:
+	 *           <ol>
+	 *           <li>The {@value XML#ATTRIBUTE_XMLNS} is sorted first.</li>
+	 *           <li>Any attribute with the {@value XML#XMLNS_NAMESPACE_PREFIX} prefix is sorted based upon the case-insensitive local name
+	 *           (<code>xmlns:first</code>, <code>xmlns:second</code>) and placed before any other prefixed attributes, but not before non-prefixed
+	 *           attributes.</li>
+	 *           <li>Attributes are then ordered by {@link XmlFormatProfile#getAttributeOrder(Element)}.</li>
+	 *           <li>Names with no prefix are sorted next (e.g. <code>bar</code>, <code>foo:bar</code>).</li>
+	 *           <li>Names are then sorted by prefix in a case-insensitive order (e.g. <code>foo:bar</code>, <code>other:att</code>).</li>
+	 *           <li>Names are then sorted by local name in a case-insensitive order (e.g. <code>foo:first</code>, <code>foo:second</code>).</li>
+	 *           </ol>
+	 * @param appendable The destination into which the attributes should be written.
+	 * @param element The XML element the attributes of which to serialize.
+	 * @param attributes The actual attributes to serialize.
+	 * @return The given appendable.
+	 * @throws IOException Thrown if an I/O error occurred.
+	 * @see #XMLNS_ATTR_NAME_COMPARATOR
+	 * @see #ATTR_NAME_COMPARATOR
+	 */
+	protected Appendable serializeAttributes(@Nonnull final Appendable appendable, @Nonnull final Element element, @Nonnull Stream<Attr> attributes)
+			throws IOException {
+		//1. `xmlns` related attributes come first.
+		Comparator<Attr> comparator = XMLNS_ATTR_NAME_COMPARATOR;
+		//2. Explicitly ordered attributes come next.
+		final List<NsName> order = getFormatProfile().getAttributeOrder(element);
+		if(!order.isEmpty()) { //if we have a preferred order, use that order, placing explicitly ordered attributes first
+			comparator = comparator.thenComparing(NsName::ofNode, explicitOrderFirst(order));
+		}
+		//3. Finally order the rest of the attributes in alphabetical order.
+		comparator = comparator.thenComparing(ATTR_NAME_COMPARATOR);
+		for(final Attr attribute : (Iterable<Attr>)attributes.sorted(comparator)::iterator) {
+			serializeAttribute(appendable, attribute.getName(), attribute.getValue()); //write this attribute
 		}
 		return appendable;
 	}
@@ -843,7 +944,7 @@ public class XMLSerializer {
 	}
 
 	/**
-	 * Serializes the specified attribute name and value to the given writer.
+	 * Serializes the specified attribute name and value to the given appendable.
 	 * @param appendable The destination into which the attribute should be written.
 	 * @param attributeName The name of the XML attribute to serialize.
 	 * @param attributeValue The name of the XML attribute to serialize.
@@ -863,7 +964,7 @@ public class XMLSerializer {
 	}
 
 	/**
-	 * Serializes the content of the specified node to the given writer using the default formatting options.
+	 * Serializes the content of the specified node to the given appendable using the default formatting options.
 	 * @param appendable The destination into which the element content should be written.
 	 * @param node The XML node the content of which to serialize—usually an element or document fragment.
 	 * @return The given appendable.
@@ -881,7 +982,7 @@ public class XMLSerializer {
 	private static final String NORMALIZED_LINE_BREAK_STRING = String.valueOf(NORMALIZED_LINE_BREAK_CHAR);
 
 	/**
-	 * Serializes the content of the specified node to the given writer.
+	 * Serializes the content of the specified node to the given appendable.
 	 * <p>
 	 * If formatting is enabled, child text content is normalized in the following manner:
 	 * </p>

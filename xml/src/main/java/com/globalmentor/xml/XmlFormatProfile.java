@@ -16,6 +16,8 @@
 
 package com.globalmentor.xml;
 
+import java.util.List;
+
 import javax.annotation.*;
 
 import org.w3c.dom.*;
@@ -65,11 +67,20 @@ public interface XmlFormatProfile {
 	 * Indicates whether the given element retains the format of its content. That is, the content should not be formatted independent of any formatting setting.
 	 * If an element preserves formatting, this setting is applied to all its children.
 	 * @apiNote These elements may still have their attributes reformatted.
-	 * @apiNote XML elements with the attribute <code>xml:space</code> set to <code>preserve</code> and the HTML {@code <pre>} element are examples of elements
-	 *          that typically retain their formatting.
+	 * @apiNote XML elements with the attribute <code>xml:space</code> set to <code>preserve</code> and the HTML <code>&lt;pre&gt;</code> element are examples of
+	 *          elements that typically retain their formatting.
 	 * @param element A DOM element.
-	 * @return <code>true</code> if the element should retain its content formatting and should therefore not be formatted.
+	 * @return return <code>true</code> if the element should retain its content formatting and should therefore not be formatted.
 	 */
 	public boolean isPreserved(@Nonnull final Element element);
+
+	/**
+	 * Determines the order of known attributes for an element.
+	 * @apiNote For example, an HTML element may return the attributes <code>id</code> and <code>name</code> to ensure that these always are sorted first (after
+	 *          any attributes the serializer decides should be first), in that order.
+	 * @param element The element for which attribute order should be specified.
+	 * @return An list of possible known attribute for the given element indicating serialization order.
+	 */
+	public List<NsName> getAttributeOrder(@Nonnull final Element element);
 
 }
