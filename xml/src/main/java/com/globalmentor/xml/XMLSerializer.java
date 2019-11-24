@@ -43,6 +43,7 @@ import static java.util.Comparator.*;
 import static java.util.Objects.*;
 
 import com.globalmentor.util.PropertiesUtilities;
+import com.globalmentor.xml.spec.NsName;
 import com.globalmentor.xml.spec.XML;
 
 import org.w3c.dom.*;
@@ -834,7 +835,7 @@ public class XMLSerializer {
 	/**
 	 * A comparator for ordering namespace-declaring attributes specially.
 	 * <ol>
-	 * <li>The {@value XML#ATTRIBUTE_XMLNS} is sorted first.</li>
+	 * <li>The {@link XML#ATTRIBUTE_XMLNS} attribute is sorted first.</li>
 	 * <li>Any attribute with the {@value XML#XMLNS_NAMESPACE_PREFIX} prefix is sorted based upon the case-insensitive local name (<code>xmlns:first</code>,
 	 * <code>xmlns:second</code>) and placed before any other prefixed attributes, but not before non-prefixed attributes.</li>
 	 * </ol>
@@ -849,14 +850,14 @@ public class XMLSerializer {
 			final String attr2Name = attr2.getName();
 
 			//`xmlns`
-			if(ATTRIBUTE_XMLNS.equals(attr1Name)) {
-				if(ATTRIBUTE_XMLNS.equals(attr2Name)) {
+			if(ATTRIBUTE_XMLNS.getLocalName().equals(attr1Name)) {
+				if(ATTRIBUTE_XMLNS.getLocalName().equals(attr2Name)) {
 					return 0; //both are `xmlns`
 				} else {
 					return -1; //only the first is `xmln`
 				}
-			} else if(ATTRIBUTE_XMLNS.equals(attr2Name)) {
-				assert !ATTRIBUTE_XMLNS.equals(attr1Name);
+			} else if(ATTRIBUTE_XMLNS.getLocalName().equals(attr2Name)) {
+				assert !ATTRIBUTE_XMLNS.getLocalName().equals(attr1Name);
 				return 1; //only the second is `xmlns`
 			}
 
@@ -897,7 +898,7 @@ public class XMLSerializer {
 	 * @apiNote The given attributes may not necessarily be exactly the attributes that would be retrieved directly from the element.
 	 * @implSpec This implementation sorts attributes in the following order:
 	 *           <ol>
-	 *           <li>The {@value XML#ATTRIBUTE_XMLNS} is sorted first.</li>
+	 *           <li>The {@link XML#ATTRIBUTE_XMLNS} attribute is sorted first.</li>
 	 *           <li>Any attribute with the {@value XML#XMLNS_NAMESPACE_PREFIX} prefix is sorted based upon the case-insensitive local name
 	 *           (<code>xmlns:first</code>, <code>xmlns:second</code>) and placed before any other prefixed attributes, but not before non-prefixed
 	 *           attributes.</li>

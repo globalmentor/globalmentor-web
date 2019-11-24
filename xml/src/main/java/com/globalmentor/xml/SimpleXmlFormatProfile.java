@@ -27,6 +27,7 @@ import javax.annotation.*;
 import org.w3c.dom.*;
 
 import com.globalmentor.java.Characters;
+import com.globalmentor.xml.spec.NsName;
 
 /**
  * A simple implementation of a format profile.

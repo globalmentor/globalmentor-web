@@ -33,6 +33,7 @@ import org.junit.jupiter.api.*;
 import org.w3c.dom.*;
 
 import com.globalmentor.java.Characters;
+import com.globalmentor.xml.spec.NsName;
 import com.globalmentor.xml.spec.XML;
 
 public class XMLSerializerTest {

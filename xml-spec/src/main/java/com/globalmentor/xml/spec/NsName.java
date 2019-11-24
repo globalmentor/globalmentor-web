@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.globalmentor.xml;
+package com.globalmentor.xml.spec;
 
 import static com.globalmentor.java.Conditions.*;
 import static java.util.Objects.*;
@@ -128,6 +128,18 @@ public final class NsName {
 		}
 		stringBuilder.append(localName);
 		return stringBuilder.toString();
+	}
+
+	/**
+	 * Determines whether the given node has the same namespace and local name as this object. That is calling {@link #ofNode(Node)} on the node would result in
+	 * an instance of this class that would be equal to this instance.
+	 * @param node The node to check.
+	 * @return <code>true</code> if the node namespace and local name match the namespace and name of this object.
+	 * @see Node#getNamespaceURI()
+	 * @see Node#getLocalName()
+	 */
+	public boolean matches(@Nonnull final Node node) {
+		return Objects.equals(namespaceString, node.getNamespaceURI()) && getLocalName().equals(node.getLocalName());
 	}
 
 }

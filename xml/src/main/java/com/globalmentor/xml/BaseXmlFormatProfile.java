@@ -16,6 +16,8 @@
 
 package com.globalmentor.xml;
 
+import static com.globalmentor.util.Optionals.*;
+import static com.globalmentor.xml.XmlDom.*;
 import static com.globalmentor.xml.spec.XML.*;
 import static java.util.Collections.*;
 
@@ -24,7 +26,7 @@ import java.util.List;
 import org.w3c.dom.*;
 
 import com.globalmentor.java.Characters;
-import com.globalmentor.xml.spec.XML;
+import com.globalmentor.xml.spec.*;
 
 /**
  * A base format profile for XML formatting, recognizing XML space normalization characters and other indicators as per the XML specification.
@@ -53,7 +55,7 @@ public abstract class BaseXmlFormatProfile implements XmlFormatProfile {
 	 */
 	@Override
 	public boolean isPreserved(final Element element) {
-		return ATTRIBUTE_SPACE_PRESERVE.equals(element.getAttributeNS(XML_NAMESPACE_URI_STRING, ATTRIBUTE_SPACE));
+		return isPresentAndEquals(findAttributeNS(element, ATTRIBUTE_SPACE), ATTRIBUTE_SPACE_PRESERVE);
 	}
 
 	/**

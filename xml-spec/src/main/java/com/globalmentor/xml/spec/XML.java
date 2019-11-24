@@ -57,7 +57,7 @@ public class XML {
 	/** The name extension for eXtensible Markup Language. */
 	public static final String XML_NAME_EXTENSION = "xml";
 
-	/** The prefix to the "xml" namespace, for use with "xml:lang", for example. */
+	/** The prefix to the "xml" namespace, for use with <code>xml:lang</code>, for example. */
 	public static final String XML_NAMESPACE_PREFIX = "xml";
 
 	/** The string representing the "xml" namespace. */
@@ -69,27 +69,31 @@ public class XML {
 	/** The prefix to the "xmlns" namespace, for use with namespace declarations. */
 	public static final String XMLNS_NAMESPACE_PREFIX = "xmlns"; //TODO makes sure code appropriately uses the new ATTRIBUTE_XMLNS when appropriate for the attribute name
 
-	/** The local name of the language attribute <code>xml:lang</code>. */
-	public static final String ATTRIBUTE_LANG = "lang";
+	/** The language attribute <code>xml:lang</code>. */
+	public static final NsName ATTRIBUTE_LANG = NsName.of(XML_NAMESPACE_URI_STRING, "lang");
 
 	/**
-	 * The local name of the space attribute <code>xml:space</code>.
+	 * The space attribute <code>xml:space</code>.
 	 * @see <a href="https://www.w3.org/TR/xml/#sec-white-space">Extensible Markup Language (XML) 1.0 (Fifth Edition), § 2.10 White Space Handling</a>
 	 */
-	public static final String ATTRIBUTE_SPACE = "space";
+	public static final NsName ATTRIBUTE_SPACE = NsName.of(XML_NAMESPACE_URI_STRING, "space");
 	/** The <code>xml:space</code> value indicating default whitespace handling. */
 	public static final String ATTRIBUTE_SPACE_DEFAULT = "default";
 	/** The <code>xml:space</code> value indicating whitespace should be preserved. */
 	public static final String ATTRIBUTE_SPACE_PRESERVE = "preserve";
-
-	/** The local name of the XML namespace attribute <code>xmlns</code>. */
-	public static final String ATTRIBUTE_XMLNS = "xmlns";
 
 	/** The string representing the "xmlns" namespace. */
 	public static final String XMLNS_NAMESPACE_URI_STRING = "http://www.w3.org/2000/xmlns/";
 
 	/** The URI to the "xmlns" namespace. */
 	public static final URI XMLNS_NAMESPACE_URI = URI.create(XMLNS_NAMESPACE_URI_STRING);
+
+	/**
+	 * The XML namespace attribute <code>xmlns</code>.
+	 * @apiNote Note that the XML DOM considers the <code>xmlns</code> attribute to be in the {@value XML#XMLNS_NAMESPACE_URI_STRING} namespace, even though it
+	 *          has no prefix.
+	 */
+	public static final NsName ATTRIBUTE_XMLNS = NsName.of(XMLNS_NAMESPACE_URI_STRING, "xmlns");
 
 	/** The name of a CDATA section node. */
 	public static final String CDATASECTION_NODE_NAME = "#cdata-section";

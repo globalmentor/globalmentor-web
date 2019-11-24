@@ -100,17 +100,13 @@ public class HtmlSerializer extends XMLSerializer {
 	/**
 	 * {@inheritDoc}
 	 * @implSpec This version will write an empty attribute if that option is enabled and the attribute value is the same as its name. For example:
-	 * 
-	 *           <pre>
-	 * {@code <button disabled/>}
-	 *           </pre>
-	 * 
+	 *           <pre>{@code <button disabled/>}</pre>
 	 * @see #isUseEmptyAttributes()
 	 */
 	@Override
 	protected Appendable serializeAttribute(@Nonnull final Appendable appendable, @Nonnull final String attributeName, @Nonnull final String attributeValue)
 			throws IOException {
-		if(attributeValue.equals(attributeName)) { //if the attribute value is the same as its name TODO do we need to restrict this to some predefine list? 
+		if(attributeValue.equals(attributeName)) { //if the attribute value is the same as its name TODO do we need to restrict this to some predefined list? 
 			return appendable.append(SPACE_CHAR).append(attributeName); //append just the attribute name
 		}
 		return super.serializeAttribute(appendable, attributeName, attributeValue); //otherwise serialize the attribute normally as per XML

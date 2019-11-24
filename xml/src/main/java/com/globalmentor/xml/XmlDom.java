@@ -38,7 +38,7 @@ import com.globalmentor.model.ObjectHolder;
 import com.globalmentor.net.ContentType;
 import com.globalmentor.net.URIs;
 import com.globalmentor.text.ASCII;
-import com.globalmentor.xml.spec.XML;
+import com.globalmentor.xml.spec.*;
 
 import org.w3c.dom.*;
 import org.w3c.dom.traversal.*;
@@ -59,8 +59,8 @@ import static java.util.stream.StreamSupport.*;
 
 /**
  * Various XML manipulation functions, mostly using the DOM.
- * @apiNote Note that the XML DOM considers the {@value XML#ATTRIBUTE_XMLNS} attribute to be in the {@value XML#XMLNS_NAMESPACE_URI_STRING} namespace, even
- *          though it has no prefix.
+ * @apiNote Note that the XML DOM considers the <code>xmlns</code> attribute to be in the {@value XML#XMLNS_NAMESPACE_URI_STRING} namespace, even though it has
+ *          no prefix.
  * @author Garret Wilson
  */
 public class XmlDom { //TODO likely move the non-DOM-related methods to another class
@@ -1732,11 +1732,8 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 			if(element.hasAttributeNS(XMLNS_NAMESPACE_URI_STRING, prefix)) { //TODO fix for empty namespace strings
 				namespaceURI = element.getAttributeNS(XMLNS_NAMESPACE_URI_STRING, prefix);
 			}
-		} else { //if no prefix was specified
-			//see if there is an `xmlns` attribute defined in the <http://www.w3.org/2000/xmlns/"> namespace
-			if(element.hasAttributeNS(XMLNS_NAMESPACE_URI_STRING, ATTRIBUTE_XMLNS)) {
-				namespaceURI = element.getAttributeNS(XMLNS_NAMESPACE_URI_STRING, ATTRIBUTE_XMLNS);
-			}
+		} else { //if no prefix was specified, see if there is an `xmlns` attribute defined in the <http://www.w3.org/2000/xmlns/"> namespace
+			namespaceURI = findAttributeNS(element, ATTRIBUTE_XMLNS).orElse(null);
 		}
 		//if we didn't find a matching namespace definition for this node, search up the chain
 		//(unless no prefix was specified, and we can't use the default namespace)
@@ -1954,7 +1951,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 			declarationElement.setAttributeNS(XMLNS_NAMESPACE_URI_STRING, createQName(XMLNS_NAMESPACE_PREFIX, prefix), namespaceURI);
 		} else { //if we weren't given a prefix
 			//create an attribute in the form `xmlns="namespaceURI"` TODO fix for attributes that may use the same prefix for different namespace URIs
-			declarationElement.setAttributeNS(XMLNS_NAMESPACE_URI_STRING, ATTRIBUTE_XMLNS, namespaceURI);
+			declarationElement.setAttributeNS(ATTRIBUTE_XMLNS.getNamespaceString(), ATTRIBUTE_XMLNS.getLocalName(), namespaceURI);
 		}
 	}
 
@@ -2232,6 +2229,25 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	}
 
 	/**
+	 * Returns <code>true</code> when an attribute with a given local name and namespace URI is specified on this element or has a default value,
+	 * <code>false</code> otherwise.
+	 * @implSpec This method delegates to {@link Element#hasAttributeNS(String, String)}.
+	 * @param element The element for which an attribute should be returned.
+	 * @param nsName The namespace URI and local name of the attribute to retrieve.
+	 * @return <code>true</code> if an attribute with the given local name and namespace URI is specified or has a default value on this element,
+	 *         <code>false</code> otherwise.
+	 * @exception DOMException
+	 *              <dl>
+	 *              <dt>NOT_SUPPORTED_ERR</dt>
+	 *              <dd>May be raised if the implementation does not support the feature <code>"XML"</code> and the language exposed through the Document does not
+	 *              support XML Namespaces (such as [<a href='http://www.w3.org/TR/1999/REC-html401-19991224/'>HTML 4.01</a>]).</dd>
+	 *              </dl>
+	 */
+	public static boolean hasAttributeNS(@Nonnull final Element element, @Nonnull final NsName nsName) throws DOMException {
+		return element.hasAttributeNS(nsName.getNamespaceString(), nsName.getNamespaceString());
+	}
+
+	/**
 	 * Retrieves an attribute value by name if it exists.
 	 * @implNote This method functions similarly to {@link Element#getAttribute(String)}, except that the attribute is guaranteed to exist to prevent ambiguity
 	 *           with the empty string, which earlier versions of the DOM were supposed to return if the attribute did not exist.
@@ -2253,6 +2269,27 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 
 	/**
 	 * Retrieves an attribute value by local name and namespace URI if it exists.
+	 * @implSpec This implementation delegates to {@link #findAttributeNS(Element, String, String)}.
+	 * @implNote This method functions similarly to {@link Element#getAttributeNS(String, String)}, except that the attribute is guaranteed to exist to prevent
+	 *           ambiguity with the empty string, which earlier versions of the DOM were supposed to return if the attribute did not exist.
+	 * @param element The element for which an attribute should be returned.
+	 * @param nsName The namespace URI and local name of the attribute to retrieve.
+	 * @return The attribute value as a string, which will not be present if the attribute does not have a specified or default value.
+	 * @throws DOMException
+	 *           <dl>
+	 *           <dt>NOT_SUPPORTED_ERR</dt>
+	 *           <dd>May be raised if the implementation does not support the feature <code>"XML"</code> and the language exposed through the Document does not
+	 *           support XML Namespaces (such as [<a href='http://www.w3.org/TR/1999/REC-html401-19991224/'>HTML 4.01</a>]).</dd>
+	 *           </dl>
+	 * @see Element#hasAttributeNS(String, String)
+	 * @see Element#getAttributeNS(String, String)
+	 */
+	public static Optional<String> findAttributeNS(@Nonnull final Element element, @Nonnull final NsName nsName) throws DOMException {
+		return findAttributeNS(element, nsName.getNamespaceString(), nsName.getLocalName());
+	}
+
+	/**
+	 * Retrieves an attribute value by local name and namespace URI if it exists.
 	 * @implNote This method functions similarly to {@link Element#getAttributeNS(String, String)}, except that the attribute is guaranteed to exist to prevent
 	 *           ambiguity with the empty string, which earlier versions of the DOM were supposed to return if the attribute did not exist.
 	 * @param element The element for which an attribute should be returned.
@@ -2260,10 +2297,11 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @param localName The local name of the attribute to retrieve.
 	 * @return The attribute value as a string, which will not be present if the attribute does not have a specified or default value.
 	 * @throws DOMException
-	 *           <ul>
-	 *           <li>NOT_SUPPORTED_ERR: May be raised if the implementation does not support the feature <code>"XML"</code> and the language exposed through the
-	 *           Document does not support XML Namespaces (such as [<a href='http://www.w3.org/TR/1999/REC-html401-19991224/'>HTML 4.01</a>]).</li>
-	 *           </ul>
+	 *           <dl>
+	 *           <dt>NOT_SUPPORTED_ERR</dt>
+	 *           <dd>May be raised if the implementation does not support the feature <code>"XML"</code> and the language exposed through the Document does not
+	 *           support XML Namespaces (such as [<a href='http://www.w3.org/TR/1999/REC-html401-19991224/'>HTML 4.01</a>]).</dd>
+	 *           </dl>
 	 * @see Element#hasAttributeNS(String, String)
 	 * @see Element#getAttributeNS(String, String)
 	 */
