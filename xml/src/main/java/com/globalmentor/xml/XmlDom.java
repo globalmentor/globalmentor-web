@@ -1936,18 +1936,6 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @param prefix The prefix to declare, or <code>null</code> if no prefix is used.
 	 * @param namespaceURI The namespace being defined, or <code>null</code> if no namespace is used.
 	 */
-	//TODO delete	
-	//	public static void declareNamespace(final Element declarationElement, final String prefix, String namespaceURI) {
-	//		
-	//	}
-
-	/**
-	 * Declares a prefix for the given namespace using the appropriate <code>xmlns=</code> or <code>xmlns:prefix=</code> attribute declaration for the given
-	 * element.
-	 * @param declarationElement The element on which the namespace should be declared.
-	 * @param prefix The prefix to declare, or <code>null</code> if no prefix is used.
-	 * @param namespaceURI The namespace being defined, or <code>null</code> if no namespace is used.
-	 */
 	public static void declareNamespace(final Element declarationElement, final String prefix, String namespaceURI) {
 		if(XMLNS_NAMESPACE_PREFIX.equals(prefix) && XMLNS_NAMESPACE_URI_STRING.equals(namespaceURI)) { //we don't need to define the `xmlns` prefix
 			return;
