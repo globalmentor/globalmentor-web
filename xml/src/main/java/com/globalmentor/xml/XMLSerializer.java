@@ -332,7 +332,18 @@ public class XMLSerializer {
 	}
 
 	/**
-	 * Sets the character sequence to use for horizontally aligning the elements if formatting is turned on..
+	 * Sets the character to use for horizontally aligning the elements if formatting is turned on.
+	 * @implSpec The default is a single tab character.
+	 * @implSpec This method delegates to {@link #setHorizontalAligner(CharSequence)}.
+	 * @param horizontalAligner The horizontal alignment character.
+	 * @see #setFormatted(boolean)
+	 */
+	public void setHorizontalAligner(final char horizontalAligner) {
+		setHorizontalAligner(String.valueOf(horizontalAligner));
+	}
+
+	/**
+	 * Sets the character sequence to use for horizontally aligning the elements if formatting is turned on.
 	 * @implSpec The default is a single tab character.
 	 * @param horizontalAligner The horizontal alignment character sequence.
 	 * @see #setFormatted(boolean)

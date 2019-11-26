@@ -17,9 +17,11 @@
 package com.globalmentor.html;
 
 import static com.globalmentor.html.spec.HTML.*;
+import static java.util.function.Predicate.*;
+import static java.util.stream.Stream.*;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import org.w3c.dom.*;
 
@@ -35,6 +37,9 @@ import com.globalmentor.xml.spec.*;
  */
 public abstract class BaseHtmlFormatProfile implements XmlFormatProfile {
 
+	private static final Set<NsName> BLOCK_ELEMENTS = concat(FLOW_CONTENT.stream(), METADATA_CONTENT.stream()).filter(not(PHRASING_CONTENT::contains))
+			.collect(Collectors.toSet());
+
 	private static final Set<NsName> PRESERVED_HTML_ELEMENTS = Set.of(NsName.of(XHTML_NAMESPACE_URI_STRING, ELEMENT_PRE),
 			NsName.of(XHTML_NAMESPACE_URI_STRING, ELEMENT_SCRIPT));
 
@@ -48,6 +53,19 @@ public abstract class BaseHtmlFormatProfile implements XmlFormatProfile {
 	@Override
 	public Characters getSpaceNormalizationCharacters() {
 		return HTML.SPACE_CHARACTERS;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * @implSpec This method considers an element a block element if it is HTML5 <dfn>flow content</dfn> that is not <dfn>phrasing content</dfn>, or <dfn>metadata
+	 *           content</dfn>.
+	 * @see <a href="https://www.w3.org/TR/html52/dom.html#flow-content">HTML 5.2 § 3.2.4.2.2. Flow content</a>
+	 * @see <a href="https://www.w3.org/TR/html52/dom.html#metadata-content">HTML 5.2 § 3.2.4.2.1. Metadata content</a>
+	 * @see <a href="https://www.w3.org/TR/html52/dom.html#phrasing-content">HTML 5.2 § 3.2.4.2.5. Phrasing content</a>
+	 */
+	@Override
+	public boolean isBlock(final Element element) {
+		return BLOCK_ELEMENTS.contains(NsName.ofNode(element));
 	}
 
 	/**

@@ -41,12 +41,7 @@ import com.globalmentor.xml.spec.NsName;
 public class HtmlSerializer extends XMLSerializer {
 
 	/** The default HTML formatting profile, which uses categories specified by the HTML specification as well as some useful defaults. */
-	public static XmlFormatProfile DEFAULT_HTML_FORMAT_PROFILE = new BaseHtmlFormatProfile() {
-		@Override
-		public boolean isBlock(Element element) {
-			return true; //TODO fix
-		}
-	};
+	public static XmlFormatProfile DEFAULT_HTML_FORMAT_PROFILE = new BaseHtmlFormatProfile() {};
 
 	/** Whether an attribute that has a value equal to its name should be serialized in empty attribute form. */
 	public static final String OPTION_USE_EMPTY_ATTRIBUTES = "useEmptyAttributes"; //TODO use with property setting when integrated with Confound
