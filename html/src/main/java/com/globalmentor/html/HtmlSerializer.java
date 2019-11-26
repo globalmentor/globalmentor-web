@@ -44,7 +44,7 @@ public class HtmlSerializer extends XMLSerializer {
 	 * The default HTML formatting profile, which uses categories specified by the HTML specification as well as some useful defaults.
 	 * @implSpec This profile considers an element a block element if it is HTML5 <dfn>flow content</dfn> that is not <dfn>phrasing content</dfn>, or
 	 *           <dfn>metadata content</dfn>.
-	 * @implSpec This profile makes the direct child content of <code>&lt;html</code> flush with no indention.
+	 * @implSpec This profile makes the direct child content of <code>&lt;html&gt;</code> flush with no indention.
 	 */
 	public static XmlFormatProfile DEFAULT_HTML_FORMAT_PROFILE = new BaseHtmlFormatProfile() {
 
