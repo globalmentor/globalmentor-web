@@ -49,6 +49,15 @@ public interface XmlFormatProfile {
 	public boolean isBlock(@Nonnull final Element element);
 
 	/**
+	 * Indicates whether first-level children are never indented. The first-level children of flush elements, if they result in newlines (such as block children),
+	 * are formatted flush with the given element—that is, at the same indention level rather than indented an additional level.
+	 * @apiNote Typically a flush element will also be a block element and/or the root, document element.
+	 * @param element A DOM element.
+	 * @return return <code>true</code> if any non-inline children should be indented at the same level as the given element.
+	 */
+	public boolean isFlush(@Nonnull final Element element);
+
+	/**
 	 * Indicates whether the given element retains the format of its content. That is, the content should not be formatted independent of any formatting setting.
 	 * If an element preserves formatting, this setting is applied to all its children.
 	 * @apiNote These elements may still have their attributes reformatted.

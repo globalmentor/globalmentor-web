@@ -56,12 +56,18 @@ import org.w3c.dom.*;
 public class XMLSerializer {
 
 	/**
-	 * Default XML formatting profile which uses {@link XML#WHITESPACE_CHARACTERS} as space normalization characters, and considers all elements block elements.
+	 * Default XML formatting profile which uses {@link XML#WHITESPACE_CHARACTERS} as space normalization characters, and considers all elements block elements
+	 * with no flush elements.
 	 */
 	public static final XmlFormatProfile DEFAULT_XML_FORMAT_PROFILE = new BaseXmlFormatProfile() {
 		@Override
 		public boolean isBlock(final Element element) {
 			return true;
+		}
+
+		@Override
+		public boolean isFlush(Element element) {
+			return false;
 		}
 	};
 
@@ -1033,6 +1039,8 @@ public class XMLSerializer {
 	 * @throws IOException Thrown if an I/O error occurred.
 	 */
 	protected Appendable serializeContent(@Nonnull final Appendable appendable, @Nonnull final Node node, final boolean isContentFormatted) throws IOException {
+		final XmlFormatProfile formatProfile = getFormatProfile();
+
 		/*
 		 * Whether content will always begin with a newline if there are any newlines.
 		 * This is a possible future configurable setting.
@@ -1046,7 +1054,8 @@ public class XMLSerializer {
 		 */
 		final boolean settingAlwaysEndingNewlineIfAny = true;
 
-		final boolean isBlockElement = node instanceof Element && getFormatProfile().isBlock(((Element)node));
+		final boolean isBlockElement = node instanceof Element && formatProfile.isBlock(((Element)node));
+		final boolean isFlushElement = node instanceof Element && formatProfile.isFlush(((Element)node));
 
 		boolean lastChildBrokeLine = false; //keep track of whether we had a line break for the previous child
 		boolean hasChildNewline = false; //keep track of whether any child had a line break
@@ -1056,12 +1065,12 @@ public class XMLSerializer {
 			final Node childNode = childNodes.item(childIndex); //look at this node
 
 			final boolean isFormatBlock;
-			final boolean isFormatIndent;
+			final boolean isFormatIndent; //this indicates whether we need to append indent characters, not necessarily whether we need to _increase_ indent
 			final boolean isFormatNewlineAfter;
 			if(isContentFormatted) {
-				isFormatBlock = childNode instanceof Element && getFormatProfile().isBlock((Element)childNode);
+				isFormatBlock = childNode instanceof Element && formatProfile.isBlock((Element)childNode);
 				//we should force a first "block" child if the beginning newline setting is turned on and we know we'll need to indent (untested)
-				//TODO enable in future: || (settingAlwaysBeginningNewlineIfAny && childIndex==0 && childElementsOf(node).filter(getFormatProfile()::isBlock).findAny().isPresent())
+				//TODO enable in future: || (settingAlwaysBeginningNewlineIfAny && childIndex==0 && childElementsOf(node).filter(formatProfile::isBlock).findAny().isPresent())
 				isFormatIndent = lastChildBrokeLine || isFormatBlock;
 				isFormatNewlineAfter = isFormatBlock || (settingAlwaysEndingNewlineIfAny && hasChildNewline && childIndex == childNodeCount - 1);
 			} else {
@@ -1073,7 +1082,10 @@ public class XMLSerializer {
 				appendable.append(getLineSeparator());
 			}
 			if(isFormatIndent) {
-				serializeHorizontalAlignment(appendable, indent());
+				if(!isFlushElement) {
+					indent();
+				}
+				serializeHorizontalAlignment(appendable, getIndent());
 			}
 			lastChildBrokeLine = isFormatNewlineAfter;
 			if(lastChildBrokeLine) {
@@ -1090,10 +1102,10 @@ public class XMLSerializer {
 					final CharSequence text;
 					if(isContentFormatted) {
 						final boolean trimStart = isBlockElement && childIndex == 0 //text is first child of block,
-								|| childIndex > 0 && asElement(childNodes.item(childIndex - 1)).map(getFormatProfile()::isBlock).orElse(false); //or text comes after a block child element
+								|| childIndex > 0 && asElement(childNodes.item(childIndex - 1)).map(formatProfile::isBlock).orElse(false); //or text comes after a block child element
 						final boolean trimEnd = isBlockElement && childIndex == childNodeCount - 1 //text is last child of block,
-								|| childIndex < childNodeCount - 1 && asElement(childNodes.item(childIndex + 1)).map(getFormatProfile()::isBlock).orElse(false); //or text comes before a block child element
-						text = collapseRuns(textNodeValue, getFormatProfile().getSpaceNormalizationCharacters(), SPACE_CHAR, trimStart, trimEnd);
+								|| childIndex < childNodeCount - 1 && asElement(childNodes.item(childIndex + 1)).map(formatProfile::isBlock).orElse(false); //or text comes before a block child element
+						text = collapseRuns(textNodeValue, formatProfile.getSpaceNormalizationCharacters(), SPACE_CHAR, trimStart, trimEnd);
 					} else { //even non-formatted content needs the end-of-line sequences normalized and converted to the requested sequence
 						//TODO first normalize newlines in the text in case the text was placed in the tree manually (that is, it didn't originate from an XML processor)
 						final CharSequence lineSeparator = getLineSeparator();
@@ -1131,7 +1143,7 @@ public class XMLSerializer {
 			if(isFormatNewlineAfter) {
 				appendable.append(getLineSeparator());
 			}
-			if(isFormatIndent) {
+			if(isFormatIndent && !isFlushElement) {
 				unindent();
 			}
 		}

@@ -71,6 +71,15 @@ public class SimpleXmlFormatProfile implements XmlFormatProfile {
 
 	/**
 	 * {@inheritDoc}
+	 * @implSpec This implementation always returns <code>false</code>, resulting in no flush elements.
+	 */
+	@Override
+	public boolean isFlush(Element element) {
+		return false;
+	}
+
+	/**
+	 * {@inheritDoc}
 	 * @implSpec This implementation returns an empty list.
 	 */
 	@Override
