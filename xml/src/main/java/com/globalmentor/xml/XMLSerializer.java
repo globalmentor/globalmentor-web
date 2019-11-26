@@ -128,7 +128,7 @@ public class XMLSerializer {
 	}
 
 	/**
-	 * Whether a byte order mark (BOM) is written.
+	 * Sets whether a byte order mark (BOM) is written.
 	 * @implSpec This option is disabled by default.
 	 * @param bomWritten Whether a BOM is written.
 	 */
@@ -147,7 +147,7 @@ public class XMLSerializer {
 	}
 
 	/**
-	 * Whether an XML prolog is written.
+	 * Sets whether an XML prolog is written.
 	 * @implSpec This option is enabled by default.
 	 * @param prologWritten Whether an XML prolog is written.
 	 */
@@ -379,6 +379,29 @@ public class XMLSerializer {
 		this.lineSeparator = requireNonNull(lineSeparator);
 	}
 
+	private boolean formatEndNewline = true;
+
+	/**
+	 * Returns whether an ending newline will be added if formatting is enabled.
+	 * @return Whether the formatted XML will end with a newline.
+	 * @see #isFormatted()
+	 * @see #getLineSeparator()
+	 */
+	public boolean isFormatEndNewline() {
+		return formatEndNewline;
+	}
+
+	/**
+	 * Sets whether an ultimate newline will be appended if formatting is enabled.
+	 * @implSpec This option is enabled by default.
+	 * @param formatEndNewline Whether a newline will be added at the end.
+	 * @see #isFormatted()
+	 * @see #getLineSeparator()
+	 */
+	public void setFormatEndNewline(final boolean formatEndNewline) {
+		this.formatEndNewline = formatEndNewline;
+	}
+
 	/** The current level of indenting during document serialization if output is formatted. */
 	private int indent = -1;
 
@@ -517,7 +540,8 @@ public class XMLSerializer {
 	}
 
 	/**
-	 * Serializes the content (all child nodes and their descendants) of a specified node to a string using the UTF-8 encoding with no byte order mark.
+	 * Serializes the content (all child nodes and their descendants) of a specified node to a string using the UTF-8 encoding with no byte order mark. A newline
+	 * will be appended at the end if {@link #isFormatted()} is turned on and {@link #isFormatEndNewline()} is enabled.
 	 * @param node The XML node the content of which to serialize—usually an element or document fragment.
 	 * @return A string containing the serialized XML data.
 	 */
@@ -545,7 +569,7 @@ public class XMLSerializer {
 
 	/**
 	 * Serializes the specified document to the given output stream using the specified encoding. Any byte order mark specified in the character encoding will be
-	 * written to the stream.
+	 * written to the stream. A newline will be appended at the end if {@link #isFormatted()} is turned on and {@link #isFormatEndNewline()} is enabled.
 	 * @param document The XML document to serialize.
 	 * @param outputStream The stream into which the document should be serialized.
 	 * @param charset The character set to use when serializing.
@@ -580,7 +604,7 @@ public class XMLSerializer {
 			}
 		}
 		serialize(writer, documentElement); //write the document element and all elements below it
-		if(isFormatted()) { //if we should write formatted output
+		if(isFormatted() && isFormatEndNewline()) {
 			writer.append(getLineSeparator()); //newline
 		}
 		writer.flush(); //flush any data we've buffered
@@ -600,7 +624,7 @@ public class XMLSerializer {
 
 	/**
 	 * Serializes the specified document fragment to the given output stream using the specified encoding. Any byte order mark specified in the character encoding
-	 * will be written to the stream.
+	 * will be written to the stream. A newline will be appended at the end if {@link #isFormatted()} is turned on and {@link #isFormatEndNewline()} is enabled.
 	 * @param documentFragment The XML document fragment to serialize.
 	 * @param outputStream The stream into which the document fragment should be serialized.
 	 * @param charset The charset to use when serializing.
@@ -625,7 +649,8 @@ public class XMLSerializer {
 
 	/**
 	 * Serializes the specified element and its children to the given output stream using the specified encoding. Any byte order mark specified in the character
-	 * encoding will be written to the stream.
+	 * encoding will be written to the stream. A newline will be appended at the end if {@link #isFormatted()} is turned on and {@link #isFormatEndNewline()} is
+	 * enabled.
 	 * @param element The XML element to serialize.
 	 * @param outputStream The stream into which the element should be serialized.
 	 * @param charset The charset to use when serializing.
@@ -643,7 +668,7 @@ public class XMLSerializer {
 		}
 		final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, charset)); //create a new writer based on our encoding TODO see if the writer automatically writes the byte order mark already for non-UTF-8
 		serialize(writer, element); //write the element and all elements below it
-		if(isFormatted()) { //if we should write formatted output
+		if(isFormatted() && isFormatEndNewline()) {
 			writer.append(getLineSeparator()); //newline
 		}
 		writer.flush(); //flush any data we've buffered
@@ -651,7 +676,7 @@ public class XMLSerializer {
 
 	/**
 	 * Serializes the content (all child nodes and their descendants) of a specified node to the given output stream using the UTF-8 encoding with the UTF-8 byte
-	 * order mark.
+	 * order mark. A newline will be appended at the end if {@link #isFormatted()} is turned on and {@link #isFormatEndNewline()} is enabled.
 	 * @param node The XML node the content of which to serialize—usually an element or document fragment.
 	 * @param outputStream The stream into which the element content should be serialized.
 	 * @throws IOException Thrown if an I/O error occurred.
@@ -663,7 +688,8 @@ public class XMLSerializer {
 
 	/**
 	 * Serializes the content (all child nodes and their descendants) of a specified node to the given output stream using the specified encoding. Any byte order
-	 * mark specified in the character encoding will be written to the stream.
+	 * mark specified in the character encoding will be written to the stream. A newline will be appended at the end if {@link #isFormatted()} is turned on and
+	 * {@link #isFormatEndNewline()} is enabled.
 	 * @param node The XML node the content of which to serialize—usually an element or document fragment.
 	 * @param outputStream The stream into which the element content should be serialized.
 	 * @param charset The charset to use when serializing.
@@ -681,7 +707,7 @@ public class XMLSerializer {
 		}
 		final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, charset)); //create a new writer based on our encoding TODO see if the writer automatically writes the byte order mark already for non-UTF-8
 		serializeContent(writer, node); //write all children of the node
-		if(isFormatted()) { //if we should write formatted output
+		if(isFormatted() && isFormatEndNewline()) {
 			writer.append(getLineSeparator()); //newline
 		}
 		writer.flush(); //flush any data we've buffered

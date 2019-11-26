@@ -349,13 +349,13 @@ public class XMLSerializerTest {
 	@Test
 	public void testNewlinesAroundBlock() throws IOException {
 		assertThat(reformat("<block>foo<inline>foobar</inline>bar</block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE, "\n", ""),
-				is("<block>foo<inline>foobar</inline>bar</block>\n"));
+				is("<block>foo<inline>foobar</inline>bar</block>"));
 		assertThat(reformat("<block><block>foobar</block>bar</block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE, "\n", ""),
-				is("<block>\n<block>foobar</block>\nbar\n</block>\n"));
+				is("<block>\n<block>foobar</block>\nbar\n</block>"));
 		assertThat(reformat("<block>foo<block>foobar</block></block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE, "\n", ""),
-				is("<block>foo\n<block>foobar</block>\n</block>\n"));
+				is("<block>foo\n<block>foobar</block>\n</block>"));
 		assertThat(reformat("<block>foo<block>foobar</block>bar</block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE, "\n", ""),
-				is("<block>foo\n<block>foobar</block>\nbar\n</block>\n"));
+				is("<block>foo\n<block>foobar</block>\nbar\n</block>"));
 	}
 
 	/** @see XmlFormatProfile#isBlock(Element) */
@@ -364,14 +364,14 @@ public class XMLSerializerTest {
 		assertThat(
 				reformat("<block>foo<block>foobar</block><inline>inside</inline><inline>inside</inline>beside<block>another</block>bar</block>",
 						BLOCK_FLUSH_PRE_FORMAT_PROFILE, "\n", ""),
-				is("<block>foo\n<block>foobar</block>\n<inline>inside</inline><inline>inside</inline>beside\n<block>another</block>\nbar\n</block>\n"));
+				is("<block>foo\n<block>foobar</block>\n<inline>inside</inline><inline>inside</inline>beside\n<block>another</block>\nbar\n</block>"));
 	}
 
 	/** @see XmlFormatProfile#isBlock(Element) */
 	@Test
 	public void testTrailingInlineAfterBlockHasNewline() throws IOException {
 		assertThat(reformat("<block><block>foobar</block>bar</block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE, "\n", ""),
-				is("<block>\n<block>foobar</block>\nbar\n</block>\n"));
+				is("<block>\n<block>foobar</block>\nbar\n</block>"));
 	}
 
 	/** @see XmlFormatProfile#isBlock(Element) */
@@ -389,44 +389,43 @@ public class XMLSerializerTest {
 	/** @see XmlFormatProfile#isBlock(Element) */
 	@Test
 	public void testBlockNewlinesAndIndents() throws IOException {
-		assertThat(reformat("<block>foo<inline>foobar</inline>bar</block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE), is("<block>foo<inline>foobar</inline>bar</block>\n"));
-		assertThat(reformat("<block><block>foobar</block>bar</block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE), is("<block>\n\t<block>foobar</block>\n\tbar\n</block>\n"));
-		assertThat(reformat("<block>foo<block>foobar</block></block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE), is("<block>foo\n\t<block>foobar</block>\n</block>\n"));
+		assertThat(reformat("<block>foo<inline>foobar</inline>bar</block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE), is("<block>foo<inline>foobar</inline>bar</block>"));
+		assertThat(reformat("<block><block>foobar</block>bar</block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE), is("<block>\n\t<block>foobar</block>\n\tbar\n</block>"));
+		assertThat(reformat("<block>foo<block>foobar</block></block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE), is("<block>foo\n\t<block>foobar</block>\n</block>"));
 		assertThat(reformat("<block>foo<block>foobar</block>bar</block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE),
-				is("<block>foo\n\t<block>foobar</block>\n\tbar\n</block>\n"));
+				is("<block>foo\n\t<block>foobar</block>\n\tbar\n</block>"));
 		assertThat(reformat("<block>foo<block>foobar</block>bar<block>left<block>nest</block>right</block>end</block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE),
-				is("<block>foo\n\t<block>foobar</block>\n\tbar\n\t<block>left\n\t\t<block>nest</block>\n\t\tright\n\t</block>\n\tend\n</block>\n"));
+				is("<block>foo\n\t<block>foobar</block>\n\tbar\n\t<block>left\n\t\t<block>nest</block>\n\t\tright\n\t</block>\n\tend\n</block>"));
 		assertThat(
 				reformat("<block>foo<block>foobar</block><inline>inside</inline><inline>inside</inline>beside<block>another</block>bar</block>",
 						BLOCK_FLUSH_PRE_FORMAT_PROFILE),
-				is("<block>foo\n\t<block>foobar</block>\n\t<inline>inside</inline><inline>inside</inline>beside\n\t<block>another</block>\n\tbar\n</block>\n"));
+				is("<block>foo\n\t<block>foobar</block>\n\t<inline>inside</inline><inline>inside</inline>beside\n\t<block>another</block>\n\tbar\n</block>"));
 	}
 
 	/** @see XmlFormatProfile#isFlush(Element) */
 	@Test
 	public void testFlush() throws IOException {
-		assertThat(reformat("<block><block>foobar</block></block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE), is("<block>\n\t<block>foobar</block>\n</block>\n"));
-		assertThat(reformat("<flush><block>foobar</block></flush>", BLOCK_FLUSH_PRE_FORMAT_PROFILE), is("<flush>\n<block>foobar</block>\n</flush>\n"));
-		assertThat(reformat("<flush>foo<block>foobar</block></flush>", BLOCK_FLUSH_PRE_FORMAT_PROFILE), is("<flush>foo\n<block>foobar</block>\n</flush>\n"));
-		assertThat(reformat("<flush><block>foobar</block>bar</flush>", BLOCK_FLUSH_PRE_FORMAT_PROFILE), is("<flush>\n<block>foobar</block>\nbar\n</flush>\n"));
-		assertThat(reformat("<flush>foo<block>foobar</block>bar</flush>", BLOCK_FLUSH_PRE_FORMAT_PROFILE),
-				is("<flush>foo\n<block>foobar</block>\nbar\n</flush>\n"));
+		assertThat(reformat("<block><block>foobar</block></block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE), is("<block>\n\t<block>foobar</block>\n</block>"));
+		assertThat(reformat("<flush><block>foobar</block></flush>", BLOCK_FLUSH_PRE_FORMAT_PROFILE), is("<flush>\n<block>foobar</block>\n</flush>"));
+		assertThat(reformat("<flush>foo<block>foobar</block></flush>", BLOCK_FLUSH_PRE_FORMAT_PROFILE), is("<flush>foo\n<block>foobar</block>\n</flush>"));
+		assertThat(reformat("<flush><block>foobar</block>bar</flush>", BLOCK_FLUSH_PRE_FORMAT_PROFILE), is("<flush>\n<block>foobar</block>\nbar\n</flush>"));
+		assertThat(reformat("<flush>foo<block>foobar</block>bar</flush>", BLOCK_FLUSH_PRE_FORMAT_PROFILE), is("<flush>foo\n<block>foobar</block>\nbar\n</flush>"));
 		assertThat(
 				reformat(
 						"<block><block><block>foo</block> indented <block>bar</block></block> foobar <flush><block>foo</block> flush <block>bar</block></flush></block>",
 						BLOCK_FLUSH_PRE_FORMAT_PROFILE),
-				is("<block>\n\t<block>\n\t\t<block>foo</block>\n\t\tindented\n\t\t<block>bar</block>\n\t</block>\n\tfoobar\n\t<flush>\n\t<block>foo</block>\n\tflush\n\t<block>bar</block>\n\t</flush>\n</block>\n"));
+				is("<block>\n\t<block>\n\t\t<block>foo</block>\n\t\tindented\n\t\t<block>bar</block>\n\t</block>\n\tfoobar\n\t<flush>\n\t<block>foo</block>\n\tflush\n\t<block>bar</block>\n\t</flush>\n</block>"));
 	}
 
 	/** @see XmlFormatProfile#isPreserved(Element) */
 	@Test
 	public void testPreservedNotFormatted() throws IOException {
 		assertThat(reformat("<pre>abc def\thijk\n  lmnop\n\t\tqrstuv\n\n\n\nwxyz</pre>", BLOCK_FLUSH_PRE_FORMAT_PROFILE),
-				is("<pre>abc def\thijk\n  lmnop\n\t\tqrstuv\n\n\n\nwxyz</pre>\n"));
+				is("<pre>abc def\thijk\n  lmnop\n\t\tqrstuv\n\n\n\nwxyz</pre>"));
 		assertThat(reformat(
 				"<block> before\t\n\n<pre>\t x\n\n\tThere are <nested>inline \t\t things</nested> and \n\t\t<block>several    spaces</block>\n\t here.\t\t</pre>\t  after\n</block>",
 				BLOCK_FLUSH_PRE_FORMAT_PROFILE),
-				is("<block>before\n\t<pre>\t x\n\n\tThere are <nested>inline \t\t things</nested> and \n\t\t<block>several    spaces</block>\n\t here.\t\t</pre>\n\tafter\n</block>\n"));
+				is("<block>before\n\t<pre>\t x\n\n\tThere are <nested>inline \t\t things</nested> and \n\t\t<block>several    spaces</block>\n\t here.\t\t</pre>\n\tafter\n</block>"));
 	}
 
 	/**
@@ -436,7 +435,7 @@ public class XMLSerializerTest {
 	@Test
 	public void testPreservedNormalizesNewlines() throws IOException {
 		assertThat(reformat("<pre>abc\r\r\r\rdef\n\n\n\nhij\r\n\r\nklmn\r\n\n\rop</pre>", BLOCK_FLUSH_PRE_FORMAT_PROFILE, "XY", "\t"),
-				is("<pre>abcXYXYXYXYdefXYXYXYXYhijXYXYklmnXYXYXYop</pre>XY"));
+				is("<pre>abcXYXYXYXYdefXYXYXYXYhijXYXYklmnXYXYXYop</pre>"));
 	}
 
 	/**
@@ -474,7 +473,7 @@ public class XMLSerializerTest {
 
 	/**
 	 * Parses and re-serializes an XML document from a string.
-	 * @implSpec No prolog is written.
+	 * @implSpec No prolog or ending newline is written.
 	 * @implSpec A single newline character <code>'\n'</code> is used as a line separator.
 	 * @implSpec A single tab character <code>'\t'</code> is used as a horizontal aligner.
 	 * @param text The text to parse and re-serialize.
@@ -488,7 +487,7 @@ public class XMLSerializerTest {
 
 	/**
 	 * Parses and re-serializes an XML document from a string.
-	 * @implSpec No prolog is written.
+	 * @implSpec No prolog or ending newline is written.
 	 * @param text The text to parse and re-serialize.
 	 * @param formatProfile The formatting characterization of the document.
 	 * @param lineSeparator The newline delimiter to use.
@@ -503,6 +502,7 @@ public class XMLSerializerTest {
 		serializer.setPrologWritten(false);
 		serializer.setLineSeparator(lineSeparator);
 		serializer.setHorizontalAligner(horizontalAligner);
+		serializer.setFormatEndNewline(false);
 		return serializer.serialize(document);
 	}
 
