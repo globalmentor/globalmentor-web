@@ -43,8 +43,7 @@ import static java.util.Comparator.*;
 import static java.util.Objects.*;
 
 import com.globalmentor.util.PropertiesUtilities;
-import com.globalmentor.xml.spec.NsName;
-import com.globalmentor.xml.spec.XML;
+import com.globalmentor.xml.spec.*;
 
 import org.w3c.dom.*;
 
@@ -1041,9 +1040,11 @@ public class XMLSerializer {
 	 * If formatting is enabled, child text content is normalized in the following manner:
 	 * </p>
 	 * <ul>
+	 * <li>Subsequent text nodes are combined.</li>
 	 * <li>Text space runs of {@link XmlFormatProfile#getSpaceNormalizationCharacters()} are normalized to a single space.</li>
 	 * <li>Text is left trimmed if it is the first child of block content, or if it appears directly after a block element sibling.</li>
 	 * <li>Text is right trimmed if it is the last child of block content, or if it appears directly before a block element sibling.</li>
+	 * <li>Any resulting empty string text nodes are ignored.</li>
 	 * </ul>
 	 * <p>
 	 * If formatting is enabled, child nodes are formatted in the following way:
@@ -1080,31 +1081,94 @@ public class XMLSerializer {
 		 */
 		final boolean settingAlwaysEndingNewlineIfAny = true;
 
+		//gather information about the parent node
 		final boolean isBlockElement = node instanceof Element && formatProfile.isBlock(((Element)node));
 		final boolean isFlushElement = node instanceof Element && formatProfile.isFlush(((Element)node));
 
-		boolean lastChildBrokeLine = false; //keep track of whether we had a line break for the previous child
+		//1. preprocess children
+
+		//1a. dereference text and combine text runs, using strings; use an array list for faster lookup later; all text will be of type `String`
+		final List<Object> children;
+		{
+			Object lastChild = null;
+			final NodeList childNodes = node.getChildNodes();
+			final int childNodeCount = node.getChildNodes().getLength();
+			children = new ArrayList<>(childNodeCount); //we know the maximum number of children
+			for(int childIndex = 0; childIndex < childNodeCount; childIndex++) {
+				final Node childNode = childNodes.item(childIndex);
+				final Object child;
+				if(childNode.getNodeType() == Node.TEXT_NODE) {
+					final String textNodeValue = childNode.getNodeValue();
+					if(lastChild instanceof String) { //combine runs of text
+						final String text = (String)lastChild + textNodeValue;
+						assert children.size() > 0 : "Subsequent text nodes must have resulted in collecting at least one child.";
+						children.set(children.size() - 1, text); //replace the last item with the combined text
+						lastChild = text; //manually update the last child
+						continue; //skip adding a child because we replaced the last one
+					}
+					child = textNodeValue; //dereference text nodes
+				} else {
+					child = childNode;
+				}
+				children.add(child);
+				lastChild = child;
+			}
+		}
+
+		//1b. if formatting, normalize spaces; otherwise normalize line endings; //child text items should henceforth be considered to be of type `CharSequence`
+		for(int childIndex = children.size() - 1; childIndex >= 0; --childIndex) { //order of traversal doesn't matter on this pass, so go backwards to make index tracking easier with removal
+			final Object child = children.get(childIndex);
+			if(child instanceof String) {
+				final String text = (String)child;
+				final CharSequence normalizedText;
+				if(isContentFormatted) {
+					final int childCount = children.size();
+					final boolean trimStart = isBlockElement && childIndex == 0 //text is first child of block,
+							|| childIndex > 0 && asInstance(children.get(childIndex - 1), Element.class).map(formatProfile::isBlock).orElse(false); //or text comes after a block child element
+					final boolean trimEnd = isBlockElement && childIndex == childCount - 1 //text is last child of block,
+							|| childIndex < childCount - 1 && asInstance(children.get(childIndex + 1), Element.class).map(formatProfile::isBlock).orElse(false); //or text comes before a block child element
+					normalizedText = collapseRuns(text, formatProfile.getSpaceNormalizationCharacters(), SPACE_CHAR, trimStart, trimEnd);
+				} else {
+					//TODO first normalize newlines in the text in case the text was placed in the tree manually (that is, it didn't originate from an XML processor)
+					final CharSequence lineSeparator = getLineSeparator();
+					if(!CharSequences.equals(lineSeparator, NORMALIZED_LINE_BREAK_CHAR)) { //if the requested line separator is something other than the XML normalized newline 
+						normalizedText = text.replace(NORMALIZED_LINE_BREAK_STRING, lineSeparator); //replace the normalized line breaks with the requested line separator
+					} else {
+						normalizedText = text;
+					}
+				}
+				if(normalizedText.length() == 0) { //discard empty text
+					children.remove(childIndex);
+				} else {
+					children.set(childIndex, normalizedText); //replace the text with the normalized version
+				}
+			}
+		}
+
+		//2. serialize children
+
+		boolean lastChildBrokeLine = false; //keep track of whether we ended with a line break for the previous child
 		boolean hasChildNewline = false; //keep track of whether any child had a line break
-		final NodeList childNodes = node.getChildNodes();
-		final int childNodeCount = node.getChildNodes().getLength();
-		for(int childIndex = 0; childIndex < childNodeCount; childIndex++) { //look at each child node
-			final Node childNode = childNodes.item(childIndex); //look at this node
+		final int childCount = children.size();
+		for(int childIndex = 0; childIndex < childCount; childIndex++) {
+			final Object child = children.get(childIndex);
 
 			final boolean isFormatBlock;
 			final boolean isFormatIndent; //this indicates whether we need to append indent characters, not necessarily whether we need to _increase_ indent
 			final boolean isFormatNewlineAfter;
 			if(isContentFormatted) {
-				isFormatBlock = childNode instanceof Element && formatProfile.isBlock((Element)childNode);
+				isFormatBlock = child instanceof Element && formatProfile.isBlock((Element)child);
 				//we should force a first "block" child if the beginning newline setting is turned on and we know we'll need to indent (untested)
 				//TODO enable in future: || (settingAlwaysBeginningNewlineIfAny && childIndex==0 && childElementsOf(node).filter(formatProfile::isBlock).findAny().isPresent())
 				isFormatIndent = lastChildBrokeLine || isFormatBlock;
-				isFormatNewlineAfter = isFormatBlock || (settingAlwaysEndingNewlineIfAny && hasChildNewline && childIndex == childNodeCount - 1);
+				isFormatNewlineAfter = isFormatBlock || (settingAlwaysEndingNewlineIfAny && hasChildNewline && childIndex == childCount - 1);
 			} else {
 				isFormatBlock = false;
 				isFormatIndent = false;
 				isFormatNewlineAfter = false;
 			}
-			if(isFormatBlock) {
+
+			if(isFormatBlock && !lastChildBrokeLine) { //prevent two blocks in a row from having double line breaks
 				appendable.append(getLineSeparator());
 			}
 			if(isFormatIndent) {
@@ -1118,54 +1182,38 @@ public class XMLSerializer {
 				hasChildNewline = true;
 			}
 
-			switch(childNode.getNodeType()) { //see which type of object this is
-				case Node.ELEMENT_NODE: //if this is an element
-					serialize(appendable, (Element)childNode, isContentFormatted); //content formatting may get overridden inside the element
-					break;
-				case Node.TEXT_NODE: //if this is a text node
-				{
-					final String textNodeValue = childNode.getNodeValue();
-					final CharSequence text;
-					if(isContentFormatted) {
-						final boolean trimStart = isBlockElement && childIndex == 0 //text is first child of block,
-								|| childIndex > 0 && asElement(childNodes.item(childIndex - 1)).map(formatProfile::isBlock).orElse(false); //or text comes after a block child element
-						final boolean trimEnd = isBlockElement && childIndex == childNodeCount - 1 //text is last child of block,
-								|| childIndex < childNodeCount - 1 && asElement(childNodes.item(childIndex + 1)).map(formatProfile::isBlock).orElse(false); //or text comes before a block child element
-						text = collapseRuns(textNodeValue, formatProfile.getSpaceNormalizationCharacters(), SPACE_CHAR, trimStart, trimEnd);
-					} else { //even non-formatted content needs the end-of-line sequences normalized and converted to the requested sequence
-						//TODO first normalize newlines in the text in case the text was placed in the tree manually (that is, it didn't originate from an XML processor)
-						final CharSequence lineSeparator = getLineSeparator();
-						if(!CharSequences.equals(lineSeparator, NORMALIZED_LINE_BREAK_CHAR)) { //if the requested line separator is something other than the XML normalized newline 
-							text = textNodeValue.replace(NORMALIZED_LINE_BREAK_STRING, lineSeparator); //replace the normalized line breaks with the requested line separator
-						} else {
-							text = textNodeValue;
-						}
-					}
-					if(isChildTextEncoded(node)) {
-						encodeContent(appendable, text); //write the text value of the node after encoding the string for XML
-					} else {
-						appendable.append(text); //write the text value of the node without encoding
-					}
+			if(child instanceof Node) { //non-text nodes
+				final Node childNode = (Node)child;
+				final short childNodeType = childNode.getNodeType();
+				assert childNodeType != Node.TEXT_NODE : "Text nodes should have already been dereferenced.";
+				switch(childNodeType) { //see which type of object this is
+					case Node.ELEMENT_NODE: //if this is an element
+						serialize(appendable, (Element)childNode, isContentFormatted); //content formatting may get overridden inside the element
+						break;
+					case Node.COMMENT_NODE: //if this is a comment node
+						appendable.append(COMMENT_START); //write the start of the comment
+						//TODO check content for disallowed sequence
+						appendable.append(childNode.getNodeValue()); //write the text value of the node, but don't encode the string for XML since it's inside a comment
+						appendable.append(COMMENT_END); //write the end of the comment
+						break;
+					case Node.CDATA_SECTION_NODE: //if this is a CDATA section node
+						appendable.append(CDATA_START); //write the start of the CDATA section
+						//TODO check content for disallowed sequence
+						appendable.append(childNode.getNodeValue()); //write the text value of the node, but don't encode the string for XML since it's inside a CDATA section
+						appendable.append(CDATA_END); //write the end of the CDATA section
+						break;
+					//TODO see if there are any other types of nodes that need serialized
 				}
-					break;
-				case Node.COMMENT_NODE: //if this is a comment node
-				{
-					appendable.append(COMMENT_START); //write the start of the comment
-					//TODO check content for disallowed sequence
-					appendable.append(childNode.getNodeValue()); //write the text value of the node, but don't encode the string for XML since it's inside a comment
-					appendable.append(COMMENT_END); //write the end of the comment
+			} else { //dereferenced text nodes
+				assert child instanceof CharSequence : "The only non-node children should be dereferenced text.";
+				final CharSequence text = (CharSequence)child;
+				if(isChildTextEncoded(node)) {
+					encodeContent(appendable, text); //write the text value of the node after encoding the string for XML
+				} else {
+					appendable.append(text); //write the text value of the node without encoding
 				}
-					break;
-				case Node.CDATA_SECTION_NODE: //if this is a CDATA section node
-				{
-					appendable.append(CDATA_START); //write the start of the CDATA section
-					//TODO check content for disallowed sequence
-					appendable.append(childNode.getNodeValue()); //write the text value of the node, but don't encode the string for XML since it's inside a CDATA section
-					appendable.append(CDATA_END); //write the end of the CDATA section
-				}
-					break;
-				//TODO see if there are any other types of nodes that need serialized
 			}
+
 			if(isFormatNewlineAfter) {
 				appendable.append(getLineSeparator());
 			}

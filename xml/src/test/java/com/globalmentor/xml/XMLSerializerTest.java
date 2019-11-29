@@ -402,6 +402,13 @@ public class XMLSerializerTest {
 				is("<block>foo\n\t<block>foobar</block>\n\t<inline>inside</inline><inline>inside</inline>beside\n\t<block>another</block>\n\tbar\n</block>"));
 	}
 
+	/** @see XmlFormatProfile#isBlock(Element) */
+	@Test
+	public void testNewlinesAmongBlocksDoNotProduceBlankLines() throws IOException {
+		assertThat(reformat("<block>\n\n\t<block>top</block>\n\n\n\t<block>bottom</block>\n\n</block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE),
+				is("<block>\n\t<block>top</block>\n\t<block>bottom</block>\n</block>"));
+	}
+
 	/** @see XmlFormatProfile#isFlush(Element) */
 	@Test
 	public void testFlush() throws IOException {
