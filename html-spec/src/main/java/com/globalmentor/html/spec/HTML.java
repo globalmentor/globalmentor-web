@@ -188,7 +188,6 @@ public class HTML {
 	public static final String ELEMENT_A = "a";
 	public static final String ELEMENT_ABBR = "abbr";
 	public static final String ELEMENT_ADDRESS = "address";
-	public static final String ELEMENT_APPLET = "applet";
 	public static final String ELEMENT_AREA = "area";
 	public static final String ELEMENT_ARTICLE = "article";
 	public static final String ELEMENT_ASIDE = "aside";
@@ -197,7 +196,6 @@ public class HTML {
 	public static final String ELEMENT_BASE = "base";
 	public static final String ELEMENT_BDI = "bdi";
 	public static final String ELEMENT_BDO = "bdo";
-	public static final String ELEMENT_BIG = "big";
 	public static final String ELEMENT_BLOCKCODE = "blockcode";
 	public static final String ELEMENT_BLOCKQUOTE = "blockquote";
 	public static final String ELEMENT_BODY = "body";
@@ -205,7 +203,6 @@ public class HTML {
 	public static final String ELEMENT_BUTTON = "button";
 	public static final String ELEMENT_CANVAS = "canvas";
 	public static final String ELEMENT_CAPTION = "caption";
-	public static final String ELEMENT_CENTER = "center";
 	public static final String ELEMENT_CITE = "cite";
 	public static final String ELEMENT_COL = "col";
 	public static final String ELEMENT_CODE = "code";
@@ -224,7 +221,6 @@ public class HTML {
 	public static final String ELEMENT_FIELDSET = "fieldset";
 	public static final String ELEMENT_FIGCAPTION = "figcaption";
 	public static final String ELEMENT_FIGURE = "figure";
-	public static final String ELEMENT_FONT = "font";
 	public static final String ELEMENT_FOOTER = "footer";
 	public static final String ELEMENT_FORM = "form";
 	public static final String ELEMENT_H1 = "h1";
@@ -273,10 +269,10 @@ public class HTML {
 	public static final String ELEMENT_SMALL = "small";
 	public static final String ELEMENT_SOURCE = "source";
 	public static final String ELEMENT_SPAN = "span";
-	public static final String ELEMENT_STRIKE = "strike";
 	public static final String ELEMENT_STRONG = "strong";
 	public static final String ELEMENT_STYLE = "style";
 	public static final String ELEMENT_SUB = "sub";
+	public static final String ELEMENT_SUMMARY = "summary";
 	public static final String ELEMENT_SUP = "sup";
 	public static final String ELEMENT_TABLE = "table";
 	public static final String ELEMENT_TIME = "time";
@@ -290,12 +286,44 @@ public class HTML {
 	public static final String ELEMENT_TITLE = "title";
 	public static final String ELEMENT_TR = "tr";
 	public static final String ELEMENT_TRACK = "track";
-	public static final String ELEMENT_TT = "tt";
 	public static final String ELEMENT_U = "u";
 	public static final String ELEMENT_UL = "ul";
 	public static final String ELEMENT_VAR = "var";
 	public static final String ELEMENT_VIDEO = "video";
 	public static final String ELEMENT_WBR = "wbr";
+
+	//obsolete, non-conforming elements; see https://www.w3.org/TR/html52/obsolete.html#non-conforming-features
+	public static final String ELEMENT_APPLET = "applet";
+	public static final String ELEMENT_ACRONYM = "acronym";
+	public static final String ELEMENT_BASEFONT = "basefont";
+	public static final String ELEMENT_BGSOUND = "bgsound";
+	public static final String ELEMENT_BIG = "big";
+	public static final String ELEMENT_BLINK = "blink";
+	public static final String ELEMENT_CENTER = "center";
+	public static final String ELEMENT_DIR = "dir";
+	public static final String ELEMENT_FONT = "font";
+	public static final String ELEMENT_FRAME = "frame";
+	public static final String ELEMENT_FRAMESET = "frameset";
+	public static final String ELEMENT_NOFRAMES = "noframes";
+	public static final String ELEMENT_ISINDEX = "isindex";
+	public static final String ELEMENT_LISTING = "listing";
+	public static final String ELEMENT_MARQUEE = "marquee";
+	public static final String ELEMENT_MENU = "menu";
+	public static final String ELEMENT_MENUITEM = "menuitem";
+	public static final String ELEMENT_MULTICOL = "multicol";
+	public static final String ELEMENT_NEXTID = "nextid";
+	public static final String ELEMENT_NOEMBED = "noembed";
+	public static final String ELEMENT_NOBR = "nobr";
+	public static final String ELEMENT_PLAINTEXT = "plaintext";
+	public static final String ELEMENT_RB = "rb";
+	public static final String ELEMENT_RTC = "rtc";
+	public static final String ELEMENT_SPACER = "spacer";
+	public static final String ELEMENT_STRIKE = "strike";
+	public static final String ELEMENT_TT = "tt";
+	public static final String ELEMENT_XMP = "xmp";
+
+	//removed elements
+	public static final String ELEMENT_HGROUP = "hgroup"; //in WHATWG but not W3C version; see https://html.spec.whatwg.org/#the-hgroup-element
 
 	//attributes
 
@@ -570,6 +598,15 @@ public class HTML {
 	//attributes for <video>
 	public static final String ELEMENT_VIDEO_ATTRIBUTE_SRC = "src";
 
+	/**
+	 * HTML5 obsolete, non-conforming elements.
+	 * @see <a href="https://www.w3.org/TR/html52/obsolete.html#non-conforming-features">HTML 5.2 § 11.2. Non-conforming features</a>
+	 */
+	public static final Set<NsName> OBSOLETE_ELEMENTS = Stream.of(ELEMENT_APPLET, ELEMENT_ACRONYM, ELEMENT_BASEFONT, ELEMENT_BGSOUND, ELEMENT_BIG, ELEMENT_BLINK,
+			ELEMENT_CENTER, ELEMENT_DIR, ELEMENT_FONT, ELEMENT_FRAME, ELEMENT_FRAMESET, ELEMENT_NOFRAMES, ELEMENT_ISINDEX, ELEMENT_LISTING, ELEMENT_MARQUEE,
+			ELEMENT_MENU, ELEMENT_MENUITEM, ELEMENT_MULTICOL, ELEMENT_NEXTID, ELEMENT_NOEMBED, ELEMENT_NOBR, ELEMENT_PLAINTEXT, ELEMENT_RB, ELEMENT_RTC,
+			ELEMENT_SPACER, ELEMENT_STRIKE, ELEMENT_TT, ELEMENT_XMP).map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName)).collect(toSet());
+
 	//kinds of elements; see https://www.w3.org/TR/html52/syntax.html#writing-html-documents-elements
 
 	/**
@@ -731,5 +768,39 @@ public class HTML {
 	 */
 	public static final Set<NsName> SCRIPT_SUPPORTING_ELEMENTS = Stream.of(ELEMENT_SCRIPT, ELEMENT_TEMPLATE)
 			.map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName)).collect(toSet());
+
+	//roles based upon styles; see [HTML 5.2 § 10. Rendering](https://www.w3.org/TR/html52/rendering.html#rendering); see also [Browsers' default CSS for HTML elements](https://stackoverflow.com/q/6867254/421049)
+
+	/**
+	 * Elements HTML5 suggests should be rendered as CSS <code>display: block</code>.
+	 * @see <a href="https://www.w3.org/TR/html52/rendering.html#the-page">HTML 5.2 § 10.3.2. The page</a>
+	 * @see <a href="https://www.w3.org/TR/html52/rendering.html#non-replaced-elements-flow-content">HTML 5.2 § 10.3.3. Flow content</a>
+	 * @see <a href="https://www.w3.org/TR/html52/rendering.html#sections-and-headings">HTML 5.2 § 10.3.7. Sections and headings</a>
+	 * @see <a href="https://www.w3.org/TR/html52/rendering.html#section-lists">HTML 5.2 § 10.3.8. Lists</a>
+	 * @see <a href="https://www.w3.org/TR/html52/rendering.html#the-fieldset-and-legend-elements">HTML 5.2 § 10.3.13. The fieldset and legend elements</a>
+	 */
+	public static final Set<NsName> BLOCK_ELEMENTS = Stream.of(
+			//the page
+			ELEMENT_HTML, ELEMENT_BODY,
+			//flow content
+			ELEMENT_ADDRESS, ELEMENT_BLOCKQUOTE, ELEMENT_CENTER, ELEMENT_DIV, ELEMENT_FIGURE, ELEMENT_FIGCAPTION, ELEMENT_FOOTER, ELEMENT_FORM, ELEMENT_HEADER,
+			ELEMENT_HR, ELEMENT_LEGEND, ELEMENT_LISTING, ELEMENT_MAIN, ELEMENT_P, ELEMENT_PLAINTEXT, ELEMENT_PRE, ELEMENT_XMP,
+			//sections and headings
+			ELEMENT_ARTICLE, ELEMENT_ASIDE, ELEMENT_H1, ELEMENT_H2, ELEMENT_H3, ELEMENT_H4, ELEMENT_H5, ELEMENT_H6, ELEMENT_HGROUP, ELEMENT_NAV, ELEMENT_SECTION,
+			//lists
+			ELEMENT_DIR, ELEMENT_DD, ELEMENT_DL, ELEMENT_DT, ELEMENT_OL, ELEMENT_UL,
+			//fieldset and legend
+			ELEMENT_FIELDSET).map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName)).collect(toSet());
+
+	/**
+	 * Elements HTML5 suggests should be rendered as CSS <code>display: list-item</code>.
+	 * @see <a href="https://www.w3.org/TR/html52/rendering.html#section-lists">HTML 5.2 § 10.3.8. Lists</a>
+	 * @see <a href="https://www.w3.org/TR/html52/rendering.html#the-details-element-rendering">HTML 5.2 § 10.5.3. The details and summary elements</a>
+	 */
+	public static final Set<NsName> LIST_ITEM_ELEMENTS = Stream.of(
+			//lists
+			ELEMENT_LI,
+			//details and summary
+			ELEMENT_SUMMARY).map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName)).collect(toSet());
 
 }
