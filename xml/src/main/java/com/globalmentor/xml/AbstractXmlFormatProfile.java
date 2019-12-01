@@ -16,6 +16,8 @@
 
 package com.globalmentor.xml;
 
+import static java.util.Collections.emptyList;
+
 import java.util.List;
 
 import javax.annotation.*;
@@ -99,11 +101,14 @@ public abstract class AbstractXmlFormatProfile implements XmlFormatProfile {
 
 	/**
 	 * Determines the order of known attributes for an element.
+	 * @implSpec This implementation returns an empty list.
 	 * @apiNote For example, an HTML element may return the attributes <code>id</code> and <code>name</code> to ensure that these always are sorted first (after
 	 *          any attributes the serializer decides should be first), in that order.
 	 * @param element The element for which attribute order should be specified.
 	 * @return An list of possible known attribute for the given element indicating serialization order.
 	 */
-	protected abstract List<NsName> getAttributeOrder(@Nonnull final NsName element);
+	protected List<NsName> getAttributeOrder(@Nonnull final NsName element) {
+		return emptyList();
+	}
 
 }

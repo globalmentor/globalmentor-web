@@ -184,7 +184,8 @@ public class HTML {
 	 */
 	public static final Characters SPACE_CHARACTERS = Characters.of(SPACE_CHAR, CHARACTER_TABULATION_CHAR, LINE_FEED_CHAR, FORM_FEED_CHAR, CARRIAGE_RETURN_CHAR);
 
-	//XHTML and HTML5 element names.
+	//# elements
+
 	public static final String ELEMENT_A = "a";
 	public static final String ELEMENT_ABBR = "abbr";
 	public static final String ELEMENT_ADDRESS = "address";
@@ -328,43 +329,58 @@ public class HTML {
 	//removed elements
 	public static final String ELEMENT_HGROUP = "hgroup"; //in WHATWG but not W3C version; see https://html.spec.whatwg.org/#the-hgroup-element
 
-	//attributes
-
 	/**
 	 * The delimiter character for separating parts of an attribute string (e.g. for HTML5 data- attributes). This is distinct from the namespace prefix
 	 * delimiter.
 	 */
 	public static final char ATTRIBUTE_DELIMITER_CHAR = '-';
 
+	//# attributes
+
+	//## global attributes; see [HTML 5.2 § 3.2.5. Global attributes](https://www.w3.org/TR/html52/dom.html#global-attributes)
+	public static final String ATTRIBUTE_ACCESSKEY = "accesskey";
+	public static final String ATTRIBUTE_CLASS = "class";
+	public static final String ATTRIBUTE_CONTENTEDITABLE = "contenteditable";
+	public static final String ATTRIBUTE_DIR = "dir";
+	public static final String ATTRIBUTE_DRAGGABLE = "draggable";
+	public static final String ATTRIBUTE_HIDDEN = "hidden";
+	public static final String ATTRIBUTE_ID = "id";
+	public static final String ATTRIBUTE_LANG = "lang";
+	public static final String ATTRIBUTE_SPELLCHECK = "spellcheck";
+	public static final String ATTRIBUTE_STYLE = "style";
+	public static final String ATTRIBUTE_TABINDEX = "tabindex";
+	public static final String ATTRIBUTE_TITLE = "title";
+	public static final String ATTRIBUTE_TRANSLATE = "translate";
+
+	//## common attributes
+
+	/** The attribute for left-to-right direction. */
+	public static final String DIR_LTR = "ltr";
+	/** The attribute for right-to-left direction. */
+	public static final String DIR_RTL = "rtl";
+
+	/** The attribute for name. */
+	public static final String ATTRIBUTE_NAME = "name";
+	/** The attribute for value. */
+	public static final String ATTRIBUTE_VALUE = "value";
+
+	/** The common attribute for the source of content. */
+	public static final String ATTRIBUTE_SRC = "src";
+	/** The common attribute for a reference to a resource. */
+	public static final String ATTRIBUTE_HREF = "href";
+
+	//## event attributes
+
+	public static final String ATTRIBUTE_ONCLICK = "onclick";
+	public static final String ATTRIBUTE_ONLOAD = "onload";
+
+	//## element-specific attributes
+
 	/**
 	 * The identifier, with no delimiter, indicating that an attribute is an HTML5 data attribute
 	 * @see <a href="http://www.w3.org/TR/html5/elements.html#embedding-custom-non-visible-data-with-the-data-attributes">HTML 5 Data Attributes</a>
 	 */
 	public static final String DATA_ATTRIBUTE_ID = "data";
-
-	/** The attribute for class. */
-	public static final String ATTRIBUTE_CLASS = "class";
-	/** The attribute for direction. */
-	public static final String ATTRIBUTE_DIR = "dir";
-	/** The attribute for left-to-right direction. */
-	public static final String DIR_LTR = "ltr";
-	/** The attribute for right-to-left direction. */
-	public static final String DIR_RTL = "rtl";
-	/** The attribute for ID. */
-	public static final String ATTRIBUTE_ID = "id";
-	/** The attribute for language. */
-	public static final String ATTRIBUTE_LANG = "lang";
-	/** The attribute for name. */
-	public static final String ATTRIBUTE_NAME = "name";
-	/** The attribute for style. */
-	public static final String ATTRIBUTE_STYLE = "style";
-	/** The attribute for title. */
-	public static final String ATTRIBUTE_TITLE = "title";
-	/** The attribute for value. */
-	public static final String ATTRIBUTE_VALUE = "value";
-	//event attributes
-	public static final String ATTRIBUTE_ONCLICK = "onclick";
-	public static final String ATTRIBUTE_ONLOAD = "onload";
 
 	public static final String LINK_ATTRIBUTE_REL = "rel"; //the link type attribute for <a>, <area>, and <link>; see http://www.w3.org/TR/html5/links.html#linkTypes
 	public static final String LINK_ATTRIBUTE_TYPE = "type"; //the link MIME type attribute for <a>, <area>, and <link>; see http://www.w3.org/TR/html5/links.html#attr-hyperlink-type
@@ -388,7 +404,8 @@ public class HTML {
 	public static final String LINK_REL_TAG = "tag"; //<link>, <a>/<area>
 
 	//attributes for <a>
-	public static final String ELEMENT_A_ATTRIBUTE_HREF = "href";
+	public static final String ELEMENT_A_ATTRIBUTE_HREF = ATTRIBUTE_HREF;
+	public static final String ELEMENT_A_ATTRIBUTE_HREFLANG = ATTRIBUTE_LANG;
 	public static final String ELEMENT_A_ATTRIBUTE_TARGET = "target";
 	public static final String ELEMENT_A_ATTRIBUTE_REL = LINK_ATTRIBUTE_REL;
 
@@ -434,10 +451,10 @@ public class HTML {
 	public static final String ELEMENT_APPLET_ATTRIBUTE_WIDTH = "width";
 
 	//attributes for <area>
-	public static final String ELEMENT_AREA_ATTRIBUTE_HREF = "href";
+	public static final String ELEMENT_AREA_ATTRIBUTE_HREF = ATTRIBUTE_HREF;
 
 	//attributes for <audio>
-	public static final String ELEMENT_AUDIO_ATTRIBUTE_SRC = "src";
+	public static final String ELEMENT_AUDIO_ATTRIBUTE_SRC = ATTRIBUTE_SRC;
 
 	//attributes for <button>
 	public static final String ELEMENT_BUTTON_ATTRIBUTE_TYPE = "type";
@@ -458,14 +475,14 @@ public class HTML {
 	public static final String FORM_METHOD_POST = "post";
 
 	//attributes for <embed>
-	public static final String ELEMENT_EMBED_ATTRIBUTE_SRC = "src";
+	public static final String ELEMENT_EMBED_ATTRIBUTE_SRC = ATTRIBUTE_SRC;
 	public static final String ELEMENT_EMBED_ATTRIBUTE_HEIGHT = "height";
 	public static final String ELEMENT_EMBED_ATTRIBUTE_WIDTH = "width";
 	public static final String ELEMENT_EMBED_ATTRIBUTE_TYPE = "type";
 
 	//attributes for <iframe>
 	public static final String ELEMENT_IFRAME_ATTRIBUTE_ALLOW_TRANSPARENCY = "allowTransparency"; //IE-specific; see http://msdn.microsoft.com/en-us/library/ms533072.aspx
-	public static final String ELEMENT_IFRAME_ATTRIBUTE_SRC = "src";
+	public static final String ELEMENT_IFRAME_ATTRIBUTE_SRC = ATTRIBUTE_SRC;
 	public static final String ELEMENT_IFRAME_ATTRIBUTE_FRAMEBORDER = "frameborder";
 	public static final String ELEMENT_IFRAME_ATTRIBUTE_SCROLLING = "scrolling";
 	public static final String IFRAME_SCROLLING_NO = "no";
@@ -476,7 +493,7 @@ public class HTML {
 	public static final String ELEMENT_IMG_ATTRIBUTE_ALT = "alt";
 	public static final String ELEMENT_IMG_ATTRIBUTE_HEIGHT = "height";
 	public static final String ELEMENT_IMG_ATTRIBUTE_WIDTH = "width";
-	public static final String ELEMENT_IMG_ATTRIBUTE_SRC = "src";
+	public static final String ELEMENT_IMG_ATTRIBUTE_SRC = ATTRIBUTE_SRC;
 
 	//attributes for <input>
 	public static final String ELEMENT_INPUT_ATTRIBUTE_ACCEPT = "accept";
@@ -504,7 +521,7 @@ public class HTML {
 	public static final String ELEMENT_LABEL_ATTRIBUTE_FOR = "for";
 
 	//attributes for <link>
-	public static final String ELEMENT_LINK_ATTRIBUTE_HREF = "href";
+	public static final String ELEMENT_LINK_ATTRIBUTE_HREF = ATTRIBUTE_HREF;
 	public static final String ELEMENT_LINK_ATTRIBUTE_REL = LINK_ATTRIBUTE_REL;
 	public static final String ELEMENT_LINK_ATTRIBUTE_TYPE = "type";
 	public static final String ELEMENT_LINK_ATTRIBUTE_MEDIA = "media";
@@ -543,7 +560,7 @@ public class HTML {
 	public static final String ELEMENT_PARAM_ATTRIBUTE_VALUE = "value";
 
 	//attributes for <script>
-	public static final String ELEMENT_SCRIPT_ATTRIBUTE_SRC = "src";
+	public static final String ELEMENT_SCRIPT_ATTRIBUTE_SRC = ATTRIBUTE_SRC;
 	public static final String ELEMENT_SCRIPT_ATTRIBUTE_TYPE = "type";
 	public static final String ELEMENT_SCRIPT_ATTRIBUTE_LANGUAGE = "language";
 
@@ -553,7 +570,7 @@ public class HTML {
 	public static final String ELEMENT_SELECT_ATTRIBUTE_SIZE = "size";
 
 	//attributes for <source>
-	public static final String ELEMENT_SOURCE_ATTRIBUTE_SRC = "src";
+	public static final String ELEMENT_SOURCE_ATTRIBUTE_SRC = ATTRIBUTE_SRC;
 
 	//attributes for <td>
 	public static final String ELEMENT_TD_ATTRIBUTE_ALIGN = "align";
@@ -596,10 +613,10 @@ public class HTML {
 	public static final String TR_VALIGN_BOTTOM = "bottom";
 
 	//attributes for <track>
-	public static final String ELEMENT_TRACK_ATTRIBUTE_SRC = "src";
+	public static final String ELEMENT_TRACK_ATTRIBUTE_SRC = ATTRIBUTE_SRC;
 
 	//attributes for <video>
-	public static final String ELEMENT_VIDEO_ATTRIBUTE_SRC = "src";
+	public static final String ELEMENT_VIDEO_ATTRIBUTE_SRC = ATTRIBUTE_SRC;
 
 	/**
 	 * HTML5 obsolete, non-conforming elements.

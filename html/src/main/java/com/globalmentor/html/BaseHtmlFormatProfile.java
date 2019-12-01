@@ -50,9 +50,6 @@ public abstract class BaseHtmlFormatProfile extends AbstractXmlFormatProfile {
 	private static final Set<NsName> PRESERVED_HTML_ELEMENTS = Set.of(NsName.of(XHTML_NAMESPACE_URI_STRING, ELEMENT_PRE),
 			NsName.of(XHTML_NAMESPACE_URI_STRING, ELEMENT_SCRIPT));
 
-	private static final List<NsName> ATTRIBUTE_ORDER = List.of(NsName.of(ATTRIBUTE_ID), NsName.of(ATTRIBUTE_NAME), NsName.of(ATTRIBUTE_TITLE),
-			NsName.of(ATTRIBUTE_LANG), NsName.of(ATTRIBUTE_DIR), NsName.of(ATTRIBUTE_CLASS), NsName.of(ATTRIBUTE_STYLE));
-
 	/**
 	 * {@inheritDoc}
 	 * @implSpec This implementation returns {@link HTML#SPACE_CHARACTERS}.
@@ -83,16 +80,6 @@ public abstract class BaseHtmlFormatProfile extends AbstractXmlFormatProfile {
 	@Override
 	protected boolean isPreserved(final NsName element) {
 		return PRESERVED_HTML_ELEMENTS.contains(element);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * @implSpec This implementation returns an order for HTML identification and style attributes, including <code>id</code>, <code>name</code>,
-	 *           <code>class</code>, and <code>style</code>.
-	 */
-	@Override
-	protected List<NsName> getAttributeOrder(final NsName element) {
-		return ATTRIBUTE_ORDER;
 	}
 
 }

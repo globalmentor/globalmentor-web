@@ -480,6 +480,7 @@ public class XMLSerializerTest {
 
 	/**
 	 * Parses and re-serializes an XML document from a string.
+	 * @implSpec This implementation delegates to {@link #reformat(String, XmlFormatProfile, String, String)}.
 	 * @implSpec No prolog or ending newline is written.
 	 * @implSpec A single newline character <code>'\n'</code> is used as a line separator.
 	 * @implSpec A single tab character <code>'\t'</code> is used as a horizontal aligner.

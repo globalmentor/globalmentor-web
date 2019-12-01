@@ -19,9 +19,6 @@ package com.globalmentor.xml;
 import static com.globalmentor.util.Optionals.*;
 import static com.globalmentor.xml.XmlDom.*;
 import static com.globalmentor.xml.spec.XML.*;
-import static java.util.Collections.*;
-
-import java.util.List;
 
 import org.w3c.dom.*;
 
@@ -72,13 +69,6 @@ public abstract class BaseXmlFormatProfile extends AbstractXmlFormatProfile {
 		return false;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * @implSpec This implementation returns an empty list.
-	 */
-	@Override
-	protected List<NsName> getAttributeOrder(final NsName element) {
-		return emptyList(); //TODO add support for xml:id
-	}
+	//TODO add support for xml:id in getAttributeOrder()
 
 }

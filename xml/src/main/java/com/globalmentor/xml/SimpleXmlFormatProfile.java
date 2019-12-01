@@ -16,10 +16,8 @@
 
 package com.globalmentor.xml;
 
-import static java.util.Collections.*;
 import static java.util.Objects.*;
 
-import java.util.List;
 import java.util.Set;
 
 import javax.annotation.*;
@@ -74,15 +72,6 @@ public class SimpleXmlFormatProfile extends AbstractXmlFormatProfile {
 	@Override
 	protected boolean isPreserved(final NsName element) {
 		return preservedElements.contains(element);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * @implSpec This implementation returns an empty list.
-	 */
-	@Override
-	protected List<NsName> getAttributeOrder(final NsName element) {
-		return emptyList(); //TODO add support for xml:id
 	}
 
 }
