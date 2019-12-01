@@ -18,15 +18,16 @@ package com.globalmentor.html.spec;
 
 import java.net.URI;
 import java.util.*;
+import java.util.stream.Stream;
 
 import static java.util.Objects.*;
+import static java.util.stream.Collectors.*;
 
 import com.globalmentor.java.Characters;
 import com.globalmentor.model.IDed;
 import com.globalmentor.net.ContentType;
-import com.globalmentor.xml.spec.XML;
+import com.globalmentor.xml.spec.*;
 
-import static com.globalmentor.collections.Sets.*;
 import static com.globalmentor.java.Characters.*;
 import static com.globalmentor.net.ContentTypeConstants.*;
 
@@ -178,34 +179,42 @@ public class HTML {
 
 	/**
 	 * Characters considered <dfn>space characters</dfn> in HTML.
-	 * @see <a href="http://www.w3.org/TR/html5/infrastructure.html#space-character">HTML5 space characters</a>
+	 * @apiNote These are not to be confused with <dfn>whitespace</dfn> characters, which are those characters in the Unicode <code>White_Space</code> category.
+	 * @see <a href="https://www.w3.org/TR/html52/infrastructure.html#space-characters">HTML 5.2, § 2.4.1. Common parser idioms: space characters</a>
 	 */
 	public static final Characters SPACE_CHARACTERS = Characters.of(SPACE_CHAR, CHARACTER_TABULATION_CHAR, LINE_FEED_CHAR, FORM_FEED_CHAR, CARRIAGE_RETURN_CHAR);
 
-	//The XHTML 1.0 document element names.
-	//TODO fix; some are missing since these were copied from the OEB 1.0
+	//# elements
+
 	public static final String ELEMENT_A = "a";
+	public static final String ELEMENT_ABBR = "abbr";
 	public static final String ELEMENT_ADDRESS = "address";
-	public static final String ELEMENT_APPLET = "applet";
 	public static final String ELEMENT_AREA = "area";
 	public static final String ELEMENT_ARTICLE = "article";
 	public static final String ELEMENT_ASIDE = "aside";
 	public static final String ELEMENT_AUDIO = "audio";
 	public static final String ELEMENT_B = "b";
 	public static final String ELEMENT_BASE = "base";
-	public static final String ELEMENT_BIG = "big";
+	public static final String ELEMENT_BDI = "bdi";
+	public static final String ELEMENT_BDO = "bdo";
 	public static final String ELEMENT_BLOCKCODE = "blockcode";
 	public static final String ELEMENT_BLOCKQUOTE = "blockquote";
 	public static final String ELEMENT_BODY = "body";
 	public static final String ELEMENT_BR = "br";
 	public static final String ELEMENT_BUTTON = "button";
+	public static final String ELEMENT_CANVAS = "canvas";
 	public static final String ELEMENT_CAPTION = "caption";
-	public static final String ELEMENT_CENTER = "center";
 	public static final String ELEMENT_CITE = "cite";
 	public static final String ELEMENT_COL = "col";
 	public static final String ELEMENT_CODE = "code";
+	public static final String ELEMENT_DATA = "data";
+	public static final String ELEMENT_DATE = "date";
+	public static final String ELEMENT_DATALIST = "datalist";
 	public static final String ELEMENT_DD = "dd";
+	public static final String ELEMENT_DEL = "del";
+	public static final String ELEMENT_DETAILS = "details";
 	public static final String ELEMENT_DFN = "dfn";
+	public static final String ELEMENT_DIALOG = "dialog";
 	public static final String ELEMENT_DIV = "div";
 	public static final String ELEMENT_DL = "dl";
 	public static final String ELEMENT_DT = "dt";
@@ -214,7 +223,6 @@ public class HTML {
 	public static final String ELEMENT_FIELDSET = "fieldset";
 	public static final String ELEMENT_FIGCAPTION = "figcaption";
 	public static final String ELEMENT_FIGURE = "figure";
-	public static final String ELEMENT_FONT = "font";
 	public static final String ELEMENT_FOOTER = "footer";
 	public static final String ELEMENT_FORM = "form";
 	public static final String ELEMENT_H1 = "h1";
@@ -231,6 +239,7 @@ public class HTML {
 	public static final String ELEMENT_IFRAME = "iframe";
 	public static final String ELEMENT_IMG = "img";
 	public static final String ELEMENT_INPUT = "input";
+	public static final String ELEMENT_INS = "ins";
 	public static final String ELEMENT_KBD = "kbd";
 	public static final String ELEMENT_LI = "li";
 	public static final String ELEMENT_LABEL = "label";
@@ -238,15 +247,24 @@ public class HTML {
 	public static final String ELEMENT_LINK = "link";
 	public static final String ELEMENT_MAIN = "main";
 	public static final String ELEMENT_MAP = "map";
+	public static final String ELEMENT_MARK = "mark";
 	public static final String ELEMENT_META = "meta";
+	public static final String ELEMENT_METER = "meter";
 	public static final String ELEMENT_NAV = "nav";
+	public static final String ELEMENT_NOSCRIPT = "noscript";
 	public static final String ELEMENT_OBJECT = "object";
 	public static final String ELEMENT_OL = "ol";
 	public static final String ELEMENT_OPTION = "option";
+	public static final String ELEMENT_OUTPUT = "output";
 	public static final String ELEMENT_P = "p";
 	public static final String ELEMENT_PARAM = "param";
+	public static final String ELEMENT_PICTURE = "picture";
 	public static final String ELEMENT_PRE = "pre";
+	public static final String ELEMENT_PROGRESS = "progress";
 	public static final String ELEMENT_Q = "q";
+	public static final String ELEMENT_RUBY = "ruby";
+	public static final String ELEMENT_RP = "rp";
+	public static final String ELEMENT_RT = "rt";
 	public static final String ELEMENT_S = "s";
 	public static final String ELEMENT_SAMP = "samp";
 	public static final String ELEMENT_SCRIPT = "script";
@@ -255,13 +273,15 @@ public class HTML {
 	public static final String ELEMENT_SMALL = "small";
 	public static final String ELEMENT_SOURCE = "source";
 	public static final String ELEMENT_SPAN = "span";
-	public static final String ELEMENT_STRIKE = "strike";
 	public static final String ELEMENT_STRONG = "strong";
 	public static final String ELEMENT_STYLE = "style";
 	public static final String ELEMENT_SUB = "sub";
+	public static final String ELEMENT_SUMMARY = "summary";
 	public static final String ELEMENT_SUP = "sup";
 	public static final String ELEMENT_TABLE = "table";
+	public static final String ELEMENT_TIME = "time";
 	public static final String ELEMENT_TD = "td";
+	public static final String ELEMENT_TEMPLATE = "template";
 	public static final String ELEMENT_TEXTAREA = "textarea";
 	public static final String ELEMENT_TH = "th";
 	public static final String ELEMENT_TBODY = "tbody";
@@ -270,14 +290,44 @@ public class HTML {
 	public static final String ELEMENT_TITLE = "title";
 	public static final String ELEMENT_TR = "tr";
 	public static final String ELEMENT_TRACK = "track";
-	public static final String ELEMENT_TT = "tt";
 	public static final String ELEMENT_U = "u";
 	public static final String ELEMENT_UL = "ul";
 	public static final String ELEMENT_VAR = "var";
 	public static final String ELEMENT_VIDEO = "video";
 	public static final String ELEMENT_WBR = "wbr";
 
-	//attributes
+	//obsolete, non-conforming elements; see https://www.w3.org/TR/html52/obsolete.html#non-conforming-features
+	public static final String ELEMENT_APPLET = "applet";
+	public static final String ELEMENT_ACRONYM = "acronym";
+	public static final String ELEMENT_BASEFONT = "basefont";
+	public static final String ELEMENT_BGSOUND = "bgsound";
+	public static final String ELEMENT_BIG = "big";
+	public static final String ELEMENT_BLINK = "blink";
+	public static final String ELEMENT_CENTER = "center";
+	public static final String ELEMENT_DIR = "dir";
+	public static final String ELEMENT_FONT = "font";
+	public static final String ELEMENT_FRAME = "frame";
+	public static final String ELEMENT_FRAMESET = "frameset";
+	public static final String ELEMENT_NOFRAMES = "noframes";
+	public static final String ELEMENT_ISINDEX = "isindex";
+	public static final String ELEMENT_LISTING = "listing";
+	public static final String ELEMENT_MARQUEE = "marquee";
+	public static final String ELEMENT_MENU = "menu";
+	public static final String ELEMENT_MENUITEM = "menuitem";
+	public static final String ELEMENT_MULTICOL = "multicol";
+	public static final String ELEMENT_NEXTID = "nextid";
+	public static final String ELEMENT_NOEMBED = "noembed";
+	public static final String ELEMENT_NOBR = "nobr";
+	public static final String ELEMENT_PLAINTEXT = "plaintext";
+	public static final String ELEMENT_RB = "rb";
+	public static final String ELEMENT_RTC = "rtc";
+	public static final String ELEMENT_SPACER = "spacer";
+	public static final String ELEMENT_STRIKE = "strike";
+	public static final String ELEMENT_TT = "tt";
+	public static final String ELEMENT_XMP = "xmp";
+
+	//removed elements
+	public static final String ELEMENT_HGROUP = "hgroup"; //in WHATWG but not W3C version; see https://html.spec.whatwg.org/#the-hgroup-element
 
 	/**
 	 * The delimiter character for separating parts of an attribute string (e.g. for HTML5 data- attributes). This is distinct from the namespace prefix
@@ -285,35 +335,52 @@ public class HTML {
 	 */
 	public static final char ATTRIBUTE_DELIMITER_CHAR = '-';
 
+	//# attributes
+
+	//## global attributes; see [HTML 5.2 § 3.2.5. Global attributes](https://www.w3.org/TR/html52/dom.html#global-attributes)
+	public static final String ATTRIBUTE_ACCESSKEY = "accesskey";
+	public static final String ATTRIBUTE_CLASS = "class";
+	public static final String ATTRIBUTE_CONTENTEDITABLE = "contenteditable";
+	public static final String ATTRIBUTE_DIR = "dir";
+	public static final String ATTRIBUTE_DRAGGABLE = "draggable";
+	public static final String ATTRIBUTE_HIDDEN = "hidden";
+	public static final String ATTRIBUTE_ID = "id";
+	public static final String ATTRIBUTE_LANG = "lang";
+	public static final String ATTRIBUTE_SPELLCHECK = "spellcheck";
+	public static final String ATTRIBUTE_STYLE = "style";
+	public static final String ATTRIBUTE_TABINDEX = "tabindex";
+	public static final String ATTRIBUTE_TITLE = "title";
+	public static final String ATTRIBUTE_TRANSLATE = "translate";
+
+	//## common attributes
+
+	/** The attribute for left-to-right direction. */
+	public static final String DIR_LTR = "ltr";
+	/** The attribute for right-to-left direction. */
+	public static final String DIR_RTL = "rtl";
+
+	/** The attribute for name. */
+	public static final String ATTRIBUTE_NAME = "name";
+	/** The attribute for value. */
+	public static final String ATTRIBUTE_VALUE = "value";
+
+	/** The common attribute for the source of content. */
+	public static final String ATTRIBUTE_SRC = "src";
+	/** The common attribute for a reference to a resource. */
+	public static final String ATTRIBUTE_HREF = "href";
+
+	//## event attributes
+
+	public static final String ATTRIBUTE_ONCLICK = "onclick";
+	public static final String ATTRIBUTE_ONLOAD = "onload";
+
+	//## element-specific attributes
+
 	/**
 	 * The identifier, with no delimiter, indicating that an attribute is an HTML5 data attribute
 	 * @see <a href="http://www.w3.org/TR/html5/elements.html#embedding-custom-non-visible-data-with-the-data-attributes">HTML 5 Data Attributes</a>
 	 */
 	public static final String DATA_ATTRIBUTE_ID = "data";
-
-	/** The attribute for class. */
-	public static final String ATTRIBUTE_CLASS = "class";
-	/** The attribute for direction. */
-	public static final String ATTRIBUTE_DIR = "dir";
-	/** The attribute for left-to-right direction. */
-	public static final String DIR_LTR = "ltr";
-	/** The attribute for right-to-left direction. */
-	public static final String DIR_RTL = "rtl";
-	/** The attribute for ID. */
-	public static final String ATTRIBUTE_ID = "id";
-	/** The attribute for language. */
-	public static final String ATTRIBUTE_LANG = "lang";
-	/** The attribute for name. */
-	public static final String ATTRIBUTE_NAME = "name";
-	/** The attribute for style. */
-	public static final String ATTRIBUTE_STYLE = "style";
-	/** The attribute for title. */
-	public static final String ATTRIBUTE_TITLE = "title";
-	/** The attribute for value. */
-	public static final String ATTRIBUTE_VALUE = "value";
-	//event attributes
-	public static final String ATTRIBUTE_ONCLICK = "onclick";
-	public static final String ATTRIBUTE_ONLOAD = "onload";
 
 	public static final String LINK_ATTRIBUTE_REL = "rel"; //the link type attribute for <a>, <area>, and <link>; see http://www.w3.org/TR/html5/links.html#linkTypes
 	public static final String LINK_ATTRIBUTE_TYPE = "type"; //the link MIME type attribute for <a>, <area>, and <link>; see http://www.w3.org/TR/html5/links.html#attr-hyperlink-type
@@ -337,7 +404,8 @@ public class HTML {
 	public static final String LINK_REL_TAG = "tag"; //<link>, <a>/<area>
 
 	//attributes for <a>
-	public static final String ELEMENT_A_ATTRIBUTE_HREF = "href";
+	public static final String ELEMENT_A_ATTRIBUTE_HREF = ATTRIBUTE_HREF;
+	public static final String ELEMENT_A_ATTRIBUTE_HREFLANG = ATTRIBUTE_LANG;
 	public static final String ELEMENT_A_ATTRIBUTE_TARGET = "target";
 	public static final String ELEMENT_A_ATTRIBUTE_REL = LINK_ATTRIBUTE_REL;
 
@@ -383,10 +451,10 @@ public class HTML {
 	public static final String ELEMENT_APPLET_ATTRIBUTE_WIDTH = "width";
 
 	//attributes for <area>
-	public static final String ELEMENT_AREA_ATTRIBUTE_HREF = "href";
+	public static final String ELEMENT_AREA_ATTRIBUTE_HREF = ATTRIBUTE_HREF;
 
 	//attributes for <audio>
-	public static final String ELEMENT_AUDIO_ATTRIBUTE_SRC = "src";
+	public static final String ELEMENT_AUDIO_ATTRIBUTE_SRC = ATTRIBUTE_SRC;
 
 	//attributes for <button>
 	public static final String ELEMENT_BUTTON_ATTRIBUTE_TYPE = "type";
@@ -407,14 +475,14 @@ public class HTML {
 	public static final String FORM_METHOD_POST = "post";
 
 	//attributes for <embed>
-	public static final String ELEMENT_EMBED_ATTRIBUTE_SRC = "src";
+	public static final String ELEMENT_EMBED_ATTRIBUTE_SRC = ATTRIBUTE_SRC;
 	public static final String ELEMENT_EMBED_ATTRIBUTE_HEIGHT = "height";
 	public static final String ELEMENT_EMBED_ATTRIBUTE_WIDTH = "width";
 	public static final String ELEMENT_EMBED_ATTRIBUTE_TYPE = "type";
 
 	//attributes for <iframe>
 	public static final String ELEMENT_IFRAME_ATTRIBUTE_ALLOW_TRANSPARENCY = "allowTransparency"; //IE-specific; see http://msdn.microsoft.com/en-us/library/ms533072.aspx
-	public static final String ELEMENT_IFRAME_ATTRIBUTE_SRC = "src";
+	public static final String ELEMENT_IFRAME_ATTRIBUTE_SRC = ATTRIBUTE_SRC;
 	public static final String ELEMENT_IFRAME_ATTRIBUTE_FRAMEBORDER = "frameborder";
 	public static final String ELEMENT_IFRAME_ATTRIBUTE_SCROLLING = "scrolling";
 	public static final String IFRAME_SCROLLING_NO = "no";
@@ -425,7 +493,7 @@ public class HTML {
 	public static final String ELEMENT_IMG_ATTRIBUTE_ALT = "alt";
 	public static final String ELEMENT_IMG_ATTRIBUTE_HEIGHT = "height";
 	public static final String ELEMENT_IMG_ATTRIBUTE_WIDTH = "width";
-	public static final String ELEMENT_IMG_ATTRIBUTE_SRC = "src";
+	public static final String ELEMENT_IMG_ATTRIBUTE_SRC = ATTRIBUTE_SRC;
 
 	//attributes for <input>
 	public static final String ELEMENT_INPUT_ATTRIBUTE_ACCEPT = "accept";
@@ -453,7 +521,7 @@ public class HTML {
 	public static final String ELEMENT_LABEL_ATTRIBUTE_FOR = "for";
 
 	//attributes for <link>
-	public static final String ELEMENT_LINK_ATTRIBUTE_HREF = "href";
+	public static final String ELEMENT_LINK_ATTRIBUTE_HREF = ATTRIBUTE_HREF;
 	public static final String ELEMENT_LINK_ATTRIBUTE_REL = LINK_ATTRIBUTE_REL;
 	public static final String ELEMENT_LINK_ATTRIBUTE_TYPE = "type";
 	public static final String ELEMENT_LINK_ATTRIBUTE_MEDIA = "media";
@@ -492,7 +560,7 @@ public class HTML {
 	public static final String ELEMENT_PARAM_ATTRIBUTE_VALUE = "value";
 
 	//attributes for <script>
-	public static final String ELEMENT_SCRIPT_ATTRIBUTE_SRC = "src";
+	public static final String ELEMENT_SCRIPT_ATTRIBUTE_SRC = ATTRIBUTE_SRC;
 	public static final String ELEMENT_SCRIPT_ATTRIBUTE_TYPE = "type";
 	public static final String ELEMENT_SCRIPT_ATTRIBUTE_LANGUAGE = "language";
 
@@ -502,7 +570,7 @@ public class HTML {
 	public static final String ELEMENT_SELECT_ATTRIBUTE_SIZE = "size";
 
 	//attributes for <source>
-	public static final String ELEMENT_SOURCE_ATTRIBUTE_SRC = "src";
+	public static final String ELEMENT_SOURCE_ATTRIBUTE_SRC = ATTRIBUTE_SRC;
 
 	//attributes for <td>
 	public static final String ELEMENT_TD_ATTRIBUTE_ALIGN = "align";
@@ -545,23 +613,214 @@ public class HTML {
 	public static final String TR_VALIGN_BOTTOM = "bottom";
 
 	//attributes for <track>
-	public static final String ELEMENT_TRACK_ATTRIBUTE_SRC = "src";
+	public static final String ELEMENT_TRACK_ATTRIBUTE_SRC = ATTRIBUTE_SRC;
 
 	//attributes for <video>
-	public static final String ELEMENT_VIDEO_ATTRIBUTE_SRC = "src";
+	public static final String ELEMENT_VIDEO_ATTRIBUTE_SRC = ATTRIBUTE_SRC;
 
 	/**
-	 * The XHTML elements that by default have <code>display:block</code> CSS style.
-	 * @see <a href="http://www.w3.org/TR/2003/WD-xhtml2-20030506/mod-block-text.html">XHTML Block Text Module</a>
+	 * HTML5 obsolete, non-conforming elements.
+	 * @see <a href="https://www.w3.org/TR/html52/obsolete.html#non-conforming-features">HTML 5.2 § 11.2. Non-conforming features</a>
 	 */
-	public static final Set<String> BLOCK_ELEMENTS = immutableSetOf(ELEMENT_ADDRESS, ELEMENT_BLOCKCODE, ELEMENT_BLOCKQUOTE, ELEMENT_DIV, ELEMENT_H1, ELEMENT_H2,
-			ELEMENT_H3, ELEMENT_H4, ELEMENT_H5, ELEMENT_H6, ELEMENT_HR, ELEMENT_P, ELEMENT_PRE, ELEMENT_SECTION);
+	public static final Set<NsName> OBSOLETE_ELEMENTS = Stream.of(ELEMENT_APPLET, ELEMENT_ACRONYM, ELEMENT_BASEFONT, ELEMENT_BGSOUND, ELEMENT_BIG, ELEMENT_BLINK,
+			ELEMENT_CENTER, ELEMENT_DIR, ELEMENT_FONT, ELEMENT_FRAME, ELEMENT_FRAMESET, ELEMENT_NOFRAMES, ELEMENT_ISINDEX, ELEMENT_LISTING, ELEMENT_MARQUEE,
+			ELEMENT_MENU, ELEMENT_MENUITEM, ELEMENT_MULTICOL, ELEMENT_NEXTID, ELEMENT_NOEMBED, ELEMENT_NOBR, ELEMENT_PLAINTEXT, ELEMENT_RB, ELEMENT_RTC,
+			ELEMENT_SPACER, ELEMENT_STRIKE, ELEMENT_TT, ELEMENT_XMP).map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName)).collect(toSet());
+
+	//kinds of elements; see https://www.w3.org/TR/html52/syntax.html#writing-html-documents-elements
 
 	/**
-	 * The HTML 5 <a href="https://www.w3.org/TR/html5/syntax.html#void-elements"><dfn>void elements</dfn></a>.
-	 * @see <a href="https://www.w3.org/TR/html5/syntax.html#writing-html-documents-elements">HTML 5.2 § 8.1.2. Elements</a>
+	 * The HTML5 <dfn>void elements</dfn>.
+	 * @see <a href="https://www.w3.org/TR/html52/syntax.html#void-elements">HTML 5.2 § 8.1.2. Elements: Void elements</a>
 	 */
-	public static final Set<String> VOID_ELEMENTS = immutableSetOf(ELEMENT_AREA, ELEMENT_BASE, ELEMENT_BR, ELEMENT_COL, ELEMENT_EMBED, ELEMENT_HR, ELEMENT_IMG,
-			ELEMENT_INPUT, ELEMENT_LINK, ELEMENT_META, ELEMENT_PARAM, ELEMENT_SOURCE, ELEMENT_TRACK, ELEMENT_WBR);
+	public static final Set<NsName> VOID_ELEMENTS = Stream.of(ELEMENT_AREA, ELEMENT_BASE, ELEMENT_BR, ELEMENT_COL, ELEMENT_EMBED, ELEMENT_HR, ELEMENT_IMG,
+			ELEMENT_INPUT, ELEMENT_LINK, ELEMENT_META, ELEMENT_PARAM, ELEMENT_SOURCE, ELEMENT_TRACK, ELEMENT_WBR)
+			.map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName)).collect(toSet());
+
+	//kinds of content; see https://www.w3.org/TR/html52/dom.html#content-models
+
+	/**
+	 * Elements HTML5 considers <dfn>metadata content</dfn>.
+	 * @see <a href="https://www.w3.org/TR/html52/dom.html#metadata-content">HTML 5.2 § 3.2.4.2.1. Metadata content</a>
+	 */
+	public static final Set<NsName> METADATA_CONTENT = Stream
+			.of(ELEMENT_BASE, ELEMENT_LINK, ELEMENT_META, ELEMENT_NOSCRIPT, ELEMENT_SCRIPT, ELEMENT_STYLE, ELEMENT_TEMPLATE, ELEMENT_TITLE)
+			.map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName)).collect(toSet());
+
+	/**
+	 * Elements HTML5 considers <dfn>flow content</dfn>.
+	 * @apiNote This includes the <code>&lt;math&gt;</code> and <code>&lt;svg&gt;</code> elements, even though they they are technically in separate namespaces,
+	 *          because they are classified as flow content in HTML5.
+	 * @see <a href="https://www.w3.org/TR/html52/dom.html#flow-content">HTML 5.2 § 3.2.4.2.2. Flow content</a>
+	 * @see <a href="https://www.w3.org/TR/MathML/chapter2.html#interf.namespace">Mathematical Markup Language (MathML) Version 3.0 2nd Edition § 2.1.2 MathML and
+	 *      Namespaces</a>
+	 * @see <a href="https://www.w3.org/TR/SVG2/struct.html#Namespace">Scalable Vector Graphics (SVG) 2 § 5.1.2. Namespace</a>
+	 */
+	public static final Set<NsName> FLOW_CONTENT = Stream.concat(
+			//HTML elements
+			Stream.of(ELEMENT_A, ELEMENT_ABBR, ELEMENT_ADDRESS, ELEMENT_AREA, //if it is a descendant of a `<map>` element
+					ELEMENT_ARTICLE, ELEMENT_ASIDE, ELEMENT_AUDIO, ELEMENT_B, ELEMENT_BDI, ELEMENT_BDO, ELEMENT_BLOCKQUOTE, ELEMENT_BR, ELEMENT_BUTTON, ELEMENT_CANVAS,
+					ELEMENT_CITE, ELEMENT_CODE, ELEMENT_DATA, ELEMENT_DATALIST, ELEMENT_DEL, ELEMENT_DETAILS, ELEMENT_DFN, ELEMENT_DIALOG, ELEMENT_DIV, ELEMENT_DL,
+					ELEMENT_EM, ELEMENT_EMBED, ELEMENT_FIELDSET, ELEMENT_FIGURE, ELEMENT_FOOTER, ELEMENT_FORM, ELEMENT_H1, ELEMENT_H2, ELEMENT_H3, ELEMENT_H4, ELEMENT_H5,
+					ELEMENT_H6, ELEMENT_HEADER, ELEMENT_HR, ELEMENT_I, ELEMENT_IFRAME, ELEMENT_IMG, ELEMENT_INPUT, ELEMENT_INS, ELEMENT_KBD, ELEMENT_LABEL, ELEMENT_LINK, //if it is allowed in the body
+					ELEMENT_MAIN, ELEMENT_MAP, ELEMENT_MARK, //MathML: `<math>`
+					ELEMENT_METER, ELEMENT_NAV, ELEMENT_NOSCRIPT, ELEMENT_OBJECT, ELEMENT_OL, ELEMENT_OUTPUT, ELEMENT_P, ELEMENT_PICTURE, ELEMENT_PRE, ELEMENT_PROGRESS,
+					ELEMENT_Q, ELEMENT_RUBY, ELEMENT_S, ELEMENT_SAMP, ELEMENT_SCRIPT, ELEMENT_SECTION, ELEMENT_SELECT, ELEMENT_SMALL, ELEMENT_SPAN, ELEMENT_STRONG,
+					ELEMENT_STYLE, ELEMENT_SUB, ELEMENT_SUP, //SVG: `<svg>`
+					ELEMENT_TABLE, ELEMENT_TEMPLATE, ELEMENT_TEXTAREA, ELEMENT_TIME, ELEMENT_U, ELEMENT_UL, ELEMENT_VAR, ELEMENT_VIDEO, ELEMENT_WBR)
+					.map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName)),
+			//non-HTML elements
+			Stream.of(
+					//MathML
+					NsName.of("http://www.w3.org/1998/Math/MathML", "math"),
+					//SVG
+					NsName.of("http://www.w3.org/2000/svg", "svg")))
+			.collect(toSet());
+
+	/**
+	 * Elements HTML5 considers <dfn>sectioning content</dfn>.
+	 * @see <a href="https://www.w3.org/TR/html52/dom.html#sectioning-content">HTML 5.2 § 3.2.4.2.3. Sectioning content</a>
+	 */
+	public static final Set<NsName> SECTIONING_CONTENT = Stream.of(ELEMENT_ARTICLE, ELEMENT_ASIDE, ELEMENT_NAV, ELEMENT_SECTION)
+			.map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName)).collect(toSet());
+
+	/**
+	 * Elements HTML5 considers <dfn>heading content</dfn>.
+	 * @see <a href="https://www.w3.org/TR/html52/dom.html#heading-content">HTML 5.2 § 3.2.4.2.4. Heading content</a>
+	 */
+	public static final Set<NsName> HEADING_CONTENT = Stream.of(ELEMENT_H1, ELEMENT_H2, ELEMENT_H3, ELEMENT_H4, ELEMENT_H5, ELEMENT_H6)
+			.map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName)).collect(toSet());
+
+	/**
+	 * Elements HTML5 considers <dfn>phrasing content</dfn>.
+	 * @apiNote This includes the <code>&lt;math&gt;</code> and <code>&lt;svg&gt;</code> elements, even though they they are technically in separate namespaces,
+	 *          because they are classified as phrasing content in HTML5.
+	 * @see <a href="https://www.w3.org/TR/html52/dom.html#phrasing-content">HTML 5.2 § 3.2.4.2.5. Phrasing content</a>
+	 * @see <a href="https://www.w3.org/TR/MathML/chapter2.html#interf.namespace">Mathematical Markup Language (MathML) Version 3.0 2nd Edition § 2.1.2 MathML and
+	 *      Namespaces</a>
+	 * @see <a href="https://www.w3.org/TR/SVG2/struct.html#Namespace">Scalable Vector Graphics (SVG) 2 § 5.1.2. Namespace</a>
+	 */
+	public static final Set<NsName> PHRASING_CONTENT = Stream.concat(
+			//HTML elements
+			Stream.of(ELEMENT_A, ELEMENT_ABBR, ELEMENT_AREA, //if it is a descendant of a `<map>` element
+					ELEMENT_AUDIO, ELEMENT_B, ELEMENT_BDI, ELEMENT_BDO, ELEMENT_BR, ELEMENT_BUTTON, ELEMENT_CANVAS, ELEMENT_CITE, ELEMENT_CODE, ELEMENT_DATA,
+					ELEMENT_DATALIST, ELEMENT_DEL, ELEMENT_DFN, ELEMENT_EM, ELEMENT_EMBED, ELEMENT_I, ELEMENT_IFRAME, ELEMENT_IMG, ELEMENT_INPUT, ELEMENT_INS,
+					ELEMENT_KBD, ELEMENT_LABEL, ELEMENT_LINK, //if it is allowed in the body
+					ELEMENT_MAP, ELEMENT_MARK, //MathML: `<math>`
+					ELEMENT_METER, ELEMENT_NOSCRIPT, ELEMENT_OBJECT, ELEMENT_OUTPUT, ELEMENT_PICTURE, ELEMENT_PROGRESS, ELEMENT_Q, ELEMENT_RUBY, ELEMENT_S, ELEMENT_SAMP,
+					ELEMENT_SCRIPT, ELEMENT_SELECT, ELEMENT_SMALL, ELEMENT_SPAN, ELEMENT_STRONG, ELEMENT_SUB, ELEMENT_SUP, //SVG: `<svg>`
+					ELEMENT_TEMPLATE, ELEMENT_TEXTAREA, ELEMENT_TIME, ELEMENT_U, ELEMENT_VAR, ELEMENT_VIDEO, ELEMENT_WBR)
+					.map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName)),
+			//non-HTML elements
+			Stream.of(
+					//MathML
+					NsName.of("http://www.w3.org/1998/Math/MathML", "math"),
+					//SVG
+					NsName.of("http://www.w3.org/2000/svg", "svg")))
+			.collect(toSet());
+
+	/**
+	 * Elements HTML5 considers <dfn>embedded content</dfn>.
+	 * @apiNote This includes the <code>&lt;math&gt;</code> and <code>&lt;svg&gt;</code> elements, even though they they are technically in separate namespaces,
+	 *          because they are classified as embedded content in HTML5.
+	 * @see <a href="https://www.w3.org/TR/html52/dom.html#embedded-content">HTML 5.2 § 3.2.4.2.6. Embedded content</a>
+	 * @see <a href="https://www.w3.org/TR/MathML/chapter2.html#interf.namespace">Mathematical Markup Language (MathML) Version 3.0 2nd Edition § 2.1.2 MathML and
+	 *      Namespaces</a>
+	 * @see <a href="https://www.w3.org/TR/SVG2/struct.html#Namespace">Scalable Vector Graphics (SVG) 2 § 5.1.2. Namespace</a>
+	 */
+	public static final Set<NsName> EMBEDDED_CONTENT = Stream.concat(
+			//HTML elements
+			Stream.of(ELEMENT_AUDIO, ELEMENT_CANVAS, ELEMENT_EMBED, ELEMENT_IFRAME, ELEMENT_IMG, //MathML: `<math>`
+					ELEMENT_OBJECT, ELEMENT_PICTURE, //SVG: `<svg>`
+					ELEMENT_VIDEO).map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName)),
+			//non-HTML elements
+			Stream.of(
+					//MathML
+					NsName.of("http://www.w3.org/1998/Math/MathML", "math"),
+					//SVG
+					NsName.of("http://www.w3.org/2000/svg", "svg")))
+			.collect(toSet());
+
+	/**
+	 * Elements HTML5 considers <dfn>interactive content</dfn>.
+	 * @see <a href="https://www.w3.org/TR/html52/dom.html#interactive-content">HTML 5.2 § 3.2.4.2.7. Interactive content</a>
+	 */
+	public static final Set<NsName> INTERACTIVE_CONTENT = Stream.of(ELEMENT_A, //if the `href` attribute is present
+			ELEMENT_AUDIO, //if the `controls` attribute is present
+			ELEMENT_BUTTON, ELEMENT_DETAILS, ELEMENT_EMBED, ELEMENT_IFRAME, ELEMENT_IMG, //if the `usemap` attribute is present
+			ELEMENT_INPUT, //if the `type` attribute is not in the `Hidden` state
+			ELEMENT_LABEL, ELEMENT_SELECT, ELEMENT_TEXTAREA, ELEMENT_VIDEO) //if the controls attribute is present 
+			.map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName)).collect(toSet());
+
+	/**
+	 * Elements HTML5 considers <dfn>palpable content</dfn>.
+	 * @apiNote This includes the <code>&lt;math&gt;</code> and <code>&lt;svg&gt;</code> elements, even though they they are technically in separate namespaces,
+	 *          because they are classified as palpable content in HTML5.
+	 * @see <a href="https://www.w3.org/TR/html52/dom.html#palpable-content">HTML 5.2 § 3.2.4.2.8. Palpable content</a>
+	 * @see <a href="https://www.w3.org/TR/MathML/chapter2.html#interf.namespace">Mathematical Markup Language (MathML) Version 3.0 2nd Edition § 2.1.2 MathML and
+	 *      Namespaces</a>
+	 * @see <a href="https://www.w3.org/TR/SVG2/struct.html#Namespace">Scalable Vector Graphics (SVG) 2 § 5.1.2. Namespace</a>
+	 */
+	public static final Set<NsName> PALPABLE_CONTENT = Stream.concat(
+			//HTML elements
+			Stream.of(ELEMENT_A, ELEMENT_ABBR, ELEMENT_ADDRESS, ELEMENT_ARTICLE, ELEMENT_ASIDE, ELEMENT_AUDIO, //if the `controls` attribute is present
+					ELEMENT_B, ELEMENT_BDI, ELEMENT_BDO, ELEMENT_BLOCKQUOTE, ELEMENT_BUTTON, ELEMENT_CANVAS, ELEMENT_CITE, ELEMENT_CODE, ELEMENT_DATA, ELEMENT_DETAILS,
+					ELEMENT_DFN, ELEMENT_DIV, ELEMENT_DL, //if the element’s children include at least one name-value group
+					ELEMENT_EM, ELEMENT_EMBED, ELEMENT_FIELDSET, ELEMENT_FIGURE, ELEMENT_FOOTER, ELEMENT_FORM, ELEMENT_H1, ELEMENT_H2, ELEMENT_H3, ELEMENT_H4, ELEMENT_H5,
+					ELEMENT_H6, ELEMENT_HEADER, ELEMENT_I, ELEMENT_IFRAME, ELEMENT_IMG, ELEMENT_INPUT, //if the `type` attribute is not in the `Hidden` state
+					ELEMENT_INS, ELEMENT_KBD, ELEMENT_LABEL, ELEMENT_MAIN, ELEMENT_MAP, ELEMENT_MARK, //MathML: `<math>`
+					ELEMENT_METER, ELEMENT_NAV, ELEMENT_OBJECT, ELEMENT_OL, //if the element’s children include at least one `<li>` element
+					ELEMENT_OUTPUT, ELEMENT_P, ELEMENT_PRE, ELEMENT_PROGRESS, ELEMENT_Q, ELEMENT_RUBY, ELEMENT_S, ELEMENT_SAMP, ELEMENT_SECTION, ELEMENT_SELECT,
+					ELEMENT_SMALL, ELEMENT_SPAN, ELEMENT_STRONG, ELEMENT_SUB, ELEMENT_SUP, //SVG: `<svg>`
+					ELEMENT_TABLE, ELEMENT_TEXTAREA, ELEMENT_TIME, ELEMENT_U, ELEMENT_UL, //if the element’s children include at least one `<li>` element
+					ELEMENT_VAR, ELEMENT_VIDEO).map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName)),
+			//non-HTML elements
+			Stream.of(
+					//MathML
+					NsName.of("http://www.w3.org/1998/Math/MathML", "math"),
+					//SVG
+					NsName.of("http://www.w3.org/2000/svg", "svg")))
+			.collect(toSet());
+
+	/**
+	 * Elements HTML5 considers <dfn>script-supporting elements</dfn>.
+	 * @see <a href="https://www.w3.org/TR/html52/dom.html#script-supporting-elements">HTML 5.2 § 3.2.4.2.9. Script-supporting elements</a>
+	 */
+	public static final Set<NsName> SCRIPT_SUPPORTING_ELEMENTS = Stream.of(ELEMENT_SCRIPT, ELEMENT_TEMPLATE)
+			.map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName)).collect(toSet());
+
+	//roles based upon styles; see [HTML 5.2 § 10. Rendering](https://www.w3.org/TR/html52/rendering.html#rendering); see also [Browsers' default CSS for HTML elements](https://stackoverflow.com/q/6867254/421049)
+
+	/**
+	 * Elements HTML5 suggests should be rendered as CSS <code>display: block</code>.
+	 * @see <a href="https://www.w3.org/TR/html52/rendering.html#the-page">HTML 5.2 § 10.3.2. The page</a>
+	 * @see <a href="https://www.w3.org/TR/html52/rendering.html#non-replaced-elements-flow-content">HTML 5.2 § 10.3.3. Flow content</a>
+	 * @see <a href="https://www.w3.org/TR/html52/rendering.html#sections-and-headings">HTML 5.2 § 10.3.7. Sections and headings</a>
+	 * @see <a href="https://www.w3.org/TR/html52/rendering.html#section-lists">HTML 5.2 § 10.3.8. Lists</a>
+	 * @see <a href="https://www.w3.org/TR/html52/rendering.html#the-fieldset-and-legend-elements">HTML 5.2 § 10.3.13. The fieldset and legend elements</a>
+	 */
+	public static final Set<NsName> BLOCK_ELEMENTS = Stream.of(
+			//the page
+			ELEMENT_HTML, ELEMENT_BODY,
+			//flow content
+			ELEMENT_ADDRESS, ELEMENT_BLOCKQUOTE, ELEMENT_CENTER, ELEMENT_DIV, ELEMENT_FIGURE, ELEMENT_FIGCAPTION, ELEMENT_FOOTER, ELEMENT_FORM, ELEMENT_HEADER,
+			ELEMENT_HR, ELEMENT_LEGEND, ELEMENT_LISTING, ELEMENT_MAIN, ELEMENT_P, ELEMENT_PLAINTEXT, ELEMENT_PRE, ELEMENT_XMP,
+			//sections and headings
+			ELEMENT_ARTICLE, ELEMENT_ASIDE, ELEMENT_H1, ELEMENT_H2, ELEMENT_H3, ELEMENT_H4, ELEMENT_H5, ELEMENT_H6, ELEMENT_HGROUP, ELEMENT_NAV, ELEMENT_SECTION,
+			//lists
+			ELEMENT_DIR, ELEMENT_DD, ELEMENT_DL, ELEMENT_DT, ELEMENT_OL, ELEMENT_UL,
+			//fieldset and legend
+			ELEMENT_FIELDSET).map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName)).collect(toSet());
+
+	/**
+	 * Elements HTML5 suggests should be rendered as CSS <code>display: list-item</code>.
+	 * @see <a href="https://www.w3.org/TR/html52/rendering.html#section-lists">HTML 5.2 § 10.3.8. Lists</a>
+	 * @see <a href="https://www.w3.org/TR/html52/rendering.html#the-details-element-rendering">HTML 5.2 § 10.5.3. The details and summary elements</a>
+	 */
+	public static final Set<NsName> LIST_ITEM_ELEMENTS = Stream.of(
+			//lists
+			ELEMENT_LI,
+			//details and summary
+			ELEMENT_SUMMARY).map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName)).collect(toSet());
 
 }

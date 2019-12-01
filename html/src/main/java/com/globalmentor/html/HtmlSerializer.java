@@ -20,12 +20,15 @@ import static com.globalmentor.html.spec.HTML.*;
 import static com.globalmentor.java.Characters.SPACE_CHAR;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
 import org.w3c.dom.*;
 
 import com.globalmentor.xml.XMLSerializer;
+import com.globalmentor.xml.XmlFormatProfile;
+import com.globalmentor.xml.spec.NsName;
 
 /**
  * Serializes a document as HTML. Has features to serialize features in an HTML-oriented way, such as void elements and empty attributes:
@@ -37,6 +40,45 @@ import com.globalmentor.xml.XMLSerializer;
  * @author Garret Wilson
  */
 public class HtmlSerializer extends XMLSerializer {
+
+	/**
+	 * The default HTML formatting profile, which uses categories specified by the HTML specification as well as some useful defaults.
+	 * @implSpec This profile considers an element a block element if it is HTML5 <dfn>flow content</dfn> that is not <dfn>phrasing content</dfn>, or
+	 *           <dfn>metadata content</dfn>.
+	 * @implSpec This profile makes the direct child content of <code>&lt;html&gt;</code> flush with no indention.
+	 * @implSpec This implementation returns an order for HTML identification, style, and metadata attributes, including <code>id</code>, <code>name</code>,
+	 *           <code>class</code>, <code>style</code>, and <code>title</code>.
+	 */
+	public static XmlFormatProfile DEFAULT_HTML_FORMAT_PROFILE = new BaseHtmlFormatProfile() {
+
+		private final NsName flushElement = NsName.of(XHTML_NAMESPACE_URI_STRING, ELEMENT_HTML);
+
+		private final List<NsName> attributeOrder = List.of(
+				//element identification
+				NsName.of(ATTRIBUTE_ID), NsName.of(ATTRIBUTE_NAME),
+				//element style
+				NsName.of(ATTRIBUTE_CLASS), NsName.of(ATTRIBUTE_STYLE),
+				//element description
+				NsName.of(ATTRIBUTE_LANG), NsName.of(ATTRIBUTE_DIR),
+				//content source
+				NsName.of(ATTRIBUTE_SRC), NsName.of(ELEMENT_IMG_ATTRIBUTE_ALT),
+				//content reference
+				NsName.of(LINK_ATTRIBUTE_REL), NsName.of(ATTRIBUTE_HREF), NsName.of(ELEMENT_A_ATTRIBUTE_HREFLANG), NsName.of(LINK_ATTRIBUTE_TYPE),
+				NsName.of(ELEMENT_A_ATTRIBUTE_TARGET),
+				//metadata
+				NsName.of(ATTRIBUTE_TITLE));
+
+		@Override
+		protected boolean isFlush(final NsName element) {
+			return element.equals(flushElement);
+		};
+
+		@Override
+		protected List<NsName> getAttributeOrder(final NsName element) {
+			return attributeOrder;
+		}
+
+	};
 
 	/** Whether an attribute that has a value equal to its name should be serialized in empty attribute form. */
 	public static final String OPTION_USE_EMPTY_ATTRIBUTES = "useEmptyAttributes"; //TODO use with property setting when integrated with Confound
@@ -62,17 +104,25 @@ public class HtmlSerializer extends XMLSerializer {
 
 	/** Default constructor for unformatted output with no XML prolog. */
 	public HtmlSerializer() {
-		super();
-		setPrologWritten(false);
+		this(false);
+	}
+
+	/**
+	 * Constructor for an optionally formatted serializer with no XML prolog, using the {@link #DEFAULT_HTML_FORMAT_PROFILE} format profile.
+	 * @param formatted Whether the serializer should be formatted.
+	 */
+	public HtmlSerializer(final boolean formatted) {
+		this(formatted, DEFAULT_HTML_FORMAT_PROFILE);
 	}
 
 	/**
 	 * Constructor for an optionally formatted serializer with no XML prolog.
 	 * @param formatted Whether the serializer should be formatted.
+	 * @param formatProfile The profile to use to guide formatting.
 	 */
-	public HtmlSerializer(final boolean formatted) {
-		this(); //do the default construction
-		setFormatted(formatted); //set whether the output should be formatted
+	public HtmlSerializer(final boolean formatted, @Nonnull final XmlFormatProfile formatProfile) {
+		super(formatted, formatProfile);
+		setPrologWritten(false);
 	}
 
 	/**
@@ -83,7 +133,7 @@ public class HtmlSerializer extends XMLSerializer {
 	 */
 	@Override
 	protected boolean isEmptyElementTag(final Element element) {
-		final boolean isVoidElement = XHTML_NAMESPACE_URI_STRING.equals(element.getNamespaceURI()) && VOID_ELEMENTS.contains(element.getLocalName());
+		final boolean isVoidElement = VOID_ELEMENTS.contains(NsName.ofNode(element));
 		//TODO log a warning or throw an exception if a void element has children
 		return isVoidElement;
 	}
@@ -91,17 +141,13 @@ public class HtmlSerializer extends XMLSerializer {
 	/**
 	 * {@inheritDoc}
 	 * @implSpec This version will write an empty attribute if that option is enabled and the attribute value is the same as its name. For example:
-	 * 
-	 *           <pre>
-	 * {@code <button disabled/>}
-	 *           </pre>
-	 * 
+	 *           <pre>{@code <button disabled/>}</pre>
 	 * @see #isUseEmptyAttributes()
 	 */
 	@Override
 	protected Appendable serializeAttribute(@Nonnull final Appendable appendable, @Nonnull final String attributeName, @Nonnull final String attributeValue)
 			throws IOException {
-		if(attributeValue.equals(attributeName)) { //if the attribute value is the same as its name TODO do we need to restrict this to some predefine list? 
+		if(attributeValue.equals(attributeName)) { //if the attribute value is the same as its name TODO do we need to restrict this to some predefined list? 
 			return appendable.append(SPACE_CHAR).append(attributeName); //append just the attribute name
 		}
 		return super.serializeAttribute(appendable, attributeName, attributeValue); //otherwise serialize the attribute normally as per XML

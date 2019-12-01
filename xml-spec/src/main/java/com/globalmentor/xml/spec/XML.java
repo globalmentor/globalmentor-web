@@ -20,6 +20,8 @@ import java.net.URI;
 import java.nio.charset.*;
 import java.util.*;
 
+import javax.annotation.*;
+
 import com.globalmentor.java.*;
 import com.globalmentor.net.ContentType;
 
@@ -44,10 +46,10 @@ public class XML {
 	public static final String XML_EXTERNAL_PARSED_ENTITY_SUBTYPE_SUFFIX = "xml-external-parsed-entity";
 
 	/** The content type for generic XML: <code>text/xml</code>. */
-	public static final ContentType CONTENT_TYPE = ContentType.create(ContentType.TEXT_PRIMARY_TYPE, XML_SUBTYPE);
+	public static final ContentType CONTENT_TYPE = ContentType.of(ContentType.TEXT_PRIMARY_TYPE, XML_SUBTYPE);
 
 	/** The content type for a generic XML fragment: <code>text/xml-external-parsed-entity</code>. */
-	public static final ContentType EXTERNAL_PARSED_ENTITY_CONTENT_TYPE = ContentType.create(ContentType.TEXT_PRIMARY_TYPE, XML_EXTERNAL_PARSED_ENTITY_SUBTYPE);
+	public static final ContentType EXTERNAL_PARSED_ENTITY_CONTENT_TYPE = ContentType.of(ContentType.TEXT_PRIMARY_TYPE, XML_EXTERNAL_PARSED_ENTITY_SUBTYPE);
 
 	/** The default charset to assume if none is indicated. */
 	public static final Charset DEFAULT_CHARSET = UTF_8;
@@ -55,7 +57,7 @@ public class XML {
 	/** The name extension for eXtensible Markup Language. */
 	public static final String XML_NAME_EXTENSION = "xml";
 
-	/** The prefix to the "xml" namespace, for use with "xml:lang", for example. */
+	/** The prefix to the "xml" namespace, for use with <code>xml:lang</code>, for example. */
 	public static final String XML_NAMESPACE_PREFIX = "xml";
 
 	/** The string representing the "xml" namespace. */
@@ -67,17 +69,31 @@ public class XML {
 	/** The prefix to the "xmlns" namespace, for use with namespace declarations. */
 	public static final String XMLNS_NAMESPACE_PREFIX = "xmlns"; //TODO makes sure code appropriately uses the new ATTRIBUTE_XMLNS when appropriate for the attribute name
 
-	/** The local name of the language attribute <code>xml:lang</code>. */
-	public static final String ATTRIBUTE_LANG = "lang";
+	/** The language attribute <code>xml:lang</code>. */
+	public static final NsName ATTRIBUTE_LANG = NsName.of(XML_NAMESPACE_URI_STRING, "lang");
 
-	/** The local name of the XML namespace attribute <code>xmlns</code>. */
-	public static final String ATTRIBUTE_XMLNS = "xmlns";
+	/**
+	 * The space attribute <code>xml:space</code>.
+	 * @see <a href="https://www.w3.org/TR/xml/#sec-white-space">Extensible Markup Language (XML) 1.0 (Fifth Edition), § 2.10 White Space Handling</a>
+	 */
+	public static final NsName ATTRIBUTE_SPACE = NsName.of(XML_NAMESPACE_URI_STRING, "space");
+	/** The <code>xml:space</code> value indicating default whitespace handling. */
+	public static final String ATTRIBUTE_SPACE_DEFAULT = "default";
+	/** The <code>xml:space</code> value indicating whitespace should be preserved. */
+	public static final String ATTRIBUTE_SPACE_PRESERVE = "preserve";
 
 	/** The string representing the "xmlns" namespace. */
 	public static final String XMLNS_NAMESPACE_URI_STRING = "http://www.w3.org/2000/xmlns/";
 
 	/** The URI to the "xmlns" namespace. */
 	public static final URI XMLNS_NAMESPACE_URI = URI.create(XMLNS_NAMESPACE_URI_STRING);
+
+	/**
+	 * The XML namespace attribute <code>xmlns</code>.
+	 * @apiNote Note that the XML DOM considers the <code>xmlns</code> attribute to be in the {@value XML#XMLNS_NAMESPACE_URI_STRING} namespace, even though it
+	 *          has no prefix.
+	 */
+	public static final NsName ATTRIBUTE_XMLNS = NsName.of(XMLNS_NAMESPACE_URI_STRING, "xmlns");
 
 	/** The name of a CDATA section node. */
 	public static final String CDATASECTION_NODE_NAME = "#cdata-section";
@@ -151,8 +167,25 @@ public class XML {
 	public static final char SINGLE_QUOTE_CHAR = '\'';
 	/** A double quote character. */
 	public static final char DOUBLE_QUOTE_CHAR = '"';
-	/** The characters considered by XML to be whitespace. */
-	public static final String WHITESPACE_CHARS = "" + SPACE_CHAR + TAB_CHAR + CR_CHAR + LF_CHAR; //whitespace characters in XML are space, tab, CR, and LF TODO upgrade to use Characters
+
+	/**
+	 * The character to which any line break sequence is normalized during XML processing.
+	 * @see <a href="https://www.w3.org/TR/xml/#sec-line-ends">Extensible Markup Language (XML) 1.0 (Fifth Edition), § 2.11 End-of-Line Handling</a>
+	 */
+	public static final char NORMALIZED_LINE_BREAK_CHAR = LF_CHAR;
+
+	/**
+	 * The characters considered by XML to be "whitespace": space, tab, <code>CR</code>, and <code>LF</code>.
+	 * @see <a href="https://www.w3.org/TR/xml/#AVNormalize">Extensible Markup Language (XML) 1.0 (Fifth Edition), § 3.3.3 Attribute-Value Normalization</a>
+	 */
+	public static final Characters WHITESPACE_CHARACTERS = Characters.of(SPACE_CHAR, TAB_CHAR, CR_CHAR, LF_CHAR);
+
+	/**
+	 * The characters considered by XML to be whitespace, as a string.
+	 * @deprecated Switch to using {@link #WHITESPACE_CHARACTERS}.
+	 */
+	@Deprecated
+	public static final String WHITESPACE_CHARS = WHITESPACE_CHARACTERS.toString();
 	/** Public ID characters. */
 	public static final String PUBLIC_ID_CHARS = SPACE_CHAR + CR_CHAR + LF_CHAR
 			+ "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-'()+,./:=?;!*#@$_%";
@@ -363,7 +396,8 @@ public class XML {
 	public static final Characters PREDEFINED_ENTITY_CHARACTERS = Characters.of(ENTITY_LT_VALUE, ENTITY_GT_VALUE, ENTITY_AMP_VALUE, ENTITY_APOS_VALUE,
 			ENTITY_QUOT_VALUE);
 
-	/**Determines the name of the predefined entity associated with the given character.
+	/**
+	 * Determines the name of the predefined entity associated with the given character.
 	 * @param c The character to be replaced by a predefined entity.
 	 * @return The name of the predefined entity for the given character.
 	 * @throws IllegalArgumentException if the given character does not have a predefined entity as per the XML specification.
@@ -412,7 +446,7 @@ public class XML {
 	 * @return The namespace prefix, or <code>null</code> if no prefix is present.
 	 * @throws NullPointerException if the given qualified name is <code>null</code>.
 	 */
-	public static String getPrefix(final String qualifiedName) {
+	public static @Nullable String getPrefix(final String qualifiedName) {
 		final int prefixDividerIndex = qualifiedName.indexOf(NAMESPACE_DIVIDER); //see if there is a prefix
 		if(prefixDividerIndex >= 0) //if there is a prefix
 			return qualifiedName.substring(0, prefixDividerIndex); //return the prefix
@@ -427,7 +461,7 @@ public class XML {
 	 * @return The local name without a prefix.
 	 * @throws NullPointerException if the given qualified name is <code>null</code>.
 	 */
-	public static String getLocalName(final String qualifiedName) {
+	public static @Nonnull String getLocalName(final String qualifiedName) {
 		final int namespaceDividerIndex = qualifiedName.indexOf(NAMESPACE_DIVIDER); //find where the namespace divider is in the name
 		return namespaceDividerIndex >= 0 ? //if there is a namespace prefix
 				qualifiedName.substring(namespaceDividerIndex + 1) : //remove the namespace prefix

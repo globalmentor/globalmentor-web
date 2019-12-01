@@ -663,33 +663,4 @@ public class HtmlDom {
 		return new LinkedHashSet<>(SPACE_CHARACTERS.split(element.getAttributeNS(null, ATTRIBUTE_CLASS)));
 	}
 
-	//#text
-
-	/**
-	 * Retrieves the text of the node contained in child nodes of type {@link Node#TEXT_NODE}, extracting text deeply.
-	 * @apiNote This HTML-specific version adds whitespace to separate block elements.
-	 * @param node The node from which text will be retrieved.
-	 * @return The data of all <code>Text</code> descendant nodes, which may be the empty string.
-	 * @see XmlDom#getText(Node, Set)
-	 * @see HTML#BLOCK_ELEMENTS
-	 */
-	public static String getText(final Node node) { //TODO transfer to some higher-layer content manipulation class 
-		return XmlDom.getText(node, BLOCK_ELEMENTS);
-	}
-
-	/**
-	 * Retrieves the text of the node contained in child nodes of type <code>Node.Text</code>. If <code>deep</code> is set to <code>true</code> the text of all
-	 * descendant nodes in document (depth-first) order; otherwise, only text of direct children will be returned.
-	 * <p>
-	 * This HTML-specific version adds whitespace to separate block elements.
-	 * </p>
-	 * @param node The node from which text will be retrieved.
-	 * @param stringBuilder The buffer to which text will be added.
-	 * @see XmlDom#getText(Node, Set, boolean, StringBuilder)
-	 * @see HTML#BLOCK_ELEMENTS
-	 */
-	public static void getText(final Node node, final StringBuilder stringBuilder) { //TODO transfer to some higher-layer content manipulation class
-		XmlDom.getText(node, BLOCK_ELEMENTS, true, stringBuilder);
-	}
-
 }

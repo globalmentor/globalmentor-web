@@ -38,7 +38,7 @@ import com.globalmentor.xml.spec.XML;
  * </p>
  * @author Garret Wilson
  */
-public class QualifiedName extends DefaultResource implements IDed<URI> {
+public class QualifiedName extends DefaultResource implements IDed<URI> { //TODO consider extending NsName
 
 	/** The namespace URI, or <code>null</code> if there is no namespace URI. */
 	private final URI namespaceURI;

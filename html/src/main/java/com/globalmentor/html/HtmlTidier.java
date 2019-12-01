@@ -876,9 +876,9 @@ public class HtmlTidier implements Clogged {
 		final String elementNamespace = element.getNamespaceURI(); //get the element's namespace
 		//TODO fix		final List headerElementList=new ArrayList(); //we'll put all headers in here
 		for(Node childNode = element.getFirstChild(); //get the first child node
-		childNode != null; //while we still have child nodes (we'll use getNextSibling() because we may dynamically remove elements
-		//get the next sibling node to check (because we might remove the first node, this will get the first child if the node has been removed)
-		childNode = childNode != null ? childNode.getNextSibling() : element.getFirstChild())
+				childNode != null; //while we still have child nodes (we'll use getNextSibling() because we may dynamically remove elements
+				//get the next sibling node to check (because we might remove the first node, this will get the first child if the node has been removed)
+				childNode = childNode != null ? childNode.getNextSibling() : element.getFirstChild())
 		/*TODO del when works
 				final NodeList childNodes=element.getChildNodes();  //get the list of child nodes
 				for(int childIndex=0; childIndex<childNodes.getLength(); ++childIndex) //look at each child node
@@ -1158,9 +1158,9 @@ public class HtmlTidier implements Clogged {
 		//change any "lang" attribute to "xml:lang"
 		if(element.hasAttributeNS(null, HTML.ATTRIBUTE_LANG)) { //if there is a lang attribute defined
 			final String langValue = element.getAttributeNS(null, HTML.ATTRIBUTE_LANG); //get the lang attribute value
-			if(!element.hasAttributeNS(XML_NAMESPACE_URI_STRING, XML.ATTRIBUTE_LANG)) { //if there is no xml:lang attribute TODO use a constant, use namespaces
+			if(!hasAttributeNS(element, XML.ATTRIBUTE_LANG)) { //if there is no xml:lang attribute
 				//create an xml:lang attribute with the value of the lang attribute TODO use a constant here, use namespaces
-				element.setAttributeNS(XML_NAMESPACE_URI_STRING, createQName(XML_NAMESPACE_PREFIX, XML.ATTRIBUTE_LANG), langValue);
+				element.setAttributeNS(XML_NAMESPACE_URI_STRING, createQName(XML_NAMESPACE_PREFIX, XML.ATTRIBUTE_LANG.getLocalName()), langValue);
 				element.removeAttributeNS(null, HTML.ATTRIBUTE_LANG); //remove the lang attribute
 			}
 		}
@@ -1904,7 +1904,8 @@ public class HtmlTidier implements Clogged {
 		if(node.getNodeType() == Node.ELEMENT_NODE && //if this is an element and the name matches one of our text container elements
 				(
 				//TODO fix					nodeName.equals(ELEMENT_DIV)  //TODO add others, like <em>, <code>, etc.
-				nodeName.equals(ELEMENT_P) || nodeName.equals(ELEMENT_SPAN) || nodeName.equals(ELEMENT_B) || nodeName.equals(ELEMENT_EM) || nodeName.equals(ELEMENT_I) || nodeName.equals(ELEMENT_STRONG) || nodeName.equals(ELEMENT_SUB) || nodeName.equals(ELEMENT_SUP))) {
+				nodeName.equals(ELEMENT_P) || nodeName.equals(ELEMENT_SPAN) || nodeName.equals(ELEMENT_B) || nodeName.equals(ELEMENT_EM) || nodeName.equals(ELEMENT_I)
+						|| nodeName.equals(ELEMENT_STRONG) || nodeName.equals(ELEMENT_SUB) || nodeName.equals(ELEMENT_SUP))) {
 			return true; //show that this is a text container
 		}
 		return false; //show that this isn't a text container
