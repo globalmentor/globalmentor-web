@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+	<head>
+		<meta charset="UTF-8" />
+		<title>HTML5 Formatting Test</title>
+		<meta name="author" content="Garret Wilson" />
+		<link href="../../css/lesson.css" rel="stylesheet" type="text/css" />
+	</head>
+	<body>
+		<h1>HTML5 Formatting Test</h1>
+		<h2>Lists</h2>
+	
+	
+		<ul><li><dfn>three-letter acronym</dfn> (<abbr>TLA</abbr>)</li>
+			<li>A list inside a list.
+				<ul><li>item 1</li>    <li>item 2</li>
+				</ul>
+			</li>
+		</ul>
+		<ol>
+		<li><a class="external" href="https://jdk.java.net/">Download</a> and <a class="external" href="https://openjdk.java.net/install/">install</a> the latest version of the <dfn>Java Development Kit</dfn> (<abbr>JDK</abbr>). <span class="note">This course is based on Java 11.</span>
+			<ul>
+				<li class="important">Make sure the download says “JDK” and not “JRE”.</li>
+				<li>Unpack the archive contents into the directory of your choice.
+					<span class="note"><a class="external" href="https://www.7-zip.org/">7-Zip</a> is recommended.</span>
+				</li>
+				<li class="important">Don't forget to set the <code>JAVA_HOME</code> environment variable to indicate the root directory where you unpacked the download file.</li>
+				<li class="tip">You will want to add the Java <code>…/bin</code> subdirectory to your system path.</li>
+			</ul>
+		</li><li>Install a good text editor that supports the UTF-8 encoding.
+			<dl>
+				<dt><a class="external" href="https://code.visualstudio.com/">Visual Studio Code</a> (<strong class="good">recommended</strong>)</dt>
+				<dd>Modern, extensible, and supports other user interface <a class="external" href="https://code.visualstudio.com/docs/getstarted/locales">languages</a> in addition to English.</dd>
+				<dt><a class="external" href="https://atom.io/">Atom</a></dt>
+				<dd>Modern and extensible, but can be buggy and unstable.</dd>
+				<dt><a class="external" href="https://notepad-plus-plus.org/">Notepad++</a></dt>
+				<dd>Has localizations for other user interface languages.</dd>
+			</dl>
+		</li>
+		</ol>
+		<h2 id="figures">Figures</h2>
+		<figure><figcaption>A "Hello World" Java Program</figcaption>
+<pre class="line-numbers"><code class="language-java">package com.example;
+
+public class HelloWorld
+{
+  public static void main(String[] args)
+  {
+    System.out.println("Hello, World!");
+  }
+}</code></pre>
+		</figure>
+		<figure><img src="images/java-compile-workflow.svg" alt="Java compile workflow" title="Java compile workflow" />
+			<figcaption>Compiling Java source code to bytecode and deploying it on different platforms.</figcaption>
+		</figure>
+		<h2 id="stuff" class="things">More Stuff</h2>
+		<article>
+			<p>
+				Java is object-oriented and runs on the <dfn>Java Virtual Machine</dfn> (<abbr>JVM</abbr>).
+				The Java compiler <code>javac</code> takes <dfn>source code</dfn>, stored in <code>.java</code> files, and compiles them into <dfn>object code</dfn>, stored in <code>.class</code> files.
+				Java prefers to call its object code <dfn>bytecode</dfn>.
+			</p>
+			<aside class="tip">You can verify you have correctly installed the JDK by entering the following at the command prompt; you must have version <strong>1.8.0</strong> or higher: <pre class="command-line"><code class="language-bash">java --version</code></pre>
+			You should see something similar to the following:
+			<pre><samp>openjdk 11 2018-09-25
+OpenJDK Runtime Environment 18.9 (build 11+28)
+OpenJDK 64-Bit Server VM 18.9 (build 11+28, mixed mode)</samp></pre> <span class="note">This same command may be used on <span class="os-linux">Linux</span> or <span class="os-windows">Windows</span>. The details output for these platforms may vary slightly.</span>
+			</aside>
+	
+			<p>Java is based on an <dfn>imperative programming</dfn> paradigm: each line in the source code is an instruction telling Java to perform some action.
+	The JVM will read the codes in the <code>.class</code> file representing the instructions you originally placed in your source code, and <dfn>execute</dfn> the commands, one at a time.
+	You could modify the above program to print more information by adding more lines containing the command <code>System.out.println(…)</code>.</p>
+	
+		</article>
+	
+		<script src="../../_assets/js/reveal.js"></script><script>
+		Reveal.initialize(
+			//{navigationMode: "linear"}
+		);
+
+	</script>
+	</body>
+</html>
