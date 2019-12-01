@@ -207,6 +207,7 @@ public class HTML {
 	public static final String ELEMENT_COL = "col";
 	public static final String ELEMENT_CODE = "code";
 	public static final String ELEMENT_DATA = "data";
+	public static final String ELEMENT_DATE = "date";
 	public static final String ELEMENT_DATALIST = "datalist";
 	public static final String ELEMENT_DD = "dd";
 	public static final String ELEMENT_DEL = "del";
@@ -261,6 +262,8 @@ public class HTML {
 	public static final String ELEMENT_PROGRESS = "progress";
 	public static final String ELEMENT_Q = "q";
 	public static final String ELEMENT_RUBY = "ruby";
+	public static final String ELEMENT_RP = "rp";
+	public static final String ELEMENT_RT = "rt";
 	public static final String ELEMENT_S = "s";
 	public static final String ELEMENT_SAMP = "samp";
 	public static final String ELEMENT_SCRIPT = "script";

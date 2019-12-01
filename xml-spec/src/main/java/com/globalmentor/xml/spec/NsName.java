@@ -118,13 +118,13 @@ public final class NsName {
 
 	/**
 	 * {@inheritDoc}
-	 * @implSpec This implementation returns a concatenation of the namespace, if any, and the local name name.
+	 * @implSpec This implementation returns a concatenation of the namespace, if any, and the local name name in the form {@code <namespace>:localName}.
 	 */
 	@Override
 	public String toString() {
 		final StringBuilder stringBuilder = new StringBuilder();
 		if(namespaceString != null) {
-			stringBuilder.append(namespaceString);
+			stringBuilder.append('<').append(namespaceString).append('>').append(':');
 		}
 		stringBuilder.append(localName);
 		return stringBuilder.toString();

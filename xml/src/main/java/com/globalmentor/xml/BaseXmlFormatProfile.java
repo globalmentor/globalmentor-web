@@ -34,7 +34,7 @@ import com.globalmentor.xml.spec.*;
  * @see XML#WHITESPACE_CHARACTERS
  * @see XML#ATTRIBUTE_SPACE
  */
-public abstract class BaseXmlFormatProfile implements XmlFormatProfile {
+public abstract class BaseXmlFormatProfile extends AbstractXmlFormatProfile {
 
 	/**
 	 * {@inheritDoc}
@@ -48,14 +48,28 @@ public abstract class BaseXmlFormatProfile implements XmlFormatProfile {
 	/**
 	 * {@inheritDoc}
 	 * @implSpec This implementation considers an element to preserve formatting if its <code>xml:space</code> attribute is set to
-	 *           {@value XML#ATTRIBUTE_SPACE_PRESERVE}.
+	 *           {@value XML#ATTRIBUTE_SPACE_PRESERVE}. Otherwise it delegates to {@link #isPreserved(NsName)}.
 	 * @see <a href="https://www.w3.org/TR/xml/#sec-white-space">Extensible Markup Language (XML) 1.0 (Fifth Edition), § 2.10 White Space Handling</a>
 	 * @see XML#ATTRIBUTE_SPACE
 	 * @see XML#ATTRIBUTE_SPACE_PRESERVE
+	 * @see NsName#ofNode(Node)
 	 */
 	@Override
 	public boolean isPreserved(final Element element) {
-		return isPresentAndEquals(findAttributeNS(element, ATTRIBUTE_SPACE), ATTRIBUTE_SPACE_PRESERVE);
+		if(isPresentAndEquals(findAttributeNS(element, ATTRIBUTE_SPACE), ATTRIBUTE_SPACE_PRESERVE)) {
+			return true;
+		}
+		return super.isPreserved(element);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * @implSpec This implementation always returns <code>false</code> because XML preserved elements can only be determined by the element attributes.
+	 * @see #isPreserved(Element)
+	 */
+	@Override
+	protected boolean isPreserved(final NsName element) {
+		return false;
 	}
 
 	/**
@@ -63,7 +77,7 @@ public abstract class BaseXmlFormatProfile implements XmlFormatProfile {
 	 * @implSpec This implementation returns an empty list.
 	 */
 	@Override
-	public List<NsName> getAttributeOrder(final Element element) {
+	protected List<NsName> getAttributeOrder(final NsName element) {
 		return emptyList(); //TODO add support for xml:id
 	}
 

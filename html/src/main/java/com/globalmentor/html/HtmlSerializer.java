@@ -51,8 +51,8 @@ public class HtmlSerializer extends XMLSerializer {
 		private final NsName flushElement = NsName.of(XHTML_NAMESPACE_URI_STRING, ELEMENT_HTML);
 
 		@Override
-		public boolean isFlush(final Element element) {
-			return flushElement.matches(element);
+		protected boolean isFlush(final NsName element) {
+			return element.equals(flushElement);
 		};
 
 	};

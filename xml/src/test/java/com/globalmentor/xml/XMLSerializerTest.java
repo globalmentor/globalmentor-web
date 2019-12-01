@@ -17,7 +17,7 @@
 package com.globalmentor.xml;
 
 import static com.globalmentor.xml.XmlDom.*;
-import static java.util.Collections.emptyList;
+import static java.util.Collections.*;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
@@ -278,13 +278,13 @@ public class XMLSerializerTest {
 		private final List<NsName> attributeOrder = List.of(NsName.of("foo"), NsName.of("bar"));
 
 		@Override
-		public boolean isFlush(final Element element) {
-			return flushElement.matches(element);
+		public boolean isFlush(final NsName element) {
+			return element.equals(flushElement);
 		};
 
 		@Override
-		public List<NsName> getAttributeOrder(final Element element) {
-			if((element.getNamespaceURI() == null || element.getNamespaceURI().equals("http://example/ns/")) && element.getLocalName().equals("ordered")) {
+		public List<NsName> getAttributeOrder(final NsName element) {
+			if((element.getNamespaceString() == null || element.getNamespaceString().equals("http://example/ns/")) && element.getLocalName().equals("ordered")) {
 				return attributeOrder;
 			}
 			return emptyList();

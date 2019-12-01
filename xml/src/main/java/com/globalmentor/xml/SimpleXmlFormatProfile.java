@@ -16,15 +16,13 @@
 
 package com.globalmentor.xml;
 
-import static java.util.Collections.emptyList;
+import static java.util.Collections.*;
 import static java.util.Objects.*;
 
 import java.util.List;
 import java.util.Set;
 
 import javax.annotation.*;
-
-import org.w3c.dom.*;
 
 import com.globalmentor.java.Characters;
 import com.globalmentor.xml.spec.NsName;
@@ -33,7 +31,7 @@ import com.globalmentor.xml.spec.NsName;
  * A simple implementation of a format profile.
  * @author Garret Wilson
  */
-public class SimpleXmlFormatProfile implements XmlFormatProfile {
+public class SimpleXmlFormatProfile extends AbstractXmlFormatProfile {
 
 	private final Characters spaceNormalizationCharacters;
 
@@ -60,13 +58,8 @@ public class SimpleXmlFormatProfile implements XmlFormatProfile {
 	}
 
 	@Override
-	public boolean isBlock(final Element element) {
-		return blockElements.contains(NsName.ofNode(element));
-	}
-
-	@Override
-	public boolean isPreserved(final Element element) {
-		return preservedElements.contains(NsName.ofNode(element));
+	protected boolean isBlock(final NsName element) {
+		return blockElements.contains(element);
 	}
 
 	/**
@@ -74,8 +67,13 @@ public class SimpleXmlFormatProfile implements XmlFormatProfile {
 	 * @implSpec This implementation always returns <code>false</code>, resulting in no flush elements.
 	 */
 	@Override
-	public boolean isFlush(Element element) {
+	protected boolean isFlush(final NsName element) {
 		return false;
+	}
+
+	@Override
+	protected boolean isPreserved(final NsName element) {
+		return preservedElements.contains(element);
 	}
 
 	/**
@@ -83,7 +81,7 @@ public class SimpleXmlFormatProfile implements XmlFormatProfile {
 	 * @implSpec This implementation returns an empty list.
 	 */
 	@Override
-	public List<NsName> getAttributeOrder(final Element element) {
+	protected List<NsName> getAttributeOrder(final NsName element) {
 		return emptyList(); //TODO add support for xml:id
 	}
 

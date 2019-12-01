@@ -60,12 +60,12 @@ public class XMLSerializer {
 	 */
 	public static final XmlFormatProfile DEFAULT_XML_FORMAT_PROFILE = new BaseXmlFormatProfile() {
 		@Override
-		public boolean isBlock(final Element element) {
+		protected boolean isBlock(final NsName element) {
 			return true;
 		}
 
 		@Override
-		public boolean isFlush(Element element) {
+		protected boolean isFlush(final NsName element) {
 			return false;
 		}
 	};

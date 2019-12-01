@@ -17,17 +17,15 @@
 package com.globalmentor.html;
 
 import static com.globalmentor.html.spec.HTML.*;
-import static java.util.function.Predicate.*;
+import static java.util.stream.Collectors.*;
 import static java.util.stream.Stream.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
-
-import org.w3c.dom.*;
+import java.util.stream.Stream;
 
 import com.globalmentor.html.spec.HTML;
 import com.globalmentor.java.Characters;
-import com.globalmentor.xml.XmlFormatProfile;
+import com.globalmentor.xml.AbstractXmlFormatProfile;
 import com.globalmentor.xml.spec.*;
 
 /**
@@ -35,10 +33,19 @@ import com.globalmentor.xml.spec.*;
  * @author Garret Wilson
  * @see HTML#SPACE_CHARACTERS
  */
-public abstract class BaseHtmlFormatProfile implements XmlFormatProfile {
+public abstract class BaseHtmlFormatProfile extends AbstractXmlFormatProfile {
 
-	private static final Set<NsName> BLOCK_ELEMENTS = concat(FLOW_CONTENT.stream(), METADATA_CONTENT.stream()).filter(not(PHRASING_CONTENT::contains))
-			.collect(Collectors.toSet());
+	private static final Set<NsName> BLOCK_ELEMENTS;
+
+	static {
+		Stream<NsName> blockElements = HTML.BLOCK_ELEMENTS.stream();
+		blockElements = concat(blockElements, HTML.LIST_ITEM_ELEMENTS.stream());
+		blockElements = concat(blockElements, HTML.METADATA_CONTENT.stream());
+		blockElements = concat(blockElements, Stream.of(ELEMENT_HEAD).map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName)));
+		//consider adding ELEMENT_DATALIST
+		//consider adding contained items: ELEMENT_AREA, ELEMENT_OPTION, ELEMENT_PARAM, ELEMENT_SOURCE, ELEMENT_TRACK
+		BLOCK_ELEMENTS = blockElements.collect(toSet());
+	}
 
 	private static final Set<NsName> PRESERVED_HTML_ELEMENTS = Set.of(NsName.of(XHTML_NAMESPACE_URI_STRING, ELEMENT_PRE),
 			NsName.of(XHTML_NAMESPACE_URI_STRING, ELEMENT_SCRIPT));
@@ -57,15 +64,16 @@ public abstract class BaseHtmlFormatProfile implements XmlFormatProfile {
 
 	/**
 	 * {@inheritDoc}
-	 * @implSpec This method considers an element a block element if it is HTML5 <dfn>flow content</dfn> that is not <dfn>phrasing content</dfn>, or <dfn>metadata
-	 *           content</dfn>.
-	 * @see <a href="https://www.w3.org/TR/html52/dom.html#flow-content">HTML 5.2 § 3.2.4.2.2. Flow content</a>
-	 * @see <a href="https://www.w3.org/TR/html52/dom.html#metadata-content">HTML 5.2 § 3.2.4.2.1. Metadata content</a>
-	 * @see <a href="https://www.w3.org/TR/html52/dom.html#phrasing-content">HTML 5.2 § 3.2.4.2.5. Phrasing content</a>
+	 * @implSpec This method considers an element a block element if its suggested user agent styling is <code>display: block</code> or
+	 *           <code>display: list-item</code>.
+	 * @implNote An alternate approach would be to use content categories, considering an element a block element if it is HTML5 <dfn>flow content</dfn> that is
+	 *           not <dfn>phrasing content</dfn>; <dfn>metadata content</dfn>; or one of {@code <html>}, {@code <head>}, or {@code <body>}. However this would
+	 *           still not include list-item elements such as {@code <li>} and other elements.
+	 * @see <a href="https://www.w3.org/TR/html52/rendering.html#rendering">HTML 5.2 § 10. Rendering</a>
 	 */
 	@Override
-	public boolean isBlock(final Element element) {
-		return BLOCK_ELEMENTS.contains(NsName.ofNode(element));
+	protected boolean isBlock(final NsName element) {
+		return BLOCK_ELEMENTS.contains(element);
 	}
 
 	/**
@@ -73,8 +81,8 @@ public abstract class BaseHtmlFormatProfile implements XmlFormatProfile {
 	 * @implSpec This method preserves space of HTML <code>&lt;pre&gt;</code> and <code>&lt;script&gt;</code> elements.
 	 */
 	@Override
-	public boolean isPreserved(final Element element) {
-		return PRESERVED_HTML_ELEMENTS.contains(NsName.ofNode(element));
+	protected boolean isPreserved(final NsName element) {
+		return PRESERVED_HTML_ELEMENTS.contains(element);
 	}
 
 	/**
@@ -83,7 +91,7 @@ public abstract class BaseHtmlFormatProfile implements XmlFormatProfile {
 	 *           <code>class</code>, and <code>style</code>.
 	 */
 	@Override
-	public List<NsName> getAttributeOrder(final Element element) {
+	protected List<NsName> getAttributeOrder(final NsName element) {
 		return ATTRIBUTE_ORDER;
 	}
 
