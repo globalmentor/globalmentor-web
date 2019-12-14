@@ -47,8 +47,13 @@ public abstract class BaseHtmlFormatProfile extends AbstractXmlFormatProfile {
 		BLOCK_ELEMENTS = blockElements.collect(toSet());
 	}
 
-	private static final Set<NsName> PRESERVED_HTML_ELEMENTS = Set.of(NsName.of(XHTML_NAMESPACE_URI_STRING, ELEMENT_PRE),
-			NsName.of(XHTML_NAMESPACE_URI_STRING, ELEMENT_SCRIPT));
+	private static final Set<NsName> PRESERVED_HTML_ELEMENTS = Set.of(
+			//<pre>
+			NsName.of(XHTML_NAMESPACE_URI_STRING, ELEMENT_PRE),
+			//<script>
+			NsName.of(XHTML_NAMESPACE_URI_STRING, ELEMENT_SCRIPT),
+			//<style>
+			NsName.of(XHTML_NAMESPACE_URI_STRING, ELEMENT_STYLE));
 
 	/**
 	 * {@inheritDoc}
