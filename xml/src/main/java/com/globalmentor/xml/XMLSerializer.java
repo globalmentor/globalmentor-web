@@ -1075,17 +1075,17 @@ public class XMLSerializer {
 		final XmlFormatProfile formatProfile = getFormatProfile();
 
 		/*
-		 * Whether content will always begin with a newline if there are any newlines.
+		 * Whether content will always begin with a newline if there are any child block elements.
 		 * This is a possible future configurable setting.
 		 */
-		//TODO enable in future: final boolean settingAlwaysBeginningNewlineIfAny = false;
+		//TODO enable in future: final boolean settingAlwaysBeginningNewlineIfAnyBlockChildren = false;
 
 		/*
-		 * Whether content will always end with a newline before closing tag for indented content.
-		 * Put another way, this setting determines whether ending tags are always aligned with beginning tags.
+		 * Whether content will always end with a newline before closing tag if there were any block children.
+		 * Put another way, this setting determines whether ending tags are always aligned with beginning tags, unless the only lines breaks are from break elements.
 		 * This is a possible future configurable setting.
 		 */
-		final boolean settingAlwaysEndingNewlineIfAny = true;
+		final boolean settingAlwaysEndingNewlineIfAnyBlockChildren = true;
 
 		//gather information about the parent node
 		final boolean isBlockElement = node instanceof Element && formatProfile.isBlock(((Element)node));
@@ -1156,7 +1156,7 @@ public class XMLSerializer {
 
 		boolean lastChildBrokeLine = false; //keep track of whether we ended with a line break for the previous child
 		boolean lastBreakFlush = false; //keep track of whether the previous child did not cause an indent when when breaking the line
-		boolean hasChildNewline = false; //keep track of whether any child had a line break
+		boolean hasBlockChild = false; //keep track of whether any child was a block element
 		final int childCount = children.size();
 		for(int childIndex = 0; childIndex < childCount; childIndex++) {
 			final Object child = children.get(childIndex);
@@ -1169,17 +1169,21 @@ public class XMLSerializer {
 			if(isContentFormatted) {
 				isFormatBlock = child instanceof Element && formatProfile.isBlock((Element)child);
 				//we should force a first "block" child if the beginning newline setting is turned on and we know we'll need to indent (untested)
-				//TODO enable in future: || (settingAlwaysBeginningNewlineIfAny && childIndex==0 && childElementsOf(node).filter(formatProfile::isBlock).findAny().isPresent())
+				//TODO enable in future; combine with hasBlockChild: || (settingAlwaysBeginningNewlineIfAnyBlockChildren && childIndex==0 && childElementsOf(node).filter(formatProfile::isBlock).findAny().isPresent())
 				isFormatBreak = child instanceof Element && formatProfile.isBreak((Element)child); //e.g. <br/>
 				isFormatIndent = lastChildBrokeLine || isFormatBlock;
 				isFormatIncreaseIndent = isFormatIndent && !isFlushElement && !(lastChildBrokeLine && lastBreakFlush); //don't increase the indent if the last break was a flush break
-				isFormatNewlineAfter = isFormatBlock || isFormatBreak || (settingAlwaysEndingNewlineIfAny && hasChildNewline && childIndex == childCount - 1);
+				isFormatNewlineAfter = isFormatBlock || isFormatBreak
+						|| (settingAlwaysEndingNewlineIfAnyBlockChildren && hasBlockChild && childIndex == childCount - 1);
 			} else {
 				isFormatBlock = false;
 				isFormatBreak = false;
 				isFormatIndent = false;
 				isFormatIncreaseIndent = false;
 				isFormatNewlineAfter = false;
+			}
+			if(isFormatBlock) {
+				hasBlockChild = true;
 			}
 
 			if(isFormatBlock && !lastChildBrokeLine) { //prevent two blocks in a row from having double line breaks
@@ -1193,9 +1197,6 @@ public class XMLSerializer {
 			}
 			lastChildBrokeLine = isFormatNewlineAfter;
 			lastBreakFlush = lastChildBrokeLine && isFormatBreak; //break elements break the line but do not increase the indent
-			if(lastChildBrokeLine) {
-				hasChildNewline = true;
-			}
 
 			if(child instanceof Node) { //non-text nodes
 				final Node childNode = (Node)child;

@@ -432,10 +432,12 @@ public class XMLSerializerTest {
 	/** @see XmlFormatProfile#isBreak(Element) */
 	@Test
 	public void testBreak() throws IOException {
+		assertThat(reformat("<block>foo<break/>bar<break/>foobar</block>", BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE),
+				is("<block>foo<break />\nbar<break />\nfoobar</block>"));
 		assertThat(reformat(
 				"<block>foo<break/>bar<break/>before<block>foo<break/> bar</block><inline>in<break/>side</inline> foo<inline>foo<break/>bar inside</inline>be<break/>side<block>another</block>foo<break/>bar</block>",
 				BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE),
-				is("<block>foo<break />\nbar<break />\nbefore\n\t<block>foo<break />\n\tbar\n\t</block>\n\t<inline>in<break />\n\tside\n\t</inline> foo<inline>foo<break />\nbar inside\n</inline>be<break />\nside\n\t<block>another</block>\n\tfoo<break />\nbar\n</block>"));
+				is("<block>foo<break />\nbar<break />\nbefore\n\t<block>foo<break />\n\tbar</block>\n\t<inline>in<break />\n\tside</inline> foo<inline>foo<break />\nbar inside</inline>be<break />\nside\n\t<block>another</block>\n\tfoo<break />\nbar\n</block>"));
 	}
 
 	/** @see XmlFormatProfile#isFlush(Element) */
