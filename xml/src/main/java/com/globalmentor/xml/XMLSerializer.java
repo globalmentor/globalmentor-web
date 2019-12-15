@@ -65,6 +65,11 @@ public class XMLSerializer {
 		}
 
 		@Override
+		protected boolean isBreak(final NsName element) {
+			return false;
+		}
+
+		@Override
 		protected boolean isFlush(final NsName element) {
 			return false;
 		}
@@ -1042,7 +1047,8 @@ public class XMLSerializer {
 	 * <ul>
 	 * <li>Subsequent text nodes are combined.</li>
 	 * <li>Text space runs of {@link XmlFormatProfile#getSpaceNormalizationCharacters()} are normalized to a single space.</li>
-	 * <li>Text is left trimmed if it is the first child of block content, or if it appears directly after a block element sibling.</li>
+	 * <li>Text is left trimmed if it is the first child of block content, or if it appears directly after a block element sibling or a break element
+	 * sibling.</li>
 	 * <li>Text is right trimmed if it is the last child of block content, or if it appears directly before a block element sibling.</li>
 	 * <li>Any resulting empty string text nodes are ignored.</li>
 	 * </ul>
@@ -1124,7 +1130,8 @@ public class XMLSerializer {
 				if(isContentFormatted) {
 					final int childCount = children.size();
 					final boolean trimStart = isBlockElement && childIndex == 0 //text is first child of block,
-							|| childIndex > 0 && asInstance(children.get(childIndex - 1), Element.class).map(formatProfile::isBlock).orElse(false); //or text comes after a block child element
+							|| childIndex > 0 && asInstance(children.get(childIndex - 1), Element.class).map(formatProfile::isBlock).orElse(false) //or text comes after a block child element,
+							|| childIndex > 0 && asInstance(children.get(childIndex - 1), Element.class).map(formatProfile::isBreak).orElse(false); //or text comes after a break child element
 					final boolean trimEnd = isBlockElement && childIndex == childCount - 1 //text is last child of block,
 							|| childIndex < childCount - 1 && asInstance(children.get(childIndex + 1), Element.class).map(formatProfile::isBlock).orElse(false); //or text comes before a block child element
 					normalizedText = collapseRuns(text, formatProfile.getSpaceNormalizationCharacters(), SPACE_CHAR, trimStart, trimEnd);
@@ -1148,23 +1155,30 @@ public class XMLSerializer {
 		//2. serialize children
 
 		boolean lastChildBrokeLine = false; //keep track of whether we ended with a line break for the previous child
+		boolean lastBreakFlush = false; //keep track of whether the previous child did not cause an indent when when breaking the line
 		boolean hasChildNewline = false; //keep track of whether any child had a line break
 		final int childCount = children.size();
 		for(int childIndex = 0; childIndex < childCount; childIndex++) {
 			final Object child = children.get(childIndex);
 
 			final boolean isFormatBlock;
+			final boolean isFormatBreak;
 			final boolean isFormatIndent; //this indicates whether we need to append indent characters, not necessarily whether we need to _increase_ indent
+			final boolean isFormatIncreaseIndent;
 			final boolean isFormatNewlineAfter;
 			if(isContentFormatted) {
 				isFormatBlock = child instanceof Element && formatProfile.isBlock((Element)child);
 				//we should force a first "block" child if the beginning newline setting is turned on and we know we'll need to indent (untested)
 				//TODO enable in future: || (settingAlwaysBeginningNewlineIfAny && childIndex==0 && childElementsOf(node).filter(formatProfile::isBlock).findAny().isPresent())
+				isFormatBreak = child instanceof Element && formatProfile.isBreak((Element)child); //e.g. <br/>
 				isFormatIndent = lastChildBrokeLine || isFormatBlock;
-				isFormatNewlineAfter = isFormatBlock || (settingAlwaysEndingNewlineIfAny && hasChildNewline && childIndex == childCount - 1);
+				isFormatIncreaseIndent = isFormatIndent && !isFlushElement && !(lastChildBrokeLine && lastBreakFlush); //don't increase the indent if the last break was a flush break
+				isFormatNewlineAfter = isFormatBlock || isFormatBreak || (settingAlwaysEndingNewlineIfAny && hasChildNewline && childIndex == childCount - 1);
 			} else {
 				isFormatBlock = false;
+				isFormatBreak = false;
 				isFormatIndent = false;
+				isFormatIncreaseIndent = false;
 				isFormatNewlineAfter = false;
 			}
 
@@ -1172,12 +1186,13 @@ public class XMLSerializer {
 				appendable.append(getLineSeparator());
 			}
 			if(isFormatIndent) {
-				if(!isFlushElement) {
+				if(isFormatIncreaseIndent) {
 					indent();
 				}
 				serializeHorizontalAlignment(appendable, getIndent());
 			}
 			lastChildBrokeLine = isFormatNewlineAfter;
+			lastBreakFlush = lastChildBrokeLine && isFormatBreak; //break elements break the line but do not increase the indent
 			if(lastChildBrokeLine) {
 				hasChildNewline = true;
 			}
@@ -1217,7 +1232,7 @@ public class XMLSerializer {
 			if(isFormatNewlineAfter) {
 				appendable.append(getLineSeparator());
 			}
-			if(isFormatIndent && !isFlushElement) {
+			if(isFormatIncreaseIndent) {
 				unindent();
 			}
 		}

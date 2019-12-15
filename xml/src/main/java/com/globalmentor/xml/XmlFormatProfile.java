@@ -49,6 +49,14 @@ public interface XmlFormatProfile {
 	public boolean isBlock(@Nonnull final Element element);
 
 	/**
+	 * Indicates whether the given element is considered a break element for purposes of formatting. A <dfn>break</dfn> element is one that results in a line
+	 * break after the element, even though the element may not be a block element.
+	 * @param element A DOM element.
+	 * @return <code>true</code> if the element should be formatted as a break element.
+	 */
+	public boolean isBreak(@Nonnull final Element element);
+
+	/**
 	 * Indicates whether first-level children are never indented. The first-level children of flush elements, if they result in newlines (such as block children),
 	 * are formatted flush with the given element—that is, at the same indention level rather than indented an additional level.
 	 * @apiNote Typically a flush element will also be a block element and/or the root, document element.

@@ -262,6 +262,8 @@ public class XMLSerializerTest {
 	 * <dl>
 	 * <dt>block elements</dt>
 	 * <dd>{@code <block>}, {@code <flush>}, and {@code <pre>}</dd>
+	 * <dt>break elements</dt>
+	 * <dd>{@code <break>}</dd>
 	 * <dt>preserved elements</dt>
 	 * <dd>{@code <pre>}</dd>
 	 * <dt>flush elements</dt>
@@ -270,12 +272,17 @@ public class XMLSerializerTest {
 	 * <dd>{@code <ordered>}, either with no namespace or in the <code>http://example/ns/</code> namespace: <code>foo</code>, <code>bar</code></dd>
 	 * </dl>
 	 */
-	public static final XmlFormatProfile BLOCK_FLUSH_PRE_FORMAT_PROFILE = new SimpleXmlFormatProfile(XML.WHITESPACE_CHARACTERS,
+	public static final XmlFormatProfile BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE = new SimpleXmlFormatProfile(XML.WHITESPACE_CHARACTERS,
 			Set.of(NsName.of("block"), NsName.of("flush"), NsName.of("pre")), Set.of(NsName.of("pre"))) {
 
+		private final NsName breakElement = NsName.of("break");
 		private final NsName flushElement = NsName.of("flush");
-
 		private final List<NsName> attributeOrder = List.of(NsName.of("foo"), NsName.of("bar"));
+
+		@Override
+		public boolean isBreak(final NsName element) {
+			return element.equals(breakElement);
+		};
 
 		@Override
 		public boolean isFlush(final NsName element) {
@@ -294,8 +301,8 @@ public class XMLSerializerTest {
 	/** @see XmlFormatProfile#getSpaceNormalizationCharacters() */
 	@Test
 	public void testSpacesNormalized() throws IOException {
-		assertThat(reformat("<block>bar</block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE, "", ""), is("<block>bar</block>"));
-		assertThat(reformat("<block>abc def\thijk\r\n  lmnop\n\t\tqrstuv\n\n\n\nwxyz</block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE, "", ""),
+		assertThat(reformat("<block>bar</block>", BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE, "", ""), is("<block>bar</block>"));
+		assertThat(reformat("<block>abc def\thijk\r\n  lmnop\n\t\tqrstuv\n\n\n\nwxyz</block>", BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE, "", ""),
 				is("<block>abc def hijk lmnop qrstuv wxyz</block>"));
 	}
 
@@ -305,9 +312,9 @@ public class XMLSerializerTest {
 	 */
 	@Test
 	public void testBlockStartChildTextTrimmed() throws IOException {
-		assertThat(reformat("<block>\n\tfoo<inline>bar</inline>\t\t\tfoobar</block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE, "", ""),
+		assertThat(reformat("<block>\n\tfoo<inline>bar</inline>\t\t\tfoobar</block>", BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE, "", ""),
 				is("<block>foo<inline>bar</inline> foobar</block>"));
-		assertThat(reformat("<inline>\n\tfoo</inline>", BLOCK_FLUSH_PRE_FORMAT_PROFILE, "", ""), is("<inline> foo</inline>"));
+		assertThat(reformat("<inline>\n\tfoo</inline>", BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE, "", ""), is("<inline> foo</inline>"));
 	}
 
 	/**
@@ -316,10 +323,20 @@ public class XMLSerializerTest {
 	 */
 	@Test
 	public void testChildTextAfterBlockTrimmed() throws IOException {
-		assertThat(reformat("<block>foo<inline>bar</inline>\t\t\tfoobar</block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE, "", ""),
+		assertThat(reformat("<block>foo<inline>bar</inline>\t\t\tfoobar</block>", BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE, "", ""),
 				is("<block>foo<inline>bar</inline> foobar</block>"));
-		assertThat(reformat("<block>foo<block>bar</block>\t\t\tfoobar</block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE, "", ""),
+		assertThat(reformat("<block>foo<block>bar</block>\t\t\tfoobar</block>", BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE, "", ""),
 				is("<block>foo<block>bar</block>foobar</block>"));
+	}
+
+	/**
+	 * @see XmlFormatProfile#getSpaceNormalizationCharacters()
+	 * @see XmlFormatProfile#isBreak(Element)
+	 */
+	@Test
+	public void testChildTextAfterBreakTrimmed() throws IOException {
+		assertThat(reformat("<block>foobar<break/>\t\t \r\n\tfoobar</block>", BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE, "", ""),
+				is("<block>foobar<break />foobar</block>"));
 	}
 
 	/**
@@ -328,9 +345,9 @@ public class XMLSerializerTest {
 	 */
 	@Test
 	public void testBlockEndChildTextTrimmed() throws IOException {
-		assertThat(reformat("<block>foo\t\t\t<inline>bar</inline>foobar\n\t</block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE, "", ""),
+		assertThat(reformat("<block>foo\t\t\t<inline>bar</inline>foobar\n\t</block>", BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE, "", ""),
 				is("<block>foo <inline>bar</inline>foobar</block>"));
-		assertThat(reformat("<inline>foo\n\t</inline>", BLOCK_FLUSH_PRE_FORMAT_PROFILE, "", ""), is("<inline>foo </inline>"));
+		assertThat(reformat("<inline>foo\n\t</inline>", BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE, "", ""), is("<inline>foo </inline>"));
 	}
 
 	/**
@@ -339,22 +356,22 @@ public class XMLSerializerTest {
 	 */
 	@Test
 	public void testChildTextBeforeBlockTrimmed() throws IOException {
-		assertThat(reformat("<block>foo\t\t\t<inline>bar</inline>foobar</block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE, "", ""),
+		assertThat(reformat("<block>foo\t\t\t<inline>bar</inline>foobar</block>", BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE, "", ""),
 				is("<block>foo <inline>bar</inline>foobar</block>"));
-		assertThat(reformat("<block>foo\t\t\t<block>bar</block>foobar</block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE, "", ""),
+		assertThat(reformat("<block>foo\t\t\t<block>bar</block>foobar</block>", BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE, "", ""),
 				is("<block>foo<block>bar</block>foobar</block>"));
 	}
 
 	/** @see XmlFormatProfile#isBlock(Element) */
 	@Test
 	public void testNewlinesAroundBlock() throws IOException {
-		assertThat(reformat("<block>foo<inline>foobar</inline>bar</block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE, "\n", ""),
+		assertThat(reformat("<block>foo<inline>foobar</inline>bar</block>", BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE, "\n", ""),
 				is("<block>foo<inline>foobar</inline>bar</block>"));
-		assertThat(reformat("<block><block>foobar</block>bar</block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE, "\n", ""),
+		assertThat(reformat("<block><block>foobar</block>bar</block>", BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE, "\n", ""),
 				is("<block>\n<block>foobar</block>\nbar\n</block>"));
-		assertThat(reformat("<block>foo<block>foobar</block></block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE, "\n", ""),
+		assertThat(reformat("<block>foo<block>foobar</block></block>", BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE, "\n", ""),
 				is("<block>foo\n<block>foobar</block>\n</block>"));
-		assertThat(reformat("<block>foo<block>foobar</block>bar</block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE, "\n", ""),
+		assertThat(reformat("<block>foo<block>foobar</block>bar</block>", BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE, "\n", ""),
 				is("<block>foo\n<block>foobar</block>\nbar\n</block>"));
 	}
 
@@ -363,75 +380,88 @@ public class XMLSerializerTest {
 	public void testSubsequentInlinesDoNotBreakLine() throws IOException {
 		assertThat(
 				reformat("<block>foo<block>foobar</block><inline>inside</inline><inline>inside</inline>beside<block>another</block>bar</block>",
-						BLOCK_FLUSH_PRE_FORMAT_PROFILE, "\n", ""),
+						BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE, "\n", ""),
 				is("<block>foo\n<block>foobar</block>\n<inline>inside</inline><inline>inside</inline>beside\n<block>another</block>\nbar\n</block>"));
 	}
 
 	/** @see XmlFormatProfile#isBlock(Element) */
 	@Test
 	public void testTrailingInlineAfterBlockHasNewline() throws IOException {
-		assertThat(reformat("<block><block>foobar</block>bar</block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE, "\n", ""),
+		assertThat(reformat("<block><block>foobar</block>bar</block>", BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE, "\n", ""),
 				is("<block>\n<block>foobar</block>\nbar\n</block>"));
 	}
 
 	/** @see XmlFormatProfile#isBlock(Element) */
 	@Test
 	public void testBlockIndented() throws IOException {
-		assertThat(reformat("<block>foo<inline>foobar</inline>bar</block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE, "", "\t"),
+		assertThat(reformat("<block>foo<inline>foobar</inline>bar</block>", BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE, "", "\t"),
 				is("<block>foo<inline>foobar</inline>bar</block>"));
-		assertThat(reformat("<block><block>foobar</block>bar</block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE, "", "\t"),
+		assertThat(reformat("<block><block>foobar</block>bar</block>", BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE, "", "\t"),
 				is("<block>\t<block>foobar</block>\tbar</block>"));
-		assertThat(reformat("<block>foo<block>foobar</block></block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE, "", "\t"), is("<block>foo\t<block>foobar</block></block>"));
-		assertThat(reformat("<block>foo<block>foobar</block>bar</block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE, "", "\t"),
+		assertThat(reformat("<block>foo<block>foobar</block></block>", BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE, "", "\t"),
+				is("<block>foo\t<block>foobar</block></block>"));
+		assertThat(reformat("<block>foo<block>foobar</block>bar</block>", BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE, "", "\t"),
 				is("<block>foo\t<block>foobar</block>\tbar</block>"));
 	}
 
 	/** @see XmlFormatProfile#isBlock(Element) */
 	@Test
 	public void testBlockNewlinesAndIndents() throws IOException {
-		assertThat(reformat("<block>foo<inline>foobar</inline>bar</block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE), is("<block>foo<inline>foobar</inline>bar</block>"));
-		assertThat(reformat("<block><block>foobar</block>bar</block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE), is("<block>\n\t<block>foobar</block>\n\tbar\n</block>"));
-		assertThat(reformat("<block>foo<block>foobar</block></block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE), is("<block>foo\n\t<block>foobar</block>\n</block>"));
-		assertThat(reformat("<block>foo<block>foobar</block>bar</block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE),
+		assertThat(reformat("<block>foo<inline>foobar</inline>bar</block>", BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE),
+				is("<block>foo<inline>foobar</inline>bar</block>"));
+		assertThat(reformat("<block><block>foobar</block>bar</block>", BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE),
+				is("<block>\n\t<block>foobar</block>\n\tbar\n</block>"));
+		assertThat(reformat("<block>foo<block>foobar</block></block>", BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE), is("<block>foo\n\t<block>foobar</block>\n</block>"));
+		assertThat(reformat("<block>foo<block>foobar</block>bar</block>", BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE),
 				is("<block>foo\n\t<block>foobar</block>\n\tbar\n</block>"));
-		assertThat(reformat("<block>foo<block>foobar</block>bar<block>left<block>nest</block>right</block>end</block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE),
+		assertThat(reformat("<block>foo<block>foobar</block>bar<block>left<block>nest</block>right</block>end</block>", BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE),
 				is("<block>foo\n\t<block>foobar</block>\n\tbar\n\t<block>left\n\t\t<block>nest</block>\n\t\tright\n\t</block>\n\tend\n</block>"));
 		assertThat(
 				reformat("<block>foo<block>foobar</block><inline>inside</inline><inline>inside</inline>beside<block>another</block>bar</block>",
-						BLOCK_FLUSH_PRE_FORMAT_PROFILE),
+						BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE),
 				is("<block>foo\n\t<block>foobar</block>\n\t<inline>inside</inline><inline>inside</inline>beside\n\t<block>another</block>\n\tbar\n</block>"));
 	}
 
 	/** @see XmlFormatProfile#isBlock(Element) */
 	@Test
 	public void testNewlinesAmongBlocksDoNotProduceBlankLines() throws IOException {
-		assertThat(reformat("<block>\n\n\t<block>top</block>\n\n\n\t<block>bottom</block>\n\n</block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE),
+		assertThat(reformat("<block>\n\n\t<block>top</block>\n\n\n\t<block>bottom</block>\n\n</block>", BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE),
 				is("<block>\n\t<block>top</block>\n\t<block>bottom</block>\n</block>"));
+	}
+
+	/** @see XmlFormatProfile#isBreak(Element) */
+	@Test
+	public void testBreak() throws IOException {
+		assertThat(reformat(
+				"<block>foo<break/>bar<break/>before<block>foo<break/> bar</block><inline>in<break/>side</inline> foo<inline>foo<break/>bar inside</inline>be<break/>side<block>another</block>foo<break/>bar</block>",
+				BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE),
+				is("<block>foo<break />\nbar<break />\nbefore\n\t<block>foo<break />\n\tbar\n\t</block>\n\t<inline>in<break />\n\tside\n\t</inline> foo<inline>foo<break />\nbar inside\n</inline>be<break />\nside\n\t<block>another</block>\n\tfoo<break />\nbar\n</block>"));
 	}
 
 	/** @see XmlFormatProfile#isFlush(Element) */
 	@Test
 	public void testFlush() throws IOException {
-		assertThat(reformat("<block><block>foobar</block></block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE), is("<block>\n\t<block>foobar</block>\n</block>"));
-		assertThat(reformat("<flush><block>foobar</block></flush>", BLOCK_FLUSH_PRE_FORMAT_PROFILE), is("<flush>\n<block>foobar</block>\n</flush>"));
-		assertThat(reformat("<flush>foo<block>foobar</block></flush>", BLOCK_FLUSH_PRE_FORMAT_PROFILE), is("<flush>foo\n<block>foobar</block>\n</flush>"));
-		assertThat(reformat("<flush><block>foobar</block>bar</flush>", BLOCK_FLUSH_PRE_FORMAT_PROFILE), is("<flush>\n<block>foobar</block>\nbar\n</flush>"));
-		assertThat(reformat("<flush>foo<block>foobar</block>bar</flush>", BLOCK_FLUSH_PRE_FORMAT_PROFILE), is("<flush>foo\n<block>foobar</block>\nbar\n</flush>"));
+		assertThat(reformat("<block><block>foobar</block></block>", BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE), is("<block>\n\t<block>foobar</block>\n</block>"));
+		assertThat(reformat("<flush><block>foobar</block></flush>", BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE), is("<flush>\n<block>foobar</block>\n</flush>"));
+		assertThat(reformat("<flush>foo<block>foobar</block></flush>", BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE), is("<flush>foo\n<block>foobar</block>\n</flush>"));
+		assertThat(reformat("<flush><block>foobar</block>bar</flush>", BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE), is("<flush>\n<block>foobar</block>\nbar\n</flush>"));
+		assertThat(reformat("<flush>foo<block>foobar</block>bar</flush>", BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE),
+				is("<flush>foo\n<block>foobar</block>\nbar\n</flush>"));
 		assertThat(
 				reformat(
 						"<block><block><block>foo</block> indented <block>bar</block></block> foobar <flush><block>foo</block> flush <block>bar</block></flush></block>",
-						BLOCK_FLUSH_PRE_FORMAT_PROFILE),
+						BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE),
 				is("<block>\n\t<block>\n\t\t<block>foo</block>\n\t\tindented\n\t\t<block>bar</block>\n\t</block>\n\tfoobar\n\t<flush>\n\t<block>foo</block>\n\tflush\n\t<block>bar</block>\n\t</flush>\n</block>"));
 	}
 
 	/** @see XmlFormatProfile#isPreserved(Element) */
 	@Test
 	public void testPreservedNotFormatted() throws IOException {
-		assertThat(reformat("<pre>abc def\thijk\n  lmnop\n\t\tqrstuv\n\n\n\nwxyz</pre>", BLOCK_FLUSH_PRE_FORMAT_PROFILE),
+		assertThat(reformat("<pre>abc def\thijk\n  lmnop\n\t\tqrstuv\n\n\n\nwxyz</pre>", BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE),
 				is("<pre>abc def\thijk\n  lmnop\n\t\tqrstuv\n\n\n\nwxyz</pre>"));
 		assertThat(reformat(
 				"<block> before\t\n\n<pre>\t x\n\n\tThere are <nested>inline \t\t things</nested> and \n\t\t<block>several    spaces</block>\n\t here.\t\t</pre>\t  after\n</block>",
-				BLOCK_FLUSH_PRE_FORMAT_PROFILE),
+				BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE),
 				is("<block>before\n\t<pre>\t x\n\n\tThere are <nested>inline \t\t things</nested> and \n\t\t<block>several    spaces</block>\n\t here.\t\t</pre>\n\tafter\n</block>"));
 	}
 
@@ -441,7 +471,7 @@ public class XMLSerializerTest {
 	 */
 	@Test
 	public void testPreservedNormalizesNewlines() throws IOException {
-		assertThat(reformat("<pre>abc\r\r\r\rdef\n\n\n\nhij\r\n\r\nklmn\r\n\n\rop</pre>", BLOCK_FLUSH_PRE_FORMAT_PROFILE, "XY", "\t"),
+		assertThat(reformat("<pre>abc\r\r\r\rdef\n\n\n\nhij\r\n\r\nklmn\r\n\n\rop</pre>", BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE, "XY", "\t"),
 				is("<pre>abcXYXYXYXYdefXYXYXYXYhijXYXYklmnXYXYXYop</pre>"));
 	}
 
@@ -453,22 +483,21 @@ public class XMLSerializerTest {
 	public void testAttributeOrder() throws IOException {
 		//no order
 		assertThat(
-				reformat("<block banana=\"yellow\" bar=\"rab\" apple=\"red\" cherry=\"red\" foo=\"oof\">content</block>", BLOCK_FLUSH_PRE_FORMAT_PROFILE, "", ""),
+				reformat("<block banana=\"yellow\" bar=\"rab\" apple=\"red\" cherry=\"red\" foo=\"oof\">content</block>", BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE, "", ""),
 				is("<block apple=\"red\" banana=\"yellow\" bar=\"rab\" cherry=\"red\" foo=\"oof\">content</block>"));
 		//ordered
-		assertThat(
-				reformat("<ordered banana=\"yellow\" bar=\"rab\" apple=\"red\" cherry=\"red\" foo=\"oof\">content</ordered>", BLOCK_FLUSH_PRE_FORMAT_PROFILE, "", ""),
-				is("<ordered foo=\"oof\" bar=\"rab\" apple=\"red\" banana=\"yellow\" cherry=\"red\">content</ordered>"));
+		assertThat(reformat("<ordered banana=\"yellow\" bar=\"rab\" apple=\"red\" cherry=\"red\" foo=\"oof\">content</ordered>",
+				BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE, "", ""), is("<ordered foo=\"oof\" bar=\"rab\" apple=\"red\" banana=\"yellow\" cherry=\"red\">content</ordered>"));
 		//default namespace declaration
 		assertThat(
 				reformat("<ordered banana=\"yellow\" bar=\"rab\" apple=\"red\" xmlns=\"http://example/ns/\" cherry=\"red\" foo=\"oof\">content</ordered>",
-						BLOCK_FLUSH_PRE_FORMAT_PROFILE, "", ""),
+						BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE, "", ""),
 				is("<ordered xmlns=\"http://example/ns/\" foo=\"oof\" bar=\"rab\" apple=\"red\" banana=\"yellow\" cherry=\"red\">content</ordered>"));
 		//other defined namespaces (i.e. all possibilities)
 		assertThat(reformat(
 				"<ordered xmlns:veggie=\"http://example.com/ns/veggie/\" xml:lang=\"en-us\" fruit:banana=\"yellow\" bar=\"rab\" xmlns:fruit=\"http://example.com/ns/fruit/\""
 						+ " fruit:apple=\"red\" veggie:broccoli=\"green\" xmlns=\"http://example/ns/\" fruit:cherry=\"red\" test=\"example\" foo=\"oof\">content</ordered>",
-				BLOCK_FLUSH_PRE_FORMAT_PROFILE, "", ""),
+				BLOCK_BREAK_FLUSH_PRE_FORMAT_PROFILE, "", ""),
 				is("<ordered xmlns=\"http://example/ns/\"" //default namespace declaration
 						+ " foo=\"oof\" bar=\"rab\"" //ordered attributes
 						+ " test=\"example\"" //other non-prefixed attribute

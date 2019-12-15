@@ -47,7 +47,11 @@ public abstract class BaseHtmlFormatProfile extends AbstractXmlFormatProfile {
 		BLOCK_ELEMENTS = blockElements.collect(toSet());
 	}
 
-	private static final Set<NsName> PRESERVED_HTML_ELEMENTS = Set.of(
+	private static final Set<NsName> BREAK_ELEMENTS = Set.of(
+			//<br/>
+			NsName.of(XHTML_NAMESPACE_URI_STRING, ELEMENT_BR));
+
+	private static final Set<NsName> PRESERVED_ELEMENTS = Set.of(
 			//<pre>
 			NsName.of(XHTML_NAMESPACE_URI_STRING, ELEMENT_PRE),
 			//<script>
@@ -80,11 +84,20 @@ public abstract class BaseHtmlFormatProfile extends AbstractXmlFormatProfile {
 
 	/**
 	 * {@inheritDoc}
-	 * @implSpec This method preserves space of HTML <code>&lt;pre&gt;</code> and <code>&lt;script&gt;</code> elements.
+	 * @implSpec This implementation considers the HTML <code>&lt;br&gt;</code> element a break elements.
+	 */
+	@Override
+	protected boolean isBreak(final NsName element) {
+		return BREAK_ELEMENTS.contains(element);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * @implSpec This implementation preserves space of HTML <code>&lt;pre&gt;</code> and <code>&lt;script&gt;</code> elements.
 	 */
 	@Override
 	protected boolean isPreserved(final NsName element) {
-		return PRESERVED_HTML_ELEMENTS.contains(element);
+		return PRESERVED_ELEMENTS.contains(element);
 	}
 
 }

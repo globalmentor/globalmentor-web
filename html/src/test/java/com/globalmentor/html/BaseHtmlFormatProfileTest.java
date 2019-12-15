@@ -37,6 +37,11 @@ public class BaseHtmlFormatProfileTest {
 	/** A default implementation of the base profile, with no flush elements. */
 	private static final BaseHtmlFormatProfile PROFILE = new BaseHtmlFormatProfile() {
 		@Override
+		protected boolean isBreak(final NsName element) {
+			return false;
+		}
+
+		@Override
 		protected boolean isFlush(final NsName element) {
 			return false;
 		}
@@ -53,8 +58,7 @@ public class BaseHtmlFormatProfileTest {
 				//lists
 				ELEMENT_DL, ELEMENT_DT, ELEMENT_DD, ELEMENT_OL, ELEMENT_UL, ELEMENT_LI,
 				//metadata
-				ELEMENT_BASE, ELEMENT_STYLE, ELEMENT_TEMPLATE
-		).map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName))
+				ELEMENT_BASE, ELEMENT_STYLE, ELEMENT_TEMPLATE).map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName))
 				.forEach(element -> assertThat(element.toString(), PROFILE.isBlock(element), is(true)));
 		Stream.of(ELEMENT_SPAN, ELEMENT_IMG, ELEMENT_EM,
 				//hidden elements we don't want to be block
