@@ -38,7 +38,7 @@ public abstract class AbstractXmlFormatProfile implements XmlFormatProfile {
 	 * @see NsName#ofNode(Node)
 	 */
 	@Override
-	public boolean isBlock(@Nonnull final Element element) {
+	public boolean isBlock(final Element element) {
 		return isBlock(NsName.ofNode(element));
 	}
 
@@ -48,6 +48,24 @@ public abstract class AbstractXmlFormatProfile implements XmlFormatProfile {
 	 * @return <code>true</code> if the element should be formatted as a block element.
 	 */
 	protected abstract boolean isBlock(@Nonnull final NsName element);
+
+	/**
+	 * {@inheritDoc}
+	 * @implSpec This implementation delegates to {@link #isBreak(NsName)} using the name of the given element.
+	 * @see NsName#ofNode(Node)
+	 */
+	@Override
+	public boolean isBreak(final Element element) {
+		return isBreak(NsName.ofNode(element));
+	}
+
+	/**
+	 * Indicates whether the given element is considered a break element for purposes of formatting. A <dfn>break</dfn> element is one that results in a line
+	 * break after the element, even though the element may not be a block element.
+	 * @param element The name of a DOM element.
+	 * @return <code>true</code> if the element should be formatted as a break element.
+	 */
+	protected abstract boolean isBreak(@Nonnull final NsName element);
 
 	/**
 	 * {@inheritDoc}

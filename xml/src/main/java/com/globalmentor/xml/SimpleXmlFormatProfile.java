@@ -62,6 +62,15 @@ public class SimpleXmlFormatProfile extends AbstractXmlFormatProfile {
 
 	/**
 	 * {@inheritDoc}
+	 * @implSpec This implementation always returns <code>false</code>, resulting in no break elements.
+	 */
+	@Override
+	protected boolean isBreak(final NsName element) {
+		return false;
+	}
+
+	/**
+	 * {@inheritDoc}
 	 * @implSpec This implementation always returns <code>false</code>, resulting in no flush elements.
 	 */
 	@Override
