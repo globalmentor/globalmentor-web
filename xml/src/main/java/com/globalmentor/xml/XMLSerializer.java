@@ -51,29 +51,9 @@ import org.w3c.dom.*;
  * Serializes an XML document to a byte-oriented output stream. Has the option of automatically formatting the output in a hierarchical structure with tabs or
  * other strings.
  * @author Garret Wilson
+ * @see DefaultXmlFormatProfile
  */
 public class XMLSerializer {
-
-	/**
-	 * Default XML formatting profile which uses {@link XML#WHITESPACE_CHARACTERS} as space normalization characters, and considers all elements block elements
-	 * with no flush elements.
-	 */
-	public static final XmlFormatProfile DEFAULT_XML_FORMAT_PROFILE = new BaseXmlFormatProfile() {
-		@Override
-		protected boolean isBlock(final NsName element) {
-			return true;
-		}
-
-		@Override
-		protected boolean isBreak(final NsName element) {
-			return false;
-		}
-
-		@Override
-		protected boolean isFlush(final NsName element) {
-			return false;
-		}
-	};
 
 	/** Whether the output should be formatted. */
 	public static final String OPTION_FORMAT_OUTPUT = "formatOutput";
@@ -465,11 +445,11 @@ public class XMLSerializer {
 	}
 
 	/**
-	 * Constructor for an optionally formatted serializer using the {@link #DEFAULT_XML_FORMAT_PROFILE} format profile.
+	 * Constructor for an optionally formatted serializer using the {@link DefaultXmlFormatProfile#INSTANCE} format profile.
 	 * @param formatted Whether the serializer should be formatted.
 	 */
 	public XMLSerializer(final boolean formatted) {
-		this(formatted, DEFAULT_XML_FORMAT_PROFILE);
+		this(formatted, DefaultXmlFormatProfile.INSTANCE);
 	}
 
 	private final XmlFormatProfile formatProfile;

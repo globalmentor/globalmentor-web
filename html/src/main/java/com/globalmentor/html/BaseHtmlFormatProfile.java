@@ -35,7 +35,8 @@ import com.globalmentor.xml.spec.*;
  */
 public abstract class BaseHtmlFormatProfile extends AbstractXmlFormatProfile {
 
-	private static final Set<NsName> BLOCK_ELEMENTS;
+	/** The elements this base implementation considers block elements for formatting. */
+	public static final Set<NsName> BLOCK_ELEMENTS;
 
 	static {
 		Stream<NsName> blockElements = HTML.BLOCK_ELEMENTS.stream();
@@ -47,11 +48,13 @@ public abstract class BaseHtmlFormatProfile extends AbstractXmlFormatProfile {
 		BLOCK_ELEMENTS = blockElements.collect(toSet());
 	}
 
-	private static final Set<NsName> BREAK_ELEMENTS = Set.of(
+	/** The elements this base implementation considers break elements for formatting. */
+	public static final Set<NsName> BREAK_ELEMENTS = Set.of(
 			//<br/>
 			NsName.of(XHTML_NAMESPACE_URI_STRING, ELEMENT_BR));
 
-	private static final Set<NsName> PRESERVED_ELEMENTS = Set.of(
+	/** The elements this base implementation considers preserved elements for formatting. */
+	public static final Set<NsName> PRESERVED_ELEMENTS = Set.of(
 			//<pre>
 			NsName.of(XHTML_NAMESPACE_URI_STRING, ELEMENT_PRE),
 			//<script>
@@ -76,6 +79,7 @@ public abstract class BaseHtmlFormatProfile extends AbstractXmlFormatProfile {
 	 *           not <dfn>phrasing content</dfn>; <dfn>metadata content</dfn>; or one of {@code <html>}, {@code <head>}, or {@code <body>}. However this would
 	 *           still not include list-item elements such as {@code <li>} and other elements.
 	 * @see <a href="https://www.w3.org/TR/html52/rendering.html#rendering">HTML 5.2 § 10. Rendering</a>
+	 * @see #BLOCK_ELEMENTS
 	 */
 	@Override
 	protected boolean isBlock(final NsName element) {
@@ -85,6 +89,7 @@ public abstract class BaseHtmlFormatProfile extends AbstractXmlFormatProfile {
 	/**
 	 * {@inheritDoc}
 	 * @implSpec This implementation considers the HTML <code>&lt;br&gt;</code> element a break elements.
+	 * @see #BREAK_ELEMENTS
 	 */
 	@Override
 	protected boolean isBreak(final NsName element) {
