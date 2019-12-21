@@ -33,7 +33,7 @@ import org.w3c.dom.Document;
 import com.globalmentor.xml.XmlFormatProfile;
 
 /**
- * Tests of {@link HtmlSerializer} with {@link HtmlSerializer#DEFAULT_HTML_FORMAT_PROFILE}.
+ * Tests of {@link HtmlSerializer} with {@link DefaultHtmlFormatProfile#INSTANCE}.
  * @author Garret Wilson
  */
 public class HtmlSerializerTest {
@@ -45,7 +45,7 @@ public class HtmlSerializerTest {
 	public void testHtml5Example() throws IOException {
 		final String unformatted = readString(
 				new InputStreamReader(new BufferedInputStream(getClass().getResourceAsStream(HTML5_UNFORMATTED_RESOURCE_NAME)), UTF_8));
-		final String formatted = reformat(unformatted, HtmlSerializer.DEFAULT_HTML_FORMAT_PROFILE, "\n", "\t", true);
+		final String formatted = reformat(unformatted, DefaultHtmlFormatProfile.INSTANCE, "\n", "\t", true);
 		final String expected = readString(new InputStreamReader(new BufferedInputStream(getClass().getResourceAsStream(HTML5_FORMATTED_RESOURCE_NAME)), UTF_8))
 				//normalize line endings in because the formatted resource might be stored in a Git repository on Windows 
 				.replace("\r\n", "\n"); //TODO create a utility, probably in a system utility class, to normalize line endings; use in serializers as well
