@@ -303,7 +303,7 @@ public class HtmlDom {
 	public static Optional<ContentType> findLinkContentType(@Nonnull final Element element) {
 		return findAttributeNS(element, null, LINK_ATTRIBUTE_TYPE).flatMap(link -> { //if there is a type specified
 			try {
-				return Optional.of(ContentType.create(link)); //parse the content type and return it
+				return Optional.of(ContentType.parse(link)); //parse the content type and return it
 			} catch(final IllegalArgumentException illegalArgumentException) { //if the content type isn't valid
 				Clogr.getLogger(HtmlDom.class).debug(illegalArgumentException.getMessage(), illegalArgumentException);
 				return Optional.empty();
@@ -367,7 +367,7 @@ public class HtmlDom {
 				//see if there is a type attribute
 				if(element.hasAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_TYPE)) { //if there is a type attribute
 					final String type = element.getAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_TYPE); //get the type
-					final ContentType mediaType = ContentType.create(type); //create a media type from the given type
+					final ContentType mediaType = ContentType.parse(type); //create a media type from the given type
 					//TODO catch possible exception here
 					if(mediaType.getPrimaryType().equals(ContentType.IMAGE_PRIMARY_TYPE)) //if this is an image
 						return true; //show that this is an image object
