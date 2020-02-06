@@ -273,6 +273,9 @@ public interface VocabularyRegistry {
 	 */
 	public Set<Map.Entry<String, URI>> getRegisteredVocabulariesByPrefix();
 
+	/** @return <code>true</code> if there are no prefix or vocabulary registrations at all. */
+	public boolean isEmpty();
+
 	/**
 	 * Creates a builder.
 	 * @implSpec The {@link VocabularySpecification#DEFAULT} vocabulary specification is used.
@@ -345,6 +348,11 @@ public interface VocabularyRegistry {
 		@Override
 		public Set<Entry<String, URI>> getRegisteredVocabulariesByPrefix() {
 			return emptySet();
+		}
+
+		@Override
+		public boolean isEmpty() {
+			return true;
 		}
 
 	};

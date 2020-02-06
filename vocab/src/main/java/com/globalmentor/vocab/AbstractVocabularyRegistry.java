@@ -113,4 +113,10 @@ public abstract class AbstractVocabularyRegistry implements VocabularyRegistry {
 		return unmodifiableSet(getNamespacesByPrefix().entrySet());
 	}
 
+	@Override
+	public boolean isEmpty() {
+		assert getNamespacesByPrefix().isEmpty() == getPrefixesByNamespace().isEmpty();
+		return getNamespacesByPrefix().isEmpty();
+	}
+
 }
