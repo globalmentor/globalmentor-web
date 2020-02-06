@@ -116,7 +116,7 @@ public class VocabularyManager extends AbstractVocabularyRegistry implements Voc
 	@Override
 	public Optional<URI> findVocabularyByPrefix(final String prefix) {
 		Optional<URI> optionalNamespace = super.findVocabularyByPrefix(prefix);
-		if(optionalNamespace.isEmpty() && isAutoRegister()) {
+		if(!optionalNamespace.isPresent() && isAutoRegister()) {
 			optionalNamespace = getKnownVocabularies().findVocabularyByPrefix(prefix);
 			optionalNamespace.ifPresent(namespace -> registerPrefix(prefix, namespace));
 		}
@@ -126,7 +126,7 @@ public class VocabularyManager extends AbstractVocabularyRegistry implements Voc
 	@Override
 	public Optional<String> findPrefixForVocabulary(final URI namespace) {
 		Optional<String> optionalPrefix = super.findPrefixForVocabulary(namespace);
-		if(optionalPrefix.isEmpty() && isAutoRegister()) {
+		if(!optionalPrefix.isPresent() && isAutoRegister()) {
 			optionalPrefix = getKnownVocabularies().findPrefixForVocabulary(namespace);
 			optionalPrefix.ifPresent(prefix -> registerVocabulary(namespace, prefix));
 		}
@@ -154,7 +154,7 @@ public class VocabularyManager extends AbstractVocabularyRegistry implements Voc
 		final boolean hadPrefixRegistration = prefixesByNamespace.containsKey(namespace); //check first to distinguish between no mapping and null value
 		final String previousPrefix = getPrefixesByNamespace().put(namespace, prefix);
 		getNamespacesByPrefix().put(prefix, namespace); //update the prefix-namespace mapping as well 
-		return hadPrefixRegistration ? Optional.of(Map.entry(namespace, previousPrefix)) : Optional.empty();
+		return hadPrefixRegistration ? Optional.of(new AbstractMap.SimpleImmutableEntry<>(namespace, previousPrefix)) : Optional.empty();
 	}
 
 	@Override

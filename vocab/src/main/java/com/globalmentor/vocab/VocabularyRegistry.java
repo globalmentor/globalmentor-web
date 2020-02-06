@@ -23,7 +23,6 @@ import static java.util.Objects.*;
 
 import java.net.URI;
 import java.util.*;
-import java.util.Map.Entry;
 
 import javax.annotation.*;
 
@@ -177,8 +176,8 @@ public interface VocabularyRegistry {
 	 * @throws IllegalArgumentException if the given URI is not absolute.
 	 */
 	public default Optional<Map.Entry<VocabularyTerm, String>> findPrefixForTerm(@Nonnull final URI term) {
-		return asVocabularyTerm(term)
-				.flatMap(vocabularyTerm -> findPrefixForVocabulary(vocabularyTerm.getNamespace()).map(prefix -> Map.entry(vocabularyTerm, prefix)));
+		return asVocabularyTerm(term).flatMap(
+				vocabularyTerm -> findPrefixForVocabulary(vocabularyTerm.getNamespace()).map(prefix -> new AbstractMap.SimpleImmutableEntry<>(vocabularyTerm, prefix)));
 	}
 
 	/**
@@ -341,12 +340,12 @@ public interface VocabularyRegistry {
 		}
 
 		@Override
-		public Set<Entry<URI, String>> getRegisteredPrefixesByVocabulary() {
+		public Set<Map.Entry<URI, String>> getRegisteredPrefixesByVocabulary() {
 			return emptySet();
 		}
 
 		@Override
-		public Set<Entry<String, URI>> getRegisteredVocabulariesByPrefix() {
+		public Set<Map.Entry<String, URI>> getRegisteredVocabulariesByPrefix() {
 			return emptySet();
 		}
 

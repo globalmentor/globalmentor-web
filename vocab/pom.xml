@@ -13,6 +13,10 @@
 	<name>GlobalMentor Vocbulary</name>
 	<description>GlobalMentor web vocabulary utility library.</description>
 
+	<properties>
+		<maven.compiler.release>8</maven.compiler.release>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>com.globalmentor</groupId>

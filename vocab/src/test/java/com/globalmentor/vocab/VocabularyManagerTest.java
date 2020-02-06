@@ -79,9 +79,11 @@ public class VocabularyManagerTest {
 		assertThat(manager.findVocabularyByPrefix("foo"), isEmpty());
 		assertThat(manager.findVocabularyByPrefix("og"), isPresentAndIs(OG_NAMESPACE));
 
-		assertThat(manager.getRegisteredPrefixesByVocabulary(), is(new HashSet<>(asList(Map.entry(DC_NAMESPACE, "dc"), Map.entry(OG_NAMESPACE, "og")))));
+		assertThat(manager.getRegisteredPrefixesByVocabulary(),
+				is(new HashSet<>(asList(new AbstractMap.SimpleImmutableEntry<>(DC_NAMESPACE, "dc"), new AbstractMap.SimpleImmutableEntry<>(OG_NAMESPACE, "og")))));
 
-		assertThat(manager.getRegisteredVocabulariesByPrefix(), is(new HashSet<>(asList(Map.entry("dc", DC_NAMESPACE), Map.entry("og", OG_NAMESPACE)))));
+		assertThat(manager.getRegisteredVocabulariesByPrefix(),
+				is(new HashSet<>(asList(new AbstractMap.SimpleImmutableEntry<>("dc", DC_NAMESPACE), new AbstractMap.SimpleImmutableEntry<>("og", OG_NAMESPACE)))));
 	}
 
 	/** @see VocabularyManager#registerPrefix(String, URI) */
@@ -211,7 +213,7 @@ public class VocabularyManagerTest {
 	@Test
 	public void testDetermineVocabularyPrefixUsesKnownVocabularyPrefix() {
 		final URI fooNamespace = URI.create("http://example.com/foo");
-		final VocabularyRegistry knownVocabularies = VocabularyRegistry.of(Map.entry("bar", fooNamespace));
+		final VocabularyRegistry knownVocabularies = VocabularyRegistry.of(new AbstractMap.SimpleImmutableEntry<>("bar", fooNamespace));
 		assertThat(knownVocabularies.isPrefixRegistered("bar"), is(true));
 		final VocabularyManager manager = new VocabularyManager(knownVocabularies);
 		assertThat(manager.isPrefixRegistered("bar"), is(false));
@@ -227,7 +229,8 @@ public class VocabularyManagerTest {
 	public void testAutoRegisterUsesKnownVocabularyNamespace() {
 		final URI fooNamespace = URI.create("http://example.com/foo");
 		final URI otherNamespace = URI.create("http://example.com/other");
-		final VocabularyRegistry knownVocabularies = VocabularyRegistry.of(Map.entry("bar", fooNamespace), Map.entry("other", otherNamespace));
+		final VocabularyRegistry knownVocabularies = VocabularyRegistry.of(new AbstractMap.SimpleImmutableEntry<>("bar", fooNamespace),
+				new AbstractMap.SimpleImmutableEntry<>("other", otherNamespace));
 		final VocabularyManager manager = new VocabularyManager(knownVocabularies, true); //turn on auto-register
 		assertThat(manager.isVocabularyRegistered(fooNamespace), is(false));
 		assertThat(manager.findVocabularyByPrefix("bar"), isPresentAndIs(fooNamespace));
@@ -242,7 +245,8 @@ public class VocabularyManagerTest {
 	public void testAutoRegisterUsesKnownVocabularyPrefix() {
 		final URI fooNamespace = URI.create("http://example.com/foo");
 		final URI otherNamespace = URI.create("http://example.com/other");
-		final VocabularyRegistry knownVocabularies = VocabularyRegistry.of(Map.entry("bar", fooNamespace), Map.entry("other", otherNamespace));
+		final VocabularyRegistry knownVocabularies = VocabularyRegistry.of(new AbstractMap.SimpleImmutableEntry<>("bar", fooNamespace),
+				new AbstractMap.SimpleImmutableEntry<>("other", otherNamespace));
 		final VocabularyManager manager = new VocabularyManager(knownVocabularies, true); //turn on auto-register
 		assertThat(manager.isPrefixRegistered("bar"), is(false));
 		assertThat(manager.findPrefixForVocabulary(fooNamespace), isPresentAndIs("bar"));
@@ -252,30 +256,31 @@ public class VocabularyManagerTest {
 	/** @see VocabularyManager#determinePrefixForTerm(URI) */
 	@Test
 	public void testDeterminePrefixForTerm() {
-		final VocabularyRegistry knownVocabularies = VocabularyRegistry.of(Map.entry("cc", CC_NAMESPACE));
+		final VocabularyRegistry knownVocabularies = VocabularyRegistry.of(new AbstractMap.SimpleImmutableEntry<>("cc", CC_NAMESPACE));
 		final VocabularyManager manager = new VocabularyManager(knownVocabularies);
 		manager.setDefaultVocabulary(URI.create("http://example.com/"));
 		manager.registerPrefix("dc", DC_NAMESPACE);
 		manager.registerPrefix("og", OG_NAMESPACE);
 
 		assertThat(manager.determinePrefixForTerm(URI.create("http://example.com/")), isEmpty()); //not a term
-		assertThat(manager.determinePrefixForTerm(URI.create("http://example.com/foo")),
-				isPresentAndIs(Map.entry(VocabularyTerm.of(URI.create("http://example.com/"), "foo"), BaseVocabularySpecification.PREFIX_PREFIX + "1"))); //set as default; prefix has to be generated
-		assertThat(manager.determinePrefixForTerm(URI.create("https://example.com/foo")),
-				isPresentAndIs(Map.entry(VocabularyTerm.of(URI.create("https://example.com/"), "foo"), BaseVocabularySpecification.PREFIX_PREFIX + "2"))); //not registered; prefix has to be generated
+		assertThat(manager.determinePrefixForTerm(URI.create("http://example.com/foo")), isPresentAndIs(
+				new AbstractMap.SimpleImmutableEntry<>(VocabularyTerm.of(URI.create("http://example.com/"), "foo"), BaseVocabularySpecification.PREFIX_PREFIX + "1"))); //set as default; prefix has to be generated
+		assertThat(manager.determinePrefixForTerm(URI.create("https://example.com/foo")), isPresentAndIs(
+				new AbstractMap.SimpleImmutableEntry<>(VocabularyTerm.of(URI.create("https://example.com/"), "foo"), BaseVocabularySpecification.PREFIX_PREFIX + "2"))); //not registered; prefix has to be generated
 		assertThat(manager.determinePrefixForTerm(URI.create("http://example.com/foo/bar")),
-				isPresentAndIs(Map.entry(VocabularyTerm.of(URI.create("http://example.com/foo/"), "bar"), "foo"))); //not registered; prefix from path
+				isPresentAndIs(new AbstractMap.SimpleImmutableEntry<>(VocabularyTerm.of(URI.create("http://example.com/foo/"), "bar"), "foo"))); //not registered; prefix from path
 		assertThat(manager.determinePrefixForTerm(URI.create("http://purl.org/dc/terms/creator")),
-				isPresentAndIs(Map.entry(VocabularyTerm.of(DC_NAMESPACE, "creator"), "dc")));
-		assertThat(manager.determinePrefixForTerm(URI.create("http://ogp.me/ns#title")), isPresentAndIs(Map.entry(VocabularyTerm.of(OG_NAMESPACE, "title"), "og")));
+				isPresentAndIs(new AbstractMap.SimpleImmutableEntry<>(VocabularyTerm.of(DC_NAMESPACE, "creator"), "dc")));
+		assertThat(manager.determinePrefixForTerm(URI.create("http://ogp.me/ns#title")),
+				isPresentAndIs(new AbstractMap.SimpleImmutableEntry<>(VocabularyTerm.of(OG_NAMESPACE, "title"), "og")));
 		assertThat(manager.determinePrefixForTerm(URI.create("http://creativecommons.org/ns#permits")),
-				isPresentAndIs(Map.entry(VocabularyTerm.of(CC_NAMESPACE, "permits"), "cc"))); //not registered; known vocabulary
+				isPresentAndIs(new AbstractMap.SimpleImmutableEntry<>(VocabularyTerm.of(CC_NAMESPACE, "permits"), "cc"))); //not registered; known vocabulary
 	}
 
 	/** @see VocabularyManager#determineCurie(VocabularyTerm) */
 	@Test
 	public void testDetermineCurie() {
-		final VocabularyRegistry knownVocabularies = VocabularyRegistry.of(Map.entry("cc", CC_NAMESPACE));
+		final VocabularyRegistry knownVocabularies = VocabularyRegistry.of(new AbstractMap.SimpleImmutableEntry<>("cc", CC_NAMESPACE));
 		final VocabularyManager manager = new VocabularyManager(knownVocabularies);
 		manager.setDefaultVocabulary(EG_NAMESPACE);
 		manager.registerPrefix("dc", DC_NAMESPACE);
