@@ -50,12 +50,22 @@ public abstract class AbstractVocabularyRegistry implements VocabularyRegistry {
 		return namespacesByPrefix;
 	}
 
+	@Override
+	public int getRegisteredPrefixCount() {
+		return getNamespacesByPrefix().size();
+	}
+
 	/** @implSpec <code>null</code> is not allowed as a key or as a value. */
 	private final Map<URI, String> prefixesByNamespace = new HashMap<>();
 
 	/** @return The internal map of registered namespaces and their associated prefixes. */
 	protected Map<URI, String> getPrefixesByNamespace() {
 		return prefixesByNamespace;
+	}
+
+	@Override
+	public int getRegisteredVocabularyCount() {
+		return getPrefixesByNamespace().size();
 	}
 
 	/**
