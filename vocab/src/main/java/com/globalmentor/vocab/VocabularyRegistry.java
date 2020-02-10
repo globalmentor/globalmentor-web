@@ -23,7 +23,6 @@ import static java.util.Objects.*;
 
 import java.net.URI;
 import java.util.*;
-import java.util.Map.Entry;
 
 import javax.annotation.*;
 
@@ -133,6 +132,19 @@ public interface VocabularyRegistry {
 	public Optional<URI> getDefaultVocabulary();
 
 	/**
+	 * Returns the number of prefixes registered.
+	 * @apiNote There may be more prefixes than vocabularies registered, as multiple prefixes may be mapped to the same vocabulary.
+	 * @return The number of registered prefixes.
+	 */
+	public int getRegisteredPrefixCount();
+
+	/**
+	 * Returns the number of vocabularies registered.
+	 * @return The number of registered vocabularies.
+	 */
+	public int getRegisteredVocabularyCount();
+
+	/**
 	 * Determines whether the given prefix is registered with a vocabulary.
 	 * @param prefix A prefix that may be associated with a vocabulary namespace.
 	 * @return <code>true</code> if the given prefix has been associated with a vocabulary.
@@ -177,8 +189,8 @@ public interface VocabularyRegistry {
 	 * @throws IllegalArgumentException if the given URI is not absolute.
 	 */
 	public default Optional<Map.Entry<VocabularyTerm, String>> findPrefixForTerm(@Nonnull final URI term) {
-		return asVocabularyTerm(term)
-				.flatMap(vocabularyTerm -> findPrefixForVocabulary(vocabularyTerm.getNamespace()).map(prefix -> Map.entry(vocabularyTerm, prefix)));
+		return asVocabularyTerm(term).flatMap(
+				vocabularyTerm -> findPrefixForVocabulary(vocabularyTerm.getNamespace()).map(prefix -> new AbstractMap.SimpleImmutableEntry<>(vocabularyTerm, prefix)));
 	}
 
 	/**
@@ -273,6 +285,9 @@ public interface VocabularyRegistry {
 	 */
 	public Set<Map.Entry<String, URI>> getRegisteredVocabulariesByPrefix();
 
+	/** @return <code>true</code> if there are no prefix or vocabulary registrations at all. */
+	public boolean isEmpty();
+
 	/**
 	 * Creates a builder.
 	 * @implSpec The {@link VocabularySpecification#DEFAULT} vocabulary specification is used.
@@ -314,6 +329,16 @@ public interface VocabularyRegistry {
 		}
 
 		@Override
+		public int getRegisteredPrefixCount() {
+			return 0;
+		}
+
+		@Override
+		public int getRegisteredVocabularyCount() {
+			return 0;
+		}
+
+		@Override
 		public boolean isPrefixRegistered(final String prefix) {
 			requireNonNull(prefix);
 			return false;
@@ -338,13 +363,18 @@ public interface VocabularyRegistry {
 		}
 
 		@Override
-		public Set<Entry<URI, String>> getRegisteredPrefixesByVocabulary() {
+		public Set<Map.Entry<URI, String>> getRegisteredPrefixesByVocabulary() {
 			return emptySet();
 		}
 
 		@Override
-		public Set<Entry<String, URI>> getRegisteredVocabulariesByPrefix() {
+		public Set<Map.Entry<String, URI>> getRegisteredVocabulariesByPrefix() {
 			return emptySet();
+		}
+
+		@Override
+		public boolean isEmpty() {
+			return true;
 		}
 
 	};

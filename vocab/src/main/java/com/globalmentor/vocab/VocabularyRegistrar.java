@@ -221,14 +221,14 @@ public interface VocabularyRegistrar extends VocabularyRegistry {
 	 */
 	public default String determinePrefixForVocabulary(@Nonnull final URI namespace) {
 		Optional<String> optionalPrefix = findPrefixForVocabulary(namespace);
-		if(optionalPrefix.isEmpty()) { //TODO use Java 9 Optional.or() here and below
+		if(!optionalPrefix.isPresent()) { //TODO use Java 9 Optional.or() here and below
 			optionalPrefix = getKnownVocabularies().findPrefixForVocabulary(namespace);
-			if(optionalPrefix.isEmpty()) {
+			if(!optionalPrefix.isPresent()) {
 				final String name = getName(namespace); //get the name identified by the URI (the last URI path sequence) TODO add URIs.findName()
 				if(name != null && !name.equals(ROOT_PATH) && getVocabularySpecification().isValidPrefix(name) && !isPrefixRegistered(name)) { //if the name is a valid prefix that we haven't yet used
 					optionalPrefix = Optional.of(name); //use the name as the prefix
 				}
-				if(optionalPrefix.isEmpty()) { //if we didn't find a label from the URI name
+				if(!optionalPrefix.isPresent()) { //if we didn't find a label from the URI name
 					optionalPrefix = Optional.of(generatePrefix()); //generate a unique vocabulary prefix
 				}
 			}
@@ -256,7 +256,8 @@ public interface VocabularyRegistrar extends VocabularyRegistry {
 	 * @see #registerVocabulary(URI, String)
 	 */
 	public default Optional<Map.Entry<VocabularyTerm, String>> determinePrefixForTerm(@Nonnull final URI term) {
-		return asVocabularyTerm(term).map(vocabularyTerm -> Map.entry(vocabularyTerm, determinePrefixForVocabulary(vocabularyTerm.getNamespace())));
+		return asVocabularyTerm(term)
+				.map(vocabularyTerm -> new AbstractMap.SimpleImmutableEntry<>(vocabularyTerm, determinePrefixForVocabulary(vocabularyTerm.getNamespace())));
 	}
 
 	/**
