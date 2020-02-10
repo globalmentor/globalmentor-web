@@ -17,6 +17,7 @@
 package com.globalmentor.vocab;
 
 import static com.github.npathai.hamcrestopt.OptionalMatchers.*;
+import static java.util.AbstractMap.SimpleImmutableEntry;
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
 import static org.hamcrest.MatcherAssert.*;
@@ -54,7 +55,7 @@ public class DefaultVocabularyRegistryTest {
 	@Test
 	public void testBasicRegistrations() {
 		final DefaultVocabularyRegistry registry = new DefaultVocabularyRegistry(EG_NAMESPACE,
-				asList(new AbstractMap.SimpleImmutableEntry<>("dc", DC_NAMESPACE), new AbstractMap.SimpleImmutableEntry<>("og", OG_NAMESPACE)));
+				asList(new SimpleImmutableEntry<>("dc", DC_NAMESPACE), new SimpleImmutableEntry<>("og", OG_NAMESPACE)));
 
 		assertThat(registry.getDefaultVocabulary(), isPresentAndIs(EG_NAMESPACE));
 
@@ -77,24 +78,24 @@ public class DefaultVocabularyRegistryTest {
 		assertThat(registry.findVocabularyByPrefix("og"), isPresentAndIs(OG_NAMESPACE));
 
 		assertThat(registry.getRegisteredPrefixesByVocabulary(),
-				is(new HashSet<>(asList(new AbstractMap.SimpleImmutableEntry<>(DC_NAMESPACE, "dc"), new AbstractMap.SimpleImmutableEntry<>(OG_NAMESPACE, "og")))));
+				is(new HashSet<>(asList(new SimpleImmutableEntry<>(DC_NAMESPACE, "dc"), new SimpleImmutableEntry<>(OG_NAMESPACE, "og")))));
 
 		assertThat(registry.getRegisteredVocabulariesByPrefix(),
-				is(new HashSet<>(asList(new AbstractMap.SimpleImmutableEntry<>("dc", DC_NAMESPACE), new AbstractMap.SimpleImmutableEntry<>("og", OG_NAMESPACE)))));
+				is(new HashSet<>(asList(new SimpleImmutableEntry<>("dc", DC_NAMESPACE), new SimpleImmutableEntry<>("og", OG_NAMESPACE)))));
 	}
 
 	/** @see DefaultVocabularyRegistry#findPrefixForTerm(URI) */
 	@Test
 	public void testFindPrefixForTerm() {
 		final DefaultVocabularyRegistry registry = new DefaultVocabularyRegistry(EG_NAMESPACE,
-				asList(new AbstractMap.SimpleImmutableEntry<>("dc", DC_NAMESPACE), new AbstractMap.SimpleImmutableEntry<>("og", OG_NAMESPACE)));
+				asList(new SimpleImmutableEntry<>("dc", DC_NAMESPACE), new SimpleImmutableEntry<>("og", OG_NAMESPACE)));
 		assertThat(registry.findPrefixForTerm(URI.create("http://example.com/")), isEmpty()); //not a term
 		assertThat(registry.findPrefixForTerm(URI.create("http://example.com/foo")), isEmpty()); //not registered
 		assertThat(registry.findPrefixForTerm(URI.create("http://example.com/foo/bar")), isEmpty()); //not registered
 		assertThat(registry.findPrefixForTerm(URI.create("http://purl.org/dc/terms/creator")),
-				isPresentAndIs(new AbstractMap.SimpleImmutableEntry<>(VocabularyTerm.of(DC_NAMESPACE, "creator"), "dc")));
+				isPresentAndIs(new SimpleImmutableEntry<>(VocabularyTerm.of(DC_NAMESPACE, "creator"), "dc")));
 		assertThat(registry.findPrefixForTerm(URI.create("http://ogp.me/ns#title")),
-				isPresentAndIs(new AbstractMap.SimpleImmutableEntry<>(VocabularyTerm.of(OG_NAMESPACE, "title"), "og")));
+				isPresentAndIs(new SimpleImmutableEntry<>(VocabularyTerm.of(OG_NAMESPACE, "title"), "og")));
 		assertThat(registry.findPrefixForTerm(URI.create("http://creativecommons.org/ns#permits")), isEmpty());
 	}
 
@@ -102,7 +103,7 @@ public class DefaultVocabularyRegistryTest {
 	@Test
 	public void testAsVocabularyTerm() {
 		final DefaultVocabularyRegistry registry = new DefaultVocabularyRegistry(EG_NAMESPACE,
-				asList(new AbstractMap.SimpleImmutableEntry<>("dc", DC_NAMESPACE), new AbstractMap.SimpleImmutableEntry<>("og", OG_NAMESPACE)));
+				asList(new SimpleImmutableEntry<>("dc", DC_NAMESPACE), new SimpleImmutableEntry<>("og", OG_NAMESPACE)));
 		assertThat(registry.asVocabularyTerm(URI.create("http://example.com/")), isEmpty());
 		assertThat(registry.asVocabularyTerm(URI.create("http://purl.org/dc/terms/creator")), isPresentAndIs(VocabularyTerm.of(DC_NAMESPACE, "creator")));
 		assertThat(registry.asVocabularyTerm(URI.create("http://ogp.me/ns#title")), isPresentAndIs(VocabularyTerm.of(OG_NAMESPACE, "title")));
@@ -113,7 +114,7 @@ public class DefaultVocabularyRegistryTest {
 	@Test
 	public void testFindVocabularyTermWithoutDefaultNamespace() {
 		final DefaultVocabularyRegistry registry = new DefaultVocabularyRegistry(null,
-				asList(new AbstractMap.SimpleImmutableEntry<>("dc", DC_NAMESPACE), new AbstractMap.SimpleImmutableEntry<>("og", OG_NAMESPACE)));
+				asList(new SimpleImmutableEntry<>("dc", DC_NAMESPACE), new SimpleImmutableEntry<>("og", OG_NAMESPACE)));
 		assertThat(registry.findVocabularyTerm(Curie.parse("foo:bar")), isEmpty());
 		assertThat(registry.findVocabularyTerm(Curie.parse("bar")), isEmpty());
 		assertThat(registry.findVocabularyTerm(Curie.parse("dc:creator")), isPresentAndIs(VocabularyTerm.of(DC_NAMESPACE, "creator")));
@@ -124,7 +125,7 @@ public class DefaultVocabularyRegistryTest {
 	@Test
 	public void testFindVocabularyTermWithDefaultNamespace() {
 		final DefaultVocabularyRegistry registry = new DefaultVocabularyRegistry(EG_NAMESPACE,
-				asList(new AbstractMap.SimpleImmutableEntry<>("dc", DC_NAMESPACE), new AbstractMap.SimpleImmutableEntry<>("og", OG_NAMESPACE)));
+				asList(new SimpleImmutableEntry<>("dc", DC_NAMESPACE), new SimpleImmutableEntry<>("og", OG_NAMESPACE)));
 		assertThat(registry.findVocabularyTerm(Curie.parse("foo:bar")), isEmpty());
 		assertThat(registry.findVocabularyTerm(Curie.parse("bar")), isPresentAndIs(VocabularyTerm.of(EG_NAMESPACE, "bar")));
 		assertThat(registry.findVocabularyTerm(Curie.parse("dc:creator")), isPresentAndIs(VocabularyTerm.of(DC_NAMESPACE, "creator")));
@@ -135,7 +136,7 @@ public class DefaultVocabularyRegistryTest {
 	@Test
 	public void testFindCurieWithoutDefaultNamespace() {
 		final DefaultVocabularyRegistry registry = new DefaultVocabularyRegistry(null,
-				asList(new AbstractMap.SimpleImmutableEntry<>("dc", DC_NAMESPACE), new AbstractMap.SimpleImmutableEntry<>("og", OG_NAMESPACE)));
+				asList(new SimpleImmutableEntry<>("dc", DC_NAMESPACE), new SimpleImmutableEntry<>("og", OG_NAMESPACE)));
 		assertThat(registry.findCurie(VocabularyTerm.of(CC_NAMESPACE, "permits")), isEmpty());
 		assertThat(registry.findCurie(VocabularyTerm.of(EG_NAMESPACE, "bar")), isEmpty());
 		assertThat(registry.findCurie(VocabularyTerm.of(DC_NAMESPACE, "creator")), isPresentAndIs(Curie.parse("dc:creator")));
@@ -146,7 +147,7 @@ public class DefaultVocabularyRegistryTest {
 	@Test
 	public void testFindCurieWithDefaultNamespace() {
 		final DefaultVocabularyRegistry registry = new DefaultVocabularyRegistry(EG_NAMESPACE,
-				asList(new AbstractMap.SimpleImmutableEntry<>("dc", DC_NAMESPACE), new AbstractMap.SimpleImmutableEntry<>("og", OG_NAMESPACE)));
+				asList(new SimpleImmutableEntry<>("dc", DC_NAMESPACE), new SimpleImmutableEntry<>("og", OG_NAMESPACE)));
 		assertThat(registry.findCurie(VocabularyTerm.of(CC_NAMESPACE, "permits")), isEmpty());
 		assertThat(registry.findCurie(VocabularyTerm.of(EG_NAMESPACE, "bar")), isPresentAndIs(Curie.parse("bar")));
 		assertThat(registry.findCurie(VocabularyTerm.of(DC_NAMESPACE, "creator")), isPresentAndIs(Curie.parse("dc:creator")));
@@ -156,8 +157,8 @@ public class DefaultVocabularyRegistryTest {
 	/** @see DefaultVocabularyRegistry#findCurie(VocabularyTerm) */
 	@Test
 	public void testFindCuriePrefersRegisteredNamespaceOverDefaultNamespace() {
-		final DefaultVocabularyRegistry registry = new DefaultVocabularyRegistry(EG_NAMESPACE, asList(new AbstractMap.SimpleImmutableEntry<>("dc", DC_NAMESPACE),
-				new AbstractMap.SimpleImmutableEntry<>("eg", EG_NAMESPACE), new AbstractMap.SimpleImmutableEntry<>("og", OG_NAMESPACE)));
+		final DefaultVocabularyRegistry registry = new DefaultVocabularyRegistry(EG_NAMESPACE,
+				asList(new SimpleImmutableEntry<>("dc", DC_NAMESPACE), new SimpleImmutableEntry<>("eg", EG_NAMESPACE), new SimpleImmutableEntry<>("og", OG_NAMESPACE)));
 		assertThat(registry.findCurie(VocabularyTerm.of(CC_NAMESPACE, "permits")), isEmpty());
 		assertThat(registry.findCurie(VocabularyTerm.of(EG_NAMESPACE, "bar")), isPresentAndIs(Curie.parse("eg:bar")));
 		assertThat(registry.findCurie(VocabularyTerm.of(DC_NAMESPACE, "creator")), isPresentAndIs(Curie.parse("dc:creator")));
