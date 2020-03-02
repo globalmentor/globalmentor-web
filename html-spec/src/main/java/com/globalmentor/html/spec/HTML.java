@@ -85,42 +85,42 @@ public class HTML {
 	/** The public ID for the HTML 4.01 Strict DTD. */
 	public static final String HTML_4_01_STRICT_PUBLIC_ID = "-//W3C//DTD HTML 4.01//EN";
 	/** The system ID for the HTML 4.01 Strict DTD. */
-	public static final String HTML_4_01_STRICT_SYSTEM_ID = "http://www.w3.org/TR/html4/strict.dtd";
+	public static final String HTML_4_01_STRICT_SYSTEM_ID = "https://www.w3.org/TR/html4/strict.dtd";
 
 	/** The public ID for the HTML 4.01 Traditional DTD. */
 	public static final String HTML_4_01_TRANSITIONAL_PUBLIC_ID = "-//W3C//DTD HTML 4.01 Transitional//EN";
 	/** The system ID for the HTML 4.01 Traditional DTD. */
-	public static final String HTML_4_01_TRANSITIONAL_SYSTEM_ID = "http://www.w3.org/TR/html4/loose.dtd";
+	public static final String HTML_4_01_TRANSITIONAL_SYSTEM_ID = "https://www.w3.org/TR/html4/loose.dtd";
 
 	/** The public ID for the HTML 4.01 Frameset DTD. */
 	public static final String HTML_4_01_FRAMESET_PUBLIC_ID = "-//W3C//DTD HTML 4.01 Frameset//EN";
 	/** The system ID for the HTML 4.01 Frameset DTD. */
-	public static final String HTML_4_01_FRAMESET_SYSTEM_ID = "http://www.w3.org/TR/html4/frameset.dtd";
+	public static final String HTML_4_01_FRAMESET_SYSTEM_ID = "https://www.w3.org/TR/html4/frameset.dtd";
 
 	/** The public ID for the XHTML 1.0 Strict DTD. */
 	public static final String XHTML_1_0_STRICT_PUBLIC_ID = "-//W3C//DTD XHTML 1.0 Strict//EN";
 	/** The system ID for the XHTML 1.0 Strict DTD. */
-	public static final String XHTML_1_0_STRICT_SYSTEM_ID = "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd";
+	public static final String XHTML_1_0_STRICT_SYSTEM_ID = "https://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd";
 
 	/** The public ID for the XHTML 1.0 Traditional DTD. */
 	public static final String XHTML_1_0_TRANSITIONAL_PUBLIC_ID = "-//W3C//DTD XHTML 1.0 Transitional//EN";
 	/** The system ID for the XHTML 1.0 Traditional DTD. */
-	public static final String XHTML_1_0_TRANSITIONAL_SYSTEM_ID = "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd";
+	public static final String XHTML_1_0_TRANSITIONAL_SYSTEM_ID = "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd";
 
 	/** The public ID for the XHTML 1.0 Frameset DTD. */
 	public static final String XHTML_1_0_FRAMESET_PUBLIC_ID = "-//W3C//DTD XHTML 1.0 Frameset//EN";
 	/** The system ID for the XHTML 1.0 Frameset DTD. */
-	public static final String XHTML_1_0_FRAMESET_SYSTEM_ID = "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd";
+	public static final String XHTML_1_0_FRAMESET_SYSTEM_ID = "https://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd";
 
 	/** The public ID for the XHTML 1.1 DTD. */
 	public static final String XHTML_1_1_PUBLIC_ID = "-//W3C//DTD XHTML 1.1//EN";
 	/** The system ID for the XHTML 1.1 DTD. */
-	public static final String XHTML_1_1_SYSTEM_ID = "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd";
+	public static final String XHTML_1_1_SYSTEM_ID = "https://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd";
 
 	/** The public ID for the XHTML+MathML+SVG DTD. */
 	public static final String XHTML_MATHML_SVG_PUBLIC_ID = "-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN";
 	/** The system ID for the XHTML+MathML+SVG DTD. */
-	public static final String XHTML_MATHML_SVG_SYSTEM_ID = "http://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd";
+	public static final String XHTML_MATHML_SVG_SYSTEM_ID = "https://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd";
 
 	/**
 	 * Determines if the given content type is one representing HTML in some form.

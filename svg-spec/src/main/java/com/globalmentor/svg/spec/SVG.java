@@ -47,22 +47,22 @@ public class SVG {
 	/** The public ID for the SVG 1.0 DTD. */
 	public static final String SVG_1_0_PUBLIC_ID = "-//W3C//DTD SVG 1.0//EN";
 	/** The system ID for the SVG 1.0 DTD. */
-	public static final String SVG_1_0_SYSTEM_ID = "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd";
+	public static final String SVG_1_0_SYSTEM_ID = "https://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd";
 
 	/** The public ID for the SVG 1.1 Full DTD. */
 	public static final String SVG_1_1_FULL_PUBLIC_ID = "-//W3C//DTD SVG 1.1//EN";
 	/** The system ID for the SVG 1.1 Full DTD. */
-	public static final String SVG_1_1_FULL_SYSTEM_ID = "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd";
+	public static final String SVG_1_1_FULL_SYSTEM_ID = "https://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd";
 
 	/** The public ID for the SVG 1.1 Basic DTD. */
 	public static final String SVG_1_1_BASIC_PUBLIC_ID = "-//W3C//DTD SVG 1.1 Basic//EN";
 	/** The system ID for the SVG 1.1 Basic DTD. */
-	public static final String SVG_1_1_BASIC_SYSTEM_ID = "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-basic.dtd";
+	public static final String SVG_1_1_BASIC_SYSTEM_ID = "https://www.w3.org/Graphics/SVG/1.1/DTD/svg11-basic.dtd";
 
 	/** The public ID for the SVG 1.1 Tiny DTD. */
 	public static final String SVG_1_1_TINY_PUBLIC_ID = "-//W3C//DTD SVG 1.1 Tiny//EN";
 	/** The system ID for the SVG 1.1 Tiny DTD. */
-	public static final String SVG_1_1_TINY_SYSTEM_ID = "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-tiny.dtd";
+	public static final String SVG_1_1_TINY_SYSTEM_ID = "https://www.w3.org/Graphics/SVG/1.1/DTD/svg11-tiny.dtd";
 
 	//The SVG document element names.
 	public static final String ELEMENT_SVG = "svg";
