@@ -45,12 +45,12 @@ public class MathML {
 	public static final URI MATHML_NAMESPACE_URI = URI.create(MATHML_NAMESPACE_URI_STRING);
 
 	/** The system ID for the MathML 1.01 DTD. */
-	public static final String MATHML_1_01_SYSTEM_ID = "http://www.w3.org/Math/DTD/mathml1/mathml.dtd";
+	public static final String MATHML_1_01_SYSTEM_ID = "https://www.w3.org/Math/DTD/mathml1/mathml.dtd";
 
 	/** The public ID for the MathML 2.0 DTD. */
 	public static final String MATHML_2_0_PUBLIC_ID = "-//W3C//DTD MathML 2.0//EN";
 	/** The system ID for the MathML 2.0 DTD. */
-	public static final String MATHML_2_0_SYSTEM_ID = "http://www.w3.org/TR/MathML2/dtd/mathml2.dtd";
+	public static final String MATHML_2_0_SYSTEM_ID = "https://www.w3.org/Math/DTD/mathml2/mathml2.dtd";
 
 	//The MathML document element names.
 	public static final String ELEMENT_MATHML = "mathml";

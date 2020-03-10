@@ -33,7 +33,6 @@ import org.w3c.dom.*;
 
 import com.globalmentor.io.ByteOrderMark;
 import com.globalmentor.model.ObjectHolder;
-import com.globalmentor.xml.XmlDom;
 
 /**
  * Tests of XML DOM utilities.
