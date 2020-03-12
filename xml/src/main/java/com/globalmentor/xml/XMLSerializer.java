@@ -471,16 +471,54 @@ public class XMLSerializer {
 	}
 
 	/**
-	 * Serializes the specified document to a string using the UTF-8 encoding with no byte order mark.
+	 * Serializes the specified document to a string using the UTF-8 encoding.
+	 * @apiNote Whether a byte order mark is written depends on the setting of {@link #isBomWritten()}; normally this should be set to <code>false</code> when
+	 *          writing to a string.
 	 * @param document The XML document to serialize.
 	 * @return A string containing the serialized XML data.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 * @throws UnsupportedEncodingException Thrown if the UTF-8 encoding not recognized.
+	 * @see #setBomWritten(boolean)
 	 */
 	public String serialize(@Nonnull final Document document) throws UnsupportedEncodingException, IOException {
+		return serialize(document, document.getDoctype());
+	}
+
+	/**
+	 * Serializes the specified document to a string using the UTF-8 encoding.
+	 * @apiNote This method replaces the given document's doctype altogether, even if <code>null</code> is indicated for both public and system identifiers.
+	 * @apiNote Whether a byte order mark is written depends on the setting of {@link #isBomWritten()}; normally this should be set to <code>false</code> when
+	 *          writing to a string.
+	 * @param document The XML document to serialize.
+	 * @param publicId The external subset public identifier to use instead of that specified by the document, or <code>null</code> if none should be included.
+	 * @param systemId The external subset system identifier to use instead of that specified by the document, or <code>null</code> if none should be included.
+	 * @return A string containing the serialized XML data.
+	 * @throws IllegalArgumentException if a public ID was given with no system ID.
+	 * @throws IOException Thrown if an I/O error occurred.
+	 * @throws UnsupportedEncodingException Thrown if the UTF-8 encoding not recognized.
+	 * @see #setBomWritten(boolean)
+	 */
+	public String serialize(@Nonnull final Document document, @Nullable final String publicId, @Nullable final String systemId)
+			throws UnsupportedEncodingException, IOException {
+		checkArgument(!(publicId != null && systemId == null), "A system ID must be given with public ID `%s`.", publicId);
+		return serialize(document, document.getImplementation().createDocumentType(document.getDocumentElement().getNodeName(), publicId, systemId));
+	}
+
+	/**
+	 * Serializes the specified document to a string using the UTF-8 encoding.
+	 * @apiNote Whether a byte order mark is written depends on the setting of {@link #isBomWritten()}; normally this should be set to <code>false</code> when
+	 *          writing to a string.
+	 * @param document The XML document to serialize.
+	 * @param documentType The document type to use for the document, or <code>null</code> if no document type should be used.
+	 * @return A string containing the serialized XML data.
+	 * @throws IOException Thrown if an I/O error occurred.
+	 * @throws UnsupportedEncodingException Thrown if the UTF-8 encoding not recognized.
+	 * @see #setBomWritten(boolean)
+	 */
+	public String serialize(@Nonnull final Document document, @Nullable final DocumentType documentType) throws UnsupportedEncodingException, IOException {
 		try {
 			final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(); //create an output stream for receiving the XML data
-			serialize(document, byteArrayOutputStream, UTF_8); //serialize the document to the output stream using UTF-8 with no byte order mark
+			serialize(document, documentType, byteArrayOutputStream, UTF_8); //serialize the document to the output stream using UTF-8
 			return byteArrayOutputStream.toString(UTF_8); //convert the byte array to a string, using the UTF-8 encoding, and return it
 		} catch(final UnsupportedEncodingException unsupportedEncodingException) { //UTF-8 should always be supported
 			throw new AssertionError(unsupportedEncodingException);
@@ -490,14 +528,17 @@ public class XMLSerializer {
 	}
 
 	/**
-	 * Serializes the specified document fragment to a string using the UTF-8 encoding with no byte order mark.
+	 * Serializes the specified document fragment to a string using the UTF-8 encoding.
+	 * @apiNote Whether a byte order mark is written depends on the setting of {@link #isBomWritten()}; normally this should be set to <code>false</code> when
+	 *          writing to a string.
 	 * @param documentFragment The XML document fragment to serialize.
 	 * @return A string containing the serialized XML data.
+	 * @see #setBomWritten(boolean)
 	 */
 	public String serialize(@Nonnull final DocumentFragment documentFragment) {
 		try {
 			final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(); //create an output stream for receiving the XML data
-			serialize(documentFragment, byteArrayOutputStream, UTF_8); //serialize the document fragment to the output stream using UTF-8 with no byte order mark
+			serialize(documentFragment, byteArrayOutputStream, UTF_8); //serialize the document fragment to the output stream using UTF-8
 			return byteArrayOutputStream.toString(UTF_8); //convert the byte array to a string, using the UTF-8 encoding, and return it
 		} catch(final UnsupportedEncodingException unsupportedEncodingException) { //UTF-8 should always be supported
 			throw new AssertionError(unsupportedEncodingException);
@@ -507,14 +548,17 @@ public class XMLSerializer {
 	}
 
 	/**
-	 * Serializes the specified element to a string using the UTF-8 encoding with no byte order mark.
+	 * Serializes the specified element to a string using the UTF-8 encoding.
+	 * @apiNote Whether a byte order mark is written depends on the setting of {@link #isBomWritten()}; normally this should be set to <code>false</code> when
+	 *          writing to a string.
 	 * @param element The XML element to serialize.
 	 * @return A string containing the serialized XML data.
+	 * @see #setBomWritten(boolean)
 	 */
 	public String serialize(@Nonnull final Element element) {
 		try {
 			final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(); //create an output stream for receiving the XML data
-			serialize(element, byteArrayOutputStream, UTF_8); //serialize the element to the output stream using UTF-8 with no byte order mark
+			serialize(element, byteArrayOutputStream, UTF_8); //serialize the element to the output stream using UTF-8
 			return byteArrayOutputStream.toString(UTF_8); //convert the byte array to a string, using the UTF-8 encoding, and return it
 		} catch(final UnsupportedEncodingException unsupportedEncodingException) { //UTF-8 should always be supported
 			throw new AssertionError(unsupportedEncodingException);
@@ -524,15 +568,18 @@ public class XMLSerializer {
 	}
 
 	/**
-	 * Serializes the content (all child nodes and their descendants) of a specified node to a string using the UTF-8 encoding with no byte order mark. A newline
-	 * will be appended at the end if {@link #isFormatted()} is turned on and {@link #isFormatEndNewline()} is enabled.
+	 * Serializes the content (all child nodes and their descendants) of a specified node to a string using the UTF-8 encoding. A newline will be appended at the
+	 * end if {@link #isFormatted()} is turned on and {@link #isFormatEndNewline()} is enabled.
+	 * @apiNote Whether a byte order mark is written depends on the setting of {@link #isBomWritten()}; normally this should be set to <code>false</code> when
+	 *          writing to a string.
 	 * @param node The XML node the content of which to serialize—usually an element or document fragment.
 	 * @return A string containing the serialized XML data.
+	 * @see #setBomWritten(boolean)
 	 */
 	public String serializeContent(@Nonnull final Node node) {
 		try {
 			final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(); //create an output stream for receiving the XML data
-			serializeContent(node, byteArrayOutputStream, UTF_8); //serialize the node content to the output stream using UTF-8 with no byte order mark
+			serializeContent(node, byteArrayOutputStream, UTF_8); //serialize the node content to the output stream using UTF-8
 			return byteArrayOutputStream.toString(UTF_8); //convert the byte array to a string, using the UTF-8 encoding, and return it
 		} catch(final UnsupportedEncodingException unsupportedEncodingException) { //UTF-8 should always be supported
 			throw new AssertionError(unsupportedEncodingException);
@@ -542,18 +589,46 @@ public class XMLSerializer {
 	}
 
 	/**
-	 * Serializes the specified document to the given output stream using the UTF-8 encoding with the UTF-8 byte order mark.
+	 * Serializes the specified document to the given output stream using the UTF-8 encoding.
 	 * @param document The XML document to serialize.
 	 * @param outputStream The stream into which the document should be serialized.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 */
 	public void serialize(@Nonnull final Document document, @Nonnull final OutputStream outputStream) throws IOException {
-		serialize(document, outputStream, UTF_8); //serialize the document, defaulting to UTF-8
+		serialize(document, document.getDoctype(), outputStream);
+	}
+
+	/**
+	 * Serializes the specified document to the given output stream using the UTF-8 encoding.
+	 * @param document The XML document to serialize.
+	 * @param publicId The external subset public identifier to use instead of that specified by the document, or <code>null</code> if none should be included.
+	 * @param systemId The external subset system identifier to use instead of that specified by the document, or <code>null</code> if none should be included.
+	 * @param outputStream The stream into which the document should be serialized.
+	 * @throws IllegalArgumentException if a public ID was given with no system ID.
+	 * @throws IOException Thrown if an I/O error occurred.
+	 */
+	public void serialize(@Nonnull final Document document, @Nullable final String publicId, @Nullable final String systemId,
+			@Nonnull final OutputStream outputStream) throws IOException {
+		checkArgument(!(publicId != null && systemId == null), "A system ID must be given with public ID `%s`.", publicId);
+		serialize(document, document.getImplementation().createDocumentType(document.getDocumentElement().getNodeName(), publicId, systemId), outputStream);
+	}
+
+	/**
+	 * Serializes the specified document to the given output stream using the UTF-8 encoding.
+	 * @param document The XML document to serialize.
+	 * @param documentType The document type to use for the document, or <code>null</code> if no document type should be used.
+	 * @param outputStream The stream into which the document should be serialized.
+	 * @throws IOException Thrown if an I/O error occurred.
+	 */
+	public void serialize(@Nonnull final Document document, @Nullable final DocumentType documentType, @Nonnull final OutputStream outputStream)
+			throws IOException {
+		serialize(document, documentType, outputStream, UTF_8); //serialize the document, defaulting to UTF-8
 	}
 
 	/**
 	 * Serializes the specified document to the given output stream using the specified encoding. Any byte order mark specified in the character encoding will be
-	 * written to the stream. A newline will be appended at the end if {@link #isFormatted()} is turned on and {@link #isFormatEndNewline()} is enabled.
+	 * written to the stream based upon {@link #isBomWritten()}. A newline will be appended at the end if {@link #isFormatted()} is turned on and
+	 * {@link #isFormatEndNewline()} is enabled.
 	 * @param document The XML document to serialize.
 	 * @param outputStream The stream into which the document should be serialized.
 	 * @param charset The character set to use when serializing.
@@ -562,6 +637,43 @@ public class XMLSerializer {
 	 */
 	public void serialize(@Nonnull final Document document, @Nonnull final OutputStream outputStream, @Nonnull final Charset charset)
 			throws IOException, UnsupportedEncodingException {
+		serialize(document, document.getDoctype(), outputStream, charset);
+	}
+
+	/**
+	 * Serializes the specified document to the given output stream using the specified encoding. Any byte order mark specified in the character encoding will be
+	 * written to the stream based upon {@link #isBomWritten()}. A newline will be appended at the end if {@link #isFormatted()} is turned on and
+	 * {@link #isFormatEndNewline()} is enabled.
+	 * @apiNote This method replaces the given document's doctype altogether, even if <code>null</code> is indicated for both public and system identifiers.
+	 * @param document The XML document to serialize.
+	 * @param publicId The external subset public identifier to use instead of that specified by the document, or <code>null</code> if none should be included.
+	 * @param systemId The external subset system identifier to use instead of that specified by the document, or <code>null</code> if none should be included.
+	 * @param outputStream The stream into which the document should be serialized.
+	 * @param charset The character set to use when serializing.
+	 * @throws IllegalArgumentException if a public ID was given with no system ID.
+	 * @throws IOException Thrown if an I/O error occurred.
+	 * @throws UnsupportedEncodingException Thrown if the specified encoding is not recognized.
+	 */
+	public void serialize(@Nonnull final Document document, @Nullable final String publicId, @Nullable final String systemId,
+			@Nonnull final OutputStream outputStream, @Nonnull final Charset charset) throws IOException, UnsupportedEncodingException {
+		checkArgument(!(publicId != null && systemId == null), "A system ID must be given with public ID `%s`.", publicId);
+		serialize(document, document.getImplementation().createDocumentType(document.getDocumentElement().getNodeName(), publicId, systemId), outputStream,
+				charset);
+	}
+
+	/**
+	 * Serializes the specified document to the given output stream using the specified encoding. Any byte order mark specified in the character encoding will be
+	 * written to the stream based upon {@link #isBomWritten()}. A newline will be appended at the end if {@link #isFormatted()} is turned on and
+	 * {@link #isFormatEndNewline()} is enabled.
+	 * @param document The XML document to serialize.
+	 * @param documentType The document type to use for the document, or <code>null</code> if no document type should be used.
+	 * @param outputStream The stream into which the document should be serialized.
+	 * @param charset The character set to use when serializing.
+	 * @throws IOException Thrown if an I/O error occurred.
+	 * @throws UnsupportedEncodingException Thrown if the specified encoding is not recognized.
+	 */
+	public void serialize(@Nonnull final Document document, @Nullable final DocumentType documentType, @Nonnull final OutputStream outputStream,
+			@Nonnull final Charset charset) throws IOException, UnsupportedEncodingException {
 		resetIndent();
 		if(isBomWritten()) { //if we should write a BOM
 			final ByteOrderMark bom = ByteOrderMark.forCharset(charset); //get the byte order mark, if there is one
@@ -573,8 +685,7 @@ public class XMLSerializer {
 		if(isPrologWritten()) {
 			serializeProlog(writer, document, charset); //write the prolog
 		}
-		final DocumentType documentType = document.getDoctype(); //get the document type, if there is one
-		if(documentType != null) { //if there is a document type
+		if(documentType != null) { //if there is a document type indicated
 			initializeEntityLookup(documentType.getEntities()); //initialize the entity lookup based on the provided entities
 			serialize(writer, documentType); //write the document type
 		} else { //if there is no document type

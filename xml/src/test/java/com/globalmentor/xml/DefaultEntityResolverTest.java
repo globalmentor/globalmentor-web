@@ -16,6 +16,8 @@
 
 package com.globalmentor.xml;
 
+import static com.globalmentor.xml.XmlTestResources.*;
+
 import java.io.*;
 
 import javax.xml.parsers.*;
@@ -31,12 +33,10 @@ import org.xml.sax.SAXException;
  */
 public class DefaultEntityResolverTest {
 
-	private static final String XHTML_1_1_SKELETON_RESOURCE_NAME = "xhtml-1.1-skeleton.xhtml";
-
 	/**
-	 * Confirms the ability to parse an XHTML 1.1 modularized document using {@link DefaultEntityResolver}, even though some of the entities may longer be present
-	 * at their original URLs.
-	 * @implSpec This test uses the {@value #XHTML_1_1_SKELETON_RESOURCE_NAME} test resource.
+	 * Confirms the ability to parse an XHTML 1.1 modularized document using {@link DefaultEntityResolver} without exceptions, even though some of the entities
+	 * may longer be present at their original URLs.
+	 * @implSpec This test uses the {@value XmlTestResources#XHTML_1_1_SKELETON} test resource.
 	 * @implNote Strange behavior will occur of {@link Document#normalizeDocument()} is called after loading document in some situations: the entity resolver will
 	 *           never be accessed, and an error message will be printed. Although this behavior does not occur in this test, even if
 	 *           <code>document.normalizeDocument()</code> is invoked, if this parsing and documentation normalization is placed in a loop it may crash the JVM.
@@ -49,7 +49,7 @@ public class DefaultEntityResolverTest {
 		final DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 		documentBuilder.setEntityResolver(DefaultEntityResolver.getInstance()); //load XHTML entities as local resources
 		final Document document;
-		try (final InputStream inputStream = new BufferedInputStream(getClass().getResourceAsStream(XHTML_1_1_SKELETON_RESOURCE_NAME))) {
+		try (final InputStream inputStream = new BufferedInputStream(getClass().getResourceAsStream(XHTML_1_1_SKELETON))) {
 			document = documentBuilder.parse(inputStream);
 		}
 		document.normalize(); //see note in documentation about calling `document.normalizeDocument()` instead
