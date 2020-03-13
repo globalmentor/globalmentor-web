@@ -17,26 +17,47 @@
 package com.globalmentor.xml;
 
 import static com.globalmentor.xml.XmlDom.*;
+import static com.globalmentor.xml.XmlTestResources.*;
 import static java.util.Collections.*;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Stream;
 
 import javax.annotation.*;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.junit.jupiter.api.*;
 import org.w3c.dom.*;
+import org.xml.sax.SAXException;
 
 import com.globalmentor.java.Characters;
 import com.globalmentor.xml.spec.NsName;
 import com.globalmentor.xml.spec.XML;
 
 public class XMLSerializerTest {
+
+	/**
+	 * Checks the ability to specify a different doctype when serializing.
+	 * @implSpec This test uses the {@value XmlTestResources#XHTML_1_1_SKELETON} test resource.
+	 */
+	@Test
+	public void testChangeDoctype() throws IOException, ParserConfigurationException, SAXException {
+		final Document document;
+		try (final InputStream inputStream = new BufferedInputStream(getClass().getResourceAsStream(XHTML_1_1_SKELETON))) {
+			document = createDocumentBuilder(true, DefaultEntityResolver.getInstance()).parse(inputStream);
+		}
+		final XMLSerializer serializer = new XMLSerializer(false);
+		serializer.setPrologWritten(false);
+		assertThat(serializer.serialize(document, "foo", "bar"), startsWith("<!DOCTYPE html PUBLIC \"foo\" \"bar\">"));
+		assertThrows(IllegalArgumentException.class, () -> serializer.serialize(document, "foo", null));
+		assertThat(serializer.serialize(document, null, "bar"), startsWith("<!DOCTYPE html SYSTEM \"bar\">"));
+		assertThat(serializer.serialize(document, (String)null, (String)null), startsWith("<!DOCTYPE html>"));
+	}
 
 	/**
 	 * @see XMLSerializer#encodeContent(Appendable, CharSequence)
