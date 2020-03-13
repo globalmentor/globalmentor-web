@@ -476,6 +476,7 @@ public class XMLSerializer {
 	 *          writing to a string.
 	 * @param document The XML document to serialize.
 	 * @return A string containing the serialized XML data.
+	 * @throws IllegalArgumentException if the document type has a public ID with no system ID.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 * @throws UnsupportedEncodingException Thrown if the UTF-8 encoding not recognized.
 	 * @see #setBomWritten(boolean)
@@ -511,6 +512,7 @@ public class XMLSerializer {
 	 * @param document The XML document to serialize.
 	 * @param documentType The document type to use for the document, or <code>null</code> if no document type should be used.
 	 * @return A string containing the serialized XML data.
+	 * @throws IllegalArgumentException if the document type has a public ID with no system ID.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 * @throws UnsupportedEncodingException Thrown if the UTF-8 encoding not recognized.
 	 * @see #setBomWritten(boolean)
@@ -592,6 +594,7 @@ public class XMLSerializer {
 	 * Serializes the specified document to the given output stream using the UTF-8 encoding.
 	 * @param document The XML document to serialize.
 	 * @param outputStream The stream into which the document should be serialized.
+	 * @throws IllegalArgumentException if the document type has a public ID with no system ID.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 */
 	public void serialize(@Nonnull final Document document, @Nonnull final OutputStream outputStream) throws IOException {
@@ -618,6 +621,7 @@ public class XMLSerializer {
 	 * @param document The XML document to serialize.
 	 * @param documentType The document type to use for the document, or <code>null</code> if no document type should be used.
 	 * @param outputStream The stream into which the document should be serialized.
+	 * @throws IllegalArgumentException if the document type has a public ID with no system ID.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 */
 	public void serialize(@Nonnull final Document document, @Nullable final DocumentType documentType, @Nonnull final OutputStream outputStream)
@@ -632,6 +636,7 @@ public class XMLSerializer {
 	 * @param document The XML document to serialize.
 	 * @param outputStream The stream into which the document should be serialized.
 	 * @param charset The character set to use when serializing.
+	 * @throws IllegalArgumentException if the document type has a public ID with no system ID.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 * @throws UnsupportedEncodingException Thrown if the specified encoding is not recognized.
 	 */
@@ -669,6 +674,7 @@ public class XMLSerializer {
 	 * @param documentType The document type to use for the document, or <code>null</code> if no document type should be used.
 	 * @param outputStream The stream into which the document should be serialized.
 	 * @param charset The character set to use when serializing.
+	 * @throws IllegalArgumentException if the document type has a public ID with no system ID.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 * @throws UnsupportedEncodingException Thrown if the specified encoding is not recognized.
 	 */
@@ -889,17 +895,18 @@ public class XMLSerializer {
 	 * @param appendable The destination into which the document type should be written.
 	 * @param documentType The XML document type to serialize.
 	 * @return The given appendable.
+	 * @throws IllegalArgumentException if the document type has a public ID with no system ID.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 */
 	protected Appendable serialize(@Nonnull final Appendable appendable, @Nonnull final DocumentType documentType) throws IOException {
-		appendable.append(DOCTYPE_DECL_START).append(SPACE_CHAR).append(documentType.getName()); //write the beginning of the document type declaration
 		final String publicID = documentType.getPublicId(); //get the public ID, if there is one
 		final String systemID = documentType.getSystemId(); //get the system ID, if there is one 
+		checkArgument(!(publicID != null && systemID == null), "A system ID must be given with public ID `%s`.", publicID);
+		appendable.append(DOCTYPE_DECL_START).append(SPACE_CHAR).append(documentType.getName()); //write the beginning of the document type declaration
 		if(publicID != null || systemID != null) { //if there is a public ID or a system ID
 			appendable.append(SPACE_CHAR); //separate the identifiers from the doctype introduction
 			if(publicID != null) { //if there is a public ID
 				appendable.append(PUBLIC_ID_NAME).append(SPACE_CHAR).append(DOUBLE_QUOTE_CHAR).append(publicID).append(DOUBLE_QUOTE_CHAR).append(SPACE_CHAR); //write the public ID name and its public literal
-				assert systemID != null : "A system ID is expected following a public ID.";
 			} else { //if there is no public ID
 				appendable.append(SYSTEM_ID_NAME).append(SPACE_CHAR); //write the system ID name
 			}
