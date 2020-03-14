@@ -88,7 +88,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 			systemIDMap.put(XHTML_1_0_TRANSITIONAL_PUBLIC_ID, XHTML_1_0_TRANSITIONAL_SYSTEM_ID);
 			systemIDMap.put(XHTML_1_0_FRAMESET_PUBLIC_ID, XHTML_1_0_FRAMESET_SYSTEM_ID);
 			systemIDMap.put(XHTML_1_1_PUBLIC_ID, XHTML_1_1_SYSTEM_ID);
-			systemIDMap.put(XHTML_MATHML_SVG_PUBLIC_ID, XHTML_MATHML_SVG_SYSTEM_ID);
+			systemIDMap.put(XHTML_1_1_MATHML_2_0_SVG_1_1_PUBLIC_ID, XHTML_1_1_MATHML_2_0_SVG_1_1_SYSTEM_ID);
 			systemIDMap.put(MATHML_2_0_PUBLIC_ID, MATHML_2_0_SYSTEM_ID);
 			systemIDMap.put(SVG_1_0_PUBLIC_ID, SVG_1_0_SYSTEM_ID);
 			systemIDMap.put(SVG_1_1_FULL_PUBLIC_ID, SVG_1_1_FULL_SYSTEM_ID);
@@ -236,7 +236,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 			contentTypeMap.put(XHTML_1_0_TRANSITIONAL_PUBLIC_ID, XHTML_CONTENT_TYPE);
 			contentTypeMap.put(XHTML_1_0_FRAMESET_PUBLIC_ID, XHTML_CONTENT_TYPE);
 			contentTypeMap.put(XHTML_1_1_PUBLIC_ID, XHTML_CONTENT_TYPE);
-			contentTypeMap.put(XHTML_MATHML_SVG_PUBLIC_ID, XHTML_CONTENT_TYPE);
+			contentTypeMap.put(XHTML_1_1_MATHML_2_0_SVG_1_1_PUBLIC_ID, XHTML_CONTENT_TYPE);
 			contentTypeMap.put(MATHML_2_0_PUBLIC_ID, MATHML_CONTENT_TYPE);
 			contentTypeMap.put(SVG_1_0_PUBLIC_ID, SVG_CONTENT_TYPE);
 			contentTypeMap.put(SVG_1_1_FULL_PUBLIC_ID, SVG_CONTENT_TYPE);
