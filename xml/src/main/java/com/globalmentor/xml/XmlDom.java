@@ -72,6 +72,13 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 */
 	public static final int CHARACTER_ENCODING_AUTODETECT_BYTE_COUNT = 4;
 
+	/**
+	 * The wildcard string for matching tags, namespace URI strings, or local names.
+	 * @see Element#getElementsByTagName(String)
+	 * @see Element#getElementsByTagNameNS(String, String)
+	 */
+	public static final String MATCH_ALL = "*";
+
 	/** A lazily-created cache of system IDs keyed to public IDs. */
 	private static Reference<Map<String, String>> systemIDMapReference = null;
 
@@ -1200,12 +1207,12 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	}
 
 	/**
-	 * Returns a list of child nodes with a given type and node name. The special wildcard name "*" returns nodes of all names. If <code>deep</code> is set to
-	 * <code>true</code>, returns a list of all descendant nodes with a given name, in the order in which they would be encountered in a pre-order traversal of
-	 * the node tree.
+	 * Returns a list of child nodes with a given type and node name. The special wildcard name {@value #MATCH_ALL} returns nodes of all names. If
+	 * <code>deep</code> is set to <code>true</code>, returns a list of all descendant nodes with a given name, in the order in which they would be encountered in
+	 * a pre-order traversal of the node tree.
 	 * @param node The node the child nodes of which will be searched.
 	 * @param nodeType The type of nodes to include.
-	 * @param nodeName The name of the node to match on. The special value "*" matches all nodes.
+	 * @param nodeName The name of the node to match on. The special value {@value #MATCH_ALL} matches all nodes.
 	 * @param deep Whether or not matching child nodes of each matching child node, etc. should be included.
 	 * @return A new list containing all the matching nodes.
 	 */
@@ -1214,22 +1221,22 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	}
 
 	/**
-	 * Collects child nodes with a given type and node name. The special wildcard name "*" returns nodes of all names. If <code>deep</code> is set to
-	 * <code>true</code>, returns a list of all descendant nodes with a given name, in the order in which they would be encountered in a pre-order traversal of
+	 * Collects child nodes with a given type and node name. The special wildcard name {@value #MATCH_ALL} returns nodes of all names. If <code>deep</code> is set
+	 * to <code>true</code>, returns a list of all descendant nodes with a given name, in the order in which they would be encountered in a pre-order traversal of
 	 * the node tree.
 	 * @param <N> The type of node to collect.
 	 * @param <C> The type of the collection of nodes.
 	 * @param node The node the child nodes of which will be searched.
 	 * @param nodeType The type of nodes to include.
 	 * @param nodeClass The class representing the type of node to return.
-	 * @param nodeName The name of the node to match on. The special value "*" matches all nodes.
+	 * @param nodeName The name of the node to match on. The special value {@value #MATCH_ALL} matches all nodes.
 	 * @param deep Whether or not matching child nodes of each matching child node, etc. should be included.
 	 * @param nodes The collection into which the nodes will be gathered.
 	 * @return The given collection, now containing all the matching nodes.
 	 */
 	public static <N extends Node, C extends Collection<N>> C collectNodesByName(@Nonnull final Node node, final int nodeType, @Nonnull final Class<N> nodeClass,
 			@Nonnull final String nodeName, final boolean deep, final C nodes) {
-		final boolean matchAllNodes = "*".equals(nodeName); //see if they passed us the wildcard character TODO use a constant here
+		final boolean matchAllNodes = MATCH_ALL.equals(nodeName); //see if they passed us the wildcard character
 		final NodeList childNodeList = node.getChildNodes(); //get the list of child nodes
 		final int childNodeCount = childNodeList.getLength(); //get the number of child nodes
 		for(int childIndex = 0; childIndex < childNodeCount; childIndex++) { //look at each child node
@@ -1247,13 +1254,13 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	}
 
 	/**
-	 * Returns a list of child nodes with a given type, namespace URI, and local name. The special wildcard name "*" returns nodes of all local names. If
-	 * <code>deep</code> is set to <code>true</code>, returns a list of all descendant nodes with a given name, in the order in which they would be encountered in
-	 * a pre-order traversal of the node tree.
+	 * Returns a list of child nodes with a given type, namespace URI, and local name. The special wildcard name {@value #MATCH_ALL} returns nodes of all local
+	 * names. If <code>deep</code> is set to <code>true</code>, returns a list of all descendant nodes with a given name, in the order in which they would be
+	 * encountered in a pre-order traversal of the node tree.
 	 * @param node The node the child nodes of which will be searched.
 	 * @param nodeType The type of nodes to include.
-	 * @param namespaceURI The URI of the namespace of nodes to return. The special value "*" matches all namespaces.
-	 * @param localName The local name of the node to match on. The special value "*" matches all local names.
+	 * @param namespaceURI The URI of the namespace of nodes to return. The special value {@value #MATCH_ALL} matches all namespaces.
+	 * @param localName The local name of the node to match on. The special value {@value #MATCH_ALL} matches all local names.
 	 * @param deep Whether or not matching child nodes of each matching child node, etc. should be included.
 	 * @return A new list containing all the matching nodes.
 	 */
@@ -1263,16 +1270,16 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	}
 
 	/**
-	 * Collects child nodes with a given type, namespace URI, and local name. The special wildcard name "*" returns nodes of all local names. If <code>deep</code>
-	 * is set to <code>true</code>, returns a list of all descendant nodes with a given name, in the order in which they would be encountered in a pre-order
-	 * traversal of the node tree.
+	 * Collects child nodes with a given type, namespace URI, and local name. The special wildcard name {@value #MATCH_ALL} returns nodes of all local names. If
+	 * <code>deep</code> is set to <code>true</code>, returns a list of all descendant nodes with a given name, in the order in which they would be encountered in
+	 * a pre-order traversal of the node tree.
 	 * @param <N> The type of node to collect.
 	 * @param <C> The type of the collection of nodes.
 	 * @param node The node the child nodes of which will be searched.
 	 * @param nodeType The type of nodes to include.
 	 * @param nodeClass The class representing the type of node to return.
-	 * @param namespaceURI The URI of the namespace of nodes to return. The special value "*" matches all namespaces.
-	 * @param localName The local name of the node to match on. The special value "*" matches all local names.
+	 * @param namespaceURI The URI of the namespace of nodes to return. The special value {@value #MATCH_ALL} matches all namespaces.
+	 * @param localName The local name of the node to match on. The special value {@value #MATCH_ALL} matches all local names.
 	 * @param deep Whether or not matching child nodes of each matching child node, etc. should be included.
 	 * @param nodes The collection into which the nodes will be gathered.
 	 * @return The given collection, now containing all the matching nodes.
@@ -1280,8 +1287,8 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 */
 	public static <N extends Node, C extends Collection<N>> C collectNodesByNameNS(@Nonnull final Node node, final int nodeType,
 			@Nonnull final Class<N> nodeClass, @Nullable final String namespaceURI, @Nonnull final String localName, final boolean deep, final C nodes) {
-		final boolean matchAllNamespaces = "*".equals(namespaceURI); //see if they passed us the wildcard character for the namespace URI TODO use a constant here
-		final boolean matchAllLocalNames = "*".equals(localName); //see if they passed us the wildcard character for the local name TODO use a constant here
+		final boolean matchAllNamespaces = MATCH_ALL.equals(namespaceURI); //see if they passed us the wildcard character for the namespace URI
+		final boolean matchAllLocalNames = MATCH_ALL.equals(localName); //see if they passed us the wildcard character for the local name
 		final NodeList childNodeList = node.getChildNodes(); //get the list of child nodes
 		final int childNodeCount = childNodeList.getLength(); //get the number of child nodes
 		for(int childIndex = 0; childIndex < childNodeCount; childIndex++) { //look at each child node
