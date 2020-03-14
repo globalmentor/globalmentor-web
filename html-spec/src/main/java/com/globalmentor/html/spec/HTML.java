@@ -387,6 +387,14 @@ public class HTML {
 	public static final String ATTRIBUTE_ONCLICK = "onclick";
 	public static final String ATTRIBUTE_ONLOAD = "onload";
 
+	//## XHTML 1.1 attributes
+
+	/**
+	 * The doctype version attribute described in XHTML 1.1 and added as implied in the XHTML 1.1 DTDs.
+	 * @see <a href="https://www.w3.org/TR/xhtml11/xhtml11.html#strict">XHTML 1.1 - Second Edition § 2.1.1. Strictly Conforming Documents</a>
+	 */
+	public static final String ATTRIBUTE_VERSION = "version";
+
 	//## element-specific attributes
 
 	/**
