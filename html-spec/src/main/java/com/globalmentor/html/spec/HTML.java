@@ -118,9 +118,22 @@ public class HTML {
 	public static final String XHTML_1_1_SYSTEM_ID = "https://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd";
 
 	/** The public ID for the XHTML+MathML+SVG DTD. */
-	public static final String XHTML_MATHML_SVG_PUBLIC_ID = "-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN";
+	public static final String XHTML_1_1_MATHML_2_0_SVG_1_1_PUBLIC_ID = "-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN";
 	/** The system ID for the XHTML+MathML+SVG DTD. */
-	public static final String XHTML_MATHML_SVG_SYSTEM_ID = "https://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd";
+	public static final String XHTML_1_1_MATHML_2_0_SVG_1_1_SYSTEM_ID = "https://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd";
+
+	/**
+	 * The public ID for the XHTML+MathML+SVG DTD.
+	 * @deprecated to be removed in favor of {@link #XHTML_1_1_MATHML_2_0_SVG_1_1_PUBLIC_ID}.
+	 */
+	@Deprecated
+	public static final String XHTML_MATHML_SVG_PUBLIC_ID = XHTML_1_1_MATHML_2_0_SVG_1_1_PUBLIC_ID;
+	/**
+	 * The system ID for the XHTML+MathML+SVG DTD.
+	 * @deprecated to be removed in favor of {@link #XHTML_1_1_MATHML_2_0_SVG_1_1_SYSTEM_ID}.
+	 */
+	@Deprecated
+	public static final String XHTML_MATHML_SVG_SYSTEM_ID = XHTML_1_1_MATHML_2_0_SVG_1_1_SYSTEM_ID;
 
 	/**
 	 * Determines if the given content type is one representing HTML in some form.
