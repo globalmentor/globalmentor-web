@@ -22,6 +22,7 @@ import java.net.URI;
 import java.nio.charset.*;
 import java.util.*;
 import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.stream.*;
 
 import javax.annotation.*;
@@ -2243,15 +2244,15 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @param nsName The namespace URI and local name of the attribute to retrieve.
 	 * @return <code>true</code> if an attribute with the given local name and namespace URI is specified or has a default value on this element,
 	 *         <code>false</code> otherwise.
-	 * @exception DOMException
-	 *              <dl>
-	 *              <dt>NOT_SUPPORTED_ERR</dt>
-	 *              <dd>May be raised if the implementation does not support the feature <code>"XML"</code> and the language exposed through the Document does not
-	 *              support XML Namespaces (such as [<a href='http://www.w3.org/TR/1999/REC-html401-19991224/'>HTML 4.01</a>]).</dd>
-	 *              </dl>
+	 * @throws DOMException
+	 *           <dl>
+	 *           <dt>NOT_SUPPORTED_ERR</dt>
+	 *           <dd>May be raised if the implementation does not support the feature <code>"XML"</code> and the language exposed through the Document does not
+	 *           support XML Namespaces (such as [<a href='http://www.w3.org/TR/1999/REC-html401-19991224/'>HTML 4.01</a>]).</dd>
+	 *           </dl>
 	 */
 	public static boolean hasAttributeNS(@Nonnull final Element element, @Nonnull final NsName nsName) throws DOMException {
-		return element.hasAttributeNS(nsName.getNamespaceString(), nsName.getNamespaceString());
+		return element.hasAttributeNS(nsName.getNamespaceString(), nsName.getLocalName());
 	}
 
 	/**
@@ -2352,6 +2353,71 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 */
 	public static void mergeAttributesNS(@Nonnull final Element targetElement, @Nonnull final Stream<Attr> attributes) {
 		attributes.forEach(attr -> targetElement.setAttributeNS(attr.getNamespaceURI(), attr.getName(), attr.getValue()));
+	}
+
+	/**
+	 * Removes an attribute by local name and namespace URI. If no attribute with this local name and namespace URI is found, this method has no effect.
+	 * @implSpec This method delegates to {@link Element#removeAttributeNS(String, String)}.
+	 * @param element The element from which an attribute should be removed.
+	 * @param nsName The namespace URI and local name of the attribute to remove.
+	 * @throws DOMException
+	 *           <dl>
+	 *           <dt>NO_MODIFICATION_ALLOWED_ERR</dt>
+	 *           <dd>Raised if this node is read-only.</dd>
+	 *           <dt>NOT_SUPPORTED_ERR</dt>
+	 *           <dd>May be raised if the implementation does not support the feature <code>"XML"</code> and the language exposed through the Document does not
+	 *           support XML Namespaces (such as [<a href='http://www.w3.org/TR/1999/REC-html401-19991224/'>HTML 4.01</a>]).</dd>
+	 *           </dl>
+	 */
+	public static void removeAttributeNS(@Nonnull final Element element, @Nonnull final NsName nsName) throws DOMException {
+		element.removeAttributeNS(nsName.getNamespaceString(), nsName.getLocalName());
+	}
+
+	/**
+	 * Removes an attribute by local name and namespace URI if its value matches some predicate.
+	 * @implSpec This implementation delegates to {@link #removeAttributeNSIf(Element, String, String, Predicate)}.
+	 * @param element The element from which an attribute should be removed.
+	 * @param nsName The namespace URI and local name of the attribute to remove.
+	 * @param valuePredicate The predicate that, if it returns <code>true</code> for the attribute value, causes the attribute to be removed.
+	 * @return <code>true</code> if the attribute was present and was removed.
+	 * @throws DOMException
+	 *           <dl>
+	 *           <dt>NO_MODIFICATION_ALLOWED_ERR</dt>
+	 *           <dd>Raised if this node is read-only.</dd>
+	 *           <dt>NOT_SUPPORTED_ERR</dt>
+	 *           <dd>May be raised if the implementation does not support the feature <code>"XML"</code> and the language exposed through the Document does not
+	 *           support XML Namespaces (such as [<a href='http://www.w3.org/TR/1999/REC-html401-19991224/'>HTML 4.01</a>]).</dd>
+	 *           </dl>
+	 */
+	public static boolean removeAttributeNSIf(@Nonnull final Element element, @Nonnull final NsName nsName,
+			@Nonnull final Predicate<? super String> valuePredicate) throws DOMException {
+		return removeAttributeNSIf(element, nsName.getNamespaceString(), nsName.getLocalName(), valuePredicate);
+	}
+
+	/**
+	 * Removes an attribute value by local name and namespace URI if its value matches some predicate.
+	 * @param element The element for which an attribute should be returned.
+	 * @param namespaceURI The namespace URI of the attribute to remove.
+	 * @param localName The local name of the attribute to remove.
+	 * @param valuePredicate The predicate that, if it returns <code>true</code> for the attribute value, causes the attribute to be removed.
+	 * @return <code>true</code> if the attribute was present and was removed.
+	 * @throws DOMException
+	 *           <dl>
+	 *           <dt>NO_MODIFICATION_ALLOWED_ERR</dt>
+	 *           <dd>Raised if this node is read-only.</dd>
+	 *           <dt>NOT_SUPPORTED_ERR</dt>
+	 *           <dd>May be raised if the implementation does not support the feature <code>"XML"</code> and the language exposed through the Document does not
+	 *           support XML Namespaces (such as [<a href='http://www.w3.org/TR/1999/REC-html401-19991224/'>HTML 4.01</a>]).</dd>
+	 *           </dl>
+	 */
+	public static boolean removeAttributeNSIf(@Nonnull final Element element, @Nullable final String namespaceURI, @Nonnull final String localName,
+			@Nonnull final Predicate<? super String> valuePredicate) throws DOMException {
+		final boolean remove = findAttributeNS(element, namespaceURI, localName).filter(valuePredicate).isPresent();
+		if(remove) {
+			element.removeAttributeNS(namespaceURI, localName);
+		}
+		return remove;
+
 	}
 
 }
