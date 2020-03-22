@@ -87,15 +87,16 @@ public class HtmlSerializer extends XMLSerializer {
 
 	/**
 	 * {@inheritDoc}
-	 * @implSpec This version only serializes elements using an empty element tag if the element is an HTML <dfn>void element</dfn>.
-	 * @implNote This implementation results in an empty element tag for void elements even if the element has children, as HTML void elements are not allowed to
-	 *           have children.
+	 * @implSpec This version only serializes elements using an empty element tag if one of the HTML specifications forbids the use of an ending tag; this
+	 *           includes HTML5 <dfn>void elements</dfn> but also obsolete HTML 4.0.1 elements forbidden from having end tags such as {@code <frame>}.
+	 * @implNote This implementation results in an empty element tag for an HTML element forbidden to have children even if the element does in fact have
+	 *           children.
 	 */
 	@Override
 	protected boolean isEmptyElementTag(final Element element) {
-		final boolean isVoidElement = VOID_ELEMENTS.contains(NsName.ofNode(element));
+		final boolean isEmptyElement = EMPTY_ELEMENTS.contains(NsName.ofNode(element));
 		//TODO log a warning or throw an exception if a void element has children
-		return isVoidElement;
+		return isEmptyElement;
 	}
 
 	/**
