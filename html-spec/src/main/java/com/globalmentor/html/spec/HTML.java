@@ -824,12 +824,15 @@ public class HTML {
 	//roles based upon styles; see [HTML 5.2 § 10. Rendering](https://www.w3.org/TR/html52/rendering.html#rendering); see also [Browsers' default CSS for HTML elements](https://stackoverflow.com/q/6867254/421049)
 
 	/**
-	 * Elements HTML5 suggests should be rendered as CSS <code>display: block</code>.
+	 * Elements HTML5 and CSS 2.1 suggests should be rendered as CSS <code>display: block</code>.
+	 * @apiNote The majority of these elements follow the HTML 5 specification, but they also include obsolete elements not mentioned as block elements but
+	 *          indicated to be block elements by CSS 2.1 for HTML 4.
 	 * @see <a href="https://www.w3.org/TR/html52/rendering.html#the-page">HTML 5.2 § 10.3.2. The page</a>
 	 * @see <a href="https://www.w3.org/TR/html52/rendering.html#non-replaced-elements-flow-content">HTML 5.2 § 10.3.3. Flow content</a>
 	 * @see <a href="https://www.w3.org/TR/html52/rendering.html#sections-and-headings">HTML 5.2 § 10.3.7. Sections and headings</a>
 	 * @see <a href="https://www.w3.org/TR/html52/rendering.html#section-lists">HTML 5.2 § 10.3.8. Lists</a>
 	 * @see <a href="https://www.w3.org/TR/html52/rendering.html#the-fieldset-and-legend-elements">HTML 5.2 § 10.3.13. The fieldset and legend elements</a>
+	 * @see <a href="https://www.w3.org/TR/CSS2/sample.html">CSS 2.1 Appendix D. Default style sheet for HTML 4</a>
 	 */
 	public static final Set<NsName> BLOCK_ELEMENTS = Stream.of(
 			//the page
@@ -842,7 +845,10 @@ public class HTML {
 			//lists
 			ELEMENT_DIR, ELEMENT_DD, ELEMENT_DL, ELEMENT_DT, ELEMENT_OL, ELEMENT_UL,
 			//fieldset and legend
-			ELEMENT_FIELDSET).map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName)).collect(toSet());
+			ELEMENT_FIELDSET,
+			//obsolete elements
+			ELEMENT_FRAME, ELEMENT_FRAMESET, ELEMENT_NOFRAMES, ELEMENT_CENTER, ELEMENT_MENU).map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName))
+			.collect(toSet());
 
 	/**
 	 * Elements HTML5 suggests should be rendered as CSS <code>display: list-item</code>.
