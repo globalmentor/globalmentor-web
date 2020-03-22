@@ -501,6 +501,19 @@ public class HTML {
 	public static final String ELEMENT_EMBED_ATTRIBUTE_WIDTH = "width";
 	public static final String ELEMENT_EMBED_ATTRIBUTE_TYPE = "type";
 
+	//attributes for <frame>
+	public static final String ELEMENT_FRAME_ATTRIBUTE_SRC = ATTRIBUTE_SRC;
+	public static final String ELEMENT_FRAME_ATTRIBUTE_FRAMEBORDER = "frameborder";
+	public static final String ELEMENT_FRAME_ATTRIBUTE_LONGDESC = "longdesc";
+	public static final String ELEMENT_FRAME_ATTRIBUTE_MARGINHEIGHT = "marginheight";
+	public static final String ELEMENT_FRAME_ATTRIBUTE_MARGINWIDTH = "marginwidth";
+	public static final String ELEMENT_FRAME_ATTRIBUTE_NORESIZE = "noresize";
+	public static final String ELEMENT_FRAME_ATTRIBUTE_SCROLLING = "scrolling";
+
+	//attributes for <frameset>
+	public static final String ELEMENT_FRAMESET_ATTRIBUTE_COLS = "cols";
+	public static final String ELEMENT_FRAMESET_ATTRIBUTE_ROWS = "rows";
+
 	//attributes for <iframe>
 	public static final String ELEMENT_IFRAME_ATTRIBUTE_ALLOW_TRANSPARENCY = "allowTransparency"; //IE-specific; see http://msdn.microsoft.com/en-us/library/ms533072.aspx
 	public static final String ELEMENT_IFRAME_ATTRIBUTE_SRC = ATTRIBUTE_SRC;
