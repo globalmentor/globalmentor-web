@@ -652,11 +652,22 @@ public class HTML {
 
 	/**
 	 * The HTML5 <dfn>void elements</dfn>.
+	 * @apiNote This definition only includes HTML5 elements designated as "void elements". It does not include obsolete elements from previous specifications
+	 *          that also must be empty. For a complete set of empty elements, including void elements and obsolete empty elements, use {@link #EMPTY_ELEMENTS}.
 	 * @see <a href="https://www.w3.org/TR/html52/syntax.html#void-elements">HTML 5.2 § 8.1.2. Elements: Void elements</a>
 	 */
 	public static final Set<NsName> VOID_ELEMENTS = Stream.of(ELEMENT_AREA, ELEMENT_BASE, ELEMENT_BR, ELEMENT_COL, ELEMENT_EMBED, ELEMENT_HR, ELEMENT_IMG,
 			ELEMENT_INPUT, ELEMENT_LINK, ELEMENT_META, ELEMENT_PARAM, ELEMENT_SOURCE, ELEMENT_TRACK, ELEMENT_WBR)
 			.map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName)).collect(toSet());
+
+	/**
+	 * HTML elements which must be empty. These include the HTML5 <dfn>void elements</dfn> defined in {@link #VOID_ELEMENTS}, as well as other obsolete elements
+	 * that were specified as empty.
+	 * @see <a href="https://www.w3.org/TR/html52/syntax.html#void-elements">HTML 5.2 § 8.1.2. Elements: Void elements</a>
+	 * @see <a href="https://www.w3.org/TR/html4/index/elements.html">HTML 4.01 Index of Elements</a>
+	 */
+	public static final Set<NsName> EMPTY_ELEMENTS = Stream.concat(VOID_ELEMENTS.stream(),
+			Stream.of(ELEMENT_BASEFONT, ELEMENT_FRAME, ELEMENT_ISINDEX).map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName))).collect(toSet());
 
 	//kinds of content; see https://www.w3.org/TR/html52/dom.html#content-models
 
