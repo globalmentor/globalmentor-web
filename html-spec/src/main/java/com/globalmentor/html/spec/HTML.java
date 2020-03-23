@@ -659,7 +659,8 @@ public class HTML {
 	public static final Set<NsName> OBSOLETE_ELEMENTS = Stream.of(ELEMENT_APPLET, ELEMENT_ACRONYM, ELEMENT_BASEFONT, ELEMENT_BGSOUND, ELEMENT_BIG, ELEMENT_BLINK,
 			ELEMENT_CENTER, ELEMENT_DIR, ELEMENT_FONT, ELEMENT_FRAME, ELEMENT_FRAMESET, ELEMENT_NOFRAMES, ELEMENT_ISINDEX, ELEMENT_LISTING, ELEMENT_MARQUEE,
 			ELEMENT_MENU, ELEMENT_MENUITEM, ELEMENT_MULTICOL, ELEMENT_NEXTID, ELEMENT_NOEMBED, ELEMENT_NOBR, ELEMENT_PLAINTEXT, ELEMENT_RB, ELEMENT_RTC,
-			ELEMENT_SPACER, ELEMENT_STRIKE, ELEMENT_TT, ELEMENT_XMP).map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName)).collect(toSet());
+			ELEMENT_SPACER, ELEMENT_STRIKE, ELEMENT_TT, ELEMENT_XMP).map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName))
+			.collect(toUnmodifiableSet());
 
 	//kinds of elements; see https://www.w3.org/TR/html52/syntax.html#writing-html-documents-elements
 
@@ -671,7 +672,7 @@ public class HTML {
 	 */
 	public static final Set<NsName> VOID_ELEMENTS = Stream.of(ELEMENT_AREA, ELEMENT_BASE, ELEMENT_BR, ELEMENT_COL, ELEMENT_EMBED, ELEMENT_HR, ELEMENT_IMG,
 			ELEMENT_INPUT, ELEMENT_LINK, ELEMENT_META, ELEMENT_PARAM, ELEMENT_SOURCE, ELEMENT_TRACK, ELEMENT_WBR)
-			.map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName)).collect(toSet());
+			.map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName)).collect(toUnmodifiableSet());
 
 	/**
 	 * HTML elements which must be empty. These include the HTML5 <dfn>void elements</dfn> defined in {@link #VOID_ELEMENTS}, as well as other obsolete elements
@@ -679,8 +680,10 @@ public class HTML {
 	 * @see <a href="https://www.w3.org/TR/html52/syntax.html#void-elements">HTML 5.2 § 8.1.2. Elements: Void elements</a>
 	 * @see <a href="https://www.w3.org/TR/html4/index/elements.html">HTML 4.01 Index of Elements</a>
 	 */
-	public static final Set<NsName> EMPTY_ELEMENTS = Stream.concat(VOID_ELEMENTS.stream(),
-			Stream.of(ELEMENT_BASEFONT, ELEMENT_FRAME, ELEMENT_ISINDEX).map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName))).collect(toSet());
+	public static final Set<NsName> EMPTY_ELEMENTS = Stream
+			.concat(VOID_ELEMENTS.stream(),
+					Stream.of(ELEMENT_BASEFONT, ELEMENT_FRAME, ELEMENT_ISINDEX).map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName)))
+			.collect(toUnmodifiableSet());
 
 	//kinds of content; see https://www.w3.org/TR/html52/dom.html#content-models
 
@@ -690,7 +693,7 @@ public class HTML {
 	 */
 	public static final Set<NsName> METADATA_CONTENT = Stream
 			.of(ELEMENT_BASE, ELEMENT_LINK, ELEMENT_META, ELEMENT_NOSCRIPT, ELEMENT_SCRIPT, ELEMENT_STYLE, ELEMENT_TEMPLATE, ELEMENT_TITLE)
-			.map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName)).collect(toSet());
+			.map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName)).collect(toUnmodifiableSet());
 
 	/**
 	 * Elements HTML5 considers <dfn>flow content</dfn>.
@@ -720,21 +723,21 @@ public class HTML {
 					NsName.of("http://www.w3.org/1998/Math/MathML", "math"),
 					//SVG
 					NsName.of("http://www.w3.org/2000/svg", "svg")))
-			.collect(toSet());
+			.collect(toUnmodifiableSet());
 
 	/**
 	 * Elements HTML5 considers <dfn>sectioning content</dfn>.
 	 * @see <a href="https://www.w3.org/TR/html52/dom.html#sectioning-content">HTML 5.2 § 3.2.4.2.3. Sectioning content</a>
 	 */
 	public static final Set<NsName> SECTIONING_CONTENT = Stream.of(ELEMENT_ARTICLE, ELEMENT_ASIDE, ELEMENT_NAV, ELEMENT_SECTION)
-			.map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName)).collect(toSet());
+			.map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName)).collect(toUnmodifiableSet());
 
 	/**
 	 * Elements HTML5 considers <dfn>heading content</dfn>.
 	 * @see <a href="https://www.w3.org/TR/html52/dom.html#heading-content">HTML 5.2 § 3.2.4.2.4. Heading content</a>
 	 */
 	public static final Set<NsName> HEADING_CONTENT = Stream.of(ELEMENT_H1, ELEMENT_H2, ELEMENT_H3, ELEMENT_H4, ELEMENT_H5, ELEMENT_H6)
-			.map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName)).collect(toSet());
+			.map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName)).collect(toUnmodifiableSet());
 
 	/**
 	 * Elements HTML5 considers <dfn>phrasing content</dfn>.
@@ -762,7 +765,7 @@ public class HTML {
 					NsName.of("http://www.w3.org/1998/Math/MathML", "math"),
 					//SVG
 					NsName.of("http://www.w3.org/2000/svg", "svg")))
-			.collect(toSet());
+			.collect(toUnmodifiableSet());
 
 	/**
 	 * Elements HTML5 considers <dfn>embedded content</dfn>.
@@ -784,7 +787,7 @@ public class HTML {
 					NsName.of("http://www.w3.org/1998/Math/MathML", "math"),
 					//SVG
 					NsName.of("http://www.w3.org/2000/svg", "svg")))
-			.collect(toSet());
+			.collect(toUnmodifiableSet());
 
 	/**
 	 * Elements HTML5 considers <dfn>interactive content</dfn>.
@@ -795,7 +798,7 @@ public class HTML {
 			ELEMENT_BUTTON, ELEMENT_DETAILS, ELEMENT_EMBED, ELEMENT_IFRAME, ELEMENT_IMG, //if the `usemap` attribute is present
 			ELEMENT_INPUT, //if the `type` attribute is not in the `Hidden` state
 			ELEMENT_LABEL, ELEMENT_SELECT, ELEMENT_TEXTAREA, ELEMENT_VIDEO) //if the controls attribute is present 
-			.map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName)).collect(toSet());
+			.map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName)).collect(toUnmodifiableSet());
 
 	/**
 	 * Elements HTML5 considers <dfn>palpable content</dfn>.
@@ -825,14 +828,14 @@ public class HTML {
 					NsName.of("http://www.w3.org/1998/Math/MathML", "math"),
 					//SVG
 					NsName.of("http://www.w3.org/2000/svg", "svg")))
-			.collect(toSet());
+			.collect(toUnmodifiableSet());
 
 	/**
 	 * Elements HTML5 considers <dfn>script-supporting elements</dfn>.
 	 * @see <a href="https://www.w3.org/TR/html52/dom.html#script-supporting-elements">HTML 5.2 § 3.2.4.2.9. Script-supporting elements</a>
 	 */
 	public static final Set<NsName> SCRIPT_SUPPORTING_ELEMENTS = Stream.of(ELEMENT_SCRIPT, ELEMENT_TEMPLATE)
-			.map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName)).collect(toSet());
+			.map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName)).collect(toUnmodifiableSet());
 
 	//roles based upon styles; see [HTML 5.2 § 10. Rendering](https://www.w3.org/TR/html52/rendering.html#rendering); see also [Browsers' default CSS for HTML elements](https://stackoverflow.com/q/6867254/421049)
 
@@ -861,7 +864,7 @@ public class HTML {
 			ELEMENT_FIELDSET,
 			//obsolete elements
 			ELEMENT_FRAME, ELEMENT_FRAMESET, ELEMENT_NOFRAMES, ELEMENT_CENTER, ELEMENT_MENU).map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName))
-			.collect(toSet());
+			.collect(toUnmodifiableSet());
 
 	/**
 	 * Elements HTML5 suggests should be rendered as CSS <code>display: list-item</code>.
@@ -872,6 +875,6 @@ public class HTML {
 			//lists
 			ELEMENT_LI,
 			//details and summary
-			ELEMENT_SUMMARY).map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName)).collect(toSet());
+			ELEMENT_SUMMARY).map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName)).collect(toUnmodifiableSet());
 
 }
