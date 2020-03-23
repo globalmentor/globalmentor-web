@@ -45,7 +45,7 @@ public abstract class BaseHtmlFormatProfile extends AbstractXmlFormatProfile {
 		blockElements = concat(blockElements, Stream.of(ELEMENT_HEAD).map(elementName -> NsName.of(XHTML_NAMESPACE_URI_STRING, elementName)));
 		//consider adding ELEMENT_DATALIST
 		//consider adding contained items: ELEMENT_AREA, ELEMENT_OPTION, ELEMENT_PARAM, ELEMENT_SOURCE, ELEMENT_TRACK
-		BLOCK_ELEMENTS = blockElements.collect(toSet());
+		BLOCK_ELEMENTS = blockElements.collect(toUnmodifiableSet());
 	}
 
 	/** The elements this base implementation considers break elements for formatting. */
