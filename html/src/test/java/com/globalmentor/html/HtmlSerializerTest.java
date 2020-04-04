@@ -54,26 +54,33 @@ public class HtmlSerializerTest {
 
 	/** Verifies that serialization of a combination of <code>lang</code> and <code>xml:lang</code> attributes are serialized correctly for HTML. */
 	@Test
-	public void testSerializeLangAttribute() throws IOException {
-		assertThat("Simple HTML `lang` tag.", reformat("<html xmlns=\"http://www.w3.org/1999/xhtml\"><body lang=\"en\"></body></html>"),
+	public void testSerializeLangAttributes() throws IOException {
+		assertThat("Simple HTML `lang` attribute.", reformat("<html xmlns=\"http://www.w3.org/1999/xhtml\"><body lang=\"en\"></body></html>"),
 				containsString("<body lang=\"en\">"));
-		assertThat("Simple XML `xml:lang` tag.", reformat("<html xmlns=\"http://www.w3.org/1999/xhtml\"><body xml:lang=\"en\"></body></html>"),
+		assertThat("Simple XML `xml:lang` attribute.", reformat("<html xmlns=\"http://www.w3.org/1999/xhtml\"><body xml:lang=\"en\"></body></html>"),
 				containsString("<body lang=\"en\">"));
-		assertThat("Both `lang` and `xml:lang` tag with the same value.",
+		assertThat("Both `lang` and `xml:lang` attributes with the same value.",
 				reformat("<html xmlns=\"http://www.w3.org/1999/xhtml\"><body lang=\"en\" xml:lang=\"en\"></body></html>"), containsString("<body lang=\"en\">"));
-		assertThat("Both `lang` and `xml:lang` tag with the same value ignoring ASCII case.",
+		assertThat("Both `lang` and `xml:lang` attributes with the same value ignoring ASCII case.",
 				reformat("<html xmlns=\"http://www.w3.org/1999/xhtml\"><body lang=\"en-US\" xml:lang=\"en-us\"></body></html>"),
 				containsString("<body lang=\"en-US\">"));
 		//the following test rely on the serializer providing a deterministic order
-		assertThat("Both `lang` and `xml:lang` tag with different values.",
+		assertThat("Both `lang` and `xml:lang` attributes with different values.",
 				reformat("<html xmlns=\"http://www.w3.org/1999/xhtml\"><body lang=\"en\" xml:lang=\"pt\"></body></html>"),
 				containsString("<body lang=\"en\" xml:lang=\"pt\">"));
-		assertThat("Both `lang` and `xml:lang` tag with different values.",
+		assertThat("Both `lang` and `xml:lang` attributes with different values.",
 				reformat("<html xmlns=\"http://www.w3.org/1999/xhtml\"><body lang=\"pt\" xml:lang=\"en\"></body></html>"),
 				containsString("<body lang=\"pt\" xml:lang=\"en\">"));
-		assertThat("Both `lang` and `xml:lang` tag with different values.",
+		assertThat("Both `lang` and `xml:lang` attributes with different values.",
 				reformat("<html xmlns=\"http://www.w3.org/1999/xhtml\"><body lang=\"en-US\" xml:lang=\"pt-UK\"></body></html>"),
 				containsString("<body lang=\"en-US\" xml:lang=\"pt-UK\">"));
+	}
+
+	/** Verifies that the <code>xml:space</code> attribute is not serialized. */
+	@Test
+	public void testNotSerializeXmlSpaceAttribute() throws IOException {
+		assertThat("Simple XML `xml:space` attribute.", reformat("<html xmlns=\"http://www.w3.org/1999/xhtml\"><body xml:space=\"preserve\"></body></html>"),
+				containsString("<body>"));
 	}
 
 	/**

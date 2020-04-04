@@ -107,11 +107,13 @@ public class HtmlSerializer extends XMLSerializer {
 	 * {@inheritDoc}
 	 * @implSpec This version ignores the <code>xml:lang</code> attribute if a <code>lang</code> attribute is present with the same value; otherwise if no
 	 *           <code>lang</code> attribute is present, <code>xml:lang</code> is serialized as <code>lang</code>.
+	 * @implSpec This version ignores the <code>xml:space</code> attribute.
 	 * @see <a href="https://www.w3.org/TR/html52/dom.html#the-lang-and-xmllang-attributes">HTML 5.2 § 3.2.5.2. The lang and xml:lang attributes</a>
+	 * @see <a href="https://www.w3.org/TR/html52/dom.html#global-attributes">HTML 5.2 § 3.2.5. Global attributes</a>
 	 */
 	@Override
 	protected Appendable serializeAttribute(final Appendable appendable, final Element element, final Attr attribute) throws IOException {
-		if(XML.ATTRIBUTE_LANG.matches(attribute)) {
+		if(XML.ATTRIBUTE_LANG.matches(attribute)) { //convert `xml:lang` to `lang` as appropriate
 			final String attributeValue = attribute.getValue();
 			final String htmlLang = findAttributeNS(element, null, HTML.ATTRIBUTE_LANG).orElse(null);
 			if(htmlLang != null) {
@@ -123,6 +125,8 @@ public class HtmlSerializer extends XMLSerializer {
 			} else { //if there is no HTML `lang` attribute, convert `xml:lang` to HTML `lang`
 				return serializeAttribute(appendable, HTML.ATTRIBUTE_LANG, attributeValue);
 			}
+		} else if(XML.ATTRIBUTE_SPACE.matches(attribute)) { //ignore `xml:space` altogether
+			return appendable;
 		}
 		return super.serializeAttribute(appendable, element, attribute);
 	}
