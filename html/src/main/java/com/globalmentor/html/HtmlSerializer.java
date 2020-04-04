@@ -18,6 +18,7 @@ package com.globalmentor.html;
 
 import static com.globalmentor.html.spec.HTML.*;
 import static com.globalmentor.java.Characters.SPACE_CHAR;
+import static com.globalmentor.xml.XmlDom.*;
 
 import java.io.IOException;
 
@@ -25,9 +26,12 @@ import javax.annotation.Nonnull;
 
 import org.w3c.dom.*;
 
+import com.globalmentor.html.spec.HTML;
+import com.globalmentor.text.ASCII;
 import com.globalmentor.xml.XMLSerializer;
 import com.globalmentor.xml.XmlFormatProfile;
 import com.globalmentor.xml.spec.NsName;
+import com.globalmentor.xml.spec.XML;
 
 /**
  * Serializes a document as HTML. Has features to serialize features in an HTML-oriented way, such as void elements and empty attributes:
@@ -101,13 +105,40 @@ public class HtmlSerializer extends XMLSerializer {
 
 	/**
 	 * {@inheritDoc}
+	 * @implSpec This version ignores the <code>xml:lang</code> attribute if a <code>lang</code> attribute is present with the same value; otherwise if no
+	 *           <code>lang</code> attribute is present, <code>xml:lang</code> is serialized as <code>lang</code>.
+	 * @implSpec This version ignores the <code>xml:space</code> attribute.
+	 * @see <a href="https://www.w3.org/TR/html52/dom.html#the-lang-and-xmllang-attributes">HTML 5.2 § 3.2.5.2. The lang and xml:lang attributes</a>
+	 * @see <a href="https://www.w3.org/TR/html52/dom.html#global-attributes">HTML 5.2 § 3.2.5. Global attributes</a>
+	 */
+	@Override
+	protected Appendable serializeAttribute(final Appendable appendable, final Element element, final Attr attribute) throws IOException {
+		if(XML.ATTRIBUTE_LANG.matches(attribute)) { //convert `xml:lang` to `lang` as appropriate
+			final String attributeValue = attribute.getValue();
+			final String htmlLang = findAttributeNS(element, null, HTML.ATTRIBUTE_LANG).orElse(null);
+			if(htmlLang != null) {
+				//if the HTML `lang` attribute is present with an equivalent value, don't serialize `xml:lang` at all 
+				if(ASCII.equalsIgnoreCase(htmlLang, attributeValue)) {
+					return appendable;
+				}
+				//TODO log a warning or throw an exception indicating that the xml:lang value is different than the HTML value
+			} else { //if there is no HTML `lang` attribute, convert `xml:lang` to HTML `lang`
+				return serializeAttribute(appendable, HTML.ATTRIBUTE_LANG, attributeValue);
+			}
+		} else if(XML.ATTRIBUTE_SPACE.matches(attribute)) { //ignore `xml:space` altogether
+			return appendable;
+		}
+		return super.serializeAttribute(appendable, element, attribute);
+	}
+
+	/**
+	 * {@inheritDoc}
 	 * @implSpec This version will write an empty attribute if that option is enabled and the attribute value is the same as its name. For example:
 	 *           <pre>{@code <button disabled/>}</pre>
 	 * @see #isUseEmptyAttributes()
 	 */
 	@Override
-	protected Appendable serializeAttribute(@Nonnull final Appendable appendable, @Nonnull final String attributeName, @Nonnull final String attributeValue)
-			throws IOException {
+	protected Appendable serializeAttribute(final Appendable appendable, final String attributeName, final String attributeValue) throws IOException {
 		if(attributeValue.equals(attributeName)) { //if the attribute value is the same as its name TODO do we need to restrict this to some predefined list? 
 			return appendable.append(SPACE_CHAR).append(attributeName); //append just the attribute name
 		}
