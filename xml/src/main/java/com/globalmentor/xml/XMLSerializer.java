@@ -1082,7 +1082,7 @@ public class XMLSerializer {
 		//3. Finally order the rest of the attributes in alphabetical order.
 		comparator = comparator.thenComparing(ATTR_NAME_COMPARATOR);
 		for(final Attr attribute : (Iterable<Attr>)attributes.sorted(comparator)::iterator) {
-			serializeAttribute(appendable, attribute.getName(), attribute.getValue()); //write this attribute
+			serializeAttribute(appendable, element, attribute); //write this attribute
 		}
 		return appendable;
 	}
@@ -1100,6 +1100,21 @@ public class XMLSerializer {
 	}
 
 	/**
+	 * Serializes the specified element attribute to the given appendable.
+	 * @implSpec This implementation delegates to {@link #serializeAttribute(Appendable, String, String)}.
+	 * @implNote A subclass that overrides this method should normally call this version or manually delegate to
+	 *           {@link #serializeAttribute(Appendable, String, String)} as appropriate.
+	 * @param appendable The destination into which the attribute should be written.
+	 * @param element The XML element the attribute of which to serialize.
+	 * @param attribute The attribute to serialize.
+	 * @return The given appendable.
+	 * @throws IOException Thrown if an I/O error occurred.
+	 */
+	protected Appendable serializeAttribute(@Nonnull final Appendable appendable, @Nonnull final Element element, @Nonnull final Attr attribute) throws IOException {
+		return serializeAttribute(appendable, attribute.getName(), attribute.getValue());
+	}
+
+	/**
 	 * Serializes the specified attribute name and value to the given appendable.
 	 * @param appendable The destination into which the attribute should be written.
 	 * @param attributeName The name of the XML attribute to serialize.
@@ -1107,8 +1122,8 @@ public class XMLSerializer {
 	 * @return The given appendable.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 */
-	protected Appendable serializeAttribute(@Nonnull final Appendable appendable, @Nonnull final String attributeName, @Nonnull final String attributeValue)
-			throws IOException {
+	protected Appendable serializeAttribute(@Nonnull final Appendable appendable, @Nonnull final String attributeName,
+			@Nonnull final String attributeValue) throws IOException {
 		//use a double quote character as a delimiter unless the value contains
 		//  a double quote; in that case, use a single quote TODO fix escaping---what if both double and single quotes are used?
 		final char valueDelimiter = attributeValue.indexOf(DOUBLE_QUOTE_CHAR) < 0 ? DOUBLE_QUOTE_CHAR : SINGLE_QUOTE_CHAR;
