@@ -133,13 +133,27 @@ public final class NsName {
 	/**
 	 * Determines whether the given node has the same namespace and local name as this object. That is calling {@link #ofNode(Node)} on the node would result in
 	 * an instance of this class that would be equal to this instance.
+	 * @implSpec This implementation delegates to {@link #matches(String, String)}.
 	 * @param node The node to check.
 	 * @return <code>true</code> if the node namespace and local name match the namespace and name of this object.
 	 * @see Node#getNamespaceURI()
 	 * @see Node#getLocalName()
 	 */
 	public boolean matches(@Nonnull final Node node) {
-		return Objects.equals(namespaceString, node.getNamespaceURI()) && getLocalName().equals(node.getLocalName());
+		return matches(node.getNamespaceURI(), node.getLocalName());
+	}
+
+	/**
+	 * Determines whether the given namespace and local name are the same as this object's. That is calling {@link #of(String, String)} on the values would result
+	 * in an instance of this class that would be equal to this instance.
+	 * @param namespaceString The string form of a namespace URI to check, or <code>null</code> if there is no namespace URI.
+	 * @param localName The local name to check.
+	 * @return <code>true</code> if the given namespace and local name match the namespace and name of this object.
+	 * @see Node#getNamespaceURI()
+	 * @see Node#getLocalName()
+	 */
+	public boolean matches(@Nullable final String namespaceString, @Nonnull final String localName) {
+		return Objects.equals(this.namespaceString, namespaceString) && this.localName.equals(localName);
 	}
 
 }
