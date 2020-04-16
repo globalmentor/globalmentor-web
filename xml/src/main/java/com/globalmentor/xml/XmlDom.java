@@ -75,10 +75,21 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 
 	/**
 	 * The wildcard string for matching tags, namespace URI strings, or local names.
+	 * @see Document#getElementsByTagName(String)
+	 * @see Document#getElementsByTagNameNS(String, String)
 	 * @see Element#getElementsByTagName(String)
 	 * @see Element#getElementsByTagNameNS(String, String)
+	 * @see #getElementsByTagNameNS(Document, NsName)
 	 */
 	public static final String MATCH_ALL = "*";
+
+	/**
+	 * The wildcard namespace-aware name for matching all local names in all namespaces.
+	 * @see Document#getElementsByTagNameNS(String, String)
+	 * @see Element#getElementsByTagNameNS(String, String)
+	 * @see #getElementsByTagNameNS(Document, NsName)
+	 */
+	public static final NsName MATCH_ALL_NAMES = NsName.of(MATCH_ALL, MATCH_ALL);
 
 	/** A lazily-created cache of system IDs keyed to public IDs. */
 	private static Reference<Map<String, String>> systemIDMapReference = null;
@@ -910,36 +921,6 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	}
 
 	/**
-	 * Convenience function to create an element and use it to replace the document element of the document.
-	 * @param document The document which will serve as parent of the newly created element.
-	 * @param elementNamespaceURI The namespace URI of the element to be created.
-	 * @param elementName The name of the element to create.
-	 * @return The newly created child element.
-	 */
-	//TODO list exceptions
-	public static Element replaceDocumentElement(final Document document, final String elementNamespaceURI, final String elementName) {
-		return replaceDocumentElementNS(document, elementNamespaceURI, elementName, null); //append an element with no text
-	}
-
-	/**
-	 * Convenience function to create an element, replace the document element of the given document, and add optional text as a child of the given element. A
-	 * heading, for instance, might be added using <code>replaceDocumentElement(document, XHTML_NAMESPACE_URI, ELEMENT_H2,
-		"My Heading");</code>.
-	 * @param document The document which will serve as parent of the newly created element.
-	 * @param elementNamespaceURI The namespace URI of the element to be created.
-	 * @param elementName The name of the element to create.
-	 * @param textContent The text to add as a child of the created element, or <code>null</code> if no text should be added.
-	 * @return The newly created child element.
-	 * @throws DOMException if there was an error creating the element, appending the text, or replacing the child.
-	 */
-	public static Element replaceDocumentElementNS(final Document document, final String elementNamespaceURI, final String elementName,
-			final String textContent) {
-		final Element childElement = createElementNS(document, elementNamespaceURI, elementName, textContent); //create the new element
-		document.replaceChild(childElement, document.getDocumentElement()); //replace the document element of the document
-		return childElement; //return the element we created
-	}
-
-	/**
 	 * Convenience function to create an element and add it as a child of the given parent element.
 	 * @param parentElement The element which will serve as parent of the newly created element. This element must have a valid owner document.
 	 * @param elementNamespaceURI The namespace URI of the element to be created.
@@ -953,8 +934,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 
 	/**
 	 * Convenience function to create an element, add it as a child of the given parent element, and add optional text as a child of the given element. A heading,
-	 * for instance, might be added using <code>appendElement(bodyElement, XHTML_NAMESPACE_URI, ELEMENT_H2,
-		"My Heading");</code>.
+	 * for instance, might be added using <code>appendElementNS(bodyElement, XHTML_NAMESPACE_URI, ELEMENT_H2, "My Heading");</code>.
 	 * @param parentElement The element which will serve as parent of the newly created element. This element must have a valid owner document.
 	 * @param elementNamespaceURI The namespace URI of the element to be created.
 	 * @param elementName The name of the element to create.
@@ -981,28 +961,6 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 		final Node importedNode = document.importNode(element, true); //import the element into our new document
 		document.replaceChild(importedNode, document.getDocumentElement()); //set the element clone as the document element of the new document
 		return document; //return the document we created
-	}
-
-	/**
-	 * Convenience function to create an element and add optional text as a child of the given element. A heading, for instance, might be created using
-	 * <code>appendElementNS(document, XHTML_NAMESPACE_URI, ELEMENT_H2,
-		"My Heading");</code>.
-	 * @param document The document to be used to create the new element.
-	 * @param elementNamespaceURI The namespace URI of the element to be created.
-	 * @param elementName The name of the element to create.
-	 * @param textContent The text to add as a child of the created element, or <code>null</code> if no text should be added.
-	 * @return The newly created child element.
-	 * @throws DOMException if there was an error creating the element or appending the text.
-	 * @see Document#createElementNS(String, String)
-	 * @see #appendText(Element, String)
-	 */
-	public static Element createElementNS(final Document document, final String elementNamespaceURI, final String elementName, final String textContent)
-			throws DOMException {
-		final Element childElement = document.createElementNS(elementNamespaceURI, elementName); //create the new element
-		if(textContent != null) { //if we have text content to add
-			appendText(childElement, textContent); //append the text content to the newly created child element
-		}
-		return childElement; //return the element we created
 	}
 
 	/**
@@ -1987,7 +1945,171 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 		}
 	}
 
-	//#Node
+	//# Document
+
+	/**
+	 * Creates an attribute of the given qualified name and namespace URI.
+	 * @implSpec This implementation delegates to {@link Document#createAttributeNS(String, String)}.
+	 * @param document The document for which the new element is to be created.
+	 * @param nsName The namespace URI and local name of the attribute to create.
+	 * @return A new attribute object.
+	 * @throws DOMException
+	 *           <dl>
+	 *           <dt><code>INVALID_CHARACTER_ERR</code></dt>
+	 *           <dd>Raised if the specified <code>qualifiedName</code> is not an XML name according to the XML version in use specified in the
+	 *           <code>Document.xmlVersion</code> attribute.</dd>
+	 *           <dt><code>NAMESPACE_ERR</code></dt>
+	 *           <dd>Raised if the <code>qualifiedName</code> is a malformed qualified name, if the <code>qualifiedName</code> has a prefix and the
+	 *           <code>namespaceURI</code> is <code>null</code>, if the <code>qualifiedName</code> has a prefix that is "xml" and the <code>namespaceURI</code> is
+	 *           different from "<a href='http://www.w3.org/XML/1998/namespace'> http://www.w3.org/XML/1998/namespace</a>", if the <code>qualifiedName</code> or
+	 *           its prefix is "xmlns" and the <code>namespaceURI</code> is different from
+	 *           "<a href='http://www.w3.org/2000/xmlns/'>http://www.w3.org/2000/xmlns/</a>", or if the <code>namespaceURI</code> is
+	 *           "<a href='http://www.w3.org/2000/xmlns/'>http://www.w3.org/2000/xmlns/</a>" and neither the <code>qualifiedName</code> nor its prefix is
+	 *           "xmlns".</dd>
+	 *           <dt><code>NOT_SUPPORTED_ERR</code></dt>
+	 *           <dd>Always thrown if the current document does not support the <code>"XML"</code> feature, since namespaces were defined by XML.</dd>
+	 *           </dl>
+	 */
+	public static Attr createAttributeNS(@Nonnull final Document document, @Nonnull final NsName nsName) throws DOMException {
+		return document.createAttributeNS(nsName.getNamespaceString(), nsName.getLocalName());
+	}
+
+	/**
+	 * Creates an element of the given qualified name and namespace URI.
+	 * @implSpec This implementation delegates to {@link Document#createElementNS(String, String)}.
+	 * @param document The document for which the new element is to be created.
+	 * @param nsName The namespace URI and local name of the element to create.
+	 * @return A new element.
+	 * @throws DOMException
+	 *           <dl>
+	 *           <dt><code>INVALID_CHARACTER_ERR</code></dt>
+	 *           <dd>Raised if the specified <code>qualifiedName</code> is not an XML name according to the XML version in use specified in the
+	 *           <code>Document.xmlVersion</code> attribute.</dd>
+	 *           <dt><code>NAMESPACE_ERR</code></dt>
+	 *           <dd>Raised if the <code>qualifiedName</code> is a malformed qualified name, if the <code>qualifiedName</code> has a prefix and the
+	 *           <code>namespaceURI</code> is <code>null</code>, or if the <code>qualifiedName</code> has a prefix that is "xml" and the <code>namespaceURI</code>
+	 *           is different from "<a href='http://www.w3.org/XML/1998/namespace'> http://www.w3.org/XML/1998/namespace</a>"
+	 *           [<a href='http://www.w3.org/TR/1999/REC-xml-names-19990114/'>XML Namespaces</a>] , or if the <code>qualifiedName</code> or its prefix is "xmlns"
+	 *           and the <code>namespaceURI</code> is different from "<a href='http://www.w3.org/2000/xmlns/'>http://www.w3.org/2000/xmlns/</a>", or if the
+	 *           <code>namespaceURI</code> is "<a href='http://www.w3.org/2000/xmlns/'>http://www.w3.org/2000/xmlns/</a>" and neither the
+	 *           <code>qualifiedName</code> nor its prefix is "xmlns".</dd>
+	 *           <dt><code>NOT_SUPPORTED_ERR</code></dt>
+	 *           <dd>Always thrown if the current document does not support the <code>"XML"</code> feature, since namespaces were defined by XML.</dd>
+	 *           </dl>
+	 */
+	public static Element createElementNS(@Nonnull final Document document, @Nonnull final NsName nsName) throws DOMException {
+		return document.createElementNS(nsName.getNamespaceString(), nsName.getLocalName());
+	}
+
+	/**
+	 * Convenience function to create an element and add optional text as a child of the given element.
+	 * @implSpec This method delegates to {@link #createElementNS(Document, String, String, String)}.
+	 * @param document The document to be used to create the new element.
+	 * @param nsName The namespace URI and local name of the element to create.
+	 * @param textContent The text to add as a child of the created element, or <code>null</code> if no text should be added.
+	 * @return The newly created child element.
+	 * @throws DOMException if there was an error creating the element or appending the text.
+	 * @see Document#createElementNS(String, String)
+	 * @see #appendText(Element, String)
+	 */
+	public static Element createElementNS(@Nonnull final Document document, @Nonnull final NsName nsName, @Nullable final String textContent)
+			throws DOMException {
+		return createElementNS(document, nsName.getNamespaceString(), nsName.getLocalName(), textContent);
+	}
+
+	/**
+	 * Convenience function to create an element and add optional text as a child of the given element. A heading, for instance, might be created using
+	 * <code>createElementNS(document, XHTML_NAMESPACE_URI, ELEMENT_H2, "My Heading");</code>.
+	 * @implSpec This method creates an element by delegating to {@link Document#createElementNS(String, String)}.
+	 * @param document The document to be used to create the new element.
+	 * @param elementNamespaceURI The namespace URI of the element to be created.
+	 * @param elementName The name of the element to create.
+	 * @param textContent The text to add as a child of the created element, or <code>null</code> if no text should be added.
+	 * @return The newly created child element.
+	 * @throws DOMException if there was an error creating the element or appending the text.
+	 * @see Document#createElementNS(String, String)
+	 * @see #appendText(Element, String)
+	 */
+	public static Element createElementNS(@Nonnull final Document document, @Nullable final String elementNamespaceURI, @Nonnull final String elementName,
+			@Nullable final String textContent) throws DOMException {
+		final Element childElement = document.createElementNS(elementNamespaceURI, elementName); //create the new element
+		if(textContent != null) { //if we have text content to add
+			appendText(childElement, textContent); //append the text content to the newly created child element
+		}
+		return childElement; //return the element we created
+	}
+
+	/**
+	 * Returns a node list of all the elements with a given local name and namespace URI in document order.
+	 * @implSpec This implementation delegates to {@link Document#getElementsByTagNameNS(String, String)}.
+	 * @param document The document from which to retrieve elements.
+	 * @param nsName The namespace URI and local name of the elements to match on. The special value {@value #MATCH_ALL} may be used to match all namespaces
+	 *          and/or all local names.
+	 * @return A new node list containing all the matched elements.
+	 * @see #MATCH_ALL
+	 * @see #MATCH_ALL_NAMES
+	 */
+	public static NodeList getElementsByTagNameNS(@Nonnull final Document document, @Nonnull final NsName nsName) {
+		return document.getElementsByTagNameNS(nsName.getNamespaceString(), nsName.getLocalName());
+	}
+
+	/**
+	 * Convenience function to create an element, replace the document element of the given document.
+	 * @implSpec This implementation delegates to {@link #replaceDocumentElementNS(Document, NsName, String)} with no text content.
+	 * @param document The document which will serve as parent of the newly created element.
+	 * @param nsName The namespace URI and local name of the element to create.
+	 * @return The newly created child element.
+	 * @throws DOMException if there was an error creating the element.
+	 */
+	public static Element replaceDocumentElementNS(@Nonnull final Document document, @Nonnull final NsName nsName) {
+		return replaceDocumentElementNS(document, nsName, null);
+	}
+
+	/**
+	 * Convenience function to create an element and use it to replace the document element of the document.
+	 * @implSpec This implementation delegates to {@link #replaceDocumentElementNS(Document, String, String, String)} with no text content.
+	 * @param document The document which will serve as parent of the newly created element.
+	 * @param elementNamespaceURI The namespace URI of the element to be created.
+	 * @param elementName The name of the element to create.
+	 * @return The newly created child element.
+	 * @throws DOMException if there was an error creating the element.
+	 */
+	public static Element replaceDocumentElementNS(@Nonnull final Document document, @Nullable final String elementNamespaceURI,
+			@Nonnull final String elementName) {
+		return replaceDocumentElementNS(document, elementNamespaceURI, elementName, null); //append an element with no text
+	}
+
+	/**
+	 * Convenience function to create an element, replace the document element of the given document, and add optional text as a child of the given element.
+	 * @implSpec This implementation delegates to {@link #replaceDocumentElementNS(Document, String, String, String)}.
+	 * @param document The document which will serve as parent of the newly created element.
+	 * @param nsName The namespace URI and local name of the element to create.
+	 * @param textContent The text to add as a child of the created element, or <code>null</code> if no text should be added.
+	 * @return The newly created child element.
+	 * @throws DOMException if there was an error creating the element, appending the text, or replacing the child.
+	 */
+	public static Element replaceDocumentElementNS(@Nonnull final Document document, @Nonnull final NsName nsName, @Nullable final String textContent) {
+		return replaceDocumentElementNS(document, nsName.getNamespaceString(), nsName.getLocalName(), textContent);
+	}
+
+	/**
+	 * Convenience function to create an element, replace the document element of the given document, and add optional text as a child of the given element. A
+	 * heading, for instance, might be added using <code>replaceDocumentElement(document, XHTML_NAMESPACE_URI, ELEMENT_H2, "My Heading");</code>.
+	 * @param document The document which will serve as parent of the newly created element.
+	 * @param elementNamespaceURI The namespace URI of the element to be created.
+	 * @param elementName The name of the element to create.
+	 * @param textContent The text to add as a child of the created element, or <code>null</code> if no text should be added.
+	 * @return The newly created child element.
+	 * @throws DOMException if there was an error creating the element, appending the text, or replacing the child.
+	 */
+	public static Element replaceDocumentElementNS(@Nonnull final Document document, @Nullable final String elementNamespaceURI,
+			@Nonnull final String elementName, @Nullable final String textContent) {
+		final Element childElement = createElementNS(document, elementNamespaceURI, elementName, textContent); //create the new element
+		document.replaceChild(childElement, document.getDocumentElement()); //replace the document element of the document
+		return childElement; //return the element we created
+	}
+
+	//# Node
 
 	/**
 	 * Adds a node as the first child of the given parent node.
@@ -2135,7 +2257,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 		return asInstance(node, Element.class);
 	}
 
-	//#NamedNodeMap
+	//# NamedNodeMap
 
 	/**
 	 * Returns an iterable to iterate through the nodes in a named node map. The returned iterator fails fast if it detects that the named node map was modified
@@ -2158,7 +2280,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 				false);
 	}
 
-	//#NodeList
+	//# NodeList
 
 	/**
 	 * Retrieves the optional first item of a node list.
@@ -2215,7 +2337,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 		return stream(spliterator(new NodeListIterator(nodeList), nodeList.getLength(), Spliterator.SIZED | Spliterator.ORDERED | Spliterator.NONNULL), false);
 	}
 
-	//#Element
+	//# Element
 
 	/**
 	 * Retrieves an iterator to the attributes of the given element.
@@ -2246,7 +2368,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 *         <code>false</code> otherwise.
 	 * @throws DOMException
 	 *           <dl>
-	 *           <dt>NOT_SUPPORTED_ERR</dt>
+	 *           <dt><code>NOT_SUPPORTED_ERR</code></dt>
 	 *           <dd>May be raised if the implementation does not support the feature <code>"XML"</code> and the language exposed through the Document does not
 	 *           support XML Namespaces (such as [<a href='http://www.w3.org/TR/1999/REC-html401-19991224/'>HTML 4.01</a>]).</dd>
 	 *           </dl>
@@ -2285,7 +2407,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @return The attribute value as a string, which will not be present if the attribute does not have a specified or default value.
 	 * @throws DOMException
 	 *           <dl>
-	 *           <dt>NOT_SUPPORTED_ERR</dt>
+	 *           <dt><code>NOT_SUPPORTED_ERR</code></dt>
 	 *           <dd>May be raised if the implementation does not support the feature <code>"XML"</code> and the language exposed through the Document does not
 	 *           support XML Namespaces (such as [<a href='http://www.w3.org/TR/1999/REC-html401-19991224/'>HTML 4.01</a>]).</dd>
 	 *           </dl>
@@ -2306,7 +2428,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @return The attribute value as a string, which will not be present if the attribute does not have a specified or default value.
 	 * @throws DOMException
 	 *           <dl>
-	 *           <dt>NOT_SUPPORTED_ERR</dt>
+	 *           <dt><code>NOT_SUPPORTED_ERR</code></dt>
 	 *           <dd>May be raised if the implementation does not support the feature <code>"XML"</code> and the language exposed through the Document does not
 	 *           support XML Namespaces (such as [<a href='http://www.w3.org/TR/1999/REC-html401-19991224/'>HTML 4.01</a>]).</dd>
 	 *           </dl>
@@ -2362,9 +2484,9 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @param nsName The namespace URI and local name of the attribute to remove.
 	 * @throws DOMException
 	 *           <dl>
-	 *           <dt>NO_MODIFICATION_ALLOWED_ERR</dt>
+	 *           <dt><code>NO_MODIFICATION_ALLOWED_ERR</code></dt>
 	 *           <dd>Raised if this node is read-only.</dd>
-	 *           <dt>NOT_SUPPORTED_ERR</dt>
+	 *           <dt><code>NOT_SUPPORTED_ERR</code></dt>
 	 *           <dd>May be raised if the implementation does not support the feature <code>"XML"</code> and the language exposed through the Document does not
 	 *           support XML Namespaces (such as [<a href='http://www.w3.org/TR/1999/REC-html401-19991224/'>HTML 4.01</a>]).</dd>
 	 *           </dl>
@@ -2382,9 +2504,9 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @return <code>true</code> if the attribute was present and was removed.
 	 * @throws DOMException
 	 *           <dl>
-	 *           <dt>NO_MODIFICATION_ALLOWED_ERR</dt>
+	 *           <dt><code>NO_MODIFICATION_ALLOWED_ERR</code></dt>
 	 *           <dd>Raised if this node is read-only.</dd>
-	 *           <dt>NOT_SUPPORTED_ERR</dt>
+	 *           <dt><code>NOT_SUPPORTED_ERR</code></dt>
 	 *           <dd>May be raised if the implementation does not support the feature <code>"XML"</code> and the language exposed through the Document does not
 	 *           support XML Namespaces (such as [<a href='http://www.w3.org/TR/1999/REC-html401-19991224/'>HTML 4.01</a>]).</dd>
 	 *           </dl>
@@ -2403,9 +2525,9 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @return <code>true</code> if the attribute was present and was removed.
 	 * @throws DOMException
 	 *           <dl>
-	 *           <dt>NO_MODIFICATION_ALLOWED_ERR</dt>
+	 *           <dt><code>NO_MODIFICATION_ALLOWED_ERR</code></dt>
 	 *           <dd>Raised if this node is read-only.</dd>
-	 *           <dt>NOT_SUPPORTED_ERR</dt>
+	 *           <dt><code>NOT_SUPPORTED_ERR</code></dt>
 	 *           <dd>May be raised if the implementation does not support the feature <code>"XML"</code> and the language exposed through the Document does not
 	 *           support XML Namespaces (such as [<a href='http://www.w3.org/TR/1999/REC-html401-19991224/'>HTML 4.01</a>]).</dd>
 	 *           </dl>
