@@ -20,6 +20,8 @@ import java.net.URI;
 import java.util.*;
 import java.util.stream.Stream;
 
+import javax.annotation.Nonnegative;
+
 import static java.util.Objects.*;
 import static java.util.stream.Collectors.*;
 
@@ -29,6 +31,7 @@ import com.globalmentor.net.ContentType;
 import com.globalmentor.xml.spec.*;
 
 import static com.globalmentor.java.Characters.*;
+import static com.globalmentor.java.Conditions.*;
 import static com.globalmentor.net.ContentTypeConstants.*;
 
 /**
@@ -341,6 +344,30 @@ public class HTML {
 
 	//removed elements
 	public static final String ELEMENT_HGROUP = "hgroup"; //in WHATWG but not W3C version; see https://html.spec.whatwg.org/#the-hgroup-element
+
+	/**
+	 * The one-based maximum level of the heading levels: {@value #MAX_H_LEVEL}.
+	 * @see #ELEMENT_H6
+	 */
+	public static final int MAX_H_LEVEL = 6;
+
+	/**
+	 * Returns the heading element for the given level.
+	 * @param level The one-based heading level, with one corresponding to {@link #ELEMENT_H1}.
+	 * @return The XHTML name of the requested heading element.
+	 * @throws IllegalArgumentException if the given level is less than one or greater than {@value #MAX_H_LEVEL}.
+	 * @see #ELEMENT_H1
+	 * @see #ELEMENT_H2
+	 * @see #ELEMENT_H3
+	 * @see #ELEMENT_H4
+	 * @see #ELEMENT_H5
+	 * @see #ELEMENT_H6
+	 * @see #MAX_H_LEVEL
+	 */
+	public static NsName ELEMENT_H(@Nonnegative final int level) {
+		final String localName = "h" + checkArgumentRange(level, 1, MAX_H_LEVEL);
+		return NsName.of(XHTML_NAMESPACE_URI_STRING, localName);
+	}
 
 	/**
 	 * The delimiter character for separating parts of an attribute string (e.g. for HTML5 data- attributes). This is distinct from the namespace prefix
