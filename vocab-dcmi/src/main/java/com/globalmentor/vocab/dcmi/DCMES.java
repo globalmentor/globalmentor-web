@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.globalmentor.metadata;
+package com.globalmentor.vocab.dcmi;
 
 import java.net.URI;
 
@@ -24,7 +24,7 @@ import java.net.URI;
  * @see <a href="http://dublincore.org/documents/dcmi-namespace/">DCMI Namespace Policy</a>
  * @see <a href="http://dublincore.org/documents/dces/">Dublin Core Metadata Element Set, Version 1.1</a>
  */
-public class DCMI {
+public class DCMES {
 
 	/** The recommended prefix of the Dublin Core Metadata Initiative elements namespace. */
 	public static final String DCMI_ELEMENTS_NAMESPACE_PREFIX = "dc";

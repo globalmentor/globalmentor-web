@@ -36,6 +36,9 @@
 		<module>javascript</module>
 		<module>svg-spec</module>
 		<module>vocab</module>
+		<module>vocab-dcmi</module>
+		<module>vocab-foaf</module>
+		<module>vocab-ogp</module>
 		<module>xml</module>
 		<module>xml-dom-impl</module>
 		<module>xml-spec</module>

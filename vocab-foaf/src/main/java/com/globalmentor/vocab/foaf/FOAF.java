@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.globalmentor.metadata;
+package com.globalmentor.vocab.foaf;
 
 import java.net.URI;
 

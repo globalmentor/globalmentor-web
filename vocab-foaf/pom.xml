@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.globalmentor</groupId>
+		<artifactId>globalmentor-web-parent</artifactId>
+		<version>0.6.4-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>globalmentor-vocab-foaf</artifactId>
+
+	<name>GlobalMentor FOAF Vocabulary</name>
+	<description>GlobalMentor definitions for the FOAF language.</description>
+
+	<properties>
+		<maven.compiler.release>8</maven.compiler.release>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.globalmentor</groupId>
+			<artifactId>globalmentor-core</artifactId>
+		</dependency>
+	</dependencies>
+</project>
