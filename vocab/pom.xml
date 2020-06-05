@@ -10,7 +10,7 @@
 
 	<artifactId>globalmentor-vocab</artifactId>
 
-	<name>GlobalMentor Vocbulary</name>
+	<name>GlobalMentor Vocabulary</name>
 	<description>GlobalMentor web vocabulary utility library.</description>
 
 	<properties>
