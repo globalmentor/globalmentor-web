@@ -148,7 +148,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 		final byte[] bytes = new byte[ByteOrderMark.MAX_BYTE_COUNT + CHARACTER_ENCODING_AUTODETECT_BYTE_COUNT]; //create an array to hold the byte order mark
 		inputStream.mark(bytes.length);
 		final ByteOrderMark imputedBOM;
-		if(inputStream.read(bytes) == bytes.length) { //read the byte order mark; if we didn't reach the end of the data
+		if(read(inputStream, bytes) == bytes.length) { //read the byte order mark; if we didn't reach the end of the data
 			imputedBOM = ByteOrderMark.impute(bytes, XML_DECL_START, bom).orElse(null); //see if we can recognize the BOM by the beginning characters
 		} else {
 			imputedBOM = null;
