@@ -8,10 +8,10 @@
 		<version>0.6.4-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>globalmentor-vocab</artifactId>
+	<artifactId>globalmentor-vocab-foaf</artifactId>
 
-	<name>GlobalMentor Vocabulary</name>
-	<description>GlobalMentor web vocabulary utility library.</description>
+	<name>GlobalMentor FOAF Vocabulary</name>
+	<description>GlobalMentor definitions for the FOAF language.</description>
 
 	<properties>
 		<maven.compiler.release>8</maven.compiler.release>
@@ -21,6 +21,10 @@
 		<dependency>
 			<groupId>com.globalmentor</groupId>
 			<artifactId>globalmentor-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.globalmentor</groupId>
+			<artifactId>globalmentor-vocab</artifactId>
 		</dependency>
 	</dependencies>
 </project>

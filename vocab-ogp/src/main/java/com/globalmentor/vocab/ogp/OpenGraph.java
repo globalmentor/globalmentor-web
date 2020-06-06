@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package com.globalmentor.metadata;
+package com.globalmentor.vocab.ogp;
 
 import static java.util.Objects.*;
 
 import java.net.URI;
 
 import com.globalmentor.model.*;
+import com.globalmentor.vocab.VocabularyTerm;
 
 /**
  * Definitions of Facebook's Open Graph protocol.
@@ -33,21 +34,22 @@ public class OpenGraph {
 
 	/** The Open Graph namespace. */
 	public static final URI NAMESPACE_URI = URI.create("http://ogp.me/ns#");
+
 	/** The default prefix for the Open Graph namespace, e.g. in XML documents. */
 	public static final String NAMESPACE_PREFIX = "og";
 
 	/** The title of the object. (required) */
-	public static final String TITLE_LOCAL_NAME = "title";
+	public static final VocabularyTerm PROPERTY_TITLE = VocabularyTerm.of(NAMESPACE_URI, "title");
 	/** The type of object, e.g. "movie". (required) */
-	public static final String TYPE_LOCAL_NAME = "type";
+	public static final VocabularyTerm PROPERTY_TYPE = VocabularyTerm.of(NAMESPACE_URI, "type");
 	/** The URL of an image to represent the object. (required) */
-	public static final String IMAGE_LOCAL_NAME = "image";
+	public static final VocabularyTerm PROPERTY_IMAGE = VocabularyTerm.of(NAMESPACE_URI, "image");
 	/** The canonical URL of the object to be used as its permanent. (required) */
-	public static final String URL_LOCAL_NAME = "url";
+	public static final VocabularyTerm PROPERTY_URL = VocabularyTerm.of(NAMESPACE_URI, "url");
 	/** A short description of the object. (optional) */
-	public static final String DESCRIPTION_LOCAL_NAME = "description";
+	public static final VocabularyTerm PROPERTY_DESCRIPTION = VocabularyTerm.of(NAMESPACE_URI, "description");
 	/** The name of the overall site, if this object is part of a larger web site. (optional) */
-	public static final String SITE_NAME_LOCAL_NAME = "site_name";
+	public static final VocabularyTerm PROPERTY_SITE_NAME = VocabularyTerm.of(NAMESPACE_URI, "site_name");
 
 	/**
 	 * A predefined category of Open Graph type.
@@ -55,8 +57,8 @@ public class OpenGraph {
 	 * @see <a href="http://ogp.me/">The Open Graph Protocol</a>
 	 */
 	public enum PredefinedCategory implements Labeled {
-		ACTIVITIES("Activities"), BUSINESSES("Businesses"), GROUPS("Groups"), ORGANIZATIONS("Organizations"), PEOPLE("People"), PLACES("Places"), PRODUCTS_ENTERTAINMENT(
-				"Products and Entertainment"), WEBSITES("Websites");
+		ACTIVITIES("Activities"), BUSINESSES("Businesses"), GROUPS("Groups"), ORGANIZATIONS("Organizations"), PEOPLE("People"), PLACES(
+				"Places"), PRODUCTS_ENTERTAINMENT("Products and Entertainment"), WEBSITES("Websites");
 
 		private final CharSequence label;
 
