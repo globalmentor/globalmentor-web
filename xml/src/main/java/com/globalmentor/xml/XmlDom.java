@@ -284,10 +284,10 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 		Map<String, String> rootElementLocalNameMap = rootElementLocalNameMapReference != null ? rootElementLocalNameMapReference.get() : null;
 		if(rootElementLocalNameMap == null) { //if the garbage collector has reclaimed the cache
 			rootElementLocalNameMap = new HashMap<String, String>(); //create a new map of root element local names, and fill it with the default mappings
-			rootElementLocalNameMap.put(HTML_CONTENT_TYPE.getBaseType(), ELEMENT_HTML);
-			rootElementLocalNameMap.put(XHTML_CONTENT_TYPE.getBaseType(), ELEMENT_HTML);
-			rootElementLocalNameMap.put(MATHML_CONTENT_TYPE.getBaseType(), ELEMENT_MATHML);
-			rootElementLocalNameMap.put(SVG_CONTENT_TYPE.getBaseType(), ELEMENT_SVG);
+			rootElementLocalNameMap.put(HTML_CONTENT_TYPE.toBaseTypeString(), ELEMENT_HTML);
+			rootElementLocalNameMap.put(XHTML_CONTENT_TYPE.toBaseTypeString(), ELEMENT_HTML);
+			rootElementLocalNameMap.put(MATHML_CONTENT_TYPE.toBaseTypeString(), ELEMENT_MATHML);
+			rootElementLocalNameMap.put(SVG_CONTENT_TYPE.toBaseTypeString(), ELEMENT_SVG);
 			rootElementLocalNameMapReference = new SoftReference<Map<String, String>>(rootElementLocalNameMap); //create a soft reference to the map
 		}
 		return rootElementLocalNameMap; //return the map
@@ -299,7 +299,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @return The default root element local name corresponding to the given media type, or <code>null</code> if the given content type is not recognized.
 	 */
 	public static String getDefaultRootElementLocalName(final ContentType contentType) {
-		return getRootElementLocalNameMap().get(contentType.getBaseType()); //return the root element corresponding to the given content type base type, if we have one
+		return getRootElementLocalNameMap().get(contentType.toBaseTypeString()); //return the root element corresponding to the given content type base type, if we have one
 	}
 
 	/**
