@@ -9,7 +9,7 @@
 	</parent>
 
 	<artifactId>globalmentor-web-parent</artifactId>
-	<version>0.6.4</version>
+	<version>0.6.5-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>GlobalMentor Web Parent</name>
@@ -49,49 +49,49 @@
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-css</artifactId>
-				<version>0.6.4</version>
+				<version>0.6.5-SNAPSHOT</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-css-spec</artifactId>
-				<version>0.6.4</version>
+				<version>0.6.5-SNAPSHOT</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-html-spec</artifactId>
-				<version>0.6.4</version>
+				<version>0.6.5-SNAPSHOT</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-mathml-spec</artifactId>
-				<version>0.6.4</version>
+				<version>0.6.5-SNAPSHOT</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-svg-spec</artifactId>
-				<version>0.6.4</version>
+				<version>0.6.5-SNAPSHOT</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-vocab</artifactId>
-				<version>0.6.4</version>
+				<version>0.6.5-SNAPSHOT</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-xml</artifactId>
-				<version>0.6.4</version>
+				<version>0.6.5-SNAPSHOT</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-xml-spec</artifactId>
-				<version>0.6.4</version>
+				<version>0.6.5-SNAPSHOT</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
