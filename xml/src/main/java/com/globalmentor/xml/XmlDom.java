@@ -48,7 +48,6 @@ import org.xml.sax.SAXException;
 
 import static com.globalmentor.java.Characters.*;
 import static com.globalmentor.java.Objects.*;
-import static com.globalmentor.net.ContentTypeConstants.*;
 import static com.globalmentor.html.spec.HTML.*;
 import static com.globalmentor.mathml.spec.MathML.*;
 import static com.globalmentor.svg.spec.SVG.*;
@@ -694,11 +693,11 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 */
 	public static boolean isXML(final ContentType contentType) {
 		if(contentType != null) { //if a content type is given
-			if(ContentType.TEXT_PRIMARY_TYPE.equals(contentType.getPrimaryType()) && XML_SUBTYPE.equals(contentType.getSubType())) { //if this is "text/xml"
+			if(contentType.hasBaseType(XML.CONTENT_TYPE)) { //if this is "text/xml"
 				return true; //text/xml is an XML content type
 			}
 			if(ContentType.APPLICATION_PRIMARY_TYPE.equals(contentType.getPrimaryType())) { //if this is "application/*"
-				return XML_SUBTYPE.equals(contentType.getSubType()) //see if the subtype is "xml"
+				return ASCII.equalsIgnoreCase(contentType.getSubType(), XML.CONTENT_TYPE.getSubType()) //see if the subtype is "xml"
 						|| contentType.hasSubTypeSuffix(XML_SUBTYPE_SUFFIX); //see if the subtype has an XML suffix
 			}
 		}
@@ -722,9 +721,9 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	public static boolean isXMLExternalParsedEntity(final ContentType contentType) {
 		if(contentType != null) { //if a content type is given
 			final String primaryType = contentType.getPrimaryType(); //get the primary type
-			if(ContentType.TEXT_PRIMARY_TYPE.equals(primaryType) || ContentType.APPLICATION_PRIMARY_TYPE.equals(primaryType)) { //if this is "text/*" or "application/*"
+			if(ASCII.equalsIgnoreCase(primaryType, ContentType.TEXT_PRIMARY_TYPE) || ASCII.equalsIgnoreCase(primaryType, ContentType.APPLICATION_PRIMARY_TYPE)) { //if this is "text/*" or "application/*"
 				final String subType = contentType.getSubType(); //get the subtype
-				return XML_EXTERNAL_PARSED_ENTITY_SUBTYPE.equals(subType) //if the subtype is /xml-external-parsed-entity
+				return ASCII.equalsIgnoreCase(subType, XML.EXTERNAL_PARSED_ENTITY_CONTENT_TYPE.getSubType()) //if the subtype is /xml-external-parsed-entity
 						|| contentType.hasSubTypeSuffix(XML_EXTERNAL_PARSED_ENTITY_SUBTYPE_SUFFIX); //or if the subtype has an XML external parsed entity suffix
 			}
 		}

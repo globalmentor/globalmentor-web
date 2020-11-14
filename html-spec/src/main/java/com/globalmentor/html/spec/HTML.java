@@ -28,11 +28,11 @@ import static java.util.stream.Collectors.*;
 import com.globalmentor.java.Characters;
 import com.globalmentor.model.IDed;
 import com.globalmentor.net.ContentType;
+import com.globalmentor.text.ASCII;
 import com.globalmentor.xml.spec.*;
 
 import static com.globalmentor.java.Characters.*;
 import static com.globalmentor.java.Conditions.*;
-import static com.globalmentor.net.ContentTypeConstants.*;
 
 /**
  * Definitional constants of the HyperText Markup Language (HTML).
@@ -155,15 +155,15 @@ public class HTML {
 		if(contentType != null) { //if a media type is given
 			final String primaryType = contentType.getPrimaryType(); //get the primary type
 			final String subType = contentType.getSubType(); //get the sub type
-			if(ContentType.TEXT_PRIMARY_TYPE.equals(primaryType)) { //if this is "text/?"
-				if(HTML_SUBTYPE.equals(subType) //if this is "text/html"
+			if(ASCII.equalsIgnoreCase(primaryType, ContentType.TEXT_PRIMARY_TYPE)) { //if this is "text/?"
+				if(ASCII.equalsIgnoreCase(subType, HTML_SUBTYPE) //if this is "text/html"
 				/*TODO fix for OEB || OEB.X_OEB1_DOCUMENT_SUBTYPE.equals(subType)*/) { //if this is "text/x-oeb1-document"
 					return true; //show that this is HTML
 				}
 			}
 			if(ContentType.APPLICATION_PRIMARY_TYPE.equals(primaryType)) { //if this is "application/?"
 				//TODO probably add a parameter to specify whether we should allow fragments to qualify as XHTML---right now this behavior is not consistent with XMLUtilities.isXML(), which doesn't recognize fragments as XML
-				if(XHTML_XML_SUBTYPE.equals(subType) || XHTML_XML_EXTERNAL_PARSED_ENTITY_SUBTYPE.equals(subType)) { //if this is "application/xhtml+xml" or "application/xhtml+xml-external-parsed-entity"
+				if(ASCII.equalsIgnoreCase(subType, XHTML_XML_SUBTYPE) || ASCII.equalsIgnoreCase(subType, XHTML_XML_EXTERNAL_PARSED_ENTITY_SUBTYPE)) { //if this is "application/xhtml+xml" or "application/xhtml+xml-external-parsed-entity"
 					return true; //show that this is HTML
 				}
 			}
@@ -513,10 +513,16 @@ public class HTML {
 	//attributes for <form>
 	public static final String ELEMENT_FORM_ATTRIBUTE_ACTION = "action";
 	public static final String ELEMENT_FORM_ATTRIBUTE_ENCTYPE = "enctype";
-	/** The "application/x-www-form-urlencoded" encoding type; see <a href="http://www.rfc-editor.org/rfc/rfc1867.txt">RFC 1867</a>. */
-	public static final ContentType APPLICATION_X_WWW_FORM_URLENCODED_CONTENT_TYPE = ContentType.of(ContentType.APPLICATION_PRIMARY_TYPE, X_WWW_FORM_URLENCODED);
-	/** The "multipart/form-data" encoding type; see <a href="http://www.rfc-editor.org/rfc/rfc1867.txt">RFC 1867</a>. */
-	public static final ContentType MULTIPART_FORM_DATA_CONTENT_TYPE = ContentType.of(ContentType.MULTIPART_PRIMARY_TYPE, FORM_DATA_SUBTYPE);
+	/**
+	 * The <code>application/x-www-form-urlencoded</code> encoding type.
+	 * @see <a href="https://tools.ietf.org/html/rfc1867">RFC 1867: Form-based File Upload in HTML</a>.
+	 */
+	public static final ContentType APPLICATION_X_WWW_FORM_URLENCODED_CONTENT_TYPE = ContentType.of(ContentType.APPLICATION_PRIMARY_TYPE, "www-form-urlencoded");
+	/**
+	 * The <code>multipart/form-data</code> encoding type.
+	 * @see <a href="https://tools.ietf.org/html/rfc1867">RFC 1867: Form-based File Upload in HTML</a>.
+	 */
+	public static final ContentType MULTIPART_FORM_DATA_CONTENT_TYPE = ContentType.of(ContentType.MULTIPART_PRIMARY_TYPE, "form-data");
 
 	public static final String ELEMENT_FORM_ATTRIBUTE_METHOD = "method";
 	public static final String FORM_METHOD_GET = "get";
