@@ -32,17 +32,17 @@ public class MathML {
 	/** A MathML application. */
 	public static final String MATHML_XML_SUBTYPE = "mathml" + ContentType.SUBTYPE_SUFFIX_DELIMITER_CHAR + XML.XML_SUBTYPE_SUFFIX;
 
-	/** The content type for MathML: <code>application/mathml+xml</code>. */
-	public static final ContentType MATHML_CONTENT_TYPE = ContentType.of(ContentType.APPLICATION_PRIMARY_TYPE, MATHML_XML_SUBTYPE);
+	/** The media type for MathML: <code>application/mathml+xml</code>. */
+	public static final ContentType MEDIA_TYPE = ContentType.of(ContentType.APPLICATION_PRIMARY_TYPE, MATHML_XML_SUBTYPE);
 
 	/** The recommended prefix to the MathML namespace. */
-	public static final String MATHML_NAMESPACE_PREFIX = "mathml";
+	public static final String NAMESPACE_PREFIX = "mathml";
 
 	/** The string representing the the MathML namespace. */
-	public static final String MATHML_NAMESPACE_URI_STRING = "http://www.w3.org/1998/Math/MathML";
+	public static final String NAMESPACE_URI_STRING = "http://www.w3.org/1998/Math/MathML";
 	
 	/** The URI to the MathML namespace. */
-	public static final URI MATHML_NAMESPACE_URI = URI.create(MATHML_NAMESPACE_URI_STRING);
+	public static final URI NAMESPACE_URI = URI.create(NAMESPACE_URI_STRING);
 
 	/** The system ID for the MathML 1.01 DTD. */
 	public static final String MATHML_1_01_SYSTEM_ID = "https://www.w3.org/Math/DTD/mathml1/mathml.dtd";

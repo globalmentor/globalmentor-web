@@ -46,8 +46,8 @@ import com.globalmentor.text.W3CDateFormat;
  */
 public class JSON {
 
-	/** The content type for JSON: <code>application/json</code>. */
-	public static final ContentType CONTENT_TYPE = ContentType.of(ContentType.APPLICATION_PRIMARY_TYPE, "json");
+	/** The media type for JSON: <code>application/json</code>. */
+	public static final ContentType MEDIA_TYPE = ContentType.of(ContentType.APPLICATION_PRIMARY_TYPE, "json");
 
 	public static final char BEGIN_ARRAY = 0x5B; //[ left square bracket
 	public static final char BEGIN_OBJECT = 0x7B; //[ left square bracket

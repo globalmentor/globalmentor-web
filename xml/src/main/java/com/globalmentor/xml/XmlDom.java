@@ -33,11 +33,13 @@ import static com.globalmentor.io.InputStreams.*;
 
 import com.globalmentor.io.ByteOrderMark;
 import com.globalmentor.java.*;
+import com.globalmentor.mathml.spec.MathML;
 import com.globalmentor.model.ConfigurationException;
 import com.globalmentor.model.NameValuePair;
 import com.globalmentor.model.ObjectHolder;
 import com.globalmentor.net.ContentType;
 import com.globalmentor.net.URIs;
+import com.globalmentor.svg.spec.SVG;
 import com.globalmentor.text.ASCII;
 import com.globalmentor.xml.spec.*;
 
@@ -48,7 +50,6 @@ import org.xml.sax.SAXException;
 
 import static com.globalmentor.java.Characters.*;
 import static com.globalmentor.java.Objects.*;
-import static com.globalmentor.net.ContentTypeConstants.*;
 import static com.globalmentor.html.spec.HTML.*;
 import static com.globalmentor.mathml.spec.MathML.*;
 import static com.globalmentor.svg.spec.SVG.*;
@@ -247,20 +248,20 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 		Map<String, ContentType> contentTypeMap = contentTypeMapReference != null ? contentTypeMapReference.get() : null;
 		if(contentTypeMap == null) { //if the garbage collector has reclaimed the cache
 			contentTypeMap = new HashMap<String, ContentType>(); //create a new map of content types, and fill it with the default mappings
-			contentTypeMap.put("-//Guise//DTD XHTML Guise 1.0//EN", XHTML_CONTENT_TYPE); //Guise XHTML DTD
-			contentTypeMap.put(HTML_4_01_STRICT_PUBLIC_ID, HTML_CONTENT_TYPE);
-			contentTypeMap.put(HTML_4_01_TRANSITIONAL_PUBLIC_ID, HTML_CONTENT_TYPE);
-			contentTypeMap.put(HTML_4_01_FRAMESET_PUBLIC_ID, HTML_CONTENT_TYPE);
-			contentTypeMap.put(XHTML_1_0_STRICT_PUBLIC_ID, XHTML_CONTENT_TYPE);
-			contentTypeMap.put(XHTML_1_0_TRANSITIONAL_PUBLIC_ID, XHTML_CONTENT_TYPE);
-			contentTypeMap.put(XHTML_1_0_FRAMESET_PUBLIC_ID, XHTML_CONTENT_TYPE);
-			contentTypeMap.put(XHTML_1_1_PUBLIC_ID, XHTML_CONTENT_TYPE);
-			contentTypeMap.put(XHTML_1_1_MATHML_2_0_SVG_1_1_PUBLIC_ID, XHTML_CONTENT_TYPE);
-			contentTypeMap.put(MATHML_2_0_PUBLIC_ID, MATHML_CONTENT_TYPE);
-			contentTypeMap.put(SVG_1_0_PUBLIC_ID, SVG_CONTENT_TYPE);
-			contentTypeMap.put(SVG_1_1_FULL_PUBLIC_ID, SVG_CONTENT_TYPE);
-			contentTypeMap.put(SVG_1_1_BASIC_PUBLIC_ID, SVG_CONTENT_TYPE);
-			contentTypeMap.put(SVG_1_1_TINY_PUBLIC_ID, SVG_CONTENT_TYPE);
+			contentTypeMap.put("-//Guise//DTD XHTML Guise 1.0//EN", XHTML_MEDIA_TYPE); //Guise XHTML DTD
+			contentTypeMap.put(HTML_4_01_STRICT_PUBLIC_ID, HTML_MEDIA_TYPE);
+			contentTypeMap.put(HTML_4_01_TRANSITIONAL_PUBLIC_ID, HTML_MEDIA_TYPE);
+			contentTypeMap.put(HTML_4_01_FRAMESET_PUBLIC_ID, HTML_MEDIA_TYPE);
+			contentTypeMap.put(XHTML_1_0_STRICT_PUBLIC_ID, XHTML_MEDIA_TYPE);
+			contentTypeMap.put(XHTML_1_0_TRANSITIONAL_PUBLIC_ID, XHTML_MEDIA_TYPE);
+			contentTypeMap.put(XHTML_1_0_FRAMESET_PUBLIC_ID, XHTML_MEDIA_TYPE);
+			contentTypeMap.put(XHTML_1_1_PUBLIC_ID, XHTML_MEDIA_TYPE);
+			contentTypeMap.put(XHTML_1_1_MATHML_2_0_SVG_1_1_PUBLIC_ID, XHTML_MEDIA_TYPE);
+			contentTypeMap.put(MATHML_2_0_PUBLIC_ID, MathML.MEDIA_TYPE);
+			contentTypeMap.put(SVG_1_0_PUBLIC_ID, SVG.MEDIA_TYPE);
+			contentTypeMap.put(SVG_1_1_FULL_PUBLIC_ID, SVG.MEDIA_TYPE);
+			contentTypeMap.put(SVG_1_1_BASIC_PUBLIC_ID, SVG.MEDIA_TYPE);
+			contentTypeMap.put(SVG_1_1_TINY_PUBLIC_ID, SVG.MEDIA_TYPE);
 			contentTypeMapReference = new SoftReference<Map<String, ContentType>>(contentTypeMap); //create a soft reference to the map
 		}
 		return contentTypeMap; //return the map
@@ -284,10 +285,10 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 		Map<String, String> rootElementLocalNameMap = rootElementLocalNameMapReference != null ? rootElementLocalNameMapReference.get() : null;
 		if(rootElementLocalNameMap == null) { //if the garbage collector has reclaimed the cache
 			rootElementLocalNameMap = new HashMap<String, String>(); //create a new map of root element local names, and fill it with the default mappings
-			rootElementLocalNameMap.put(HTML_CONTENT_TYPE.toBaseTypeString(), ELEMENT_HTML);
-			rootElementLocalNameMap.put(XHTML_CONTENT_TYPE.toBaseTypeString(), ELEMENT_HTML);
-			rootElementLocalNameMap.put(MATHML_CONTENT_TYPE.toBaseTypeString(), ELEMENT_MATHML);
-			rootElementLocalNameMap.put(SVG_CONTENT_TYPE.toBaseTypeString(), ELEMENT_SVG);
+			rootElementLocalNameMap.put(HTML_MEDIA_TYPE.toBaseTypeString(), ELEMENT_HTML);
+			rootElementLocalNameMap.put(XHTML_MEDIA_TYPE.toBaseTypeString(), ELEMENT_HTML);
+			rootElementLocalNameMap.put(MathML.MEDIA_TYPE.toBaseTypeString(), ELEMENT_MATHML);
+			rootElementLocalNameMap.put(SVG.MEDIA_TYPE.toBaseTypeString(), ELEMENT_SVG);
 			rootElementLocalNameMapReference = new SoftReference<Map<String, String>>(rootElementLocalNameMap); //create a soft reference to the map
 		}
 		return rootElementLocalNameMap; //return the map
@@ -694,11 +695,11 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 */
 	public static boolean isXML(final ContentType contentType) {
 		if(contentType != null) { //if a content type is given
-			if(ContentType.TEXT_PRIMARY_TYPE.equals(contentType.getPrimaryType()) && XML_SUBTYPE.equals(contentType.getSubType())) { //if this is "text/xml"
+			if(contentType.hasBaseType(XML.MEDIA_TYPE)) { //if this is "text/xml"
 				return true; //text/xml is an XML content type
 			}
 			if(ContentType.APPLICATION_PRIMARY_TYPE.equals(contentType.getPrimaryType())) { //if this is "application/*"
-				return XML_SUBTYPE.equals(contentType.getSubType()) //see if the subtype is "xml"
+				return ASCII.equalsIgnoreCase(contentType.getSubType(), XML.MEDIA_TYPE.getSubType()) //see if the subtype is "xml"
 						|| contentType.hasSubTypeSuffix(XML_SUBTYPE_SUFFIX); //see if the subtype has an XML suffix
 			}
 		}
@@ -722,9 +723,9 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	public static boolean isXMLExternalParsedEntity(final ContentType contentType) {
 		if(contentType != null) { //if a content type is given
 			final String primaryType = contentType.getPrimaryType(); //get the primary type
-			if(ContentType.TEXT_PRIMARY_TYPE.equals(primaryType) || ContentType.APPLICATION_PRIMARY_TYPE.equals(primaryType)) { //if this is "text/*" or "application/*"
+			if(ASCII.equalsIgnoreCase(primaryType, ContentType.TEXT_PRIMARY_TYPE) || ASCII.equalsIgnoreCase(primaryType, ContentType.APPLICATION_PRIMARY_TYPE)) { //if this is "text/*" or "application/*"
 				final String subType = contentType.getSubType(); //get the subtype
-				return XML_EXTERNAL_PARSED_ENTITY_SUBTYPE.equals(subType) //if the subtype is /xml-external-parsed-entity
+				return ASCII.equalsIgnoreCase(subType, XML.EXTERNAL_PARSED_ENTITY_MEDIA_TYPE.getSubType()) //if the subtype is /xml-external-parsed-entity
 						|| contentType.hasSubTypeSuffix(XML_EXTERNAL_PARSED_ENTITY_SUBTYPE_SUFFIX); //or if the subtype has an XML external parsed entity suffix
 			}
 		}

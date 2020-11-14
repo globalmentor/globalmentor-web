@@ -27,7 +27,6 @@ import com.globalmentor.net.ContentType;
 
 import static com.globalmentor.java.Characters.*;
 import static com.globalmentor.java.Integers.*;
-import static com.globalmentor.net.ContentTypeConstants.*;
 import static java.nio.charset.StandardCharsets.*;
 
 /**
@@ -45,11 +44,14 @@ public class XML {
 	/** The suffix for XML external parsed entity subtypes (not yet formally defined). */
 	public static final String XML_EXTERNAL_PARSED_ENTITY_SUBTYPE_SUFFIX = "xml-external-parsed-entity";
 
-	/** The content type for generic XML: <code>text/xml</code>. */
-	public static final ContentType CONTENT_TYPE = ContentType.of(ContentType.TEXT_PRIMARY_TYPE, XML_SUBTYPE);
+	/** The media type for generic XML: <code>text/xml</code>. */
+	public static final ContentType MEDIA_TYPE = ContentType.of(ContentType.TEXT_PRIMARY_TYPE, "xml");
 
-	/** The content type for a generic XML fragment: <code>text/xml-external-parsed-entity</code>. */
-	public static final ContentType EXTERNAL_PARSED_ENTITY_CONTENT_TYPE = ContentType.of(ContentType.TEXT_PRIMARY_TYPE, XML_EXTERNAL_PARSED_ENTITY_SUBTYPE);
+	/**
+	 * The media type for a generic XML fragment: <code>text/xml-external-parsed-entity</code>.
+	 * @see <a href="https://tools.ietf.org/html/rfc3023">RFC 3023: XML Media Types</a>
+	 */
+	public static final ContentType EXTERNAL_PARSED_ENTITY_MEDIA_TYPE = ContentType.of(ContentType.TEXT_PRIMARY_TYPE, "xml-external-parsed-entity");
 
 	/** The default charset to assume if none is indicated. */
 	public static final Charset DEFAULT_CHARSET = UTF_8;

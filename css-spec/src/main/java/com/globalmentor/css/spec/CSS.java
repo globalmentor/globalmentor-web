@@ -42,8 +42,8 @@ public class CSS {
 	/** A Cascading Style Sheet document MIME subtype. */
 	public static final String CSS_SUBTYPE = "css";
 
-	/** The content type for CSS: <code>text/css</code>. */
-	public static final ContentType TEXT_CSS_CONTENT_TYPE = ContentType.of(ContentType.TEXT_PRIMARY_TYPE, CSS_SUBTYPE);
+	/** The media type for CSS: <code>text/css</code>. */
+	public static final ContentType TEXT_CSS_MEDIA_TYPE = ContentType.of(ContentType.TEXT_PRIMARY_TYPE, CSS_SUBTYPE);
 
 	/** A space character. */
 	public static final char SPACE_CHAR = ' ';

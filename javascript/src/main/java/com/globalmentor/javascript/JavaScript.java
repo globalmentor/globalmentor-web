@@ -32,11 +32,11 @@ public class JavaScript {
 	/** The JavaScript MIME subtype. */
 	public static final String JAVASCRIPT_SUBTYPE = "javascript";
 
-	/** The content type for JavaScript: <code>application/javascript</code>. */
-	public static final ContentType JAVASCRIPT_CONTENT_TYPE = ContentType.of(ContentType.APPLICATION_PRIMARY_TYPE, JAVASCRIPT_SUBTYPE);
+	/** The media type for JavaScript: <code>application/javascript</code>. */
+	public static final ContentType MEDIA_TYPE = ContentType.of(ContentType.APPLICATION_PRIMARY_TYPE, JAVASCRIPT_SUBTYPE);
 
-	/** The obsolete content type for JavaScript: <code>text/javascript</code>. */
-	public static final ContentType JAVASCRIPT_OBSOLETE_CONTENT_TYPE = ContentType.of(ContentType.TEXT_PRIMARY_TYPE, JAVASCRIPT_SUBTYPE);
+	/** The obsolete media type for JavaScript: <code>text/javascript</code>. */
+	public static final ContentType OBSOLETE_MEDIA_TYPE = ContentType.of(ContentType.TEXT_PRIMARY_TYPE, JAVASCRIPT_SUBTYPE);
 
 	/** The name extension for JavaScript files. */
 	public static final String JS_NAME_EXTENSION = "js";

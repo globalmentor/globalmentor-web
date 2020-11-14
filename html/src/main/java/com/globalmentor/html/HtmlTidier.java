@@ -34,7 +34,6 @@ import com.globalmentor.xml.xpath.XPath;
 import io.clogr.Clogged;
 
 import static com.globalmentor.java.Characters.*;
-import static com.globalmentor.net.ContentTypeConstants.*;
 import static com.globalmentor.css.spec.CSS.*;
 import static com.globalmentor.html.spec.HTML.*;
 import static com.globalmentor.xml.spec.XML.*;
@@ -1531,7 +1530,7 @@ public class HtmlTidier implements Clogged {
 		final Element objectElement = element.getOwnerDocument().createElementNS(elementNamespace, ELEMENT_OBJECT); //create the element object in the same namespace as the applet object
 		if(code != null) //if there is a code attribute
 			objectElement.setAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_CLASSID, code); //set the object classid attribute TODO correctly add needed "java:" and ".class"
-		objectElement.setAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_CODETYPE, ContentType.toString(ContentType.APPLICATION_PRIMARY_TYPE, JAVA_SUBTYPE)); //set the object codetype attribute to "application/java"
+		objectElement.setAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_CODETYPE, ContentType.toString(ContentType.APPLICATION_PRIMARY_TYPE, "java")); //set the object codetype attribute to "application/java" TODO confirm the appropriate media type
 		if(height != null) //if there is a height attribute
 			objectElement.setAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_HEIGHT, height); //set the object height attribute
 		if(width != null) //if there is a width attribute
