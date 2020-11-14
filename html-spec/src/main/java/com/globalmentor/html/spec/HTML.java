@@ -52,14 +52,14 @@ public class HTML {
 	public static final String XHTML_XML_EXTERNAL_PARSED_ENTITY_SUBTYPE = "xhtml" + ContentType.SUBTYPE_SUFFIX_DELIMITER_CHAR
 			+ XML.XML_EXTERNAL_PARSED_ENTITY_SUBTYPE_SUFFIX;
 
-	/** The content type for HTML: <code>text/html</code>. */
-	public static final ContentType HTML_CONTENT_TYPE = ContentType.of(ContentType.TEXT_PRIMARY_TYPE, HTML_SUBTYPE);
+	/** The media type for HTML: <code>text/html</code>. */
+	public static final ContentType HTML_MEDIA_TYPE = ContentType.of(ContentType.TEXT_PRIMARY_TYPE, HTML_SUBTYPE);
 
-	/** The content type for XHTML: <code>application/xhtml+xml</code>. */
-	public static final ContentType XHTML_CONTENT_TYPE = ContentType.of(ContentType.APPLICATION_PRIMARY_TYPE, XHTML_XML_SUBTYPE);
+	/** The media type for XHTML: <code>application/xhtml+xml</code>. */
+	public static final ContentType XHTML_MEDIA_TYPE = ContentType.of(ContentType.APPLICATION_PRIMARY_TYPE, XHTML_XML_SUBTYPE);
 
-	/** The content type for an XHTML fragment: <code>application/xhtml+xml-external-parsed-entity</code>. */
-	public static final ContentType XHTML_FRAGMENT_CONTENT_TYPE = ContentType.of(ContentType.APPLICATION_PRIMARY_TYPE, XHTML_XML_EXTERNAL_PARSED_ENTITY_SUBTYPE);
+	/** The media type for an XHTML fragment: <code>application/xhtml+xml-external-parsed-entity</code>. */
+	public static final ContentType XHTML_FRAGMENT_MEDIA_TYPE = ContentType.of(ContentType.APPLICATION_PRIMARY_TYPE, XHTML_XML_EXTERNAL_PARSED_ENTITY_SUBTYPE);
 
 	/** The old extension for HTML resource names. */
 	public static final String HTM_NAME_EXTENSION = "htm";
@@ -139,16 +139,16 @@ public class HTML {
 	public static final String XHTML_MATHML_SVG_SYSTEM_ID = XHTML_1_1_MATHML_2_0_SVG_1_1_SYSTEM_ID;
 
 	/**
-	 * Determines if the given content type is one representing HTML in some form.
+	 * Determines if the given media type is one representing HTML in some form.
 	 * <p>
-	 * HTML content types include:
+	 * HTML media types include:
 	 * </p>
 	 * <ul>
 	 * <li><code>text/html</code></li>
 	 * <li><code>application/xhtml+xml</code></li>
 	 * <li><code>application/xhtml+xml-external-parsed-entity</code> (not formally defined)</li>
 	 * </ul>
-	 * @param contentType The content type of a resource, or <code>null</code> for no content type.
+	 * @param contentType The media type of a resource, or <code>null</code> for no media type.
 	 * @return <code>true</code> if the given media type is one of several HTML media types.
 	 */
 	public static boolean isHTML(final ContentType contentType) { //TODO maybe move this to an HTMLUtilities
@@ -514,15 +514,15 @@ public class HTML {
 	public static final String ELEMENT_FORM_ATTRIBUTE_ACTION = "action";
 	public static final String ELEMENT_FORM_ATTRIBUTE_ENCTYPE = "enctype";
 	/**
-	 * The <code>application/x-www-form-urlencoded</code> encoding type.
+	 * The <code>application/x-www-form-urlencoded</code> encoding media type.
 	 * @see <a href="https://tools.ietf.org/html/rfc1867">RFC 1867: Form-based File Upload in HTML</a>.
 	 */
-	public static final ContentType APPLICATION_X_WWW_FORM_URLENCODED_CONTENT_TYPE = ContentType.of(ContentType.APPLICATION_PRIMARY_TYPE, "www-form-urlencoded");
+	public static final ContentType APPLICATION_X_WWW_FORM_URLENCODED_MEDIA_TYPE = ContentType.of(ContentType.APPLICATION_PRIMARY_TYPE, "www-form-urlencoded");
 	/**
-	 * The <code>multipart/form-data</code> encoding type.
+	 * The <code>multipart/form-data</code> encoding media type.
 	 * @see <a href="https://tools.ietf.org/html/rfc1867">RFC 1867: Form-based File Upload in HTML</a>.
 	 */
-	public static final ContentType MULTIPART_FORM_DATA_CONTENT_TYPE = ContentType.of(ContentType.MULTIPART_PRIMARY_TYPE, "form-data");
+	public static final ContentType MULTIPART_FORM_DATA_MEDIA_TYPE = ContentType.of(ContentType.MULTIPART_PRIMARY_TYPE, "form-data");
 
 	public static final String ELEMENT_FORM_ATTRIBUTE_METHOD = "method";
 	public static final String FORM_METHOD_GET = "get";

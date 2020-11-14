@@ -32,17 +32,17 @@ public class SVG {
 	/** The SVG image MIME subtype. */
 	public static final String SVG_XML_SUBTYPE = "svg" + ContentType.SUBTYPE_SUFFIX_DELIMITER_CHAR + XML.XML_SUBTYPE_SUFFIX;
 
-	/** The content type for SVG: <code>application/svg+xml</code>. */
-	public static final ContentType SVG_CONTENT_TYPE = ContentType.of(ContentType.APPLICATION_PRIMARY_TYPE, SVG_XML_SUBTYPE);
+	/** The media type for SVG: <code>application/svg+xml</code>. */
+	public static final ContentType MEDIA_TYPE = ContentType.of(ContentType.APPLICATION_PRIMARY_TYPE, SVG_XML_SUBTYPE);
 
 	/** The recommended prefix to the SVG namespace. */
-	public static final String SVG_NAMESPACE_PREFIX = "svg";
+	public static final String NAMESPACE_PREFIX = "svg";
 
 	/** The string representing the SVG namespace. */
-	public static final String SVG_NAMESPACE_URI_STRING = "http://www.w3.org/2000/svg";
+	public static final String NAMESPACE_URI_STRING = "http://www.w3.org/2000/svg";
 
 	/** The URI to the SVG namespace. */
-	public static final URI SVG_NAMESPACE_URI = URI.create(SVG_NAMESPACE_URI_STRING);
+	public static final URI NAMESPACE_URI = URI.create(NAMESPACE_URI_STRING);
 
 	/** The public ID for the SVG 1.0 DTD. */
 	public static final String SVG_1_0_PUBLIC_ID = "-//W3C//DTD SVG 1.0//EN";
