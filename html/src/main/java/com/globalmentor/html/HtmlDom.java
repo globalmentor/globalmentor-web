@@ -19,7 +19,6 @@ package com.globalmentor.html;
 import static java.util.Collections.*;
 import static java.util.Objects.*;
 
-import java.io.*;
 import java.net.URI;
 import java.util.*;
 import java.util.function.BiFunction;
@@ -350,6 +349,7 @@ public class HtmlDom {
 	/**
 	 * Determines if the specified element represents an image. Specifically, this returns <code>true</code> if the element's name is "img"; or if the element's
 	 * name is "object" and the type attribute is an image or the data attribute references an image file.
+	 * @implNote This implementation considers only the most common image filename extensions.
 	 * @param htmlNamespaceURI The XHTML namespace.
 	 * @param element The element which might represent an image.
 	 * @return <code>true</code> if the specified element represents an image.
@@ -375,8 +375,7 @@ public class HtmlDom {
 				//see if there is a data attribute, since there is no type specified
 				if(element.hasAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_DATA)) { //if there is a data attribute
 					final String data = element.getAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_DATA); //get the data
-					final ContentType mediaType = Files.getContentType(new File(data)); //try to get a media type from the file
-					if(mediaType != null && mediaType.getPrimaryType().equals(ContentType.IMAGE_PRIMARY_TYPE)) //if this is an image
+					if(Filenames.findExtension(data).map(Images.MEDIA_TYPES_BY_FILENAME_EXTENSION::containsKey).orElse(false)) //if the filename has an image extension
 						return true; //show that this is an image object
 				}
 			}
