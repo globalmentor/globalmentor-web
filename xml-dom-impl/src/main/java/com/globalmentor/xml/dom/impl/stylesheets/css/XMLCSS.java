@@ -48,17 +48,14 @@ public class XMLCSS {
 				final XMLCSSStyleSheet styleSheet = new XMLCSSStyleSheet((com.globalmentor.xml.dom.impl.XMLNode)null); //create a new CSS stylesheet that has no owner TODO make this cast use a generic Node, or make a default constructor
 				try {
 					//TODO XMLCSSProcessor has been updated -- see if we need to modify this code
-					final InputStream inputStream = styleSheetURL.openConnection().getInputStream(); //open a connection to the URL and get an input stream from that
-					final InputStreamReader inputStreamReader = new InputStreamReader(inputStream); //get an input stream reader to the stylesheet TODO what about encoding?
-					final ParseReader styleSheetReader = new ParseReader(inputStreamReader, styleSheetURL); //create a parse reader reader to use to read the stylesheet
-					try {
+					try (final InputStream inputStream = styleSheetURL.openConnection().getInputStream(); //open a connection to the URL and get an input stream from that
+							final InputStreamReader inputStreamReader = new InputStreamReader(inputStream); //get an input stream reader to the stylesheet TODO what about encoding?
+							final ParseReader styleSheetReader = new ParseReader(inputStreamReader, styleSheetURL)) { //create a parse reader reader to use to read the stylesheet
 						//TODO fix			entityReader.setCurrentLineIndex(entity.getLineIndex());	//pretend we're reading where the entity was located in that file, so any errors will show the correct information
 						//TODO fix			entityReader.setCurrentCharIndex(entity.getCharIndex());	//pretend we're reading where the entity was located in that file, so any errors will show the correct information
 						final XMLCSSProcessor cssProcessor = new XMLCSSProcessor(); //create a new CSS processor
 						cssProcessor.parseStyleSheetContent(styleSheetReader, styleSheet); //parse the stylesheet content
 						return styleSheet; //return the stylesheet we parsed
-					} finally {
-						styleSheetReader.close(); //always close the stylesheet reader
 					}
 				} catch(IOException ioException) { //if anything goes wrong reading the stylesheet, that's bad but shouldn't keep the program from continuing
 					Clogr.getLogger(XMLCSS.class).warn(ioException.getMessage(), ioException); //warn that there's was an IO problem

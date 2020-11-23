@@ -878,14 +878,11 @@ public class XMLProcessor implements URIInputStreamable, Clogged {
 		} else { //if we weren't able to find a cached document type subset
 			generalEntityMap = new XMLNamedNodeMap(); //eventually replace these with an object specifically for DTD subsets
 			parameterEntityMap = new XMLNamedNodeMap();
-			final XMLReader externalDTDReader = createReader(reader.getSourceObject(), documentType.getPublicID(), documentType.getSystemID()); //TODO testing; comment
-			try {
+			try (final XMLReader externalDTDReader = createReader(reader.getSourceObject(), documentType.getPublicID(), documentType.getSystemID())) { //TODO testing; comment
 				//TODO change the code to know whether it should look for an ending ']'
 				parseDocumentTypeContent(externalDTDReader, ownerDocument, generalEntityMap, parameterEntityMap, elementDeclarationList, attributeListDeclarationList); //parse the external document type content
 				//cache the document type subset we just loaded
 				putCachedDocumentTypeSubset(documentType.getPublicID(), documentType.getSystemID(), generalEntityMap);
-			} finally {
-				externalDTDReader.close(); //always close the reader we created
 			}
 		}
 		//store the general entities in the document
@@ -936,13 +933,10 @@ public class XMLProcessor implements URIInputStreamable, Clogged {
 				case PARAMETER_ENTITY_REF: //if this is a parameter entity reference
 				{
 					final XMLEntity entity = parseParameterEntityReference(reader, ownerDocument, parameterEntityMap); //parse this entity reference and see which entity it refers to
-					final XMLReader entityReader = createEntityReader(reader.getSourceObject(), entity); //we'll use this to read either from the internal value or an external file
-					try {
+					try (final XMLReader entityReader = createEntityReader(reader.getSourceObject(), entity)) { //we'll use this to read either from the internal value or an external file
 						if(parseDocumentTypeContent(entityReader, ownerDocument, /*TODO fix documentType, */generalEntityMap, parameterEntityMap, elementDeclarationList,
 								attributeListDeclarationList)) //parse the entity text just as if it were included in the file (except for markup across entity boundaries); if the ending markup for the DTD for the element was found TODO fix; how can they find the ']' in a parameter entity?
 							return true; //show that we found the end of the element
-					} finally {
-						entityReader.close(); //always close the entity reader
 					}
 				}
 					break; //TODO perhaps have a more instructive error here if they try to split up general entities across entities
