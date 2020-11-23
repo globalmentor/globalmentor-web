@@ -190,12 +190,9 @@ public abstract class AbstractXMLCSSStylesheetApplier<D, E> implements URIInputS
 					//create a URI from the original URI of the XML document and the stylesheet href
 					final URI styleSheetURI = URIs.createURI(baseURI, styleSheetDescriptor.getHRef());
 					//buffer the input stream so that the BOMInputStreamReader will be able to use mark/reset
-					final Reader styleSheetReader = new BOMInputStreamReader(new BufferedInputStream(getInputStream(styleSheetURI))); //get an input stream to the stylesheet TODO do a preread check for the @charset "" CSS keyword 
-					try {
+					try (final Reader styleSheetReader = new BOMInputStreamReader(new BufferedInputStream(getInputStream(styleSheetURI)))) { //get an input stream to the stylesheet TODO do a preread check for the @charset "" CSS keyword 
 						final CSSStyleSheet cssStyleSheet = cssProcessor.parseStyleSheet(styleSheetReader, styleSheetURI); //parse the stylesheet
 						styleSheetList.add(cssStyleSheet); //add this stylesheet to our list
-					} finally {
-						styleSheetReader.close(); //always close the stylesheet reader
 					}
 				} catch(IOException ioException) { //if there are any I/O exceptions
 					getLogger().warn(ioException.getMessage(), ioException); //TODO fix better

@@ -402,14 +402,10 @@ public class HtmlTidier implements Clogged {
 						if(contextFile != null) { //if we have a context file
 							final File stylesheetFile = new File(Files.changeExtension(contextFile, "css").getCanonicalPath()); //create a file with a .css extension TODO use a constant here
 							//create an output file stream for writing the stylesheet
-							final OutputStream stylesheetOutputStream = new BufferedOutputStream(new FileOutputStream(stylesheetFile));
-							try {
+							try (final OutputStream stylesheetOutputStream = new BufferedOutputStream(new FileOutputStream(stylesheetFile))) {
 								new CSSSerializer().serialize(cssStyleSheet, stylesheetOutputStream); //write the stylesheet out to the file TODO use a pre-created serializer, maybe
 								stylesheetOutputStream.flush(); //flush the output stream
 								addStyleSheetReference(document, stylesheetFile.getName(), OEB.OEB10_CSS_MEDIA_TYPE); //add the stylesheet to the document TODO eventually change to text/css
-			
-							} finally {
-								stylesheetOutputStream.close(); //always close the file
 							}
 						}
 					}
