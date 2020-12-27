@@ -107,7 +107,7 @@ public class XMLNamedObject { //TODO implement NamedObject or extend DefaultName
 	 */
 	public void setQName(final String qname) {
 		this.qname = qname; //save the qualified name
-		prefix = XML.getPrefix(qname); //determine and set the prefix
+		prefix = XML.findPrefix(qname).orElse(null); //determine and set the prefix
 		localName = XML.getLocalName(qname); //determine and set the local name		
 	}
 
@@ -120,7 +120,7 @@ public class XMLNamedObject { //TODO implement NamedObject or extend DefaultName
 	protected void setName(final String newPrefix, final String newLocalName) {
 		prefix = newPrefix; //set the prefix
 		localName = newLocalName; //set the local name
-		qname = XML.createQName(newPrefix, newLocalName); //create a qualified name and store it (don't call setQName(), which will needlessly reset the prefix and local name)
+		qname = XML.createQualifiedName(newPrefix, newLocalName); //create a qualified name and store it (don't call setQName(), which will needlessly reset the prefix and local name)
 	}
 
 	/**
@@ -132,7 +132,7 @@ public class XMLNamedObject { //TODO implement NamedObject or extend DefaultName
 		//TODO fix		super(qname);	//construct the parent class
 		setNamespaceURI(namespaceURI); //set the namespace URI
 		this.qname = qname; //save the qualified name
-		prefix = qname != null ? XML.getPrefix(qname) : null; //determine and set the prefix
+		prefix = qname != null ? XML.findPrefix(qname).orElse(null) : null; //determine and set the prefix
 		localName = qname != null ? XML.getLocalName(qname) : null; //determine and set the local name		
 	}
 

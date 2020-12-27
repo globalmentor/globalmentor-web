@@ -445,16 +445,29 @@ public class XML {
 	/**
 	 * Returns the prefix from the qualified name.
 	 * @param qualifiedName The fully qualified name, with an optional namespace prefix.
-	 * @return The namespace prefix, or <code>null</code> if no prefix is present.
+	 * @return The namespace prefix if present.
 	 * @throws NullPointerException if the given qualified name is <code>null</code>.
 	 */
-	public static @Nullable String getPrefix(final String qualifiedName) {
+	public static Optional<String> findPrefix(@Nonnull final String qualifiedName) {
 		final int prefixDividerIndex = qualifiedName.indexOf(NAMESPACE_DIVIDER); //see if there is a prefix
 		if(prefixDividerIndex >= 0) //if there is a prefix
-			return qualifiedName.substring(0, prefixDividerIndex); //return the prefix
-		else
-			//if there is no prefix
-			return null; //show that there is no prefix
+			return Optional.of(qualifiedName.substring(0, prefixDividerIndex)); //return the prefix
+		else { //if there is no prefix
+			return Optional.empty(); //show that there is no prefix
+		}
+	}
+
+	/**
+	 * Returns the prefix from the qualified name.
+	 * @param qualifiedName The fully qualified name, with an optional namespace prefix.
+	 * @return The namespace prefix, or <code>null</code> if no prefix is present.
+	 * @throws NullPointerException if the given qualified name is <code>null</code>.
+	 * @deprecated to be replaced with {@link #findPrefix(String)}.
+	 */
+	@Deprecated
+	@Nullable
+	public static String getPrefix(@Nonnull final String qualifiedName) {
+		return findPrefix(qualifiedName).orElse(null);
 	}
 
 	/**
@@ -463,7 +476,8 @@ public class XML {
 	 * @return The local name without a prefix.
 	 * @throws NullPointerException if the given qualified name is <code>null</code>.
 	 */
-	public static @Nonnull String getLocalName(final String qualifiedName) {
+	@Nonnull
+	public static String getLocalName(@Nonnull final String qualifiedName) {
 		final int namespaceDividerIndex = qualifiedName.indexOf(NAMESPACE_DIVIDER); //find where the namespace divider is in the name
 		return namespaceDividerIndex >= 0 ? //if there is a namespace prefix
 				qualifiedName.substring(namespaceDividerIndex + 1) : //remove the namespace prefix
@@ -570,12 +584,23 @@ public class XML {
 	 * @param localName The XML local name.
 	 * @return The XML qualified name.
 	 */
-	public static String createQName(final String prefix, final String localName) {
-		final StringBuilder stringBuilder = new StringBuilder();
-		if(prefix != null) { //if there is a prefix defined
-			stringBuilder.append(prefix).append(NAMESPACE_DIVIDER); //prepend the prefix and the namespace delimiter
+	public static String createQualifiedName(@Nullable String prefix, @Nonnull final String localName) {
+		if(prefix == null) {
+			return localName;
 		}
-		return stringBuilder.append(localName).toString(); //always append the local name
+		return prefix + NAMESPACE_DIVIDER + localName;
+	}
+
+	/**
+	 * Creates a qualified name from a namespace prefix and a local name.
+	 * @param prefix The namespace prefix, or <code>null</code> if there is no prefix.
+	 * @param localName The XML local name.
+	 * @return The XML qualified name.
+	 * @deprecated in favor of {@link #createQualifiedName(String, String)}.
+	 */
+	@Deprecated
+	public static String createQName(@Nullable String prefix, @Nonnull final String localName) {
+		return createQualifiedName(prefix, localName);
 	}
 
 	/**

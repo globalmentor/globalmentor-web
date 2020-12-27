@@ -771,20 +771,6 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	}
 
 	/**
-	 * Creates a qualified name object from an XML node.
-	 * <p>
-	 * If the node namespace is not a valid URI (e.g. "DAV:"), it will be converted to a valid URI (e.g. "DAV:/") if possible.
-	 * </p>
-	 * @param node The XML node from which a qualified name is to be created.
-	 * @return A qualified name object representing the given XML node
-	 * @throws IllegalArgumentException if the namespace is not <code>null</code> and cannot be converted to a valid URI.
-	 * @see #toNamespaceURI(String)
-	 */
-	public static QualifiedName createQualifiedName(final Node node) {
-		return new QualifiedName(node.getNamespaceURI(), node.getPrefix(), node.getLocalName()); //create a qualified name for this node
-	}
-
-	/**
 	 * Creates a namespace URI from the given namespace string.
 	 * <p>
 	 * This method attempts to compensate for XML documents that include a namespace string that is not a true URI, notably the <code>DAV:</code> namespace "URI"
@@ -2004,7 +1990,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 		}
 		if(prefix != null) { //if we were given a prefix
 			//create an attribute in the form `xmlns:prefix="namespaceURI"` TODO fix for attributes that may use the same prefix for different namespace URIs
-			declarationElement.setAttributeNS(XMLNS_NAMESPACE_URI_STRING, createQName(XMLNS_NAMESPACE_PREFIX, prefix), namespaceURI);
+			declarationElement.setAttributeNS(XMLNS_NAMESPACE_URI_STRING, createQualifiedName(XMLNS_NAMESPACE_PREFIX, prefix), namespaceURI);
 		} else { //if we weren't given a prefix
 			//create an attribute in the form `xmlns="namespaceURI"` TODO fix for attributes that may use the same prefix for different namespace URIs
 			declarationElement.setAttributeNS(ATTRIBUTE_XMLNS.getNamespaceString(), ATTRIBUTE_XMLNS.getLocalName(), namespaceURI);
@@ -2068,7 +2054,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * Creates an element of the given qualified name and namespace URI.
 	 * @implSpec This implementation delegates to {@link Document#createElementNS(String, String)}.
 	 * @param document The document for which the new element is to be created.
-	 * @param nsName The namespace URI and local name of the element to create.
+	 * @param nsQualifiedName The namespace URI and qualified name of the element to create.
 	 * @return A new element.
 	 * @throws DOMException
 	 *           <dl>
@@ -2087,8 +2073,8 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 *           <dd>Always thrown if the current document does not support the <code>"XML"</code> feature, since namespaces were defined by XML.</dd>
 	 *           </dl>
 	 */
-	public static Element createElement(@Nonnull final Document document, @Nonnull final NsName nsName) throws DOMException {
-		return document.createElementNS(nsName.getNamespaceString(), nsName.getLocalName());
+	public static Element createElement(@Nonnull final Document document, @Nonnull final NsName nsQualifiedName) throws DOMException {
+		return document.createElementNS(nsQualifiedName.getNamespaceString(), nsQualifiedName.getLocalName());
 	}
 
 	/**

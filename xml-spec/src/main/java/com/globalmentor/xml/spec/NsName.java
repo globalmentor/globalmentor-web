@@ -1,5 +1,5 @@
 /*
- * Copyright © 2019 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ * Copyright © 2019-2020 GlobalMentor, Inc. <http://www.globalmentor.com/>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ package com.globalmentor.xml.spec;
 import static com.globalmentor.java.Conditions.*;
 import static java.util.Objects.*;
 
+import java.net.URI;
 import java.util.Objects;
 
 import javax.annotation.*;
@@ -27,23 +28,17 @@ import org.w3c.dom.Node;
 
 /**
  * A namespaced name value object for encapsulating the namespace and a name of an XML element or attribute.
- * @apiNote The namespace is used in string from and the methods are nullable to correspond to the DOM approach.
+ * @apiNote The namespace is used in nullable string form to correspond to the DOM approach.
  * @author Garret Wilson
  */
-public final class NsName {
+public final class NsName extends AbstractNsObject {
 
-	private final String namespaceString;
-
-	/** @return The string form of the namespace URI, or <code>null</code> if there is no namespace URI. */
-	public @Nullable String getNamespaceString() {
-		return namespaceString;
-	}
-
-	/** The local name. */
+	@Nonnull
 	private final String localName;
 
 	/** @return The local name; guaranteed not to be the empty string. */
-	public @Nonnull String getLocalName() {
+	@Nonnull
+	public String getLocalName() {
 		return localName;
 	}
 
@@ -55,7 +50,7 @@ public final class NsName {
 	 * @throws IllegalArgumentException if the given local name is the empty string.
 	 */
 	public static NsName of(@Nonnull final String localName) {
-		return of(null, localName);
+		return of((String)null, localName);
 	}
 
 	/**
@@ -71,11 +66,23 @@ public final class NsName {
 	}
 
 	/**
-	 * Static factory method from a namespace string and a local name.
-	 * @param node The node of which the namespace string and local name will be determined.
+	 * Static factory method from a namespace URI and a local name.
+	 * @param namespaceUri The namespace URI, or <code>null</code> if there is no namespace URI.
+	 * @param localName The local name.
 	 * @return A namespaced name with the given namespace and local name.
 	 * @throws NullPointerException if the given local name is <code>null</code>.
 	 * @throws IllegalArgumentException if the given local name is the empty string.
+	 */
+	public static NsName of(@Nullable final URI namespaceUri, @Nonnull final String localName) {
+		return new NsName(namespaceUri, localName);
+	}
+
+	/**
+	 * Static factory method from DOM node.
+	 * @param node The node of which the namespace string and local name will be determined.
+	 * @return A namespaced name with the given namespace and local name.
+	 * @throws NullPointerException if the given node's local name is <code>null</code>.
+	 * @throws IllegalArgumentException if the given node's local name is the empty string.
 	 * @throws IllegalArgumentException if the node was created with DOM Level 1, which does not support namespaces.
 	 * @see Node#getNamespaceURI()
 	 * @see Node#getLocalName()
@@ -87,21 +94,34 @@ public final class NsName {
 	}
 
 	/**
-	 * Constructor.
+	 * Namespace string constructor.
 	 * @param namespaceString The string form of the namespace URI, or <code>null</code> if there is no namespace URI.
 	 * @param localName The local name.
 	 * @throws NullPointerException if the given local name is <code>null</code>.
 	 * @throws IllegalArgumentException if the given local name is the empty string.
 	 */
 	private NsName(@Nullable final String namespaceString, @Nonnull final String localName) {
-		this.namespaceString = namespaceString;
+		super(namespaceString);
+		this.localName = requireNonNull(localName);
+		checkArgument(!localName.isEmpty(), "Namespaced local name cannot be empty.");
+	}
+
+	/**
+	 * Namespace URI constructor.
+	 * @param namespaceUri The namespace URI, or <code>null</code> if there is no namespace URI.
+	 * @param localName The local name.
+	 * @throws NullPointerException if the given local name is <code>null</code>.
+	 * @throws IllegalArgumentException if the given local name is the empty string.
+	 */
+	private NsName(@Nullable final URI namespaceUri, @Nonnull final String localName) {
+		super(namespaceUri);
 		this.localName = requireNonNull(localName);
 		checkArgument(!localName.isEmpty(), "Namespaced local name cannot be empty.");
 	}
 
 	@Override
 	public int hashCode() {
-		return hash(namespaceString, localName);
+		return hash(getNamespaceString(), localName);
 	}
 
 	@Override
@@ -113,18 +133,19 @@ public final class NsName {
 			return false;
 		}
 		final NsName nsName = (NsName)object;
-		return Objects.equals(namespaceString, nsName.namespaceString) && localName.equals(nsName.localName);
+		return Objects.equals(getNamespaceString(), nsName.getNamespaceString()) && localName.equals(nsName.localName);
 	}
 
 	/**
 	 * {@inheritDoc}
-	 * @implSpec This implementation returns a concatenation of the namespace, if any, and the local name name in the form {@code <namespace>:localName}.
+	 * @implSpec This implementation returns a concatenation of the namespace, if any, and the local name name in the form {@code <namespace>/localName}.
 	 */
 	@Override
 	public String toString() {
 		final StringBuilder stringBuilder = new StringBuilder();
+		final String namespaceString = getNamespaceString();
 		if(namespaceString != null) {
-			stringBuilder.append('<').append(namespaceString).append('>').append(':');
+			stringBuilder.append('<').append(namespaceString).append('>').append('/');
 		}
 		stringBuilder.append(localName);
 		return stringBuilder.toString();
@@ -153,7 +174,7 @@ public final class NsName {
 	 * @see Node#getLocalName()
 	 */
 	public boolean matches(@Nullable final String namespaceString, @Nonnull final String localName) {
-		return Objects.equals(this.namespaceString, namespaceString) && this.localName.equals(localName);
+		return Objects.equals(getNamespaceString(), namespaceString) && getLocalName().equals(localName);
 	}
 
 }
