@@ -53,7 +53,7 @@ public abstract class BaseXmlFormatProfile extends AbstractXmlFormatProfile {
 	 */
 	@Override
 	public boolean isPreserved(final Element element) {
-		if(isPresentAndEquals(findAttributeNS(element, ATTRIBUTE_SPACE), ATTRIBUTE_SPACE_PRESERVE)) {
+		if(isPresentAndEquals(findAttribute(element, ATTRIBUTE_SPACE), ATTRIBUTE_SPACE_PRESERVE)) {
 			return true;
 		}
 		return super.isPreserved(element);

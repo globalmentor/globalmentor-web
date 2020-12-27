@@ -80,7 +80,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @see Document#getElementsByTagNameNS(String, String)
 	 * @see Element#getElementsByTagName(String)
 	 * @see Element#getElementsByTagNameNS(String, String)
-	 * @see #getElementsByTagNameNS(Document, NsName)
+	 * @see #getElementsByTagName(Document, NsName)
 	 */
 	public static final String MATCH_ALL = "*";
 
@@ -88,7 +88,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * The wildcard namespace-aware name for matching all local names in all namespaces.
 	 * @see Document#getElementsByTagNameNS(String, String)
 	 * @see Element#getElementsByTagNameNS(String, String)
-	 * @see #getElementsByTagNameNS(Document, NsName)
+	 * @see #getElementsByTagName(Document, NsName)
 	 */
 	public static final NsName MATCH_ALL_NAMES = NsName.of(MATCH_ALL, MATCH_ALL);
 
@@ -923,14 +923,39 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 
 	/**
 	 * Convenience function to create an element and add it as a child of the given parent element.
+	 * @implSpec This implementation delegates to {@link #appendElementNS(Element, String, String)}.
+	 * @param parentElement The element which will serve as parent of the newly created element. This element must have a valid owner document.
+	 * @param elementName The namespace URI and local name of the element to create.
+	 * @return The newly created child element.
+	 * @throws DOMException if there was an error creating the element or appending the element to the parent element.
+	 */
+	public static Element appendElement(@Nonnull Element parentElement, @Nonnull NsName elementName) {
+		return appendElementNS(parentElement, elementName.getNamespaceString(), elementName.getLocalName());
+	}
+
+	/**
+	 * Convenience function to create an element and add it as a child of the given parent element.
 	 * @param parentElement The element which will serve as parent of the newly created element. This element must have a valid owner document.
 	 * @param elementNamespaceURI The namespace URI of the element to be created.
 	 * @param elementName The name of the element to create.
 	 * @return The newly created child element.
 	 * @throws DOMException if there was an error creating the element or appending the element to the parent element.
 	 */
-	public static Element appendElementNS(final Element parentElement, final String elementNamespaceURI, final String elementName) {
+	public static Element appendElementNS(@Nonnull final Element parentElement, @Nullable final String elementNamespaceURI, @Nonnull final String elementName) {
 		return appendElementNS(parentElement, elementNamespaceURI, elementName, null); //append the element with no text
+	}
+
+	/**
+	 * Convenience function to create an element, add it as a child of the given parent element, and add optional text as a child of the given element.
+	 * @implSpec This implementation delegates to {@link #appendElementNS(Element, String, String, String)}.
+	 * @param parentElement The element which will serve as parent of the newly created element. This element must have a valid owner document.
+	 * @param elementName The namespace URI and local name of the element to create.
+	 * @param textContent The text to add as a child of the created element, or <code>null</code> if no text should be added.
+	 * @return The newly created child element.
+	 * @throws DOMException if there was an error creating the element, appending the text, or appending the element to the parent element.
+	 */
+	public static Element appendElement(@Nonnull Element parentElement, @Nonnull final NsName elementName, @Nullable String textContent) {
+		return appendElementNS(parentElement, elementName.getNamespaceString(), elementName.getNamespaceString(), textContent);
 	}
 
 	/**
@@ -943,7 +968,8 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @return The newly created child element.
 	 * @throws DOMException if there was an error creating the element, appending the text, or appending the element to the parent element.
 	 */
-	public static Element appendElementNS(final Element parentElement, final String elementNamespaceURI, final String elementName, final String textContent) {
+	public static Element appendElementNS(@Nonnull Element parentElement, @Nullable final String elementNamespaceURI, @Nonnull final String elementName,
+			@Nullable String textContent) {
 		final Element childElement = createElementNS(parentElement.getOwnerDocument(), elementNamespaceURI, elementName, textContent); //create the new element
 		parentElement.appendChild(childElement); //add the child element to the parent element
 		return childElement; //return the element we created
@@ -1168,8 +1194,8 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 
 	/**
 	 * Returns a list of child nodes with a given type and node name. The special wildcard name {@value #MATCH_ALL} returns nodes of all names. If
-	 * <code>deep</code> is set to <code>true</code>, returns a list of all descendant nodes with a given name, in the order in which they would be encountered in
-	 * a pre-order traversal of the node tree.
+	 * <code><var>deep</var></code> is set to <code>true</code>, returns a list of all descendant nodes with a given name, in the order in which they would be
+	 * encountered in a pre-order traversal of the node tree.
 	 * @param node The node the child nodes of which will be searched.
 	 * @param nodeType The type of nodes to include.
 	 * @param nodeName The name of the node to match on. The special value {@value #MATCH_ALL} matches all nodes.
@@ -1181,9 +1207,9 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	}
 
 	/**
-	 * Collects child nodes with a given type and node name. The special wildcard name {@value #MATCH_ALL} returns nodes of all names. If <code>deep</code> is set
-	 * to <code>true</code>, returns a list of all descendant nodes with a given name, in the order in which they would be encountered in a pre-order traversal of
-	 * the node tree.
+	 * Collects child nodes with a given type and node name. The special wildcard name {@value #MATCH_ALL} returns nodes of all names. If
+	 * <code><var>deep</var></code> is set to <code>true</code>, returns a list of all descendant nodes with a given name, in the order in which they would be
+	 * encountered in a pre-order traversal of the node tree.
 	 * @param <N> The type of node to collect.
 	 * @param <C> The type of the collection of nodes.
 	 * @param node The node the child nodes of which will be searched.
@@ -1215,8 +1241,24 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 
 	/**
 	 * Returns a list of child nodes with a given type, namespace URI, and local name. The special wildcard name {@value #MATCH_ALL} returns nodes of all local
-	 * names. If <code>deep</code> is set to <code>true</code>, returns a list of all descendant nodes with a given name, in the order in which they would be
-	 * encountered in a pre-order traversal of the node tree.
+	 * names. If <code><var>deep</var></code> is set to <code>true</code>, returns a list of all descendant nodes with a given name, in the order in which they
+	 * would be encountered in a pre-order traversal of the node tree.
+	 * @implSpec This implementation delegates to {@link #getNodesByNameNS(Node, int, String, String, boolean)}.
+	 * @param node The node the child nodes of which will be searched.
+	 * @param nodeType The type of nodes to include.
+	 * @param name The namespace URI and local name of the node to match on. The special value {@value #MATCH_ALL} matches all namespaces. The special value
+	 *          {@value #MATCH_ALL} matches all local names.
+	 * @param deep Whether or not matching child nodes of each matching child node, etc. should be included.
+	 * @return A new list containing all the matching nodes.
+	 */
+	public static List<Node> getNodesByName(@Nonnull final Node node, final int nodeType, @Nonnull NsName name, final boolean deep) {
+		return getNodesByNameNS(node, nodeType, name.getNamespaceString(), name.getLocalName(), deep);
+	}
+
+	/**
+	 * Returns a list of child nodes with a given type, namespace URI, and local name. The special wildcard name {@value #MATCH_ALL} returns nodes of all local
+	 * names. If <code><var>deep</var></code> is set to <code>true</code>, returns a list of all descendant nodes with a given name, in the order in which they
+	 * would be encountered in a pre-order traversal of the node tree.
 	 * @param node The node the child nodes of which will be searched.
 	 * @param nodeType The type of nodes to include.
 	 * @param namespaceURI The URI of the namespace of nodes to return. The special value {@value #MATCH_ALL} matches all namespaces.
@@ -1231,8 +1273,30 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 
 	/**
 	 * Collects child nodes with a given type, namespace URI, and local name. The special wildcard name {@value #MATCH_ALL} returns nodes of all local names. If
-	 * <code>deep</code> is set to <code>true</code>, returns a list of all descendant nodes with a given name, in the order in which they would be encountered in
-	 * a pre-order traversal of the node tree.
+	 * <code><var>deep</var></code> is set to <code>true</code>, returns a list of all descendant nodes with a given name, in the order in which they would be
+	 * encountered in a pre-order traversal of the node tree.
+	 * @implSpec This implementation delegates to {@link #collectNodesByNameNS(Node, int, Class, String, String, boolean, Collection)}
+	 * @param <N> The type of node to collect.
+	 * @param <C> The type of the collection of nodes.
+	 * @param node The node the child nodes of which will be searched.
+	 * @param nodeType The type of nodes to include.
+	 * @param nodeClass The class representing the type of node to return.
+	 * @param name The namespace URI and local name of the node to match on. The special value {@value #MATCH_ALL} matches all namespaces. The special value
+	 *          {@value #MATCH_ALL} matches all local names.
+	 * @param deep Whether or not matching child nodes of each matching child node, etc. should be included.
+	 * @param nodes The collection into which the nodes will be gathered.
+	 * @return The given collection, now containing all the matching nodes.
+	 * @throws ClassCastException if one of the nodes of the indicated node type cannot be cast to the indicated node class.
+	 */
+	public static <N extends Node, C extends Collection<N>> C collectNodesByName(@Nonnull final Node node, final int nodeType, @Nonnull final Class<N> nodeClass,
+			@Nonnull NsName name, final boolean deep, final C nodes) {
+		return collectNodesByNameNS(node, nodeType, nodeClass, TAB_STRING, MATCH_ALL, deep, nodes);
+	}
+
+	/**
+	 * Collects child nodes with a given type, namespace URI, and local name. The special wildcard name {@value #MATCH_ALL} returns nodes of all local names. If
+	 * <code><var>deep</var></code> is set to <code>true</code>, returns a list of all descendant nodes with a given name, in the order in which they would be
+	 * encountered in a pre-order traversal of the node tree.
 	 * @param <N> The type of node to collect.
 	 * @param <C> The type of the collection of nodes.
 	 * @param node The node the child nodes of which will be searched.
@@ -1295,8 +1359,8 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	}
 
 	/**
-	 * Retrieves the text of the node contained in child nodes of type {@link Node#TEXT_NODE}. If <code>deep</code> is set to <code>true</code> the text of all
-	 * descendant nodes in document (depth-first) order; otherwise, only text of direct children will be returned.
+	 * Retrieves the text of the node contained in child nodes of type {@link Node#TEXT_NODE}. If <code><var>deep</var></code> is set to <code>true</code> the
+	 * text of all descendant nodes in document (depth-first) order; otherwise, only text of direct children will be returned.
 	 * @param node The node from which text will be retrieved.
 	 * @param deep Whether text of all descendants in document order will be returned.
 	 * @return The data of all <code>Text</code> children nodes, which may be the empty string.
@@ -1310,8 +1374,8 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	}
 
 	/**
-	 * Retrieves the text of the node contained in child nodes of type <code>Node.Text</code>. If <code>deep</code> is set to <code>true</code> the text of all
-	 * descendant nodes in document (depth-first) order; otherwise, only text of direct children will be returned.
+	 * Retrieves the text of the node contained in child nodes of type <code>Node.Text</code>. If <code><var>deep</var></code> is set to <code>true</code> the
+	 * text of all descendant nodes in document (depth-first) order; otherwise, only text of direct children will be returned.
 	 * @param node The node from which text will be retrieved.
 	 * @param blockElementNames The names of elements considered "block" elements, which will be separated from other elements using whitespace.
 	 * @param deep Whether text of all descendants in document order will be returned.
@@ -1351,14 +1415,26 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 
 	/**
 	 * Determines whether the given element has an ancestor with the given namespace and name.
+	 * @implSpec This implementation delegates to {@link #hasAncestorElementNS(Element, String, String)}.
 	 * @param element The element the ancestors of which to check.
-	 * @param ancestorElementNamespaceURI The namespace URI of the ancestor element to check for.
-	 * @param ancestorElementName The name of the ancestor element to check for.
+	 * @param ancestorElementName The namespace URI and local name of the ancestor element to check for.
 	 * @return <code>true</code> if an ancestor element with the given namespace URI and name was found.
 	 */
-	public static boolean hasAncestorElementNS(Element element, final String ancestorElementNamespaceURI, final String ancestorElementName) {
+	public static boolean hasAncestorElement(final @Nonnull Element element, @Nonnull final NsName ancestorElementName) {
+		return hasAncestorElementNS(element, ancestorElementName.getNamespaceString(), ancestorElementName.getLocalName());
+	}
+
+	/**
+	 * Determines whether the given element has an ancestor with the given namespace and name.
+	 * @param element The element the ancestors of which to check.
+	 * @param ancestorElementNamespaceURI The namespace URI of the ancestor element to check for.
+	 * @param ancestorElementLocalName The local name of the ancestor element to check for.
+	 * @return <code>true</code> if an ancestor element with the given namespace URI and name was found.
+	 */
+	public static boolean hasAncestorElementNS(@Nonnull Element element, @Nullable final String ancestorElementNamespaceURI,
+			@Nonnull final String ancestorElementLocalName) {
 		while((element = asInstance(element.getParentNode(), Element.class).orElse(null)) != null) { //keep looking at parents until we run out of elements and hit the document
-			if(Objects.equals(element.getNamespaceURI(), ancestorElementNamespaceURI) && element.getNodeName().equals(ancestorElementName)) {
+			if(Objects.equals(element.getNamespaceURI(), ancestorElementNamespaceURI) && element.getNodeName().equals(ancestorElementLocalName)) {
 				return true;
 			}
 		}
@@ -1516,12 +1592,25 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * Renames an element by creating a new element with the specified name, cloning the original element's children, and replacing the original element with the
 	 * new, renamed clone. While this method's purpose is renaming, because of DOM restrictions it must remove the element and replace it with a new one, which is
 	 * reflected by the method's name.
+	 * @implSpec This implementation delegates to {@link #replaceElementNS(Element, String, String)}.
+	 * @param element The element to rename.
+	 * @param name The new element namespace and local name.
+	 * @return The new element with the specified name which replaced the old element. //TODO list exceptions
+	 */
+	public static Element replaceElement(@Nonnull final Element element, @Nonnull final NsName name) {
+		return replaceElementNS(element, name.getNamespaceString(), name.getLocalName());
+	}
+
+	/**
+	 * Renames an element by creating a new element with the specified name, cloning the original element's children, and replacing the original element with the
+	 * new, renamed clone. While this method's purpose is renaming, because of DOM restrictions it must remove the element and replace it with a new one, which is
+	 * reflected by the method's name.
 	 * @param element The element to rename.
 	 * @param namespaceURI The new element namespace.
 	 * @param localName The new element local name.
 	 * @return The new element with the specified name which replaced the old element. //TODO list exceptions
 	 */
-	public static Element replaceElementNS(final Element element, final String namespaceURI, final String localName) {
+	public static Element replaceElementNS(@Nonnull final Element element, @Nullable final String namespaceURI, @Nonnull final String localName) {
 		final Document document = element.getOwnerDocument(); //get the owner document
 		final Element newElement = document.createElementNS(namespaceURI, localName); //create the new element
 		appendClonedAttributeNodesNS(newElement, element); //clone the attributes TODO testing
@@ -1532,7 +1621,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	}
 
 	//TODO fix, comment private static final int tabDelta=2;	//
-	private static final String tabString = "|\t"; //TODO fix to adjust automatically to tabDelta, comment
+	private static final String TAB_STRING = "|\t"; //TODO fix to adjust automatically to tabDelta, comment
 
 	/**
 	 * Prints a tree representation of the document to the standard output.
@@ -1564,7 +1653,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 */
 	protected static void printTree(final Element element, int tabPos, final PrintStream printStream) {
 		for(int i = 0; i < tabPos; ++i)
-			printStream.print(tabString); //TODO fix to adjust automatically to tabDelta, comment
+			printStream.print(TAB_STRING); //TODO fix to adjust automatically to tabDelta, comment
 		printStream.print("[Element] "); //TODO fix to adjust automatically to tabDelta, comment
 		printStream.print("<" + element.getNodeName()); //print the element name
 
@@ -1585,7 +1674,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 			}
 
 			for(int i = 0; i < tabPos; ++i)
-				printStream.print(tabString); //TODO fix to adjust automatically to tabDelta, comment
+				printStream.print(TAB_STRING); //TODO fix to adjust automatically to tabDelta, comment
 			printStream.print("[/Element] "); //TODO fix to adjust automatically to tabDelta, comment
 			printStream.println("</" + element.getNodeName() + '>');
 		}
@@ -1618,13 +1707,13 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 				break;
 			case Node.TEXT_NODE: //if this is a text node
 				for(int i = 0; i < tabPos + 1; ++i)
-					printStream.print(tabString); //TODO fix to adjust automatically to tabDelta, comment
+					printStream.print(TAB_STRING); //TODO fix to adjust automatically to tabDelta, comment
 				printStream.print("[Text] "); //TODO fix to adjust automatically to tabDelta, comment
 				printStream.println(Strings.replace(node.getNodeValue(), '\n', "\\n")); //print the text of this node
 				break;
 			case Node.COMMENT_NODE: //if this is a comment node
 				for(int i = 0; i < tabPos + 1; i += ++i)
-					printStream.print(tabString); //TODO fix to adjust automatically to tabDelta, comment
+					printStream.print(TAB_STRING); //TODO fix to adjust automatically to tabDelta, comment
 				printStream.print("[Comment] "); //TODO fix to adjust automatically to tabDelta, comment
 				printStream.println(Strings.replace(node.getNodeValue(), '\n', "\\n")); //print the text of this node
 				break;
@@ -1700,7 +1789,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 				namespaceURI = element.getAttributeNS(XMLNS_NAMESPACE_URI_STRING, prefix);
 			}
 		} else { //if no prefix was specified, see if there is an `xmlns` attribute defined in the <http://www.w3.org/2000/xmlns/"> namespace
-			namespaceURI = findAttributeNS(element, ATTRIBUTE_XMLNS).orElse(null);
+			namespaceURI = findAttribute(element, ATTRIBUTE_XMLNS).orElse(null);
 		}
 		//if we didn't find a matching namespace definition for this node, search up the chain
 		//(unless no prefix was specified, and we can't use the default namespace)
@@ -1971,7 +2060,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 *           <dd>Always thrown if the current document does not support the <code>"XML"</code> feature, since namespaces were defined by XML.</dd>
 	 *           </dl>
 	 */
-	public static Attr createAttributeNS(@Nonnull final Document document, @Nonnull final NsName nsName) throws DOMException {
+	public static Attr createAttribute(@Nonnull final Document document, @Nonnull final NsName nsName) throws DOMException {
 		return document.createAttributeNS(nsName.getNamespaceString(), nsName.getLocalName());
 	}
 
@@ -1998,7 +2087,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 *           <dd>Always thrown if the current document does not support the <code>"XML"</code> feature, since namespaces were defined by XML.</dd>
 	 *           </dl>
 	 */
-	public static Element createElementNS(@Nonnull final Document document, @Nonnull final NsName nsName) throws DOMException {
+	public static Element createElement(@Nonnull final Document document, @Nonnull final NsName nsName) throws DOMException {
 		return document.createElementNS(nsName.getNamespaceString(), nsName.getLocalName());
 	}
 
@@ -2013,8 +2102,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @see Document#createElementNS(String, String)
 	 * @see #appendText(Element, String)
 	 */
-	public static Element createElementNS(@Nonnull final Document document, @Nonnull final NsName nsName, @Nullable final String textContent)
-			throws DOMException {
+	public static Element createElement(@Nonnull final Document document, @Nonnull final NsName nsName, @Nullable final String textContent) throws DOMException {
 		return createElementNS(document, nsName.getNamespaceString(), nsName.getLocalName(), textContent);
 	}
 
@@ -2050,20 +2138,20 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @see #MATCH_ALL
 	 * @see #MATCH_ALL_NAMES
 	 */
-	public static NodeList getElementsByTagNameNS(@Nonnull final Document document, @Nonnull final NsName nsName) {
+	public static NodeList getElementsByTagName(@Nonnull final Document document, @Nonnull final NsName nsName) {
 		return document.getElementsByTagNameNS(nsName.getNamespaceString(), nsName.getLocalName());
 	}
 
 	/**
 	 * Convenience function to create an element, replace the document element of the given document.
-	 * @implSpec This implementation delegates to {@link #replaceDocumentElementNS(Document, NsName, String)} with no text content.
+	 * @implSpec This implementation delegates to {@link #replaceDocumentElement(Document, NsName, String)} with no text content.
 	 * @param document The document which will serve as parent of the newly created element.
 	 * @param nsName The namespace URI and local name of the element to create.
 	 * @return The newly created child element.
 	 * @throws DOMException if there was an error creating the element.
 	 */
-	public static Element replaceDocumentElementNS(@Nonnull final Document document, @Nonnull final NsName nsName) {
-		return replaceDocumentElementNS(document, nsName, null);
+	public static Element replaceDocumentElement(@Nonnull final Document document, @Nonnull final NsName nsName) {
+		return replaceDocumentElement(document, nsName, null);
 	}
 
 	/**
@@ -2089,7 +2177,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @return The newly created child element.
 	 * @throws DOMException if there was an error creating the element, appending the text, or replacing the child.
 	 */
-	public static Element replaceDocumentElementNS(@Nonnull final Document document, @Nonnull final NsName nsName, @Nullable final String textContent) {
+	public static Element replaceDocumentElement(@Nonnull final Document document, @Nonnull final NsName nsName, @Nullable final String textContent) {
 		return replaceDocumentElementNS(document, nsName.getNamespaceString(), nsName.getLocalName(), textContent);
 	}
 
@@ -2174,6 +2262,17 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 
 	/**
 	 * Returns a stream of direct child elements with a given namespace URI and local name, in order.
+	 * @implSpec This implementation delegates to {@link #childElementsByNameNS(Node, String, String)}.
+	 * @param parentNode The node the child nodes of which will be searched.
+	 * @param name The namespace URI and local name of the node to return.
+	 * @return A stream containing all the matching child elements.
+	 */
+	public static Stream<Element> childElementsByName(@Nonnull final Node parentNode, @Nonnull final NsName name) {
+		return childElementsByNameNS(parentNode, name.getNamespaceString(), name.getLocalName());
+	}
+
+	/**
+	 * Returns a stream of direct child elements with a given namespace URI and local name, in order.
 	 * @param parentNode The node the child nodes of which will be searched.
 	 * @param namespaceURI The URI of the namespace of nodes to return.
 	 * @param localName The local name of the node to match on.
@@ -2205,6 +2304,17 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 */
 	public static Optional<Node> findFirstChild(@Nonnull final Node parentNode) {
 		return Optional.ofNullable(parentNode.getFirstChild());
+	}
+
+	/**
+	 * Returns the first direct child element with a given namespace URI and local name.
+	 * @implSpec This implementation delegates to {@link #findFirstChildElementByNameNS(Node, String, String)}.
+	 * @param parentNode The node the child nodes of which will be searched.
+	 * @param name The namespace URI and local name of the node to match on.
+	 * @return The first matching element, if any.
+	 */
+	public static Optional<Element> findFirstChildElementByName(@Nonnull final Node parentNode, @Nonnull final NsName name) {
+		return findFirstChildElementByNameNS(parentNode, name.getNamespaceString(), name.getLocalName());
 	}
 
 	/**
@@ -2295,6 +2405,17 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 
 	/**
 	 * Returns the first elements with a given namespace URI and local name.
+	 * @implSpec This implementation delegates to {@link #findFirstElementByNameNS(NodeList, String, String)}.
+	 * @param nodeList The nodes to be searched.
+	 * @param name The namespace URI and local name of the node to match on.
+	 * @return The first matching element, if any.
+	 */
+	public static Optional<Element> findFirstElementByName(@Nonnull final NodeList nodeList, @Nonnull final NsName name) {
+		return findFirstElementByNameNS(nodeList, name.getNamespaceString(), name.getLocalName());
+	}
+
+	/**
+	 * Returns the first elements with a given namespace URI and local name.
 	 * @param nodeList The nodes to be searched.
 	 * @param namespaceURI The URI of the namespace of nodes to return.
 	 * @param localName The local name of the node to match on.
@@ -2374,7 +2495,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 *           support XML Namespaces (such as [<a href='http://www.w3.org/TR/1999/REC-html401-19991224/'>HTML 4.01</a>]).</dd>
 	 *           </dl>
 	 */
-	public static boolean hasAttributeNS(@Nonnull final Element element, @Nonnull final NsName nsName) throws DOMException {
+	public static boolean hasAttribute(@Nonnull final Element element, @Nonnull final NsName nsName) throws DOMException {
 		return element.hasAttributeNS(nsName.getNamespaceString(), nsName.getLocalName());
 	}
 
@@ -2415,7 +2536,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @see Element#hasAttributeNS(String, String)
 	 * @see Element#getAttributeNS(String, String)
 	 */
-	public static Optional<String> findAttributeNS(@Nonnull final Element element, @Nonnull final NsName nsName) throws DOMException {
+	public static Optional<String> findAttribute(@Nonnull final Element element, @Nonnull final NsName nsName) throws DOMException {
 		return findAttributeNS(element, nsName.getNamespaceString(), nsName.getLocalName());
 	}
 
@@ -2492,7 +2613,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 *           support XML Namespaces (such as [<a href='http://www.w3.org/TR/1999/REC-html401-19991224/'>HTML 4.01</a>]).</dd>
 	 *           </dl>
 	 */
-	public static void removeAttributeNS(@Nonnull final Element element, @Nonnull final NsName nsName) throws DOMException {
+	public static void removeAttribute(@Nonnull final Element element, @Nonnull final NsName nsName) throws DOMException {
 		element.removeAttributeNS(nsName.getNamespaceString(), nsName.getLocalName());
 	}
 
@@ -2512,8 +2633,8 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 *           support XML Namespaces (such as [<a href='http://www.w3.org/TR/1999/REC-html401-19991224/'>HTML 4.01</a>]).</dd>
 	 *           </dl>
 	 */
-	public static boolean removeAttributeNSIf(@Nonnull final Element element, @Nonnull final NsName nsName,
-			@Nonnull final Predicate<? super String> valuePredicate) throws DOMException {
+	public static boolean removeAttributeIf(@Nonnull final Element element, @Nonnull final NsName nsName, @Nonnull final Predicate<? super String> valuePredicate)
+			throws DOMException {
 		return removeAttributeNSIf(element, nsName.getNamespaceString(), nsName.getLocalName(), valuePredicate);
 	}
 
@@ -2540,7 +2661,6 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 			element.removeAttributeNS(namespaceURI, localName);
 		}
 		return remove;
-
 	}
 
 }
