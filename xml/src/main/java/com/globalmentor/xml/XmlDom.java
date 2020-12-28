@@ -911,12 +911,12 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * Convenience function to create an element and add it as a child of the given parent element.
 	 * @implSpec This implementation delegates to {@link #appendElementNS(Element, String, String)}.
 	 * @param parentElement The element which will serve as parent of the newly created element. This element must have a valid owner document.
-	 * @param elementName The namespace URI and local name of the element to create.
+	 * @param elementName The namespace URI and qualified name of the element to create.
 	 * @return The newly created child element.
 	 * @throws DOMException if there was an error creating the element or appending the element to the parent element.
 	 */
-	public static Element appendElement(@Nonnull Element parentElement, @Nonnull NsName elementName) {
-		return appendElementNS(parentElement, elementName.getNamespaceString(), elementName.getLocalName());
+	public static Element appendElement(@Nonnull Element parentElement, @Nonnull NsQualifiedName elementName) {
+		return appendElementNS(parentElement, elementName.getNamespaceString(), elementName.getQualifiedName());
 	}
 
 	/**
@@ -935,13 +935,13 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * Convenience function to create an element, add it as a child of the given parent element, and add optional text as a child of the given element.
 	 * @implSpec This implementation delegates to {@link #appendElementNS(Element, String, String, String)}.
 	 * @param parentElement The element which will serve as parent of the newly created element. This element must have a valid owner document.
-	 * @param elementName The namespace URI and local name of the element to create.
+	 * @param elementName The namespace URI and qualified name of the element to create.
 	 * @param textContent The text to add as a child of the created element, or <code>null</code> if no text should be added.
 	 * @return The newly created child element.
 	 * @throws DOMException if there was an error creating the element, appending the text, or appending the element to the parent element.
 	 */
-	public static Element appendElement(@Nonnull Element parentElement, @Nonnull final NsName elementName, @Nullable String textContent) {
-		return appendElementNS(parentElement, elementName.getNamespaceString(), elementName.getNamespaceString(), textContent);
+	public static Element appendElement(@Nonnull Element parentElement, @Nonnull final NsQualifiedName elementName, @Nullable String textContent) {
+		return appendElementNS(parentElement, elementName.getNamespaceString(), elementName.getQualifiedName(), textContent);
 	}
 
 	/**
@@ -949,14 +949,14 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * for instance, might be added using <code>appendElementNS(bodyElement, XHTML_NAMESPACE_URI, ELEMENT_H2, "My Heading");</code>.
 	 * @param parentElement The element which will serve as parent of the newly created element. This element must have a valid owner document.
 	 * @param elementNamespaceURI The namespace URI of the element to be created.
-	 * @param elementName The name of the element to create.
+	 * @param elementQualifiedName The qualified name of the element to create.
 	 * @param textContent The text to add as a child of the created element, or <code>null</code> if no text should be added.
 	 * @return The newly created child element.
 	 * @throws DOMException if there was an error creating the element, appending the text, or appending the element to the parent element.
 	 */
-	public static Element appendElementNS(@Nonnull Element parentElement, @Nullable final String elementNamespaceURI, @Nonnull final String elementName,
+	public static Element appendElementNS(@Nonnull Element parentElement, @Nullable final String elementNamespaceURI, @Nonnull final String elementQualifiedName,
 			@Nullable String textContent) {
-		final Element childElement = createElementNS(parentElement.getOwnerDocument(), elementNamespaceURI, elementName, textContent); //create the new element
+		final Element childElement = createElementNS(parentElement.getOwnerDocument(), elementNamespaceURI, elementQualifiedName, textContent); //create the new element
 		parentElement.appendChild(childElement); //add the child element to the parent element
 		return childElement; //return the element we created
 	}
@@ -1237,7 +1237,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @param deep Whether or not matching child nodes of each matching child node, etc. should be included.
 	 * @return A new list containing all the matching nodes.
 	 */
-	public static List<Node> getNodesByName(@Nonnull final Node node, final int nodeType, @Nonnull NsName name, final boolean deep) {
+	public static List<Node> getNodesByName(@Nonnull final Node node, final int nodeType, @Nonnull final NsName name, final boolean deep) {
 		return getNodesByNameNS(node, nodeType, name.getNamespaceString(), name.getLocalName(), deep);
 	}
 
@@ -1580,11 +1580,11 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * reflected by the method's name.
 	 * @implSpec This implementation delegates to {@link #replaceElementNS(Element, String, String)}.
 	 * @param element The element to rename.
-	 * @param name The new element namespace and local name.
+	 * @param name The new element namespace and qualified name.
 	 * @return The new element with the specified name which replaced the old element. //TODO list exceptions
 	 */
-	public static Element replaceElement(@Nonnull final Element element, @Nonnull final NsName name) {
-		return replaceElementNS(element, name.getNamespaceString(), name.getLocalName());
+	public static Element replaceElement(@Nonnull final Element element, @Nonnull final NsQualifiedName name) {
+		return replaceElementNS(element, name.getNamespaceString(), name.getQualifiedName());
 	}
 
 	/**
@@ -1593,12 +1593,12 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * reflected by the method's name.
 	 * @param element The element to rename.
 	 * @param namespaceURI The new element namespace.
-	 * @param localName The new element local name.
+	 * @param qualifiedName The new element qualified name.
 	 * @return The new element with the specified name which replaced the old element. //TODO list exceptions
 	 */
-	public static Element replaceElementNS(@Nonnull final Element element, @Nullable final String namespaceURI, @Nonnull final String localName) {
+	public static Element replaceElementNS(@Nonnull final Element element, @Nullable final String namespaceURI, @Nonnull final String qualifiedName) {
 		final Document document = element.getOwnerDocument(); //get the owner document
-		final Element newElement = document.createElementNS(namespaceURI, localName); //create the new element
+		final Element newElement = document.createElementNS(namespaceURI, qualifiedName); //create the new element
 		appendClonedAttributeNodesNS(newElement, element); //clone the attributes TODO testing
 		appendClonedChildNodes(newElement, element, true); //deep-clone the child nodes of the element and add them to the new element
 		final Node parentNode = element.getParentNode(); //get the parent node, which we'll need for the replacement
@@ -2027,7 +2027,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * Creates an attribute of the given qualified name and namespace URI.
 	 * @implSpec This implementation delegates to {@link Document#createAttributeNS(String, String)}.
 	 * @param document The document for which the new element is to be created.
-	 * @param nsName The namespace URI and local name of the attribute to create.
+	 * @param nsQualifiedName The namespace URI and qualified name of the attribute to create.
 	 * @return A new attribute object.
 	 * @throws DOMException
 	 *           <dl>
@@ -2046,8 +2046,8 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 *           <dd>Always thrown if the current document does not support the <code>"XML"</code> feature, since namespaces were defined by XML.</dd>
 	 *           </dl>
 	 */
-	public static Attr createAttribute(@Nonnull final Document document, @Nonnull final NsName nsName) throws DOMException {
-		return document.createAttributeNS(nsName.getNamespaceString(), nsName.getLocalName());
+	public static Attr createAttribute(@Nonnull final Document document, @Nonnull final NsQualifiedName nsQualifiedName) throws DOMException {
+		return document.createAttributeNS(nsQualifiedName.getNamespaceString(), nsQualifiedName.getQualifiedName());
 	}
 
 	/**
@@ -2073,23 +2073,24 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 *           <dd>Always thrown if the current document does not support the <code>"XML"</code> feature, since namespaces were defined by XML.</dd>
 	 *           </dl>
 	 */
-	public static Element createElement(@Nonnull final Document document, @Nonnull final NsName nsQualifiedName) throws DOMException {
-		return document.createElementNS(nsQualifiedName.getNamespaceString(), nsQualifiedName.getLocalName());
+	public static Element createElement(@Nonnull final Document document, @Nonnull final NsQualifiedName nsQualifiedName) throws DOMException {
+		return document.createElementNS(nsQualifiedName.getNamespaceString(), nsQualifiedName.getQualifiedName());
 	}
 
 	/**
 	 * Convenience function to create an element and add optional text as a child of the given element.
 	 * @implSpec This method delegates to {@link #createElementNS(Document, String, String, String)}.
 	 * @param document The document to be used to create the new element.
-	 * @param nsName The namespace URI and local name of the element to create.
+	 * @param nsQualifiedName The namespace URI and qualified name of the element to create.
 	 * @param textContent The text to add as a child of the created element, or <code>null</code> if no text should be added.
 	 * @return The newly created child element.
 	 * @throws DOMException if there was an error creating the element or appending the text.
 	 * @see Document#createElementNS(String, String)
 	 * @see #appendText(Element, String)
 	 */
-	public static Element createElement(@Nonnull final Document document, @Nonnull final NsName nsName, @Nullable final String textContent) throws DOMException {
-		return createElementNS(document, nsName.getNamespaceString(), nsName.getLocalName(), textContent);
+	public static Element createElement(@Nonnull final Document document, @Nonnull final NsQualifiedName nsQualifiedName, @Nullable final String textContent)
+			throws DOMException {
+		return createElementNS(document, nsQualifiedName.getNamespaceString(), nsQualifiedName.getQualifiedName(), textContent);
 	}
 
 	/**
@@ -2098,16 +2099,16 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @implSpec This method creates an element by delegating to {@link Document#createElementNS(String, String)}.
 	 * @param document The document to be used to create the new element.
 	 * @param elementNamespaceURI The namespace URI of the element to be created.
-	 * @param elementName The name of the element to create.
+	 * @param elementQualifiedName The qualified name of the element to create.
 	 * @param textContent The text to add as a child of the created element, or <code>null</code> if no text should be added.
 	 * @return The newly created child element.
 	 * @throws DOMException if there was an error creating the element or appending the text.
 	 * @see Document#createElementNS(String, String)
 	 * @see #appendText(Element, String)
 	 */
-	public static Element createElementNS(@Nonnull final Document document, @Nullable final String elementNamespaceURI, @Nonnull final String elementName,
-			@Nullable final String textContent) throws DOMException {
-		final Element childElement = document.createElementNS(elementNamespaceURI, elementName); //create the new element
+	public static Element createElementNS(@Nonnull final Document document, @Nullable final String elementNamespaceURI,
+			@Nonnull final String elementQualifiedName, @Nullable final String textContent) throws DOMException {
+		final Element childElement = document.createElementNS(elementNamespaceURI, elementQualifiedName); //create the new element
 		if(textContent != null) { //if we have text content to add
 			appendText(childElement, textContent); //append the text content to the newly created child element
 		}
@@ -2132,12 +2133,12 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * Convenience function to create an element, replace the document element of the given document.
 	 * @implSpec This implementation delegates to {@link #replaceDocumentElement(Document, NsName, String)} with no text content.
 	 * @param document The document which will serve as parent of the newly created element.
-	 * @param nsName The namespace URI and local name of the element to create.
+	 * @param elementName The namespace URI and qualified name of the element to create.
 	 * @return The newly created child element.
 	 * @throws DOMException if there was an error creating the element.
 	 */
-	public static Element replaceDocumentElement(@Nonnull final Document document, @Nonnull final NsName nsName) {
-		return replaceDocumentElement(document, nsName, null);
+	public static Element replaceDocumentElement(@Nonnull final Document document, @Nonnull final NsQualifiedName elementName) {
+		return replaceDocumentElement(document, elementName, null);
 	}
 
 	/**
@@ -2158,13 +2159,14 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * Convenience function to create an element, replace the document element of the given document, and add optional text as a child of the given element.
 	 * @implSpec This implementation delegates to {@link #replaceDocumentElementNS(Document, String, String, String)}.
 	 * @param document The document which will serve as parent of the newly created element.
-	 * @param nsName The namespace URI and local name of the element to create.
+	 * @param elementName The namespace URI and qualified name of the element to create.
 	 * @param textContent The text to add as a child of the created element, or <code>null</code> if no text should be added.
 	 * @return The newly created child element.
 	 * @throws DOMException if there was an error creating the element, appending the text, or replacing the child.
 	 */
-	public static Element replaceDocumentElement(@Nonnull final Document document, @Nonnull final NsName nsName, @Nullable final String textContent) {
-		return replaceDocumentElementNS(document, nsName.getNamespaceString(), nsName.getLocalName(), textContent);
+	public static Element replaceDocumentElement(@Nonnull final Document document, @Nonnull final NsQualifiedName elementName,
+			@Nullable final String textContent) {
+		return replaceDocumentElementNS(document, elementName.getNamespaceString(), elementName.getQualifiedName(), textContent);
 	}
 
 	/**
@@ -2172,14 +2174,14 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * heading, for instance, might be added using <code>replaceDocumentElement(document, XHTML_NAMESPACE_URI, ELEMENT_H2, "My Heading");</code>.
 	 * @param document The document which will serve as parent of the newly created element.
 	 * @param elementNamespaceURI The namespace URI of the element to be created.
-	 * @param elementName The name of the element to create.
+	 * @param elementQualifiedName The qualified name of the element to create.
 	 * @param textContent The text to add as a child of the created element, or <code>null</code> if no text should be added.
 	 * @return The newly created child element.
 	 * @throws DOMException if there was an error creating the element, appending the text, or replacing the child.
 	 */
 	public static Element replaceDocumentElementNS(@Nonnull final Document document, @Nullable final String elementNamespaceURI,
-			@Nonnull final String elementName, @Nullable final String textContent) {
-		final Element childElement = createElementNS(document, elementNamespaceURI, elementName, textContent); //create the new element
+			@Nonnull final String elementQualifiedName, @Nullable final String textContent) {
+		final Element childElement = createElementNS(document, elementNamespaceURI, elementQualifiedName, textContent); //create the new element
 		document.replaceChild(childElement, document.getDocumentElement()); //replace the document element of the document
 		return childElement; //return the element we created
 	}
