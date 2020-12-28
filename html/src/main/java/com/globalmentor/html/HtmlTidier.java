@@ -1153,9 +1153,9 @@ public class HtmlTidier implements Clogged {
 		//change any "lang" attribute to "xml:lang"
 		if(element.hasAttributeNS(null, HTML.ATTRIBUTE_LANG)) { //if there is a lang attribute defined
 			final String langValue = element.getAttributeNS(null, HTML.ATTRIBUTE_LANG); //get the lang attribute value
-			if(!hasAttributeNS(element, XML.ATTRIBUTE_LANG)) { //if there is no xml:lang attribute
+			if(!hasAttribute(element, XML.ATTRIBUTE_LANG)) { //if there is no xml:lang attribute
 				//create an xml:lang attribute with the value of the lang attribute TODO use a constant here, use namespaces
-				element.setAttributeNS(XML_NAMESPACE_URI_STRING, createQName(XML_NAMESPACE_PREFIX, XML.ATTRIBUTE_LANG.getLocalName()), langValue);
+				element.setAttributeNS(XML_NAMESPACE_URI_STRING, createQualifiedName(XML_NAMESPACE_PREFIX, XML.ATTRIBUTE_LANG.getLocalName()), langValue);
 				element.removeAttributeNS(null, HTML.ATTRIBUTE_LANG); //remove the lang attribute
 			}
 		}

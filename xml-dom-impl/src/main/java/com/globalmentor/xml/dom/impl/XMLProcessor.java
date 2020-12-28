@@ -2034,7 +2034,7 @@ public class XMLProcessor implements URIInputStreamable, Clogged {
 		while(xmlnsAttributeIterator.hasNext()) { //while there are more attributes
 			final XMLAttribute xmlAttribute = (XMLAttribute)xmlnsAttributeIterator.next(); //get the next attribute
 			final String attributeName = xmlAttribute.getNodeName(); //get the attribute's name
-			final String attributePrefix = getPrefix(attributeName); //get the prefix of the attribute, or null if there is no prefix
+			final String attributePrefix = findPrefix(attributeName).orElse(null); //get the prefix of the attribute, or null if there is no prefix
 			//if this is the "xmlns" attribute, or the attribute has the the "xmlns:" prefix
 			if((attributePrefix == null && attributeName.equals(XMLNS_NAMESPACE_PREFIX))
 					|| (attributePrefix != null && attributePrefix.equals(XMLNS_NAMESPACE_PREFIX))) {
@@ -2052,7 +2052,7 @@ public class XMLProcessor implements URIInputStreamable, Clogged {
 		while(attributeIterator.hasNext()) { //while there are more attributes
 			final XMLAttribute xmlAttribute = (XMLAttribute)attributeIterator.next(); //get the next attribute
 			final String attributeName = xmlAttribute.getNodeName(); //get the attribute's name
-			final String attributePrefix = getPrefix(attributeName); //get the prefix of the attribute, or null if there is no prefix
+			final String attributePrefix = findPrefix(attributeName).orElse(null); //get the prefix of the attribute, or null if there is no prefix
 			final String attributeLocalName = getLocalName(attributeName); //get the local name encoded in the attribute name
 			//if there is an attribute prefix, try to get the corresponding namespace URL TODO fix for blank URIs
 			final String attributeNamespaceURI = attributePrefix != null ? getNamespaceURI(xmlElement, attributePrefix, true) : null;
@@ -2062,7 +2062,7 @@ public class XMLProcessor implements URIInputStreamable, Clogged {
 		}
 		//now process this element
 		final String nodeName = xmlElement.getNodeName(); //get the node name
-		final String nodePrefix = getPrefix(nodeName); //get the prefix, or null if there is no prefix
+		final String nodePrefix = findPrefix(nodeName).orElse(null); //get the prefix, or null if there is no prefix
 		final String nodeLocalName = getLocalName(nodeName); //get the local name encoded in the name
 
 		//TODO del Log.trace("(ready to find namespace for node: "+nodeName+" with prefix: "+nodePrefix+" and local name: "+nodeLocalName+")");  //TODO del

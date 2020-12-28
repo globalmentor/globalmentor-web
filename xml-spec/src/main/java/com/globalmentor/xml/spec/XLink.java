@@ -66,7 +66,7 @@ public class XLink {
 	 * @param type The xlink:type value to use, either <code>XLink.SIMPLE_TYPE</code> or <code>XLink.EXTENDED_TYPE</code>.
 	 */
 	public static void setXLinkType(final Element element, final String type) {
-		element.setAttributeNS(XLINK_NAMESPACE_URI_STRING, createQName(XLINK_NAMESPACE_PREFIX, ATTRIBUTE_TYPE), type); //set xlink:type=type		
+		element.setAttributeNS(XLINK_NAMESPACE_URI_STRING, createQualifiedName(XLINK_NAMESPACE_PREFIX, ATTRIBUTE_TYPE), type); //set xlink:type=type		
 	}
 
 	/**
@@ -75,7 +75,7 @@ public class XLink {
 	 * @param href The xlink:href value to use.
 	 */
 	public static void setXLinkHRef(final Element element, final String href) {
-		element.setAttributeNS(XLINK_NAMESPACE_URI_STRING, createQName(XLINK_NAMESPACE_PREFIX, ATTRIBUTE_HREF), href); //set xlink:href=href		
+		element.setAttributeNS(XLINK_NAMESPACE_URI_STRING, createQualifiedName(XLINK_NAMESPACE_PREFIX, ATTRIBUTE_HREF), href); //set xlink:href=href		
 	}
 
 	/**

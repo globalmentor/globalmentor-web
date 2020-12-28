@@ -443,7 +443,7 @@ public class XMLElement extends XMLNode implements org.w3c.dom.Element {
 		XMLAttribute attribute; //we'll use this to either find an existing attribute or create a new one
 		if(getAttributeXMLNamedNodeMap().containsKeyNS(namespaceURI, localName)) { //if an attribute with this name already exists
 			attribute = (XMLAttribute)getAttributeXMLNamedNodeMap().getNamedItemNS(namespaceURI, localName); //get a reference to that attribute
-			final String prefix = XML.getPrefix(qualifiedName); //get the prefix of the qualified name
+			final String prefix = XML.findPrefix(qualifiedName).orElse(null); //get the prefix of the qualified name
 			attribute.setPrefix(prefix); //update the prefix
 			attribute.setValue(value); //update the attribute's value
 		} else { //if this attribute doesn't exist
