@@ -139,6 +139,14 @@ public final class NsQualifiedName extends AbstractNsObject {
 		checkArgument(!endsWith(qualifiedName, NAMESPACE_DIVIDER), "Namespaced qualified name cannot have an empty local name.");
 	}
 
+	/**
+	 * Converts this qualified name to an unqualified name.
+	 * @return The unqualified form of the name, with no prefix information.
+	 */
+	public NsName toNsName() {
+		return NsName.of(getNamespaceString(), getLocalName());
+	}
+
 	@Override
 	public int hashCode() {
 		return hash(getNamespaceString(), qualifiedName);

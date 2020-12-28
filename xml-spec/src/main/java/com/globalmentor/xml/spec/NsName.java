@@ -17,6 +17,7 @@
 package com.globalmentor.xml.spec;
 
 import static com.globalmentor.java.Conditions.*;
+import static com.globalmentor.xml.spec.XML.*;
 import static java.util.Objects.*;
 
 import java.net.URI;
@@ -117,6 +118,24 @@ public final class NsName extends AbstractNsObject {
 		super(namespaceUri);
 		this.localName = requireNonNull(localName);
 		checkArgument(!localName.isEmpty(), "Namespaced local name cannot be empty.");
+	}
+
+	/**
+	 * Qualifies a namespaced name by adding a namespace prefix.
+	 * @param prefix The qualifying namespace prefix to add, or <code>null</code> there is no prefix.
+	 * @return A namespaced qualified name with the prefix appended to the local name.
+	 */
+	public NsQualifiedName withPrefix(@Nullable final String prefix) {
+		return NsQualifiedName.of(getNamespaceString(), createQualifiedName(prefix, getLocalName()));
+	}
+
+	/**
+	 * Qualifies a namespaced name by adding a namespace prefix.
+	 * @implSpec This is a convenience method that delegates to {@link #withPrefix(String)} with a <code>null</code> prefix.
+	 * @return A namespaced qualified name with no prefix.
+	 */
+	public NsQualifiedName withNoPrefix() {
+		return withPrefix(null);
 	}
 
 	@Override
