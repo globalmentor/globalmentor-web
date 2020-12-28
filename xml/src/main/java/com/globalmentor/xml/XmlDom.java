@@ -2705,6 +2705,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	/**
 	 * Adds a new attribute with no prefix.
 	 * @implSpec This implementation delegates to {@link #setAttribute(Element, NsQualifiedName, String)}.
+	 * @param element The element on which an attribute should be set.
 	 * @param attributeName The namespace URI and name with no prefix of the attribute to create or alter.
 	 * @param value The value to set.
 	 * @throws DOMException if there was a DOM error creating or altering the attribute.
@@ -2717,6 +2718,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * Adds a new attribute. If an attribute with the same local name and namespace URI is already present on the element, its prefix will be changed to be the
 	 * prefix part of the qualified name, and its value will be updated.
 	 * @implSpec This implementation delegates to {@link Element#setAttributeNS(String, String, String)}.
+	 * @param element The element on which an attribute should be set.
 	 * @param attributeName The namespace URI and qualified name of the attribute to create or alter.
 	 * @param value The value to set.
 	 * @throws DOMException if there was a DOM error creating or altering the attribute.
