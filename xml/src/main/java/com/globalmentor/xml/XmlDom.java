@@ -909,6 +909,18 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 
 	/**
 	 * Convenience function to create an element and add it as a child of the given parent element.
+	 * @implSpec This implementation delegates to {@link #appendElement(Element, NsQualifiedName)}.
+	 * @param parentElement The element which will serve as parent of the newly created element. This element must have a valid owner document.
+	 * @param elementName The namespace URI and name of the element to create with no prefix.
+	 * @return The newly created child element.
+	 * @throws DOMException if there was an error creating the element or appending the element to the parent element.
+	 */
+	public static Element appendElement(@Nonnull Element parentElement, @Nonnull NsName elementName) {
+		return appendElement(parentElement, elementName.withNoPrefix());
+	}
+
+	/**
+	 * Convenience function to create an element and add it as a child of the given parent element.
 	 * @implSpec This implementation delegates to {@link #appendElementNS(Element, String, String)}.
 	 * @param parentElement The element which will serve as parent of the newly created element. This element must have a valid owner document.
 	 * @param elementName The namespace URI and qualified name of the element to create.
@@ -929,6 +941,19 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 */
 	public static Element appendElementNS(@Nonnull final Element parentElement, @Nullable final String elementNamespaceURI, @Nonnull final String elementName) {
 		return appendElementNS(parentElement, elementNamespaceURI, elementName, null); //append the element with no text
+	}
+
+	/**
+	 * Convenience function to create an element, add it as a child of the given parent element, and add optional text as a child of the given element.
+	 * @implSpec This implementation delegates to {@link #appendElement(Element, NsQualifiedName, String)}.
+	 * @param parentElement The element which will serve as parent of the newly created element. This element must have a valid owner document.
+	 * @param elementName The namespace URI and name of the element to create with no prefix.
+	 * @param textContent The text to add as a child of the created element, or <code>null</code> if no text should be added.
+	 * @return The newly created child element.
+	 * @throws DOMException if there was an error creating the element, appending the text, or appending the element to the parent element.
+	 */
+	public static Element appendElement(@Nonnull Element parentElement, @Nonnull final NsName elementName, @Nullable String textContent) {
+		return appendElement(parentElement, elementName.withNoPrefix(), textContent);
 	}
 
 	/**
@@ -1578,6 +1603,19 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * Renames an element by creating a new element with the specified name, cloning the original element's children, and replacing the original element with the
 	 * new, renamed clone. While this method's purpose is renaming, because of DOM restrictions it must remove the element and replace it with a new one, which is
 	 * reflected by the method's name.
+	 * @implSpec This implementation delegates to {@link #replaceElement(Element, NsQualifiedName)}.
+	 * @param element The element to rename.
+	 * @param name The new element namespace and name with no prefix.
+	 * @return The new element with the specified name which replaced the old element. //TODO list exceptions
+	 */
+	public static Element replaceElement(@Nonnull final Element element, @Nonnull final NsName name) {
+		return replaceElement(element, name.withNoPrefix());
+	}
+
+	/**
+	 * Renames an element by creating a new element with the specified name, cloning the original element's children, and replacing the original element with the
+	 * new, renamed clone. While this method's purpose is renaming, because of DOM restrictions it must remove the element and replace it with a new one, which is
+	 * reflected by the method's name.
 	 * @implSpec This implementation delegates to {@link #replaceElementNS(Element, String, String)}.
 	 * @param element The element to rename.
 	 * @param name The new element namespace and qualified name.
@@ -2025,29 +2063,38 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 
 	/**
 	 * Creates an attribute of the given qualified name and namespace URI.
+	 * @implSpec This implementation delegates to {@link #createAttribute(Document, NsQualifiedName)}.
+	 * @param document The document for which the new element is to be created.
+	 * @param nsName The namespace URI and name of the attribute to create with no prefix.
+	 * @return A new attribute object.
+	 * @throws DOMException if there was a DOM error creating the attribute.
+	 */
+	public static Attr createAttribute(@Nonnull final Document document, @Nonnull final NsName nsName) throws DOMException {
+		return createAttribute(document, nsName.withNoPrefix());
+	}
+
+	/**
+	 * Creates an attribute of the given qualified name and namespace URI.
 	 * @implSpec This implementation delegates to {@link Document#createAttributeNS(String, String)}.
 	 * @param document The document for which the new element is to be created.
 	 * @param nsQualifiedName The namespace URI and qualified name of the attribute to create.
 	 * @return A new attribute object.
-	 * @throws DOMException
-	 *           <dl>
-	 *           <dt><code>INVALID_CHARACTER_ERR</code></dt>
-	 *           <dd>Raised if the specified <code>qualifiedName</code> is not an XML name according to the XML version in use specified in the
-	 *           <code>Document.xmlVersion</code> attribute.</dd>
-	 *           <dt><code>NAMESPACE_ERR</code></dt>
-	 *           <dd>Raised if the <code>qualifiedName</code> is a malformed qualified name, if the <code>qualifiedName</code> has a prefix and the
-	 *           <code>namespaceURI</code> is <code>null</code>, if the <code>qualifiedName</code> has a prefix that is "xml" and the <code>namespaceURI</code> is
-	 *           different from "<a href='http://www.w3.org/XML/1998/namespace'> http://www.w3.org/XML/1998/namespace</a>", if the <code>qualifiedName</code> or
-	 *           its prefix is "xmlns" and the <code>namespaceURI</code> is different from
-	 *           "<a href='http://www.w3.org/2000/xmlns/'>http://www.w3.org/2000/xmlns/</a>", or if the <code>namespaceURI</code> is
-	 *           "<a href='http://www.w3.org/2000/xmlns/'>http://www.w3.org/2000/xmlns/</a>" and neither the <code>qualifiedName</code> nor its prefix is
-	 *           "xmlns".</dd>
-	 *           <dt><code>NOT_SUPPORTED_ERR</code></dt>
-	 *           <dd>Always thrown if the current document does not support the <code>"XML"</code> feature, since namespaces were defined by XML.</dd>
-	 *           </dl>
+	 * @throws DOMException if there was a DOM error creating the attribute.
 	 */
 	public static Attr createAttribute(@Nonnull final Document document, @Nonnull final NsQualifiedName nsQualifiedName) throws DOMException {
 		return document.createAttributeNS(nsQualifiedName.getNamespaceString(), nsQualifiedName.getQualifiedName());
+	}
+
+	/**
+	 * Creates an element of the given qualified name and namespace URI.
+	 * @implSpec This implementation delegates to {@link #createElement(Document, NsQualifiedName)}.
+	 * @param document The document for which the new element is to be created.
+	 * @param nsName The namespace URI and name of the element to create with no prefix.
+	 * @return A new element.
+	 * @throws DOMException if there was a DOM error creating the element.
+	 */
+	public static Element createElement(@Nonnull final Document document, @Nonnull final NsName nsName) throws DOMException {
+		return createElement(document, nsName.withNoPrefix());
 	}
 
 	/**
@@ -2056,25 +2103,25 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @param document The document for which the new element is to be created.
 	 * @param nsQualifiedName The namespace URI and qualified name of the element to create.
 	 * @return A new element.
-	 * @throws DOMException
-	 *           <dl>
-	 *           <dt><code>INVALID_CHARACTER_ERR</code></dt>
-	 *           <dd>Raised if the specified <code>qualifiedName</code> is not an XML name according to the XML version in use specified in the
-	 *           <code>Document.xmlVersion</code> attribute.</dd>
-	 *           <dt><code>NAMESPACE_ERR</code></dt>
-	 *           <dd>Raised if the <code>qualifiedName</code> is a malformed qualified name, if the <code>qualifiedName</code> has a prefix and the
-	 *           <code>namespaceURI</code> is <code>null</code>, or if the <code>qualifiedName</code> has a prefix that is "xml" and the <code>namespaceURI</code>
-	 *           is different from "<a href='http://www.w3.org/XML/1998/namespace'> http://www.w3.org/XML/1998/namespace</a>"
-	 *           [<a href='http://www.w3.org/TR/1999/REC-xml-names-19990114/'>XML Namespaces</a>] , or if the <code>qualifiedName</code> or its prefix is "xmlns"
-	 *           and the <code>namespaceURI</code> is different from "<a href='http://www.w3.org/2000/xmlns/'>http://www.w3.org/2000/xmlns/</a>", or if the
-	 *           <code>namespaceURI</code> is "<a href='http://www.w3.org/2000/xmlns/'>http://www.w3.org/2000/xmlns/</a>" and neither the
-	 *           <code>qualifiedName</code> nor its prefix is "xmlns".</dd>
-	 *           <dt><code>NOT_SUPPORTED_ERR</code></dt>
-	 *           <dd>Always thrown if the current document does not support the <code>"XML"</code> feature, since namespaces were defined by XML.</dd>
-	 *           </dl>
+	 * @throws DOMException if there was a DOM error creating the element.
 	 */
 	public static Element createElement(@Nonnull final Document document, @Nonnull final NsQualifiedName nsQualifiedName) throws DOMException {
 		return document.createElementNS(nsQualifiedName.getNamespaceString(), nsQualifiedName.getQualifiedName());
+	}
+
+	/**
+	 * Convenience function to create an element and add optional text as a child of the given element.
+	 * @implSpec This method delegates to {@link #createElement(Document, NsQualifiedName, String)}.
+	 * @param document The document to be used to create the new element.
+	 * @param nsName The namespace URI and name of the element to create with no prefix.
+	 * @param textContent The text to add as a child of the created element, or <code>null</code> if no text should be added.
+	 * @return The newly created child element.
+	 * @throws DOMException if there was an error creating the element or appending the text.
+	 * @see Document#createElementNS(String, String)
+	 * @see #appendText(Element, String)
+	 */
+	public static Element createElement(@Nonnull final Document document, @Nonnull final NsName nsName, @Nullable final String textContent) throws DOMException {
+		return createElement(document, nsName.withNoPrefix(), textContent);
 	}
 
 	/**
@@ -2131,6 +2178,18 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 
 	/**
 	 * Convenience function to create an element, replace the document element of the given document.
+	 * @implSpec This implementation delegates to {@link #replaceDocumentElement(Document, NsQualifiedName)} with no text content.
+	 * @param document The document which will serve as parent of the newly created element.
+	 * @param elementName The namespace URI and name of the element to create with no prefix.
+	 * @return The newly created child element.
+	 * @throws DOMException if there was an error creating the element.
+	 */
+	public static Element replaceDocumentElement(@Nonnull final Document document, @Nonnull final NsName elementName) {
+		return replaceDocumentElement(document, elementName.withNoPrefix());
+	}
+
+	/**
+	 * Convenience function to create an element, replace the document element of the given document.
 	 * @implSpec This implementation delegates to {@link #replaceDocumentElement(Document, NsName, String)} with no text content.
 	 * @param document The document which will serve as parent of the newly created element.
 	 * @param elementName The namespace URI and qualified name of the element to create.
@@ -2153,6 +2212,19 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	public static Element replaceDocumentElementNS(@Nonnull final Document document, @Nullable final String elementNamespaceURI,
 			@Nonnull final String elementName) {
 		return replaceDocumentElementNS(document, elementNamespaceURI, elementName, null); //append an element with no text
+	}
+
+	/**
+	 * Convenience function to create an element, replace the document element of the given document, and add optional text as a child of the given element.
+	 * @implSpec This implementation delegates to {@link #replaceDocumentElement(Document, NsQualifiedName, String)}.
+	 * @param document The document which will serve as parent of the newly created element.
+	 * @param elementName The namespace URI and name of the element to create with no prefix.
+	 * @param textContent The text to add as a child of the created element, or <code>null</code> if no text should be added.
+	 * @return The newly created child element.
+	 * @throws DOMException if there was an error creating the element, appending the text, or replacing the child.
+	 */
+	public static Element replaceDocumentElement(@Nonnull final Document document, @Nonnull final NsName elementName, @Nullable final String textContent) {
+		return replaceDocumentElement(document, elementName.withNoPrefix(), textContent);
 	}
 
 	/**
