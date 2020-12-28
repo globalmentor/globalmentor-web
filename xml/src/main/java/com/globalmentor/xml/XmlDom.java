@@ -915,7 +915,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @return The newly created child element.
 	 * @throws DOMException if there was an error creating the element or appending the element to the parent element.
 	 */
-	public static Element appendElement(@Nonnull Element parentElement, @Nonnull NsName elementName) {
+	public static Element appendElement(@Nonnull Element parentElement, @Nonnull final NsName elementName) {
 		return appendElement(parentElement, elementName.withNoPrefix());
 	}
 
@@ -927,7 +927,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @return The newly created child element.
 	 * @throws DOMException if there was an error creating the element or appending the element to the parent element.
 	 */
-	public static Element appendElement(@Nonnull Element parentElement, @Nonnull NsQualifiedName elementName) {
+	public static Element appendElement(@Nonnull Element parentElement, @Nonnull final NsQualifiedName elementName) {
 		return appendElementNS(parentElement, elementName.getNamespaceString(), elementName.getQualifiedName());
 	}
 
@@ -1300,7 +1300,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @throws ClassCastException if one of the nodes of the indicated node type cannot be cast to the indicated node class.
 	 */
 	public static <N extends Node, C extends Collection<N>> C collectNodesByName(@Nonnull final Node node, final int nodeType, @Nonnull final Class<N> nodeClass,
-			@Nonnull NsName name, final boolean deep, final C nodes) {
+			@Nonnull final NsName name, final boolean deep, final C nodes) {
 		return collectNodesByNameNS(node, nodeType, nodeClass, TAB_STRING, MATCH_ALL, deep, nodes);
 	}
 
@@ -2062,7 +2062,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	//# Document
 
 	/**
-	 * Creates an attribute of the given qualified name and namespace URI.
+	 * Creates an attribute of the given name with no prefix and namespace URI.
 	 * @implSpec This implementation delegates to {@link #createAttribute(Document, NsQualifiedName)}.
 	 * @param document The document for which the new element is to be created.
 	 * @param nsName The namespace URI and name of the attribute to create with no prefix.
@@ -2086,7 +2086,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	}
 
 	/**
-	 * Creates an element of the given qualified name and namespace URI.
+	 * Creates an element of the given name with no prefix and namespace URI.
 	 * @implSpec This implementation delegates to {@link #createElement(Document, NsQualifiedName)}.
 	 * @param document The document for which the new element is to be created.
 	 * @param nsName The namespace URI and name of the element to create with no prefix.
@@ -2664,14 +2664,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @implSpec This method delegates to {@link Element#removeAttributeNS(String, String)}.
 	 * @param element The element from which an attribute should be removed.
 	 * @param nsName The namespace URI and local name of the attribute to remove.
-	 * @throws DOMException
-	 *           <dl>
-	 *           <dt><code>NO_MODIFICATION_ALLOWED_ERR</code></dt>
-	 *           <dd>Raised if this node is read-only.</dd>
-	 *           <dt><code>NOT_SUPPORTED_ERR</code></dt>
-	 *           <dd>May be raised if the implementation does not support the feature <code>"XML"</code> and the language exposed through the Document does not
-	 *           support XML Namespaces (such as [<a href='http://www.w3.org/TR/1999/REC-html401-19991224/'>HTML 4.01</a>]).</dd>
-	 *           </dl>
+	 * @throws DOMException if there was a DOM error removing the attribute.
 	 */
 	public static void removeAttribute(@Nonnull final Element element, @Nonnull final NsName nsName) throws DOMException {
 		element.removeAttributeNS(nsName.getNamespaceString(), nsName.getLocalName());
@@ -2684,14 +2677,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @param nsName The namespace URI and local name of the attribute to remove.
 	 * @param valuePredicate The predicate that, if it returns <code>true</code> for the attribute value, causes the attribute to be removed.
 	 * @return <code>true</code> if the attribute was present and was removed.
-	 * @throws DOMException
-	 *           <dl>
-	 *           <dt><code>NO_MODIFICATION_ALLOWED_ERR</code></dt>
-	 *           <dd>Raised if this node is read-only.</dd>
-	 *           <dt><code>NOT_SUPPORTED_ERR</code></dt>
-	 *           <dd>May be raised if the implementation does not support the feature <code>"XML"</code> and the language exposed through the Document does not
-	 *           support XML Namespaces (such as [<a href='http://www.w3.org/TR/1999/REC-html401-19991224/'>HTML 4.01</a>]).</dd>
-	 *           </dl>
+	 * @throws DOMException if there was a DOM error removing the attribute.
 	 */
 	public static boolean removeAttributeIf(@Nonnull final Element element, @Nonnull final NsName nsName, @Nonnull final Predicate<? super String> valuePredicate)
 			throws DOMException {
@@ -2705,14 +2691,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @param localName The local name of the attribute to remove.
 	 * @param valuePredicate The predicate that, if it returns <code>true</code> for the attribute value, causes the attribute to be removed.
 	 * @return <code>true</code> if the attribute was present and was removed.
-	 * @throws DOMException
-	 *           <dl>
-	 *           <dt><code>NO_MODIFICATION_ALLOWED_ERR</code></dt>
-	 *           <dd>Raised if this node is read-only.</dd>
-	 *           <dt><code>NOT_SUPPORTED_ERR</code></dt>
-	 *           <dd>May be raised if the implementation does not support the feature <code>"XML"</code> and the language exposed through the Document does not
-	 *           support XML Namespaces (such as [<a href='http://www.w3.org/TR/1999/REC-html401-19991224/'>HTML 4.01</a>]).</dd>
-	 *           </dl>
+	 * @throws DOMException if there was a DOM error removing the attribute.
 	 */
 	public static boolean removeAttributeNSIf(@Nonnull final Element element, @Nullable final String namespaceURI, @Nonnull final String localName,
 			@Nonnull final Predicate<? super String> valuePredicate) throws DOMException {
@@ -2721,6 +2700,30 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 			element.removeAttributeNS(namespaceURI, localName);
 		}
 		return remove;
+	}
+
+	/**
+	 * Adds a new attribute with no prefix.
+	 * @implSpec This implementation delegates to {@link #setAttribute(Element, NsQualifiedName, String)}.
+	 * @param attributeName The namespace URI and name with no prefix of the attribute to create or alter.
+	 * @param value The value to set.
+	 * @throws DOMException if there was a DOM error creating or altering the attribute.
+	 */
+	public static void setAttribute(@Nonnull final Element element, @Nonnull final NsName attributeName, @Nonnull final String value) throws DOMException {
+		setAttribute(element, attributeName.withNoPrefix(), value);
+	}
+
+	/**
+	 * Adds a new attribute. If an attribute with the same local name and namespace URI is already present on the element, its prefix will be changed to be the
+	 * prefix part of the qualified name, and its value will be updated.
+	 * @implSpec This implementation delegates to {@link Element#setAttributeNS(String, String, String)}.
+	 * @param attributeName The namespace URI and qualified name of the attribute to create or alter.
+	 * @param value The value to set.
+	 * @throws DOMException if there was a DOM error creating or altering the attribute.
+	 */
+	public static void setAttribute(@Nonnull final Element element, @Nonnull final NsQualifiedName attributeName, @Nonnull final String value)
+			throws DOMException {
+		element.setAttributeNS(attributeName.getNamespaceString(), attributeName.getQualifiedName(), value);
 	}
 
 }
