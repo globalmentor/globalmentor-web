@@ -44,18 +44,22 @@ import com.globalmentor.text.ASCII;
 import com.globalmentor.xml.spec.*;
 
 import org.w3c.dom.*;
+import org.w3c.dom.Node;
 import org.w3c.dom.traversal.*;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.SAXException;
 
 import static com.globalmentor.java.Characters.*;
+import static com.globalmentor.java.Conditions.*;
 import static com.globalmentor.java.Objects.*;
 import static com.globalmentor.html.spec.HTML.*;
 import static com.globalmentor.mathml.spec.MathML.*;
 import static com.globalmentor.svg.spec.SVG.*;
 import static com.globalmentor.xml.spec.XML.*;
 import static com.globalmentor.xml.spec.XMLStyleSheets.*;
+import static java.lang.String.format;
 import static java.nio.charset.StandardCharsets.*;
+import static java.util.Objects.*;
 import static java.util.Spliterators.*;
 import static java.util.stream.StreamSupport.*;
 
@@ -2426,6 +2430,43 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 */
 	public static Optional<Element> asElement(@Nonnull final Node node) {
 		return asInstance(node, Element.class);
+	}
+
+	/**
+	 * Replaces a parent's child node with the given new children and returns the old child.
+	 * @apiNote This method functions similarly to {@link Node#replaceChild(Node, Node)} if a {@link DocumentFragment} were used instead of a list. Note that the
+	 *          old and new children parameters are reversed compared with {@link Node#replaceChild(Node, Node)}.
+	 * @implSpec If the list of new children contains the same old child as its only node, no action takes place.
+	 * @param <N> The type of replacement nodes.
+	 * @param parentNode The parent node of the children being replaced.
+	 * @param oldChild The node being replaced.
+	 * @param newChildren The list of new children to replace the old child.
+	 * @return The node replaced.
+	 * @throws IllegalArgumentException if old child is not a child of the given parent node.
+	 * @throws DOMException if a DOM exception occurs during replacement.
+	 * @see Node#replaceChild(Node, Node)
+	 */
+	public static <N extends Node> Node replaceChild(@Nonnull final Node parentNode, @Nonnull final Node oldChild, @Nonnull final List<N> newChildren)
+			throws DOMException {
+		checkArgument(oldChild.getParentNode() == requireNonNull(parentNode),
+				format("Child node %s has different parent than given parent %s.", oldChild, parentNode));
+		final int newChildCount = newChildren.size();
+		if(!(newChildCount == 1 && newChildren.get(0) == oldChild)) { //if structural changes were requested
+			final Node nextSibling = oldChild.getNextSibling();
+			parentNode.removeChild(oldChild); //remove the current child (which may get added back if it is one of the new children)
+			if(nextSibling != null) { //if the child node being replaced isn't at the end, do a complicated reverse insert
+				Node refChild = nextSibling; //iterate the new children in reverse order, inserting them before the next sibling
+				final ListIterator<N> reverseNewChildIterator = newChildren.listIterator(newChildCount);
+				while(reverseNewChildIterator.hasPrevious()) {
+					final N newChild = reverseNewChildIterator.previous();
+					parentNode.insertBefore(newChild, refChild); //insert the replacement node in the earlier position
+					refChild = newChild; //the newly inserted node becomes the new reference for the next insertion
+				}
+			} else { //if the child node we're replacing was the last child of its parent
+				newChildren.forEach(parentNode::appendChild); //just append the replacement nodes normally
+			}
+		}
+		return oldChild;
 	}
 
 	//# NamedNodeMap
