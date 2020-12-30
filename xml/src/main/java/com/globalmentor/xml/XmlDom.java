@@ -1506,7 +1506,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @param parentNode The parent of the node to remove.
 	 * @param childNode The node to remove, promoting its children in the process. //TODO list exceptions
 	 */
-	public static void pruneChild(final Node parentNode, final Node childNode) { //TODO maybe rename to excise child
+	public static void pruneChild(final Node parentNode, final Node childNode) {
 		//promote all the child node's children to be children of the parent node
 		while(childNode.hasChildNodes()) { //while the child node has children
 			final Node node = childNode.getFirstChild(); //get the first child of the node
@@ -2582,6 +2582,47 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	}
 
 	/**
+	 * Retrieves an attribute value by local name and namespace URI if it exists, and removes that attribute. If no attribute with this local name and namespace
+	 * URI is found, this method has no effect.
+	 * @implSpec This implementation delegates to {@link #exciseAttributeNS(Element, String, String)}.
+	 * @implNote This method functions similarly to {@link Element#getAttributeNS(String, String)}, except that the attribute is guaranteed to exist to prevent
+	 *           ambiguity with the empty string, which earlier versions of the DOM were supposed to return if the attribute did not exist.
+	 * @param element The element from which an attribute should be excised.
+	 * @param nsName The namespace URI and local name of the attribute to excise.
+	 * @return The value of the attribute before removal as a string, which will not be present if the attribute did not have a specified or default value.
+	 * @throws DOMException if there was a DOM error excising the attribute.
+	 * @see Element#hasAttributeNS(String, String)
+	 * @see Element#getAttributeNS(String, String)
+	 * @see Element#removeAttributeNS(String, String)
+	 */
+	public static Optional<String> exciseAttribute(@Nonnull final Element element, @Nonnull final NsName nsName) throws DOMException {
+		return exciseAttributeNS(element, nsName.getNamespaceString(), nsName.getLocalName());
+	}
+
+	/**
+	 * Retrieves an attribute value by local name and namespace URI if it exists, and removes that attribute. If no attribute with this local name and namespace
+	 * URI is found, this method has no effect.
+	 * @implSpec This implementation delegates to {@link #findAttributeNS(Element, String, String)} and {@link Element#removeAttributeNS(String, String)}.
+	 * @implNote This method functions similarly to {@link Element#getAttributeNS(String, String)}, except that the attribute is guaranteed to exist to prevent
+	 *           ambiguity with the empty string, which earlier versions of the DOM were supposed to return if the attribute did not exist.
+	 * @param element The element from which an attribute should be excised.
+	 * @param namespaceURI The namespace URI of the attribute to excised.
+	 * @param localName The local name of the attribute to excise.
+	 * @return The value of the attribute before removal as a string, which will not be present if the attribute did not have a specified or default value.
+	 * @throws DOMException if there was a DOM error excising the attribute.
+	 * @see Element#hasAttributeNS(String, String)
+	 * @see Element#getAttributeNS(String, String)
+	 * @see Element#removeAttributeNS(String, String)
+	 */
+	public static Optional<String> exciseAttributeNS(@Nonnull final Element element, @Nullable final String namespaceURI, @Nonnull final String localName) {
+		final Optional<String> foundAttribute = findAttributeNS(element, namespaceURI, localName);
+		if(foundAttribute.isPresent()) {
+			element.removeAttributeNS(namespaceURI, localName);
+		}
+		return foundAttribute;
+	}
+
+	/**
 	 * Returns <code>true</code> when an attribute with a given local name and namespace URI is specified on this element or has a default value,
 	 * <code>false</code> otherwise.
 	 * @implSpec This method delegates to {@link Element#hasAttributeNS(String, String)}.
@@ -2589,12 +2630,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @param nsName The namespace URI and local name of the attribute to retrieve.
 	 * @return <code>true</code> if an attribute with the given local name and namespace URI is specified or has a default value on this element,
 	 *         <code>false</code> otherwise.
-	 * @throws DOMException
-	 *           <dl>
-	 *           <dt><code>NOT_SUPPORTED_ERR</code></dt>
-	 *           <dd>May be raised if the implementation does not support the feature <code>"XML"</code> and the language exposed through the Document does not
-	 *           support XML Namespaces (such as [<a href='http://www.w3.org/TR/1999/REC-html401-19991224/'>HTML 4.01</a>]).</dd>
-	 *           </dl>
+	 * @throws DOMException if there was a DOM error checking for the attribute.
 	 */
 	public static boolean hasAttribute(@Nonnull final Element element, @Nonnull final NsName nsName) throws DOMException {
 		return element.hasAttributeNS(nsName.getNamespaceString(), nsName.getLocalName());
@@ -2607,6 +2643,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @param element The element for which an attribute should be returned.
 	 * @param name The name of the attribute to retrieve.
 	 * @return The attribute value as a string, which will not be present if the attribute does not have a specified or default value.
+	 * @throws DOMException if there was a DOM error retrieving the attribute.
 	 */
 	public static Optional<String> findAttribute(@Nonnull final Element element, @Nonnull final String name) {
 		final String attribute = element.getAttribute(name);
@@ -2628,12 +2665,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @param element The element for which an attribute should be returned.
 	 * @param nsName The namespace URI and local name of the attribute to retrieve.
 	 * @return The attribute value as a string, which will not be present if the attribute does not have a specified or default value.
-	 * @throws DOMException
-	 *           <dl>
-	 *           <dt><code>NOT_SUPPORTED_ERR</code></dt>
-	 *           <dd>May be raised if the implementation does not support the feature <code>"XML"</code> and the language exposed through the Document does not
-	 *           support XML Namespaces (such as [<a href='http://www.w3.org/TR/1999/REC-html401-19991224/'>HTML 4.01</a>]).</dd>
-	 *           </dl>
+	 * @throws DOMException if there was a DOM error retrieving the attribute.
 	 * @see Element#hasAttributeNS(String, String)
 	 * @see Element#getAttributeNS(String, String)
 	 */
@@ -2649,12 +2681,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @param namespaceURI The namespace URI of the attribute to retrieve.
 	 * @param localName The local name of the attribute to retrieve.
 	 * @return The attribute value as a string, which will not be present if the attribute does not have a specified or default value.
-	 * @throws DOMException
-	 *           <dl>
-	 *           <dt><code>NOT_SUPPORTED_ERR</code></dt>
-	 *           <dd>May be raised if the implementation does not support the feature <code>"XML"</code> and the language exposed through the Document does not
-	 *           support XML Namespaces (such as [<a href='http://www.w3.org/TR/1999/REC-html401-19991224/'>HTML 4.01</a>]).</dd>
-	 *           </dl>
+	 * @throws DOMException if there was a DOM error retrieving the attribute.
 	 * @see Element#hasAttributeNS(String, String)
 	 * @see Element#getAttributeNS(String, String)
 	 */
