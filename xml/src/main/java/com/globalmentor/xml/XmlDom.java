@@ -2436,6 +2436,9 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * Replaces a parent's child node with the given new children and returns the old child.
 	 * @apiNote This method functions similarly to {@link Node#replaceChild(Node, Node)} if a {@link DocumentFragment} were used instead of a list. Note that the
 	 *          old and new children parameters are reversed compared with {@link Node#replaceChild(Node, Node)}.
+	 * @apiNote This document does not give {@link DocumentFragment} special treatment; unlike {@link Node#replaceChild(Node, Node)}, if a
+	 *          {@link DocumentFragment} is given as one of the nodes in the list, the {@link DocumentFragment} itself and not its children will be used as a
+	 *          replacement.
 	 * @implSpec If the list of new children contains the same old child as its only node, no action takes place.
 	 * @param <N> The type of replacement nodes.
 	 * @param parentNode The parent node of the children being replaced.
@@ -2451,20 +2454,27 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 		checkArgument(oldChild.getParentNode() == requireNonNull(parentNode),
 				format("Child node %s has different parent than given parent %s.", oldChild, parentNode));
 		final int newChildCount = newChildren.size();
-		if(!(newChildCount == 1 && newChildren.get(0) == oldChild)) { //if structural changes were requested
-			final Node nextSibling = oldChild.getNextSibling();
-			parentNode.removeChild(oldChild); //remove the current child (which may get added back if it is one of the new children)
-			if(nextSibling != null) { //if the child node being replaced isn't at the end, do a complicated reverse insert
-				Node refChild = nextSibling; //iterate the new children in reverse order, inserting them before the next sibling
-				final ListIterator<N> reverseNewChildIterator = newChildren.listIterator(newChildCount);
-				while(reverseNewChildIterator.hasPrevious()) {
-					final N newChild = reverseNewChildIterator.previous();
-					parentNode.insertBefore(newChild, refChild); //insert the replacement node in the earlier position
-					refChild = newChild; //the newly inserted node becomes the new reference for the next insertion
-				}
-			} else { //if the child node we're replacing was the last child of its parent
-				newChildren.forEach(parentNode::appendChild); //just append the replacement nodes normally
+		if(newChildCount == 1) { //replacing only a single child has more efficient special cases
+			final Node newChild = newChildren.get(0);
+			if(newChild == oldChild) { //if no structural changes were requested
+				return oldChild; //there is nothing to do
 			}
+			if(!(newChild instanceof DocumentFragment)) { //for a DocumentFragment child don't use the more efficient DOM method, which would use the fragment's children rather than the fragment itself
+				return parentNode.replaceChild(newChild, oldChild);
+			}
+		}
+		final Node nextSibling = oldChild.getNextSibling();
+		parentNode.removeChild(oldChild); //remove the current child (which may get added back if it is one of the new children)
+		if(nextSibling != null) { //if the child node being replaced isn't at the end, do a complicated reverse insert
+			Node refChild = nextSibling; //iterate the new children in reverse order, inserting them before the next sibling
+			final ListIterator<N> reverseNewChildIterator = newChildren.listIterator(newChildCount);
+			while(reverseNewChildIterator.hasPrevious()) {
+				final N newChild = reverseNewChildIterator.previous();
+				parentNode.insertBefore(newChild, refChild); //insert the replacement node in the earlier position
+				refChild = newChild; //the newly inserted node becomes the new reference for the next insertion
+			}
+		} else { //if the child node we're replacing was the last child of its parent
+			newChildren.forEach(parentNode::appendChild); //just append the replacement nodes normally
 		}
 		return oldChild;
 	}
