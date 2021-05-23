@@ -56,8 +56,8 @@ public class XML {
 	/** The default charset to assume if none is indicated. */
 	public static final Charset DEFAULT_CHARSET = UTF_8;
 
-	/** The name extension for eXtensible Markup Language. */
-	public static final String XML_NAME_EXTENSION = "xml";
+	/** The filename extension for eXtensible Markup Language. */
+	public static final String FILENAME_EXTENSION = "xml";
 
 	/** The prefix to the "xml" namespace, for use with <code>xml:lang</code>, for example. */
 	public static final String XML_NAMESPACE_PREFIX = "xml";

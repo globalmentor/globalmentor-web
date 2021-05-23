@@ -38,8 +38,8 @@ public class JavaScript {
 	/** The obsolete media type for JavaScript: <code>text/javascript</code>. */
 	public static final ContentType OBSOLETE_MEDIA_TYPE = ContentType.of(ContentType.TEXT_PRIMARY_TYPE, JAVASCRIPT_SUBTYPE);
 
-	/** The name extension for JavaScript files. */
-	public static final String JS_NAME_EXTENSION = "js";
+	/** The filename extension for JavaScript files. */
+	public static final String FILENAME_EXTENSION = "js";
 
 	/** The delimiter '.' for object properties. */
 	public static final char PROPERTY_DELIMITER = '.';
