@@ -36,8 +36,8 @@ import static java.util.Collections.*;
  */
 public class CSS {
 
-	/** The name extension for CSS stylesheets. */
-	public static final String CSS_NAME_EXTENSION = "css";
+	/** The filename extension for CSS stylesheets. */
+	public static final String FILENAME_EXTENSION = "css";
 
 	/** A Cascading Style Sheet document MIME subtype. */
 	public static final String CSS_SUBTYPE = "css";

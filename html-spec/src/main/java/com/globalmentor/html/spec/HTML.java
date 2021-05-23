@@ -62,13 +62,13 @@ public class HTML {
 	public static final ContentType XHTML_FRAGMENT_MEDIA_TYPE = ContentType.of(ContentType.APPLICATION_PRIMARY_TYPE, XHTML_XML_EXTERNAL_PARSED_ENTITY_SUBTYPE);
 
 	/** The old extension for HTML resource names. */
-	public static final String HTM_NAME_EXTENSION = "htm";
+	public static final String HTM_FILENAME_EXTENSION = "htm";
 
 	/** The extension for HTML resource names. */
-	public static final String HTML_NAME_EXTENSION = "html";
+	public static final String HTML_FILENAME_EXTENSION = "html";
 
 	/** The extension for XHTML resource names. */
-	public static final String XHTML_NAME_EXTENSION = "xhtml";
+	public static final String XHTML_FILENAME_EXTENSION = "xhtml";
 
 	/** The recommended prefix to the XHTML namespace. */
 	public static final String XHTML_NAMESPACE_PREFIX = "xhtml";
