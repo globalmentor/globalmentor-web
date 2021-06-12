@@ -30,7 +30,7 @@ import static com.globalmentor.java.Conditions.*;
 import static com.globalmentor.java.StringBuilders.*;
 
 import com.globalmentor.model.ObjectHolder;
-import com.globalmentor.net.ContentType;
+import com.globalmentor.net.MediaType;
 import com.globalmentor.text.ArgumentSyntaxException;
 import com.globalmentor.text.W3CDateFormat;
 
@@ -47,7 +47,7 @@ import com.globalmentor.text.W3CDateFormat;
 public class JSON {
 
 	/** The media type for JSON: <code>application/json</code>. */
-	public static final ContentType MEDIA_TYPE = ContentType.of(ContentType.APPLICATION_PRIMARY_TYPE, "json");
+	public static final MediaType MEDIA_TYPE = MediaType.of(MediaType.APPLICATION_PRIMARY_TYPE, "json");
 
 	public static final char BEGIN_ARRAY = 0x5B; //[ left square bracket
 	public static final char BEGIN_OBJECT = 0x7B; //[ left square bracket

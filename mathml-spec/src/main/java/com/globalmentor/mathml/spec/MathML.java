@@ -18,7 +18,7 @@ package com.globalmentor.mathml.spec;
 
 import java.net.URI;
 
-import com.globalmentor.net.ContentType;
+import com.globalmentor.net.MediaType;
 import com.globalmentor.xml.spec.XML;
 
 /**
@@ -30,10 +30,10 @@ import com.globalmentor.xml.spec.XML;
 public class MathML {
 
 	/** A MathML application. */
-	public static final String MATHML_XML_SUBTYPE = "mathml" + ContentType.SUBTYPE_SUFFIX_DELIMITER_CHAR + XML.XML_SUBTYPE_SUFFIX;
+	public static final String MATHML_XML_SUBTYPE = "mathml" + MediaType.SUBTYPE_SUFFIX_DELIMITER_CHAR + XML.XML_SUBTYPE_SUFFIX;
 
 	/** The media type for MathML: <code>application/mathml+xml</code>. */
-	public static final ContentType MEDIA_TYPE = ContentType.of(ContentType.APPLICATION_PRIMARY_TYPE, MATHML_XML_SUBTYPE);
+	public static final MediaType MEDIA_TYPE = MediaType.of(MediaType.APPLICATION_PRIMARY_TYPE, MATHML_XML_SUBTYPE);
 
 	/** The recommended prefix to the MathML namespace. */
 	public static final String NAMESPACE_PREFIX = "mathml";

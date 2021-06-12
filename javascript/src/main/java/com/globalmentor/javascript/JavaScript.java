@@ -18,7 +18,7 @@ package com.globalmentor.javascript;
 
 import java.net.URI;
 
-import com.globalmentor.net.ContentType;
+import com.globalmentor.net.MediaType;
 
 import static com.globalmentor.java.StringBuilders.*;
 
@@ -33,10 +33,10 @@ public class JavaScript {
 	public static final String JAVASCRIPT_SUBTYPE = "javascript";
 
 	/** The media type for JavaScript: <code>application/javascript</code>. */
-	public static final ContentType MEDIA_TYPE = ContentType.of(ContentType.APPLICATION_PRIMARY_TYPE, JAVASCRIPT_SUBTYPE);
+	public static final MediaType MEDIA_TYPE = MediaType.of(MediaType.APPLICATION_PRIMARY_TYPE, JAVASCRIPT_SUBTYPE);
 
 	/** The obsolete media type for JavaScript: <code>text/javascript</code>. */
-	public static final ContentType OBSOLETE_MEDIA_TYPE = ContentType.of(ContentType.TEXT_PRIMARY_TYPE, JAVASCRIPT_SUBTYPE);
+	public static final MediaType OBSOLETE_MEDIA_TYPE = MediaType.of(MediaType.TEXT_PRIMARY_TYPE, JAVASCRIPT_SUBTYPE);
 
 	/** The filename extension for JavaScript files. */
 	public static final String FILENAME_EXTENSION = "js";

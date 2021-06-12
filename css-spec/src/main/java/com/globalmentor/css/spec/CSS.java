@@ -23,7 +23,7 @@ import org.w3c.dom.css.*;
 
 import com.globalmentor.java.Characters;
 import com.globalmentor.lex.Identifier;
-import com.globalmentor.net.ContentType;
+import com.globalmentor.net.MediaType;
 
 import static com.globalmentor.java.Characters.*;
 import static java.util.Collections.*;
@@ -43,7 +43,7 @@ public class CSS {
 	public static final String CSS_SUBTYPE = "css";
 
 	/** The media type for CSS: <code>text/css</code>. */
-	public static final ContentType TEXT_CSS_MEDIA_TYPE = ContentType.of(ContentType.TEXT_PRIMARY_TYPE, CSS_SUBTYPE);
+	public static final MediaType TEXT_CSS_MEDIA_TYPE = MediaType.of(MediaType.TEXT_PRIMARY_TYPE, CSS_SUBTYPE);
 
 	/** A space character. */
 	public static final char SPACE_CHAR = ' ';

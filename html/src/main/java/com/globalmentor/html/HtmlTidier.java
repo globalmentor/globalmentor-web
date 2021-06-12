@@ -22,7 +22,7 @@ import java.util.Arrays;
 
 import com.globalmentor.css.CSSTidier;
 import com.globalmentor.java.*;
-import com.globalmentor.net.ContentType;
+import com.globalmentor.net.MediaType;
 import com.globalmentor.text.Prose;
 import com.globalmentor.text.Unicode;
 import com.globalmentor.util.*;
@@ -1526,7 +1526,7 @@ public class HtmlTidier implements Clogged {
 		final Element objectElement = element.getOwnerDocument().createElementNS(elementNamespace, ELEMENT_OBJECT); //create the element object in the same namespace as the applet object
 		if(code != null) //if there is a code attribute
 			objectElement.setAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_CLASSID, code); //set the object classid attribute TODO correctly add needed "java:" and ".class"
-		objectElement.setAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_CODETYPE, ContentType.toString(ContentType.APPLICATION_PRIMARY_TYPE, "java")); //set the object codetype attribute to "application/java" TODO confirm the appropriate media type
+		objectElement.setAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_CODETYPE, MediaType.toString(MediaType.APPLICATION_PRIMARY_TYPE, "java")); //set the object codetype attribute to "application/java" TODO confirm the appropriate media type
 		if(height != null) //if there is a height attribute
 			objectElement.setAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_HEIGHT, height); //set the object height attribute
 		if(width != null) //if there is a width attribute

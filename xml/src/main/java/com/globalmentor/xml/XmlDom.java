@@ -37,7 +37,7 @@ import com.globalmentor.mathml.spec.MathML;
 import com.globalmentor.model.ConfigurationException;
 import com.globalmentor.model.NameValuePair;
 import com.globalmentor.model.ObjectHolder;
-import com.globalmentor.net.ContentType;
+import com.globalmentor.net.MediaType;
 import com.globalmentor.net.URIs;
 import com.globalmentor.svg.spec.SVG;
 import com.globalmentor.text.ASCII;
@@ -243,32 +243,32 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 		return getSystemIDMap().get(publicID); //return the system ID corresponding to the given public ID, if we have one
 	}
 
-	/** A lazily-created cache of content types keyed to public IDs. */
-	private static Reference<Map<String, ContentType>> contentTypeMapReference = null;
+	/** A lazily-created cache of media types keyed to public IDs. */
+	private static Reference<Map<String, MediaType>> mediaTypesByPublicIdReference = null;
 
-	/** @return A lazily-created cache of content types keyed to public IDs. */
-	protected static Map<String, ContentType> getContentTypeMap() {
+	/** @return A lazily-created cache of media types keyed to public IDs. */
+	protected static Map<String, MediaType> getMediaTypesByPublicId() {
 		//get the cache if we have one
-		Map<String, ContentType> contentTypeMap = contentTypeMapReference != null ? contentTypeMapReference.get() : null;
-		if(contentTypeMap == null) { //if the garbage collector has reclaimed the cache
-			contentTypeMap = new HashMap<String, ContentType>(); //create a new map of content types, and fill it with the default mappings
-			contentTypeMap.put("-//Guise//DTD XHTML Guise 1.0//EN", XHTML_MEDIA_TYPE); //Guise XHTML DTD
-			contentTypeMap.put(HTML_4_01_STRICT_PUBLIC_ID, HTML_MEDIA_TYPE);
-			contentTypeMap.put(HTML_4_01_TRANSITIONAL_PUBLIC_ID, HTML_MEDIA_TYPE);
-			contentTypeMap.put(HTML_4_01_FRAMESET_PUBLIC_ID, HTML_MEDIA_TYPE);
-			contentTypeMap.put(XHTML_1_0_STRICT_PUBLIC_ID, XHTML_MEDIA_TYPE);
-			contentTypeMap.put(XHTML_1_0_TRANSITIONAL_PUBLIC_ID, XHTML_MEDIA_TYPE);
-			contentTypeMap.put(XHTML_1_0_FRAMESET_PUBLIC_ID, XHTML_MEDIA_TYPE);
-			contentTypeMap.put(XHTML_1_1_PUBLIC_ID, XHTML_MEDIA_TYPE);
-			contentTypeMap.put(XHTML_1_1_MATHML_2_0_SVG_1_1_PUBLIC_ID, XHTML_MEDIA_TYPE);
-			contentTypeMap.put(MATHML_2_0_PUBLIC_ID, MathML.MEDIA_TYPE);
-			contentTypeMap.put(SVG_1_0_PUBLIC_ID, SVG.MEDIA_TYPE);
-			contentTypeMap.put(SVG_1_1_FULL_PUBLIC_ID, SVG.MEDIA_TYPE);
-			contentTypeMap.put(SVG_1_1_BASIC_PUBLIC_ID, SVG.MEDIA_TYPE);
-			contentTypeMap.put(SVG_1_1_TINY_PUBLIC_ID, SVG.MEDIA_TYPE);
-			contentTypeMapReference = new SoftReference<Map<String, ContentType>>(contentTypeMap); //create a soft reference to the map
+		Map<String, MediaType> mediaTypesByPublicId = mediaTypesByPublicIdReference != null ? mediaTypesByPublicIdReference.get() : null;
+		if(mediaTypesByPublicId == null) { //if the garbage collector has reclaimed the cache
+			mediaTypesByPublicId = new HashMap<String, MediaType>(); //create a new map of content types, and fill it with the default mappings
+			mediaTypesByPublicId.put("-//Guise//DTD XHTML Guise 1.0//EN", XHTML_MEDIA_TYPE); //Guise XHTML DTD TODO delete if no longer used
+			mediaTypesByPublicId.put(HTML_4_01_STRICT_PUBLIC_ID, HTML_MEDIA_TYPE);
+			mediaTypesByPublicId.put(HTML_4_01_TRANSITIONAL_PUBLIC_ID, HTML_MEDIA_TYPE);
+			mediaTypesByPublicId.put(HTML_4_01_FRAMESET_PUBLIC_ID, HTML_MEDIA_TYPE);
+			mediaTypesByPublicId.put(XHTML_1_0_STRICT_PUBLIC_ID, XHTML_MEDIA_TYPE);
+			mediaTypesByPublicId.put(XHTML_1_0_TRANSITIONAL_PUBLIC_ID, XHTML_MEDIA_TYPE);
+			mediaTypesByPublicId.put(XHTML_1_0_FRAMESET_PUBLIC_ID, XHTML_MEDIA_TYPE);
+			mediaTypesByPublicId.put(XHTML_1_1_PUBLIC_ID, XHTML_MEDIA_TYPE);
+			mediaTypesByPublicId.put(XHTML_1_1_MATHML_2_0_SVG_1_1_PUBLIC_ID, XHTML_MEDIA_TYPE);
+			mediaTypesByPublicId.put(MATHML_2_0_PUBLIC_ID, MathML.MEDIA_TYPE);
+			mediaTypesByPublicId.put(SVG_1_0_PUBLIC_ID, SVG.MEDIA_TYPE);
+			mediaTypesByPublicId.put(SVG_1_1_FULL_PUBLIC_ID, SVG.MEDIA_TYPE);
+			mediaTypesByPublicId.put(SVG_1_1_BASIC_PUBLIC_ID, SVG.MEDIA_TYPE);
+			mediaTypesByPublicId.put(SVG_1_1_TINY_PUBLIC_ID, SVG.MEDIA_TYPE);
+			mediaTypesByPublicIdReference = new SoftReference<Map<String, MediaType>>(mediaTypesByPublicId); //create a soft reference to the map
 		}
-		return contentTypeMap; //return the map
+		return mediaTypesByPublicId; //return the map
 	}
 
 	/**
@@ -276,8 +276,8 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @param publicID The public ID for which a content type should be retrieved.
 	 * @return The content type corresponding to the given public ID, or <code>null</code> if the given public ID is not recognized.
 	 */
-	public static ContentType getContentTypeForPublicID(final String publicID) {
-		return getContentTypeMap().get(publicID); //return the content type corresponding to the given public ID, if we have one
+	public static MediaType getMediaTypeForPublicID(final String publicID) {
+		return getMediaTypesByPublicId().get(publicID); //return the content type corresponding to the given public ID, if we have one
 	}
 
 	/** A lazily-created cache of root element local names keyed to content types base type names. */
@@ -300,11 +300,11 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 
 	/**
 	 * Determines the default root element local name for the given content type
-	 * @param contentType The content type for which a root element should be retrieved.
+	 * @param mediaType The content type for which a root element should be retrieved.
 	 * @return The default root element local name corresponding to the given media type, or <code>null</code> if the given content type is not recognized.
 	 */
-	public static String getDefaultRootElementLocalName(final ContentType contentType) {
-		return getRootElementLocalNameMap().get(contentType.toBaseTypeString()); //return the root element corresponding to the given content type base type, if we have one
+	public static String getDefaultRootElementLocalName(final MediaType mediaType) {
+		return getRootElementLocalNameMap().get(mediaType.toBaseTypeString()); //return the root element corresponding to the given content type base type, if we have one
 	}
 
 	/**
@@ -685,7 +685,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	}
 
 	/**
-	 * Determines if the given content type is one representing XML in some form.
+	 * Determines if the given media type is one representing XML in some form.
 	 * <p>
 	 * XML media types include:
 	 * </p>
@@ -694,24 +694,24 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * <li><code>application/xml</code></li>
 	 * <li><code>application/*+xml</code></li>
 	 * </ul>
-	 * @param contentType The content type of a resource, or <code>null</code> for no content type.
-	 * @return <code>true</code> if the given content type is one of several XML media types.
+	 * @param mediaType The media type of a resource, or <code>null</code> for no media type.
+	 * @return <code>true</code> if the given media type is one of several XML media types.
 	 */
-	public static boolean isXML(final ContentType contentType) {
-		if(contentType != null) { //if a content type is given
-			if(contentType.hasBaseType(XML.MEDIA_TYPE)) { //if this is "text/xml"
+	public static boolean isXML(final MediaType mediaType) {
+		if(mediaType != null) { //if a content type is given
+			if(mediaType.hasBaseType(XML.MEDIA_TYPE)) { //if this is "text/xml"
 				return true; //text/xml is an XML content type
 			}
-			if(ContentType.APPLICATION_PRIMARY_TYPE.equals(contentType.getPrimaryType())) { //if this is "application/*"
-				return ASCII.equalsIgnoreCase(contentType.getSubType(), XML.MEDIA_TYPE.getSubType()) //see if the subtype is "xml"
-						|| contentType.hasSubTypeSuffix(XML_SUBTYPE_SUFFIX); //see if the subtype has an XML suffix
+			if(MediaType.APPLICATION_PRIMARY_TYPE.equals(mediaType.getPrimaryType())) { //if this is "application/*"
+				return ASCII.equalsIgnoreCase(mediaType.getSubType(), XML.MEDIA_TYPE.getSubType()) //see if the subtype is "xml"
+						|| mediaType.hasSubTypeSuffix(XML_SUBTYPE_SUFFIX); //see if the subtype has an XML suffix
 			}
 		}
 		return false; //this is not a media type we recognize as being XML
 	}
 
 	/**
-	 * Determines if the given content type is one representing an XML external parsed entity in some form.
+	 * Determines if the given media type is one representing an XML external parsed entity in some form.
 	 * <p>
 	 * XML external parsed entities include:
 	 * </p>
@@ -721,16 +721,16 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * <li><code>text/*+xml-external-parsed-entity</code> (not formally defined)</li>
 	 * <li><code>application/*+xml-external-parsed-entity</code> (not formally defined)</li>
 	 * </ul>
-	 * @param contentType The content type of a resource, or <code>null</code> for no content type.
+	 * @param mediaType The content type of a resource, or <code>null</code> for no content type.
 	 * @return <code>true</code> if the given content type is one of several XML external parsed entity media types.
 	 */
-	public static boolean isXMLExternalParsedEntity(final ContentType contentType) {
-		if(contentType != null) { //if a content type is given
-			final String primaryType = contentType.getPrimaryType(); //get the primary type
-			if(ASCII.equalsIgnoreCase(primaryType, ContentType.TEXT_PRIMARY_TYPE) || ASCII.equalsIgnoreCase(primaryType, ContentType.APPLICATION_PRIMARY_TYPE)) { //if this is "text/*" or "application/*"
-				final String subType = contentType.getSubType(); //get the subtype
+	public static boolean isXMLExternalParsedEntity(final MediaType mediaType) {
+		if(mediaType != null) { //if a content type is given
+			final String primaryType = mediaType.getPrimaryType(); //get the primary type
+			if(ASCII.equalsIgnoreCase(primaryType, MediaType.TEXT_PRIMARY_TYPE) || ASCII.equalsIgnoreCase(primaryType, MediaType.APPLICATION_PRIMARY_TYPE)) { //if this is "text/*" or "application/*"
+				final String subType = mediaType.getSubType(); //get the subtype
 				return ASCII.equalsIgnoreCase(subType, XML.EXTERNAL_PARSED_ENTITY_MEDIA_TYPE.getSubType()) //if the subtype is /xml-external-parsed-entity
-						|| contentType.hasSubTypeSuffix(XML_EXTERNAL_PARSED_ENTITY_SUBTYPE_SUFFIX); //or if the subtype has an XML external parsed entity suffix
+						|| mediaType.hasSubTypeSuffix(XML_EXTERNAL_PARSED_ENTITY_SUBTYPE_SUFFIX); //or if the subtype has an XML external parsed entity suffix
 			}
 		}
 		return false; //this is not a media type we recognize as being an XML external parsed entity
@@ -801,7 +801,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @param href The reference to the stylesheet.
 	 * @param mediaType The media type of the stylesheet.
 	 */
-	public static void addStyleSheetReference(final Document document, final String href, final ContentType mediaType) {
+	public static void addStyleSheetReference(final Document document, final String href, final MediaType mediaType) {
 		final String target = XML_STYLESHEET_PROCESSING_INSTRUCTION; //the PI target will be the name of the stylesheet processing instruction
 		final StringBuilder dataStringBuilder = new StringBuilder(); //create a string buffer to construct the data parameter (with its pseudo attributes)
 		//add: href="href"

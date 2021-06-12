@@ -27,7 +27,7 @@ import static java.util.stream.Collectors.*;
 
 import com.globalmentor.java.Characters;
 import com.globalmentor.model.IDed;
-import com.globalmentor.net.ContentType;
+import com.globalmentor.net.MediaType;
 import com.globalmentor.text.ASCII;
 import com.globalmentor.xml.spec.*;
 
@@ -46,20 +46,20 @@ public class HTML {
 	public static final String HTML_SUBTYPE = "html";
 
 	/** An XHTML application. */
-	public static final String XHTML_XML_SUBTYPE = "xhtml" + ContentType.SUBTYPE_SUFFIX_DELIMITER_CHAR + XML.XML_SUBTYPE_SUFFIX;
+	public static final String XHTML_XML_SUBTYPE = "xhtml" + MediaType.SUBTYPE_SUFFIX_DELIMITER_CHAR + XML.XML_SUBTYPE_SUFFIX;
 
 	/** An XHTML fragment (not yet formally defined). */
-	public static final String XHTML_XML_EXTERNAL_PARSED_ENTITY_SUBTYPE = "xhtml" + ContentType.SUBTYPE_SUFFIX_DELIMITER_CHAR
+	public static final String XHTML_XML_EXTERNAL_PARSED_ENTITY_SUBTYPE = "xhtml" + MediaType.SUBTYPE_SUFFIX_DELIMITER_CHAR
 			+ XML.XML_EXTERNAL_PARSED_ENTITY_SUBTYPE_SUFFIX;
 
 	/** The media type for HTML: <code>text/html</code>. */
-	public static final ContentType HTML_MEDIA_TYPE = ContentType.of(ContentType.TEXT_PRIMARY_TYPE, HTML_SUBTYPE);
+	public static final MediaType HTML_MEDIA_TYPE = MediaType.of(MediaType.TEXT_PRIMARY_TYPE, HTML_SUBTYPE);
 
 	/** The media type for XHTML: <code>application/xhtml+xml</code>. */
-	public static final ContentType XHTML_MEDIA_TYPE = ContentType.of(ContentType.APPLICATION_PRIMARY_TYPE, XHTML_XML_SUBTYPE);
+	public static final MediaType XHTML_MEDIA_TYPE = MediaType.of(MediaType.APPLICATION_PRIMARY_TYPE, XHTML_XML_SUBTYPE);
 
 	/** The media type for an XHTML fragment: <code>application/xhtml+xml-external-parsed-entity</code>. */
-	public static final ContentType XHTML_FRAGMENT_MEDIA_TYPE = ContentType.of(ContentType.APPLICATION_PRIMARY_TYPE, XHTML_XML_EXTERNAL_PARSED_ENTITY_SUBTYPE);
+	public static final MediaType XHTML_FRAGMENT_MEDIA_TYPE = MediaType.of(MediaType.APPLICATION_PRIMARY_TYPE, XHTML_XML_EXTERNAL_PARSED_ENTITY_SUBTYPE);
 
 	/** The old extension for HTML resource names. */
 	public static final String HTM_FILENAME_EXTENSION = "htm";
@@ -148,20 +148,20 @@ public class HTML {
 	 * <li><code>application/xhtml+xml</code></li>
 	 * <li><code>application/xhtml+xml-external-parsed-entity</code> (not formally defined)</li>
 	 * </ul>
-	 * @param contentType The media type of a resource, or <code>null</code> for no media type.
+	 * @param mediaType The media type of a resource, or <code>null</code> for no media type.
 	 * @return <code>true</code> if the given media type is one of several HTML media types.
 	 */
-	public static boolean isHTML(final ContentType contentType) { //TODO maybe move this to an HTMLUtilities
-		if(contentType != null) { //if a media type is given
-			final String primaryType = contentType.getPrimaryType(); //get the primary type
-			final String subType = contentType.getSubType(); //get the sub type
-			if(ASCII.equalsIgnoreCase(primaryType, ContentType.TEXT_PRIMARY_TYPE)) { //if this is "text/?"
+	public static boolean isHTML(final MediaType mediaType) { //TODO maybe move this to an HTMLUtilities
+		if(mediaType != null) { //if a media type is given
+			final String primaryType = mediaType.getPrimaryType(); //get the primary type
+			final String subType = mediaType.getSubType(); //get the sub type
+			if(ASCII.equalsIgnoreCase(primaryType, MediaType.TEXT_PRIMARY_TYPE)) { //if this is "text/?"
 				if(ASCII.equalsIgnoreCase(subType, HTML_SUBTYPE) //if this is "text/html"
 				/*TODO fix for OEB || OEB.X_OEB1_DOCUMENT_SUBTYPE.equals(subType)*/) { //if this is "text/x-oeb1-document"
 					return true; //show that this is HTML
 				}
 			}
-			if(ContentType.APPLICATION_PRIMARY_TYPE.equals(primaryType)) { //if this is "application/?"
+			if(MediaType.APPLICATION_PRIMARY_TYPE.equals(primaryType)) { //if this is "application/?"
 				//TODO probably add a parameter to specify whether we should allow fragments to qualify as XHTML---right now this behavior is not consistent with XMLUtilities.isXML(), which doesn't recognize fragments as XML
 				if(ASCII.equalsIgnoreCase(subType, XHTML_XML_SUBTYPE) || ASCII.equalsIgnoreCase(subType, XHTML_XML_EXTERNAL_PARSED_ENTITY_SUBTYPE)) { //if this is "application/xhtml+xml" or "application/xhtml+xml-external-parsed-entity"
 					return true; //show that this is HTML
@@ -517,12 +517,12 @@ public class HTML {
 	 * The <code>application/x-www-form-urlencoded</code> encoding media type.
 	 * @see <a href="https://tools.ietf.org/html/rfc1867">RFC 1867: Form-based File Upload in HTML</a>.
 	 */
-	public static final ContentType APPLICATION_X_WWW_FORM_URLENCODED_MEDIA_TYPE = ContentType.of(ContentType.APPLICATION_PRIMARY_TYPE, "www-form-urlencoded");
+	public static final MediaType APPLICATION_X_WWW_FORM_URLENCODED_MEDIA_TYPE = MediaType.of(MediaType.APPLICATION_PRIMARY_TYPE, "www-form-urlencoded");
 	/**
 	 * The <code>multipart/form-data</code> encoding media type.
 	 * @see <a href="https://tools.ietf.org/html/rfc1867">RFC 1867: Form-based File Upload in HTML</a>.
 	 */
-	public static final ContentType MULTIPART_FORM_DATA_MEDIA_TYPE = ContentType.of(ContentType.MULTIPART_PRIMARY_TYPE, "form-data");
+	public static final MediaType MULTIPART_FORM_DATA_MEDIA_TYPE = MediaType.of(MediaType.MULTIPART_PRIMARY_TYPE, "form-data");
 
 	public static final String ELEMENT_FORM_ATTRIBUTE_METHOD = "method";
 	public static final String FORM_METHOD_GET = "get";

@@ -30,7 +30,7 @@ import static com.globalmentor.xml.spec.XMLStyleSheets.*;
 import com.globalmentor.html.spec.HTML;
 import com.globalmentor.io.*;
 import com.globalmentor.model.NameValuePair;
-import com.globalmentor.net.ContentType;
+import com.globalmentor.net.MediaType;
 import com.globalmentor.net.URIs;
 import com.globalmentor.xml.XmlDom;
 import com.globalmentor.xml.dom.impl.stylesheets.XMLStyleSheetDescriptor;
@@ -166,7 +166,7 @@ public abstract class AbstractXMLCSSStylesheetApplier<D, E> implements URIInputS
 	 * @return An array of stylesheets.
 	 */
 	public CSSStyleSheet[] getStylesheets(final D document, final URI baseURI,
-			final ContentType mediaType/*TODO convert to something general, final RDFResource description*/) {
+			final MediaType mediaType/*TODO convert to something general, final RDFResource description*/) {
 		final List<CSSStyleSheet> styleSheetList = new ArrayList<CSSStyleSheet>(); //create a new list to hold the stylesheets
 		//get all default stylesheets
 		final String[] namespaceURIArray = getNamespaceURIs(document, mediaType/*TODO fix, description*/); //get all namespaces used in this document
@@ -253,7 +253,7 @@ public abstract class AbstractXMLCSSStylesheetApplier<D, E> implements URIInputS
 	 * @return The default XML namespace URI used by resources of the given content type, or <code>null</code> if there is no default namespace URI or the default
 	 *         namespace URI is not known.
 	 */
-	public static URI getDefaultNamespaceURI(final ContentType mediaType) {
+	public static URI getDefaultNamespaceURI(final MediaType mediaType) {
 		if(mediaType != null) { //if we were given a valid media type
 			if(HTML.isHTML(mediaType)) //if this is one of the HTML media types
 				return HTML.XHTML_NAMESPACE_URI; //return the XHTML media type
@@ -280,7 +280,7 @@ public abstract class AbstractXMLCSSStylesheetApplier<D, E> implements URIInputS
 	 * @param mediaType The media type of the document, or <code>null</code> if the media type is unknown.
 	 * @return A non-<code>null</code> array of namespace URIs.
 	 */
-	protected String[] getNamespaceURIs(final D document, final ContentType mediaType/*TODO convert to something general, final RDFResource description*/) { //TODO fix to actually look through all the namespaces, maybe, but that could be intensive -- on the other hand, a subclass could get that information from the OEB package, overriding the intensive part
+	protected String[] getNamespaceURIs(final D document, final MediaType mediaType/*TODO convert to something general, final RDFResource description*/) { //TODO fix to actually look through all the namespaces, maybe, but that could be intensive -- on the other hand, a subclass could get that information from the OEB package, overriding the intensive part
 		final Set<String> namespaceURISet = new HashSet<String>(); //create a set of namespaces
 		final E documentElement = getDocumentElement(document); //get the root element of the document
 		final String documentElementNamespaceURI = getElementNamespaceURI(documentElement); //get the document element namespace URI

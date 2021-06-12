@@ -34,7 +34,7 @@ import com.globalmentor.io.*;
 import com.globalmentor.java.Arrays;
 import com.globalmentor.java.Objects;
 import com.globalmentor.model.ConfigurationException;
-import com.globalmentor.net.ContentType;
+import com.globalmentor.net.MediaType;
 import com.globalmentor.text.ASCII;
 import com.globalmentor.html.spec.HTML;
 import com.globalmentor.xml.XmlDom;
@@ -292,17 +292,16 @@ public class HtmlDom {
 	}
 
 	/**
-	 * Determines the content type indicated by the given link element.
+	 * Determines the media type indicated by the given link element.
 	 * @param element The element, presumably a link ({@code <a>}, {@code <area>}, or {@code <link>}).
-	 * @return The content type specified by the link element, which will not be present if no content type was specified or the content type was not
-	 *         syntactically correct.
+	 * @return The content type specified by the link element, which will not be present if no type was specified or the media type was not syntactically correct.
 	 * @see HTML#LINK_ATTRIBUTE_TYPE
 	 * @see <a href="http://www.w3.org/TR/html5/links.html#attr-hyperlink-type">HTML5 Link MIME type</a>
 	 */
-	public static Optional<ContentType> findLinkContentType(@Nonnull final Element element) {
+	public static Optional<MediaType> findLinkType(@Nonnull final Element element) {
 		return findAttributeNS(element, null, LINK_ATTRIBUTE_TYPE).flatMap(link -> { //if there is a type specified
 			try {
-				return Optional.of(ContentType.parse(link)); //parse the content type and return it
+				return Optional.of(MediaType.parse(link)); //parse the content type and return it
 			} catch(final IllegalArgumentException illegalArgumentException) { //if the content type isn't valid
 				Clogr.getLogger(HtmlDom.class).debug(illegalArgumentException.getMessage(), illegalArgumentException);
 				return Optional.empty();
@@ -367,9 +366,9 @@ public class HtmlDom {
 				//see if there is a type attribute
 				if(element.hasAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_TYPE)) { //if there is a type attribute
 					final String type = element.getAttributeNS(null, ELEMENT_OBJECT_ATTRIBUTE_TYPE); //get the type
-					final ContentType mediaType = ContentType.parse(type); //create a media type from the given type
+					final MediaType mediaType = MediaType.parse(type); //create a media type from the given type
 					//TODO catch possible exception here
-					if(mediaType.getPrimaryType().equals(ContentType.IMAGE_PRIMARY_TYPE)) //if this is an image
+					if(mediaType.getPrimaryType().equals(MediaType.IMAGE_PRIMARY_TYPE)) //if this is an image
 						return true; //show that this is an image object
 				}
 				//see if there is a data attribute, since there is no type specified

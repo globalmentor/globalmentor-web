@@ -18,7 +18,7 @@ package com.globalmentor.svg.spec;
 
 import java.net.URI;
 
-import com.globalmentor.net.ContentType;
+import com.globalmentor.net.MediaType;
 import com.globalmentor.xml.spec.XML;
 
 /**
@@ -30,10 +30,10 @@ import com.globalmentor.xml.spec.XML;
 public class SVG {
 
 	/** The SVG image MIME subtype. */
-	public static final String SVG_XML_SUBTYPE = "svg" + ContentType.SUBTYPE_SUFFIX_DELIMITER_CHAR + XML.XML_SUBTYPE_SUFFIX;
+	public static final String SVG_XML_SUBTYPE = "svg" + MediaType.SUBTYPE_SUFFIX_DELIMITER_CHAR + XML.XML_SUBTYPE_SUFFIX;
 
 	/** The media type for SVG: <code>application/svg+xml</code>. */
-	public static final ContentType MEDIA_TYPE = ContentType.of(ContentType.APPLICATION_PRIMARY_TYPE, SVG_XML_SUBTYPE);
+	public static final MediaType MEDIA_TYPE = MediaType.of(MediaType.APPLICATION_PRIMARY_TYPE, SVG_XML_SUBTYPE);
 
 	/** The recommended prefix to the SVG namespace. */
 	public static final String NAMESPACE_PREFIX = "svg";
