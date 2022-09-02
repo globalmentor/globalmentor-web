@@ -128,7 +128,7 @@ public class XMLCSSStyleSheet extends XMLStyleSheet implements CSSStyleSheet {
 		try {
 			((XMLCSSRuleList)getCssRules()).remove(index); //remove the item at the specified index
 		} catch(IndexOutOfBoundsException e) { //if they don't give a valid index
-			throw new XMLDOMException(DOMException.INDEX_SIZE_ERR, new Object[] { new Integer(index) }); //use our own type of exception to show that this index is out of bounds
+			throw new XMLDOMException(DOMException.INDEX_SIZE_ERR, new Object[] { Integer.valueOf(index) }); //use our own type of exception to show that this index is out of bounds
 		}
 	}
 }

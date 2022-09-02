@@ -125,7 +125,7 @@ public abstract class XMLCharacterData extends XMLNode implements org.w3c.dom.Ch
 	 */
 	public String substringData(int offset, int count) throws DOMException {
 		if(offset < 0 || offset > getLength() || count < 0) //if the offset is out of bounds or the count is negative
-			throw new XMLDOMException(DOMException.INDEX_SIZE_ERR, new Object[] { new Integer(offset) }); //throw an exception
+			throw new XMLDOMException(DOMException.INDEX_SIZE_ERR, new Object[] {Integer.valueOf(offset)}); //throw an exception
 		final int endIndex = Math.min(offset + count, getLength()); //don't let the ending index be too high (this is for the DOM, which wants us to automatically compensate instead of throwing an exception, as Java does)
 		return getData().substring(offset, endIndex); //return the substring section
 	}
@@ -155,7 +155,7 @@ public abstract class XMLCharacterData extends XMLNode implements org.w3c.dom.Ch
 	 */
 	public void insertData(int offset, String arg) throws DOMException {
 		if(offset < 0 || offset > getLength()) //if the offset is out of bounds
-			throw new XMLDOMException(DOMException.INDEX_SIZE_ERR, new Object[] { new Integer(offset) }); //throw an exception
+			throw new XMLDOMException(DOMException.INDEX_SIZE_ERR, new Object[] {Integer.valueOf(offset)}); //throw an exception
 		setData(substringData(0, offset) + arg + substringData(offset, getLength() - offset)); //construct and set the new data, which will check for readonly status
 	}
 
@@ -173,7 +173,7 @@ public abstract class XMLCharacterData extends XMLNode implements org.w3c.dom.Ch
 	 */
 	public void deleteData(int offset, int count) throws DOMException {
 		if(offset < 0 || offset > getLength() || count < 0) //if the offset is out of bounds or the count is negative
-			throw new XMLDOMException(DOMException.INDEX_SIZE_ERR, new Object[] { new Integer(offset) }); //throw an exception
+			throw new XMLDOMException(DOMException.INDEX_SIZE_ERR, new Object[] {Integer.valueOf(offset)}); //throw an exception
 		final int secondIndex = Math.min(offset + count, getLength()); //find the start of the second substring, claiming the entire rest of the string if count is too high
 		setData(substringData(0, offset) + substringData(secondIndex, getLength() - secondIndex)); //construct the new data without the substring, and set the new data, which will check for readonly status
 	}
@@ -194,7 +194,7 @@ public abstract class XMLCharacterData extends XMLNode implements org.w3c.dom.Ch
 	 */
 	public void replaceData(int offset, int count, String arg) throws DOMException {
 		if(offset < 0 || offset > getLength() || count < 0) //if the offset is out of bounds or the count is negative
-			throw new XMLDOMException(DOMException.INDEX_SIZE_ERR, new Object[] { new Integer(offset) }); //throw an exception
+			throw new XMLDOMException(DOMException.INDEX_SIZE_ERR, new Object[] {Integer.valueOf(offset)}); //throw an exception
 		final int secondIndex = Math.min(offset + count, getLength()); //find the start of the second substring, claiming the entire rest of the string if count is too high
 		setData(substringData(0, offset) + arg + substringData(secondIndex, getLength() - secondIndex)); //construct and set the new data, which will check for readonly status
 	}

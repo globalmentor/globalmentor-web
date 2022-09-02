@@ -191,7 +191,7 @@ public class XMLCSSPrimitiveValue extends XMLCSSValue implements org.w3c.dom.css
 			FloatValue = floatValue; //save the float value
 		} else
 			//if this type isn't compatible with float
-			;//TODO throw an INVALID_ACCESS_ERR when we find out how to do so			throw new XMLDOMException(DOMException.INDEX_SIZE_ERR, new Object[]{new Integer(index)});	//use our own type of exception to show that this index is out of bounds
+			;//TODO throw an INVALID_ACCESS_ERR when we find out how to do so			throw new XMLDOMException(DOMException.INDEX_SIZE_ERR, new Object[]{Integer.valueOf(index)});	//use our own type of exception to show that this index is out of bounds
 	}
 
 	/**
@@ -214,7 +214,7 @@ public class XMLCSSPrimitiveValue extends XMLCSSValue implements org.w3c.dom.css
 			return FloatValue; //return the float value
 		} else
 			//if this type isn't compatible with float
-			return 0;//TODO throw an INVALID_ACCESS_ERR when we find out how to do so			throw new XMLDOMException(DOMException.INDEX_SIZE_ERR, new Object[]{new Integer(index)});	//use our own type of exception to show that this index is out of bounds
+			return 0;//TODO throw an INVALID_ACCESS_ERR when we find out how to do so			throw new XMLDOMException(DOMException.INDEX_SIZE_ERR, new Object[]{Integer.valueOf(index)});	//use our own type of exception to show that this index is out of bounds
 	}
 
 	/**
@@ -240,7 +240,7 @@ public class XMLCSSPrimitiveValue extends XMLCSSValue implements org.w3c.dom.css
 			StringValue = stringValue; //save the string value
 		} else
 			//if this type isn't compatible with a string
-			;//TODO throw an INVALID_ACCESS_ERR when we find out how to do so			throw new XMLDOMException(DOMException.INDEX_SIZE_ERR, new Object[]{new Integer(index)});	//use our own type of exception to show that this index is out of bounds
+			;//TODO throw an INVALID_ACCESS_ERR when we find out how to do so			throw new XMLDOMException(DOMException.INDEX_SIZE_ERR, new Object[]{Integer.valueOf(index)});	//use our own type of exception to show that this index is out of bounds
 	}
 
 	/**
@@ -258,7 +258,7 @@ public class XMLCSSPrimitiveValue extends XMLCSSValue implements org.w3c.dom.css
 			return StringValue; //return the string value
 		else
 			//if this type isn't compatible with string
-			return "";//TODO throw an INVALID_ACCESS_ERR when we find out how to do so			throw new XMLDOMException(DOMException.INDEX_SIZE_ERR, new Object[]{new Integer(index)});	//use our own type of exception to show that this index is out of bounds
+			return "";//TODO throw an INVALID_ACCESS_ERR when we find out how to do so			throw new XMLDOMException(DOMException.INDEX_SIZE_ERR, new Object[]{Integer.valueOf(index)});	//use our own type of exception to show that this index is out of bounds
 	}
 
 	/**
@@ -294,7 +294,7 @@ public class XMLCSSPrimitiveValue extends XMLCSSValue implements org.w3c.dom.css
 			return rgbValue; //return the rgb value
 		else
 			//if this isn't an RGB value
-			return null;//TODO throw an INVALID_ACCESS_ERR when we find out how to do so			throw new XMLDOMException(DOMException.INDEX_SIZE_ERR, new Object[]{new Integer(index)});	//use our own type of exception to show that this index is out of bounds
+			return null;//TODO throw an INVALID_ACCESS_ERR when we find out how to do so			throw new XMLDOMException(DOMException.INDEX_SIZE_ERR, new Object[]{Integer.valueOf(index)});	//use our own type of exception to show that this index is out of bounds
 	}
 
 	/*Determines whether or not this value is a floating point number.
