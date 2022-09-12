@@ -34,6 +34,7 @@ import com.globalmentor.xml.xpath.XPath;
 import io.clogr.Clogged;
 
 import static com.globalmentor.java.Characters.*;
+import static com.globalmentor.css.CSS.*;
 import static com.globalmentor.css.spec.CSS.*;
 import static com.globalmentor.html.spec.HTML.*;
 import static com.globalmentor.xml.spec.XML.*;
@@ -637,9 +638,9 @@ public class HtmlTidier implements Clogged {
 					//  started a list)
 					if(markerListStyleType != null && (listStyleType == null || markerListStyleType == listStyleType)) {
 						//get what we expect the marker string to be based upon the index this list item would be in the list
-						final String expectedMarkerString = CSS.getMarkerString(markerListStyleType, listItemNodeList.size());
+						final String expectedMarkerString = getMarkerString(markerListStyleType, listItemNodeList.size());
 						//to detect new lists starting, see what would come at the first of this type of list
-						final String expectedFirstMarkerString = CSS.getMarkerString(markerListStyleType, 0);
+						final String expectedFirstMarkerString = getMarkerString(markerListStyleType, 0);
 						final boolean isExpectedMarker; //we'll see if this is the marker we were expecting
 						//if this is one of the list types that always have the same marker
 						if(markerListStyleType == CSS_LIST_STYLE_TYPE_CIRCLE || markerListStyleType == CSS_LIST_STYLE_TYPE_DISC
