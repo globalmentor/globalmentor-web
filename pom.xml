@@ -13,7 +13,7 @@
 	<packaging>pom</packaging>
 
 	<name>GlobalMentor Web Parent</name>
-	<description>(X/HT)ML, CSS, and JavaScript format definitions, implementations, and utilities.</description>
+	<description>(X/HT)ML, CSS, JavaScript, etc. format definitions, implementations, and utilities.</description>
 	<url>http://www.globalmentor.com/software/</url>
 	<inceptionYear>1996</inceptionYear>
 
@@ -32,8 +32,10 @@
 		<module>css-spec</module>
 		<module>html</module>
 		<module>html-spec</module>
-		<module>mathml-spec</module>
 		<module>javascript</module>
+		<module>mathml-spec</module>
+		<module>rdf-spec</module>
+		<module>rdfa-spec</module>
 		<module>svg-spec</module>
 		<module>vocab</module>
 		<module>vocab-dcmi</module>

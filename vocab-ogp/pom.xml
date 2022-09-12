@@ -13,10 +13,6 @@
 	<name>GlobalMentor Open Graph Vocabulary</name>
 	<description>GlobalMentor definitions for the Open Graph protocol.</description>
 
-	<properties>
-		<maven.compiler.release>8</maven.compiler.release>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>com.globalmentor</groupId>
