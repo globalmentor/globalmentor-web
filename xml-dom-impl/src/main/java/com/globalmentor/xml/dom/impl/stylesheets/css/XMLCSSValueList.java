@@ -29,6 +29,7 @@ import io.clogr.Clogr;
  * @see org.w3c.dom.css.CSSValueList
  * @deprecated
  */
+@Deprecated
 public class XMLCSSValueList extends XMLCSSValue implements CSSValueList {
 
 	/** The list of CSS values. */

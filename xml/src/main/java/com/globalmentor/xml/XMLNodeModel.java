@@ -37,6 +37,7 @@ import org.w3c.dom.*;
  * @see #XML_PROPERTY
  * @deprecated
  */
+@Deprecated
 public class XMLNodeModel<N extends Node> extends URIAccessibleModel {
 
 	/** The XML node property. */

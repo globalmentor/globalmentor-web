@@ -31,6 +31,7 @@ import org.w3c.dom.*;
  * @see org.w3c.dom.Text
  * @deprecated
  */
+@Deprecated
 public class XMLText extends XMLCharacterData implements org.w3c.dom.Text {
 
 	/**

@@ -36,6 +36,7 @@ import com.globalmentor.xml.spec.XML;
  * @see XMLNodeList
  * @deprecated
  */
+@Deprecated
 public abstract class XMLNode extends XMLNamedObject implements Node, EventTarget, Cloneable {
 
 	/** The type of node before it is defined. This value is not defined in DOM. */

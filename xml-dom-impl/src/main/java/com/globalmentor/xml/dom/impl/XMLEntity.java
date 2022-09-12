@@ -25,6 +25,7 @@ import org.w3c.dom.Node;
  * @see org.w3c.dom.Entity
  * @deprecated
  */
+@Deprecated
 public class XMLEntity extends XMLNode implements org.w3c.dom.Entity {
 
 	/**

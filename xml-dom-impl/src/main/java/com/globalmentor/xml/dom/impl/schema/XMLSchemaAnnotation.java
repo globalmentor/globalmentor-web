@@ -26,6 +26,7 @@ import java.util.List;
  * @author Garret Wilson
  * @deprecated
  */
+@Deprecated
 public class XMLSchemaAnnotation extends XMLSchemaHelperComponent {
 
 	/** The list of annotation elements. */

@@ -22,6 +22,7 @@ package com.globalmentor.xml.dom.impl;
  * @see XMLParseException
  * @deprecated
  */
+@Deprecated
 public class XMLUndefinedEntityReferenceException extends XMLParseException {
 
 	/**

@@ -27,6 +27,7 @@ import com.globalmentor.io.ParseIOException;
  * @see IOException
  * @deprecated
  */
+@Deprecated
 public class XMLParseException extends IOException { //TODO it looks like we were going to make this descend from ParseIOException
 
 	/** The base name used for getting resources. */

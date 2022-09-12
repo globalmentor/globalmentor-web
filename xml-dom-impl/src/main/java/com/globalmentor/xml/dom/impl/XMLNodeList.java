@@ -28,6 +28,7 @@ import org.w3c.dom.Node;
  * @see org.w3c.dom.NodeList
  * @deprecated
  */
+@Deprecated
 public class XMLNodeList extends LinkedList implements org.w3c.dom.NodeList {
 
 	/**

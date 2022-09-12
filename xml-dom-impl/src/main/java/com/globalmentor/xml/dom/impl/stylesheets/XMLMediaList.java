@@ -27,6 +27,7 @@ import com.globalmentor.xml.dom.impl.XMLDOMException;
  * @see org.w3c.dom.stylesheets.MediaList
  * @deprecated
  */
+@Deprecated
 public class XMLMediaList extends ArrayList implements org.w3c.dom.stylesheets.MediaList {
 
 	/**

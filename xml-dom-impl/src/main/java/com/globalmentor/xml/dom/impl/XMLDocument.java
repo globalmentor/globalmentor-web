@@ -31,6 +31,7 @@ import com.globalmentor.xml.dom.impl.traversal.*;
  * @see XMLNode
  * @deprecated
  */
+@Deprecated
 public class XMLDocument extends XMLNode implements Document, DocumentTraversal, DocumentEvent {
 
 	//TODO should we override getNodeName() to return the correct name from the document type?

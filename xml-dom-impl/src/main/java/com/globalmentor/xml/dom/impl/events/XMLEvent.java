@@ -25,6 +25,7 @@ import org.w3c.dom.events.*;
  * @see com.globalmentor.xml.dom.impl.XMLNode
  * @deprecated
  */
+@Deprecated
 public class XMLEvent implements Event {
 
 	/** A custom phase indicating the event has not yet been dispatched. */

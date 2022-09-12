@@ -29,6 +29,7 @@ import com.globalmentor.xml.dom.impl.XMLDocument;
  * @see CSSRule
  * @deprecated
  */
+@Deprecated
 public class XMLCSSRuleList extends ArrayList implements org.w3c.dom.css.CSSRuleList {
 
 	@Override

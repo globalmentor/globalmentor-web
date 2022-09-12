@@ -24,6 +24,7 @@ import java.util.List;
  * @author Garret Wilson
  * @deprecated
  */
+@Deprecated
 public class XMLSchemaAttributeGroup extends XMLSchemaSecondaryComponent {
 
 	/** The list of child components. */

@@ -25,6 +25,7 @@ import java.util.ListResourceBundle;
  * @see XMLValidityException
  * @deprecated
  */
+@Deprecated
 public class XMLParseExceptionResources extends ListResourceBundle {
 
 	public Object[][] getContents() {

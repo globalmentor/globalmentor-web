@@ -40,6 +40,7 @@ import org.w3c.dom.css.*;
  * @see org.w3c.dom.css.RGBColor
  * @deprecated
  */
+@Deprecated
 public class XMLCSSRGBColor implements RGBColor, Clogged {
 
 	/** The red color component as a primitive value. */

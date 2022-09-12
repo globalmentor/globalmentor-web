@@ -22,6 +22,7 @@ package com.globalmentor.xml.dom.impl;
  * @see XMLParseException
  * @deprecated
  */
+@Deprecated
 public class XMLSyntaxException extends XMLParseException {
 
 	//TODO eventually, delete all XMLSyntaxException constructors that don't take error locations

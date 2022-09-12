@@ -32,6 +32,7 @@ import static com.globalmentor.xml.spec.XML.*;
  * @see com.globalmentor.io.ParseReader
  * @deprecated
  */
+@Deprecated
 public class XMLReader extends ParseReader {
 
 	boolean tidy = false; //TODO fix, probably by adding a listener to XMLProcessor or (maybe better) by an anonymous class in XMLProcessor

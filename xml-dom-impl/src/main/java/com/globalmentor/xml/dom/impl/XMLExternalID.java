@@ -23,6 +23,7 @@ package com.globalmentor.xml.dom.impl;
  * @see XMLDocumentType
  * @deprecated
  */
+@Deprecated
 class XMLExternalID {
 
 	/**

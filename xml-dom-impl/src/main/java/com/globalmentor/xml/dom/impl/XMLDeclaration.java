@@ -24,6 +24,7 @@ import static java.nio.charset.StandardCharsets.*;
  * @see XMLNode
  * @deprecated
  */
+@Deprecated
 public class XMLDeclaration extends XMLNode {
 
 	/** The XML version of this document. */

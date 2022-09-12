@@ -25,6 +25,7 @@ import org.w3c.dom.*;
  * @see org.w3c.dom.DocumentType
  * @deprecated
  */
+@Deprecated
 public class XMLDocumentType extends XMLNode implements DocumentType {
 
 	/**

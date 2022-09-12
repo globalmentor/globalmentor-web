@@ -25,6 +25,7 @@ import java.text.MessageFormat;
  * @see XMLParseException
  * @deprecated
  */
+@Deprecated
 public class XMLValidityException extends XMLParseException {
 
 	/** The prefix used as a prefix for all validity error string resources. */

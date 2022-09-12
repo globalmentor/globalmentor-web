@@ -32,6 +32,7 @@ import org.w3c.dom.css.*;
  * @see org.w3c.dom.css.CSSValue
  * @deprecated
  */
+@Deprecated
 public class XMLCSSPrimitiveValue extends XMLCSSValue implements org.w3c.dom.css.CSSPrimitiveValue { //TODO fix, Cloneable
 
 	//Strings that specify the various accepted unit types. TODO perhaps later give these more appropriate names

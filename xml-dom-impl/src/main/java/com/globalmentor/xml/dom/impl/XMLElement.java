@@ -36,6 +36,7 @@ import com.globalmentor.xml.spec.XML;
  * @see org.w3c.dom.Element
  * @deprecated
  */
+@Deprecated
 public class XMLElement extends XMLNode implements org.w3c.dom.Element {
 
 	/**

@@ -31,6 +31,7 @@ import static com.globalmentor.net.URIs.*;
  * @author Garret Wilson
  * @deprecated
  */
+@Deprecated
 public class XMLNamespacePrefixManager //TODO replace with VocabularyManager
 {
 

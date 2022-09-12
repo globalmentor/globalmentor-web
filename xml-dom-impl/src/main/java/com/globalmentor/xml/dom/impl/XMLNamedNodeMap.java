@@ -31,6 +31,7 @@ import org.w3c.dom.DOMException;
  * @see org.w3c.dom.NamedNodeMap
  * @deprecated
  */
+@Deprecated
 public class XMLNamedNodeMap extends HashMap implements NamedNodeMap {
 
 	/**

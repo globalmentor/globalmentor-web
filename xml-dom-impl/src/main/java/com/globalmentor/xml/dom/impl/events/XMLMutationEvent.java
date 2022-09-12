@@ -28,6 +28,7 @@ import com.globalmentor.xml.dom.impl.XMLNode;
  * @author Garret Wilson
  * @deprecated
  */
+@Deprecated
 public class XMLMutationEvent extends XMLEvent implements MutationEvent {
 
 	/** The identification string of this class of events. */
