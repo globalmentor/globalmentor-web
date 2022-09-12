@@ -39,15 +39,19 @@ import com.globalmentor.text.W3CDateFormat;
  * value according to the W3C Note, "Date and Time Formats", <a href="http://www.w3.org/TR/NOTE-datetime">http://www.w3.org/TR/NOTE-datetime</a>, a profile of
  * ISO 8601.
  * @author Garret Wilson
- * @see <a href="http://www.ietf.org/rfc/rfc4627.txt">RFC 4627: The application/json Media Type for JavaScript Object Notation (JSON)</a>
- * @see <a href="http://www.json.org/">Introducing JSON</a>
- * @see <a href="http://www.w3.org/TR/NOTE-datetime">Date and Time Formats</a>
+ * @see <a href="https://www.rfc-editor.org/rfc/rfc4627">RFC 4627: The application/json Media Type for JavaScript Object Notation (JSON)</a>
+ * @see <a href="https://www.rfc-editor.org/rfc/rfc7159">RFC 4627: The JavaScript Object Notation (JSON) Data Interchange Format</a>
+ * @see <a href="https://www.json.org/">Introducing JSON</a>
+ * @see <a href="https://www.w3.org/TR/NOTE-datetime">Date and Time Formats</a>
  * @see W3CDateFormat.Style#DATE_TIME
  */
 public class JSON {
 
 	/** The media type for JSON: <code>application/json</code>. */
 	public static final MediaType MEDIA_TYPE = MediaType.of(MediaType.APPLICATION_PRIMARY_TYPE, "json");
+
+	/** The extension for JSON resource names. */
+	public static final String FILENAME_EXTENSION = "json";
 
 	public static final char BEGIN_ARRAY = 0x5B; //[ left square bracket
 	public static final char BEGIN_OBJECT = 0x7B; //[ left square bracket
@@ -84,13 +88,13 @@ public class JSON {
 	public static final char ESCAPED_UNICODE = 'u';
 
 	/** Sign characters. */
-	public static final char[] SIGN = new char[] { MINUS, PLUS };
+	public static final char[] SIGN = new char[] {MINUS, PLUS};
 
 	/** Digit characters. */
-	public static final char[] DIGITS = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+	public static final char[] DIGITS = new char[] {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
 	/** Whitespace characters. */
-	public static final char[] WHITESPACE = new char[] { SPACE, HORIZONTAL_TAB, LINE_FEED, CARRIAGE_RETURN };
+	public static final char[] WHITESPACE = new char[] {SPACE, HORIZONTAL_TAB, LINE_FEED, CARRIAGE_RETURN};
 
 	/** The null identifier. */
 	public static final String NULL = "null";
@@ -262,8 +266,8 @@ public class JSON {
 	}
 
 	/**
-	 * Decodes a string value. Every instance of {@value JavaScript#ESCAPE_CHAR} will be removed if followed by another character and the subsequent character will be
-	 * ignored.
+	 * Decodes a string value. Every instance of {@value JavaScript#ESCAPE_CHAR} will be removed if followed by another character and the subsequent character
+	 * will be ignored.
 	 * @param charSequence The characters to encode.
 	 * @return A string containing encoded characters.
 	 * @throws NullPointerException if the given character sequence is <code>null</code>.
@@ -476,25 +480,25 @@ public class JSON {
 		char c = charSequence.charAt(index); //get the current character
 		switch(c) { //check the current character
 			case BEGIN_ARRAY: //array
-			{
-				final List<Object> list = new ArrayList<Object>(); //create a new list to populate
-				index = parseArray(charSequence, index, list); //parse the array
-				object = list; //save the list we parsed
-			}
+				{
+					final List<Object> list = new ArrayList<Object>(); //create a new list to populate
+					index = parseArray(charSequence, index, list); //parse the array
+					object = list; //save the list we parsed
+				}
 				break;
 			case BEGIN_OBJECT: //object
-			{
-				final Map<String, Object> map = new HashMap<String, Object>(); //create a new map to populate
-				index = parseObject(charSequence, index, map); //parse the array
-				object = map; //save the map we parsed
-			}
+				{
+					final Map<String, Object> map = new HashMap<String, Object>(); //create a new map to populate
+					index = parseObject(charSequence, index, map); //parse the array
+					object = map; //save the map we parsed
+				}
 				break;
 			case QUOTATION_MARK: //string
-			{
-				final ObjectHolder<String> stringHolder = new ObjectHolder<String>(); //create a new string holder to populate
-				index = parseString(charSequence, index, stringHolder); //parse the string
-				object = stringHolder.getObject(); //save the string we parsed
-			}
+				{
+					final ObjectHolder<String> stringHolder = new ObjectHolder<String>(); //create a new string holder to populate
+					index = parseString(charSequence, index, stringHolder); //parse the string
+					object = stringHolder.getObject(); //save the string we parsed
+				}
 				break;
 			case MINUS: //minus
 			case '0':
@@ -506,11 +510,12 @@ public class JSON {
 			case '6':
 			case '7':
 			case '8':
-			case '9': {
-				final ObjectHolder<Number> numberHolder = new ObjectHolder<Number>(); //create a new object holder to populate
-				index = parseNumber(charSequence, index, numberHolder); //parse the number
-				object = numberHolder.getObject(); //save the number we parsed
-			}
+			case '9':
+				{
+					final ObjectHolder<Number> numberHolder = new ObjectHolder<Number>(); //create a new object holder to populate
+					index = parseNumber(charSequence, index, numberHolder); //parse the number
+					object = numberHolder.getObject(); //save the number we parsed
+				}
 				break;
 			case 'f':
 				index = check(charSequence, index, FALSE); //make sure this is "false"
@@ -698,11 +703,11 @@ public class JSON {
 							c = HORIZONTAL_TAB;
 							break;
 						case ESCAPED_UNICODE: //if this is an escaped version of a Unicode code point
-						{
-							final int nextIndex = index + 4; //the hex characters should be four characters long
-							c = (char)Integer.parseInt(charSequence.subSequence(index + 1, nextIndex + 1).toString(), 16); //parse the hex characters
-							index = nextIndex; //skip the hex characters
-						}
+							{
+								final int nextIndex = index + 4; //the hex characters should be four characters long
+								c = (char)Integer.parseInt(charSequence.subSequence(index + 1, nextIndex + 1).toString(), 16); //parse the hex characters
+								index = nextIndex; //skip the hex characters
+							}
 							break;
 						default: //if we didn't recognize the escaped character
 							throw new ArgumentSyntaxException("Unrecognized escaped character " + c + ".", charSequence.toString(), index);
