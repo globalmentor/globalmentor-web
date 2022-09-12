@@ -13,10 +13,6 @@
 	<name>GlobalMentor FOAF Vocabulary</name>
 	<description>GlobalMentor definitions for the FOAF language.</description>
 
-	<properties>
-		<maven.compiler.release>8</maven.compiler.release>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>com.globalmentor</groupId>

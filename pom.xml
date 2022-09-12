@@ -4,8 +4,8 @@
 
 	<parent>
 		<groupId>com.globalmentor</groupId>
-		<artifactId>globalmentor-opensource-parent</artifactId>
-		<version>8.6.0</version>
+		<artifactId>globalmentor-base</artifactId>
+		<version>0.7.1</version>
 	</parent>
 
 	<artifactId>globalmentor-web-parent</artifactId>
@@ -13,9 +13,17 @@
 	<packaging>pom</packaging>
 
 	<name>GlobalMentor Web Parent</name>
-	<description>(X/HT)ML, CSS, and JavaScript format definitions, implementations, and utilities.</description>
+	<description>(X/HT)ML, CSS, JavaScript, etc. format definitions, implementations, and utilities.</description>
 	<url>http://www.globalmentor.com/software/</url>
 	<inceptionYear>1996</inceptionYear>
+
+	<licenses>
+		<license>
+			<name>Apache-2.0</name>
+			<url>https://www.apache.org/licenses/LICENSE-2.0</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 
 	<scm>
 		<connection>scm:git:https://bitbucket.org/globalmentor/globalmentor-web.git</connection>
@@ -32,8 +40,10 @@
 		<module>css-spec</module>
 		<module>html</module>
 		<module>html-spec</module>
-		<module>mathml-spec</module>
 		<module>javascript</module>
+		<module>mathml-spec</module>
+		<module>rdf-spec</module>
+		<module>rdfa-spec</module>
 		<module>svg-spec</module>
 		<module>vocab</module>
 		<module>vocab-dcmi</module>
@@ -92,6 +102,12 @@
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-xml-spec</artifactId>
 				<version>0.6.6-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>io.clogr</groupId>
+				<artifactId>clogr</artifactId>
+				<version>0.8.0</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
