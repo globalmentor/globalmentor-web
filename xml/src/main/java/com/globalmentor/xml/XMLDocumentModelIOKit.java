@@ -30,6 +30,7 @@ import org.w3c.dom.Document;
  * @author Garret Wilson
  * @deprecated
  */
+@Deprecated
 public class XMLDocumentModelIOKit extends AbstractIOKit<XMLNodeModel<Document>> {
 
 	/** Default constructor. */

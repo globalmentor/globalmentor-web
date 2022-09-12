@@ -23,10 +23,11 @@ package com.globalmentor.xml.dom.impl.schema;
  * @see XMLSchemaSecondaryComponent
  * @deprecated
  */
+@Deprecated
 public abstract class XMLSchemaNamedComponent extends XMLSchemaComponent implements Comparable //TODO probably rename this class
 {
 
-	/** The name of the schem acomponent. */
+	/** The name of the schema component. */
 	private String name = null;
 
 	/**

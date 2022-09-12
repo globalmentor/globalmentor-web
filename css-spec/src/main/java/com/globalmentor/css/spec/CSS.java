@@ -881,6 +881,7 @@ public class CSS {
 	 * @see CSS2Properties#getDisplay()
 	 * @deprecated
 	 */
+	@Deprecated
 	public static boolean isDisplayInline(final CSSStyleDeclaration cssStyle) {
 		if(cssStyle != null) { //if a valid style is passed
 			/*TODO fix when our XMLCSSStyleDeclaration implements CSS2Properties

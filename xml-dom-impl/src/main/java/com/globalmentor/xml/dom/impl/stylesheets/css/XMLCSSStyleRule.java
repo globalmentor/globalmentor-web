@@ -36,6 +36,7 @@ import com.globalmentor.xml.dom.impl.XMLDocument;
  * @see org.w3c.dom.css.CSSRule
  * @deprecated
  */
+@Deprecated
 public class XMLCSSStyleRule extends XMLCSSRule implements CSSStyleRule { //TODO fix, Cloneable
 
 	/**

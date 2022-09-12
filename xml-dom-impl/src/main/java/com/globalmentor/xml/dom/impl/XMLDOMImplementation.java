@@ -24,6 +24,7 @@ import org.w3c.dom.*;
  * @see org.w3c.dom.DOMImplementation
  * @deprecated
  */
+@Deprecated
 class XMLDOMImplementation implements DOMImplementation {
 
 	/**

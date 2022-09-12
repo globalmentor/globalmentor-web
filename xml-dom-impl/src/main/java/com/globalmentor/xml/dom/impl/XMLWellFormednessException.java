@@ -28,6 +28,7 @@ import com.globalmentor.io.ParseUnexpectedDataException;
  * @see XMLParseException
  * @deprecated
  */
+@Deprecated
 public class XMLWellFormednessException extends XMLParseException {
 
 	/** The prefix used as a prefix for all wellformedness error string resources. */

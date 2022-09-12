@@ -28,6 +28,7 @@ import org.w3c.dom.DOMException;
  * @see org.w3c.dom.CharacterData
  * @deprecated
  */
+@Deprecated
 public abstract class XMLCharacterData extends XMLNode implements org.w3c.dom.CharacterData {
 
 	/**

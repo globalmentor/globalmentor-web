@@ -85,6 +85,7 @@ import io.clogr.Clogged;
  * @author Garret Wilson
  * @deprecated
  */
+@Deprecated
 public class XMLProcessor implements URIInputStreamable, Clogged {
 
 	/** Whether we should automatically tidy non-well-formed XML. */

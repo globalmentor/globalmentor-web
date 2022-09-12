@@ -25,6 +25,7 @@ import org.w3c.dom.events.EventException;
  * @author Garret Wilson
  * @deprecated
  */
+@Deprecated
 public class XMLEventException extends EventException {
 
 	/** The base name used for getting resources. */

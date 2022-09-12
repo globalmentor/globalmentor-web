@@ -34,6 +34,7 @@ import org.w3c.dom.css.*;
  * @author Garret Wilson
  * @deprecated
  */
+@Deprecated
 public class XMLCSSProcessor implements URIInputStreamable {
 
 	/**
@@ -518,6 +519,7 @@ public class XMLCSSProcessor implements URIInputStreamable {
 	 * @return A style declaration representing the style in the style attribute, or <code>null</code> if there is no style in the style attribute.
 	 * @deprecated
 	 */
+	@Deprecated
 	public static CSSStyleDeclaration getLocalHTMLStyle(final Element element) { //TODO fix and move to some HTML-specific package
 		final String styleValue = element.getAttributeNS(null, HTML.ATTRIBUTE_STYLE); //get the value of the style attribute
 		if(styleValue.length() != 0) { //if there is a style value

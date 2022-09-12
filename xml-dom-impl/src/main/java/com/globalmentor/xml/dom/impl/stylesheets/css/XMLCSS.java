@@ -37,6 +37,7 @@ public class XMLCSS {
 	 * @return A W3C CSS DOM tree representing the stylesheet, or <code>null</code> if no stylesheet was found or <code>namespaceURI</code> is <code>null</code>.
 	 * @deprecated
 	 */
+	@Deprecated
 	public static CSSStyleSheet getDefaultStyleSheet(final String namespaceURI) { //TODO add a URIInputStreamable argument which can get local input streams as well as external ones
 		//TODO do we want to cache stylesheets? probably not
 		if(namespaceURI != null) { //if a valid namespace was passed

@@ -21,6 +21,7 @@ package com.globalmentor.xml.dom.impl;
  * @author Garret Wilson
  * @deprecated
  */
+@Deprecated
 public interface XMLStatusReportable {
 
 	/**

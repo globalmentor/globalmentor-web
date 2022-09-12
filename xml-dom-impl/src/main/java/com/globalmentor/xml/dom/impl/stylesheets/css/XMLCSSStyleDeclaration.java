@@ -34,6 +34,7 @@ import org.w3c.dom.css.*;
  * @see org.w3c.dom.css.CSS2Properties
  * @deprecated
  */
+@Deprecated
 public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements CSSStyleDeclaration { //TODO fix, org.w3c.dom.css.CSS2Properties
 
 	/**

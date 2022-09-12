@@ -25,6 +25,7 @@ import com.globalmentor.xml.spec.XML;
  * @author Garret Wilson
  * @deprecated
  */
+@Deprecated
 public class XMLResources extends ListResourceBundle {
 
 	/** The base name used for getting resources. */

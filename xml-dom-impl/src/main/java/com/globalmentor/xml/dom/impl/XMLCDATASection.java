@@ -25,6 +25,7 @@ import static com.globalmentor.xml.spec.XML.*;
  * @see org.w3c.dom.CDATASection
  * @deprecated
  */
+@Deprecated
 public class XMLCDATASection extends XMLText implements org.w3c.dom.CDATASection {
 
 	/**

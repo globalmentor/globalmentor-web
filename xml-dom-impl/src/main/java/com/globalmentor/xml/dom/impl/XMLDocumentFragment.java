@@ -26,6 +26,7 @@ import org.w3c.dom.*;
  * @author Garret Wilson
  * @deprecated
  */
+@Deprecated
 public class XMLDocumentFragment extends XMLNode implements DocumentFragment {
 
 	/**

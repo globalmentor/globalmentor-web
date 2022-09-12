@@ -24,6 +24,7 @@ import org.w3c.dom.Element;
  * @see XMLCSSStyleRule
  * @deprecated
  */
+@Deprecated
 public class XMLCSSSelector { //TODO fix, Cloneable
 
 	/**

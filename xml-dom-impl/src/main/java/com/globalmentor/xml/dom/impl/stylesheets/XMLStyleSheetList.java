@@ -30,6 +30,7 @@ import org.w3c.dom.stylesheets.*;
  * @see StyleSheetList
  * @deprecated
  */
+@Deprecated
 public class XMLStyleSheetList extends LinkedList implements org.w3c.dom.stylesheets.StyleSheetList {
 
 	@Override

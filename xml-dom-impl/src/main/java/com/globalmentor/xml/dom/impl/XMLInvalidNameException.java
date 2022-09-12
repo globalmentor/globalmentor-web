@@ -22,6 +22,7 @@ package com.globalmentor.xml.dom.impl;
  * @see XMLSyntaxException
  * @deprecated
  */
+@Deprecated
 public class XMLInvalidNameException extends XMLSyntaxException {
 
 	/**

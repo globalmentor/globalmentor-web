@@ -46,10 +46,11 @@ import org.w3c.dom.css.*;
  * @author Garret Wilson
  * @deprecated
  */
+@Deprecated
 public abstract class AbstractXMLCSSStylesheetApplier<D, E> implements URIInputStreamable, Clogged {
 
 	/**
-	 * Determeins the base URI of the given document.
+	 * Determines the base URI of the given document.
 	 * @param document The document for which a base URI should be returned.
 	 * @return The base URI of the document, or <code>null</code> if the base URI of the document is not known.
 	 */

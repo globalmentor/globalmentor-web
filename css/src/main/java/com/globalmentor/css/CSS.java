@@ -94,12 +94,13 @@ public class CSS {
 	 * @see CSS2Properties#getDisplay()
 	 * @deprecated
 	 */
+	@Deprecated
 	public static boolean isDisplayInline(final CSSStyleDeclaration cssStyle) {
 		if(cssStyle != null) { //if a valid style is passed
-		/*TODO fix when our XMLCSSStyleDeclaration implements CSS2Properties
-					Debug.assert(cssStyle instanceof CSS2Properties, "DOM implementation does not support CSS2Properties interface for CSSStyleDeclaration"); //TODO do we want to take action if the style does not implement CSS2Properties?
-					final CSS2Properties cssProperties=(CSS2Properties)cssStyle;  //get the CSS2Properties interface, which is expected to be implemented by the DOM CSSStyleDeclaration
-		*/
+			/*TODO fix when our XMLCSSStyleDeclaration implements CSS2Properties
+						Debug.assert(cssStyle instanceof CSS2Properties, "DOM implementation does not support CSS2Properties interface for CSSStyleDeclaration"); //TODO do we want to take action if the style does not implement CSS2Properties?
+						final CSS2Properties cssProperties=(CSS2Properties)cssStyle;  //get the CSS2Properties interface, which is expected to be implemented by the DOM CSSStyleDeclaration
+			*/
 			final String displayString = cssStyle.getPropertyValue(CSS_PROP_DISPLAY); //get the display property
 			return displayString.length() == 0 || displayString.equals(CSS_DISPLAY_INLINE); //return true if there is no display string or it is equal to "inline"
 		}

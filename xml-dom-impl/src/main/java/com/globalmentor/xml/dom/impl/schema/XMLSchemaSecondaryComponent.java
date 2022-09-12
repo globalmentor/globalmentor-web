@@ -27,6 +27,7 @@ package com.globalmentor.xml.dom.impl.schema;
  * @author Garret Wilson
  * @deprecated
  */
+@Deprecated
 public abstract class XMLSchemaSecondaryComponent extends XMLSchemaNamedComponent {
 
 	/**

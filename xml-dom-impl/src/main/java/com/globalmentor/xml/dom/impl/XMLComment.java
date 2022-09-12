@@ -25,6 +25,7 @@ import static com.globalmentor.xml.spec.XML.*;
  * @see org.w3c.dom.Comment
  * @deprecated
  */
+@Deprecated
 public class XMLComment extends XMLCharacterData implements org.w3c.dom.Comment {
 
 	/**

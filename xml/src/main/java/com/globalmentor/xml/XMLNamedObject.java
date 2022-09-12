@@ -28,6 +28,7 @@ import com.globalmentor.xml.spec.XML;
  * @author Garret Wilson
  * @deprecated
  */
+@Deprecated
 public class XMLNamedObject { //TODO implement NamedObject or extend DefaultNamedObject when Java gets generics; also investigate leveraging the new QualifiedName
 
 	/** The qualified name of the object. */

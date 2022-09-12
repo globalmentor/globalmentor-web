@@ -26,6 +26,7 @@ import org.w3c.dom.*;
  * @see XMLNode
  * @deprecated
  */
+@Deprecated
 class XMLTag extends XMLNode {
 
 	/** An undefined tag. */

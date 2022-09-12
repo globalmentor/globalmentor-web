@@ -29,6 +29,7 @@ import com.globalmentor.xml.spec.XMLSchema;
  * @author Garret Wilson
  * @deprecated
  */
+@Deprecated
 public abstract class XMLSchemaTypedComponent extends XMLSchemaPrimaryComponent {
 
 	/** The name of the type of this component. */

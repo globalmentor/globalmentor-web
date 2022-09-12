@@ -30,6 +30,7 @@ import com.globalmentor.xml.dom.impl.stylesheets.XMLStyleSheet;
  * @see org.w3c.dom.css.CSSStyleSheet
  * @deprecated
  */
+@Deprecated
 public class XMLCSSStyleSheet extends XMLStyleSheet implements CSSStyleSheet {
 
 	/**

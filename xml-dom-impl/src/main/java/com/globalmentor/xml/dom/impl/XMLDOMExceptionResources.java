@@ -23,6 +23,7 @@ import java.util.ListResourceBundle;
  * @author Garret Wilson
  * @deprecated
  */
+@Deprecated
 public class XMLDOMExceptionResources extends ListResourceBundle {
 
 	public Object[][] getContents() {

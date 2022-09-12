@@ -21,6 +21,7 @@ package com.globalmentor.xml.dom.impl.stylesheets;
  * @author Garret Wilson
  * @deprecated
  */
+@Deprecated
 public class XMLStyleSheetDescriptor {	//TODO fix media type, title, etc.
 
 	/** The reference to the stylesheet's location. */

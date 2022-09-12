@@ -33,6 +33,7 @@ import org.w3c.dom.css.*;
  * @author Garret Wilson
  * @deprecated
  */
+@Deprecated
 public class XMLCSSStylesheetApplier extends AbstractXMLCSSStylesheetApplier<Document, Element> implements CSSStyleManager { //TODO do we really need this style manager interface? 
 
 	//TODO maybe move all the map storage stuff to the abstract version

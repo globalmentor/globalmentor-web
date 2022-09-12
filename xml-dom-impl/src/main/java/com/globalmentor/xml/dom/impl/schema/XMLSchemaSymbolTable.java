@@ -37,6 +37,7 @@ import io.clogr.Clogr;
  * @author Garret Wilson
  * @deprecated
  */
+@Deprecated
 public class XMLSchemaSymbolTable {
 
 	/** The name of the attribute symbol space. */

@@ -27,6 +27,7 @@ import org.w3c.dom.stylesheets.*;
  * @see org.w3c.dom.stylesheets.StyleSheet
  * @deprecated
  */
+@Deprecated
 public abstract class XMLStyleSheet implements org.w3c.dom.stylesheets.StyleSheet {
 
 	/**

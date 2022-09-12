@@ -32,6 +32,7 @@ import com.globalmentor.xml.dom.impl.XMLNode;
  * @see XMLNode
  * @deprecated
  */
+@Deprecated
 public class XMLNodeIterator implements NodeIterator {
 
 	/** The root node of this iterator. */

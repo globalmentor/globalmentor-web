@@ -28,6 +28,7 @@ import org.w3c.dom.DOMException;
  * @see org.w3c.dom.ProcessingInstruction
  * @deprecated
  */
+@Deprecated
 public class XMLProcessingInstruction extends XMLNode implements org.w3c.dom.ProcessingInstruction {
 
 	/**

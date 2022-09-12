@@ -25,6 +25,7 @@ import org.w3c.dom.css.*;
  * @see org.w3c.dom.css.CSSValue
  * @deprecated
  */
+@Deprecated
 public abstract class XMLCSSValue implements org.w3c.dom.css.CSSValue { //TODO fix, Cloneable
 
 	/**

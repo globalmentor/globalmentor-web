@@ -26,6 +26,7 @@ import org.w3c.dom.DOMException;
  * @see org.w3c.dom.DOMException
  * @deprecated
  */
+@Deprecated
 public class XMLDOMException extends DOMException {
 
 	/** The base name used for getting resources. */

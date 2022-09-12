@@ -28,6 +28,7 @@ import org.w3c.dom.TypeInfo;
  * @see org.w3c.dom.Attr
  * @deprecated
  */
+@Deprecated
 public class XMLAttribute extends XMLNode implements org.w3c.dom.Attr {
 
 	/**
