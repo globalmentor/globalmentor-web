@@ -28,45 +28,45 @@ import org.w3c.dom.css.*;
  * The class which represents a single CSS value and is used to determine or set a specific style property in a block. This class is returned from the
  * getPropertyCSSValue() of the XMLCSSStyleDeclaration class.
  * @author Garret Wilson
- * @version DOM Level 2
- * @since DOM Level 2
  * @see XMLCSSStyleDeclaration#getPropertyCSSValue(String)
  * @see org.w3c.dom.css.CSSValue
  * @deprecated
  */
-public class XMLCSSPrimitiveValue extends XMLCSSValue implements org.w3c.dom.css.CSSPrimitiveValue {	//TODO fix, Cloneable
+public class XMLCSSPrimitiveValue extends XMLCSSValue implements org.w3c.dom.css.CSSPrimitiveValue { //TODO fix, Cloneable
 
 	//Strings that specify the various accepted unit types. TODO perhaps later give these more appropriate names
 	//TODO put these in a constants file
-	public static final String UNIT_EMS_STRING = "em";
-	public static final String UNIT_EXS_STRING = "ex";
-	public static final String UNIT_PX_STRING = "px";
-	public static final String UNIT_CM_STRING = "cm";
-	public static final String UNIT_MM_STRING = "mm";
-	public static final String UNIT_IN_STRING = "in";
-	public static final String UNIT_PT_STRING = "pt";
-	public static final String UNIT_PC_STRING = "pc";
-	public static final String UNIT_DEG_STRING = "deg";
-	public static final String UNIT_RAD_STRING = "rad";
-	public static final String UNIT_GRAD_STRING = "grad";
-	public static final String UNIT_MS_STRING = "ms";
-	public static final String UNIT_S_STRING = "s";
-	public static final String UNIT_HZ_STRING = "Hz";
-	public static final String UNIT_KHZ_STRING = "kHz";
-	public static final String UNIT_PERCENTAGE_STRING = "%";
+	private static final String UNIT_EMS_STRING = "em";
+	private static final String UNIT_EXS_STRING = "ex";
+	private static final String UNIT_PX_STRING = "px";
+	private static final String UNIT_CM_STRING = "cm";
+	private static final String UNIT_MM_STRING = "mm";
+	private static final String UNIT_IN_STRING = "in";
+	private static final String UNIT_PT_STRING = "pt";
+	private static final String UNIT_PC_STRING = "pc";
+	private static final String UNIT_DEG_STRING = "deg";
+	private static final String UNIT_RAD_STRING = "rad";
+	private static final String UNIT_GRAD_STRING = "grad";
+	private static final String UNIT_MS_STRING = "ms";
+	private static final String UNIT_S_STRING = "s";
+	private static final String UNIT_HZ_STRING = "Hz";
+	private static final String UNIT_KHZ_STRING = "kHz";
+	private static final String UNIT_PERCENTAGE_STRING = "%";
 
-	/*Constructor which requires a specific primitive type.
-	@param primitiveType The primitive type of this primitive CSS value.
-	@see CSSPrimitiveValue
-	*/
+	/**
+	 * Constructor which requires a specific primitive type.
+	 * @param primitiveType The primitive type of this primitive CSS value.
+	 * @see CSSPrimitiveValue
+	 */
 	public XMLCSSPrimitiveValue(final short primitiveType) {
 		super(CSS_PRIMITIVE_VALUE); //construct the parent
 		setPrimitiveType(primitiveType); //set the primitive type of this primitive CSS value
 	}
 
-	/*Default constructor which creates a primitive type of CSS_UNKNOWN.
-	@see CSSPrimitiveValue#CSS_UNKNOWN
-	*/
+	/**
+	 * Default constructor which creates a primitive type of CSS_UNKNOWN.
+	 * @see CSSPrimitiveValue#CSS_UNKNOWN
+	 */
 	public XMLCSSPrimitiveValue() {
 		this(CSS_UNKNOWN); //do the default constructing, setting a value of CSS_UNKNOWN
 	}
@@ -77,7 +77,8 @@ public class XMLCSSPrimitiveValue extends XMLCSSValue implements org.w3c.dom.css
 	 *          <code>CSS_ATTR</code>).
 	 * @param stringValue The new string value. If the <code>stringType</code> is equal to <code>CSS_INHERIT</code>, the <code>stringValue</code> should be
 	 *          <code>inherit</code>.
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>INVALID_ACCESS_ERR: Raises if the CSS value doesn't contain a string value or if the string value can't be converted into the specified unit.
 	 *           </li>
 	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.</li>
@@ -95,7 +96,8 @@ public class XMLCSSPrimitiveValue extends XMLCSSValue implements org.w3c.dom.css
 	 *          <code>CSS_IN</code>, <code>CSS_PT</code>, <code>CSS_PC</code>, <code>CSS_DEG</code>, <code>CSS_RAD</code>, <code>CSS_GRAD</code>,
 	 *          <code>CSS_MS</code>, <code>CSS_S</code>, <code>CSS_HZ</code>, <code>CSS_KHZ</code>, <code>CSS_DIMENSION</code>).
 	 * @param floatValue The new float value.
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>INVALID_ACCESS_ERR: Raises if the attached property doesn't support the float value or the unit type.</li>
 	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.</li>
 	 *           </ul>
@@ -110,13 +112,7 @@ public class XMLCSSPrimitiveValue extends XMLCSSValue implements org.w3c.dom.css
 	/** The primitive type of this primitive CSS value.. */
 	private short PrimitiveType;
 
-	/**
-	 * Returns the unit type of the value.
-	 * @return A code representing the primitive type of the CSS value.
-	 * @see org.w3c.dom.css.CSSPrimitiveValue
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	@Override
 	public short getPrimitiveType() {
 		return PrimitiveType;
 	}
@@ -129,20 +125,14 @@ public class XMLCSSPrimitiveValue extends XMLCSSValue implements org.w3c.dom.css
 		PrimitiveType = primitiveType;
 	}
 
-	/**
-	 * Returns the parsable textual representation of the current value.
-	 * @return The parsable textual representation of the value.
-	 * @see XMLCSSValue#getCssText
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	@Override
 	public String getCssText() {
 		if(isFloatType(getPrimitiveType())) //if our value is a floating-point type
 			return String.valueOf(FloatValue) + primitiveTypeToString(getPrimitiveType()); //return a string representation of our float value, along with the notation; we don't use getFloatValue() because it does redundant checking and can thrown an error TODO what about returning units as well?
-			/*TODO fix
-						return String.valueOf(FloatValue)+primitiveTypeToString(getPrimitiveType());	//return a string representation of our float value, along with the notation; we don't use getFloatValue() because it does redundant checking and can thrown an error TODO what about returning units as well?
-						return String.valueOf(FloatValue)+primitiveTypeToString(getPrimitiveType());	//return a string representation of our float value, along with the notation; we don't use getFloatValue() because it does redundant checking and can thrown an error TODO what about returning units as well?
-			*/
+		/*TODO fix
+					return String.valueOf(FloatValue)+primitiveTypeToString(getPrimitiveType());	//return a string representation of our float value, along with the notation; we don't use getFloatValue() because it does redundant checking and can thrown an error TODO what about returning units as well?
+					return String.valueOf(FloatValue)+primitiveTypeToString(getPrimitiveType());	//return a string representation of our float value, along with the notation; we don't use getFloatValue() because it does redundant checking and can thrown an error TODO what about returning units as well?
+		*/
 		else if(getPrimitiveType() == CSS_RGBCOLOR) { //if the type we contain is an RGB color
 			final RGBColor rgbColor = getRGBColorValue(); //get the RGB color value
 			//TODO what if this is a color value which can only be stored in a rgb() format? is there even such a value, or can everything be stored in #XXXXXX format?
@@ -169,21 +159,7 @@ public class XMLCSSPrimitiveValue extends XMLCSSValue implements org.w3c.dom.css
 	//TODO check about how best to store several types here
 	private XMLCSSRGBColor rgbValue = null;
 
-	/**
-	 * Sets the float value with a specified unit. If the property attached with this value can not accept the specified unit or the float value, the value will
-	 * be unchanged and a <code>DOMException</code> will be raised.
-	 * @param unitType A unit code as defined in CSSPrimitiveValue. The unit code can only be a float unit type (e.g. <code>NUMBER</code>, <code>PERCENTAGE</code>
-	 *          , <code>CSS_EMS</code>, <code>CSS_EXS</code>, <code>CSS_PX</code>, <code>CSS_PX</code>, <code>CSS_CM</code>, <code>CSS_MM</code>,
-	 *          <code>CSS_IN</code>, <code>CSS_PT</code>, <code>CSS_PC</code>, <code>CSS_DEG</code>, <code>CSS_RAD</code>, <code>CSS_GRAD</code>,
-	 *          <code>CSS_MS</code>, <code>CSS_S</code>, <code>CSS_HZ</code>, <code>CSS_KHZ</code>, <code>CSS_DIMENSION</code>).
-	 * @param floatValue The new float value.
-	 * @throws DOMException <ul>
-	 *           <li>INVALID_ACCESS_ERR: Raises if the attached property doesn't support the float value or the unit type.</li>
-	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.</li>
-	 *           </ul>
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	@Override
 	public void setFloatValue(short unitType, float floatValue) throws DOMException {
 		//TODO check for read-only status here
 		if(isFloatType(unitType)) { //if the type they specified is compatible with a float
@@ -194,20 +170,7 @@ public class XMLCSSPrimitiveValue extends XMLCSSValue implements org.w3c.dom.css
 			;//TODO throw an INVALID_ACCESS_ERR when we find out how to do so			throw new XMLDOMException(DOMException.INDEX_SIZE_ERR, new Object[]{Integer.valueOf(index)});	//use our own type of exception to show that this index is out of bounds
 	}
 
-	/**
-	 * Returns a float value in a specified unit. If this CSS value doesn't contain a float value or can't be converted into the specified unit, a
-	 * <code>DOMException</code> is raised.
-	 * @param unitType A unit code to get the float value. The unit code can only be a float unit type (e.g. <code>CSS_NUMBER</code>, <code>CSS_PERCENTAGE</code>,
-	 *          <code>CSS_EMS</code>, <code>CSS_EXS</code>, <code>CSS_PX</code>, <code>CSS_CM</code>, <code>CSS_MM</code>, <code>CSS_IN</code>,
-	 *          <code>CSS_PT</code>, <code>CSS_PC</code>, <code>CSS_DEG</code>, <code>CSS_RAD</code>, <code>CSS_GRAD</code>, <code>CSS_MS</code>,
-	 *          <code>CSS_S</code>, <code>CSS_HZ</code>, <code>CSS_KHZ</code>, <code>CSS_DIMENSION</code>).
-	 * @return The float value in the specified unit.
-	 * @throws DOMException <ul>
-	 *           <li>INVALID_ACCESS_ERR: Raises if the CSS value doesn't contain a float value or if the float value can't be converted into the specified unit.</li>
-	 *           </ul>
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	@Override
 	public float getFloatValue(short unitType) throws DOMException {
 		if(isFloatType(unitType)) { //if the type they specified is compatible with a float
 			//TODO do the necessary conversions here, or throw an exception if we can't
@@ -217,21 +180,7 @@ public class XMLCSSPrimitiveValue extends XMLCSSValue implements org.w3c.dom.css
 			return 0;//TODO throw an INVALID_ACCESS_ERR when we find out how to do so			throw new XMLDOMException(DOMException.INDEX_SIZE_ERR, new Object[]{Integer.valueOf(index)});	//use our own type of exception to show that this index is out of bounds
 	}
 
-	/**
-	 * Sets the string value with a specified unit. If the property attached to this value can't accept the specified unit or the string value, the value will be
-	 * unchanged and a <code>DOMException</code> will be raised.
-	 * @param stringType A string code as defined above. The string code can only be a string unit type (e.g. <code>CSS_URI</code>, <code>CSS_IDENT</code>,
-	 *          <code>CSS_INHERIT</code> and <code>CSS_ATTR</code>).
-	 * @param stringValue The new string value. If the <code>stringType</code> is equal to <code>CSS_INHERIT</code>, the <code>stringValue</code> should be
-	 *          <code>inherit</code>.
-	 * @throws DOMException <ul>
-	 *           <li>INVALID_ACCESS_ERR: Raises if the CSS value doesn't contain a string value or if the string value can't be converted into the specified unit.
-	 *           </li>
-	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this property is readonly.</li>
-	 *           </ul>
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	@Override
 	public void setStringValue(short stringType, String stringValue) throws DOMException {
 		//TODO check for read-only status here
 		if(CSS_UNKNOWN == stringType || isStringType(stringType)) { //if the type they specified is compatible with a string
@@ -243,16 +192,7 @@ public class XMLCSSPrimitiveValue extends XMLCSSValue implements org.w3c.dom.css
 			;//TODO throw an INVALID_ACCESS_ERR when we find out how to do so			throw new XMLDOMException(DOMException.INDEX_SIZE_ERR, new Object[]{Integer.valueOf(index)});	//use our own type of exception to show that this index is out of bounds
 	}
 
-	/**
-	 * Returns the string value in a specified unit. If the CSS value doesn't contain a string value, a <code>DOMException</code> is raised.
-	 * @return The string value in the current unit. The current <code>valueType</code> can only be a string unit type (e.g. <code>CSS_URI</code>,
-	 *         <code>CSS_IDENT</code> and <code>CSS_ATTR</code>).
-	 * @throws DOMException <ul>
-	 *           <li>INVALID_ACCESS_ERR: Raises if the CSS value doesn't contain a string value.</li>
-	 *           </ul>
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	@Override
 	public String getStringValue() throws DOMException {
 		if(isStringType(getPrimitiveType())) //if the type we contain is compatible with a string
 			return StringValue; //return the string value
@@ -261,34 +201,17 @@ public class XMLCSSPrimitiveValue extends XMLCSSValue implements org.w3c.dom.css
 			return "";//TODO throw an INVALID_ACCESS_ERR when we find out how to do so			throw new XMLDOMException(DOMException.INDEX_SIZE_ERR, new Object[]{Integer.valueOf(index)});	//use our own type of exception to show that this index is out of bounds
 	}
 
-	/**
-	 * This method is used to get the Counter value. If this CSS value doesn't contain a counter value, a <code>DOMException</code> is raised. Modification to the
-	 * corresponding style property can be achieved using the <code>Counter</code> interface.
-	 * @return The Counter value.
-	 * @throws DOMException INVALID_ACCESS_ERR: Raises if the CSS value doesn't contain a Counter value.
-	 */
+	@Override
 	public Counter getCounterValue() throws DOMException {
 		return null;
 	} //TODO fix
 
-	/**
-	 * This method is used to get the Rect value. If this CSS value doesn't contain a rect value, a <code>DOMException</code> is raised. Modification to the
-	 * corresponding style property can be achieved using the <code>Rect</code> interface.
-	 * @return The Rect value.
-	 * @throws DOMException INVALID_ACCESS_ERR: Raises if the CSS value doesn't contain a Rect value.
-	 */
+	@Override
 	public Rect getRectValue() throws DOMException {
 		return null;
 	} //TODO fix
 
-	/**
-	 * Returns the RGB color. If this CSS value doesn't contain an RGB color value, a <code>DOMException</code> is raised. Modification to the corresponding style
-	 * property can be achieved using the <code>RGBColor</code> interface.
-	 * @return The RGB color value.
-	 * @throws DOMException <ul>
-	 *           <li>INVALID_ACCESS_ERR: Raised if the attached property can't return an RGB color value.</li>
-	 *           </ul>
-	 */
+	@Override
 	public RGBColor getRGBColorValue() throws DOMException {
 		if(getPrimitiveType() == CSS_RGBCOLOR) //if the type we contain is an RGB color
 			return rgbValue; //return the rgb value
@@ -297,18 +220,20 @@ public class XMLCSSPrimitiveValue extends XMLCSSValue implements org.w3c.dom.css
 			return null;//TODO throw an INVALID_ACCESS_ERR when we find out how to do so			throw new XMLDOMException(DOMException.INDEX_SIZE_ERR, new Object[]{Integer.valueOf(index)});	//use our own type of exception to show that this index is out of bounds
 	}
 
-	/*Determines whether or not this value is a floating point number.
-	@return <code>true</code> if the unit type is compatible with float, else <code>false</code>.
-	@see CSSPrimitiveValue
-	*/
+	/**
+	 * Determines whether or not this value is a floating point number.
+	 * @return <code>true</code> if the unit type is compatible with float, else <code>false</code>.
+	 * @see CSSPrimitiveValue
+	 */
 	public boolean isFloatType() {
 		return isFloatType(getPrimitiveType()); //return whether our type is a float type
 	}
 
-	/*Determines whether or not this value is a string.
-	@return <code>true</code> if the unit type is compatible with String, else <code>false</code>.
-	@see CSSPrimitiveValue
-	*/
+	/**
+	 * Determines whether or not this value is a string.
+	 * @return <code>true</code> if the unit type is compatible with String, else <code>false</code>.
+	 * @see CSSPrimitiveValue
+	 */
 	public boolean isStringType() {
 		return isStringType(getPrimitiveType()); //return whether our type is a string type
 	}
@@ -377,12 +302,12 @@ public class XMLCSSPrimitiveValue extends XMLCSSValue implements org.w3c.dom.css
 		}
 	}
 
-	/*Determines whether or not a particular unit type can accept a floating point number.
-
-	@param unitType A unit code as defined in CSSPrimitiveValue.
-	@return <code>true</code> if the unit type is compatible with float, else <code>false</code>.
-	@see CSSPrimitiveValue
-	*/
+	/**
+	 * Determines whether or not a particular unit type can accept a floating point number.
+	 * @param unitType A unit code as defined in CSSPrimitiveValue.
+	 * @return <code>true</code> if the unit type is compatible with float, else <code>false</code>.
+	 * @see CSSPrimitiveValue
+	 */
 	public static boolean isFloatType(final short unitType) {
 		switch(unitType) { //see which unit type they specified
 			case CSS_NUMBER: //these are acceptable float types
@@ -409,11 +334,12 @@ public class XMLCSSPrimitiveValue extends XMLCSSValue implements org.w3c.dom.css
 		}
 	}
 
-	/*Determines whether or not a particular unit type can accept a string.
-	@param unitType A unit code as defined in CSSPrimitiveValue.
-	@return <code>true</code> if the unit type is compatible with String, else <code>false</code>.
-	@see CSSPrimitiveValue
-	*/
+	/**
+	 * Determines whether or not a particular unit type can accept a string.
+	 * @param unitType A unit code as defined in CSSPrimitiveValue.
+	 * @return <code>true</code> if the unit type is compatible with String, else <code>false</code>.
+	 * @see CSSPrimitiveValue
+	 */
 	public static boolean isStringType(final short unitType) {
 		switch(unitType) { //see which unit type they specified
 			case CSS_STRING: //these are acceptable string types
@@ -464,8 +390,9 @@ public class XMLCSSPrimitiveValue extends XMLCSSValue implements org.w3c.dom.css
 	}
 
 	/**
-	 * Creates a primitive value from a value string. TODO decide if we want this in XMLCSSPrimitiveValue or XMLCSSValue.createValue() //G**del if not needed @propertyName
-	 * The name of the property to which the value will be assigned, or //TODO del if not needed <code>null</code> if the property name is not known.
+	 * Creates a primitive value from a value string. TODO decide if we want this in XMLCSSPrimitiveValue or XMLCSSValue.createValue() //G**del if not
+	 * needed @propertyName The name of the property to which the value will be assigned, or //TODO del if not needed <code>null</code> if the property name is
+	 * not known.
 	 * @param valueString The string which contains the parsable CSS primitive value.
 	 * @return The new primitive value, or <code>null</code> if the value string was not parsable. TODO do we want to instead throw an exception?
 	 */

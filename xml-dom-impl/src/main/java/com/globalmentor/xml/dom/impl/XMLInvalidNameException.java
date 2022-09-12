@@ -24,7 +24,10 @@ package com.globalmentor.xml.dom.impl;
  */
 public class XMLInvalidNameException extends XMLSyntaxException {
 
-	//TODO comment these
+	/**
+	 * Name constructor.
+	 * @param name The invalid XML name.
+	 */
 	public XMLInvalidNameException(final String name) {
 		super("Invalid XML name: \"" + name + "\".");
 	}

@@ -30,14 +30,22 @@ public class XMLStyleSheets {
 	public static final String XML_STYLESHEET_PROCESSING_INSTRUCTION = "xml-stylesheet";
 
 	//pseudo attributes
+	/** XML stylesheet pseudo attribute definition. */
 	public static final String HREF_ATTRIBUTE = "href";
+	/** XML stylesheet pseudo attribute definition. */
 	public static final String TYPE_ATTRIBUTE = "type";
+	/** XML stylesheet pseudo attribute definition. */
 	public static final String TITLE_ATTRIBUTE = "title";
+	/** XML stylesheet pseudo attribute definition. */
 	public static final String MEDIA_ATTRIBUTE = "media";
+	/** XML stylesheet pseudo attribute definition. */
 	public static final String CHARSET_ATTRIBUTE = "charset";
+	/** XML stylesheet pseudo attribute definition. */
 	public static final String ALTERNATE_ATTRIBUTE = "alternate";
 	//values for the "alternate" attribute
+	/** XML stylesheet pseudo attribute alternate value <code>yes</code>. */
 	public static final String ALTERNATE_YES = "yes";
+	/** XML stylesheet pseudo attribute alternate value <code>no</code>. */
 	public static final String ALTERNATE_NO = "no";
 
 }

@@ -30,10 +30,11 @@ import org.w3c.dom.DOMException;
  */
 public abstract class XMLCharacterData extends XMLNode implements org.w3c.dom.CharacterData {
 
-	/*Constructor which requires an owner document to be specified.
-	@param nodeType The type of node this is.
-	@param ownerDocument The document which owns this node.
-	*/
+	/**
+	 * Constructor which requires an owner document to be specified.
+	 * @param nodeType The type of node this is.
+	 * @param ownerDocument The document which owns this node.
+	 */
 	public XMLCharacterData(final short nodeType, final XMLDocument ownerDocument) {
 		super(nodeType, ownerDocument); //construct the parent class
 	}
@@ -52,77 +53,33 @@ public abstract class XMLCharacterData extends XMLNode implements org.w3c.dom.Ch
 	/** The character data of this node. */
 	private String Value = "";
 
-	/**
-	 * Returns the character data of this node.
-	 * @return The character data of this node.
-	 * @version DOM Level 1
-	 */
+	@Override
 	public String getNodeValue() throws DOMException {
 		return Value;
 	}
 
-	/**
-	 * Sets the character data of the attribute.
-	 * @param nodeValue The new character data for the attribute.
-	 * @version DOM Level 1
-	 */
+	@Override
 	public void setNodeValue(String nodeValue) throws DOMException {
 		Value = nodeValue;
 	}
 
-	/**
-	 * Returns the character data of this node.
-	 * @throws DOMException <ul>
-	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised when the node is readonly.
-	 *           <li>
-	 *           <li>DOMSTRING_SIZE_ERR: Raised when the number of characters returned would not fit in the returned string. Not used in this implementation.</li>
-	 *           </ul>
-	 * @return The character data of this node.
-	 * @see XMLNode#getNodeValue
-	 * @version DOM Level 1
-	 */
+	@Override
 	public String getData() throws DOMException {
 		return getNodeValue(); //return the character data
 	}
 
-	/**
-	 * Sets the character data of this node.
-	 * @param data The new character data for this node.
-	 *          <ul>
-	 *          <li>NO_MODIFICATION_ALLOWED_ERR: Raised when the node is readonly.
-	 *          <li>
-	 *          <li>DOMSTRING_SIZE_ERR: Raised when the number of characters returned would not fit in the returned string. Not used in this implementation.</li>
-	 *          </ul>
-	 * @see XMLNode#setNodeValue
-	 * @version DOM Level 1
-	 */
+	@Override
 	public void setData(String data) throws DOMException {
 		//TODO check about this readonly stuff
 		setNodeValue(data);
 	}
 
-	/**
-	 * Returns the number of 16-bit units that are available (the length of the data).
-	 * @return The number of characters in the character data of this node.
-	 * @version DOM Level 1
-	 */
+	@Override
 	public int getLength() {
 		return getData().length(); //return the size of our data string
 	}
 
-	/**
-	 * Extracts a range of data from the node.
-	 * @param offset Start offset of substring to extract.
-	 * @param count The number of 16-bit units to extract.
-	 * @return The specified substring. If the sum of <code>offset</code> and <code>count</code> exceeds the <code>length</code>, then all 16-bit units to the end
-	 *         of the data are returned.
-	 * @throws DOMException <ul>
-	 *           <li>INDEX_SIZE_ERR: Raised if the specified <code>offset</code> is negative or greater than the number of 16-bit units in this node's character
-	 *           data, or if the specified <code>count</code> is negative.</li>
-	 *           <li>DOMSTRING_SIZE_ERR: Raised if the specified range of text does not fit into a <code>DOMString</code> (not used in this implementation).</li>
-	 *           </ul>
-	 * @version DOM Level 1
-	 */
+	@Override
 	public String substringData(int offset, int count) throws DOMException {
 		if(offset < 0 || offset > getLength() || count < 0) //if the offset is out of bounds or the count is negative
 			throw new XMLDOMException(DOMException.INDEX_SIZE_ERR, new Object[] {Integer.valueOf(offset)}); //throw an exception
@@ -130,47 +87,19 @@ public abstract class XMLCharacterData extends XMLNode implements org.w3c.dom.Ch
 		return getData().substring(offset, endIndex); //return the substring section
 	}
 
-	/**
-	 * Appends the specified string to the end of this node's character data.
-	 * @param arg The character data to append.
-	 * @throws DOMException <ul>
-	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
-	 *           </ul>
-	 * @version DOM Level 1
-	 */
+	@Override
 	public void appendData(String arg) throws DOMException {
 		setData(getData() + arg); //add the specified character data to our character data, and change it (this will check for readonly status)
 	}
 
-	/**
-	 * Inserts character data at the specified offset.
-	 * @param offset The character offset at which to insert.
-	 * @param arg The character data to insert.
-	 * @throws DOMException <ul>
-	 *           <li>INDEX_SIZE_ERR: Raised if the specified <code>offset</code> is negative or greater than the number of 16-bit units in this node's character
-	 *           data.</li>
-	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
-	 *           </ul>
-	 * @version DOM Level 1
-	 */
+	@Override
 	public void insertData(int offset, String arg) throws DOMException {
 		if(offset < 0 || offset > getLength()) //if the offset is out of bounds
 			throw new XMLDOMException(DOMException.INDEX_SIZE_ERR, new Object[] {Integer.valueOf(offset)}); //throw an exception
 		setData(substringData(0, offset) + arg + substringData(offset, getLength() - offset)); //construct and set the new data, which will check for readonly status
 	}
 
-	/**
-	 * Removes a range of 16-bit units from the node.
-	 * @param offset The offset from which to start removing.
-	 * @param count The number of 16-bit units to delete. If the sum of <code>offset</code> and <code>count</code> exceeds <code>length</code> then all 16-bit
-	 *          units from <code>offset</code> to the end of the data are deleted.
-	 * @throws DOMException <ul>
-	 *           <li>INDEX_SIZE_ERR: Raised if the specified <code>offset</code> is negative or greater than the number of 16-bit units in the node's character
-	 *           data, or if the specified <code>count</code> is negative.</li>
-	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
-	 *           </ul>
-	 * @version DOM Level 1
-	 */
+	@Override
 	public void deleteData(int offset, int count) throws DOMException {
 		if(offset < 0 || offset > getLength() || count < 0) //if the offset is out of bounds or the count is negative
 			throw new XMLDOMException(DOMException.INDEX_SIZE_ERR, new Object[] {Integer.valueOf(offset)}); //throw an exception
@@ -178,20 +107,7 @@ public abstract class XMLCharacterData extends XMLNode implements org.w3c.dom.Ch
 		setData(substringData(0, offset) + substringData(secondIndex, getLength() - secondIndex)); //construct the new data without the substring, and set the new data, which will check for readonly status
 	}
 
-	/**
-	 * Replaces the characters starting at the specified 16-bit unit offset with the specified string.
-	 * @param offset The offset from which to start replacing.
-	 * @param count The number of 16-bit units to replace. If the sum of <code>offset</code> and <code>count</code> exceeds the number of characters, then all
-	 *          16-bit units to the end of the data are replaced (i.e., the effect is the same as a remove method call with the same range, followed by an append
-	 *          method invocation).
-	 * @param arg The character data with which the range must be replaced.
-	 * @throws DOMException <ul>
-	 *           <li>INDEX_SIZE_ERR: Raised if the specified <code>offset</code> is negative or greater than the number of 16-bit units in the node's character
-	 *           data, or if the specified <code>count</code> is negative.</li>
-	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.</li>
-	 *           </ul>
-	 * @version DOM Level 1
-	 */
+	@Override
 	public void replaceData(int offset, int count, String arg) throws DOMException {
 		if(offset < 0 || offset > getLength() || count < 0) //if the offset is out of bounds or the count is negative
 			throw new XMLDOMException(DOMException.INDEX_SIZE_ERR, new Object[] {Integer.valueOf(offset)}); //throw an exception

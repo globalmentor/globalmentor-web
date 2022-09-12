@@ -34,7 +34,7 @@ import static com.globalmentor.xml.spec.XML.*;
  */
 public class XMLReader extends ParseReader {
 
-	public boolean tidy = false; //TODO fix, probably by adding a listener to XMLProcessor or (maybe better) by an anonymous class in XMLProcessor
+	boolean tidy = false; //TODO fix, probably by adding a listener to XMLProcessor or (maybe better) by an anonymous class in XMLProcessor
 
 	/**
 	 * Constructor that specifies another reader.
@@ -157,8 +157,8 @@ public class XMLReader extends ParseReader {
 					buffer[charIndex] = ' '; //replace the invalid character with a space TODO use a constant
 				else
 					//if tidying is not enabled, report an error for the invalid character
-					throw new XMLWellFormednessException(XMLWellFormednessException.INVALID_CHARACTER,
-							new Object[] { "#x" + Integer.toHexString((int)buffer[charIndex]) }, getLineIndex(charIndex), getCharIndex(charIndex), getName()); //show that this character reference is invalid TODO tell exactly where the character appears in the file
+					throw new XMLWellFormednessException(XMLWellFormednessException.INVALID_CHARACTER, new Object[] {"#x" + Integer.toHexString((int)buffer[charIndex])},
+							getLineIndex(charIndex), getCharIndex(charIndex), getName()); //show that this character reference is invalid TODO tell exactly where the character appears in the file
 			}
 		}
 	}

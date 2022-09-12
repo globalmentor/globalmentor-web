@@ -34,14 +34,23 @@ public class XMLSchema {
 	public static final URI XML_SCHEMA_NAMESPACE_URI = URI.create(XML_SCHEMA_NAMESPACE_URI_STRING);
 
 	//XML schema elements
+
+	/** XML schema element local name definition. */
 	public static final String ELEMENT_ANNOTATION = "annotation";
+	/** XML schema element local name definition. */
 	public static final String ELEMENT_APPINFO = "appinfo";
+	/** XML schema element local name definition. */
 	public static final String ELEMENT_ATTRIBUTE_GROUP = "attributeGroup";
+	/** XML schema element local name definition. */
 	public static final String ELEMENT_DOCUMENTATION = "documentation";
+	/** XML schema element local name definition. */
 	public static final String ELEMENT_ELEMENT = "element";
 
 	//XML schema attributes
+
+	/** XML schema attribute local name definition. */
 	public static final String ATTRIBUTE_TARGET_NAMESPACE = "targetNamespace";
+	/** XML schema attribute local name definition. */
 	public static final String ATTRIBUTE_NAME = "name";
 
 	//XML schema datatype names TODO maybe put these in a separate datatype class

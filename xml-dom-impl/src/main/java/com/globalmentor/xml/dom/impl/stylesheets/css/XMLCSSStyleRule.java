@@ -36,7 +36,7 @@ import com.globalmentor.xml.dom.impl.XMLDocument;
  * @see org.w3c.dom.css.CSSRule
  * @deprecated
  */
-public class XMLCSSStyleRule extends XMLCSSRule implements CSSStyleRule {	//TODO fix, Cloneable
+public class XMLCSSStyleRule extends XMLCSSRule implements CSSStyleRule { //TODO fix, Cloneable
 
 	/**
 	 * Constructor which requires a parent stylesheet to be specified.
@@ -47,22 +47,12 @@ public class XMLCSSStyleRule extends XMLCSSRule implements CSSStyleRule {	//TODO
 		super(STYLE_RULE, parentStyleSheet); //construct the parent class
 	}
 
-	/**
-	 * @return A parsable string representation of this style rule. For the DOM version, see getCssText().
-	 * @see XMLCSSStyleRule#getCssText
-	 */
+	@Override
 	public String toString() {
 		return getCssText();
 	}
 
-	/** The parsable textual representation of the rule. */
-
-	/**
-	 * Returns the parsable textual representation of the rule. This reflects the current state of the rule and not its initial value.
-	 * @return The parsable textual representation of the rule.
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	@Override
 	public String getCssText() {
 		final StringBuilder stringBuilder = new StringBuilder(); //create a new string buffer to collect our data
 		stringBuilder.append(getSelectorText()); //add the selector text
@@ -132,7 +122,8 @@ public class XMLCSSStyleRule extends XMLCSSRule implements CSSStyleRule {	//TODO
 	 * Adds a single selector (which may be contextual) to this style rule.
 	 * @param selectorText A selector (which may consist of several context strings) in the "name.class" format; either the name portion or the class portion must
 	 *          be specified.
-	 * @throws DOMException <ul>
+	 * @throws DOMException
+	 *           <ul>
 	 *           <li>SYNTAX_ERR: Raised if the specified CSS string value has a syntax error and is unparsable.</li>
 	 *           </ul>
 	 */
@@ -150,7 +141,7 @@ public class XMLCSSStyleRule extends XMLCSSRule implements CSSStyleRule {	//TODO
 				tagClass = contextText.substring(separatorPos + 1).trim(); //the trimmed second part will be the name TODO what about beginning space here?
 			}
 			if(tagName.length() == 0 && tagClass.length() == 0) //if this selector has neither name nor class
-				throw new XMLDOMException(XMLDOMException.SYNTAX_ERR, new Object[] { selectorText }); //show that this selector text has a syntax error
+				throw new XMLDOMException(XMLDOMException.SYNTAX_ERR, new Object[] {selectorText}); //show that this selector text has a syntax error
 			selectorContextList.add(new XMLCSSSelector(tagName, tagClass)); //add a new selector for this context
 		}
 		addSelector((XMLCSSSelector[])selectorContextList.toArray(new XMLCSSSelector[selectorContextList.size()])); //convert the list to an array and add it as one of our selectors
@@ -162,7 +153,7 @@ public class XMLCSSStyleRule extends XMLCSSRule implements CSSStyleRule {	//TODO
 	 * @see XMLCSSSelector
 	 */
 	public void addSelector(final XMLCSSSelector selector) {
-		addSelector(new XMLCSSSelector[] { selector }); //create a new array and add it to our list
+		addSelector(new XMLCSSSelector[] {selector}); //create a new array and add it to our list
 	}
 
 	/**
@@ -174,13 +165,7 @@ public class XMLCSSStyleRule extends XMLCSSRule implements CSSStyleRule {	//TODO
 		getSelectorArrayList().add(selectorArray); //add this array to our list
 	}
 
-	/**
-	 * Returns the textual representation of the selector for the rule set.
-	 * @return The textual representation of the selector for the rule set.
-	 * @see XMLCSSSelector
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	@Override
 	public String getSelectorText() {
 		final StringBuilder stringBuilder = new StringBuilder(); //create a new string builder for constructing the text
 		for(int selectorIndex = 0; selectorIndex < getSelectorArrayList().size(); ++selectorIndex) { //look at each selector array
@@ -198,16 +183,7 @@ public class XMLCSSStyleRule extends XMLCSSRule implements CSSStyleRule {	//TODO
 		return stringBuilder.toString(); //return the text we constructed
 	}
 
-	/**
-	 * Sets the textual representation of the selector for the rule set.
-	 * @throws DOMException <ul>
-	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this rule is readonly.</li>
-	 *           <li>SYNTAX_ERR: Raised if the specified CSS string value has a syntax error and is unparsable.</li>
-	 *           </ul>
-	 * @see XMLCSSSelector
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	@Override
 	public void setSelectorText(String selectorText) throws DOMException {
 		//TODO check read-only status here
 
@@ -219,12 +195,7 @@ public class XMLCSSStyleRule extends XMLCSSRule implements CSSStyleRule {	//TODO
 	 */
 	private XMLCSSStyleDeclaration Style = new XMLCSSStyleDeclaration(); //create a default style
 
-	/**
-	 * Returns the declaration block of this rule set.
-	 * @return The declaration block of this rule set.
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	@Override
 	public CSSStyleDeclaration getStyle() {
 		return Style;
 	}

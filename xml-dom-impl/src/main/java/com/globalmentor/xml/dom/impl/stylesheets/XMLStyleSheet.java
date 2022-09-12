@@ -45,33 +45,19 @@ public abstract class XMLStyleSheet implements org.w3c.dom.stylesheets.StyleShee
 		ParentStyleSheet = parentStyleSheet; //set the parent stylesheet
 	}
 
-	/**
-	 * This specifies the style sheet language for this style sheet. The style sheet language is specified as a content type (e.g. "text/css"). The content type
-	 * is often specified in the <code>ownerNode</code>. A list of registered content types can be found at
-	 * ftp://ftp.isi.edu/in-notes/iana/assignments/media-types/. Also see the type attribute definition for the <code>LINK</code> element in HTML 4.0, and the
-	 * type pseudo-attribute for the XML style sheet processing instruction.
-	 */
+	@Override
 	public String getType() {
 		return "text/css";
 	} //TODO fix
 
-	/**
-	 * <code>false</code> if the style sheet is applied to the document. <code>true</code> if it is not. Modifying this attribute may cause a new resolution of
-	 * style for the document. For the , the medium has a higher priority than the <code>disabled</code> attribute. So, if the media doesn't apply to the current
-	 * user agent, the <code>disabled</code> attribute is ignored.
-	 */
+	@Override
 	public boolean getDisabled() {
 		return false;
 	} //TODO fix
 
+	@Override
 	public void setDisabled(boolean disabled) {
 	} //TODO fix
-
-	/**
-	 * The node that associates this style sheet with the document. For HTML, this may be the corresponding <code>LINK</code> or <code>STYLE</code> element. For
-	 * XML, it may be the linking processing instruction. For style sheets that are included by other style sheets, the value of this attribute is
-	 * <code>null</code>.
-	 */
 
 	/**
 	 * The node that associates this stylesheet with the document, such as an HTML LINK or STYLE element, or an XML linking processing instruction. If the
@@ -79,12 +65,7 @@ public abstract class XMLStyleSheet implements org.w3c.dom.stylesheets.StyleShee
 	 */
 	private Node OwnerNode = null;
 
-	/**
-	 * The node that associates this stylesheet with the document, such as an HTML LINK or STYLE element, or an XML linking processing instruction.
-	 * @return The owner node, or <code>null</code> if this stylesheet was included by another stylesheet.
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	@Override
 	public Node getOwnerNode() {
 		return OwnerNode;
 	}
@@ -94,38 +75,22 @@ public abstract class XMLStyleSheet implements org.w3c.dom.stylesheets.StyleShee
 	 */
 	private StyleSheet ParentStyleSheet = null;
 
-	/**
-	 * The including stylesheet if this stylesheet was included from another stylesheet.
-	 * @return The parent stylesheet, or <code>null</code> if this stylesheet has no parent.
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	@Override
 	public StyleSheet getParentStyleSheet() {
 		return ParentStyleSheet;
 	}
 
-	/**
-	 * If the style sheet is a linked style sheet, the value of its attribute is its location. For inline style sheets, the value of this attribute is
-	 * <code>null</code>. See the href attribute definition for the <code>LINK</code> element in HTML 4.0, and the href pseudo-attribute for the XML style sheet
-	 * processing instruction.
-	 */
+	@Override
 	public String getHref() {
 		return null;
 	} //TODO fix
 
-	/**
-	 * The advisory title. The title is often specified in the <code>ownerNode</code>. See the title attribute definition for the <code>LINK</code> element in
-	 * HTML 4.0, and the title pseudo-attribute for the XML style sheet processing instruction.
-	 */
+	@Override
 	public String getTitle() {
 		return "";
 	} //TODO fix
 
-	/**
-	 * The intended destination media for style information. The media is often specified in the <code>ownerNode</code>. If no media has been specified, the
-	 * <code>MediaList</code> will be empty. See the media attribute definition for the <code>LINK</code> element in HTML 4.0, and the media pseudo-attribute for
-	 * the XML style sheet processing instruction .
-	 */
+	@Override
 	public MediaList getMedia() {
 		return null;
 	} //TODO fix

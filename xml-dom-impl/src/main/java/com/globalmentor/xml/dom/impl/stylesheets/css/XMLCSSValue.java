@@ -22,12 +22,10 @@ import org.w3c.dom.css.*;
 /**
  * The class which represents a simple or complex CSS value
  * @author Garret Wilson
- * @version DOM Level 2
- * @since DOM Level 2
  * @see org.w3c.dom.css.CSSValue
  * @deprecated
  */
-public abstract class XMLCSSValue implements org.w3c.dom.css.CSSValue {	//TODO fix, Cloneable
+public abstract class XMLCSSValue implements org.w3c.dom.css.CSSValue { //TODO fix, Cloneable
 
 	/**
 	 * Constructor which requires a value type.
@@ -41,13 +39,7 @@ public abstract class XMLCSSValue implements org.w3c.dom.css.CSSValue {	//TODO f
 	/** The type of CSS value this is. */
 	private short ValueType = CSS_CUSTOM;
 
-	/**
-	 * Returns a the type of value.
-	 * @return A code representing the type of the CSS value.
-	 * @see org.w3c.dom.css.CSSValue
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	@Override
 	public short getCssValueType() {
 		return ValueType;
 	}
@@ -60,12 +52,7 @@ public abstract class XMLCSSValue implements org.w3c.dom.css.CSSValue {	//TODO f
 	/** The string representation of the current value. */
 	private String CssText = "";
 
-	/**
-	 * Returns the parsable textual representation of the current value.
-	 * @return The parsable textual representation of the value.
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	//TODO @Override
 	//TODO fix in derived classes	public String getCssText() {return CssText;}
 
 	/**
@@ -76,15 +63,7 @@ public abstract class XMLCSSValue implements org.w3c.dom.css.CSSValue {	//TODO f
 		return getCssText(); //return the text of this value
 	}
 
-	/**
-	 * Sets the parsable textual representation of the value.
-	 * @throws DOMException <ul>
-	 *           <li>SYNTAX_ERR: Raised if the specified CSS string value has a syntax error and is unparsable.</li>
-	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if the rule is readonly.</li>
-	 *           </ul>
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	@Override
 	public void setCssText(String cssText) throws DOMException {
 		//TODO we need to just parse the text here, probably
 

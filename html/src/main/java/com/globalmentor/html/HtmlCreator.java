@@ -40,8 +40,8 @@ import static java.nio.charset.StandardCharsets.*;
  */
 public class HtmlCreator implements Clogged {
 
-	protected long totalLineCount = 0; //TODO testing; comment; tidy
-	protected long totalLineLengthSum = 0;
+	private long totalLineCount = 0; //TODO testing; comment; tidy
+	private long totalLineLengthSum = 0;
 
 	/** The list of buffered lines for analyzing. */
 	private final LinkedList lineBuffer = new LinkedList();

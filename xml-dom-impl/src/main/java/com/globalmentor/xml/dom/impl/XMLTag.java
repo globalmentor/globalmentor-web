@@ -83,14 +83,7 @@ class XMLTag extends XMLNode {
 		return AttributeMap;
 	} //TODO should we just have the DOM version of getAttributes() or whatever it is? tidy up these comments, too
 
-	/**
-	 * Returns a <code>NamedNodeMap</code> containing the attributes of this element.
-	 * @return A map of attributes of this element node.
-	 * @see Attribute
-	 * @see NamedNodeMap
-	 * @see XMLNode#getAttributes
-	 * @version DOM Level 1
-	 */
+	@Override
 	public NamedNodeMap getAttributes() {
 		return getAttributeXMLNamedNodeMap();
 	}
@@ -103,9 +96,10 @@ class XMLTag extends XMLNode {
 		AttributeMap = attributeMap;
 	}
 
-	/*Constructor which requires an owner document to be specified.
-	@param ownerDocument The document which owns this node.
-	*/
+	/**
+	 * Constructor which requires an owner document to be specified.
+	 * @param ownerDocument The document which owns this node.
+	 */
 	public XMLTag(final XMLDocument ownerDocument) {
 		super(XMLNode.TAG_NODE, ownerDocument); //construct the parent class
 	}
@@ -119,7 +113,7 @@ class XMLTag extends XMLNode {
 		stringBuilder.append(getNodeName()); //append the name of the tag
 		if(getTagType() == EMPTY_ELEMENT_TAG) //if this is an empty element tag
 			stringBuilder.append(END_TAG_IDENTIFIER_CHAR); //add the character for identifying the tag as an empty element tag
-			//TODO should we	add a space above for HTML compatibility for empty element tags?
+		//TODO should we	add a space above for HTML compatibility for empty element tags?
 		stringBuilder.append(TAG_END); //append the ending character for a tag
 		return stringBuilder.toString(); //convert the string buffer to a string and return it
 	}

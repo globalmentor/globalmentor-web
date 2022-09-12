@@ -24,12 +24,10 @@ import com.globalmentor.xml.dom.impl.XMLDocument;
 /**
  * The class which forms a basis for all CSS rules, including rule sets and at-rules.
  * @author Garret Wilson
- * @version DOM Level 2
- * @since DOM Level 2
  * @see org.w3c.dom.css.CSSRule
  * @deprecated
  */
-public abstract class XMLCSSRule implements CSSRule {	//TODO fix, Cloneable
+public abstract class XMLCSSRule implements CSSRule { //TODO fix, Cloneable
 
 	/**
 	 * Constructor which requires a parent stylesheet to be specified.
@@ -45,39 +43,21 @@ public abstract class XMLCSSRule implements CSSRule {	//TODO fix, Cloneable
 	/** The type of CSS rule this is. */
 	private short Type = UNKNOWN_RULE;
 
-	/**
-	 * Returns the type of CSS rule.
-	 * @return A code representing the type of the CSS rule.
-	 * @see org.w3c.dom.css.CSSRule
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	@Override
 	public short getType() {
 		return Type;
 	}
 
-	/** The parsable textual representation of the rule. */
+	//	/** The parsable textual representation of the rule. */
 	//TODO fix	private String CssText="";
 
-	/**
-	 * Returns the parsable textual representation of the rule. This reflects the current state of the rule and not its initial value.
-	 * @return The parsable textual representation of the rule.
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	//	/**
+	//	 * Returns the parsable textual representation of the rule. This reflects the current state of the rule and not its initial value.
+	//	 * @return The parsable textual representation of the rule.
+	//	 */
 	//TODO fix	public abstract String getCssText();
 
-	/**
-	 * Sets the parsable textual representation of the rule. This reflects the current state of the rule and not its initial value.
-	 * @throws DOMException <ul>
-	 *           <li>HIERARCHY_REQUEST_ERR: Raised if the rule cannot be inserted at this point in the style sheet.</li>
-	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if the rule is readonly.</li>
-	 *           <li>SYNTAX_ERR: Raised if the specified CSS string value has a syntax error and is unparsable.</li>
-	 *           <li>INVALID_MODIFICATION_ERR: Raised if the specified CSS string value represents a different type of rule than the current one.</li>
-	 *           </ul>
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	@Override
 	public void setCssText(String cssText) throws DOMException {
 		//TODO we need to just parse the text here, probably
 
@@ -91,13 +71,7 @@ public abstract class XMLCSSRule implements CSSRule {	//TODO fix, Cloneable
 	/** The stylesheet which contains this rule. */
 	private XMLCSSStyleSheet ParentStyleSheet = null;
 
-	/**
-	 * Returns the stylesheet which contains this rule.
-	 * @return The stylesheet which contains this rule.
-	 * @see CSSStyleSheet
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	@Override
 	public CSSStyleSheet getParentStyleSheet() {
 		return ParentStyleSheet;
 	}
@@ -116,20 +90,13 @@ public abstract class XMLCSSRule implements CSSRule {	//TODO fix, Cloneable
 	 * @return The document which owns this node, or <code>null</code> if there is no owner.
 	 * @see XMLDocument
 	 * @see XMLNode#getOwnerXMLDocument
-	 * @version DOM Level 2
 	 */
 	//TODO fix	public Document getOwnerDocument() {return OwnerDocument;}
 
 	/** The rule which contains this rule. */
 	private XMLCSSRule ParentRule = null;
 
-	/**
-	 * Returns this rule's parent rule, if this rule is contained inside another rule (e.g. a style rule inside a @media block). If this rule is not nested inside
-	 * any other block, this returns <code>null</code>.
-	 * @return The containing rule, or <code>null</code> if this rule has no parent rule.
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	@Override
 	public CSSRule getParentRule() {
 		return ParentRule;
 	}

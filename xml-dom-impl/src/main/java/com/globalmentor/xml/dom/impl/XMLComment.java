@@ -27,9 +27,10 @@ import static com.globalmentor.xml.spec.XML.*;
  */
 public class XMLComment extends XMLCharacterData implements org.w3c.dom.Comment {
 
-	/*Constructor which requires an owner document to be specified.
-	@param ownerDocument The document which owns this node.
-	*/
+	/**
+	 * Constructor which requires an owner document to be specified.
+	 * @param ownerDocument The document which owns this node.
+	 */
 	public XMLComment(final XMLDocument ownerDocument) {
 		super(XMLNode.COMMENT_NODE, ownerDocument); //construct the parent class
 		setNodeName(COMMENT_NODE_NAME); //set the appropriate name for this type of character data node

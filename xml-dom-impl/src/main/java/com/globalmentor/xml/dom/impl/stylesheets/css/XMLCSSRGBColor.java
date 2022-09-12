@@ -37,8 +37,6 @@ import org.w3c.dom.css.*;
  * <p>
  * See also the <a href='http://www.w3.org/TR/2000/REC-DOM-Level-2-Style-20001113'>Document Object Model (DOM) Level 2 Style Specification</a>.
  * @author Garret Wilson
- * @version DOM Level 2
- * @since DOM Level 2
  * @see org.w3c.dom.css.RGBColor
  * @deprecated
  */

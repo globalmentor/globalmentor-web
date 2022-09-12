@@ -139,6 +139,7 @@ public class DefaultEntityResolver implements EntityResolver {
 		return INSTANCE;
 	}
 
+	/** No-args constructor. */
 	protected DefaultEntityResolver() {
 	}
 

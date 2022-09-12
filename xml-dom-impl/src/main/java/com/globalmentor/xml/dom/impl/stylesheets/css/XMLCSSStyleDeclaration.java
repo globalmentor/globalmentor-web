@@ -44,12 +44,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 		return getCssText();
 	}
 
-	/**
-	 * Returns he parsable textual representation of the declaration block, excluding the surrounding curly braces.
-	 * @return The textual representation of the declaration block.
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	@Override
 	public String getCssText() {
 		/*TODO del or fix all this
 				String rulePostfix,
@@ -75,40 +70,19 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 		return stringBuilder.toString(); //return the string we constructed
 	}
 
-	/**
-	 * Sets the parsable textual representation of the the declaration block (excluding the surrounding curly braces). Setting this attribute will result in the
-	 * parsing of the new value and resetting of the properties in the declaration block.
-	 * @param cssText The textual representation of the declaration block, excluding the surrounding curly braces.
-	 * @throws DOMException
-	 *           <ul>
-	 *           <li>SYNTAX_ERR: Raised if the specified CSS string value has a syntax error and is unparsable.</li>
-	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this media list is readonly.</li>
-	 *           </ul>
-	 */
+	@Override
 	public void setCssText(String cssText) throws DOMException {
 		//TODO check the string for a syntax error
 		//TODO check for read-only status
 		//TODO fix		return CssText;	//return the text
 	}
 
-	/**
-	 * Returns the number of properties that have been explicitly set in this declaration block.
-	 * @return The number of properties that have been explicitly set in this declaration block.
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	@Override
 	public int getLength() {
 		return size();
 	}
 
-	/**
-	 * Retrieves properties that have been explicitly set in this declaration block. The order of the properties retrieved using this method does not have to be
-	 * the order in which they were set. This method can be used to iterate over all properties in this declaration block.
-	 * @param index Index of the property name to retrieve.
-	 * @return The name of the property at this ordinal position, or the empty string if no property exists at this position.
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	@Override
 	public String item(int index) {
 		try {
 			return (String)keySet().toArray()[index]; //return the object at the index TODO see if there's a more efficient way of doing this
@@ -129,14 +103,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 		}
 	}
 
-	/**
-	 * Retrieves the value of a CSS property if it has been explicitly set within this declaration block.
-	 * @param propertyName The name of the CSS property. See the CSS property index.
-	 * @return Returns the value of the property if it has been explicitly set for this declaration block, or the empty string if the property has not been set.
-	 * @see XMLCSSStyleDeclaration#setProperty
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	@Override
 	public String getPropertyValue(String propertyName) {
 		if(containsKey(propertyName)) //if we have the specified property
 			return getPropertyCSSValue(propertyName).getCssText(); //return the text of the value
@@ -145,35 +112,12 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 			return ""; //return the empty string
 	}
 
-	/**
-	 * Retrieves the object representation of the value of a CSS property if it has been explicitly set within this declaration block. This method returns
-	 * <code>null</code> if the property is a shorthand property. Shorthand property values can only be accessed and modified as strings, using the
-	 * getPropertyValue() and setProperty() methods.
-	 * @param propertyName The name of the CSS property. See the CSS property index.
-	 * @return Returns the value of the property if it has been explicitly set for this declaration block, or <code>null</code> if the property has not been set.
-	 * @see XMLCSSStyleDeclaration#getPropertyValue
-	 * @see XMLCSSStyleDeclaration#setProperty
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	@Override
 	public CSSValue getPropertyCSSValue(String propertyName) {
 		return get(propertyName); //get the item with the specified property name
 	}
 
-	/**
-	 * Removes a CSS property if it has been explicitly set within this declaration block.
-	 * @param propertyName The name of the CSS property. See the CSS property index.
-	 * @return Returns the value of the property if it has been explicitly set for this declaration block, or the empty string if the property has not been set or
-	 *         the property name does not correspond to a valid CSS2 property.
-	 * @throws DOMException
-	 *           <ul>
-	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this declaration is readonly.</li>
-	 *           </ul>
-	 * @see XMLCSSStyleDeclaration#getPropertyCSSValue
-	 * @see XMLCSSStyleDeclaration#getPropertyValue
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	@Override
 	public String removeProperty(String propertyName) throws DOMException {
 		//TODO check read-only status here
 		//TODO what about checking the propertyName to make sure it's a valid CSS property
@@ -185,15 +129,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 			return ""; //return the empty string
 	}
 
-	/**
-	 * Retrieves the priority of a CSS property (e.g. the "important" qualifier) if the property has been explicitly set in this declaration block.
-	 * @param propertyName The name of the CSS property. See the CSS property index.
-	 * @return A string representing the priority (e.g. "important") if one exists, or the empty string if none exists.
-	 * @see XMLCSSStyleDeclaration#getPropertyCSSValue
-	 * @see XMLCSSStyleDeclaration#getPropertyValue
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	@Override
 	public String getPropertyPriority(String propertyName) {
 		final XMLCSSValue cssValue = (XMLCSSValue)getPropertyCSSValue(propertyName); //see if we have a property with this name
 		if(cssValue != null) //if there is a value with this name
@@ -203,19 +139,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 			return ""; //return the empty string
 	}
 
-	/**
-	 * Sets a property value and priority within this declaration block.
-	 * @param propertyName The name of the CSS property. See the CSS property index.
-	 * @param value The new value of the property.
-	 * @param priority The new priority of the property (e.g. "important").
-	 * @throws DOMException
-	 *           <ul>
-	 *           <li>SYNTAX_ERR: Raised if the specified value has a syntax error and is unparsable.</li>
-	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this declaration is readonly.</li>
-	 *           </ul>
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	@Override
 	//TODO right now, all string values passed will be interpreted as idents -- how can we determine if they are strings? should we examine whether they could be an ident or not, or should we allow quotes to be passed here?
 	public void setProperty(String propertyName, String value, String priority) throws DOMException {
 		//TODO check for read-only status here
@@ -402,12 +326,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 	 */
 	private CSSRule ParentRule = null;
 
-	/**
-	 * Returns the CSS rule that contains this declaration block or <code>null</code> if this CSSStyleDeclaration is not attached to a <code>CSSRule</code>.
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
-
+	@Override
 	//TODO fix it so that whenever a StyleRule adds a CSSSStyleDeclaration, this value gets set
 	public CSSRule getParentRule() {
 		return ParentRule;
@@ -720,11 +639,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 	    public void setBorderWidth(String borderWidth) throws DOMException;
 	*/
 
-	/**
-	 * @return The CSS2 "color" property.
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	/** @return The CSS2 "color" property. */
 	public String getColor() {
 		return getPropertyValue(CSS_PROP_COLOR);
 	}
@@ -744,11 +659,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
 	//TODO add other properties here
 
-	/**
-	 * @return The CSS2 "display" property.
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	/** @return The CSS2 "display" property. */
 	public String getDisplay() {
 		return getPropertyValue(CSS_PROP_DISPLAY);
 	}
@@ -783,11 +694,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
 	//TODO add other properties here
 
-	/**
-	 * @return The CSS2 "font-family" property.
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	/** @return The CSS2 "font-family" property. */
 	public String getFontFamily() {
 		return getPropertyValue(CSS_PROP_FONT_FAMILY);
 	}
@@ -812,11 +719,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 		setProperty(CSS_PROP_FONT_FAMILY, fontFamily); //set the property
 	}
 
-	/**
-	 * @return The CSS2 "font-size" property.
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	/** @return The CSS2 "font-size" property. */
 	public String getFontSize() {
 		return getPropertyValue(CSS_PROP_FONT_SIZE);
 	}
@@ -850,11 +753,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
 	//TODO add other properties here
 
-	/**
-	 * @return The CSS2 "font-style" property.
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	/** @return The CSS2 "font-style" property. */
 	public String getFontStyle() {
 		return getPropertyValue(CSS_PROP_FONT_STYLE);
 	}
@@ -879,11 +778,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
 	//TODO add other properties here
 
-	/**
-	 * @return The CSS2 "font-weight" property.
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	/** @return The CSS2 "font-weight" property. */
 	public String getFontWeight() {
 		return getPropertyValue(CSS_PROP_FONT_WEIGHT);
 	}
@@ -909,11 +804,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
 	//TODO add other properties here
 
-	/**
-	 * @return The CSS2 "line-height" property.
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	/** @return The CSS2 "line-height" property. */
 	public String getLineHeight() {
 		return getPropertyValue(CSS_PROP_LINE_HEIGHT);
 	}
@@ -933,11 +824,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
 	//TODO add other properties here
 
-	/**
-	 * @return The CSS2 "list-style" property.
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	/** @return The CSS2 "list-style" property. */
 	//TODO fix	public String getListStyle() {return getPropertyValue(CSS_PROP_LIST_STYLE);
 
 	/**
@@ -1154,11 +1041,7 @@ public class XMLCSSStyleDeclaration extends HashMap<String, CSSValue> implements
 
 	//TODO add other properties here
 
-	/**
-	 * @return The CSS2 "text-indent" property.
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	/** @return The CSS2 "text-indent" property. */
 	public String getTextIndent() {
 		return getPropertyValue(CSS_PROP_TEXT_INDENT);
 	}

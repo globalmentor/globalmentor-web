@@ -62,11 +62,7 @@ public class XMLDocumentType extends XMLNode implements DocumentType {
 		return clone; //return our cloned node
 	}
 
-	/**
-	 * Returns the name of the DTD (i.e. the name immediately following the DOCTYPE keyword).
-	 * @return The name of the document type.
-	 * @version DOM Level 1
-	 */
+	@Override
 	public String getName() {
 		return getNodeName();
 	}
@@ -141,17 +137,12 @@ public class XMLDocumentType extends XMLNode implements DocumentType {
 	/**
 	 * @return The public identifier, or <code>null</code> if there is none.
 	 * @see XMLDocumentType#getSystemID
-	 * @version DOM Level 2
-	 * @since DOM Level 2
 	 */
 	public String getPublicID() {
 		return PublicID;
 	}
 
-	/**
-	 * The public identifier of the external subset.
-	 * @since DOM Level 2
-	 */
+	@Override
 	public String getPublicId() {
 		return getPublicID();
 	} //TODO fix, comment
@@ -171,17 +162,12 @@ public class XMLDocumentType extends XMLNode implements DocumentType {
 	/**
 	 * @return The public identifier, or <code>null</code> if there is none.
 	 * @see XMLDocumentType#getPublicID
-	 * @version DOM Level 2
-	 * @since DOM Level 2
 	 */
 	public String getSystemID() {
 		return SystemID;
 	}
 
-	/**
-	 * The system identifier of the external subset.
-	 * @since DOM Level 2
-	 */
+	@Override
 	public String getSystemId() {
 		return getSystemID();
 	} //TODO fix, comment
@@ -206,11 +192,7 @@ public class XMLDocumentType extends XMLNode implements DocumentType {
 		setSystemID(externalID.getSystemID()); //sets the system identifier
 	}
 
-	/**
-	 * The internal subset as a string. The actual content returned depends on how much information is available to the implementation. This may vary depending on
-	 * various parameters, including the XML processor used to build the document.
-	 * @since DOM Level 2
-	 */
+	@Override
 	public String getInternalSubset() {
 		return "";
 	} //TODO fix

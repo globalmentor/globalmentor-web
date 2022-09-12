@@ -74,9 +74,10 @@ public class XMLDeclaration extends XMLNode {
 		Standalone = newStandalone;
 	}
 
-	/*Constructor which requires an owner document to be specified.
-	@param ownerDocument The document which owns this node.
-	*/
+	/**
+	 * Constructor which requires an owner document to be specified.
+	 * @param ownerDocument The document which owns this node.
+	 */
 	public XMLDeclaration(final XMLDocument ownerDocument) {
 		super(XMLNode.XMLDECL_NODE, ownerDocument); //construct the parent class
 		//TODO what about specifying a constant name, here?

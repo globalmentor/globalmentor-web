@@ -57,24 +57,18 @@ public class XMLNodeList extends LinkedList implements org.w3c.dom.NodeList {
 		return clone; //return our cloned node list
 	}
 
-	/**
-	 * Appends the specified node to the end of this list, and sets the node's
-	 * 
-	 * getParentNode
-	 * 
-	 *
-	 * @param o element to be appended to this list.
-	 * @return <code>true</code> (as per the general contract of Collection.add).
-	 */
+	//	/**
+	//	 * Appends the specified node to the end of this list, and sets the node's
+	//	 * 
+	//	 * getParentNode
+	//	 * 
+	//	 *
+	//	 * @param o element to be appended to this list.
+	//	 * @return <code>true</code> (as per the general contract of Collection.add).
+	//	 */
 	//TODO fix		public boolean add(Object o) {
 
-	/**
-	 * Returns the <code>index</code>th item in the collection. If <code>index</code> is greater than or equal to the number of nodes in the list, this returns
-	 * <code>null</code>.
-	 * @param index Index into the collection.
-	 * @return The node at the <code>index</code>th position in the <code>NodeList</code>, or <code>null</code> if that is not a valid index.
-	 * @version DOM Level 1
-	 */
+	@Override
 	public Node item(int index) {
 		try {
 			return (Node)get(index); //return the object at the index
@@ -83,11 +77,7 @@ public class XMLNodeList extends LinkedList implements org.w3c.dom.NodeList {
 		}
 	}
 
-	/**
-	 * Returns the number of nodes in the list. The range of valid child node indices is 0 to <code>length-1</code> inclusive.
-	 * @return The number of nodes in the list.
-	 * @version DOM Level 1
-	 */
+	@Override
 	public int getLength() {
 		return size();
 	}

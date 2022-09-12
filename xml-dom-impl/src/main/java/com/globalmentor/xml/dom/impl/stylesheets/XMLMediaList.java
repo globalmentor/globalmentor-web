@@ -34,49 +34,25 @@ public class XMLMediaList extends ArrayList implements org.w3c.dom.stylesheets.M
 	 */
 	private String CssText = "";
 
-	/**
-	 * Returns the parsable textual representation of the media list in comma-separated format.
-	 * @return The parsable comma-separated textual representation of the media list.
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	@Override
 	//TODO change this to actually go through the list of media and return them as a string
 	public String getMediaText() {
 		return CssText;
 	}
 
-	/**
-	 * Sets the parsable textual representation of the media list.
-	 * @param cssText The textual representation of the media list in comma-separated format.
-	 * @throws DOMException <ul>
-	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this media list is readonly.</li>
-	 *           <li>SYNTAX_ERR: Raised if the specified CSS string value has a syntax
-	 *           </ul>
-	 */
+	@Override
 	public void setMediaText(String cssText) throws DOMException {
 		//TODO check the string for a syntax error
 		//TODO check for read-only status
 		//TODO fix		return CssText;	//return the text
 	}
 
-	/**
-	 * Returns the number of media in the list. The range of valid media list indices is 0 to <code>length-1</code> inclusive.
-	 * @return The number of media in the list.
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	@Override
 	public int getLength() {
 		return size();
 	}
 
-	/**
-	 * Returns the <code>index</code>th item in the list. If <code>index</code> is greater than or equal to the number of media in the list, this returns
-	 * <code>null</code>.
-	 * @param index Index into the list.
-	 * @return The medium at the <code>index</code>th position in the list, or <code>null</code> if that is not a valid index.
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	@Override
 	public String item(int index) {
 		try {
 			return (String)get(index); //return the object at the index
@@ -85,14 +61,7 @@ public class XMLMediaList extends ArrayList implements org.w3c.dom.stylesheets.M
 		}
 	}
 
-	/**
-	 * Deletes the medium indicated by <code>oldMedium</code> from the list.
-	 * @param oldMedium The medium to delete in the media list.
-	 * @throws DOMException <ul>
-	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this list is readonly.</li>
-	 *           <li>NOT_FOUND_ERR: Raised if <code>oldMedium</code> is not in the list.</li>
-	 *           </ul>
-	 */
+	@Override
 	public void deleteMedium(String oldMedium) throws DOMException {
 		//TODO check for read-only status here
 		final int oldIndex = indexOf(oldMedium); //find the index of the medium
@@ -100,16 +69,10 @@ public class XMLMediaList extends ArrayList implements org.w3c.dom.stylesheets.M
 			remove(oldIndex); //remove the medium
 		else
 			//if there is no such medium to remove
-			throw new XMLDOMException(DOMException.NOT_FOUND_ERR, new Object[] { oldMedium }); //show that this media type wasn't found in our list, so we can't remove it
+			throw new XMLDOMException(DOMException.NOT_FOUND_ERR, new Object[] {oldMedium}); //show that this media type wasn't found in our list, so we can't remove it
 	}
 
-	/**
-	 * Adds the medium <code>newMedium</code> to the end of the list. It the <code>newMedium</code> is already used, it is first removed.
-	 * @param newMedium The new medium to add.
-	 * @throws DOMException <ul>
-	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this list is readonly.</li>
-	 *           </ul>
-	 */
+	@Override
 	public void appendMedium(String newMedium) throws DOMException {
 		//TODO check for read-only status here
 		final int oldIndex = indexOf(newMedium); //see if this medium already exists in our list

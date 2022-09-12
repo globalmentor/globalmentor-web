@@ -202,147 +202,290 @@ public class HTML {
 
 	//# elements
 
+	/** HTML element local name definition. */
 	public static final String ELEMENT_A = "a";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_ABBR = "abbr";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_ADDRESS = "address";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_AREA = "area";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_ARTICLE = "article";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_ASIDE = "aside";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_AUDIO = "audio";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_B = "b";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_BASE = "base";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_BDI = "bdi";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_BDO = "bdo";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_BLOCKCODE = "blockcode";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_BLOCKQUOTE = "blockquote";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_BODY = "body";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_BR = "br";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_BUTTON = "button";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_CANVAS = "canvas";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_CAPTION = "caption";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_CITE = "cite";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_COL = "col";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_CODE = "code";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_DATA = "data";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_DATE = "date";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_DATALIST = "datalist";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_DD = "dd";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_DEL = "del";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_DETAILS = "details";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_DFN = "dfn";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_DIALOG = "dialog";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_DIV = "div";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_DL = "dl";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_DT = "dt";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_EM = "em";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_EMBED = "embed";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_FIELDSET = "fieldset";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_FIGCAPTION = "figcaption";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_FIGURE = "figure";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_FOOTER = "footer";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_FORM = "form";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_H1 = "h1";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_H2 = "h2";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_H3 = "h3";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_H4 = "h4";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_H5 = "h5";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_H6 = "h6";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_HEAD = "head";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_HEADER = "header";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_HR = "hr";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_HTML = "html";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_I = "i";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_IFRAME = "iframe";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_IMG = "img";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_INPUT = "input";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_INS = "ins";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_KBD = "kbd";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_LI = "li";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_LABEL = "label";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_LEGEND = "legend";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_LINK = "link";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_MAIN = "main";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_MAP = "map";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_MARK = "mark";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_META = "meta";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_METER = "meter";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_NAV = "nav";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_NOSCRIPT = "noscript";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_OBJECT = "object";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_OL = "ol";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_OPTION = "option";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_OUTPUT = "output";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_P = "p";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_PARAM = "param";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_PICTURE = "picture";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_PRE = "pre";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_PROGRESS = "progress";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_Q = "q";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_RUBY = "ruby";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_RP = "rp";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_RT = "rt";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_S = "s";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_SAMP = "samp";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_SCRIPT = "script";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_SECTION = "section";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_SELECT = "select";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_SMALL = "small";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_SOURCE = "source";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_SPAN = "span";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_STRONG = "strong";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_STYLE = "style";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_SUB = "sub";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_SUMMARY = "summary";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_SUP = "sup";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_TABLE = "table";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_TIME = "time";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_TD = "td";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_TEMPLATE = "template";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_TEXTAREA = "textarea";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_TH = "th";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_TBODY = "tbody";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_THEAD = "thead";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_TFOOT = "tfoot";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_TITLE = "title";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_TR = "tr";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_TRACK = "track";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_U = "u";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_UL = "ul";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_VAR = "var";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_VIDEO = "video";
+	/** HTML element local name definition. */
 	public static final String ELEMENT_WBR = "wbr";
 
 	//obsolete, non-conforming elements; see https://www.w3.org/TR/html52/obsolete.html#non-conforming-features
+
+	/** HTML obsolete element local name definition. */
 	public static final String ELEMENT_APPLET = "applet";
+	/** HTML obsolete element local name definition. */
 	public static final String ELEMENT_ACRONYM = "acronym";
+	/** HTML obsolete element local name definition. */
 	public static final String ELEMENT_BASEFONT = "basefont";
+	/** HTML obsolete element local name definition. */
 	public static final String ELEMENT_BGSOUND = "bgsound";
+	/** HTML obsolete element local name definition. */
 	public static final String ELEMENT_BIG = "big";
+	/** HTML obsolete element local name definition. */
 	public static final String ELEMENT_BLINK = "blink";
+	/** HTML obsolete element local name definition. */
 	public static final String ELEMENT_CENTER = "center";
+	/** HTML obsolete element local name definition. */
 	public static final String ELEMENT_DIR = "dir";
+	/** HTML obsolete element local name definition. */
 	public static final String ELEMENT_FONT = "font";
+	/** HTML obsolete element local name definition. */
 	public static final String ELEMENT_FRAME = "frame";
+	/** HTML obsolete element local name definition. */
 	public static final String ELEMENT_FRAMESET = "frameset";
+	/** HTML obsolete element local name definition. */
 	public static final String ELEMENT_NOFRAMES = "noframes";
+	/** HTML obsolete element local name definition. */
 	public static final String ELEMENT_ISINDEX = "isindex";
+	/** HTML obsolete element local name definition. */
 	public static final String ELEMENT_LISTING = "listing";
+	/** HTML obsolete element local name definition. */
 	public static final String ELEMENT_MARQUEE = "marquee";
+	/** HTML obsolete element local name definition. */
 	public static final String ELEMENT_MENU = "menu";
+	/** HTML obsolete element local name definition. */
 	public static final String ELEMENT_MENUITEM = "menuitem";
+	/** HTML obsolete element local name definition. */
 	public static final String ELEMENT_MULTICOL = "multicol";
+	/** HTML obsolete element local name definition. */
 	public static final String ELEMENT_NEXTID = "nextid";
+	/** HTML obsolete element local name definition. */
 	public static final String ELEMENT_NOEMBED = "noembed";
+	/** HTML obsolete element local name definition. */
 	public static final String ELEMENT_NOBR = "nobr";
+	/** HTML obsolete element local name definition. */
 	public static final String ELEMENT_PLAINTEXT = "plaintext";
+	/** HTML obsolete element local name definition. */
 	public static final String ELEMENT_RB = "rb";
+	/** HTML obsolete element local name definition. */
 	public static final String ELEMENT_RTC = "rtc";
+	/** HTML obsolete element local name definition. */
 	public static final String ELEMENT_SPACER = "spacer";
+	/** HTML obsolete element local name definition. */
 	public static final String ELEMENT_STRIKE = "strike";
+	/** HTML obsolete element local name definition. */
 	public static final String ELEMENT_TT = "tt";
+	/** HTML obsolete element local name definition. */
 	public static final String ELEMENT_XMP = "xmp";
 
 	//removed elements
+
+	/**
+	 * HTML removed element {@code <hgroup>} local name definition.
+	 * @see <a href="https://html.spec.whatwg.org/#the-hgroup-element">HTML § 4.3.7 The hgroup element</a>
+	 */
 	public static final String ELEMENT_HGROUP = "hgroup"; //in WHATWG but not W3C version; see https://html.spec.whatwg.org/#the-hgroup-element
 
 	/**
@@ -378,18 +521,32 @@ public class HTML {
 	//# attributes
 
 	//## global attributes; see [HTML 5.2 § 3.2.5. Global attributes](https://www.w3.org/TR/html52/dom.html#global-attributes)
+
+	/** Definition of an HTML global attribute name. */
 	public static final String ATTRIBUTE_ACCESSKEY = "accesskey";
+	/** Definition of an HTML global attribute name. */
 	public static final String ATTRIBUTE_CLASS = "class";
+	/** Definition of an HTML global attribute name. */
 	public static final String ATTRIBUTE_CONTENTEDITABLE = "contenteditable";
+	/** Definition of an HTML global attribute name. */
 	public static final String ATTRIBUTE_DIR = "dir";
+	/** Definition of an HTML global attribute name. */
 	public static final String ATTRIBUTE_DRAGGABLE = "draggable";
+	/** Definition of an HTML global attribute name. */
 	public static final String ATTRIBUTE_HIDDEN = "hidden";
+	/** Definition of an HTML global attribute name. */
 	public static final String ATTRIBUTE_ID = "id";
+	/** Definition of an HTML global attribute name. */
 	public static final String ATTRIBUTE_LANG = "lang";
+	/** Definition of an HTML global attribute name. */
 	public static final String ATTRIBUTE_SPELLCHECK = "spellcheck";
+	/** Definition of an HTML global attribute name. */
 	public static final String ATTRIBUTE_STYLE = "style";
+	/** Definition of an HTML global attribute name. */
 	public static final String ATTRIBUTE_TABINDEX = "tabindex";
+	/** Definition of an HTML global attribute name. */
 	public static final String ATTRIBUTE_TITLE = "title";
+	/** Definition of an HTML global attribute name. */
 	public static final String ATTRIBUTE_TRANSLATE = "translate";
 
 	//## common attributes
@@ -411,7 +568,9 @@ public class HTML {
 
 	//## event attributes
 
+	/** Event attribute <code>onclick</code>. */
 	public static final String ATTRIBUTE_ONCLICK = "onclick";
+	/** Event attribute <code>onload</code>. */
 	public static final String ATTRIBUTE_ONLOAD = "onload";
 
 	//## XHTML 1.1 attributes
@@ -430,31 +589,109 @@ public class HTML {
 	 */
 	public static final String DATA_ATTRIBUTE_ID = "data";
 
-	public static final String LINK_ATTRIBUTE_REL = "rel"; //the link type attribute for <a>, <area>, and <link>; see http://www.w3.org/TR/html5/links.html#linkTypes
-	public static final String LINK_ATTRIBUTE_TYPE = "type"; //the link MIME type attribute for <a>, <area>, and <link>; see http://www.w3.org/TR/html5/links.html#attr-hyperlink-type
-	//link types for <a>, <area>, and <link>; see http://www.w3.org/TR/html5/links.html#linkTypes 
+	/**
+	 * The link type attribute for {@code <a>}, {@code <area>}, and {@code <link>}.
+	 * @see <a href="https://html.spec.whatwg.org/multipage/links.html#linkTypes">HTML § 4.6.7 Link types</a>
+	 */
+	public static final String LINK_ATTRIBUTE_REL = "rel";
+	/**
+	 * The link MIME type attribute for {@code <a>}, {@code <area>}, and {@code <link>}. @see
+	 * <a href="https://html.spec.whatwg.org/multipage/links.html#attr-hyperlink-type">HTML § 4.6.2 Links created by a and area elements</a>
+	 */
+	public static final String LINK_ATTRIBUTE_TYPE = "type";
+	/**
+	 * A link type for {@code <a>}, {@code <area>}, and {@code <link>}.
+	 * @see <a href="https://html.spec.whatwg.org/multipage/links.html#linkTypes">HTML § 4.6.7 Link types</a>
+	 */
 	public static final String LINK_REL_ALTERNATE = "alternate"; //<link>, <a>/<area>
+	/**
+	 * A link type for {@code <a>}, {@code <area>}, and {@code <link>}.
+	 * @see <a href="https://html.spec.whatwg.org/multipage/links.html#linkTypes">HTML § 4.6.7 Link types</a>
+	 */
 	public static final String LINK_REL_AUTHOR = "author"; //<link>, <a>/<area>
+	/**
+	 * A link type for {@code <a>}, {@code <area>}, and {@code <link>}.
+	 * @see <a href="https://html.spec.whatwg.org/multipage/links.html#linkTypes">HTML § 4.6.7 Link types</a>
+	 */
 	public static final String LINK_REL_BOOKMARK = "bookmark"; //<a>/<area>
+	/**
+	 * A link type for {@code <a>}, {@code <area>}, and {@code <link>}.
+	 * @see <a href="https://html.spec.whatwg.org/multipage/links.html#linkTypes">HTML § 4.6.7 Link types</a>
+	 */
 	public static final String LINK_REL_EXTERNAL = "external"; //<a>/<area>
+	/**
+	 * A link type for {@code <a>}, {@code <area>}, and {@code <link>}.
+	 * @see <a href="https://html.spec.whatwg.org/multipage/links.html#linkTypes">HTML § 4.6.7 Link types</a>
+	 */
 	public static final String LINK_REL_HELP = "help"; //<link>, <a>/<area>
+	/**
+	 * A link type for {@code <a>}, {@code <area>}, and {@code <link>}.
+	 * @see <a href="https://html.spec.whatwg.org/multipage/links.html#linkTypes">HTML § 4.6.7 Link types</a>
+	 */
 	public static final String LINK_REL_ICON = "icon"; //<link>
+	/**
+	 * A link type for {@code <a>}, {@code <area>}, and {@code <link>}.
+	 * @see <a href="https://html.spec.whatwg.org/multipage/links.html#linkTypes">HTML § 4.6.7 Link types</a>
+	 */
 	public static final String LINK_REL_LICENSE = "license"; //<link>, <a>/<area>
+	/**
+	 * A link type for {@code <a>}, {@code <area>}, and {@code <link>}.
+	 * @see <a href="https://html.spec.whatwg.org/multipage/links.html#linkTypes">HTML § 4.6.7 Link types</a>
+	 */
 	public static final String LINK_REL_NEXT = "next"; //<link>, <a>/<area>
+	/**
+	 * A link type for {@code <a>}, {@code <area>}, and {@code <link>}.
+	 * @see <a href="https://html.spec.whatwg.org/multipage/links.html#linkTypes">HTML § 4.6.7 Link types</a>
+	 */
 	public static final String LINK_REL_NOFOLLOW = "nofollow"; //<a>/<area>
+	/**
+	 * A link type for {@code <a>}, {@code <area>}, and {@code <link>}.
+	 * @see <a href="https://html.spec.whatwg.org/multipage/links.html#linkTypes">HTML § 4.6.7 Link types</a>
+	 */
 	public static final String LINK_REL_NOREFERRER = "noreferrer"; //<a>/<area>
+	/**
+	 * A link type for {@code <a>}, {@code <area>}, and {@code <link>}.
+	 * @see <a href="https://html.spec.whatwg.org/multipage/links.html#linkTypes">HTML § 4.6.7 Link types</a>
+	 */
 	public static final String LINK_REL_PINGBACK = "pingback"; //<link>
+	/**
+	 * A link type for {@code <a>}, {@code <area>}, and {@code <link>}.
+	 * @see <a href="https://html.spec.whatwg.org/multipage/links.html#linkTypes">HTML § 4.6.7 Link types</a>
+	 */
 	public static final String LINK_REL_PREFETCH = "prefetch"; //<link>, <a>/<area>
+	/**
+	 * A link type for {@code <a>}, {@code <area>}, and {@code <link>}.
+	 * @see <a href="https://html.spec.whatwg.org/multipage/links.html#linkTypes">HTML § 4.6.7 Link types</a>
+	 */
 	public static final String LINK_REL_PREV = "prev"; //<link>, <a>/<area>
+	/**
+	 * A link type for {@code <a>}, {@code <area>}, and {@code <link>}.
+	 * @see <a href="https://html.spec.whatwg.org/multipage/links.html#linkTypes">HTML § 4.6.7 Link types</a>
+	 */
 	public static final String LINK_REL_SEARCH = "search"; //<link>, <a>/<area>
+	/**
+	 * A link type for {@code <a>}, {@code <area>}, and {@code <link>}.
+	 * @see <a href="https://html.spec.whatwg.org/multipage/links.html#linkTypes">HTML § 4.6.7 Link types</a>
+	 */
 	public static final String LINK_REL_SIDEBAR = "sidebar"; //<link>, <a>/<area>
+	/**
+	 * A link type for {@code <a>}, {@code <area>}, and {@code <link>}.
+	 * @see <a href="https://html.spec.whatwg.org/multipage/links.html#linkTypes">HTML § 4.6.7 Link types</a>
+	 */
 	public static final String LINK_REL_STYLESHEET = "stylesheet"; //<link>
+	/**
+	 * A link type for {@code <a>}, {@code <area>}, and {@code <link>}.
+	 * @see <a href="https://html.spec.whatwg.org/multipage/links.html#linkTypes">HTML § 4.6.7 Link types</a>
+	 */
 	public static final String LINK_REL_TAG = "tag"; //<link>, <a>/<area>
 
-	//attributes for <a>
+	/** Possible attribute for the {@code <a>} element. */
 	public static final String ELEMENT_A_ATTRIBUTE_HREF = ATTRIBUTE_HREF;
+	/** Possible attribute for the {@code <a>} element. */
 	public static final String ELEMENT_A_ATTRIBUTE_HREFLANG = ATTRIBUTE_LANG;
+	/** Possible attribute for the {@code <a>} element. */
 	public static final String ELEMENT_A_ATTRIBUTE_TARGET = "target";
+	/** Possible attribute for the {@code <a>} element. */
 	public static final String ELEMENT_A_ATTRIBUTE_REL = LINK_ATTRIBUTE_REL;
 
 	/**
@@ -463,22 +700,39 @@ public class HTML {
 	 * @see <a href="http://www.w3.org/TR/html5/links.html#linkTypes">HTML5 Link Types</a>
 	 */
 	public enum LinkType implements IDed<String> {
+		/** Alternate link type. */
 		ALTERNATE(LINK_REL_ALTERNATE), //<link>, <a>/<area>
+		/** Author link type. */
 		AUTHOR(LINK_REL_AUTHOR), //<link>, <a>/<area>
+		/** Bookmark link type. */
 		BOOKMARK(LINK_REL_BOOKMARK), //<a>/<area>
+		/** External link type. */
 		EXTERNAL(LINK_REL_EXTERNAL), //<a>/<area>
+		/** Help link type. */
 		HELP(LINK_REL_HELP), //<link>, <a>/<area>
+		/** Icon link type. */
 		ICON(LINK_REL_ICON), //<link>
+		/** License link type. */
 		LICENSE(LINK_REL_LICENSE), //<link>, <a>/<area>
+		/** Next link type. */
 		NEXT(LINK_REL_NEXT), //<link>, <a>/<area>
+		/** No-follow link type. */
 		NOFOLLOW(LINK_REL_NOFOLLOW), //<a>/<area>
+		/** No-referrer link type. */
 		NOREFERRER(LINK_REL_NOREFERRER), //<a>/<area>
+		/** Ping-back link type. */
 		PINGBACK(LINK_REL_PINGBACK), //<link>
+		/** Prefetch link type. */
 		PREFETCH(LINK_REL_PREFETCH), //<link>, <a>/<area>
+		/** Previous link type. */
 		PREV(LINK_REL_PREV), //<link>, <a>/<area>
+		/** Search link type. */
 		SEARCH(LINK_REL_SEARCH), //<link>, <a>/<area>
+		/** Side bar link type. */
 		SIDEBAR(LINK_REL_SIDEBAR), //<link>, <a>/<area>
+		/** Style sheet link type. */
 		STYLESHEET(LINK_REL_STYLESHEET), //<link>
+		/** Tag link type. */
 		TAG(LINK_REL_TAG); //<link>, <a>/<area>
 
 		private final String id;
@@ -493,25 +747,31 @@ public class HTML {
 		}
 	}
 
-	//attributes for <applet>
+	/** Possible attribute for the {@code <applet>} element. */
 	public static final String ELEMENT_APPLET_ATTRIBUTE_CODE = "code";
+	/** Possible attribute for the {@code <applet>} element. */
 	public static final String ELEMENT_APPLET_ATTRIBUTE_HEIGHT = "height";
+	/** Possible attribute for the {@code <applet>} element. */
 	public static final String ELEMENT_APPLET_ATTRIBUTE_WIDTH = "width";
 
-	//attributes for <area>
+	/** Possible attribute for the {@code <are>} element. */
 	public static final String ELEMENT_AREA_ATTRIBUTE_HREF = ATTRIBUTE_HREF;
 
-	//attributes for <audio>
+	/** Possible attribute for the {@code <audio>} element. */
 	public static final String ELEMENT_AUDIO_ATTRIBUTE_SRC = ATTRIBUTE_SRC;
 
-	//attributes for <button>
+	/** Possible attribute for the {@code <button>} element. */
 	public static final String ELEMENT_BUTTON_ATTRIBUTE_TYPE = "type";
+	/** Possible attribute for the {@code <button>} element. */
 	public static final String BUTTON_TYPE_BUTTON = "button";
+	/** Possible attribute for the {@code <button>} element. */
 	public static final String BUTTON_TYPE_RESET = "reset";
+	/** Possible attribute for the {@code <button>} element. */
 	public static final String BUTTON_TYPE_SUBMIT = "submit";
 
-	//attributes for <form>
+	/** Possible attribute for the {@code <form>} element. */
 	public static final String ELEMENT_FORM_ATTRIBUTE_ACTION = "action";
+	/** Possible attribute for the {@code <form>} element. */
 	public static final String ELEMENT_FORM_ATTRIBUTE_ENCTYPE = "enctype";
 	/**
 	 * The <code>application/x-www-form-urlencoded</code> encoding media type.
@@ -523,166 +783,367 @@ public class HTML {
 	 * @see <a href="https://tools.ietf.org/html/rfc1867">RFC 1867: Form-based File Upload in HTML</a>.
 	 */
 	public static final MediaType MULTIPART_FORM_DATA_MEDIA_TYPE = MediaType.of(MediaType.MULTIPART_PRIMARY_TYPE, "form-data");
-
+	/** Possible attribute for the {@code <form>} element. */
 	public static final String ELEMENT_FORM_ATTRIBUTE_METHOD = "method";
+	/** Possible attribute value for the {@code <form>} element <code>method</code> attribute. */
 	public static final String FORM_METHOD_GET = "get";
+	/** Possible attribute value for the {@code <form>} element <code>method</code> attribute. */
 	public static final String FORM_METHOD_POST = "post";
 
-	//attributes for <embed>
+	/** Possible attribute for the {@code <embed>} element. */
 	public static final String ELEMENT_EMBED_ATTRIBUTE_SRC = ATTRIBUTE_SRC;
+	/** Possible attribute for the {@code <embed>} element. */
 	public static final String ELEMENT_EMBED_ATTRIBUTE_HEIGHT = "height";
+	/** Possible attribute for the {@code <embed>} element. */
 	public static final String ELEMENT_EMBED_ATTRIBUTE_WIDTH = "width";
+	/** Possible attribute for the {@code <embed>} element. */
 	public static final String ELEMENT_EMBED_ATTRIBUTE_TYPE = "type";
 
-	//attributes for <frame>
+	/** Possible attribute for the {@code <frame>} element. */
 	public static final String ELEMENT_FRAME_ATTRIBUTE_SRC = ATTRIBUTE_SRC;
+	/** Possible attribute for the {@code <frame>} element. */
 	public static final String ELEMENT_FRAME_ATTRIBUTE_FRAMEBORDER = "frameborder";
+	/** Possible attribute for the {@code <frame>} element. */
 	public static final String ELEMENT_FRAME_ATTRIBUTE_LONGDESC = "longdesc";
+	/** Possible attribute for the {@code <frame>} element. */
 	public static final String ELEMENT_FRAME_ATTRIBUTE_MARGINHEIGHT = "marginheight";
+	/** Possible attribute for the {@code <frame>} element. */
 	public static final String ELEMENT_FRAME_ATTRIBUTE_MARGINWIDTH = "marginwidth";
+	/** Possible attribute for the {@code <frame>} element. */
 	public static final String ELEMENT_FRAME_ATTRIBUTE_NORESIZE = "noresize";
+	/** Possible attribute for the {@code <frame>} element. */
 	public static final String ELEMENT_FRAME_ATTRIBUTE_SCROLLING = "scrolling";
 
-	//attributes for <frameset>
+	/** Possible attribute for the {@code <frameset>} element. */
 	public static final String ELEMENT_FRAMESET_ATTRIBUTE_COLS = "cols";
+	/** Possible attribute for the {@code <frameset>} element. */
 	public static final String ELEMENT_FRAMESET_ATTRIBUTE_ROWS = "rows";
 
-	//attributes for <iframe>
-	public static final String ELEMENT_IFRAME_ATTRIBUTE_ALLOW_TRANSPARENCY = "allowTransparency"; //IE-specific; see http://msdn.microsoft.com/en-us/library/ms533072.aspx
+	/**
+	 * Possible attribute for the {@code <iframe>} element. This attribute is IE-specific.
+	 * @see <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe">&lt;iframe&gt;: The Inline Frame element</a>
+	 */
+	public static final String ELEMENT_IFRAME_ATTRIBUTE_ALLOW_TRANSPARENCY = "allowTransparency";
+	/**
+	 * Possible attribute for the {@code <iframe>} element.
+	 * @see <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe">&lt;iframe&gt;: The Inline Frame element</a>
+	 */
 	public static final String ELEMENT_IFRAME_ATTRIBUTE_SRC = ATTRIBUTE_SRC;
+	/**
+	 * Possible attribute for the {@code <iframe>} element.
+	 * @see <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe">&lt;iframe&gt;: The Inline Frame element</a>
+	 */
 	public static final String ELEMENT_IFRAME_ATTRIBUTE_FRAMEBORDER = "frameborder";
+	/**
+	 * Possible attribute for the {@code <iframe>} element.
+	 * @see <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe">&lt;iframe&gt;: The Inline Frame element</a>
+	 */
 	public static final String ELEMENT_IFRAME_ATTRIBUTE_SCROLLING = "scrolling";
+	/**
+	 * Possible attribute for the {@code <iframe>} element.
+	 * @see <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe">&lt;iframe&gt;: The Inline Frame element</a>
+	 */
 	public static final String IFRAME_SCROLLING_NO = "no";
+	/**
+	 * Possible attribute for the {@code <iframe>} element.
+	 * @see <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe">&lt;iframe&gt;: The Inline Frame element</a>
+	 */
 	public static final String IFRAME_SCROLLING_YES = "yes";
+	/**
+	 * Possible attribute for the {@code <iframe>} element.
+	 * @see <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe">&lt;iframe&gt;: The Inline Frame element</a>
+	 */
 	public static final String IFRAME_SCROLLING_AUTO = "auto";
 
-	//attributes for <img>
+	/** Possible attribute for the {@code <img>} element. */
 	public static final String ELEMENT_IMG_ATTRIBUTE_ALT = "alt";
+	/** Possible attribute for the {@code <img>} element. */
 	public static final String ELEMENT_IMG_ATTRIBUTE_HEIGHT = "height";
+	/** Possible attribute for the {@code <img>} element. */
 	public static final String ELEMENT_IMG_ATTRIBUTE_WIDTH = "width";
+	/** Possible attribute for the {@code <img>} element. */
 	public static final String ELEMENT_IMG_ATTRIBUTE_SRC = ATTRIBUTE_SRC;
 
-	//attributes for <input>
+	/** Possible attribute for the {@code <input>} element. */
 	public static final String ELEMENT_INPUT_ATTRIBUTE_ACCEPT = "accept";
+	/** Possible attribute for the {@code <input>} element. */
 	public static final String ELEMENT_INPUT_ATTRIBUTE_TYPE = "type";
+	/** Possible attribute value for the {@code <input>} element <code>type</code> attribute. */
 	public static final String INPUT_TYPE_BUTTON = "button";
+	/** Possible attribute value for the {@code <input>} element <code>type</code> attribute. */
 	public static final String INPUT_TYPE_CHECKBOX = "checkbox";
+	/** Possible attribute value for the {@code <input>} element <code>type</code> attribute. */
 	public static final String INPUT_TYPE_FILE = "file";
+	/** Possible attribute value for the {@code <input>} element <code>type</code> attribute. */
 	public static final String INPUT_TYPE_HIDDEN = "hidden";
+	/** Possible attribute value for the {@code <input>} element <code>type</code> attribute. */
 	public static final String INPUT_TYPE_IMAGE = "image";
+	/** Possible attribute value for the {@code <input>} element <code>type</code> attribute. */
 	public static final String INPUT_TYPE_PASSWORD = "password";
+	/** Possible attribute value for the {@code <input>} element <code>type</code> attribute. */
 	public static final String INPUT_TYPE_RADIO = "radio";
+	/** Possible attribute value for the {@code <input>} element <code>type</code> attribute. */
 	public static final String INPUT_TYPE_RESET = "reset";
+	/** Possible attribute value for the {@code <input>} element <code>type</code> attribute. */
 	public static final String INPUT_TYPE_SUBMIT = "submit";
+	/** Possible attribute value for the {@code <input>} element <code>type</code> attribute. */
 	public static final String INPUT_TYPE_TEXT = "text";
+	/** Possible attribute for the {@code <input>} element. */
 	public static final String ELEMENT_INPUT_ATTRIBUTE_CHECKED = "checked";
+	/** Possible attribute value for the {@code <input>} element <code>checked</code> attribute. */
 	public static final String INPUT_CHECKED_CHECKED = "checked";
+	/** Possible attribute for the {@code <input>} element. */
 	public static final String ELEMENT_INPUT_ATTRIBUTE_DISABLED = "disabled";
+	/** Possible attribute value for the {@code <input>} element <code>disabled</code> attribute. */
 	public static final String INPUT_DISABLED_DISABLED = "disabled";
+	/** Possible attribute for the {@code <input>} element. */
 	public static final String ELEMENT_INPUT_ATTRIBUTE_MAXLENGTH = "maxlength";
+	/** Possible attribute for the {@code <input>} element. */
 	public static final String ELEMENT_INPUT_ATTRIBUTE_READONLY = "readonly";
+	/** Possible attribute for the {@code <input>} element. */
 	public static final String ELEMENT_INPUT_ATTRIBUTE_SIZE = "size";
+	/** Possible attribute value for the {@code <input>} element <code>readonly</code> attribute. */
 	public static final String INPUT_READONLY_READONLY = "readonly";
 
-	//attributes for <label>
+	/** Possible attribute for the {@code <label>} element. */
 	public static final String ELEMENT_LABEL_ATTRIBUTE_FOR = "for";
 
-	//attributes for <link>
+	/** Possible attribute for the {@code <link>} element. */
 	public static final String ELEMENT_LINK_ATTRIBUTE_HREF = ATTRIBUTE_HREF;
+	/** Possible attribute for the {@code <link>} element. */
 	public static final String ELEMENT_LINK_ATTRIBUTE_REL = LINK_ATTRIBUTE_REL;
+	/** Possible attribute for the {@code <link>} element. */
 	public static final String ELEMENT_LINK_ATTRIBUTE_TYPE = "type";
+	/** Possible attribute for the {@code <link>} element. */
 	public static final String ELEMENT_LINK_ATTRIBUTE_MEDIA = "media";
+	/** Possible attribute value for the {@code <link>} element <code>media</code> attribute. */
 	public static final String LINK_MEDIA_SCREEN = "screen";
 
-	//attributes for <meta>
+	/** Possible attribute for the {@code <meta>} element. */
 	public static final String ELEMENT_META_ATTRIBUTE_CONTENT = "content";
+	/** Possible attribute for the {@code <meta>} element. */
 	public static final String ELEMENT_META_ATTRIBUTE_NAME = "name";
+	/** Possible attribute for the {@code <meta>} element. */
 	public static final String ELEMENT_META_ATTRIBUTE_PROPERTY = "property"; //TODO Facebook OpenGraph specific; document and move; see https://developers.facebook.com/docs/opengraph/
 
-	//standard metadata names as per https://www.w3.org/TR/html52/document-metadata.html#standard-metadata-names
+	/** Standard metadata name as per <a href="https://html.spec.whatwg.org/multipage/semantics.html#standard-metadata-names">HTML § 4.2.5.1</a>. */
 	public static final String META_NAME_APPLICATION_NAME = "application-name";
+	/** Standard metadata name as per <a href="https://html.spec.whatwg.org/multipage/semantics.html#standard-metadata-names">HTML § 4.2.5.1</a>. */
 	public static final String META_NAME_AUTHOR = "author";
+	/** Standard metadata name as per <a href="https://html.spec.whatwg.org/multipage/semantics.html#standard-metadata-names">HTML § 4.2.5.1</a>. */
 	public static final String META_NAME_DESCRIPTION = "description";
+	/** Standard metadata name as per <a href="https://html.spec.whatwg.org/multipage/semantics.html#standard-metadata-names">HTML § 4.2.5.1</a>. */
 	public static final String META_NAME_GENERATOR = "generator";
+	/** Standard metadata name as per <a href="https://html.spec.whatwg.org/multipage/semantics.html#standard-metadata-names">HTML § 4.2.5.1</a>. */
 	public static final String META_NAME_KEYWORDS = "keywords";
+	/** Standard metadata name as per <a href="https://html.spec.whatwg.org/multipage/semantics.html#standard-metadata-names">HTML § 4.2.5.1</a>. */
 	public static final String META_NAME_REFERRER = "referrer";
 
-	//attributes for <object>
+	/** Possible attribute for the {@code <object>} element. */
 	public static final String ELEMENT_OBJECT_ATTRIBUTE_CLASSID = "classid";
+	/** Possible attribute for the {@code <object>} element. */
 	public static final String ELEMENT_OBJECT_ATTRIBUTE_CODEBASE = "codebase";
+	/** Possible attribute for the {@code <object>} element. */
 	public static final String ELEMENT_OBJECT_ATTRIBUTE_CODETYPE = "codetype";
+	/** Possible attribute for the {@code <object>} element. */
 	public static final String ELEMENT_OBJECT_ATTRIBUTE_DATA = "data";
+	/** Possible attribute for the {@code <object>} element. */
 	public static final String ELEMENT_OBJECT_ATTRIBUTE_HEIGHT = "height";
+	/** Possible attribute for the {@code <object>} element. */
 	public static final String ELEMENT_OBJECT_ATTRIBUTE_WIDTH = "width";
+	/** Possible attribute for the {@code <object>} element. */
 	public static final String ELEMENT_OBJECT_ATTRIBUTE_TYPE = "type";
 
-	//attributes for <option>
+	/** Possible attribute for the {@code <option>} element. */
 	public static final String ELEMENT_OPTION_ATTRIBUTE_DISABLED = "disabled";
+	/** Possible attribute for the {@code <option>} element. */
 	public static final String OPTION_DISABLED_DISABLED = "disabled";
+	/** Possible attribute for the {@code <option>} element. */
 	public static final String ELEMENT_OPTION_ATTRIBUTE_SELECTED = "selected";
+	/** Possible attribute value for the {@code <option>} element <code>option</code> attribute. */
 	public static final String OPTION_SELECTED_SELECTED = "selected";
 
-	//attributes for <param>
+	/** Possible attribute for the {@code <param>} element. */
 	public static final String ELEMENT_PARAM_ATTRIBUTE_NAME = "name";
+	/** Possible attribute for the {@code <param>} element. */
 	public static final String ELEMENT_PARAM_ATTRIBUTE_VALUE = "value";
 
-	//attributes for <script>
+	/** Possible attribute for the {@code <script>} element. */
 	public static final String ELEMENT_SCRIPT_ATTRIBUTE_SRC = ATTRIBUTE_SRC;
+	/** Possible attribute for the {@code <script>} element. */
 	public static final String ELEMENT_SCRIPT_ATTRIBUTE_TYPE = "type";
+	/** Possible attribute for the {@code <script>} element. */
 	public static final String ELEMENT_SCRIPT_ATTRIBUTE_LANGUAGE = "language";
 
-	//attributes for <select>
+	/** Possible attribute for the {@code <select>} element. */
 	public static final String ELEMENT_SELECT_ATTRIBUTE_MULTIPLE = "multiple";
+	/** Possible attribute value for the {@code <select>} element <code>multiple</code> attribute. */
 	public static final String SELECT_MULTIPLE_MULTIPLE = "multiple";
+	/** Possible attribute for the {@code <select>} element. */
 	public static final String ELEMENT_SELECT_ATTRIBUTE_SIZE = "size";
 
-	//attributes for <source>
+	/** Possible attribute for the {@code <source>} element. */
 	public static final String ELEMENT_SOURCE_ATTRIBUTE_SRC = ATTRIBUTE_SRC;
 
-	//attributes for <td>
+	/**
+	 * Possible attribute for the {@code 
+	 * 
+	<td>} element.
+	 */
 	public static final String ELEMENT_TD_ATTRIBUTE_ALIGN = "align";
+	/**
+	 * Possible attribute value for the {@code 
+	 * 
+	<td>} element <code>align</code> element.
+	 */
 	public static final String TD_ALIGN_LEFT = "left";
+	/**
+	 * Possible attribute value for the {@code 
+	 * 
+	<td>} element <code>align</code> element.
+	 */
 	public static final String TD_ALIGN_CENTER = "center";
+	/**
+	 * Possible attribute value for the {@code 
+	 * 
+	<td>} element <code>align</code> element.
+	 */
 	public static final String TD_ALIGN_RIGHT = "right";
+	/**
+	 * Possible attribute for the {@code 
+	 * 
+	<td>} element.
+	 */
 	public static final String ELEMENT_TD_ATTRIBUTE_VALIGN = "valign";
+	/**
+	 * Possible attribute value for the {@code 
+	 * 
+	<td>} element <code>valign</code> element.
+	 */
 	public static final String TD_VALIGN_TOP = "top";
+	/**
+	 * Possible attribute value for the {@code 
+	 * 
+	<td>} element <code>valign</code> element.
+	 */
 	public static final String TD_VALIGN_MIDDLE = "middle";
+	/**
+	 * Possible attribute value for the {@code 
+	 * 
+	<td>} element <code>valign</code> element.
+	 */
 	public static final String TD_VALIGN_BOTTOM = "bottom";
+	/**
+	 * Possible attribute for the {@code 
+	 * 
+	<td>} element.
+	 */
 	public static final String ELEMENT_TD_ATTRIBUTE_COLSPAN = "colspan";
+	/**
+	 * Possible attribute for the {@code 
+	 * 
+	<td>} element.
+	 */
 	public static final String ELEMENT_TD_ATTRIBUTE_ROWSPAN = "rowspan";
+	/**
+	 * Possible attribute for the {@code 
+	 * 
+	<td>} element.
+	 */
 	public static final String ELEMENT_TD_ATTRIBUTE_SCOPE = "scope";
+	/**
+	 * Possible attribute value for the {@code 
+	 * 
+	<td>} element <code>scope</code> element.
+	 */
 	public static final String TD_SCOPE_COLGROUP = "colgroup";
 
-	//attributes for <textarea>
+	/** Possible attribute for the {@code <textarea>} element. */
 	public static final String ELEMENT_TEXTAREA_ATTRIBUTE_COLS = "cols";
+	/** Possible attribute for the {@code <textarea>} element. */
 	public static final String ELEMENT_TEXTAREA_ATTRIBUTE_ROWS = "rows";
+	/** Possible attribute for the {@code <textarea>} element. */
 	public static final String ELEMENT_TEXTAREA_ATTRIBUTE_WRAP = "wrap";
+	/** Possible attribute value for the {@code <textarea>} element <code>wrap</code> attribute. */
 	public static final String TEXTAREA_WRAP_OFF = "off";
+	/** Possible attribute value for the {@code <textarea>} element <code>wrap</code> attribute. */
 	public static final String TEXTAREA_WRAP_HARD = "hard";
+	/** Possible attribute value for the {@code <textarea>} element <code>wrap</code> attribute. */
 	public static final String TEXTAREA_WRAP_SOFT = "soft";
 	/*"hard" and "soft" apparently have more acceptance than "physical" and "virtual"; see http://msdn2.microsoft.com/en-us/library/ms535152.aspx and http://lists.evolt.org/archive/Week-of-Mon-19991101/091388.html
 			public static final String TEXTAREA_WRAP_PHYSICAL="physical";
 			public static final String TEXTAREA_WRAP_VIRTUAL="virtual";
 	*/
+	/** Possible attribute for the {@code <textarea>} element. */
 	public static final String ELEMENT_TEXTAREA_ATTRIBUTE_DISABLED = "disabled";
+	/** Possible attribute value for the {@code <textarea>} element <code>disabled</code> attribute. */
 	public static final String TEXTAREA_DISABLED_DISABLED = "disabled";
+	/** Possible attribute for the {@code <textarea>} element. */
 	public static final String ELEMENT_TEXTAREA_ATTRIBUTE_READONLY = "readonly";
+	/** Possible attribute value for the {@code <textarea>} element <code>readonly</code> attribute. */
 	public static final String TEXTAREA_READONLY_READONLY = "readonly";
 
-	//attributes for <tr>
+	/**
+	 * Possible attribute for the {@code 
+	 * 
+	<tr>
+	 * } element.
+	 */
 	public static final String ELEMENT_TR_ATTRIBUTE_ALIGN = "align";
+	/**
+	 * Possible attribute value for the {@code 
+	 * 
+	<tr>
+	 * } element <code>align</code> attribute.
+	 */
 	public static final String TR_ALIGN_LEFT = "left";
+	/**
+	 * Possible attribute value for the {@code 
+	 * 
+	<tr>
+	 * } element <code>align</code> attribute.
+	 */
 	public static final String TR_ALIGN_CENTER = "center";
+	/**
+	 * Possible attribute value for the {@code 
+	 * 
+	<tr>
+	 * } element <code>align</code> attribute.
+	 */
 	public static final String TR_ALIGN_RIGHT = "right";
+	/**
+	 * Possible attribute for the {@code 
+	 * 
+	<tr>
+	 * } element.
+	 */
 	public static final String ELEMENT_TR_ATTRIBUTE_VALIGN = "valign";
+	/**
+	 * Possible attribute value for the {@code 
+	 * 
+	<tr>
+	 * } element <code>valign</code> attribute.
+	 */
 	public static final String TR_VALIGN_TOP = "top";
+	/**
+	 * Possible attribute value for the {@code 
+	 * 
+	<tr>
+	 * } element <code>valign</code> attribute.
+	 */
 	public static final String TR_VALIGN_MIDDLE = "middle";
+	/**
+	 * Possible attribute value for the {@code 
+	 * 
+	<tr>
+	 * } element <code>valign</code> attribute.
+	 */
 	public static final String TR_VALIGN_BOTTOM = "bottom";
 
-	//attributes for <track>
+	/** Possible attribute for the {@code <track>} element. */
 	public static final String ELEMENT_TRACK_ATTRIBUTE_SRC = ATTRIBUTE_SRC;
 
-	//attributes for <video>
+	/** Possible attribute for the {@code <video>} element. */
 	public static final String ELEMENT_VIDEO_ATTRIBUTE_SRC = ATTRIBUTE_SRC;
 
 	/**
