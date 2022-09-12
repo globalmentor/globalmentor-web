@@ -27,9 +27,10 @@ import static com.globalmentor.xml.spec.XML.*;
  */
 public class XMLCDATASection extends XMLText implements org.w3c.dom.CDATASection {
 
-	/*Constructor which requires an owner document to be specified.
-	@param ownerDocument The document which owns this node.
-	*/
+	/**
+	 * Constructor which requires an owner document to be specified.
+	 * @param ownerDocument The document which owns this node.
+	 */
 	public XMLCDATASection(final XMLDocument ownerDocument) {
 		super(XMLNode.CDATA_SECTION_NODE, ownerDocument); //construct the parent class
 		setNodeName(CDATASECTION_NODE_NAME); //set the appropriate name for a CDATA section (changing the name from the one set by the XMLText constructor)

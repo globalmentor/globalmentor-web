@@ -50,7 +50,7 @@ public class XMLCSSStyleSheet extends XMLStyleSheet implements CSSStyleSheet {
 
 	//TODO perhaps have another constructer which specifies an owner rule
 
-	/** @return A parsable string representation of the stylesheet. */
+	@Override
 	//TODO probably put this in a CssText property and call it from here
 	public String toString() {
 		final StringBuilder stringBuilder = new StringBuilder(); //create a new string builder to collect our data
@@ -65,15 +65,7 @@ public class XMLCSSStyleSheet extends XMLStyleSheet implements CSSStyleSheet {
 	/** The rule which owns this stylesheet, if this stylesheet comes from an @import rule. */
 	private XMLCSSRule OwnerRule = null;
 
-	/**
-	 * Returns the CSS import rule which owns this stylesheet if this stylesheet comes from an @import rule. The owner node attribute will be <code>null</code> in
-	 * this case. If the stylesheet comes from an element or a processing instruction, the owner rule will be <code>null</code> and the owner node attribute will
-	 * contain the node.
-	 * @see XMLStyleSheet#getOwnerNode
-	 * @see XMLStyleSheet#getParentStyleSheet
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	@Override
 	public CSSRule getOwnerRule() {
 		return OwnerRule;
 	}
@@ -81,48 +73,17 @@ public class XMLCSSStyleSheet extends XMLStyleSheet implements CSSStyleSheet {
 	/** The list of all CSS rules, including both rule sets and at-rules. */
 	private XMLCSSRuleList CssRules = new XMLCSSRuleList();
 
-	/**
-	 * Returns the list of all CSS rules contained within the stylesheet. This includes both rule sets and at-rules.
-	 * @return The list of all CSS rules, including both rule sets and at-rules.
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	@Override
 	public CSSRuleList getCssRules() {
 		return CssRules;
 	}
 
-	/**
-	 * Inserts a new rule into the style sheet. The new rule now becomes part of the cascade.
-	 * @param rule The parsable text representing the rule. For rule sets this contains both the selector and the style declaration. For at-rules, this specifies
-	 *          both the at-identifier and the rule content.
-	 * @param index The index within the style sheet's rule list of the rule before which to insert the specified rule. If the specified index is equal to the
-	 *          length of the style sheet's rule collection, the rule will be added to the end of the style sheet.
-	 * @return The index within the style sheet's rule collection of the newly inserted rule.
-	 * @throws DOMException <ul>
-	 *           <li>HIERARCHY_REQUEST_ERR: Raised if the rule cannot be inserted at the specified index e.g. if an <code>@import</code> rule is inserted after a
-	 *           standard rule set or other at-rule.</li>
-	 *           <li>INDEX_SIZE_ERR: Raised if the specified index is not a valid insertion point.</li>
-	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this style sheet is readonly.</li>
-	 *           <li>SYNTAX_ERR: Raised if the specified rule has a syntax error and is unparsable.</li>
-	 *           </ul>
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	@Override
 	public int insertRule(String rule, int index) throws DOMException {
 		return 0; //TODO fix
 	}
 
-	/**
-	 * Delete a rule from the stylesheet.
-	 * @param index The index within the style sheet's rule list of the rule to remove.
-	 * @throws DOMException <ul>
-	 *           <li>INDEX_SIZE_ERR: Raised if the specified index does not correspond to a rule in the style sheet's rule list.</li>
-	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised if this style sheet is readonly.
-	 *           <li>
-	 *           </ul>
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	@Override
 	public void deleteRule(int index) throws DOMException {
 		//TODO check for read-only status
 		try {

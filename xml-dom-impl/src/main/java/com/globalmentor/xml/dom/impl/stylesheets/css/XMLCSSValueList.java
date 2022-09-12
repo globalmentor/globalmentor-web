@@ -26,7 +26,6 @@ import io.clogr.Clogr;
 /**
  * An ordered collection of CSS vlaues. An empty list is the same as a list that contains the medium <code>"all"</code>.
  * @author Garret Wilson
- * @since DOM Level 2
  * @see org.w3c.dom.css.CSSValueList
  * @deprecated
  */
@@ -43,19 +42,12 @@ public class XMLCSSValueList extends XMLCSSValue implements CSSValueList {
 		super(CSS_VALUE_LIST); //construct the parent, specifying that we hold a list of values
 	}
 
-	/**
-	 * Returns the number of values in the list. The range of valid media list indices is 0 to <code>length-1</code> inclusive.
-	 * @return The number of values in the list.
-	 */
+	@Override
 	public int getLength() {
 		return valueList.size();
 	}
 
-	/**
-	 * Returns the <code>index</code>th CSS rule in the list. The order in this collection represents the order of the values in the CSS style property.
-	 * @param index Index into the list.
-	 * @return The style rule at the <code>index</code>th position in the list, or <code>null</code> if that is not a valid index.
-	 */
+	@Override
 	public CSSValue item(int index) {
 		try {
 			return (CSSValue)valueList.get(index); //return the object at the index
@@ -64,13 +56,7 @@ public class XMLCSSValueList extends XMLCSSValue implements CSSValueList {
 		}
 	}
 
-	/**
-	 * Returns the parsable textual representation of the current value.
-	 * @return The parsable textual representation of the value.
-	 * @see XMLCSSValue#getCssText
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	@Override
 	public String getCssText() {
 		final StringBuilder cssTextStringBuilder = new StringBuilder(); //create a string builder to hold our values
 		//TODO fix; for now, we don't know whether to put spaces or commas between the values

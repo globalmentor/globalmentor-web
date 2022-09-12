@@ -57,8 +57,22 @@ public class OpenGraph {
 	 * @see <a href="http://ogp.me/">The Open Graph Protocol</a>
 	 */
 	public enum PredefinedCategory implements Labeled {
-		ACTIVITIES("Activities"), BUSINESSES("Businesses"), GROUPS("Groups"), ORGANIZATIONS("Organizations"), PEOPLE("People"), PLACES(
-				"Places"), PRODUCTS_ENTERTAINMENT("Products and Entertainment"), WEBSITES("Websites");
+		/** The predefined OpenGraph category for activities. */
+		ACTIVITIES("Activities"),
+		/** The predefined OpenGraph category for businesses. */
+		BUSINESSES("Businesses"),
+		/** The predefined OpenGraph category for groups. */
+		GROUPS("Groups"),
+		/** The predefined OpenGraph category for organizations. */
+		ORGANIZATIONS("Organizations"),
+		/** The predefined OpenGraph category for people. */
+		PEOPLE("People"),
+		/** The predefined OpenGraph category for places. */
+		PLACES("Places"),
+		/** The predefined OpenGraph category for products and entertainment. */
+		PRODUCTS_ENTERTAINMENT("Products and Entertainment"),
+		/** The predefined OpenGraph category for websites. */
+		WEBSITES("Websites");
 
 		private final CharSequence label;
 
@@ -81,7 +95,84 @@ public class OpenGraph {
 	public enum PredefinedType implements IDed<String> {
 		//note: new predefined types must also be added to a category within getCategory() or an assertion exception will be thrown
 
-		ACTIVITY, SPORT, BAR, COMPANY, CAFE, HOTEL, RESTAURANT, CAUSE, SPORTS_LEAGUE, SPORTS_TEAM, BAND, GOVERNMENT, NON_PROFIT, SCHOOL, UNIVERSITY, ACTOR, ATHLETE, AUTHOR, DIRECTOR, MUSICIAN, POLITICIAN, PROFILE, PUBLIC_FIGURE, CITY, COUNTRY, LANDMARK, STATE_PROVINCE, ALBUM, BOOK, DRINK, FOOD, GAME, MOVIE, PRODUCT, SONG, TV_SHOW, ARTICLE, BLOG, WEBSITE;
+		/** The predefined OpenGraph type for activity. */
+		ACTIVITY,
+		/** The predefined OpenGraph type for sport. */
+		SPORT,
+		/** The predefined OpenGraph type for bar. */
+		BAR,
+		/** The predefined OpenGraph type for company. */
+		COMPANY,
+		/** The predefined OpenGraph type for cafe. */
+		CAFE,
+		/** The predefined OpenGraph type for hotel. */
+		HOTEL,
+		/** The predefined OpenGraph type for restaurant. */
+		RESTAURANT,
+		/** The predefined OpenGraph type for cause. */
+		CAUSE,
+		/** The predefined OpenGraph type for sports league. */
+		SPORTS_LEAGUE,
+		/** The predefined OpenGraph type for sports team. */
+		SPORTS_TEAM,
+		/** The predefined OpenGraph type for band. */
+		BAND,
+		/** The predefined OpenGraph type for government. */
+		GOVERNMENT,
+		/** The predefined OpenGraph type for non-profit. */
+		NON_PROFIT,
+		/** The predefined OpenGraph type for school. */
+		SCHOOL,
+		/** The predefined OpenGraph type for university. */
+		UNIVERSITY,
+		/** The predefined OpenGraph type for actor. */
+		ACTOR,
+		/** The predefined OpenGraph type for athlete. */
+		ATHLETE,
+		/** The predefined OpenGraph type for author. */
+		AUTHOR,
+		/** The predefined OpenGraph type for director. */
+		DIRECTOR,
+		/** The predefined OpenGraph type for musician. */
+		MUSICIAN,
+		/** The predefined OpenGraph type for politician. */
+		POLITICIAN,
+		/** The predefined OpenGraph type for profile. */
+		PROFILE,
+		/** The predefined OpenGraph type for public figure. */
+		PUBLIC_FIGURE,
+		/** The predefined OpenGraph type for city. */
+		CITY,
+		/** The predefined OpenGraph type for country. */
+		COUNTRY,
+		/** The predefined OpenGraph type for landmark. */
+		LANDMARK,
+		/** The predefined OpenGraph type for state province. */
+		STATE_PROVINCE,
+		/** The predefined OpenGraph type for album. */
+		ALBUM,
+		/** The predefined OpenGraph type for book. */
+		BOOK,
+		/** The predefined OpenGraph type for drink. */
+		DRINK,
+		/** The predefined OpenGraph type for food. */
+		FOOD,
+		/** The predefined OpenGraph type for game. */
+		GAME,
+		/** The predefined OpenGraph type for movie. */
+		MOVIE,
+		/** The predefined OpenGraph type for product. */
+		PRODUCT,
+		/** The predefined OpenGraph type for song. */
+		SONG,
+		/** The predefined OpenGraph type for TV show. */
+		TV_SHOW,
+		/** The predefined OpenGraph type for article. */
+		ARTICLE,
+		/** The predefined OpenGraph type for blog. */
+		BLOG,
+		/** The predefined OpenGraph type for web site. */
+		WEBSITE;
 
 		/** @return The predefined category of this predefined type. */
 		public PredefinedCategory getCategory() {

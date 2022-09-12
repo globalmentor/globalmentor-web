@@ -53,35 +53,65 @@ public class JSON {
 	/** The extension for JSON resource names. */
 	public static final String FILENAME_EXTENSION = "json";
 
+	/** Delimiter for array start. */
 	public static final char BEGIN_ARRAY = 0x5B; //[ left square bracket
+	/** Delimiter for object start. */
 	public static final char BEGIN_OBJECT = 0x7B; //[ left square bracket
+	/** Delimiter for array end. */
 	public static final char END_ARRAY = 0x5D; //] right square bracket
+	/** Delimiter for object end. */
 	public static final char END_OBJECT = 0x7D; //} right curly bracket
+	/** Delimiter to separate names from values. */
 	public static final char NAME_SEPARATOR = 0x3A; //: colon
+	/** Delimiter to separate values. */
 	public static final char VALUE_SEPARATOR = 0x2C; //, comma
+	/** Delimiter for escaping characters. */
 	public static final char ESCAPE = 0x5C; //\
+	/** JSON quotation mark. */
 	public static final char QUOTATION_MARK = 0x22; //"
+	/** JSON minus sign. */
 	public static final char MINUS = 0x2D; //-
+	/** JSON plus sign. */
 	public static final char PLUS = 0x2B; //+
+	/** JSON decimal point. */
 	public static final char DECIMAL_POINT = 0x2E; //.
 
 	//whitespace characters
+
+	/** JSON space character. */
 	public static final char SPACE = 0x20; //Space
+	/** JSON tab character. */
 	public static final char HORIZONTAL_TAB = 0x09; //Horizontal tab
+	/** JSON line feed character. */
 	public static final char LINE_FEED = 0x0A; //Line feed or New line
+	/** JSON carriage return character. */
 	public static final char CARRIAGE_RETURN = 0x0D; //Carriage return
+
 	//escaped forms of characters
+
+	/** Quotation mark in escaped form. */
 	public static final char ESCAPED_QUOTATION_MARK = 0x22; //" quotation mark  U+0022
+	/** Backslash in escaped form. */
 	public static final char ESCAPED_REVERSE_SOLIDUS = 0x5C; //\ reverse solidus U+005C
+	/** JSON backslash character. */
 	public static final char REVERSE_SOLIDUS = 0x5C; //\ reverse solidus U+005C
+	/** Forward slash in escaped form. */
 	public static final char ESCAPED_SOLIDUS = 0x2F; /// solidus U+002F
+	/** JSON forward slash character. */
 	public static final char SOLIDUS = 0x2F; /// solidus U+002F
+	/** Backspace in escaped form. */
 	public static final char ESCAPED_BACKSPACE = 0x62; //b backspace U+0008
+	/** JSON backspace character. */
 	public static final char BACKSPACE = 0x08; //b backspace U+0008
+	/** Form feed in escaped form. */
 	public static final char ESCAPED_FORM_FEED = 0x66; //f form feed U+000C
+	/** JSON form feed character. */
 	public static final char FORM_FEED = 0x0C; //f form feed U+000C
+	/** Line feed in escaped form. */
 	public static final char ESCAPED_LINE_FEED = 0x6E; //n line feed U+000A
+	/** Carriage return in escaped form. */
 	public static final char ESCAPED_CARRIAGE_RETURN = 0x72; //r carriage return U+000D
+	/** Tab in escaped form. */
 	public static final char ESCAPED_TAB = 0x74; //t tab U+0009	
 
 	/** The character introducing an escaped Unicode code point. */
@@ -102,6 +132,7 @@ public class JSON {
 	public static final String TRUE = "true";
 	/** The boolean false identifier. */
 	public static final String FALSE = "false";
+	/** A pattern for checking for well-formed JSON. */
 	//TODO fix (?<!\\\\)
 	public static final Pattern JSON_PATTERN = Pattern.compile("[{}\\[\\]:,]|(?:\"[^((?<!\\\\)\")]*\")|(?:null)|(?:true)(?:false)");
 

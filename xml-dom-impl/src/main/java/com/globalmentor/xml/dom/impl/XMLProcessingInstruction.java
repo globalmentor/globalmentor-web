@@ -49,9 +49,10 @@ public class XMLProcessingInstruction extends XMLNode implements org.w3c.dom.Pro
 		return (String)pseudoAttributeMap.get(pseudoAttributeName); //return the attribute value, if its name is present in the map
 	}
 
-	/*Constructor which requires an owner document to be specified.
-	@param ownerDocument The document which owns this node.
-	*/
+	/**
+	 * Constructor which requires an owner document to be specified.
+	 * @param ownerDocument The document which owns this node.
+	 */
 	public XMLProcessingInstruction(final XMLDocument ownerDocument) {
 		super(XMLNode.PROCESSING_INSTRUCTION_NODE, ownerDocument); //construct the parent class
 	}
@@ -85,16 +86,12 @@ public class XMLProcessingInstruction extends XMLNode implements org.w3c.dom.Pro
 	 * @see XMLNode#cloneNode
 	 * @see XMLNode#getParentXMLNode
 	 */
+	@Override
 	public Object clone() {
 		return new XMLProcessingInstruction(getOwnerXMLDocument(), getTarget(), getData()); //create a new node with the same owner document, target, and value
 	}
 
-	/**
-	 * Returns the target of this processing instruction. XML defines this as being the first token following the markup that begins the processing instruction.
-	 * @return The target of this procesing instruction.
-	 * @see XMLNode#getNodeName
-	 * @version DOM Level 1
-	 */
+	@Override
 	public String getTarget() {
 		return getNodeName();
 	}
@@ -102,20 +99,12 @@ public class XMLProcessingInstruction extends XMLNode implements org.w3c.dom.Pro
 	/** The character data of this node. */
 	private String Value = "";
 
-	/**
-	 * Returns the character data of this node.
-	 * @return The character data of this node.
-	 * @version DOM Level 1
-	 */
+	@Override
 	public String getNodeValue() throws DOMException {
 		return Value;
 	}
 
-	/**
-	 * Sets the character data of the attribute.
-	 * @param nodeValue The new character data for the attribute.
-	 * @version DOM Level 1
-	 */
+	@Override
 	public void setNodeValue(String nodeValue) throws DOMException { //TODO change to use the new getProcessingInstructionPseudoAttributeValues()
 		Value = nodeValue; //set the value
 		//TODO this stuff may be eventually placed back into XMLProcessor
@@ -137,27 +126,12 @@ public class XMLProcessingInstruction extends XMLNode implements org.w3c.dom.Pro
 		}
 	}
 
-	/**
-	 * Returns the content of this processing instruction. This is from the first non-whitespace character after the target to the character immediately preceding
-	 * the <code>?&gt;</code>.
-	 * @return The character data of this node.
-	 * @see XMLNode#getNodeValue
-	 * @version DOM Level 1
-	 */
+	@Override
 	public String getData() throws DOMException {
 		return getNodeValue(); //return the character data
 	}
 
-	/**
-	 * Sets the content of this processing instruction.
-	 * @param data The new character data for this node.
-	 *          <ul>
-	 *          <li>NO_MODIFICATION_ALLOWED_ERR: Raised when the node is readonly.
-	 *          <li>
-	 *          </ul>
-	 * @see XMLNode#setNodeValue
-	 * @version DOM Level 1
-	 */
+	@Override
 	public void setData(String data) throws DOMException {
 		//TODO check about this readonly stuff
 		setNodeValue(data);

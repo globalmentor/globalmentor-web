@@ -27,9 +27,10 @@ import org.w3c.dom.Node;
  */
 public class XMLEntity extends XMLNode implements org.w3c.dom.Entity {
 
-	/*Constructor which requires an owner document to be specified.
-	@param ownerDocument The document which owns this node.
-	*/
+	/**
+	 * Constructor which requires an owner document to be specified.
+	 * @param ownerDocument The document which owns this node.
+	 */
 	public XMLEntity(final XMLDocument ownerDocument) {
 		super(XMLNode.ENTITY_NODE, ownerDocument); //construct the parent class
 	}
@@ -130,12 +131,7 @@ public class XMLEntity extends XMLNode implements org.w3c.dom.Entity {
 		return PublicID;
 	}
 
-	/**
-	 * @return The public identifier, or <code>null</code> if there is none.
-	 * @see XMLDocumentType#getSystemID
-	 * @see XMLDocumentType#getPublicID
-	 * @version DOM Level 1
-	 */
+	@Override
 	public String getPublicId() {
 		return getPublicID();
 	}
@@ -160,12 +156,7 @@ public class XMLEntity extends XMLNode implements org.w3c.dom.Entity {
 		return SystemID;
 	}
 
-	/**
-	 * @return The public identifier, or <code>null</code> if there is none.
-	 * @see XMLDocumentType#getSystemID
-	 * @see XMLDocumentType#getPublicID
-	 * @version DOM Level 1
-	 */
+	@Override
 	public String getSystemId() {
 		return getSystemID();
 	}
@@ -194,10 +185,7 @@ public class XMLEntity extends XMLNode implements org.w3c.dom.Entity {
 	 */
 	private String NotationName = null;
 
-	/**
-	 * @return The notation name, if this is an unparsed entity, or <code>null</code> if this is a parsed entity.
-	 * @version DOM Level 1
-	 */
+	@Override
 	public String getNotationName() {
 		return NotationName;
 	}
@@ -211,7 +199,6 @@ public class XMLEntity extends XMLNode implements org.w3c.dom.Entity {
 	}
 
 	/** The source of this entity (such as a filename). */
-
 	private String SourceName = "";
 
 	/** @return The source of this entity (such as a filename). */
@@ -219,36 +206,25 @@ public class XMLEntity extends XMLNode implements org.w3c.dom.Entity {
 		return SourceName;
 	}
 
-	/*Sets the source of this entity (such as a filename).
-	@param sourceName The source of this entity, such as a filename or the name of another entity.
-	*/
+	/**
+	 * Sets the source of this entity (such as a filename).
+	 * @param sourceName The source of this entity, such as a filename or the name of another entity.
+	 */
 	public void setSourceName(final String sourceName) {
 		SourceName = sourceName;
 	}
 
-	/**
-	 * An attribute specifying the encoding used for this entity at the time of parsing, when it is an external parsed entity. This is <code>null</code> if it an
-	 * entity from the internal subset or if it is not known.
-	 * @since DOM Level 3
-	 */
+	@Override
 	public String getInputEncoding() {
 		throw new UnsupportedOperationException();
 	} //TODO fix for DOM 3
 
-	/**
-	 * An attribute specifying, as part of the text declaration, the encoding of this entity, when it is an external parsed entity. This is <code>null</code>
-	 * otherwise.
-	 * @since DOM Level 3
-	 */
+	@Override
 	public String getXmlEncoding() {
 		throw new UnsupportedOperationException();
 	} //TODO fix for DOM 3
 
-	/**
-	 * An attribute specifying, as part of the text declaration, the version number of this entity, when it is an external parsed entity. This is
-	 * <code>null</code> otherwise.
-	 * @since DOM Level 3
-	 */
+	@Override
 	public String getXmlVersion() {
 		throw new UnsupportedOperationException();
 	} //TODO fix for DOM 3
@@ -277,13 +253,13 @@ public class XMLEntity extends XMLNode implements org.w3c.dom.Entity {
 	}
 
 	/**
-	 * The index of the character at which this entitybegins, or -1 if unknown.
+	 * The index of the character at which this entity begins, or -1 if unknown.
 	 * @see LineIndex
 	 */
 	private long CharIndex = -1;
 
 	/**
-	 * @return The index of the character at which this entitybegins, or -1 if unknown.
+	 * @return The index of the character at which this entity begins, or -1 if unknown.
 	 * @see getLineIndex
 	 */
 	public long getCharIndex() {

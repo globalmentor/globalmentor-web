@@ -40,7 +40,7 @@ public class MathML {
 
 	/** The string representing the the MathML namespace. */
 	public static final String NAMESPACE_URI_STRING = "http://www.w3.org/1998/Math/MathML";
-	
+
 	/** The URI to the MathML namespace. */
 	public static final URI NAMESPACE_URI = URI.create(NAMESPACE_URI_STRING);
 
@@ -52,7 +52,7 @@ public class MathML {
 	/** The system ID for the MathML 2.0 DTD. */
 	public static final String MATHML_2_0_SYSTEM_ID = "https://www.w3.org/Math/DTD/mathml2/mathml2.dtd";
 
-	//The MathML document element names.
+	/** The MathML document element names. */
 	public static final String ELEMENT_MATHML = "mathml";
 
 }

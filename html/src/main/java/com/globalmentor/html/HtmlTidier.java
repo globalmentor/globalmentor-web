@@ -430,7 +430,7 @@ public class HtmlTidier implements Clogged {
 	}
 
 	//TODO testing; comment; rename
-	public static void collapseChildWhitespaceLF(final Node node) {
+	private static void collapseChildWhitespaceLF(final Node node) {
 		node.normalize(); //make sure the node is normalized
 		final NodeList childNodes = node.getChildNodes(); //get the list of child nodes
 		final int childNodeCount = childNodes.getLength(); //find out how many child nodes there are
@@ -465,18 +465,18 @@ public class HtmlTidier implements Clogged {
 		tidyChildNodes(node); //tidy the child nodes of this node
 		switch(nodeType) { //see which type of node this is
 			case Node.ELEMENT_NODE: //if this is an element node
-			{
-				Element element = (Element)node; //cast this node to an element
-				element = tidyElement(element); //tidy the node and see if we get another element
-				if(isBlockElement(element)) //if this is a block element
-					tidyChildGroups(element); //tidy any groups of child nodes that have special meaning
-			}
+				{
+					Element element = (Element)node; //cast this node to an element
+					element = tidyElement(element); //tidy the node and see if we get another element
+					if(isBlockElement(element)) //if this is a block element
+						tidyChildGroups(element); //tidy any groups of child nodes that have special meaning
+				}
 				break;
 			case Node.TEXT_NODE: //if this is a text node
-			{
-				final Text textNode = (Text)node; //cast the node to a text node
-				tidyText(textNode); //tidy the text node
-			}
+				{
+					final Text textNode = (Text)node; //cast the node to a text node
+					tidyText(textNode); //tidy the text node
+				}
 				break;
 		}
 	}
@@ -1366,7 +1366,7 @@ public class HtmlTidier implements Clogged {
 	}
 
 	//TODO comment
-	protected static Text tidyEnclosingDelimiters(final Text textNode, final char delimiter, final String namespaceURI, final String qname) {
+	private static Text tidyEnclosingDelimiters(final Text textNode, final char delimiter, final String namespaceURI, final String qname) {
 		final String data = textNode.getData(); //get the text data
 		int startIndex = 0; //we'll start looking at the first of the text
 		while(startIndex >= 0) { //while we haven't ran out of characters

@@ -134,135 +134,260 @@ public class CSS {
 	public static final String PC_UNITS = "pc";
 
 	//general CSS properties
+
+	/** CSS property name definition. */
 	public static final String CSS_VALUE_AUTO = "auto";
+	/** CSS property name definition. */
 	public static final String CSS_VALUE_INHERIT = "inherit";
 
 	//Property names for CSS2
+
+	/** CSS property name definition. */
 	public static final String CSS_PROP_AZIMUTH = "azimuth";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_BACKGROUND = "background";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_BACKGROUND_ATTACHMENT = "background-attachment";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_BACKGROUND_COLOR = "background-color";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_BACKGROUND_IMAGE = "background-image";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_BACKGROUND_POSITION = "background-position";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_BACKGROUND_REPEAT = "background-repeat";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_BORDER = "border";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_BORDER_COLLAPSE = "border-collapse";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_BORDER_COLOR = "border-color";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_BORDER_SPACING = "border-spacing";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_BORDER_STYLE = "border-style";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_BORDER_TOP = "border-top";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_BORDER_RIGHT = "border-right";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_BORDER_BOTTOM = "border-bottom";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_BORDER_LEFT = "border-left";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_BORDER_TOP_COLOR = "border-top-color";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_BORDER_RIGHT_COLOR = "border-right-color";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_BORDER_BOTTOM_COLOR = "border-bottom-color";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_BORDER_LEFT_COLOR = "border-left-color";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_BORDER_TOP_STYLE = "border-top-style";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_BORDER_RIGHT_STYLE = "border-right-style";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_BORDER_BOTTOM_STYLE = "border-bottom-style";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_BORDER_LEFT_STYLE = "border-left-style";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_BORDER_TOP_WIDTH = "border-top-width";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_BORDER_RIGHT_WIDTH = "border-right-width";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_BORDER_BOTTOM_WIDTH = "border-bottom-width";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_BORDER_LEFT_WIDTH = "border-left-width";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_BORDER_WIDTH = "border-width";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_BOTTOM = "bottom";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_CAPTION = "caption-side";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_CLEAR = "clear";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_CLIP = "clip";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_COLOR = "color";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_CONTENT = "content";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_COUNTER_INCREMENT = "counter-increment";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_COUNTER_RESET = "counter-reset";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_CUE = "cue";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_CUE_AFTER = "cue-after";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_CUE_BEFORE = "cue-before";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_CURSOR = "cursor";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_DIRECTION = "direction";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_DISPLAY = "display";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_ELEVATION = "elevation";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_EMPTY_CELLS = "empty-cells";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_FLOAT = "float";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_FONT = "font";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_FONT_FAMILY = "font-family";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_FONT_SIZE = "font-size";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_FONT_SIZE_ADJUST = "font-size-adjust";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_FONT_STRETCH = "font-stretch";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_FONT_STYLE = "font-style";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_FONT_VARIANT = "font-variant";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_FONT_WEIGHT = "font-weight";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_HEIGHT = "height";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_LEFT = "left";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_LETTER_SPACING = "letter-spacing";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_LINE_HEIGHT = "line-height";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_LIST_STYLE = "list-style";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_LIST_STYLE_IMAGE = "list-style-image";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_LIST_STYLE_POSITION = "list-style-position";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_LIST_STYLE_TYPE = "list-style-type";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_MARGIN = "margin";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_MARGIN_TOP = "margin-top";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_MARGIN_RIGHT = "margin-right";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_MARGIN_BOTTOM = "margin-bottom";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_MARGIN_LEFT = "margin-left";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_MARKET_OFFSET = "marker-offset";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_MAX_HEIGHT = "max-height";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_MAX_WIDTH = "max-width";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_MIN_HEIGHT = "min-height";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_MIN_WIDTH = "min-width";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_OPACITY = "opacity";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_ORPHANS = "orphans";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_OUTLINE = "outline";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_OUTLINE_COLOR = "outline-color";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_OUTLINE_STYLE = "outline-style";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_OUTLINE_WIDTH = "outline-width";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_OVERFLOW = "overflow";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_PADDING = "padding";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_PADDING_TOP = "padding-top";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_PADDING_RIGHT = "padding-right";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_PADDING_BOTTOM = "padding-bottom";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_PADDING_LEFT = "padding-left";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_PAGE = "page";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_PAGE_BREAK_AFTER = "page-break-after";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_PAGE_BREAK_BEFORE = "page-break-before";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_PAGE_BREAK_INSIDE = "page-break-inside";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_PAUSE = "pause";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_PAUSE_AFTER = "pause-after";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_PAUSE_BEFORE = "pause-before";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_PITCH = "pitch";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_PITCH_NUMER = "pitch-range";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_PLAY_DURING = "play-during";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_POSITION = "position";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_QUOTES = "quotes";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_RICHNESS = "richness";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_RIGHT = "right";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_SPEAK = "speak";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_SPEAK_HEADER = "speak-header";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_SPEAK_NUMERAL = "speak-numeral";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_SPEAK_PUNCTUATION = "speak-punctuation";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_SPEECH_RATE = "speech-rate";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_STRESS = "stress";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_TABLE_LAYOUT = "table-layout";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_TEXT_ALIGN = "text-align ident";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_TEXT_DECORATION = "text-decoration";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_TEXT_INDENT = "text-indent";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_TEXT_SHADOW = "text-shadow";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_TEXT_TRANSFORM = "text-transform";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_TOP = "top";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_UNICODE_BIDI = "unicode-bidi";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_VERTICAL_ALIGN = "vertical-align";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_VISIBILITY = "visibility";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_VOICE_FAMILY = "voice-family";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_VOLUME = "volume";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_WHITE_SPACE = "white-space";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_WIDOES = "widows";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_WIDTH = "width";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_WORD_SPACING = "word-spacing";
+	/** CSS property name definition. */
 	public static final String CSS_PROP_Z_INDEX = "z-index";
 
-	/**
-	 * The name used in a list to represent that there is an empty list. Used, for example, for text-decoration.
-	 */
+	//	/**
+	//	 * The name used in a list to represent that there is an empty list. Used, for example, for text-decoration.
+	//	 */
 	//TODO del probably;	public static final String CSS_LIST_NONE="none";
 
 	//TODO add other properties here
@@ -270,64 +395,108 @@ public class CSS {
 	/** The IE filter property. */
 	public static final String CSS_PROP_FILTER = "filter";
 
-	//properties <code>border-color</code> and <code>border-XXX-color</code>
+	/** Transparent value for the <code>border-color</code> and <code>border-XXX-color</code> properties. */
 	public static final String CSS_BORDER_COLOR_TRANSPARENT = "transparent";
 
-	//properties <code>border-collapse</code>
+	/** Collapse value for the <code>border-collapse</code> property. */
 	public static final String CSS_BORDER_COLLAPSE_COLLAPSE = "collapse";
+	/** Separate value for the <code>border-collapse</code> property. */
 	public static final String CSS_BORDER_COLLAPSE_SEPARATE = "separate";
 
-	//properties <code>border-style</code> and <code>border-XXX-style</code>
+	/** Possible value for <code>border-style</code> and <code>border-XXX-style</code> properties. */
 	public static final String CSS_BORDER_STYLE_NONE = "none";
+	/** Possible value for <code>border-style</code> and <code>border-XXX-style</code> properties. */
 	public static final String CSS_BORDER_STYLE_HIDDEN = "hidden";
+	/** Possible value for <code>border-style</code> and <code>border-XXX-style</code> properties. */
 	public static final String CSS_BORDER_STYLE_DOTTED = "dotted";
+	/** Possible value for <code>border-style</code> and <code>border-XXX-style</code> properties. */
 	public static final String CSS_BORDER_STYLE_DASHED = "dashed";
+	/** Possible value for <code>border-style</code> and <code>border-XXX-style</code> properties. */
 	public static final String CSS_BORDER_STYLE_SOLID = "solid";
+	/** Possible value for <code>border-style</code> and <code>border-XXX-style</code> properties. */
 	public static final String CSS_BORDER_STYLE_DOUBLE = "double";
+	/** Possible value for <code>border-style</code> and <code>border-XXX-style</code> properties. */
 	public static final String CSS_BORDER_STYLE_GROOVE = "groove";
+	/** Possible value for <code>border-style</code> and <code>border-XXX-style</code> properties. */
 	public static final String CSS_BORDER_STYLE_RIDGE = "ridge";
+	/** Possible value for <code>border-style</code> and <code>border-XXX-style</code> properties. */
 	public static final String CSS_BORDER_STYLE_INSET = "inset";
+	/** Possible value for <code>border-style</code> and <code>border-XXX-style</code> properties. */
 	public static final String CSS_BORDER_STYLE_OUTSET = "outset";
 
-	//properties <code>border-width</code> and <code>border-XXX-width</code>
+	/** Possible value for the <code>border-width</code> and <code>border-XXX-width</code> properties. */
 	public static final String CSS_BORDER_WIDTH_THIN = "thin";
+	/** Possible value for the <code>border-width</code> and <code>border-XXX-width</code> properties. */
 	public static final String CSS_BORDER_WIDTH_MEDIUM = "medium";
+	/** Possible value for the <code>border-width</code> and <code>border-XXX-width</code> properties. */
 	public static final String CSS_BORDER_WIDTH_THICK = "thick";
 
-	//property <code>color<code>
+	/** Transparent value for the <code>color</code> property. */
 	public static final String CSS_COLOR_TRANSPARENT = "transparent";
-	//colors as defined by HTML; used with several properties, such as background-color
+
+	/** A color defined by HTML; used with several properties, such as <code>background-color</code>. */
 	public static final String CSS_COLOR_BLACK = "black";
+	/** A color defined by HTML; used with several properties, such as <code>background-color</code>. */
 	public static final int CSS_COLOR_BLACK_VALUE = 0x000000;
+	/** A color defined by HTML; used with several properties, such as <code>background-color</code>. */
 	public static final String CSS_COLOR_GREEN = "green";
+	/** A color defined by HTML; used with several properties, such as <code>background-color</code>. */
 	public static final int CSS_COLOR_GREEN_VALUE = 0x008000;
+	/** A color defined by HTML; used with several properties, such as <code>background-color</code>. */
 	public static final String CSS_COLOR_SILVER = "silver";
+	/** A color defined by HTML; used with several properties, such as <code>background-color</code>. */
 	public static final int CSS_COLOR_SILVER_VALUE = 0xC0C0C0;
+	/** A color defined by HTML; used with several properties, such as <code>background-color</code>. */
 	public static final String CSS_COLOR_LIME = "lime";
+	/** A color defined by HTML; used with several properties, such as <code>background-color</code>. */
 	public static final int CSS_COLOR_LIME_VALUE = 0x00FF00;
+	/** A color defined by HTML; used with several properties, such as <code>background-color</code>. */
 	public static final String CSS_COLOR_GRAY = "gray";
+	/** A color defined by HTML; used with several properties, such as <code>background-color</code>. */
 	public static final int CSS_COLOR_GRAY_VALUE = 0x808080;
+	/** A color defined by HTML; used with several properties, such as <code>background-color</code>. */
 	public static final String CSS_COLOR_OLIVE = "olive";
+	/** A color defined by HTML; used with several properties, such as <code>background-color</code>. */
 	public static final int CSS_COLOR_OLIVE_VALUE = 0x808000;
+	/** A color defined by HTML; used with several properties, such as <code>background-color</code>. */
 	public static final String CSS_COLOR_WHITE = "white";
+	/** A color defined by HTML; used with several properties, such as <code>background-color</code>. */
 	public static final int CSS_COLOR_WHITE_VALUE = 0xFFFFFF;
+	/** A color defined by HTML; used with several properties, such as <code>background-color</code>. */
 	public static final String CSS_COLOR_YELLOW = "yellow";
+	/** A color defined by HTML; used with several properties, such as <code>background-color</code>. */
 	public static final int CSS_COLOR_YELLOW_VALUE = 0xFFFF00;
+	/** A color defined by HTML; used with several properties, such as <code>background-color</code>. */
 	public static final String CSS_COLOR_MAROON = "maroon";
+	/** A color defined by HTML; used with several properties, such as <code>background-color</code>. */
 	public static final int CSS_COLOR_MAROON_VALUE = 0x800000;
+	/** A color defined by HTML; used with several properties, such as <code>background-color</code>. */
 	public static final String CSS_COLOR_NAVY = "navy";
+	/** A color defined by HTML; used with several properties, such as <code>background-color</code>. */
 	public static final int CSS_COLOR_NAVY_VALUE = 0x000080;
+	/** A color defined by HTML; used with several properties, such as <code>background-color</code>. */
 	public static final String CSS_COLOR_RED = "red";
+	/** A color defined by HTML; used with several properties, such as <code>background-color</code>. */
 	public static final int CSS_COLOR_RED_VALUE = 0xFF0000;
+	/** A color defined by HTML; used with several properties, such as <code>background-color</code>. */
 	public static final String CSS_COLOR_BLUE = "blue";
+	/** A color defined by HTML; used with several properties, such as <code>background-color</code>. */
 	public static final int CSS_COLOR_BLUE_VALUE = 0x0000FF;
+	/** A color defined by HTML; used with several properties, such as <code>background-color</code>. */
 	public static final String CSS_COLOR_PURPLE = "purple";
+	/** A color defined by HTML; used with several properties, such as <code>background-color</code>. */
 	public static final int CSS_COLOR_PURPLE_VALUE = 0x800080;
+	/** A color defined by HTML; used with several properties, such as <code>background-color</code>. */
 	public static final String CSS_COLOR_TEAL = "teal";
+	/** A color defined by HTML; used with several properties, such as <code>background-color</code>. */
 	public static final int CSS_COLOR_TEAL_VALUE = 0x008080;
+	/** A color defined by HTML; used with several properties, such as <code>background-color</code>. */
 	public static final String CSS_COLOR_FUCHSIA = "fuchsia";
+	/** A color defined by HTML; used with several properties, such as <code>background-color</code>. */
 	public static final int CSS_COLOR_FUCHSIA_VALUE = 0xFF00FF;
+	/** A color defined by HTML; used with several properties, such as <code>background-color</code>. */
 	public static final String CSS_COLOR_AQUA = "aqua";
+	/** A color defined by HTML; used with several properties, such as <code>background-color</code>. */
 	public static final int CSS_COLOR_AQUA_VALUE = 0x00FFFF;
 
 	/** The standard CSS color names, in lowercase, and their associated values. */
@@ -356,154 +525,248 @@ public class CSS {
 
 	//TODO add other properties here
 
-	//Property <code>clear</code>
+	/** Possible value for the <code>clear</code> property. */
 	public static final String CSS_CLEAR_BOTH = "both";
+	/** Possible value for the <code>clear</code> property. */
 	public static final String CSS_CLEAR_LEFT = "left";
+	/** Possible value for the <code>clear</code> property. */
 	public static final String CSS_CLEAR_NONE = "none";
+	/** Possible value for the <code>clear</code> property. */
 	public static final String CSS_CLEAR_RIGHT = "right";
 
-	//Property <code>display</code>
+	/** Possible value for the <code>display</code> property. */
 	public static final String CSS_DISPLAY_BLOCK = "block";
+	/** Possible value for the <code>display</code> property. */
 	public static final String CSS_DISPLAY_INLINE = "inline";
+	/** Possible value for the <code>display</code> property. */
 	public static final String CSS_DISPLAY_INLINE_BLOCK = "inline-block";
+	/** Possible value for the <code>display</code> property. */
 	public static final String CSS_DISPLAY_LIST_ITEM = "list-item";
+	/** Possible value for the <code>display</code> property. */
 	public static final String CSS_DISPLAY_RUN_IN = "run-in";
+	/** Possible value for the <code>display</code> property. */
 	public static final String CSS_DISPLAY_COMPACT = "compact";
+	/** Possible value for the <code>display</code> property. */
 	public static final String CSS_DISPLAY_MARKER = "marker";
+	/** Possible value for the <code>display</code> property. */
 	public static final String CSS_DISPLAY_TABLE = "table";
+	/** Possible value for the <code>display</code> property. */
 	public static final String CSS_DISPLAY_INLINE_TABLE = "inline-table";
+	/** Possible value for the <code>display</code> property. */
 	public static final String CSS_DISPLAY_TABLE_ROW_GROUP = "table-row-group";
+	/** Possible value for the <code>display</code> property. */
 	public static final String CSS_DISPLAY_TABLE_HEADER_GROUP = "table-header-group";
+	/** Possible value for the <code>display</code> property. */
 	public static final String CSS_DISPLAY_TABLE_FOOTER_GROUP = "table-footer-group";
+	/** Possible value for the <code>display</code> property. */
 	public static final String CSS_DISPLAY_TABLE_ROW = "table-row";
+	/** Possible value for the <code>display</code> property. */
 	public static final String CSS_DISPLAY_TABLE_COLUMN_GROUP = "table-column-group";
+	/** Possible value for the <code>display</code> property. */
 	public static final String CSS_DISPLAY_TABLE_CELL = "table-cell";
+	/** Possible value for the <code>display</code> property. */
 	public static final String CSS_DISPLAY_TABLE_CAPTION = "table-caption";
+	/** Possible value for the <code>display</code> property. */
 	public static final String CSS_DISPLAY_NONE = "none";
 
-	//Property <code>float</code>
+	/** Possible value for the <code>float</code> property. */
 	public static final String CSS_FLOAT_LEFT = "left";
+	/** Possible value for the <code>float</code> property. */
 	public static final String CSS_FLOAT_NONE = "none";
+	/** Possible value for the <code>float</code> property. */
 	public static final String CSS_FLOAT_RIGHT = "right";
 
-	//Property "font-family"
+	/** Possible value for the <code>font-family</code> property. */
 	public static final String CSS_FONT_FAMILY_SERIF = "serif";
+	/** Possible value for the <code>font-family</code> property. */
 	public static final String CSS_FONT_FAMILY_SANS_SERIF = "sans-serif";
+	/** Possible value for the <code>font-family</code> property. */
 	public static final String CSS_FONT_FAMILY_CURSIVE = "cursive";
+	/** Possible value for the <code>font-family</code> property. */
 	public static final String CSS_FONT_FAMILY_FANTASY = "fantasy";
+	/** Possible value for the <code>font-family</code> property. */
 	public static final String CSS_FONT_FAMILY_MONOSPACE = "monospace";
 	/** The CSS2 recommended scaling factor between absolute font size strings. */
 	public static final float FONT_SIZE_SCALING_FACTOR = 1.2f;
 
-	//Property "font-size"
+	/** Possible value for the <code>font-size</code> property. */
 	public static final String CSS_FONT_SIZE_XX_SMALL = "xx-small";
+	/** Possible value for the <code>font-size</code> property. */
 	public static final String CSS_FONT_SIZE_X_SMALL = "x-small";
+	/** Possible value for the <code>font-size</code> property. */
 	public static final String CSS_FONT_SIZE_SMALL = "small";
+	/** Possible value for the <code>font-size</code> property. */
 	public static final String CSS_FONT_SIZE_MEDIUM = "medium";
+	/** Possible value for the <code>font-size</code> property. */
 	public static final String CSS_FONT_SIZE_LARGE = "large";
+	/** Possible value for the <code>font-size</code> property. */
 	public static final String CSS_FONT_SIZE_X_LARGE = "x-large";
+	/** Possible value for the <code>font-size</code> property. */
 	public static final String CSS_FONT_SIZE_XX_LARGE = "xx-large";
+	/** Possible value for the <code>font-size</code> property. */
 	public static final String CSS_FONT_SIZE_SMALLER = "smaller";
+	/** Possible value for the <code>font-size</code> property. */
 	public static final String CSS_FONT_SIZE_LARGER = "larger";
 
-	//Property "font-style"
+	/** Possible value for the <code>font-style</code> property. */
 	public static final String CSS_FONT_STYLE_NORMAL = "normal";
+	/** Possible value for the <code>font-style</code> property. */
 	public static final String CSS_FONT_STYLE_ITALIC = "italic";
+	/** Possible value for the <code>font-style</code> property. */
 	public static final String CSS_FONT_STYLE_OBLIQUE = "oblique";
 
-	//Property "font-weight"
+	/** Possible value for the <code>font-weight</code> property. */
 	public static final String CSS_FONT_WEIGHT_NORMAL = "normal";
+	/** Possible value for the <code>font-weight</code> property. */
 	public static final String CSS_FONT_WEIGHT_BOLD = "bold";
+	/** Possible value for the <code>font-weight</code> property. */
 	public static final String CSS_FONT_WEIGHT_BOLDER = "bolder";
+	/** Possible value for the <code>font-weight</code> property. */
 	public static final String CSS_FONT_WEIGHT_LIGHTER = "lighter";
 
-	//Property "line-height"
+	/** Normal value for the <code>line-height</code> property. */
 	public static final String CSS_LINE_HEIGHT_NORMAL = "normal";
 
-	//Property <code>list-style-type</code>
+	/** Possible value for the <code>list-style-type</code> property. */
 	public static final String CSS_LIST_STYLE_TYPE_DISC = "disc";
+	/** Possible value for the <code>list-style-type</code> property. */
 	public static final String CSS_LIST_STYLE_TYPE_CIRCLE = "circle";
+	/** Possible value for the <code>list-style-type</code> property. */
 	public static final String CSS_LIST_STYLE_TYPE_SQUARE = "square";
+	/** Possible value for the <code>list-style-type</code> property. */
 	public static final String CSS_LIST_STYLE_TYPE_DECIMAL = "decimal";
+	/** Possible value for the <code>list-style-type</code> property. */
 	public static final String CSS_LIST_STYLE_TYPE_DECIMAL_LEADING_ZERO = "decimal-leading-zero";
+	/** Possible value for the <code>list-style-type</code> property. */
 	public static final String CSS_LIST_STYLE_TYPE_LOWER_ROMAN = "lower-roman";
+	/** Possible value for the <code>list-style-type</code> property. */
 	public static final String CSS_LIST_STYLE_TYPE_UPPER_ROMAN = "upper-roman";
+	/** Possible value for the <code>list-style-type</code> property. */
 	public static final String CSS_LIST_STYLE_TYPE_LOWER_GREEK = "lower-greek";
+	/** Possible value for the <code>list-style-type</code> property. */
 	public static final String CSS_LIST_STYLE_TYPE_LOWER_ALPHA = "lower-alpha";
+	/** Possible value for the <code>list-style-type</code> property. */
 	public static final String CSS_LIST_STYLE_TYPE_LOWER_LATIN = "lower-latin";
+	/** Possible value for the <code>list-style-type</code> property. */
 	public static final String CSS_LIST_STYLE_TYPE_UPPER_ALPHA = "upper-alpha";
+	/** Possible value for the <code>list-style-type</code> property. */
 	public static final String CSS_LIST_STYLE_TYPE_UPPER_LATIN = "upper-latin";
+	/** Possible value for the <code>list-style-type</code> property. */
 	public static final String CSS_LIST_STYLE_TYPE_HEBREW = "hebrew";
+	/** Possible value for the <code>list-style-type</code> property. */
 	public static final String CSS_LIST_STYLE_TYPE_ARMENIAN = "armenian";
+	/** Possible value for the <code>list-style-type</code> property. */
 	public static final String CSS_LIST_STYLE_TYPE_GEORGIAN = "georgian";
+	/** Possible value for the <code>list-style-type</code> property. */
 	public static final String CSS_LIST_STYLE_TYPE_CJK_IDEOGRAPHIC = "cjk-ideographic";
+	/** Possible value for the <code>list-style-type</code> property. */
 	public static final String CSS_LIST_STYLE_TYPE_HIRAGANA = "hiragana";
+	/** Possible value for the <code>list-style-type</code> property. */
 	public static final String CSS_LIST_STYLE_TYPE_KATAKANA = "katakana";
+	/** Possible value for the <code>list-style-type</code> property. */
 	public static final String CSS_LIST_STYLE_TYPE_HIRAGANA_IROHA = "hiragana-iroha";
+	/** Possible value for the <code>list-style-type</code> property. */
 	public static final String CSS_LIST_STYLE_TYPE_KATAKANA_IROHA = "katakana-iroha";
+	/** Possible value for the <code>list-style-type</code> property. */
 	public static final String CSS_LIST_STYLE_TYPE_NONE = "none";
 
-	//property <code>overflow</code>
+	/** Possible value for the <code>overflow</code> property. */
 	public static final String CSS_OVERFLOW_VISIBLE = "visible";
+	/** Possible value for the <code>overflow</code> property. */
 	public static final String CSS_OVERFLOW_HIDDEN = "hidden";
+	/** Possible value for the <code>overflow</code> property. */
 	public static final String CSS_OVERFLOW_SCROLL = "scroll";
+	/** Possible value for the <code>overflow</code> property. */
 	public static final String CSS_OVERFLOW_AUTO = "auto";
 
-	//property <code>page-break-after</code>
+	/** Possible value for the <code>page-break-after</code> property. */
 	public static final String CSS_PAGE_BREAK_AFTER_AUTO = "auto";
+	/** Possible value for the <code>page-break-after</code> property. */
 	public static final String CSS_PAGE_BREAK_AFTER_ALWAYS = "always";
+	/** Possible value for the <code>page-break-after</code> property. */
 	public static final String CSS_PAGE_BREAK_AFTER_AVOID = "avoid";
+	/** Possible value for the <code>page-break-after</code> property. */
 	public static final String CSS_PAGE_BREAK_AFTER_LEFT = "left";
+	/** Possible value for the <code>page-break-after</code> property. */
 	public static final String CSS_PAGE_BREAK_AFTER_RIGHT = "right";
+	/** Possible value for the <code>page-break-after</code> property. */
 	public static final String CSS_PAGE_BREAK_AFTER_INHERIT = "inherit";
 
-	//property <code>page-break-before</code>
+	/** Possible value for the <code>page-break-before</code> property. */
 	public static final String CSS_PAGE_BREAK_BEFORE_AUTO = "auto";
+	/** Possible value for the <code>page-break-before</code> property. */
 	public static final String CSS_PAGE_BREAK_BEFORE_ALWAYS = "always";
+	/** Possible value for the <code>page-break-before</code> property. */
 	public static final String CSS_PAGE_BREAK_BEFORE_AVOID = "avoid";
+	/** Possible value for the <code>page-break-before</code> property. */
 	public static final String CSS_PAGE_BREAK_BEFORE_LEFT = "left";
+	/** Possible value for the <code>page-break-before</code> property. */
 	public static final String CSS_PAGE_BREAK_BEFORE_RIGHT = "right";
+	/** Possible value for the <code>page-break-before</code> property. */
 	public static final String CSS_PAGE_BREAK_BEFORE_INHERIT = "inherit";
 
-	//**property <code>position</code>
+	/** Possible value for the <code>position</code> property. */
 	public static final String CSS_POSITION_ABSOLUTE = "absolute";
+	/** Possible value for the <code>position</code> property. */
 	public static final String CSS_POSITION_FIXED = "fixed";
+	/** Possible value for the <code>position</code> property. */
 	public static final String CSS_POSITION_RELATIVE = "relative";
 
-	//**property <code>table-layout</code>
+	/** Possible value for the <code>table-layout</code> property. */
 	public static final String CSS_TABLE_LAYOUT_AUTO = "auto";
+	/** Possible value for the <code>table-layout</code> property. */
 	public static final String CSS_TABLE_LAYOUT_FIXED = "fixed";
 
-	//property <code>text-decoration</code>
+	/** Possible value for the <code>text-decoration</code> property */
 	public static final String CSS_TEXT_DECORATION_NONE = "none";
+	/** Possible value for the <code>text-decoration</code> property */
 	public static final String CSS_TEXT_DECORATION_UNDERLINE = "underline";
+	/** Possible value for the <code>text-decoration</code> property */
 	public static final String CSS_TEXT_DECORATION_OVERLINE = "overline";
+	/** Possible value for the <code>text-decoration</code> property */
 	public static final String CSS_TEXT_DECORATION_LINE_THROUGH = "line-through";
+	/** Possible value for the <code>text-decoration</code> property */
 	public static final String CSS_TEXT_DECORATION_BLINK = "blink";
+	/** Possible value for the <code>text-decoration</code> property */
 	public static final String CSS_TEXT_DECORATION_INHERIT = "inherit";
 
-	//property <code>text-transform</code>
+	/** Possible value for the <code>text-transform</code> property. */
 	public static final String CSS_TEXT_TRANSFORM_CAPITALIZE = "capitalize";
+	/** Possible value for the <code>text-transform</code> property. */
 	public static final String CSS_TEXT_TRANSFORM_UPPERCASE = "uppercase";
+	/** Possible value for the <code>text-transform</code> property. */
 	public static final String CSS_TEXT_TRANSFORM_LOWERCASE = "lowercase";
+	/** Possible value for the <code>text-transform</code> property. */
 	public static final String CSS_TEXT_TRANSFORM_NONE = "none";
+	/** Possible value for the <code>text-transform</code> property. */
 	public static final String CSS_TEXT_TRANSFORM_INHERIT = "inherit";
 
-	//property <code>vertical-align</code>
+	/** Possible value for the <code>vertical-align</code> property. */
 	public static final String CSS_VERTICAL_ALIGN_BASELINE = "baseline";
+	/** Possible value for the <code>vertical-align</code> property. */
 	public static final String CSS_VERTICAL_ALIGN_SUB = "sub";
+	/** Possible value for the <code>vertical-align</code> property. */
 	public static final String CSS_VERTICAL_ALIGN_SUPER = "super";
+	/** Possible value for the <code>vertical-align</code> property. */
 	public static final String CSS_VERTICAL_ALIGN_TOP = "top";
+	/** Possible value for the <code>vertical-align</code> property. */
 	public static final String CSS_VERTICAL_ALIGN_TEXT_TOP = "text-top";
+	/** Possible value for the <code>vertical-align</code> property. */
 	public static final String CSS_VERTICAL_ALIGN_MIDDLE = "middle";
+	/** Possible value for the <code>vertical-align</code> property. */
 	public static final String CSS_VERTICAL_ALIGN_BOTTOM = "bottom";
+	/** Possible value for the <code>vertical-align</code> property. */
 	public static final String CSS_VERTICAL_ALIGN_TEXT_BOTTOM = "text-bottom";
+	/** Possible value for the <code>vertical-align</code> property. */
 	public static final String CSS_VERTICAL_ALIGN_INHERIT = "inherit";
 
-	//property <code>visibility</code>
+	/** Possible value for the <code>visibility</code> property. */
 	public static final String CSS_VISIBILITY_COLLAPSE = "collapse";
+	/** Possible value for the <code>visibility</code> property. */
 	public static final String CSS_VISIBILITY_HIDDEN = "hidden";
+	/** Possible value for the <code>visibility</code> property. */
 	public static final String CSS_VISIBILITY_INHERIT = "inherit";
+	/** Possible value for the <code>visibility</code> property. */
 	public static final String CSS_VISIBILITY_VISIBLE = "visible";
 
 	/**

@@ -24,22 +24,22 @@ import org.w3c.dom.Element;
  * @see XMLCSSStyleRule
  * @deprecated
  */
-public class XMLCSSSelector {	//TODO fix, Cloneable
+public class XMLCSSSelector { //TODO fix, Cloneable
 
-	/*Constructor which requires a tag name and a class.
-	@param tagName The name of the tag this selector matches,
-		or the empty string if no name is to be specified.
-	@param tagClass The class of this selector, or the empty string if no class is to be specified.
-	*/
+	/**
+	 * Constructor which requires a tag name and a class.
+	 * @param tagName The name of the tag this selector matches, or the empty string if no name is to be specified.
+	 * @param tagClass The class of this selector, or the empty string if no class is to be specified.
+	 */
 	public XMLCSSSelector(final String tagName, final String tagClass) {
 		TagName = tagName; //set the tag name
 		TagClass = tagClass; //set the tag class
 	}
 
-	/*Constructor which requires a tag name.
-	@param tagName The name of the tag this selector matches,
-		or the empty string if no name is to be specified.
-	*/
+	/**
+	 * Constructor which requires a tag name.
+	 * @param tagName The name of the tag this selector matches, or the empty string if no name is to be specified.
+	 */
 	public XMLCSSSelector(final String tagName) {
 		this(tagName, ""); //construct this object with only a tag name
 	}

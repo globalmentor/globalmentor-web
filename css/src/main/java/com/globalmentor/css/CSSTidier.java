@@ -102,8 +102,8 @@ public class CSSTidier implements Clogged { //TODO add a feature to remove empty
 	//TODO fix	protected CSSPrimitiveValue baseFontSizeCSSValue=null;
 
 	//TODO comment
-	protected short baseFontSizeCssValueType;
-	protected float baseFontSizeValue;
+	private short baseFontSizeCssValueType;
+	private float baseFontSizeValue;
 
 	/** Default constructor initialized with the default options. */
 	public CSSTidier() {

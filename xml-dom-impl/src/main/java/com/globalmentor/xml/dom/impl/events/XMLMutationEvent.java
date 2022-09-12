@@ -33,13 +33,19 @@ public class XMLMutationEvent extends XMLEvent implements MutationEvent {
 	/** The identification string of this class of events. */
 	public static final String FEATURE_NAME = "MutationEvents";
 
-	//types of mutation events
+	/** A type of mutation event. */
 	public static final String DOM_SUBTREE_MODIFIED = "DOMSubtreeModified";
+	/** A type of mutation event. */
 	public static final String DOM_NODE_INSERTED = "DOMNodeInserted";
+	/** A type of mutation event. */
 	public static final String DOM_NODE_REMOVED = "DOMNodeRemoved";
+	/** A type of mutation event. */
 	public static final String DOM_NODE_REMOVED_FROM_DOCUMENT = "DOMNodeRemovedFromDocument";
+	/** A type of mutation event. */
 	public static final String DOM_NODE_INSERTED_INTO_DOCUMENT = "DOMNodeInsertedIntoDocument";
+	/** A type of mutation event. */
 	public static final String DOM_ATTR_MODIFIED = "DOMAttrModified";
+	/** A type of mutation event. */
 	public static final String DOM_CHARACTER_DATA_MODIFIED = "DOMCharacterDataModified";
 
 	/** The node related to this mutation, if applicable. */

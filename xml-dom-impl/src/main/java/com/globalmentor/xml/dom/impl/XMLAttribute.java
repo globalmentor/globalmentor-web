@@ -147,21 +147,12 @@ public class XMLAttribute extends XMLNode implements org.w3c.dom.Attr {
 	/** The value of the attribute. */
 	private String Value = "";
 
-	/**
-	 * Returns the value of this attribute.
-	 * @return The value of this attribute.
-	 * @version DOM Level 1
-	 */
+	@Override
 	public String getNodeValue() throws DOMException {
 		return Value;
 	}
 
-	/**
-	 * Sets the value of the attribute, and makes a note that the attribute has now been explicitly specified.
-	 * @param nodeValue The new value for the attribute.
-	 * @see XMLAttribute#getSpecified
-	 * @version DOM Level 1
-	 */
+	@Override
 	public void setNodeValue(String nodeValue) throws DOMException {
 		Value = nodeValue; //set the value
 		setSpecified(true); //show that this value has been specified
@@ -196,8 +187,6 @@ public class XMLAttribute extends XMLNode implements org.w3c.dom.Attr {
 	 * @return The owner of the attribute, or <code>null</code> if this attribute is not in use.
 	 * @see XMLAttribute#getOwnerElement
 	 * @see XMLElement
-	 * @version DOM Level 2
-	 * @since DOM Level 2
 	 */
 	public XMLElement getXMLOwnerElement() {
 		return OwnerElement;
@@ -212,13 +201,7 @@ public class XMLAttribute extends XMLNode implements org.w3c.dom.Attr {
 		OwnerElement = newOwnerElement;
 	}
 
-	/**
-	 * Returns the element node to which this attribute is attached, or <code>null</code> if this attribute is not in use.
-	 * @return The owner of the attribute, or <code>null</code> if this attribute is not in use.
-	 * @see XMLElement
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	@Override
 	public Element getOwnerElement() {
 		return getXMLOwnerElement();
 	}
@@ -242,7 +225,6 @@ public class XMLAttribute extends XMLNode implements org.w3c.dom.Attr {
 	 *           node is an attribute and the specified prefix is "xmlns" and the <code>namespaceURI</code> of this node is different from
 	 *           "http://www.w3.org/2000/xmlns/", or if this node is an attribute and the <code>qualifiedName</code> of this node is "xmlns".</li>
 	 *           </ul>
-	 * @since DOM Level 2
 	 */
 	/*TODO fix; this doesn't check the namespace URI, and it doesn't even update the prefix by calling the parent version
 		public void setPrefix(String prefix) throws DOMException
@@ -310,11 +292,7 @@ public class XMLAttribute extends XMLNode implements org.w3c.dom.Attr {
 		CharIndex = newCharIndex;
 	}
 
-	/**
-	 * Returns the name of this attribute.
-	 * @return The name of this attribute.
-	 * @version DOM Level 1
-	 */
+	@Override
 	public String getName() {
 		return getNodeName();
 	}
@@ -324,13 +302,7 @@ public class XMLAttribute extends XMLNode implements org.w3c.dom.Attr {
 	 */
 	private boolean Specified = true;
 
-	/**
-	 * Specifies if this attribute was was explicitly given a value in the original document. If the user changes the value of the attribute, this will revert to
-	 * <code>true</code>.
-	 * @return <code>true</code> if this attribute was specifically given in the document or by the user.
-	 * @see XMLAttribute#setValue
-	 * @version DOM Level 1
-	 */
+	@Override
 	public boolean getSpecified() {
 		return Specified;
 	}
@@ -344,68 +316,22 @@ public class XMLAttribute extends XMLNode implements org.w3c.dom.Attr {
 		Specified = specified;
 	}
 
-	/**
-	 * Returns the value of the attribute as a string. Character and general entity references are replaced with their values.
-	 * @return The value of the attribute as a string.
-	 * @version DOM Level 1
-	 */
+	@Override
 	public String getValue() {
 		return getNodeValue();
 	}
 
-	/**
-	 * Sets the value of the attribute, and makes a note that the attribute has now been explicitely specified. TODO fix On setting, this creates a
-	 * <code>Text</code> node with the unparsed contents of the string.
-	 * @param value The new value for the attribute.
-	 * @throws DOMException
-	 *           <ul>
-	 *           <li>NO_MODIFICATION_ALLOWED_ERR: Raised when the node is readonly.</li>
-	 *           </ul>
-	 * @see XMLAttribute#getNodeValue
-	 * @see XMLAttribute#getSpecified
-	 * @version DOM Level 1
-	 */
+	@Override
 	public void setValue(String value) throws DOMException {
 		setNodeValue(value);
 	}
 
-	/**
-	 * The type information associated with this attribute. While the type information contained in this attribute is guarantee to be correct after loading the
-	 * document or invoking <code>Document.normalizeDocument()</code>, <code>schemaTypeInfo</code> may not be reliable if the node was moved.
-	 * @since DOM Level 3
-	 */
+	@Override
 	public TypeInfo getSchemaTypeInfo() {
 		throw new UnsupportedOperationException();
 	} //TODO fix for DOM 3
 
-	/**
-	 * Returns whether this attribute is known to be of type ID (i.e. to contain an identifier for its owner element) or not. When it is and its value is unique,
-	 * the <code>ownerElement</code> of this attribute can be retrieved using the method <code>Document.getElementById</code> . The implementation could use
-	 * several ways to determine if an attribute node is known to contain an identifier:
-	 * <ul>
-	 * <li>If validation occurred using an XML Schema [<a href='http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/'>XML Schema Part 1</a>] while loading the
-	 * document or while invoking <code>Document.normalizeDocument()</code>, the post-schema-validation infoset contributions (PSVI contributions) values are used
-	 * to determine if this attribute is a schema-determined ID attribute using the <a href='http://www.w3.org/TR/2003/REC-xptr-framework-20030325/#term-sdi'>
-	 * schema-determined ID</a> definition in [<a href='http://www.w3.org/TR/2003/REC-xptr-framework-20030325/'>XPointer</a>] .</li>
-	 * <li>If validation occurred using a DTD while loading the document or while invoking <code>Document.normalizeDocument()</code>, the infoset <b>[type
-	 * definition]</b> value is used to determine if this attribute is a DTD-determined ID attribute using the
-	 * <a href='http://www.w3.org/TR/2003/REC-xptr-framework-20030325/#term-ddi'> DTD-determined ID</a> definition in
-	 * [<a href='http://www.w3.org/TR/2003/REC-xptr-framework-20030325/'>XPointer</a>] .</li>
-	 * <li>from the use of the methods <code>Element.setIdAttribute()</code>, <code>Element.setIdAttributeNS()</code>, or
-	 * <code>Element.setIdAttributeNode()</code>, i.e. it is an user-determined ID attribute;
-	 * <p >
-	 * <b>Note:</b> XPointer framework (see section 3.2 in [<a href='http://www.w3.org/TR/2003/REC-xptr-framework-20030325/'>XPointer</a>] ) consider the DOM
-	 * user-determined ID attribute as being part of the XPointer externally-determined ID definition.</li>
-	 * <li>using mechanisms that are outside the scope of this specification, it is then an externally-determined ID attribute. This includes using schema
-	 * languages different from XML schema and DTD.</li>
-	 * </ul>
-	 * <p>
-	 * If validation occurred while invoking <code>Document.normalizeDocument()</code>, all user-determined ID attributes are reset and all attribute nodes ID
-	 * information are then reevaluated in accordance to the schema used. As a consequence, if the <code>Attr.schemaTypeInfo</code> attribute contains an ID type,
-	 * <code>isId</code> will always return true.
-	 * </p>
-	 * @since DOM Level 3
-	 */
+	@Override
 	public boolean isId() {
 		throw new UnsupportedOperationException();
 	} //TODO fix for DOM 3

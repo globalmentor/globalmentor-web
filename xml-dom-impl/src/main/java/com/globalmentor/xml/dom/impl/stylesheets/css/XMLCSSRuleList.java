@@ -31,24 +31,12 @@ import com.globalmentor.xml.dom.impl.XMLDocument;
  */
 public class XMLCSSRuleList extends ArrayList implements org.w3c.dom.css.CSSRuleList {
 
-	/**
-	 * Returns the number of rules in the list. The range of valid rule indices is 0 to <code>length-1</code> inclusive.
-	 * @return The number of rules in the list.
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	@Override
 	public int getLength() {
 		return size();
 	}
 
-	/**
-	 * Returns the <code>index</code>th item in the list. If <code>index</code> is greater than or equal to the number of CSS rules in the list, this returns
-	 * <code>null</code>.
-	 * @param index Index into the list.
-	 * @return The CSS rule at the <code>index</code>th position in the list, or <code>null</code> if that is not a valid index.
-	 * @version DOM Level 2
-	 * @since DOM Level 2
-	 */
+	@Override
 	public CSSRule item(int index) {
 		try {
 			return (CSSRule)get(index); //return the object at the index

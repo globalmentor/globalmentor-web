@@ -21,7 +21,6 @@ import java.util.*;
 import org.w3c.dom.*;
 import org.w3c.dom.traversal.*;
 
-import com.globalmentor.xml.*;
 import com.globalmentor.xml.dom.impl.XMLDOMException;
 import com.globalmentor.xml.dom.impl.XMLNode;
 
@@ -38,7 +37,7 @@ public class XMLNodeIterator implements NodeIterator {
 	/** The root node of this iterator. */
 	private Node root;
 
-	/** @return The root node of the iterator, as specified when it was created. */
+	@Override
 	public Node getRoot() {
 		return root;
 	}
@@ -107,13 +106,7 @@ public class XMLNodeIterator implements NodeIterator {
 	/** What should be shown. This defaults to everything <code>NodeFilter.SHOW_ALL</code>. */
 	private int whatToShow = NodeFilter.SHOW_ALL;
 
-	/**
-	 * Determines which node types are presented via the iterator. The available set of constants is defined in the <code>NodeFilter</code> interface. Nodes not
-	 * accepted by <code>whatToShow</code> will be skipped, but their children may still be considered. Note that this skip takes precedence over the filter, if
-	 * any.
-	 * @return The nodes which should be included in the iterator.
-	 * @see NodeFilter
-	 */
+	@Override
 	public int getWhatToShow() {
 		return whatToShow;
 	}
@@ -162,32 +155,12 @@ public class XMLNodeIterator implements NodeIterator {
 		return nodeFilter;
 	}
 
-	/**
-	 * <p>
-	 * The value of this flag determines whether the children of entity reference nodes are visible to the iterator. If false, they and their descendants will be
-	 * rejected. Note that this rejection takes precedence over <code>whatToShow</code> and the filter. Also note that this is currently the only situation where
-	 * <code>NodeIterators</code> may reject a complete subtree rather than skipping individual nodes.
-	 * </p>
-	 * <p>
-	 * To produce a view of the document that has entity references expanded and does not expose the entity reference node itself, use the <code>whatToShow</code>
-	 * flags to hide the entity reference node and set <code>expandEntityReferences</code> to true when creating the iterator. To produce a view of the document
-	 * that has entity reference nodes but no entity expansion, use the <code>whatToShow</code> flags to show the entity reference node and set
-	 * <code>expandEntityReferences</code> to false.
-	 * @return Whether entity reference should be expanded.
-	 */
+	@Override
 	public boolean getExpandEntityReferences() {
 		return false;
 	} //TODO fix
 
-	/**
-	 * Returns the next node in the set and advances the position of the iterator in the set. After a <code>NodeIterator</code> is created, the first call to
-	 * <code>nextNode()</code> returns the first node in the set. The reference node will be updated.
-	 * @return The next <code>Node</code> in the set being iterated over, or <code>null</code> if there are no more members in that set.
-	 * @throws DOMException
-	 *           <ul>
-	 *           <li>INVALID_STATE_ERR: Raised if this method is called after the <code>detach</code> method was invoked.</li>
-	 *           </ul>
-	 */
+	@Override
 	public Node nextNode() throws DOMException {
 		final Node oldReferenceNode = getReferenceNode(); //get the original reference node, in case we need to restore it
 		final boolean wasBeforeReferenceNode = isBeforeReferenceNode(); //see if we're before the reference node
@@ -202,14 +175,7 @@ public class XMLNodeIterator implements NodeIterator {
 		return null; //show that we can't find the previous node
 	}
 
-	/**
-	 * Returns the previous node in the set and moves the position of the <code>NodeIterator</code> backwards in the set. The reference node will be updated.
-	 * @return The previous <code>Node</code> in the set being iterated over, or <code>null</code> if there are no more members in that set.
-	 * @throws DOMException
-	 *           <ul>
-	 *           <li>INVALID_STATE_ERR: Raised if this method is called after the <code>detach</code> method was invoked.</li>
-	 *           </ul>
-	 */
+	@Override
 	public Node previousNode() throws DOMException {
 		final Node oldReferenceNode = getReferenceNode(); //get the original reference node, in case we need to restore it
 		final boolean wasAfterReferenceNode = isAfterReferenceNode(); //see if we're after the reference node
@@ -311,12 +277,12 @@ public class XMLNodeIterator implements NodeIterator {
 	/** The current child we're looking at. */
 	//TODO fix or del	private int ChildIndex;
 
-	/**
-	 * Constructor that specifies the children which contain the objects, along with the type of object to iterate through.
-	 * @param childCollection The collection of children which contains the objects to iterate through.
-	 * @param nodeType The type of node to iterate through in the iteration (all others will be ignored).
-	 * @see XMLNode
-	 */
+	//	/**
+	//	 * Constructor that specifies the children which contain the objects, along with the type of object to iterate through.
+	//	 * @param childCollection The collection of children which contains the objects to iterate through.
+	//	 * @param nodeType The type of node to iterate through in the iteration (all others will be ignored).
+	//	 * @see XMLNode
+	//	 */
 	/*TODO fix or del
 		public XMLNodeIterator(final Collection childCollection, final short nodeType)
 		{
@@ -326,10 +292,10 @@ public class XMLNodeIterator implements NodeIterator {
 		}
 	*/
 
-	/**
-	 * @return true if there are more child objects of the correct type.
-	 * @see Iterator.hasNext
-	 */
+	//	/**
+	//	 * @return true if there are more child objects of the correct type.
+	//	 * @see Iterator.hasNext
+	//	 */
 	/*TODO fix
 		public boolean hasNext()
 		{
@@ -341,11 +307,11 @@ public class XMLNodeIterator implements NodeIterator {
 		}
 	*/
 
-	/**
-	 * @return The next child object of the correct type available.
-	 * @throw NoSuchElementException Thrown if no more child objects are left.
-	 * @see Iterator.next
-	 */
+	//	/**
+	//	 * @return The next child object of the correct type available.
+	//	 * @throw NoSuchElementException Thrown if no more child objects are left.
+	//	 * @see Iterator.next
+	//	 */
 	/*TODO fix or del
 		public Object next()
 		{
@@ -360,11 +326,11 @@ public class XMLNodeIterator implements NodeIterator {
 		}
 	*/
 
-	/**
-	 * Removing children is not currently allowed by XMLNodeIterator, and will always throw an exception.
-	 * @throw UnsupportedOperationException Always thrown, because this operation is currently not supported.
-	 * @see Iterator.remove
-	 */
+	//	/**
+	//	 * Removing children is not currently allowed by XMLNodeIterator, and will always throw an exception.
+	//	 * @throws UnsupportedOperationException Always thrown, because this operation is currently not supported.
+	//	 * @see Iterator.remove
+	//	 */
 	/*TODO fix or del
 	  public void remove()
 	  {
@@ -372,12 +338,7 @@ public class XMLNodeIterator implements NodeIterator {
 	  }
 	*/
 
-	/**
-	 * Detaches the <code>NodeIterator</code> from the set which it iterated over, releasing any computational resources and placing the iterator in the
-	 * <code>INVALID</code> state. After <code>detach</code> has been invoked, calls to <code>nextNode</code> or <code>previousNode</code> will raise the
-	 * exception <code>INVALID_STATE_ERR</code>.
-	 * @version DOM Level 2
-	 */
+	@Override
 	public void detach() {
 		//TODO remove ourselves as a listener from the root node
 		referenceNode = null; //set the reference node to null

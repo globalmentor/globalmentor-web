@@ -64,7 +64,7 @@ public class SVG {
 	/** The system ID for the SVG 1.1 Tiny DTD. */
 	public static final String SVG_1_1_TINY_SYSTEM_ID = "https://www.w3.org/Graphics/SVG/1.1/DTD/svg11-tiny.dtd";
 
-	//The SVG document element names.
+	/** The SVG document element name. */
 	public static final String ELEMENT_SVG = "svg";
 
 }
