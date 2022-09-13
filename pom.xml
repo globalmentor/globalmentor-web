@@ -8,12 +8,12 @@
 		<version>0.7.2-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>globalmentor-web-parent</artifactId>
+	<artifactId>globalmentor-web</artifactId>
 	<version>0.6.6-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<name>GlobalMentor Web Parent</name>
-	<description>(X/HT)ML, CSS, JavaScript, etc. format definitions, implementations, and utilities.</description>
+	<name>GlobalMentor Web</name>
+	<description>(X/HT)ML, CSS, JavaScript, and other web-related format definitions, implementations, and utilities.</description>
 	<url>http://www.globalmentor.com/software/</url>
 	<inceptionYear>1996</inceptionYear>
 
@@ -70,13 +70,37 @@
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
+				<artifactId>globalmentor-html</artifactId>
+				<version>0.6.6-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-html-spec</artifactId>
 				<version>0.6.6-SNAPSHOT</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
+				<artifactId>globalmentor-javascript</artifactId>
+				<version>0.6.6-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-mathml-spec</artifactId>
+				<version>0.6.6-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.globalmentor</groupId>
+				<artifactId>globalmentor-rdf-spec</artifactId>
+				<version>0.6.6-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.globalmentor</groupId>
+				<artifactId>globalmentor-rdfa-spec</artifactId>
 				<version>0.6.6-SNAPSHOT</version>
 			</dependency>
 
@@ -94,7 +118,31 @@
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
+				<artifactId>globalmentor-vocab-dcmi</artifactId>
+				<version>0.6.6-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.globalmentor</groupId>
+				<artifactId>globalmentor-vocab-foaf</artifactId>
+				<version>0.6.6-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.globalmentor</groupId>
+				<artifactId>globalmentor-vocab-ogp</artifactId>
+				<version>0.6.6-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-xml</artifactId>
+				<version>0.6.6-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.globalmentor</groupId>
+				<artifactId>globalmentor-xml-dom-impl</artifactId>
 				<version>0.6.6-SNAPSHOT</version>
 			</dependency>
 
