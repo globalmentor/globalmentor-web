@@ -29,7 +29,7 @@ import static com.globalmentor.net.URIs.*;
  * This class is not thread safe.
  * </p>
  * @author Garret Wilson
- * @deprecated
+ * @deprecated to be replaced by {@link com.globalmentor.vocab.VocabularyManager}.
  */
 @Deprecated
 public class XMLNamespacePrefixManager //TODO replace with VocabularyManager
