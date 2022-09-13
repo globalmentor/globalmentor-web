@@ -25,6 +25,7 @@ import java.util.function.BiFunction;
 import java.util.stream.Stream;
 
 import javax.annotation.*;
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.parsers.*;
 
 import org.w3c.dom.*;
@@ -36,7 +37,9 @@ import com.globalmentor.java.Objects;
 import com.globalmentor.model.ConfigurationException;
 import com.globalmentor.net.MediaType;
 import com.globalmentor.text.ASCII;
+import com.globalmentor.vocab.VocabularyRegistry;
 import com.globalmentor.html.spec.HTML;
+import com.globalmentor.xml.VocabularyNamespaceContext;
 import com.globalmentor.xml.XmlDom;
 
 import io.clogr.Clogr;
@@ -56,6 +59,18 @@ import static com.globalmentor.xml.XmlDom.*;
  * @see <a href="http://www.w3.org/TR/xhtml-media-types/">XHTML Media Types</a>
  */
 public class HtmlDom {
+
+	/**
+	 * A namespace context suitable for use with XPath expressions with HTML, mapping the (X)HTML namespace to {@value HTML#HTML_NAMESPACE_PREFIX} (as Java's
+	 * XPath implementation doesn't allow for a default namespace).
+	 * @apiNote If the default mapping is insufficient and/or uses a different namespace prefix than desired, create a {@link VocabularyNamespaceContext} using a
+	 *          custom configured {@link VocabularyRegistry}.
+	 * @see javax.xml.xpath.XPath#setNamespaceContext(NamespaceContext)
+	 * @see HTML#HTML_NAMESPACE_PREFIX
+	 * @see HTML#XHTML_NAMESPACE_URI
+	 */
+	public static NamespaceContext DEFAULT_XPATH_NAMESPACE_CONTEXT = new VocabularyNamespaceContext(
+			VocabularyRegistry.builder().registerPrefix(HTML_NAMESPACE_PREFIX, XHTML_NAMESPACE_URI).build());
 
 	/**
 	 * Creates a new unformatted default XHTML document with the required minimal structure, {@code <html><head><title></title<head><body></html>}, with no
