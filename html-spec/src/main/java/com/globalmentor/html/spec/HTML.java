@@ -67,10 +67,19 @@ public class HTML {
 	/** The extension for HTML resource names. */
 	public static final String HTML_FILENAME_EXTENSION = "html";
 
+	/**
+	 * The prefix to the XHTML namespace used as XHTML.
+	 * @apiNote This namespace prefix is seldom necessary, as (X)HTML documents commonly set the (X)HTML namespace as the default early in the document.
+	 */
+	public static final String HTML_NAMESPACE_PREFIX = "html";
+
 	/** The extension for XHTML resource names. */
 	public static final String XHTML_FILENAME_EXTENSION = "xhtml";
 
-	/** The recommended prefix to the XHTML namespace. */
+	/**
+	 * The prefix to the XHTML namespace used as XHTML.
+	 * @apiNote This namespace prefix is more of a legacy definition, used more in XML-based definition documents than in (X)HTML documents themselves.
+	 */
 	public static final String XHTML_NAMESPACE_PREFIX = "xhtml";
 
 	/** The string representing the XHTML namespace. */
