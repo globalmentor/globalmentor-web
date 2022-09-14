@@ -21,9 +21,7 @@ import static com.globalmentor.xml.spec.XPath.*;
 import java.util.*;
 
 import javax.annotation.*;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.*;
 
 import org.w3c.dom.*;
 
@@ -56,9 +54,31 @@ public class XPathDom {
 	public static XPathExpression compileExpression(@Nonnull final XPath xpath, @Nonnull String expression) {
 		try {
 			return xpath.compile(expression);
-		} catch(final XPathExpressionException xPathExpressionException) {
-			throw new IllegalArgumentException(xPathExpressionException.getMessage(), xPathExpressionException);
+		} catch(final XPathExpressionException xpathExpressionException) {
+			throw new IllegalArgumentException(xpathExpressionException.getMessage(), xpathExpressionException);
 		}
+	}
+
+	/**
+	 * Evaluates the compiled XPath expression in the specified context and return the result as a node if found.
+	 * @apiNote The type of the context is usually {@link org.w3c.dom.Node}.
+	 * @param context The context the XPath expression will be evaluated in.
+	 * @return The node, if any, that is the result of evaluating the expression.
+	 * @throws XPathExpressionException If the expression cannot be evaluated.
+	 */
+	public static Optional<Node> findAsNode(@Nonnull final XPathExpression xpathExpression, @Nonnull Object context) throws XPathExpressionException {
+		return Optional.ofNullable((Node)xpathExpression.evaluate(context, XPathConstants.NODE));
+	}
+
+	/**
+	 * Evaluates the compiled XPath expression in the specified context and return the result as a node list if found.
+	 * @apiNote The type of the context is usually {@link org.w3c.dom.Node}.
+	 * @param context The context the XPath expression will be evaluated in.
+	 * @return The node list, if any, that is the result of evaluating the expression.
+	 * @throws XPathExpressionException If the expression cannot be evaluated.
+	 */
+	public static Optional<NodeList> findAsNodeList(@Nonnull final XPathExpression xpathExpression, @Nonnull Object context) throws XPathExpressionException {
+		return Optional.ofNullable((NodeList)xpathExpression.evaluate(context, XPathConstants.NODESET));
 	}
 
 	/**
