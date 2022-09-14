@@ -21,7 +21,9 @@ import static com.globalmentor.xml.spec.XPath.*;
 /**
  * Represents an axis step in an XPath path expression.
  * @author Garret Wilson
+ * @deprecated to be removed in favor of Java's built-in XPath implementation.
  */
+@Deprecated
 public class AxisStep implements Step {
 
 	/** The tree relationship between this step and the context node. */

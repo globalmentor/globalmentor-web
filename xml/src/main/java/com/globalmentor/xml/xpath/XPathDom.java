@@ -24,13 +24,14 @@ import org.w3c.dom.*;
 
 /**
  * Parses XPath expressions and performs XPath operations on an XML document. The current implementation only interprets location paths.
- * <p>
- * Example usages include:
- * </p>
- * <ul>
- * <li><code>/html/body/*</code> Selects all element children of <code>body</code>.</li>
- * <li><code>/html/body/img/@src</code> Selects the <code>src</code> attribute of the first <code>img</code> element in <code>body</code>.</li>
- * </ul>
+ * @implNote This class contains an incomplete but functioning implementation of XPath expression parsing and evaluation. It is deprecated to be removed in
+ *           favor of Java's own {@link javax.xml.xpath.XPath} implementation. Supported expressions of the deprecated implementation include:
+ *           <dl>
+ *           <dt><code>/html/body/*</code></dt>
+ *           <dd>Selects all element children of <code>body</code>.</dd>
+ *           <dt><code>/html/body/img/@src</code></dt>
+ *           <dd>Selects the <code>src</code> attribute of the first <code>img</code> element in <code>body</code>.</dd>
+ *           </dl>
  * @see <a href="http://www.w3.org/TR/xpath">XML Path Language (XPath)</a>
  * @author Garret Wilson
  */
@@ -42,7 +43,9 @@ public class XPathDom {
 	 * @param document The document on which the expression should be evaluated.
 	 * @param expression The XPath expression to evaluate.
 	 * @return The first node matching the XPath expression, or <code>null</code> if there is no match.
+	 * @deprecated to be removed in favor of Java's built-in XPath implementation.
 	 */
+	@Deprecated
 	public static Node getNode(final Document document, final String expression) {
 		return getNode(document.getDocumentElement(), expression); //apply the expression to the document's root element
 	}
@@ -53,8 +56,11 @@ public class XPathDom {
 	 * @param node The node on which the expression should be evaluated.
 	 * @param expression The XPath expression to evaluate.
 	 * @return The first node matching the XPath expression, or <code>null</code> if there is no match.
+	 * @deprecated to be removed in favor of Java's built-in XPath implementation.
 	 */
+	@Deprecated
 	public static Node getNode(final Node node, final String expression) {
+		@SuppressWarnings("unchecked")
 		final List<Node> nodeList = (List<Node>)evaluatePathExpression(node, expression); //get the list of matching nodes
 		return nodeList.size() > 0 ? nodeList.get(0) : null; //return the first node in the list, or null if there are no matches
 		//TODO catch a class cast exception and throw another exception that's more descriptive
@@ -66,8 +72,11 @@ public class XPathDom {
 	 * @param node The node on which the expression should be evaluated.
 	 * @param pathExpression The XPath path expression to evaluate.
 	 * @return The first node matching the XPath expression, or <code>null</code> if there is no match.
+	 * @deprecated to be removed in favor of Java's built-in XPath implementation.
 	 */
+	@Deprecated
 	public static Node getNode(final Node node, final PathExpression pathExpression) {
+		@SuppressWarnings("unchecked")
 		final List<Node> nodeList = (List<Node>)evaluatePathExpression(node, pathExpression); //get the list of matching nodes
 		return nodeList.size() > 0 ? nodeList.get(0) : null; //return the first node in the list, or null if there are no matches
 		//TODO catch a class cast exception and throw another exception that's more descriptive
@@ -79,7 +88,9 @@ public class XPathDom {
 	 * @param pathExpression The XPath path expression to evaluate.
 	 * @return <code>org.w3c.dom.NodeList</code>, <code>java.lang.Boolean</code>, <code>java.lang.Float</code>, or <code>java.lang.String</code> based upon the
 	 *         result of the evaluation.
+	 * @deprecated to be removed in favor of Java's built-in XPath implementation.
 	 */
+	@Deprecated
 	public static Object evaluatePathExpression(final Node node, final PathExpression pathExpression) {
 		return evaluatePathExpression(node, pathExpression, 0); //evaluate the array of location steps and return the list of nodes we receive
 	}
@@ -90,7 +101,9 @@ public class XPathDom {
 	 * @param expression The XPath expression to evaluate.
 	 * @return <code>org.w3c.dom.NodeList</code>, <code>java.lang.Boolean</code>, <code>java.lang.Float</code>, or <code>java.lang.String</code> based upon the
 	 *         result of the evaluation.
+	 * @deprecated to be removed in favor of Java's built-in XPath implementation.
 	 */
+	@Deprecated
 	public static Object evaluatePathExpression(final Node node, final String expression) {
 		final PathExpression pathExpression = new PathExpression(expression); //TODO testing
 		return evaluatePathExpression(node, pathExpression, 0); //evaluate the array of location steps and return the list of nodes we receive
@@ -99,12 +112,14 @@ public class XPathDom {
 	/**
 	 * Evaluates an XPath path expression and returns the appropriate result of the evaluation.
 	 * @param node The document node on which the expression should be evaluated.
-	 * @param pathExpression The representation of th path expression.
-	 * @param stepIndex The current index of the path epxression being evaluated.
+	 * @param pathExpression The representation of the path expression.
+	 * @param stepIndex The current index of the path expression being evaluated.
 	 * @return <code>org.w3c.dom.NodeList</code>, <code>java.lang.Boolean</code>, <code>java.lang.Float</code>, or <code>java.lang.String</code> based upon the
 	 *         result of the evaluation.
+	 * @deprecated to be removed in favor of Java's built-in XPath implementation.
 	 */
-	protected static List<Node> evaluatePathExpression(final Node node, final PathExpression pathExpression, final int stepIndex) {
+	@Deprecated
+	private static List<Node> evaluatePathExpression(final Node node, final PathExpression pathExpression, final int stepIndex) {
 		final List<Node> nodeList = new ArrayList<Node>(); //we'll keep everything that matches in this list
 		final Step step = pathExpression.getStep(stepIndex); //get the step we're currently evaluating
 		assert step instanceof AxisStep : "Non-axis steps not yet supported";
@@ -154,7 +169,9 @@ public class XPathDom {
 	 * @param nodeTest The node test (usually from a location step) against which the nodes should be compared.
 	 * @param includeDescendants Whether all descendants (children of children) should be included in the search
 	 * @return A list of nodes which meet the criteria of <code>nodeTest</code>.
+	 * @deprecated to be removed in favor of Java's built-in XPath implementation.
 	 */
+	@Deprecated
 	protected static List<Node> getMatchingChildren(final Node node, final String nodeTest, final boolean includeDescendants) {
 		final List<Node> nodeList = new ArrayList<Node>(); //create a new node list to return
 		for(int childIndex = 0; childIndex < node.getChildNodes().getLength(); childIndex++) { //look at each child node
@@ -173,8 +190,10 @@ public class XPathDom {
 	 * @param nodeTest The node test (usually from a location step) against which the nodes should be compared.
 	 * @param includeAncestors Whether all ancestors (parents of parents, etc.) should be included in the search
 	 * @return A list of nodes which meet the criteria of <code>nodeTest</code>.
+	 * @deprecated to be removed in favor of Java's built-in XPath implementation.
 	 */
-	protected static List<Node> getMatchingParent(final Node node, final String nodeTest, final boolean includeAncestors) {
+	@Deprecated
+	private static List<Node> getMatchingParent(final Node node, final String nodeTest, final boolean includeAncestors) {
 		final List<Node> nodeList = new ArrayList<Node>(); //create a new node list to return
 		final Node parentNode = node.getParentNode(); //get a reference to this node's parent
 		if(parentNode != null) { //if this node has a parent
@@ -193,14 +212,17 @@ public class XPathDom {
 	 * @param includeDescendants Whether this node's descendants should be included in the search
 	 * @param wildcardType The type of node (a <code>Node</code> constant) which should be returned if <code>nodeTest</code> is a wildcard.
 	 * @return A list of nodes which meet the criteria of <code>nodeTest</code>.
+	 * @deprecated to be removed in favor of Java's built-in XPath implementation.
 	 */
-	protected static List<Node> getMatchingNodes(final NamedNodeMap namedNodeMap, final String nodeTest, final boolean includeDescendants,
+	@Deprecated
+	private static List<Node> getMatchingNodes(final NamedNodeMap namedNodeMap, final String nodeTest, final boolean includeDescendants,
 			final short wildcardType) {
 		final List<Node> resultNodeList = new ArrayList<Node>(); //create a new node list to return
 		for(int nodeIndex = 0; nodeIndex < namedNodeMap.getLength(); nodeIndex++) { //look at each node in the list
 			final Node node = namedNodeMap.item(nodeIndex); //get a reference to this node
-			if(isMatch(node, nodeTest, wildcardType)) //if this node matches
+			if(isMatch(node, nodeTest, wildcardType)) { //if this node matches
 				resultNodeList.add(node); //add this node to the list
+			}
 		}
 		return resultNodeList; //return the list we created and filled
 	}
@@ -211,19 +233,25 @@ public class XPathDom {
 	 * @param nodeTest The node test (usually from a location step) against which the node should be compared.
 	 * @param wildcardType The type of node (a <code>Node</code> constant) which should be returned if <code>nodeTest</code> is a wildcard.
 	 * @return <code>true</code> if the node meets the correct criteria of the locationStep, else <code>false</code>.
+	 * @deprecated to be removed in favor of Java's built-in XPath implementation.
 	 */
-	protected static boolean isMatch(final Node node, final String nodeTest, final short wildcardType) {
+	@Deprecated
+	private static boolean isMatch(final Node node, final String nodeTest, final short wildcardType) {
 		if(nodeTest.equals(WILDCARD_STRING)) { //if this is a test for a wildcard
 			return node.getNodeType() == wildcardType; //return whether or not the node is of the correct type for a wildcard match
 		}
-		if(nodeTest.equals(NODE_NODE_TEST)) //if this is a test for "node()"
+		if(nodeTest.equals(NODE_NODE_TEST)) { //if this is a test for "node()"
 			return true; //every node matches this test
-		if(nodeTest.equals(TEXT_NODE_TEST)) //if the test is for a text node
+		}
+		if(nodeTest.equals(TEXT_NODE_TEST)) { //if the test is for a text node
 			return node.getNodeType() == Node.TEXT_NODE; //show whether this is a text node
-		if(nodeTest.equals(COMMENT_NODE_TEST)) //if the test is for a comment node
+		}
+		if(nodeTest.equals(COMMENT_NODE_TEST)) { //if the test is for a comment node
 			return node.getNodeType() == Node.COMMENT_NODE; //return whether this is a comment node
-		if(nodeTest.equals(PROCESSING_INSTRUCTION_NODE_TEST))
+		}
+		if(nodeTest.equals(PROCESSING_INSTRUCTION_NODE_TEST)) {
 			return node.getNodeType() == Node.PROCESSING_INSTRUCTION_NODE; //return whether this is a processing instruction node
+		}
 		//TODO check for arguments to the processing instruction
 		//if this isn't one of the specific tests, this is just a simple name test
 		return node.getNodeName().equals(nodeTest); //return whether or not the name matches the node test

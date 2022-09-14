@@ -19,6 +19,8 @@ package com.globalmentor.xml.xpath;
 /**
  * A step in a path expression.
  * @author Garret Wilson
+ * @deprecated to be removed in favor of Java's built-in XPath implementation.
  */
+@Deprecated
 public interface Step {
 }

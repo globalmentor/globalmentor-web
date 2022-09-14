@@ -26,7 +26,9 @@ import com.globalmentor.java.Strings;
  * A compiled form of an XPath path expression. A special {@link AxisStep} with the axis of "/" as the first location step indicates an absolute path from the
  * document root.
  * @author Garret Wilson
+ * @deprecated to be removed in favor of Java's built-in XPath implementation.
  */
+@Deprecated
 public class PathExpression implements Iterable<Step> {
 
 	/** The list of steps in the path expression. */
