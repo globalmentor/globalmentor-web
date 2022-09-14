@@ -29,7 +29,7 @@ import com.globalmentor.util.*;
 import com.globalmentor.css.spec.CSS;
 import com.globalmentor.html.spec.HTML;
 import com.globalmentor.xml.spec.XML;
-import com.globalmentor.xml.xpath.XPath;
+import com.globalmentor.xml.xpath.XPathDom;
 
 import io.clogr.Clogged;
 
@@ -38,6 +38,7 @@ import static com.globalmentor.css.CSS.*;
 import static com.globalmentor.css.spec.CSS.*;
 import static com.globalmentor.html.spec.HTML.*;
 import static com.globalmentor.xml.spec.XML.*;
+import static com.globalmentor.xml.spec.XPath.*;
 import static com.globalmentor.xml.XmlDom.*;
 
 import org.w3c.dom.*;
@@ -421,11 +422,11 @@ public class HtmlTidier implements Clogged {
 		tidyStyle(documentElement); //now that we've tidied the document, tidy all styles, removing unneeded ones
 		collapseChildWhitespaceLF(document.getDocumentElement()); //change whitespace to LFs in the root element
 		//get a reference to the head element, if there is one
-		final Element headElement = (Element)XPath.getNode(document, XPath.LOCATION_STEP_SEPARATOR_CHAR + ELEMENT_HEAD);
+		final Element headElement = (Element)XPathDom.getNode(document, LOCATION_STEP_SEPARATOR_CHAR + ELEMENT_HEAD);
 		if(headElement != null) //if there is a head element
 			collapseChildWhitespaceLF(headElement); //collapse whitespace to LFs in the head element
 		//get a reference to the body element
-		final Element bodyElement = (Element)XPath.getNode(document, XPath.LOCATION_STEP_SEPARATOR_CHAR + ELEMENT_BODY);
+		final Element bodyElement = (Element)XPathDom.getNode(document, LOCATION_STEP_SEPARATOR_CHAR + ELEMENT_BODY);
 		if(bodyElement != null) //if there is a body element (there always should be one)
 			collapseChildWhitespaceLF(bodyElement); //collapse whitespace to LFs in the body element
 	}

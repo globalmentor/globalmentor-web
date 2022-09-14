@@ -16,7 +16,7 @@
 
 package com.globalmentor.xml.xpath;
 
-import static com.globalmentor.xml.xpath.XPath.*;
+import static com.globalmentor.xml.spec.XPath.*;
 
 import java.util.*;
 
