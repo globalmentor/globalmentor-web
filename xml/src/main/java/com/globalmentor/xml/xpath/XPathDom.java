@@ -19,11 +19,14 @@ package com.globalmentor.xml.xpath;
 import static com.globalmentor.xml.spec.XPath.*;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 import javax.annotation.*;
 import javax.xml.xpath.*;
 
 import org.w3c.dom.*;
+
+import com.globalmentor.xml.XmlDom;
 
 /**
  * Parses XPath expressions and performs XPath operations on an XML document. The current implementation only interprets location paths.
@@ -60,8 +63,23 @@ public class XPathDom {
 	}
 
 	/**
+	 * Evaluates the compiled XPath expression in the specified context and return the result as stream of nodes whether or not the expression path was found.
+	 * @apiNote The type of the context is usually {@link org.w3c.dom.Node}.
+	 * @apiNote This method will always return a stream, even if the expression path was not found. Use {@link #findAsNodeStream(XPathExpression, Object)} instead
+	 *          if it is desired to detect when an expression path is not found.
+	 * @param xpathExpression The XPath expression to evaluate.
+	 * @param context The context the XPath expression will be evaluated in.
+	 * @return The stream of nodes, which may be empty, that is the result of evaluating the expression.
+	 * @throws XPathExpressionException If the expression cannot be evaluated.
+	 */
+	public static Stream<Node> evaulateAsNodeStream(@Nonnull final XPathExpression xpathExpression, @Nonnull Object context) throws XPathExpressionException {
+		return findAsNodeStream(xpathExpression, context).orElse(Stream.empty());
+	}
+
+	/**
 	 * Evaluates the compiled XPath expression in the specified context and return the result as a node if found.
 	 * @apiNote The type of the context is usually {@link org.w3c.dom.Node}.
+	 * @param xpathExpression The XPath expression to evaluate.
 	 * @param context The context the XPath expression will be evaluated in.
 	 * @return The node, if any, that is the result of evaluating the expression.
 	 * @throws XPathExpressionException If the expression cannot be evaluated.
@@ -73,12 +91,26 @@ public class XPathDom {
 	/**
 	 * Evaluates the compiled XPath expression in the specified context and return the result as a node list if found.
 	 * @apiNote The type of the context is usually {@link org.w3c.dom.Node}.
+	 * @param xpathExpression The XPath expression to evaluate.
 	 * @param context The context the XPath expression will be evaluated in.
 	 * @return The node list, if any, that is the result of evaluating the expression.
 	 * @throws XPathExpressionException If the expression cannot be evaluated.
 	 */
 	public static Optional<NodeList> findAsNodeList(@Nonnull final XPathExpression xpathExpression, @Nonnull Object context) throws XPathExpressionException {
 		return Optional.ofNullable((NodeList)xpathExpression.evaluate(context, XPathConstants.NODESET));
+	}
+
+	/**
+	 * Evaluates the compiled XPath expression in the specified context and return the result as stream of nodes if found.
+	 * @apiNote The type of the context is usually {@link org.w3c.dom.Node}.
+	 * @param xpathExpression The XPath expression to evaluate.
+	 * @param context The context the XPath expression will be evaluated in.
+	 * @return The stream of nodes, if any, that is the result of evaluating the expression.
+	 * @throws XPathExpressionException If the expression cannot be evaluated.
+	 */
+	public static Optional<Stream<Node>> findAsNodeStream(@Nonnull final XPathExpression xpathExpression, @Nonnull Object context)
+			throws XPathExpressionException {
+		return findAsNodeList(xpathExpression, context).map(XmlDom::streamOf);
 	}
 
 	/**
