@@ -20,12 +20,18 @@ import static com.globalmentor.xml.spec.XPath.*;
 
 import java.util.*;
 
+import javax.annotation.*;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathExpressionException;
+
 import org.w3c.dom.*;
 
 /**
  * Parses XPath expressions and performs XPath operations on an XML document. The current implementation only interprets location paths.
- * @implNote This class contains an incomplete but functioning implementation of XPath expression parsing and evaluation. It is deprecated to be removed in
- *           favor of Java's own {@link javax.xml.xpath.XPath} implementation. Supported expressions of the deprecated implementation include:
+ * @implNote This class contains several methods comprising an an incomplete but functioning implementation of XPath expression parsing and evaluation. Those
+ *           methods are deprecated to be removed in favor of Java's own {@link javax.xml.xpath.XPath} implementation. Supported expressions of the deprecated
+ *           implementation include:
  *           <dl>
  *           <dt><code>/html/body/*</code></dt>
  *           <dd>Selects all element children of <code>body</code>.</dd>
@@ -36,6 +42,24 @@ import org.w3c.dom.*;
  * @author Garret Wilson
  */
 public class XPathDom {
+
+	/**
+	 * Compiles an XPath expression for later evaluation.
+	 * @apiNote This method is equivalent to {@link XPath#compile(String)} except that it throws an unchecked exception rather than an
+	 *          {@link XPathExpressionException}. Compare to {@link java.util.regex.Pattern#compile(String)} and {@link java.net.URI#create(String)}.
+	 * @param xpath The XPath instance.
+	 * @param expression The XPath expression to compile.
+	 * @return The compiled XPath expression.
+	 * @throws IllegalArgumentException if the expression could not be compiled; {@link IllegalArgumentException#getCause()} will contain the originating
+	 *           {@link XPathExpressionException} instance.
+	 */
+	public static XPathExpression compileExpression(@Nonnull final XPath xpath, @Nonnull String expression) {
+		try {
+			return xpath.compile(expression);
+		} catch(final XPathExpressionException xPathExpressionException) {
+			throw new IllegalArgumentException(xPathExpressionException.getMessage(), xPathExpressionException);
+		}
+	}
 
 	/**
 	 * Convenience function to retrieve a node from the root element of the specified document, based on the specified XPath expression. If multiple nodes match
