@@ -30,6 +30,8 @@ import com.globalmentor.xml.XmlDom;
 
 /**
  * Parses XPath expressions and performs XPath operations on an XML document. The current implementation only interprets location paths.
+ * @apiNote To lower the number of checked exceptions and for consistency with DOM manipulation, these utilities convert the checked exception
+ *          {@link XPathExpressionException} to {@link DOMException} with an appropriate error code depending on the operation being performed.
  * @implNote This class contains several methods comprising an an incomplete but functioning implementation of XPath expression parsing and evaluation. Those
  *           methods are deprecated to be removed in favor of Java's own {@link javax.xml.xpath.XPath} implementation. Supported expressions of the deprecated
  *           implementation include:
@@ -46,19 +48,19 @@ public class XPathDom {
 
 	/**
 	 * Compiles an XPath expression for later evaluation.
-	 * @apiNote This method is equivalent to {@link XPath#compile(String)} except that it throws an unchecked exception rather than an
+	 * @apiNote This method is equivalent to {@link XPath#compile(String)} except that it throws an unchecked {@link DOMException} rather than an
 	 *          {@link XPathExpressionException}. Compare to {@link java.util.regex.Pattern#compile(String)} and {@link java.net.URI#create(String)}.
 	 * @param xpath The XPath instance.
 	 * @param expression The XPath expression to compile.
 	 * @return The compiled XPath expression.
-	 * @throws IllegalArgumentException if the expression could not be compiled; {@link IllegalArgumentException#getCause()} will contain the originating
-	 *           {@link XPathExpressionException} instance.
+	 * @throws DOMException with code {@link DOMException#SYNTAX_ERR} if the expression could not be compiled; {@link DOMException#getCause()} will contain the
+	 *           {@link XPathExpressionException} cause.
 	 */
 	public static XPathExpression compileExpression(@Nonnull final XPath xpath, @Nonnull String expression) {
 		try {
 			return xpath.compile(expression);
 		} catch(final XPathExpressionException xpathExpressionException) {
-			throw new IllegalArgumentException(xpathExpressionException.getMessage(), xpathExpressionException);
+			throw (DOMException)new DOMException(DOMException.SYNTAX_ERR, xpathExpressionException.getMessage()).initCause(xpathExpressionException);
 		}
 	}
 
@@ -70,9 +72,10 @@ public class XPathDom {
 	 * @param xpathExpression The XPath expression to evaluate.
 	 * @param context The context the XPath expression will be evaluated in.
 	 * @return The stream of nodes, which may be empty, that is the result of evaluating the expression.
-	 * @throws XPathExpressionException If the expression cannot be evaluated.
+	 * @throws DOMException with code {@link DOMException#INVALID_ACCESS_ERR} if the expression cannot not be evaluated; {@link DOMException#getCause()} will
+	 *           contain the {@link XPathExpressionException} cause.
 	 */
-	public static Stream<Node> evaulateAsNodeStream(@Nonnull final XPathExpression xpathExpression, @Nonnull Object context) throws XPathExpressionException {
+	public static Stream<Node> evaulateAsNodeStream(@Nonnull final XPathExpression xpathExpression, @Nonnull Object context) {
 		return findAsNodeStream(xpathExpression, context).orElse(Stream.empty());
 	}
 
@@ -82,10 +85,15 @@ public class XPathDom {
 	 * @param xpathExpression The XPath expression to evaluate.
 	 * @param context The context the XPath expression will be evaluated in.
 	 * @return The node, if any, that is the result of evaluating the expression.
-	 * @throws XPathExpressionException If the expression cannot be evaluated.
+	 * @throws DOMException with code {@link DOMException#INVALID_ACCESS_ERR} if the expression cannot not be evaluated; {@link DOMException#getCause()} will
+	 *           contain the {@link XPathExpressionException} cause.
 	 */
-	public static Optional<Node> findAsNode(@Nonnull final XPathExpression xpathExpression, @Nonnull Object context) throws XPathExpressionException {
-		return Optional.ofNullable((Node)xpathExpression.evaluate(context, XPathConstants.NODE));
+	public static Optional<Node> findAsNode(@Nonnull final XPathExpression xpathExpression, @Nonnull Object context) {
+		try {
+			return Optional.ofNullable((Node)xpathExpression.evaluate(context, XPathConstants.NODE));
+		} catch(final XPathExpressionException xpathExpressionException) {
+			throw (DOMException)new DOMException(DOMException.INVALID_ACCESS_ERR, xpathExpressionException.getMessage()).initCause(xpathExpressionException);
+		}
 	}
 
 	/**
@@ -94,10 +102,15 @@ public class XPathDom {
 	 * @param xpathExpression The XPath expression to evaluate.
 	 * @param context The context the XPath expression will be evaluated in.
 	 * @return The node list, if any, that is the result of evaluating the expression.
-	 * @throws XPathExpressionException If the expression cannot be evaluated.
+	 * @throws DOMException with code {@link DOMException#INVALID_ACCESS_ERR} if the expression cannot not be evaluated; {@link DOMException#getCause()} will
+	 *           contain the {@link XPathExpressionException} cause.
 	 */
-	public static Optional<NodeList> findAsNodeList(@Nonnull final XPathExpression xpathExpression, @Nonnull Object context) throws XPathExpressionException {
-		return Optional.ofNullable((NodeList)xpathExpression.evaluate(context, XPathConstants.NODESET));
+	public static Optional<NodeList> findAsNodeList(@Nonnull final XPathExpression xpathExpression, @Nonnull Object context) {
+		try {
+			return Optional.ofNullable((NodeList)xpathExpression.evaluate(context, XPathConstants.NODESET));
+		} catch(final XPathExpressionException xpathExpressionException) {
+			throw (DOMException)new DOMException(DOMException.INVALID_ACCESS_ERR, xpathExpressionException.getMessage()).initCause(xpathExpressionException);
+		}
 	}
 
 	/**
@@ -106,10 +119,10 @@ public class XPathDom {
 	 * @param xpathExpression The XPath expression to evaluate.
 	 * @param context The context the XPath expression will be evaluated in.
 	 * @return The stream of nodes, if any, that is the result of evaluating the expression.
-	 * @throws XPathExpressionException If the expression cannot be evaluated.
+	 * @throws DOMException with code {@link DOMException#INVALID_ACCESS_ERR} if the expression cannot not be evaluated; {@link DOMException#getCause()} will
+	 *           contain the {@link XPathExpressionException} cause.
 	 */
-	public static Optional<Stream<Node>> findAsNodeStream(@Nonnull final XPathExpression xpathExpression, @Nonnull Object context)
-			throws XPathExpressionException {
+	public static Optional<Stream<Node>> findAsNodeStream(@Nonnull final XPathExpression xpathExpression, @Nonnull Object context) {
 		return findAsNodeList(xpathExpression, context).map(XmlDom::streamOf);
 	}
 
