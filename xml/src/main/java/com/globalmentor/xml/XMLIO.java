@@ -25,7 +25,7 @@ import javax.xml.parsers.*;
 import javax.xml.validation.Schema;
 
 import com.globalmentor.io.IO;
-import com.globalmentor.model.ConfigurationException;
+import com.globalmentor.model.ConfiguredStateException;
 
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -157,7 +157,7 @@ public class XMLIO extends DocumentBuilderFactory implements IO<Document> {
 	 * @param validating <code>true</code> if the parser produced will validate documents as they are parsed, else <code>false</code>.
 	 * @return The XML document representing the data read.
 	 * @throws NullPointerException if the given input stream is <code>null</code>.
-	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	 * @throws ConfiguredStateException if a document builder cannot be created which satisfies the configuration requested.
 	 * @throws IOException if there is an error reading the data.
 	 */
 	public static Document readXML(final InputStream inputStream, final URI baseURI, final boolean namespaceAware, final boolean validating) throws IOException {

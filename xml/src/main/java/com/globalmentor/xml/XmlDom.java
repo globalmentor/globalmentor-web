@@ -34,7 +34,7 @@ import static com.globalmentor.io.InputStreams.*;
 import com.globalmentor.io.ByteOrderMark;
 import com.globalmentor.java.*;
 import com.globalmentor.mathml.spec.MathML;
-import com.globalmentor.model.ConfigurationException;
+import com.globalmentor.model.ConfiguredStateException;
 import com.globalmentor.model.NameValuePair;
 import com.globalmentor.model.ObjectHolder;
 import com.globalmentor.net.MediaType;
@@ -316,7 +316,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * </p>
 	 * @param inputStream The input stream containing the content to be parsed.
 	 * @return The parsed XML document.
-	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	 * @throws ConfiguredStateException if a document builder cannot be created which satisfies the configuration requested.
 	 * @throws IOException If there is an error reading or parsing the information.
 	 */
 	public static Document parse(final InputStream inputStream) throws IOException {
@@ -332,7 +332,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @param inputStream The input stream containing the content to be parsed.
 	 * @param entityResolver The strategy to use for resolving entities, or <code>null</code> if no entity resolver should be installed.
 	 * @return The parsed XML document.
-	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	 * @throws ConfiguredStateException if a document builder cannot be created which satisfies the configuration requested.
 	 * @throws IOException If there is an error reading or parsing the information.
 	 */
 	public static Document parse(final InputStream inputStream, final EntityResolver entityResolver) throws IOException {
@@ -349,7 +349,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @param inputStream The input stream containing the content to be parsed.
 	 * @param systemID Provide a base for resolving relative URIs.
 	 * @return The parsed XML document.
-	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	 * @throws ConfiguredStateException if a document builder cannot be created which satisfies the configuration requested.
 	 * @throws IOException If there is an error reading or parsing the information.
 	 */
 	public static Document parse(final InputStream inputStream, final URI systemID) throws IOException {
@@ -366,7 +366,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @param systemID Provide a base for resolving relative URIs.
 	 * @param entityResolver The strategy to use for resolving entities, or <code>null</code> if no entity resolver should be installed.
 	 * @return The parsed XML document.
-	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	 * @throws ConfiguredStateException if a document builder cannot be created which satisfies the configuration requested.
 	 * @throws IOException If there is an error reading or parsing the information.
 	 */
 	public static Document parse(final InputStream inputStream, final URI systemID, final EntityResolver entityResolver) throws IOException {
@@ -383,7 +383,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @param inputStream The input stream containing the content to be parsed.
 	 * @param namespaceAware <code>true</code> if the parser produced will provide support for XML namespaces, else <code>false</code>.
 	 * @return The parsed XML document.
-	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	 * @throws ConfiguredStateException if a document builder cannot be created which satisfies the configuration requested.
 	 * @throws IOException If there is an error reading or parsing the information.
 	 */
 	public static Document parse(final InputStream inputStream, final boolean namespaceAware) throws IOException {
@@ -400,7 +400,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @param namespaceAware <code>true</code> if the parser produced will provide support for XML namespaces, else <code>false</code>.
 	 * @param entityResolver The strategy to use for resolving entities, or <code>null</code> if no entity resolver should be installed.
 	 * @return The parsed XML document.
-	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	 * @throws ConfiguredStateException if a document builder cannot be created which satisfies the configuration requested.
 	 * @throws IOException If there is an error reading or parsing the information.
 	 */
 	public static Document parse(final InputStream inputStream, final boolean namespaceAware, final EntityResolver entityResolver) throws IOException {
@@ -418,7 +418,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @param systemID Provide a base for resolving relative URIs.
 	 * @param namespaceAware <code>true</code> if the parser produced will provide support for XML namespaces, else <code>false</code>.
 	 * @return The parsed XML document.
-	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	 * @throws ConfiguredStateException if a document builder cannot be created which satisfies the configuration requested.
 	 * @throws IOException If there is an error reading or parsing the information.
 	 */
 	public static Document parse(final InputStream inputStream, final URI systemID, final boolean namespaceAware) throws IOException {
@@ -436,7 +436,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @param namespaceAware <code>true</code> if the parser produced will provide support for XML namespaces, else <code>false</code>.
 	 * @param entityResolver The strategy to use for resolving entities, or <code>null</code> if no entity resolver should be installed.
 	 * @return The parsed XML document.
-	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	 * @throws ConfiguredStateException if a document builder cannot be created which satisfies the configuration requested.
 	 * @throws IOException If there is an error reading or parsing the information.
 	 */
 	public static Document parse(final InputStream inputStream, final URI systemID, final boolean namespaceAware, final EntityResolver entityResolver)
@@ -455,7 +455,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @param namespaceAware <code>true</code> if the parser produced will provide support for XML namespaces, else <code>false</code>.
 	 * @param validating <code>true</code> if the parser produced will validate documents as they are parsed, else <code>false</code>.
 	 * @return The parsed XML document.
-	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	 * @throws ConfiguredStateException if a document builder cannot be created which satisfies the configuration requested.
 	 * @throws IOException If there is an error reading or parsing the information.
 	 */
 	public static Document parse(final InputStream inputStream, final boolean namespaceAware, final boolean validating) throws IOException {
@@ -473,7 +473,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @param validating <code>true</code> if the parser produced will validate documents as they are parsed, else <code>false</code>.
 	 * @param entityResolver The strategy to use for resolving entities, or <code>null</code> if no entity resolver should be installed.
 	 * @return The parsed XML document.
-	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	 * @throws ConfiguredStateException if a document builder cannot be created which satisfies the configuration requested.
 	 * @throws IOException If there is an error reading or parsing the information.
 	 */
 	public static Document parse(final InputStream inputStream, final boolean namespaceAware, final boolean validating, final EntityResolver entityResolver)
@@ -497,7 +497,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @param namespaceAware <code>true</code> if the parser produced will provide support for XML namespaces, else <code>false</code>.
 	 * @param validating <code>true</code> if the parser produced will validate documents as they are parsed, else <code>false</code>.
 	 * @return The parsed XML document.
-	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	 * @throws ConfiguredStateException if a document builder cannot be created which satisfies the configuration requested.
 	 * @throws IOException If there is an error reading or parsing the information.
 	 */
 	public static Document parse(final InputStream inputStream, final URI systemID, final boolean namespaceAware, final boolean validating) throws IOException {
@@ -516,7 +516,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @param validating <code>true</code> if the parser produced will validate documents as they are parsed, else <code>false</code>.
 	 * @param entityResolver The strategy to use for resolving entities, or <code>null</code> if no entity resolver should be installed.
 	 * @return The parsed XML document.
-	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	 * @throws ConfiguredStateException if a document builder cannot be created which satisfies the configuration requested.
 	 * @throws IOException If there is an error reading or parsing the information.
 	 */
 	public static Document parse(final InputStream inputStream, final URI systemID, final boolean namespaceAware, final boolean validating,
@@ -532,7 +532,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * Creates and returns a document builder without namespace awareness with no validation. An entity resolver is installed to load requested resources from
 	 * local resources if possible. This allows quick local lookup of the XHTML DTDs, for example. The Sun JDK 1.5 document builder handles the BOM correctly.
 	 * @return A new XML document builder.
-	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	 * @throws ConfiguredStateException if a document builder cannot be created which satisfies the configuration requested.
 	 */
 	public static DocumentBuilder createDocumentBuilder() {
 		return createDocumentBuilder(DefaultEntityResolver.getInstance());
@@ -542,7 +542,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * Creates and returns a document builder without namespace awareness with no validation. The Sun JDK 1.5 document builder handles the BOM correctly.
 	 * @param entityResolver The strategy to use for resolving entities, or <code>null</code> if no entity resolver should be installed.
 	 * @return A new XML document builder.
-	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	 * @throws ConfiguredStateException if a document builder cannot be created which satisfies the configuration requested.
 	 */
 	public static DocumentBuilder createDocumentBuilder(final EntityResolver entityResolver) {
 		return createDocumentBuilder(false, entityResolver); //create a document builder with no namespace awareness
@@ -553,7 +553,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * local resources if possible. This allows quick local lookup of the XHTML DTDs, for example. The Sun JDK 1.5 document builder handles the BOM correctly.
 	 * @param namespaceAware <code>true</code> if the parser produced will provide support for XML namespaces, else <code>false</code>.
 	 * @return A new XML document builder.
-	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	 * @throws ConfiguredStateException if a document builder cannot be created which satisfies the configuration requested.
 	 */
 	public static DocumentBuilder createDocumentBuilder(final boolean namespaceAware) {
 		return createDocumentBuilder(namespaceAware, DefaultEntityResolver.getInstance());
@@ -564,7 +564,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @param namespaceAware <code>true</code> if the parser produced will provide support for XML namespaces, else <code>false</code>.
 	 * @param entityResolver The strategy to use for resolving entities, or <code>null</code> if no entity resolver should be installed.
 	 * @return A new XML document builder.
-	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	 * @throws ConfiguredStateException if a document builder cannot be created which satisfies the configuration requested.
 	 */
 	public static DocumentBuilder createDocumentBuilder(final boolean namespaceAware, final EntityResolver entityResolver) {
 		return createDocumentBuilder(namespaceAware, false, entityResolver); //create a document builder with no validation
@@ -576,7 +576,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @param namespaceAware <code>true</code> if the parser produced will provide support for XML namespaces, else <code>false</code>.
 	 * @param validating <code>true</code> if the parser produced will validate documents as they are parsed, else <code>false</code>.
 	 * @return A new XML document builder.
-	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	 * @throws ConfiguredStateException if a document builder cannot be created which satisfies the configuration requested.
 	 */
 	public static DocumentBuilder createDocumentBuilder(final boolean namespaceAware, final boolean validating) {
 		return createDocumentBuilder(namespaceAware, validating, DefaultEntityResolver.getInstance());
@@ -588,7 +588,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @param validating <code>true</code> if the parser produced will validate documents as they are parsed, else <code>false</code>.
 	 * @param entityResolver The strategy to use for resolving entities, or <code>null</code> if no entity resolver should be installed.
 	 * @return A new XML document builder.
-	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	 * @throws ConfiguredStateException if a document builder cannot be created which satisfies the configuration requested.
 	 */
 	public static DocumentBuilder createDocumentBuilder(final boolean namespaceAware, final boolean validating, final EntityResolver entityResolver) {
 		try {
@@ -609,7 +609,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 			}
 			return documentBuilder; //return the configured document builder
 		} catch(final ParserConfigurationException parserConfigurationException) { //if the requested parser is not supported
-			throw new ConfigurationException(parserConfigurationException);
+			throw new ConfiguredStateException(parserConfigurationException);
 		}
 	}
 

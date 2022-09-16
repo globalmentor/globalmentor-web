@@ -34,7 +34,7 @@ import com.globalmentor.io.*;
 
 import com.globalmentor.java.Arrays;
 import com.globalmentor.java.Objects;
-import com.globalmentor.model.ConfigurationException;
+import com.globalmentor.model.ConfiguredStateException;
 import com.globalmentor.net.MediaType;
 import com.globalmentor.text.ASCII;
 import com.globalmentor.vocab.VocabularyRegistry;
@@ -78,7 +78,7 @@ public class HtmlDom {
 	 * @param title The title of the document.
 	 * @return A newly created default generic XHTML document with the required minimal structure.
 	 * @throws NullPointerException if the given title is <code>null</code>.
-	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	 * @throws ConfiguredStateException if a document builder cannot be created which satisfies the configuration requested.
 	 * @throws DOMException if there is an error creating the XHTML document.
 	 */
 	public static Document createXHTMLDocument(final String title) throws DOMException {
@@ -91,7 +91,7 @@ public class HtmlDom {
 	 * @param formatted <code>true</code> if the sections of the document should be formatted.
 	 * @return A newly created default generic XHTML document with the required minimal structure.
 	 * @throws NullPointerException if the given title is <code>null</code>.
-	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	 * @throws ConfiguredStateException if a document builder cannot be created which satisfies the configuration requested.
 	 * @throws DOMException if there is an error creating the XHTML document.
 	 */
 	public static Document createXHTMLDocument(final String title, final boolean formatted) throws DOMException {
@@ -106,7 +106,7 @@ public class HtmlDom {
 	 * @param formatted <code>true</code> if the sections of the document should be formatted.
 	 * @return A newly created default generic XHTML document with the required minimal structure.
 	 * @throws NullPointerException if the given title is <code>null</code>.
-	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	 * @throws ConfiguredStateException if a document builder cannot be created which satisfies the configuration requested.
 	 * @throws DOMException if there is an error creating the XHTML document.
 	 */
 	public static Document createXHTMLDocument(final String title, final boolean includeDocumentType, final boolean formatted) throws DOMException {
@@ -122,7 +122,7 @@ public class HtmlDom {
 	 * @param systemID The external subset system identifier, or <code>null</code> if there is no such identifier.
 	 * @return A newly created default generic XHTML document with the required minimal structure.
 	 * @throws NullPointerException if the given title is <code>null</code>.
-	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	 * @throws ConfiguredStateException if a document builder cannot be created which satisfies the configuration requested.
 	 * @throws DOMException if there is an error creating the XHTML document.
 	 */
 	public static Document createXHTMLDocument(final String title, final boolean includeDocumentType, final String publicID, final String systemID)
@@ -140,7 +140,7 @@ public class HtmlDom {
 	 * @param formatted <code>true</code> if the sections of the document should be formatted.
 	 * @return A newly created default generic XHTML document with the required minimal structure.
 	 * @throws NullPointerException if the given title is <code>null</code>.
-	 * @throws ConfigurationException if a document builder cannot be created which satisfies the configuration requested.
+	 * @throws ConfiguredStateException if a document builder cannot be created which satisfies the configuration requested.
 	 * @throws DOMException if there is an error creating the XHTML document.
 	 */
 	public static Document createXHTMLDocument(final String title, final boolean includeDocumentType, final String publicID, final String systemID,
