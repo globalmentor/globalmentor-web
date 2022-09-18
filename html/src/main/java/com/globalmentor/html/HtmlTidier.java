@@ -25,13 +25,14 @@ import com.globalmentor.java.*;
 import com.globalmentor.net.MediaType;
 import com.globalmentor.text.Prose;
 import com.globalmentor.text.Unicode;
-import com.globalmentor.util.*;
 import com.globalmentor.css.spec.CSS;
 import com.globalmentor.html.spec.HTML;
 import com.globalmentor.xml.spec.XML;
 import com.globalmentor.xml.xpath.XPathDom;
 
 import io.clogr.Clogged;
+import io.confound.config.Configuration;
+import io.confound.config.properties.PropertiesConfiguration;
 
 import static com.globalmentor.java.Characters.*;
 import static com.globalmentor.css.CSS.*;
@@ -330,10 +331,10 @@ public class HtmlTidier implements Clogged {
 	 * @param options The properties which contain the options.
 	 */
 	public void setOptions(final Properties options) {
-		setConvertUnderlineItalics(PropertiesUtilities.getBooleanProperty(options, CONVERT_UNDERLINE_ITALICS_OPTION, CONVERT_UNDERLINE_ITALICS_OPTION_DEFAULT));
-		setExtractInternalStylesheets(
-				PropertiesUtilities.getBooleanProperty(options, EXTRACT_INTERNAL_STYLESHEETS_OPTION, EXTRACT_INTERNAL_STYLESHEETS_OPTION_DEFAULT));
-		setNormalizeStyleClasses(PropertiesUtilities.getBooleanProperty(options, NORMALIZE_STYLE_CLASSES_OPTION, NORMALIZE_STYLE_CLASSES_OPTION_DEFAULT));
+		final Configuration config = new PropertiesConfiguration(options); //TODO switch to passing Configuration
+		setConvertUnderlineItalics(config.findBoolean(CONVERT_UNDERLINE_ITALICS_OPTION).orElse(CONVERT_UNDERLINE_ITALICS_OPTION_DEFAULT));
+		setExtractInternalStylesheets(config.findBoolean(EXTRACT_INTERNAL_STYLESHEETS_OPTION).orElse(EXTRACT_INTERNAL_STYLESHEETS_OPTION_DEFAULT));
+		setNormalizeStyleClasses(config.findBoolean(NORMALIZE_STYLE_CLASSES_OPTION).orElse(NORMALIZE_STYLE_CLASSES_OPTION_DEFAULT));
 		cssTidier.setOptions(options); //pass the options along to the CSS tidier
 	}
 

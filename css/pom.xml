@@ -20,13 +20,18 @@
 		</dependency>
 
 		<dependency>
+			<groupId>com.globalmentor</groupId>
+			<artifactId>globalmentor-css-spec</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>io.clogr</groupId>
 			<artifactId>clogr</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>com.globalmentor</groupId>
-			<artifactId>globalmentor-css-spec</artifactId>
+			<groupId>io.confound</groupId>
+			<artifactId>config-properties</artifactId>
 		</dependency>
 	</dependencies>
 </project>

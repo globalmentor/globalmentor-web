@@ -33,5 +33,10 @@
 			<groupId>com.globalmentor</groupId>
 			<artifactId>globalmentor-xml</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>io.confound</groupId>
+			<artifactId>config-properties</artifactId>
+		</dependency>
 	</dependencies>
 </project>

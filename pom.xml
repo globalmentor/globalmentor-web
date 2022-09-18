@@ -155,7 +155,13 @@
 			<dependency>
 				<groupId>io.clogr</groupId>
 				<artifactId>clogr</artifactId>
-				<version>0.8.0</version>
+				<version>0.8.1-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>io.confound</groupId>
+				<artifactId>config-properties</artifactId>
+				<version>0.7.3-SNAPSHOT</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

@@ -42,8 +42,10 @@ import static java.nio.charset.StandardCharsets.*;
 import static java.util.Comparator.*;
 import static java.util.Objects.*;
 
-import com.globalmentor.util.PropertiesUtilities;
 import com.globalmentor.xml.spec.*;
+
+import io.confound.config.Configuration;
+import io.confound.config.properties.PropertiesConfiguration;
 
 import org.w3c.dom.*;
 
@@ -297,18 +299,16 @@ public class XMLSerializer {
 	/**
 	 * Sets the options based on the contents of the option properties.
 	 * @param options The properties which contain the options.
-	 * @deprecated Replace with Confound.
 	 */
-	@Deprecated
 	public void setOptions(@Nonnull final Properties options) {
-		setFormatted(PropertiesUtilities.getBooleanProperty(options, OPTION_FORMAT_OUTPUT, OPTION_FORMAT_OUTPUT_DEFAULT));
-		setUseDefinedEntities(PropertiesUtilities.getBooleanProperty(options, OPTION_USE_DEFINED_ENTITIES, OPTION_USE_DEFINED_ENTITIES_DEFAULT));
+		final Configuration config = new PropertiesConfiguration(options); //TODO switch to passing Configuration
+		setFormatted(config.findBoolean(OPTION_FORMAT_OUTPUT).orElse(OPTION_FORMAT_OUTPUT_DEFAULT));
+		setUseDefinedEntities(config.findBoolean(OPTION_USE_DEFINED_ENTITIES).orElse(OPTION_USE_DEFINED_ENTITIES_DEFAULT));
 		setUsePredefinedEntities(
-				asInstance(options.getOrDefault(OPTION_USE_PREDEFINED_ENTITIES, OPTION_USE_PREDEFINED_ENTITIES_DEFAULT), PredefinedEntitiesUse.class)
-						.orElse(OPTION_USE_PREDEFINED_ENTITIES_DEFAULT));
-		setXMLEncodeControl(PropertiesUtilities.getBooleanProperty(options, OPTION_XML_ENCODE_CONTROL, OPTION_XML_ENCODE_CONTROL_DEFAULT));
-		setXMLEncodeNonASCII(PropertiesUtilities.getBooleanProperty(options, OPTION_XML_ENCODE_NON_ASCII, OPTION_XML_ENCODE_NON_ASCII_DEFAULT));
-		setXMLEncodePrivateUse(PropertiesUtilities.getBooleanProperty(options, OPTION_XML_ENCODE_PRIVATE_USE, OPTION_XML_ENCODE_PRIVATE_USE_DEFAULT));
+				config.findObject(OPTION_USE_PREDEFINED_ENTITIES).flatMap(asInstance(PredefinedEntitiesUse.class)).orElse(OPTION_USE_PREDEFINED_ENTITIES_DEFAULT));
+		setXMLEncodeControl(config.findBoolean(OPTION_XML_ENCODE_CONTROL).orElse(OPTION_XML_ENCODE_CONTROL_DEFAULT));
+		setXMLEncodeNonASCII(config.findBoolean(OPTION_XML_ENCODE_NON_ASCII).orElse(OPTION_XML_ENCODE_NON_ASCII_DEFAULT));
+		setXMLEncodePrivateUse(config.findBoolean(OPTION_XML_ENCODE_PRIVATE_USE).orElse(OPTION_XML_ENCODE_PRIVATE_USE_DEFAULT));
 	}
 
 	private CharSequence horizontalAligner = "\t";
@@ -1110,7 +1110,8 @@ public class XMLSerializer {
 	 * @return The given appendable.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 */
-	protected Appendable serializeAttribute(@Nonnull final Appendable appendable, @Nonnull final Element element, @Nonnull final Attr attribute) throws IOException {
+	protected Appendable serializeAttribute(@Nonnull final Appendable appendable, @Nonnull final Element element, @Nonnull final Attr attribute)
+			throws IOException {
 		return serializeAttribute(appendable, attribute.getName(), attribute.getValue());
 	}
 
@@ -1122,8 +1123,8 @@ public class XMLSerializer {
 	 * @return The given appendable.
 	 * @throws IOException Thrown if an I/O error occurred.
 	 */
-	protected Appendable serializeAttribute(@Nonnull final Appendable appendable, @Nonnull final String attributeName,
-			@Nonnull final String attributeValue) throws IOException {
+	protected Appendable serializeAttribute(@Nonnull final Appendable appendable, @Nonnull final String attributeName, @Nonnull final String attributeValue)
+			throws IOException {
 		//use a double quote character as a delimiter unless the value contains
 		//  a double quote; in that case, use a single quote TODO fix escaping---what if both double and single quotes are used?
 		final char valueDelimiter = attributeValue.indexOf(DOUBLE_QUOTE_CHAR) < 0 ? DOUBLE_QUOTE_CHAR : SINGLE_QUOTE_CHAR;

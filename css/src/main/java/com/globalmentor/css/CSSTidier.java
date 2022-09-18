@@ -21,9 +21,10 @@ import static com.globalmentor.css.spec.CSS.*;
 import java.util.*;
 
 import com.globalmentor.java.Strings;
-import com.globalmentor.util.*;
 
 import io.clogr.Clogged;
+import io.confound.config.Configuration;
+import io.confound.config.properties.PropertiesConfiguration;
 
 import org.w3c.dom.css.*;
 
@@ -93,9 +94,9 @@ public class CSSTidier implements Clogged { //TODO add a feature to remove empty
 	 * @param options The properties which contain the options.
 	 */
 	public void setOptions(final Properties options) {
-		setMakeFontSizesRelative(PropertiesUtilities.getBooleanProperty(options, MAKE_FONT_SIZES_RELATIVE_OPTION, MAKE_FONT_SIZES_RELATIVE_OPTION_DEFAULT));
-		setRemoveMSOfficeProperties(
-				PropertiesUtilities.getBooleanProperty(options, REMOVE_MS_OFFICE_PROPERTIES_OPTION, REMOVE_MS_OFFICE_PROPERTIES_OPTION_DEFAULT));
+		final Configuration config = new PropertiesConfiguration(options); //TODO switch to passing Configuration
+		setMakeFontSizesRelative(config.findBoolean(MAKE_FONT_SIZES_RELATIVE_OPTION).orElse(MAKE_FONT_SIZES_RELATIVE_OPTION_DEFAULT));
+		setRemoveMSOfficeProperties(config.findBoolean(REMOVE_MS_OFFICE_PROPERTIES_OPTION).orElse(REMOVE_MS_OFFICE_PROPERTIES_OPTION_DEFAULT));
 	}
 
 	/** The base font size, if we've found one, in its original CSS value. */
@@ -173,7 +174,7 @@ public class CSSTidier implements Clogged { //TODO add a feature to remove empty
 						//TODO del when works						final float baseFontSize=baseFontSizeCSSValue.getFloatValue(baseFontSizeCSSValue.getCssValueType());  //get the base font size
 						final float fontSizeValue = propertyCSSValue.getFloatValue(propertyCSSValue.getCssValueType()); //get the current font size
 						final float relativeSize = Math.round(fontSizeValue / baseFontSizeValue * 100); //get the relative size convert it to a percentage by multiplying by 100, rounding the value TODO use a constant here
-						propertyCSSValue.setFloatValue(propertyCSSValue.CSS_PERCENTAGE, relativeSize); //change the value to a relative size
+						propertyCSSValue.setFloatValue(CSSPrimitiveValue.CSS_PERCENTAGE, relativeSize); //change the value to a relative size
 					}
 				}
 			}
@@ -201,7 +202,7 @@ public class CSSTidier implements Clogged { //TODO add a feature to remove empty
 						final String propertyName = cssStyleDeclaration.item(propertyIndex); //get the name of this property
 						if(CSS_PROP_FONT_SIZE.equals(propertyName)) { //if this is the font-size property
 							final CSSValue propertyCSSValue = cssStyleDeclaration.getPropertyCSSValue(propertyName); //get the property with this name
-							if(propertyCSSValue.getCssValueType() == propertyCSSValue.CSS_PRIMITIVE_VALUE) { //if this is a primitive value
+							if(propertyCSSValue.getCssValueType() == CSSValue.CSS_PRIMITIVE_VALUE) { //if this is a primitive value
 								return (CSSPrimitiveValue)propertyCSSValue; //return this primitive value property as the base font size
 							}
 						}
