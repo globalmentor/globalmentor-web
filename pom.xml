@@ -5,16 +5,16 @@
 	<parent>
 		<groupId>com.globalmentor</groupId>
 		<artifactId>globalmentor-base</artifactId>
-		<version>0.7.2-SNAPSHOT</version>
+		<version>0.7.2</version>
 	</parent>
 
 	<artifactId>globalmentor-web</artifactId>
-	<version>0.6.6-SNAPSHOT</version>
+	<version>0.6.6</version>
 	<packaging>pom</packaging>
 
 	<name>GlobalMentor Web</name>
 	<description>(X/HT)ML, CSS, JavaScript, and other web-related format definitions, implementations, and utilities.</description>
-	<url>http://www.globalmentor.com/software/</url>
+	<url>https://www.globalmentor.com/software/</url>
 	<inceptionYear>1996</inceptionYear>
 
 	<licenses>
@@ -59,109 +59,109 @@
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-css</artifactId>
-				<version>0.6.6-SNAPSHOT</version>
+				<version>0.6.6</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-css-spec</artifactId>
-				<version>0.6.6-SNAPSHOT</version>
+				<version>0.6.6</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-html</artifactId>
-				<version>0.6.6-SNAPSHOT</version>
+				<version>0.6.6</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-html-spec</artifactId>
-				<version>0.6.6-SNAPSHOT</version>
+				<version>0.6.6</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-javascript</artifactId>
-				<version>0.6.6-SNAPSHOT</version>
+				<version>0.6.6</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-mathml-spec</artifactId>
-				<version>0.6.6-SNAPSHOT</version>
+				<version>0.6.6</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-rdf-spec</artifactId>
-				<version>0.6.6-SNAPSHOT</version>
+				<version>0.6.6</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-rdfa-spec</artifactId>
-				<version>0.6.6-SNAPSHOT</version>
+				<version>0.6.6</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-svg-spec</artifactId>
-				<version>0.6.6-SNAPSHOT</version>
+				<version>0.6.6</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-vocab</artifactId>
-				<version>0.6.6-SNAPSHOT</version>
+				<version>0.6.6</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-vocab-dcmi</artifactId>
-				<version>0.6.6-SNAPSHOT</version>
+				<version>0.6.6</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-vocab-foaf</artifactId>
-				<version>0.6.6-SNAPSHOT</version>
+				<version>0.6.6</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-vocab-ogp</artifactId>
-				<version>0.6.6-SNAPSHOT</version>
+				<version>0.6.6</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-xml</artifactId>
-				<version>0.6.6-SNAPSHOT</version>
+				<version>0.6.6</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-xml-dom-impl</artifactId>
-				<version>0.6.6-SNAPSHOT</version>
+				<version>0.6.6</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-xml-spec</artifactId>
-				<version>0.6.6-SNAPSHOT</version>
+				<version>0.6.6</version>
 			</dependency>
 
 			<dependency>
 				<groupId>io.clogr</groupId>
 				<artifactId>clogr</artifactId>
-				<version>0.8.1-SNAPSHOT</version>
+				<version>0.8.1</version>
 			</dependency>
 
 			<dependency>
 				<groupId>io.confound</groupId>
 				<artifactId>config-properties</artifactId>
-				<version>0.7.3-SNAPSHOT</version>
+				<version>0.7.3</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
