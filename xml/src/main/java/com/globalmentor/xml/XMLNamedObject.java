@@ -16,7 +16,8 @@
 
 package com.globalmentor.xml;
 
-import com.globalmentor.java.Objects;
+import java.util.Objects;
+
 import com.globalmentor.model.DefaultNamed;
 import com.globalmentor.xml.spec.XML;
 

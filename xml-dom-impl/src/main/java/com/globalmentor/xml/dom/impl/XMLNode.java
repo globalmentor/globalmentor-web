@@ -21,11 +21,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.w3c.dom.*;
 import org.w3c.dom.events.*;
 
-import com.globalmentor.java.Objects;
 import com.globalmentor.xml.XMLNamedObject;
 import com.globalmentor.xml.dom.impl.events.*;
 import com.globalmentor.xml.spec.XML;

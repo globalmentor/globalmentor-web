@@ -33,7 +33,6 @@ import org.w3c.dom.*;
 import com.globalmentor.io.*;
 
 import com.globalmentor.java.Arrays;
-import com.globalmentor.java.Objects;
 import com.globalmentor.model.ConfiguredStateException;
 import com.globalmentor.net.MediaType;
 import com.globalmentor.text.ASCII;
