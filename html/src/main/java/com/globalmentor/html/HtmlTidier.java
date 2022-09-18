@@ -36,6 +36,7 @@ import io.confound.config.properties.PropertiesConfiguration;
 
 import static com.globalmentor.java.CharSequences.*;
 import static com.globalmentor.java.Characters.*;
+import static com.globalmentor.java.StringBuilders.*;
 import static com.globalmentor.css.CSS.*;
 import static com.globalmentor.css.spec.CSS.*;
 import static com.globalmentor.html.spec.HTML.*;
@@ -1200,9 +1201,9 @@ public class HtmlTidier implements Clogged {
 					final Node childNode = childNodeList.item(i); //get a reference to this child node
 					if(childNode.getNodeType() == Node.TEXT_NODE) { //if this is a text node
 						final Text textNode = (Text)childNode; //cast the node to a text node
-						final StringBuffer dataStringBuffer = new StringBuffer(textNode.getData()); //create a string buffer from the text data
-						convertSymbolToUnicode(dataStringBuffer); //convert the string from the Symbol font encoding to Unicode
-						textNode.setData(dataStringBuffer.toString()); //update the text node's data
+						final StringBuilder dataStringBuilder = new StringBuilder(textNode.getData()); //create a string buffer from the text data
+						convertSymbolToUnicode(dataStringBuilder); //convert the string from the Symbol font encoding to Unicode
+						textNode.setData(dataStringBuilder.toString()); //update the text node's data
 					}
 				}
 				element.removeAttributeNS(null, ATTRIBUTE_STYLE); //remove the style attribute TODO this is a hack, to accommodate for symbol elements that have non-symbol nested spans the text of which will be promosted; fix by only removing the font style on this line
@@ -1353,12 +1354,12 @@ public class HtmlTidier implements Clogged {
 					}
 				}
 		*/
-		final StringBuffer dataStringBuffer = new StringBuffer(data); //create a string buffer from the text data
-		if(tidyText(dataStringBuffer)) { //tidy the text data; if there were changes made
+		final StringBuilder dataStringBuilder = new StringBuilder(data); //create a string buffer from the text data
+		if(tidyText(dataStringBuilder)) { //tidy the text data; if there were changes made
 			modified = true; //show that we modified the text
 		}
 		if(modified) { //if we modified the text //TODO tidy; combine blocks
-			data = dataStringBuffer.toString(); //convert the text back to a string
+			data = dataStringBuilder.toString(); //convert the text back to a string
 			textNode.setData(data); //update the text node's data
 		}
 		//turn "_..._" into an emphasized element
@@ -1420,12 +1421,12 @@ public class HtmlTidier implements Clogged {
 	 * <li>The run "``" (subsequent grave accents) is replaced with a quote character.</li> <!--TODO fix-->
 	 * <li>Grave accents following spaces are converted to apostrophes.</li>
 	 * </ul>
-	 * @param stringBuffer The buffer containing the text data to tidy.
+	 * @param stringBuilder The buffer containing the text data to tidy.
 	 * @return <code>true</code> if the data was changed, <code>false</code> if the data was already tidy.
 	 */
-	protected static boolean tidyText(final StringBuffer stringBuffer) {
+	protected static boolean tidyText(final StringBuilder stringBuilder) {
 		//make the necessary replacements and make a note of how many replacements were made
-		final int replacementCount = StringBuffers.replace(stringBuffer, CHARACTER_MATCH_REPLACE_SET_ARRAY);
+		final int replacementCount = replace(stringBuilder, CHARACTER_MATCH_REPLACE_SET_ARRAY);
 		/*TODO fix
 							final String textTransform=oldStyle.getTextTransform(); //see if there is a text transform request
 							if(textTransform.length()>0) {	//if a text transformation was requested
@@ -1434,14 +1435,14 @@ public class HtmlTidier implements Clogged {
 							}
 		*/
 		boolean modified = replacementCount > 0; //see if we modified the characters
-		final int originalLength = stringBuffer.length(); //get the length before we replace runs
+		final int originalLength = stringBuilder.length(); //get the length before we replace runs
 		//replace "--", "---", and "----" with an em-dash (this can only make the string shorter)
-		StringBuffers.replaceRuns(stringBuffer, HYPHEN_MINUS_CHAR, 2, 4, EM_DASH_CHAR);
+		replaceRuns(stringBuilder, HYPHEN_MINUS_CHAR, 2, 4, EM_DASH_CHAR);
 		//replace "''" (subsequent apostrophes) with a quote character (this can only make the string shorter)
-		StringBuffers.replaceRuns(stringBuffer, APOSTROPHE_CHAR, 2, 2, QUOTATION_MARK_CHAR);
+		replaceRuns(stringBuilder, APOSTROPHE_CHAR, 2, 2, QUOTATION_MARK_CHAR);
 		//replace "``" (subsequent grave accents) with a quote character (this can only make the string shorter)
-		StringBuffers.replaceRuns(stringBuffer, GRAVE_ACCENT_CHAR, 2, 2, QUOTATION_MARK_CHAR);
-		if(stringBuffer.length() != originalLength) //if replacing runs changed the length of the string buffer
+		replaceRuns(stringBuilder, GRAVE_ACCENT_CHAR, 2, 2, QUOTATION_MARK_CHAR);
+		if(stringBuilder.length() != originalLength) //if replacing runs changed the length of the string buffer
 			modified = true; //something was modified
 		/*TODO this needs to be thought through more---what about at the end of a word? should we replace all of them?
 						//convert grave accents following whitespace to apostrophes TODO use a common routine to do this
@@ -1472,11 +1473,11 @@ public class HtmlTidier implements Clogged {
 
 	/**
 	 * Converts text data from the Adobe Symbol font encoding to Unicode.
-	 * @param stringBuffer The buffer containing the text data to convert.
+	 * @param stringBuilder The buffer containing the text data to convert.
 	 */
-	protected static void convertSymbolToUnicode(final StringBuffer stringBuffer) {
+	protected static void convertSymbolToUnicode(final StringBuilder stringBuilder) {
 		//TODO shouldn't we have a function that transforms this automatically?
-		StringBuffers.replace(stringBuffer, Unicode.SYMBOL_FONT_TO_UNICODE_TABLE); //convert all symbol characters to Unicode
+		replace(stringBuilder, Unicode.SYMBOL_FONT_TO_UNICODE_TABLE); //convert all symbol characters to Unicode
 		/*TODO del when works
 				final int converstionTableLength=SYMBOL_FONT_TO_UNICODE_TABLE.length; //find out how many characters we recognize
 				final int stringBufferLength=stringBuffer.length(); //find out how many characters there are to convert
