@@ -16,10 +16,10 @@
 
 package com.globalmentor.xml.dom.impl.stylesheets.css;
 
-import com.globalmentor.java.CharSequences;
 import com.globalmentor.java.Strings;
 
 import static com.globalmentor.css.spec.CSS.*;
+import static com.globalmentor.java.CharSequences.*;
 
 import org.w3c.dom.DOMException;
 import org.w3c.dom.css.*;
@@ -405,7 +405,7 @@ public class XMLCSSPrimitiveValue extends XMLCSSValue implements org.w3c.dom.css
 		if(valueString.length() > 0) { //if we have at least one character in the value string
 			final char firstChar = valueString.charAt(0); //get the first character in the string
 			if(NUMBER_CHARS.contains(firstChar)) { //if the first character is a digit or a decimal, we'll assume this is a number; now we'll need to determine what kind of units this represents
-				final int typeCharIndex = CharSequences.notCharIndexOf(valueString, NUMBER_CHARS, 0); //find the first character that isn't a digit or a decimal point TODO use a constant here
+				final int typeCharIndex = indexNotOf(valueString, NUMBER_CHARS, 0); //find the first character that isn't a digit or a decimal point TODO use a constant here
 				if(typeCharIndex != -1) { //if we found a non-digit character int the string
 					final String typeString = valueString.substring(typeCharIndex, valueString.length()); //get a string representing the type of unit
 					valueString = valueString.substring(0, typeCharIndex); //chop the unit type part off of the value string

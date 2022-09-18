@@ -23,6 +23,7 @@ import com.globalmentor.java.*;
 import com.globalmentor.xml.XmlDom;
 
 import static com.globalmentor.html.HtmlDom.*;
+import static com.globalmentor.java.CharSequences.*;
 import static com.globalmentor.java.Characters.*;
 
 import org.w3c.dom.*;
@@ -364,7 +365,7 @@ public class ProjectGutenbergHtmlTidier { //TODO move to different package
 									}
 								}
 								//get the first non-whitespace character
-								final char firstChar = line.charAt(CharSequences.notCharIndexOf(line, TRIM_CHARACTERS));
+								final char firstChar = line.charAt(indexNotOf(line, TRIM_CHARACTERS));
 								//if this is the correct line, and there's whitespace or dependent punctuation after the etext string
 								if(eTextStringIndex >= 0 && eTextStringIndex + eTextString.length() < line.length() && (firstChar == '*' //TODO test with original problem etext, use constant
 										|| isSpecialFirstPGHeader //we don't need to check for etext for the special header that has no etext
@@ -389,7 +390,7 @@ public class ProjectGutenbergHtmlTidier { //TODO move to different package
 									if(remainingText.length() > 0) { //if we have anything remaining
 										//only override an old title if this line has "of"
 										if((title == null || hasOf == true) && !foundPGTitle //if we haven't already found a title in another PG line
-												&& CharSequences.containsLetterOrDigit(remainingText)) {
+												&& containsLetterOrDigit(remainingText)) {
 											title = tidyTitle(remainingText); //whatever is left is the title
 											foundPGTitle = true; //show that we found a title on the Project Gutenberg line, so don't use any titles from other Project Gutenberg lines
 											//compensate for incomplete titles (e.g. "Volume 1:" from 1dfre10.txt, part of a title in 2ppdl10.txt))
@@ -427,10 +428,10 @@ public class ProjectGutenbergHtmlTidier { //TODO move to different package
 													&& !isFileLine(nextLine) && getByIndex(line) < 0 //if the current line has "by" in it, the title on the first line was probably correct (e.g. acrdi10.txt)
 													//if the first line has "of" appearing before the almost-end
 													&& ((Strings.indexOfIgnoreCase(line, " of ") < 0 || Strings.indexOfIgnoreCase(line, " of ") > (line.length() * 3 / 4)) //it's risky going to the next line---make sure we want to go there (e.g. berne10.txt)
-															|| CharSequences.endsWithIgnoreCase(remainingText, " folio") //if the title ends in "folio" (e.g. 0ws??10.txt), the actual title is probably on the next line
+															|| endsWithIgnoreCase(remainingText, " folio") //if the title ends in "folio" (e.g. 0ws??10.txt), the actual title is probably on the next line
 													)) {
 												remainingText = tidyTitle(nextLine); //tidy the remaining line
-												if(CharSequences.containsLetterOrDigit(remainingText)) //if the trimmed string is a title
+												if(containsLetterOrDigit(remainingText)) //if the trimmed string is a title
 													title = remainingText; //use this for a title
 											}
 										}
@@ -450,7 +451,7 @@ public class ProjectGutenbergHtmlTidier { //TODO move to different package
 							title = line; //we'll use this text for the title
 							nextLineTitleAfterElement = null;
 							break; //stop looking for the title
-						} else if(CharSequences.endsWithIgnoreCase(line.trim(), "Etext of:")) { //e.g. email025.txt TODO use a constant
+						} else if(endsWithIgnoreCase(line.trim(), "Etext of:")) { //e.g. email025.txt TODO use a constant
 							nextLineTitleAfterElement = childElement; //TODO testing
 						}
 					}
@@ -518,7 +519,7 @@ public class ProjectGutenbergHtmlTidier { //TODO move to different package
 										remainingText = tidyAuthor(remainingText.substring(byIndex + BY.length()));
 										//if we have anything remaining, and it's not "author", "himself", or "herself"
 										if(!foundPGByAuthor //if we haven't already found a Project Gutenberg "by" author (e.g. ionly10.txt)
-												&& CharSequences.containsLetterOrDigit(remainingText) && !"AUTHOR".equalsIgnoreCase(remainingText) //TODO use a constant
+												&& containsLetterOrDigit(remainingText) && !"AUTHOR".equalsIgnoreCase(remainingText) //TODO use a constant
 												&& !"himself".equalsIgnoreCase(remainingText) //(e.g. advlr10.txt) TODO use a constant
 												&& !"herself".equalsIgnoreCase(remainingText)) { //(e.g. advlr10.txt) TODO use a constant
 											author = tidyAuthor(remainingText); //whatever is left is the author; tidy it
@@ -530,7 +531,7 @@ public class ProjectGutenbergHtmlTidier { //TODO move to different package
 									final int possessionIndex = Strings.indexOfIgnoreCase(remainingText, "'s"); //see if there is a "'s" in the title
 									if(possessionIndex > 0) { //if there is possession in the title
 										//try to find the start of the word showing possession
-										final int wordBeginIndex = CharSequences.charLastIndexOf(remainingText, TRIM_CHARACTERS, possessionIndex - 1) + 1;
+										final int wordBeginIndex = lastIndexOf(remainingText, TRIM_CHARACTERS, possessionIndex - 1) + 1;
 										if(wordBeginIndex < possessionIndex) { //if this is a valid index
 											remainingText = remainingText.substring(wordBeginIndex, possessionIndex); //get the word showing possession
 											if(remainingText.length() > 0 //if we have anything remaining
@@ -552,10 +553,10 @@ public class ProjectGutenbergHtmlTidier { //TODO move to different package
 									String remainingText = byIndex >= 0 //if we found by
 											? tidyAuthor(line.substring(byIndex + BY.length())) //use everything after by
 											: line; //if we didn't find by but we know the author should be on this line, use the whole line
-									if(CharSequences.containsLetterOrDigit(remainingText) //if we have anything remaining
+									if(containsLetterOrDigit(remainingText) //if we have anything remaining
 											&& (isNextLineByAuthor || usedIndex < 0 || usedIndex != byIndex - "used ".length())) { //make sure this isn't "used by" (e.g. brnte10.txt)
 										//if we've already found an author, we'll only use the new author if it's a more complete version of the author already given (e.g. only the last name was given on the first line)
-										if(author == null || CharSequences.endsWithIgnoreCase(remainingText, author)) {
+										if(author == null || endsWithIgnoreCase(remainingText, author)) {
 											if(!foundByAuthor //if this is the first author we've found using this method
 													&& !Strings.startsWithIgnoreCase(remainingText, "AUTHOR") //TODO use a constant TODO this code is duplicated
 													&& !Strings.startsWithIgnoreCase(remainingText, "himself") //(e.g. advlr10.txt) TODO use a constant
@@ -595,7 +596,7 @@ public class ProjectGutenbergHtmlTidier { //TODO move to different package
 									if(byIndex >= 0) { //if there is a "by"
 										//remove the "by" and everything before it, and tidy the property
 										final String remainingText = tidyAuthor(line.substring(byIndex + BY.length()));
-										if(CharSequences.containsLetterOrDigit(remainingText)) { //if we have anything remaining
+										if(containsLetterOrDigit(remainingText)) { //if we have anything remaining
 											author = remainingText; //whatever is left is the author
 											break; //this is about the best we can do
 										}
@@ -718,7 +719,7 @@ public class ProjectGutenbergHtmlTidier { //TODO move to different package
 						//TODO del if not needed						if(StringUtilities.startsWithIgnoreCase(line.substring(projectGutenbergIndex), "PROJECT GUTENBERG-tm"))
 						{
 							//get the first non-whitespace character
-							final char firstChar = line.charAt(CharSequences.notCharIndexOf(line, TRIM_CHARACTERS));
+							final char firstChar = line.charAt(indexNotOf(line, TRIM_CHARACTERS));
 							//if the line doesn't start with '*', make sure there's whitespace or
 							//  dependent punctuation after "etext" (e.g. it's not "...the first
 							//  nine Project Gutenberg Etexts...")
@@ -952,7 +953,7 @@ public class ProjectGutenbergHtmlTidier { //TODO move to different package
 			tidyProperty(stringBuilder.delete(0, THE.length())); //remove the beginning "the" and tidy the string
 		}
 		//if the string ends with ", or" (e.g. 03tcb10.txt)
-		if(CharSequences.endsWithIgnoreCase(stringBuilder, ", or")) { //if the string ends with ", or" TODO use a constnat
+		if(endsWithIgnoreCase(stringBuilder, ", or")) { //if the string ends with ", or" TODO use a constnat
 			tidyProperty(stringBuilder.delete(stringBuilder.length() - ", or".length(), stringBuilder.length())); //remove the beginning ", or" and tidy the string TODO use a constant
 		}
 		//if the string starts with "book", "etext", or something similar
@@ -982,8 +983,8 @@ public class ProjectGutenbergHtmlTidier { //TODO move to different package
 		final int copyrightIndex = Strings.indexOfIgnoreCase(stringBuilder.toString(), COPYRIGHT); //TODO use a StringBuilders method
 		if(copyrightIndex >= 0) { //if "copyright" appears in the title
 			//if "copyright" is followed by a copyright character
-			if(CharSequences.charIndexOf(stringBuilder, Characters.of('@', COPYRIGHT_SIGN), copyrightIndex + 1) >= 0
-					|| stringBuilder.indexOf("(c)", copyrightIndex + 1) >= 0 || stringBuilder.indexOf("(C)", copyrightIndex + 1) >= 0) {
+			if(indexOf(stringBuilder, Characters.of('@', COPYRIGHT_SIGN), copyrightIndex + 1) >= 0 || stringBuilder.indexOf("(c)", copyrightIndex + 1) >= 0
+					|| stringBuilder.indexOf("(C)", copyrightIndex + 1) >= 0) {
 				tidyProperty(stringBuilder.delete(copyrightIndex, stringBuilder.length())); //remove "copyright" and everything after it TODO add a convenience routine like the one for strings
 			}
 		}
@@ -1046,12 +1047,12 @@ public class ProjectGutenbergHtmlTidier { //TODO move to different package
 			tidyProperty(stringBuilder.delete(authorPropertyIndex, stringBuilder.length())); //remove that text and tidy the string TODO use a constant
 		}
 		//if the string ends with "all rights reserved" in any case TODO use a constant
-		if(CharSequences.endsWithIgnoreCase(stringBuilder, "all rights reserved")) {
+		if(endsWithIgnoreCase(stringBuilder, "all rights reserved")) {
 			tidyProperty(stringBuilder.delete(stringBuilder.length() - "all rights reserved".length(), stringBuilder.length())); //remove that text and tidy the string TODO use a constant
 		}
 		//see if "copyright 19" or "copyright 20" or "copyrihgt (", etc. appears in the string (e.g. efpap10.txt)
 		int copyrightIndex = Strings.indexOfIgnoreCase(stringBuilder.toString(), COPYRIGHT); //see if "copyright" appears in the string TODO change to StringBuilders
-		if(copyrightIndex >= 0 && (CharSequences.charIndexOf(stringBuilder, Characters.of('@', COPYRIGHT_SIGN)) >= 0 //if "copyright" is followed by a copyright sign TODO use a constant
+		if(copyrightIndex >= 0 && (indexOf(stringBuilder, Characters.of('@', COPYRIGHT_SIGN)) >= 0 //if "copyright" is followed by a copyright sign TODO use a constant
 				|| stringBuilder.indexOf("(c)") >= 0 //if "copyright" is followed by (c) TODO use a constant
 				|| stringBuilder.indexOf("19") >= 0 //if "copyright" is followed by 19 TODO use a constant
 				|| stringBuilder.indexOf("20") >= 0 //if "copyright" is followed by 19 TODO use a constant
@@ -1066,7 +1067,7 @@ public class ProjectGutenbergHtmlTidier { //TODO move to different package
 		final int byIndex = getByIndex(stringBuilder.toString()); //get the index of "by" TODO if we didn't have to convert to a string, this would be more efficient
 		if(byIndex >= 0 && Character.isLowerCase(stringBuilder.charAt(byIndex))) { //if we found "by" (only in lowercase)
 			//see if we can find punctuation before "by"
-			final int punctuationIndex = CharSequences.charLastIndexOf(stringBuilder, PUNCTUATION_CHARS, byIndex - 1);
+			final int punctuationIndex = lastIndexOf(stringBuilder, PUNCTUATION_CHARS, byIndex - 1);
 			//if by is not at the first of the string and has punctuation before it
 			if(punctuationIndex >= 0) { //if we can find punctuation before "by" (e.g. efpap10.txt)
 				tidyProperty(stringBuilder.delete(punctuationIndex, stringBuilder.length())); //remove the punctuation and everything else, because we assume it's talking about somebody else
@@ -1111,13 +1112,13 @@ public class ProjectGutenbergHtmlTidier { //TODO move to different package
 		//trim the string of whitespace, dashes, and asterisks
 		StringBuilders.trim(stringBuilder, TRIM_CHARS);
 		//see if there is any group punctuation at the end (e.g. "XXX (XXX)")
-		final int rightGroupIndex = CharSequences.charLastIndexOf(stringBuilder, RIGHT_GROUP_PUNCTUATION_CHARACTERS);
+		final int rightGroupIndex = lastIndexOf(stringBuilder, RIGHT_GROUP_PUNCTUATION_CHARACTERS);
 		if(rightGroupIndex >= 0) { //if the string ends with a right group characters
 			//if there's nothing but whitespace after the right group, we'll remove the entire group
 			if(StringBuilders.notCharIndexOf(stringBuilder, Characters.TRIM_CHARACTERS, rightGroupIndex + 1) < 0) {
 				//remove evertying from the start of the group onward
 				//see if there is any left punctuation at the end (e.g. "XXX (XXX)") (don't just grab the first left group punctuation, because there could be several sets of them)
-				final int leftGroupIndex = CharSequences.charLastIndexOf(stringBuilder, LEFT_GROUP_PUNCTUATION_CHARACTERS, rightGroupIndex - 1);
+				final int leftGroupIndex = lastIndexOf(stringBuilder, LEFT_GROUP_PUNCTUATION_CHARACTERS, rightGroupIndex - 1);
 				if(leftGroupIndex >= 0) { //if we found a matching left group punctuation character
 					stringBuilder.delete(leftGroupIndex, stringBuilder.length()); //remove the left punctuation and everything after it
 				}

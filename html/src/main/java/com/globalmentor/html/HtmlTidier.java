@@ -34,6 +34,7 @@ import io.clogr.Clogged;
 import io.confound.config.Configuration;
 import io.confound.config.properties.PropertiesConfiguration;
 
+import static com.globalmentor.java.CharSequences.*;
 import static com.globalmentor.java.Characters.*;
 import static com.globalmentor.css.CSS.*;
 import static com.globalmentor.css.spec.CSS.*;
@@ -615,12 +616,12 @@ public class HtmlTidier implements Clogged {
 								markerListStyleType = CSS_LIST_STYLE_TYPE_DISC; //this is the disc style type
 							} else { //if the marker is not the bullet character
 								//see if this "marker" contains at least one list item delimiter
-								final int delimiterIndex = CharSequences.charIndexOf(markerString, LIST_ITEM_MARKER_DELIMITER_CHARS);
+								final int delimiterIndex = indexOf(markerString, LIST_ITEM_MARKER_DELIMITER_CHARS);
 								if(delimiterIndex >= 0) { //if this marker contained a delimiter, it's starting to look like a real marker; we'll trim the delimeters and see for sure
 									//TODO same the delimiter somewhere
 									//trim the "." or ")" or whatever from the string, giving us just the marker
 									markerString = Strings.trim(markerString, LIST_ITEM_MARKER_DELIMITER_CHARS);
-									if(CharSequences.isLatinDigits(markerString)) { //if this string contains only latin digits (the digits '0'-'9')
+									if(isLatinDigits(markerString)) { //if this string contains only latin digits (the digits '0'-'9')
 										markerListStyleType = CSS_LIST_STYLE_TYPE_DECIMAL; //assume this is a decimal list style type
 									} else if(markerString.length() == 1) { //if the marker is only one character long
 										final char c = markerString.charAt(0); //get the first character
@@ -694,7 +695,7 @@ public class HtmlTidier implements Clogged {
 							if(textNode != null) { //if we found a text node somewhere inside this text node
 								final String data = textNode.getData(); //get the text node data
 								//see where the first whitespace is
-								final int whitespaceIndex = CharSequences.charIndexOf(data, Characters.TRIM_CHARACTERS);
+								final int whitespaceIndex = indexOf(data, Characters.TRIM_CHARACTERS);
 								if(whitespaceIndex >= 0) { //if there is whitespace (there always should be, or we could not have determined that this is a list item
 									textNode.setData(data.substring(whitespaceIndex + 1)); //remove the marker and update the text node
 								}

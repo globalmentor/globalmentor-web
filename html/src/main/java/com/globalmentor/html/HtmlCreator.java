@@ -21,7 +21,6 @@ import java.nio.charset.Charset;
 import java.util.*;
 
 import com.globalmentor.io.*;
-import com.globalmentor.java.CharSequences;
 import com.globalmentor.text.*;
 import com.globalmentor.xml.XmlDom;
 
@@ -29,6 +28,7 @@ import io.clogr.Clogged;
 
 import org.w3c.dom.*;
 
+import static com.globalmentor.java.CharSequences.*;
 import static com.globalmentor.java.Characters.*;
 import static com.globalmentor.html.HtmlDom.*;
 import static com.globalmentor.html.spec.HTML.*;
@@ -160,7 +160,7 @@ public class HtmlCreator implements Clogged {
 		final Element element = document.createElementNS(namespaceURI, ELEMENT_P); //create a new paragraph element TODO this assumes the namespace is the default name
 		String line = getLine(bufferedReader); //read the first line of text
 		while(line != null) { //read all the blank lines until we find one with text (or until we read the end of the data)
-			if(CharSequences.notCharIndexOf(line, TRIM_CHARACTERS) >= 0) //if there is text for this line
+			if(indexNotOf(line, TRIM_CHARACTERS) >= 0) //if there is text for this line
 				break; //we're ready to start storing the text
 			line = getLine(bufferedReader); //read the next line of text
 		}
@@ -172,7 +172,7 @@ public class HtmlCreator implements Clogged {
 		while(line != null && !isLastLine) { //keep reading until we read the end of the data or we we hit the last line of the paragraph
 			//make sure all the characters are valid XML characters
 			line = XmlDom.createValidString(line);
-			if(CharSequences.notCharIndexOf(line, TRIM_CHARACTERS) >= 0) { //if there is text for this line
+			if(indexNotOf(line, TRIM_CHARACTERS) >= 0) { //if there is text for this line
 				if(Prose.isBreak(line) && line.length() > 10) { //if the line we want to append is a break
 					if(lineCount > 0) { //if we already have lines accumulated
 						ungetLine(line); //put the line back in the buffer
@@ -216,10 +216,10 @@ public class HtmlCreator implements Clogged {
 						line = null; //discard the line
 					} else if(lineCount > 0) { //if we have lines in the paragraph
 						//get the index of the first non-whitespace character
-						final int firstCharIndex = CharSequences.notCharIndexOf(line, TRIM_CHARACTERS);
+						final int firstCharIndex = indexNotOf(line, TRIM_CHARACTERS);
 						final char firstChar = line.charAt(firstCharIndex); //get the first character
 						//get the index of the last non-whitespace character
-						final int lastCharIndex = CharSequences.notCharLastIndexOf(line, TRIM_CHARACTERS);
+						final int lastCharIndex = lastIndexNotOf(line, TRIM_CHARACTERS);
 						final char lastChar = line.charAt(lastCharIndex); //get the last character
 						if(headingType == Prose.NO_HEADING) { //if this is not a heading, we still need to sense the start of a new heading within the paragraph (if the paragraph started with a heading, we've already checked to see if it has changed types)
 							final int lineHeadingType = Prose.getHeadingType(line); //see what type of heading this is
@@ -352,7 +352,7 @@ public class HtmlCreator implements Clogged {
 			final String line = (String)getLineBuffer().get(i); //get another line
 			++lineCount; //show that we've found another line
 			//get the index of the last character in the string that isn't whitespace
-			final int lastNonWhitespaceCharIndex = CharSequences.notCharLastIndexOf(line, TRIM_CHARACTERS);
+			final int lastNonWhitespaceCharIndex = lastIndexNotOf(line, TRIM_CHARACTERS);
 			if(lastNonWhitespaceCharIndex >= 0) { //if this is not a blank line
 				++nonBlankLineCount; //show that we've found another non-blank line
 				final char lastChar = line.charAt(lastNonWhitespaceCharIndex); //get the last character on the line
@@ -393,7 +393,7 @@ public class HtmlCreator implements Clogged {
 		for(int i = 0; i < getLineBuffer().size(); ++i) { //look at each line
 			final String line = (String)getLineBuffer().get(i); //get another line
 			++lineCount; //show that we've found another line
-			final boolean isBlankLine = CharSequences.notCharIndexOf(line, TRIM_CHARACTERS) < 0; //see if this is a blank line
+			final boolean isBlankLine = indexNotOf(line, TRIM_CHARACTERS) < 0; //see if this is a blank line
 			if(!isBlankLine) //if this isn't a blank line
 				++nonBlankLineCount; //show that we've found another non-blank line
 			if(blankLineRunStartIndex < 0) { //if we haven't started a run, yet
