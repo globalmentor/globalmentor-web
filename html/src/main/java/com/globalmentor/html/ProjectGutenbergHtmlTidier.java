@@ -740,7 +740,7 @@ public class ProjectGutenbergHtmlTidier { //TODO move to different package
 					Node previousSiblingNode = element.getPreviousSibling(); //get the element's previous sibling
 					while(previousSiblingNode != null) { //while there are previous siblings
 						//if the previous sibling is an element, our element is not the first element
-						if(previousSiblingNode.getNodeType() == previousSiblingNode.ELEMENT_NODE) {
+						if(previousSiblingNode.getNodeType() == Node.ELEMENT_NODE) {
 							isFirstElement = false; //our element is not the first element
 							break; //stop trying to disprove ourselves
 						} else { //if we haven't found a previous element so far

@@ -44,10 +44,10 @@ public class HtmlCreator implements Clogged {
 	private long totalLineLengthSum = 0;
 
 	/** The list of buffered lines for analyzing. */
-	private final LinkedList lineBuffer = new LinkedList();
+	private final LinkedList<String> lineBuffer = new LinkedList<>();
 
 	/** @return The list of buffered lines for analyzing. */
-	public LinkedList getLineBuffer() {
+	public LinkedList<String> getLineBuffer() {
 		return lineBuffer;
 	}
 
@@ -303,7 +303,7 @@ public class HtmlCreator implements Clogged {
 	 */
 	protected String getLine(final BufferedReader bufferedReader) throws IOException {
 		if(getLineBuffer().size() > 0) { //if there are lines in the buffer
-			return (String)getLineBuffer().removeFirst(); //remove and return the first available line from the buffer
+			return getLineBuffer().removeFirst(); //remove and return the first available line from the buffer
 		} else { //if there are no lines in the buffer
 			return bufferedReader.readLine(); //read a line from the reader
 		}
@@ -349,7 +349,7 @@ public class HtmlCreator implements Clogged {
 		int nonBlankLineCount = 0; //we haven't found any non-blank lines, yet
 		int endingPunctuationSum = 0; //the sum of lines that end in punctuation
 		for(int i = startIndex; i < endIndex; ++i) { //look at each line following each non-blank line
-			final String line = (String)getLineBuffer().get(i); //get another line
+			final String line = getLineBuffer().get(i); //get another line
 			++lineCount; //show that we've found another line
 			//get the index of the last character in the string that isn't whitespace
 			final int lastNonWhitespaceCharIndex = lastIndexNotOf(line, TRIM_CHARACTERS);
@@ -391,7 +391,7 @@ public class HtmlCreator implements Clogged {
 		int nonBlankLineCount = 0; //we haven't found any non-blank lines, yet
 		int blankLineRunStartIndex = -1; //show that we haven't started a run of blank lines, yet
 		for(int i = 0; i < getLineBuffer().size(); ++i) { //look at each line
-			final String line = (String)getLineBuffer().get(i); //get another line
+			final String line = getLineBuffer().get(i); //get another line
 			++lineCount; //show that we've found another line
 			final boolean isBlankLine = indexNotOf(line, TRIM_CHARACTERS) < 0; //see if this is a blank line
 			if(!isBlankLine) //if this isn't a blank line

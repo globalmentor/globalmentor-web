@@ -495,7 +495,7 @@ public class HtmlTidier implements Clogged {
 		//tidy the styles of all the children, first.
 		for(int i = 0; i < childNodeList.getLength(); ++i) { //look at each child node
 			final Node childNode = childNodeList.item(i); //get a reference to this child node
-			if(childNode.getNodeType() == childNode.ELEMENT_NODE) { //if this is an element
+			if(childNode.getNodeType() == Node.ELEMENT_NODE) { //if this is an element
 				tidyStyle((Element)childNode); //tidy the style of this child element
 			}
 		}
@@ -590,7 +590,7 @@ public class HtmlTidier implements Clogged {
 		final String elementNamespace = element.getNamespaceURI(); //get the element's namespace
 		Node searchStartNode = element.getFirstChild(); //show that we should start the search at the first child of the element; we'll use this later if we need to start searching again at the first child node or anywhere else in the list
 		do {
-			final List listItemNodeList = new ArrayList(); //create a new list to hold sequential nodes we think might be part of a list
+			final List<Element> listItemElementList = new ArrayList<>(); //create a new list to hold sequential nodes we think might be part of a list
 			String listStyleType = null; //when we start a list, we'll store what type of list we think it is here
 			Node childNode = searchStartNode; //start searching at the requested location
 			searchStartNode = null; //show that we've started our search; if we need to search again, we'll set this to some valid value
@@ -599,7 +599,7 @@ public class HtmlTidier implements Clogged {
 				final int childNodeType = childNode.getNodeType(); //get the type of this child node
 				final String childNodeName = childNode.getNodeName(); //get the node's name TODO use namespaces
 				//only look at block elements that are not list items
-				if(childNodeType == childNode.ELEMENT_NODE && !ELEMENT_LI.equals(childNodeName) //skip list items TODO what if we skip some in the middle of a list?
+				if(childNodeType == Node.ELEMENT_NODE && !ELEMENT_LI.equals(childNodeName) //skip list items TODO what if we skip some in the middle of a list?
 						&& !childNodeName.startsWith("h") //skip headings
 						&& isBlockElement((Element)childNode)) { //TODO eventually use isListItem() or something, or check the styles in case other elements are classified as list items
 					//TODO check to see if this is already a list item; or maybe wait until we've found a marker and then, if it's a list item, remove the literal marker (but then we'd need to check to see if the style made it a plain list item, meaning there would be no automatic marker)
@@ -641,7 +641,7 @@ public class HtmlTidier implements Clogged {
 					//  started a list)
 					if(markerListStyleType != null && (listStyleType == null || markerListStyleType == listStyleType)) {
 						//get what we expect the marker string to be based upon the index this list item would be in the list
-						final String expectedMarkerString = getMarkerString(markerListStyleType, listItemNodeList.size());
+						final String expectedMarkerString = getMarkerString(markerListStyleType, listItemElementList.size());
 						//to detect new lists starting, see what would come at the first of this type of list
 						final String expectedFirstMarkerString = getMarkerString(markerListStyleType, 0);
 						final boolean isExpectedMarker; //we'll see if this is the marker we were expecting
@@ -650,15 +650,15 @@ public class HtmlTidier implements Clogged {
 								|| markerListStyleType == CSS_LIST_STYLE_TYPE_SQUARE)
 							isExpectedMarker = true; //since the list item marker never changes, the marker will always match as long as it is of the same time
 						else { //if this is a list type in which the marker can change for each list item
-							isExpectedMarker = markerString.equals(expectedMarkerString); //see if the list item is what we expeted
+							isExpectedMarker = markerString.equals(expectedMarkerString); //see if the list item is what we expected
 						}
 						if(isExpectedMarker) { //if we got what we expected, we seem to be guessing right
-							listItemNodeList.add(childNode); //add this node to our list, since it matches what we expect
+							listItemElementList.add((Element)childNode); //add this node to our list, since it matches what we expect
 							listStyleType = markerListStyleType; //show that we know for sure what type of list this will be
 						} else if(markerString.equals(expectedFirstMarkerString)) { //if we got what should be the first item in the list, we seem to be starting a new list
-							if(listItemNodeList.size() == 1) { //if our old list only had one item, and we're starting a new list
-								listItemNodeList.clear(); //clear the old list
-								listItemNodeList.add(childNode); //we'll start over with this list
+							if(listItemElementList.size() == 1) { //if our old list only had one item, and we're starting a new list
+								listItemElementList.clear(); //clear the old list
+								listItemElementList.add((Element)childNode); //we'll start over with this list
 								listStyleType = markerListStyleType; //show that we know for sure what type of list this will be
 							} else
 								//if we come upon a new list (even though it has the same type), and we completed a list previously
@@ -670,15 +670,15 @@ public class HtmlTidier implements Clogged {
 				}
 				childNode = nextNode; //go to the next node
 			}
-			if(listItemNodeList.size() > 0) { //if we've collected a list of nodes to become list items
-				if(listItemNodeList.size() > 1) { //if we have at least two list items, this constitutes a list
+			if(listItemElementList.size() > 0) { //if we've collected a list of nodes to become list items
+				if(listItemElementList.size() > 1) { //if we have at least two list items, this constitutes a list
 					final String listElementName = ELEMENT_OL; //TODO fix
 					//create a new list element to contain the elements we found
 					final Element listElement = document.createElementNS(elementNamespace, listElementName);
 					//add the class="list-style: listStyleType" attribute with the correct list style TODO maybe later create a style declaration and write it to the class attribute, so this will be created automatically
 					listElement.setAttributeNS(null, ATTRIBUTE_STYLE, CSS_PROP_LIST_STYLE_TYPE + CSS.PROPERTY_DIVIDER_CHAR + CSS.SPACE_CHAR + listStyleType);
-					final Element firstListItemElement = (Element)listItemNodeList.get(0); //get a reference to our first element to become a list item
-					final Element lastListItemElement = (Element)listItemNodeList.get(listItemNodeList.size() - 1); //get a reference to our last element to become a list item
+					final Element firstListItemElement = listItemElementList.get(0); //get a reference to our first element to become a list item
+					final Element lastListItemElement = listItemElementList.get(listItemElementList.size() - 1); //get a reference to our last element to become a list item
 					element.insertBefore(listElement, firstListItemElement); //insert our list right before the first list item
 					Node moveNode; //this will keep track of the node we're currently moving
 					Node nextMoveNode = firstListItemElement; //we'll start by moving the first list item element
@@ -688,7 +688,7 @@ public class HtmlTidier implements Clogged {
 						//TODO del when works								Node replacementNode=element.removeChild(moveNode); //remove the node from its parent
 						element.removeChild(moveNode); //remove the node from its parent
 						listElement.appendChild(moveNode); //append the list item element to the list element
-						if(listItemNodeList.indexOf(moveNode) >= 0) { //if we just moved an element that we've already determined should be a list item
+						if(listItemElementList.indexOf(moveNode) >= 0) { //if we just moved an element that we've already determined should be a list item
 							final Element listItemElement = replaceElementNS((Element)moveNode, elementNamespace, ELEMENT_LI); //rename the element to "li"
 							//remove the marker from the list item
 							final Text textNode = (Text)getFirstNode(listItemElement, NodeFilter.SHOW_TEXT); //get the first text node in the element
@@ -706,7 +706,7 @@ public class HtmlTidier implements Clogged {
 					searchStartNode = element.getFirstChild(); //since we found a list, we should check the child elements again for lists, starting with the first child
 
 				} else { //if we only found one item, that doesn't constitute a list; we'll need to search again, starting right after that list item
-					searchStartNode = ((Element)listItemNodeList.get(0)).getNextSibling(); //we'll search the list again, this time starting with the node right after the one node we found last time
+					searchStartNode = listItemElementList.get(0).getNextSibling(); //we'll search the list again, this time starting with the node right after the one node we found last time
 				}
 			}
 		} while(searchStartNode != null); //keep going through the list until we are not able to find a new list
@@ -732,7 +732,7 @@ public class HtmlTidier implements Clogged {
 		final String elementNamespace = element.getNamespaceURI(); //get the element's namespace
 		Node searchStartNode = element.getFirstChild(); //show that we should start the search at the first child of the element; we'll use this later if we need to start searching again at the first child node or anywhere else
 		do {
-			final List blockquoteNodeList = new ArrayList(); //create a new list to hold sequential nodes we think might be part of a blockquote
+			final List<Element> blockquoteElementList = new ArrayList<>(); //create a new list to hold sequential nodes we think might be part of a blockquote
 			float margin = 0; //show that we haven't found any indentations, yet
 			Node childNode = searchStartNode; //start searching at the requested location
 			searchStartNode = null; //show that we've started our search; if we need to search again, we'll set this to some valid value
@@ -741,7 +741,7 @@ public class HtmlTidier implements Clogged {
 				final int childNodeType = childNode.getNodeType(); //get the type of this child node
 				final String childNodeName = childNode.getNodeName(); //get the node's name TODO use namespaces
 				//only look at block elements that are not blockquotes TODO what if we skip some in the middle of a list?
-				if(childNodeType == childNode.ELEMENT_NODE /*TODO testing && !childNodeName.equals(ELEMENT_BLOCKQUOTE)*/ && isBlockElement((Element)childNode)) {
+				if(childNodeType == Node.ELEMENT_NODE /*TODO testing && !childNodeName.equals(ELEMENT_BLOCKQUOTE)*/ && isBlockElement((Element)childNode)) {
 					float leftMargin = 0; //we'll store the left margin here, if we find one
 					float rightMargin = 0; //we'll store the right margin here, if we find one
 					final Element childElement = (Element)childNode; //cast the node to an element
@@ -774,29 +774,29 @@ public class HtmlTidier implements Clogged {
 					*/
 					//TODO it would probably be best to give the left and right margins some initial invalid number
 					//if this is a blockquote and we've started a list, assume this is a nested blockquote
-					if(ELEMENT_DIV.equals(childNodeName) && "fullIndent".equals(childElement.getAttributeNS(null, "class")) && blockquoteNodeList.size() > 0) { //G**use constants here
-						blockquoteNodeList.add(childElement); //add this blockquote element as an element to be added as the child of the blockquote we're going to create
+					if(ELEMENT_DIV.equals(childNodeName) && "fullIndent".equals(childElement.getAttributeNS(null, "class")) && blockquoteElementList.size() > 0) { //G**use constants here
+						blockquoteElementList.add(childElement); //add this blockquote element as an element to be added as the child of the blockquote we're going to create
 					} else if(leftMargin == rightMargin) { //if the left and right margins are identical, we assume this is a blockquote
 						if(leftMargin > margin) { //if the margin increased, this is the start of another blockquote
-							blockquoteNodeList.clear(); //we'll start the list over, because this is a nested blockquote
-							blockquoteNodeList.add(childElement); //add this element which will become a blockquote
+							blockquoteElementList.clear(); //we'll start the list over, because this is a nested blockquote
+							blockquoteElementList.add(childElement); //add this element which will become a blockquote
 							margin = leftMargin; //show the margin our new blockquote uses
 						} else if(leftMargin > 0 && leftMargin == margin) { //if this is valid blockquote at the same level of blockquote we had before
-							blockquoteNodeList.add(childElement); //add this element to our list of elements to become blockquotes
-						} else if(blockquoteNodeList.size() > 0) { //if the margin decreased, the blockqoute is finished
+							blockquoteElementList.add(childElement); //add this element to our list of elements to become blockquotes
+						} else if(blockquoteElementList.size() > 0) { //if the margin decreased, the blockqoute is finished
 							break; //we finished a blockquote; stop this current iteration of searching
 						}
 					}
 				}
 				childNode = nextNode; //go to the next node
 			}
-			if(blockquoteNodeList.size() > 0) { //if we've collected a list of nodes to become blockquotes
-				if(blockquoteNodeList.size() > 1) { //if we have at least two items, we'll wrap a blockquote around them
+			if(blockquoteElementList.size() > 0) { //if we've collected a list of nodes to become blockquotes
+				if(blockquoteElementList.size() > 1) { //if we have at least two items, we'll wrap a blockquote around them
 					//create a new blockquote element to contain the elements we found TODO eventually probably make this a separate utilities method
 					final Element blockquoteElement = document.createElementNS(elementNamespace, ELEMENT_DIV);
 					blockquoteElement.setAttributeNS(null, "class", "fullIndent"); //TODO comment; use constants
-					final Element firstBlockquoteElement = (Element)blockquoteNodeList.get(0); //get a reference to our first element to become a blockquote
-					final Element lastBlockquoteElement = (Element)blockquoteNodeList.get(blockquoteNodeList.size() - 1); //get a reference to our last element to become a blockquote
+					final Element firstBlockquoteElement = blockquoteElementList.get(0); //get a reference to our first element to become a blockquote
+					final Element lastBlockquoteElement = blockquoteElementList.get(blockquoteElementList.size() - 1); //get a reference to our last element to become a blockquote
 					element.insertBefore(blockquoteElement, firstBlockquoteElement); //insert our list right before the first list item
 					Node moveNode; //this will keep track of the node we're currently moving
 					Node nextMoveNode = firstBlockquoteElement; //we'll start by moving the first blockquote element
@@ -808,7 +808,7 @@ public class HtmlTidier implements Clogged {
 					} while(moveNode != lastBlockquoteElement); //keep moving nodes until we've moved the last element
 					searchStartNode = element.getFirstChild(); //since we found a blockquote, we should check the child elements again for blockquotes, starting with the first child
 				} else { //if we only found one blockquote, simply rename the single element to a blockquote; we'll need to search again, starting right after that blockquote
-					final Element blockquoteElement = replaceElementNS((Element)blockquoteNodeList.get(0), elementNamespace, ELEMENT_DIV); //rename the element to "div"
+					final Element blockquoteElement = replaceElementNS(blockquoteElementList.get(0), elementNamespace, ELEMENT_DIV); //rename the element to "div"
 					blockquoteElement.setAttributeNS(null, "class", "fullIndent"); //TODO comment; use constants; what if there already is a class?
 					searchStartNode = element.getFirstChild(); //since we found a blockquote, we should check the child elements again for blockquotes, starting with the first child
 				}
@@ -873,7 +873,7 @@ public class HtmlTidier implements Clogged {
 		int lastAttemptedPageBreakType = Prose.NO_HEADING; //the type of heading that last attempted to make a page break
 		final Document document = element.getOwnerDocument(); //get the owner document of the element
 		final String elementNamespace = element.getNamespaceURI(); //get the element's namespace
-		//TODO fix		final List headerElementList=new ArrayList(); //we'll put all headers in here
+		//TODO fix		final List<Element> headerElementList=new ArrayList<>(); //we'll put all headers in here
 		for(Node childNode = element.getFirstChild(); //get the first child node
 				childNode != null; //while we still have child nodes (we'll use getNextSibling() because we may dynamically remove elements
 				//get the next sibling node to check (because we might remove the first node, this will get the first child if the node has been removed)
@@ -1102,7 +1102,7 @@ public class HtmlTidier implements Clogged {
 			for(int i = 0; i < childNodeCount; ++i) { //look at each of the child nodes
 				final Node childNode = childNodeList.item(i); //get a reference to this node
 				//if this node is a <br> element TODO fix for namespaces
-				if(childNode.getNodeType() == childNode.ELEMENT_NODE && childNode.getNodeName().equals(ELEMENT_BR)) {
+				if(childNode.getNodeType() == Node.ELEMENT_NODE && childNode.getNodeName().equals(ELEMENT_BR)) {
 					breakIndexes[breakCount++] = i; //store this break index in our array, and show that we found one more break element
 				}
 			}
@@ -1679,7 +1679,7 @@ public class HtmlTidier implements Clogged {
 			if(isBlockElement(element)) { //if this is a block element such as <h1> or <p>
 				if(element.getChildNodes().getLength() == 1) { //if the element has just one child node TODO should we look at all text children, or should we assume that the previous normalization has already taken care of this?
 					final Node childNode = element.getFirstChild(); //get the first child
-					if(childNode.getNodeType() == childNode.TEXT_NODE) { //if the child node is a text node
+					if(childNode.getNodeType() == Node.TEXT_NODE) { //if the child node is a text node
 						final Text textNode = (Text)childNode; //cast the node to a text node
 						//trim all beginning whitespace from the text node;
 						//  if the text was only whitespace or non-breaking spaces
@@ -1727,8 +1727,7 @@ public class HtmlTidier implements Clogged {
 			if(nodeType == Node.ELEMENT_NODE) { //if node is an element
 				final Element element = (Element)node; //cast the node to an element
 				if(nodeName.equals(ELEMENT_DIV)) { //if this is the div element
-					if(parentNodeName.equals(ELEMENT_BODY) && parentNode.getNodeType() == parentNode.ELEMENT_NODE
-							&& getChildCount((Element)parentNode, Node.ELEMENT_NODE) == 1) //if the div is the only child of the body
+					if(parentNodeName.equals(ELEMENT_BODY) && parentNode.getNodeType() == Node.ELEMENT_NODE && getChildCount((Element)parentNode, Node.ELEMENT_NODE) == 1) //if the div is the only child of the body
 						return true; //<body><div> should be pruned
 					//if the div element has only one attribute, "class", and its value contains "section" in any case
 					if(element.getAttributes().getLength() == 1 && Strings.indexOfIgnoreCase(element.getAttributeNS(null, ATTRIBUTE_CLASS), "section") >= 0)
@@ -1791,7 +1790,7 @@ public class HtmlTidier implements Clogged {
 				if(isTextContainer(node)) { //if this is a text container (i.e. <p>, <span>, etc. and not not <ul> or something similar)
 					if(node.getChildNodes().getLength() == 1) { //if there is only one child node
 						final Node childNode = node.getFirstChild(); //get the child node
-						if(childNode.getNodeType() == childNode.TEXT_NODE) { //if the child is a text node
+						if(childNode.getNodeType() == Node.TEXT_NODE) { //if the child is a text node
 							final Text text = (Text)childNode; //cast the child node to a text node
 							final String data = text.getData(); //get the text data
 							final int dataLength = data.length(); //find out how much text data there is
