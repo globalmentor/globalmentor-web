@@ -333,7 +333,7 @@ public class JSON {
 	 */
 	protected static int check(final CharSequence charSequence, final int index, final char c) throws ArgumentSyntaxException {
 		if(charSequence.charAt(index) != c) { //if this character does not match what we expected
-			throw new ArgumentSyntaxException("Expected " + (char)c + ".", charSequence.toString(), index);
+			throw new ArgumentSyntaxException("Expected " + c + ".", charSequence.toString(), index);
 		}
 		return index + 1; //return the subsequent index
 	}
@@ -352,7 +352,7 @@ public class JSON {
 	protected static int check(final CharSequence charSequence, int index, final char lowerBound, final char upperBound) {
 		final char c = charSequence.charAt(index); //get the current character
 		if(c < lowerBound || c > upperBound) { //if this character is not in the range
-			throw new ArgumentSyntaxException("Expected character from " + (char)lowerBound + " to " + (char)upperBound + ".", charSequence.toString(), index);
+			throw new ArgumentSyntaxException("Expected character from " + lowerBound + " to " + upperBound + ".", charSequence.toString(), index);
 		}
 		return index + 1; //return the subsequent index
 	}
