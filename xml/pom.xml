@@ -26,17 +26,17 @@
 
 		<dependency>
 			<groupId>com.globalmentor</groupId>
-			<artifactId>globalmentor-html-spec</artifactId>
+			<artifactId>globalmentor-html-def</artifactId>
 		</dependency>
 
 		<dependency>
 			<groupId>com.globalmentor</groupId>
-			<artifactId>globalmentor-mathml-spec</artifactId>
+			<artifactId>globalmentor-mathml-def</artifactId>
 		</dependency>
 
 		<dependency>
 			<groupId>com.globalmentor</groupId>
-			<artifactId>globalmentor-svg-spec</artifactId>
+			<artifactId>globalmentor-svg-def</artifactId>
 		</dependency>
 
 		<dependency>
@@ -46,7 +46,7 @@
 
 		<dependency>
 			<groupId>com.globalmentor</groupId>
-			<artifactId>globalmentor-xml-spec</artifactId>
+			<artifactId>globalmentor-xml-def</artifactId>
 		</dependency>
 
 		<dependency>

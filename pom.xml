@@ -37,21 +37,21 @@
 
 	<modules>
 		<module>css</module>
-		<module>css-spec</module>
+		<module>css-def</module>
 		<module>html</module>
-		<module>html-spec</module>
+		<module>html-def</module>
 		<module>javascript</module>
-		<module>mathml-spec</module>
-		<module>rdf-spec</module>
-		<module>rdfa-spec</module>
-		<module>svg-spec</module>
+		<module>mathml-def</module>
+		<module>rdf-def</module>
+		<module>rdfa-def</module>
+		<module>svg-def</module>
 		<module>vocab</module>
 		<module>vocab-dcmi</module>
 		<module>vocab-foaf</module>
 		<module>vocab-ogp</module>
 		<module>xml</module>
 		<module>xml-dom-impl</module>
-		<module>xml-spec</module>
+		<module>xml-def</module>
 	</modules>
 
 	<dependencyManagement>
@@ -64,7 +64,7 @@
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
-				<artifactId>globalmentor-css-spec</artifactId>
+				<artifactId>globalmentor-css-def</artifactId>
 				<version>0.7.0-SNAPSHOT</version>
 			</dependency>
 
@@ -76,7 +76,7 @@
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
-				<artifactId>globalmentor-html-spec</artifactId>
+				<artifactId>globalmentor-html-def</artifactId>
 				<version>0.7.0-SNAPSHOT</version>
 			</dependency>
 
@@ -88,25 +88,25 @@
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
-				<artifactId>globalmentor-mathml-spec</artifactId>
+				<artifactId>globalmentor-mathml-def</artifactId>
 				<version>0.7.0-SNAPSHOT</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
-				<artifactId>globalmentor-rdf-spec</artifactId>
+				<artifactId>globalmentor-rdf-def</artifactId>
 				<version>0.7.0-SNAPSHOT</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
-				<artifactId>globalmentor-rdfa-spec</artifactId>
+				<artifactId>globalmentor-rdfa-def</artifactId>
 				<version>0.7.0-SNAPSHOT</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
-				<artifactId>globalmentor-svg-spec</artifactId>
+				<artifactId>globalmentor-svg-def</artifactId>
 				<version>0.7.0-SNAPSHOT</version>
 			</dependency>
 
@@ -148,7 +148,7 @@
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
-				<artifactId>globalmentor-xml-spec</artifactId>
+				<artifactId>globalmentor-xml-def</artifactId>
 				<version>0.7.0-SNAPSHOT</version>
 			</dependency>
 

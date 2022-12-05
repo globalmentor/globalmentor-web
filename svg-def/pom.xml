@@ -8,10 +8,10 @@
 		<version>0.7.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>globalmentor-css</artifactId>
+	<artifactId>globalmentor-svg-def</artifactId>
 
-	<name>GlobalMentor CSS</name>
-	<description>GlobalMentor Java CSS utility library.</description>
+	<name>GlobalMentor SVG Definitions</name>
+	<description>GlobalMentor Java SVG definitions from the W3C specifications.</description>
 
 	<dependencies>
 		<dependency>
@@ -21,17 +21,7 @@
 
 		<dependency>
 			<groupId>com.globalmentor</groupId>
-			<artifactId>globalmentor-css-def</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>io.clogr</groupId>
-			<artifactId>clogr</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>io.confound</groupId>
-			<artifactId>config-properties</artifactId>
+			<artifactId>globalmentor-xml-def</artifactId>
 		</dependency>
 	</dependencies>
 </project>
