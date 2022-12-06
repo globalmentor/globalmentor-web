@@ -18,7 +18,7 @@ package com.globalmentor.css;
 
 import org.w3c.dom.css.*;
 
-import static com.globalmentor.css.spec.CSS.*;
+import static com.globalmentor.css.def.CSS.*;
 
 /**
  * Constants and utilities for working with Cascading Style Sheets (CSS), especially through the CSS DOM.

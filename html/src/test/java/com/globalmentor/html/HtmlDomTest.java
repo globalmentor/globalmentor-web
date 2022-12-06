@@ -17,7 +17,7 @@
 package com.globalmentor.html;
 
 import static com.globalmentor.html.HtmlDom.*;
-import static com.globalmentor.html.spec.HTML.*;
+import static com.globalmentor.html.def.HTML.*;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 

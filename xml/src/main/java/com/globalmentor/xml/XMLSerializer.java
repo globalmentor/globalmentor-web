@@ -36,13 +36,13 @@ import com.globalmentor.java.CharSequences;
 import com.globalmentor.java.Characters;
 
 import static com.globalmentor.xml.XmlDom.*;
-import static com.globalmentor.xml.spec.XML.*;
+import static com.globalmentor.xml.def.XML.*;
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
 import static java.nio.charset.StandardCharsets.*;
 import static java.util.Comparator.*;
 import static java.util.Objects.*;
 
-import com.globalmentor.xml.spec.*;
+import com.globalmentor.xml.def.*;
 
 import io.confound.config.Configuration;
 import io.confound.config.properties.PropertiesConfiguration;

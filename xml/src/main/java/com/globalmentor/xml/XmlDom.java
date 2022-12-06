@@ -33,15 +33,15 @@ import static com.globalmentor.io.InputStreams.*;
 
 import com.globalmentor.io.ByteOrderMark;
 import com.globalmentor.java.*;
-import com.globalmentor.mathml.spec.MathML;
+import com.globalmentor.mathml.def.MathML;
 import com.globalmentor.model.ConfiguredStateException;
 import com.globalmentor.model.NameValuePair;
 import com.globalmentor.model.ObjectHolder;
 import com.globalmentor.net.MediaType;
 import com.globalmentor.net.URIs;
-import com.globalmentor.svg.spec.SVG;
+import com.globalmentor.svg.def.SVG;
 import com.globalmentor.text.ASCII;
-import com.globalmentor.xml.spec.*;
+import com.globalmentor.xml.def.*;
 
 import org.w3c.dom.*;
 import org.w3c.dom.Node;
@@ -52,11 +52,11 @@ import org.xml.sax.SAXException;
 import static com.globalmentor.java.Characters.*;
 import static com.globalmentor.java.Conditions.*;
 import static com.globalmentor.java.Objects.*;
-import static com.globalmentor.html.spec.HTML.*;
-import static com.globalmentor.mathml.spec.MathML.*;
-import static com.globalmentor.svg.spec.SVG.*;
-import static com.globalmentor.xml.spec.XML.*;
-import static com.globalmentor.xml.spec.XMLStyleSheets.*;
+import static com.globalmentor.html.def.HTML.*;
+import static com.globalmentor.mathml.def.MathML.*;
+import static com.globalmentor.svg.def.SVG.*;
+import static com.globalmentor.xml.def.XML.*;
+import static com.globalmentor.xml.def.XMLStyleSheets.*;
 import static java.lang.String.format;
 import static java.nio.charset.StandardCharsets.*;
 import static java.util.Objects.*;
@@ -127,10 +127,10 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * Attempts to automatically detect the character encoding of a particular input stream that supposedly contains XML data.
 	 * <ul>
 	 * <li>A byte order is attempted to be determined, either by an explicit byte order mark or by the order of the XML declaration start
-	 * {@link com.globalmentor.xml.spec.XML#XML_DECL_START} . If no byte order can be determined, <code>null</code> is returned.</li>
+	 * {@link com.globalmentor.xml.def.XML#XML_DECL_START} . If no byte order can be determined, <code>null</code> is returned.</li>
 	 * <li>Based upon the imputed byte order, an explicit encoding is searched for within the XML declaration. If no explicit encoding is found, the imputed byte
-	 * order's assumed charset is returned. If a start {@link com.globalmentor.xml.spec.XML#XML_DECL_START} but not an end
-	 * {@link com.globalmentor.xml.spec.XML#XML_DECL_END} of the XML declaration is found, an exception is thrown.</li>
+	 * order's assumed charset is returned. If a start {@link com.globalmentor.xml.def.XML#XML_DECL_START} but not an end
+	 * {@link com.globalmentor.xml.def.XML#XML_DECL_END} of the XML declaration is found, an exception is thrown.</li>
 	 * <li>If an explicit encoding declaration is found, it is returned, unless it is less specific than the imputed byte order. For example, if the imputed byte
 	 * order is UTF-16BE but the declared encoding is UTF-16, then the charset UTF-16BE is returned.</li>
 	 * <li>If there is no BOM and no XML declaration, <code>null</code> is returned; the caller should assume the default XML encoding of UTF-8.</li>

@@ -18,12 +18,12 @@ package com.globalmentor.xml;
 
 import static com.globalmentor.util.Optionals.*;
 import static com.globalmentor.xml.XmlDom.*;
-import static com.globalmentor.xml.spec.XML.*;
+import static com.globalmentor.xml.def.XML.*;
 
 import org.w3c.dom.*;
 
 import com.globalmentor.java.Characters;
-import com.globalmentor.xml.spec.*;
+import com.globalmentor.xml.def.*;
 
 /**
  * A base format profile for XML formatting, recognizing XML space normalization characters and other indicators as per the XML specification.

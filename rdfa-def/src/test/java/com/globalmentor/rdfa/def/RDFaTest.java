@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.globalmentor.rdfa.spec;
+package com.globalmentor.rdfa.def;
 
 import static java.util.Collections.*;
 import static org.hamcrest.MatcherAssert.*;

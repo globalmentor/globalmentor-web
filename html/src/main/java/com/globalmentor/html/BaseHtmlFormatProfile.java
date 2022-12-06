@@ -16,17 +16,17 @@
 
 package com.globalmentor.html;
 
-import static com.globalmentor.html.spec.HTML.*;
+import static com.globalmentor.html.def.HTML.*;
 import static java.util.stream.Collectors.*;
 import static java.util.stream.Stream.*;
 
 import java.util.*;
 import java.util.stream.Stream;
 
-import com.globalmentor.html.spec.HTML;
+import com.globalmentor.html.def.HTML;
 import com.globalmentor.java.Characters;
 import com.globalmentor.xml.AbstractXmlFormatProfile;
-import com.globalmentor.xml.spec.*;
+import com.globalmentor.xml.def.*;
 
 /**
  * A base format profile for HTML formatting.

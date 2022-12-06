@@ -21,7 +21,7 @@ import java.net.URISyntaxException;
 
 import static com.globalmentor.net.URIs.*;
 import static com.globalmentor.xml.XmlDom.*;
-import static com.globalmentor.xml.spec.XML.*;
+import static com.globalmentor.xml.def.XML.*;
 
 import org.w3c.dom.*;
 

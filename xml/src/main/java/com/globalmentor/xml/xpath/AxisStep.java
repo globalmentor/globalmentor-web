@@ -16,7 +16,7 @@
 
 package com.globalmentor.xml.xpath;
 
-import static com.globalmentor.xml.spec.XPath.*;
+import static com.globalmentor.xml.def.XPath.*;
 
 /**
  * Represents an axis step in an XPath path expression.

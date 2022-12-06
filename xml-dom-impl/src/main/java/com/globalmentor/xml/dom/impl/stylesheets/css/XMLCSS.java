@@ -21,7 +21,7 @@ import java.net.URL;
 
 import org.w3c.dom.css.*;
 
-import com.globalmentor.css.spec.CSS;
+import com.globalmentor.css.def.CSS;
 import com.globalmentor.io.*;
 
 import io.clogr.Clogr;

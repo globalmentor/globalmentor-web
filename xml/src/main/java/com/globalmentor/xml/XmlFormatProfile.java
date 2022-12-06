@@ -23,7 +23,7 @@ import javax.annotation.*;
 import org.w3c.dom.*;
 
 import com.globalmentor.java.Characters;
-import com.globalmentor.xml.spec.NsName;
+import com.globalmentor.xml.def.NsName;
 
 /**
  * Specifies a strategy for characterizing an XML document for XML serialization by indicating how different elements are classified for formatting.

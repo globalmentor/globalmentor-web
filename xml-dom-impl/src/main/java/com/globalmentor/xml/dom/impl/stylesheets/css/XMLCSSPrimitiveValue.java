@@ -18,7 +18,7 @@ package com.globalmentor.xml.dom.impl.stylesheets.css;
 
 import com.globalmentor.java.Strings;
 
-import static com.globalmentor.css.spec.CSS.*;
+import static com.globalmentor.css.def.CSS.*;
 import static com.globalmentor.java.CharSequences.*;
 
 import org.w3c.dom.DOMException;

@@ -18,7 +18,7 @@ package com.globalmentor.xml.dom.impl.stylesheets.css;
 
 import java.util.List;
 
-import static com.globalmentor.css.spec.CSS.*;
+import static com.globalmentor.css.def.CSS.*;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;

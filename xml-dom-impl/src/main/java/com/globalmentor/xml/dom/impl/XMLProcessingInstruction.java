@@ -18,7 +18,7 @@ package com.globalmentor.xml.dom.impl;
 
 import java.util.*;
 
-import static com.globalmentor.xml.spec.XML.*;
+import static com.globalmentor.xml.def.XML.*;
 
 import org.w3c.dom.DOMException;
 

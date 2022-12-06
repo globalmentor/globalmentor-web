@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.globalmentor.rdfa.spec;
+package com.globalmentor.rdfa.def;
 
 import static com.globalmentor.java.CharSequences.*;
 import static com.globalmentor.java.Characters.*;

@@ -16,7 +16,7 @@
 
 package com.globalmentor.xml.dom.impl.schema;
 
-import static com.globalmentor.xml.spec.XMLSchema.*;
+import static com.globalmentor.xml.def.XMLSchema.*;
 
 import java.util.*;
 

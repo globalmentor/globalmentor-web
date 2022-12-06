@@ -23,11 +23,11 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
 
-import static com.globalmentor.html.spec.HTML.*;
-import static com.globalmentor.xml.spec.XML.*;
-import static com.globalmentor.xml.spec.XMLStyleSheets.*;
+import static com.globalmentor.html.def.HTML.*;
+import static com.globalmentor.xml.def.XML.*;
+import static com.globalmentor.xml.def.XMLStyleSheets.*;
 
-import com.globalmentor.html.spec.HTML;
+import com.globalmentor.html.def.HTML;
 import com.globalmentor.io.*;
 import com.globalmentor.model.NameValuePair;
 import com.globalmentor.net.MediaType;
