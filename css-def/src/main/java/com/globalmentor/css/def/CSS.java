@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.globalmentor.css.spec;
+package com.globalmentor.css.def;
 
 import java.util.*;
 import java.util.regex.Pattern;

@@ -22,7 +22,7 @@ import java.util.*;
 
 import org.w3c.dom.css.*;
 
-import static com.globalmentor.css.spec.CSS.*;
+import static com.globalmentor.css.def.CSS.*;
 import static java.nio.charset.StandardCharsets.*;
 
 /**

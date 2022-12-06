@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.globalmentor.xml.spec;
+package com.globalmentor.xml.def;
 
 import static com.globalmentor.java.Conditions.*;
-import static com.globalmentor.xml.spec.XML.*;
+import static com.globalmentor.xml.def.XML.*;
 import static java.util.Objects.*;
 
 import java.net.URI;

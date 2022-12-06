@@ -19,7 +19,7 @@ package com.globalmentor.xml;
 import java.util.Objects;
 
 import com.globalmentor.model.DefaultNamed;
-import com.globalmentor.xml.spec.XML;
+import com.globalmentor.xml.def.XML;
 
 /**
  * The base class for XML objects that are named—identified by qname and/or namespace and local name.

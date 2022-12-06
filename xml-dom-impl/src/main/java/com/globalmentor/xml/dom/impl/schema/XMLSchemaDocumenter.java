@@ -22,7 +22,7 @@ import com.globalmentor.xml.*;
 
 import io.clogr.Clogr;
 
-import static com.globalmentor.html.spec.HTML.*;
+import static com.globalmentor.html.def.HTML.*;
 
 import org.w3c.dom.*;
 

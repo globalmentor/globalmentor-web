@@ -25,9 +25,9 @@ import com.globalmentor.java.*;
 import com.globalmentor.net.MediaType;
 import com.globalmentor.text.Prose;
 import com.globalmentor.text.Unicode;
-import com.globalmentor.css.spec.CSS;
-import com.globalmentor.html.spec.HTML;
-import com.globalmentor.xml.spec.XML;
+import com.globalmentor.css.def.CSS;
+import com.globalmentor.html.def.HTML;
+import com.globalmentor.xml.def.XML;
 import com.globalmentor.xml.xpath.XPathDom;
 
 import io.clogr.Clogged;
@@ -38,10 +38,10 @@ import static com.globalmentor.java.CharSequences.*;
 import static com.globalmentor.java.Characters.*;
 import static com.globalmentor.java.StringBuilders.*;
 import static com.globalmentor.css.CSS.*;
-import static com.globalmentor.css.spec.CSS.*;
-import static com.globalmentor.html.spec.HTML.*;
-import static com.globalmentor.xml.spec.XML.*;
-import static com.globalmentor.xml.spec.XPath.*;
+import static com.globalmentor.css.def.CSS.*;
+import static com.globalmentor.html.def.HTML.*;
+import static com.globalmentor.xml.def.XML.*;
+import static com.globalmentor.xml.def.XPath.*;
 import static com.globalmentor.xml.XmlDom.*;
 
 import org.w3c.dom.*;

@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.globalmentor.svg.spec;
+package com.globalmentor.svg.def;
 
 import java.net.URI;
 
 import com.globalmentor.net.MediaType;
-import com.globalmentor.xml.spec.XML;
+import com.globalmentor.xml.def.XML;
 
 /**
  * Constants for SVG.

@@ -31,7 +31,7 @@ import org.w3c.dom.*;
 import static com.globalmentor.java.CharSequences.*;
 import static com.globalmentor.java.Characters.*;
 import static com.globalmentor.html.HtmlDom.*;
-import static com.globalmentor.html.spec.HTML.*;
+import static com.globalmentor.html.def.HTML.*;
 import static java.nio.charset.StandardCharsets.*;
 
 /**

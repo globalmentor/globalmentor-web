@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.globalmentor.rdf.spec;
+package com.globalmentor.rdf.def;
 
 import java.net.URI;
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.globalmentor.xml.spec;
+package com.globalmentor.xml.def;
 
 /**
  * Definitions from <a href="https://www.w3.org/TR/1999/REC-xpath-19991116/">XML Path Language (XPath) Version 1.0</a>.

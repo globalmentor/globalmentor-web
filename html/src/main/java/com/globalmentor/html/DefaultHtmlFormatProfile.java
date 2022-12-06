@@ -16,11 +16,11 @@
 
 package com.globalmentor.html;
 
-import static com.globalmentor.html.spec.HTML.*;
+import static com.globalmentor.html.def.HTML.*;
 
 import java.util.*;
 
-import com.globalmentor.xml.spec.*;
+import com.globalmentor.xml.def.*;
 
 /**
  * The HTNML format profile for the XML to serializer to use by default.

@@ -28,7 +28,7 @@ import org.w3c.dom.events.*;
 
 import com.globalmentor.xml.XMLNamedObject;
 import com.globalmentor.xml.dom.impl.events.*;
-import com.globalmentor.xml.spec.XML;
+import com.globalmentor.xml.def.XML;
 
 /**
  * The class which forms a basis for all other XML document classes.

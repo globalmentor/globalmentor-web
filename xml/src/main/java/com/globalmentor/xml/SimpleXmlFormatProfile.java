@@ -23,7 +23,7 @@ import java.util.Set;
 import javax.annotation.*;
 
 import com.globalmentor.java.Characters;
-import com.globalmentor.xml.spec.NsName;
+import com.globalmentor.xml.def.NsName;
 
 /**
  * A simple implementation of a format profile.

@@ -16,7 +16,7 @@
 
 package com.globalmentor.html;
 
-import static com.globalmentor.html.spec.HTML.*;
+import static com.globalmentor.html.def.HTML.*;
 import static com.globalmentor.java.Characters.SPACE_CHAR;
 import static com.globalmentor.xml.XmlDom.*;
 
@@ -26,12 +26,12 @@ import javax.annotation.Nonnull;
 
 import org.w3c.dom.*;
 
-import com.globalmentor.html.spec.HTML;
+import com.globalmentor.html.def.HTML;
 import com.globalmentor.text.ASCII;
 import com.globalmentor.xml.XMLSerializer;
 import com.globalmentor.xml.XmlFormatProfile;
-import com.globalmentor.xml.spec.NsName;
-import com.globalmentor.xml.spec.XML;
+import com.globalmentor.xml.def.NsName;
+import com.globalmentor.xml.def.XML;
 
 /**
  * Serializes a document as HTML. Has features to serialize features in an HTML-oriented way, such as void elements and empty attributes:

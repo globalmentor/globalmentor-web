@@ -16,7 +16,7 @@
 
 package com.globalmentor.css;
 
-import static com.globalmentor.css.spec.CSS.*;
+import static com.globalmentor.css.def.CSS.*;
 
 import java.util.*;
 

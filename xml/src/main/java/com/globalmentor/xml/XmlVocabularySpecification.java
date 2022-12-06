@@ -17,7 +17,7 @@
 package com.globalmentor.xml;
 
 import com.globalmentor.vocab.BaseVocabularySpecification;
-import com.globalmentor.xml.spec.XML;
+import com.globalmentor.xml.def.XML;
 
 /**
  * Specification for XML namespace vocabularies.

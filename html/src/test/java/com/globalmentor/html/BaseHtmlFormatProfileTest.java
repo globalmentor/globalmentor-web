@@ -16,7 +16,7 @@
 
 package com.globalmentor.html;
 
-import static com.globalmentor.html.spec.HTML.*;
+import static com.globalmentor.html.def.HTML.*;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
@@ -25,7 +25,7 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.*;
 import org.w3c.dom.Element;
 
-import com.globalmentor.xml.spec.NsName;
+import com.globalmentor.xml.def.NsName;
 
 /**
  * Tests {@link BaseHtmlFormatProfile} to ensure it appropriately characterizes HTML.

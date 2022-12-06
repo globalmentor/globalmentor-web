@@ -16,7 +16,7 @@
 
 package com.globalmentor.xml;
 
-import com.globalmentor.xml.spec.*;
+import com.globalmentor.xml.def.*;
 
 /**
  * The XML format profile for the XML to serializer to use by default.

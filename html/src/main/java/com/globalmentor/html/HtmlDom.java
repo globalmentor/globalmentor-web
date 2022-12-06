@@ -37,14 +37,14 @@ import com.globalmentor.model.ConfiguredStateException;
 import com.globalmentor.net.MediaType;
 import com.globalmentor.text.ASCII;
 import com.globalmentor.vocab.VocabularyRegistry;
-import com.globalmentor.html.spec.HTML;
+import com.globalmentor.html.def.HTML;
 import com.globalmentor.xml.VocabularyNamespaceContext;
 import com.globalmentor.xml.XmlDom;
 
 import io.clogr.Clogr;
 
 import static com.globalmentor.text.ASCII.*;
-import static com.globalmentor.html.spec.HTML.*;
+import static com.globalmentor.html.def.HTML.*;
 import static com.globalmentor.java.Characters.SPACE_CHAR;
 import static com.globalmentor.java.Conditions.*;
 import static com.globalmentor.xml.XmlDom.*;

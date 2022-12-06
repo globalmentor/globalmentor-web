@@ -36,8 +36,8 @@ import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
 import com.globalmentor.java.Characters;
-import com.globalmentor.xml.spec.NsName;
-import com.globalmentor.xml.spec.XML;
+import com.globalmentor.xml.def.NsName;
+import com.globalmentor.xml.def.XML;
 
 public class XMLSerializerTest {
 
