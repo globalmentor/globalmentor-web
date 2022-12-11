@@ -25,7 +25,6 @@ import static java.util.Objects.*;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import static com.globalmentor.io.Files.*;
 import com.globalmentor.io.URIInputStreamable;
 
 /**
