@@ -182,26 +182,17 @@ public class XML {
 	 */
 	public static final Characters WHITESPACE_CHARACTERS = Characters.of(SPACE_CHAR, TAB_CHAR, CR_CHAR, LF_CHAR);
 
-	/**
-	 * The characters considered by XML to be whitespace, as a string.
-	 * @deprecated Switch to using {@link #WHITESPACE_CHARACTERS}.
-	 */
-	@Deprecated
-	public static final String WHITESPACE_CHARS = WHITESPACE_CHARACTERS.toString();
 	/** Public ID characters. */
-	public static final String PUBLIC_ID_CHARS = SPACE_CHAR + CR_CHAR + LF_CHAR
-			+ "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-'()+,./:=?;!*#@$_%";
-	/*TODO del when PUBLIC_ID_CHARS works
-	#x20 | #xD | #xA | [a-zA-Z0-9] | [-'()+,./:=?;!*#@$_%]
-	*/
+	public static final Characters PUBLIC_ID_CHARACTERS = Characters.of(SPACE_CHAR, CR_CHAR, LF_CHAR)
+			.add("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-'()+,./:=?;!*#@$_%".toCharArray());
 
 	/** The ranges considered by XML to be legal characters. */
-	public static final char[][] CHAR_RANGES = new char[][] //each range is represented as two characters, the lower inclusive character of the range and the upper inclusive character of the range
-	{{'\t', '\t'}, {'\n', '\n'}, {'\r', '\r'}, //tab, linefeed, and carriage return escaped in C fashion because including them as unicode characters seems to make JBuilder try to parse them right away
+	private static final char[][] CHAR_RANGES = new char[][] //each range is represented as two characters, the lower inclusive character of the range and the upper inclusive character of the range
+	{{'\t', '\t'}, {'\n', '\n'}, {'\r', '\r'}, //tab, linefeed, and carriage return escaped in C fashion because including them as Unicode characters seems to make JBuilder try to parse them right away
 			{'\u0020', '\uD7FF'}, {'\uE000', '\uFFFD'}, {'\uFFFE', '\uFFFF'}}; //TODO fix the last range to match XML's [#x10000-#x10FFFF]
 
 	/** The characters considered by XML to be base characters. */
-	public static final char[][] BASE_CHAR_RANGES = new char[][] //each range is represented as two characters, the lower inclusive character of the range and the upper inclusive character of the range
+	private static final char[][] BASE_CHAR_RANGES = new char[][] //each range is represented as two characters, the lower inclusive character of the range and the upper inclusive character of the range
 	{{'\u0041', '\u005A'}, {'\u0061', '\u007A'}, {'\u00C0', '\u00D6'}, {'\u00D8', '\u00F6'}, {'\u00F8', '\u00FF'}, {'\u0100', '\u0131'}, {'\u0134', '\u013E'},
 			{'\u0141', '\u0148'}, {'\u014A', '\u017E'}, {'\u0180', '\u01C3'}, {'\u01CD', '\u01F0'}, {'\u01F4', '\u01F5'}, {'\u01FA', '\u0217'}, {'\u0250', '\u02A8'},
 			{'\u02BB', '\u02C1'}, {'\u0386', '\u0386'}, {'\u0388', '\u038A'}, {'\u038C', '\u03BC'}, {'\u038E', '\u03A1'}, {'\u03A3', '\u03CE'}, {'\u03D0', '\u03D6'},
@@ -233,9 +224,10 @@ public class XML {
 			{'\u212E', '\u212E'}, {'\u2180', '\u2182'}, {'\u3041', '\u3094'}, {'\u30A1', '\u30FA'}, {'\u3105', '\u312C'}, {'\uAC00', '\uD7A3'}};
 
 	/** The characters considered by XML to be ideographic characters. */
-	public static final char[][] IDEOGRAPHIC_RANGES = new char[][] {{'\u4E00', '\u9FA5'}, {'\u3007', '\u3007'}, {'\u3021', '\u3029'}}; //each range is represented as two characters, the lower inclusive character of the range and the upper inclusive character of the range
+	private static final char[][] IDEOGRAPHIC_RANGES = new char[][] {{'\u4E00', '\u9FA5'}, {'\u3007', '\u3007'}, {'\u3021', '\u3029'}}; //each range is represented as two characters, the lower inclusive character of the range and the upper inclusive character of the range
+
 	/** The characters considered by XML to be combining characters. */
-	public static final char[][] COMBINING_CHAR_RANGES = new char[][] //each range is represented as two characters, the lower inclusive character of the range and the upper inclusive character of the range
+	private static final char[][] COMBINING_CHAR_RANGES = new char[][] //each range is represented as two characters, the lower inclusive character of the range and the upper inclusive character of the range
 	{{'\u0300', '\u0345'}, {'\u0360', '\u0361'}, {'\u0483', '\u0486'}, {'\u0591', '\u05A1'}, {'\u05A3', '\u05B9'}, {'\u05BB', '\u05BD'}, {'\u05BF', '\u05BF'},
 			{'\u05C1', '\u05C2'}, {'\u05C4', '\u05C4'}, {'\u064B', '\u0652'}, {'\u0670', '\u0670'}, {'\u06D6', '\u06DC'}, {'\u06DD', '\u06DF'}, {'\u06E0', '\u06E4'},
 			{'\u06E7', '\u06E8'}, {'\u06EA', '\u06ED'}, {'\u0901', '\u0903'}, {'\u093C', '\u093C'}, {'\u093E', '\u094C'}, {'\u094D', '\u094D'}, {'\u0951', '\u0954'},
@@ -251,12 +243,12 @@ public class XML {
 	*/
 
 	/** The characters considered by XML to be digits. */
-	public static final char[][] DIGIT_RANGES = new char[][] //each range is represented as two characters, the lower inclusive character of the range and the upper inclusive character of the range
+	private static final char[][] DIGIT_RANGES = new char[][] //each range is represented as two characters, the lower inclusive character of the range and the upper inclusive character of the range
 	{{'\u0030', '\u0039'}, {'\u0660', '\u0669'}, {'\u06F0', '\u06F9'}, {'\u0966', '\u096F'}, {'\u09E6', '\u09EF'}, {'\u0A66', '\u0A6F'}, {'\u0AE6', '\u0AEF'},
 			{'\u0B66', '\u0B6F'}, {'\u0BE7', '\u0BEF'}, {'\u0C66', '\u0C6F'}, {'\u0CE6', '\u0CEF'}, {'\u0D66', '\u0D6F'}, {'\u0E50', '\u0E59'}, {'\u0ED0', '\u0ED9'},
 			{'\u0F20', '\u0F29'}};
 	/** The characters considered by XML to be extenders. */
-	public static final char[][] EXTENDER_RANGES = new char[][] //each range is represented as two characters, the lower inclusive character of the range and the upper inclusive character of the range
+	private static final char[][] EXTENDER_RANGES = new char[][] //each range is represented as two characters, the lower inclusive character of the range and the upper inclusive character of the range
 	{{'\u00B7', '\u00B7'}, {'\u02D0', '\u02D0'}, {'\u02D1', '\u02D1'}, {'\u0387', '\u0387'}, {'\u0640', '\u0640'}, {'\u0E46', '\u0E46'}, {'\u0EC6', '\u0EC6'},
 			{'\u3005', '\u3005'}, {'\u3031', '\u3035'}, {'\u309D', '\u309E'}, {'\u30FC', '\u30FE'}};
 
@@ -458,19 +450,6 @@ public class XML {
 	}
 
 	/**
-	 * Returns the prefix from the qualified name.
-	 * @param qualifiedName The fully qualified name, with an optional namespace prefix.
-	 * @return The namespace prefix, or <code>null</code> if no prefix is present.
-	 * @throws NullPointerException if the given qualified name is <code>null</code>.
-	 * @deprecated to be replaced with {@link #findPrefix(String)}.
-	 */
-	@Deprecated
-	@Nullable
-	public static String getPrefix(@Nonnull final String qualifiedName) {
-		return findPrefix(qualifiedName).orElse(null);
-	}
-
-	/**
 	 * Retrieves the local name from a qualified name, removing the prefix, if any.
 	 * @param qualifiedName The XML qualified name.
 	 * @return The local name without a prefix.
@@ -491,15 +470,6 @@ public class XML {
 	 */
 	public static boolean isChar(final char c) {
 		return Characters.isCharInRange(c, CHAR_RANGES); //see if the character is a legal XML character
-	}
-
-	/**
-	 * Checks to see if the specified character is XML whitespace.
-	 * @param c The character to check.
-	 * @return true if the character is XML whitespace.
-	 */
-	public static boolean isWhitespace(final char c) {
-		return WHITESPACE_CHARS.indexOf(c) != -1; //if the character matches any characters in our whitespace string, the character is whitespace
 	}
 
 	/**
@@ -592,24 +562,12 @@ public class XML {
 	}
 
 	/**
-	 * Creates a qualified name from a namespace prefix and a local name.
-	 * @param prefix The namespace prefix, or <code>null</code> if there is no prefix.
-	 * @param localName The XML local name.
-	 * @return The XML qualified name.
-	 * @deprecated in favor of {@link #createQualifiedName(String, String)}.
-	 */
-	@Deprecated
-	public static String createQName(@Nullable String prefix, @Nonnull final String localName) {
-		return createQualifiedName(prefix, localName);
-	}
-
-	/**
 	 * Checks to make sure the given identifier is a valid target for a processing instruction.
 	 * @param piTarget The identifier to check for validity.
 	 * @return <code>true</code> if the name is a valid processing instruction target, else <code>false</code>.
 	 */
 	public static boolean isPITarget(final String piTarget) {
-		return isName(piTarget) && !piTarget.equalsIgnoreCase("xml"); //a PI target is a valid name that does not equal "XML" in any case
+		return isName(piTarget) && !piTarget.equalsIgnoreCase("xml"); //a PI target is a valid name that does not equal to "XML" in any case
 	}
 
 	/**
@@ -619,7 +577,7 @@ public class XML {
 	 * @return The string value of the given pseudo attribute, or <code>null</code> if that attribute is not defined in the processing instruction's data.
 	 */
 	public static String getProcessingInstructionPseudoAttributeValue(final String processingInstructionData, final String pseudoAttributeName) {
-		final StringTokenizer tokenizer = new StringTokenizer(processingInstructionData, XML.WHITESPACE_CHARS); //create a tokenizer that separates tokens based on XML whitespace
+		final StringTokenizer tokenizer = new StringTokenizer(processingInstructionData, WHITESPACE_CHARACTERS.toString()); //create a tokenizer that separates tokens based on XML whitespace
 		while(tokenizer.hasMoreTokens()) { //while there are more tokens
 			final String token = tokenizer.nextToken(); //get the next token
 			final int equalsIndex = token.indexOf(XML.EQUAL_CHAR); //get the index of the equal sign, if there is one

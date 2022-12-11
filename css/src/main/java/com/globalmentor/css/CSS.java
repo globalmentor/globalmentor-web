@@ -16,8 +16,6 @@
 
 package com.globalmentor.css;
 
-import org.w3c.dom.css.*;
-
 import static com.globalmentor.css.def.CSS.*;
 
 /**
@@ -84,27 +82,6 @@ public class CSS {
 		//TODO fix	public static final String CSS_LIST_STYLE_TYPE_KATAKANA_IROHA="katakana-iroha";
 		//TODO fix	public static final String CSS_LIST_STYLE_TYPE_NONE="none";
 		return null; //show that we couldn't find an appropriate market string
-	}
-
-	/**
-	 * Returns whether or not this style declaration has an inline display style. This is implemented to only return <code>true</code> if the display is
-	 * specifically set to <code>CSS_DISPLAY_INLINE</code> or if there is no display property.
-	 * @param cssStyle The CSS DOM syle declaration, which is expected to implement <code>CSS2Properties</code>, although this parameter may be <code>null</code>.
-	 * @return <code>true</code> if this style declaration has an inline display style, has no display style, or the style declaration is <code>null</code>.
-	 * @see CSS2Properties#getDisplay()
-	 * @deprecated
-	 */
-	@Deprecated
-	public static boolean isDisplayInline(final CSSStyleDeclaration cssStyle) {
-		if(cssStyle != null) { //if a valid style is passed
-			/*TODO fix when our XMLCSSStyleDeclaration implements CSS2Properties
-						Debug.assert(cssStyle instanceof CSS2Properties, "DOM implementation does not support CSS2Properties interface for CSSStyleDeclaration"); //TODO do we want to take action if the style does not implement CSS2Properties?
-						final CSS2Properties cssProperties=(CSS2Properties)cssStyle;  //get the CSS2Properties interface, which is expected to be implemented by the DOM CSSStyleDeclaration
-			*/
-			final String displayString = cssStyle.getPropertyValue(CSS_PROP_DISPLAY); //get the display property
-			return displayString.length() == 0 || displayString.equals(CSS_DISPLAY_INLINE); //return true if there is no display string or it is equal to "inline"
-		}
-		return true; //if there is no style, we assume inline
 	}
 
 }

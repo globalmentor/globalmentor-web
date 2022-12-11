@@ -135,19 +135,6 @@ public class HTML {
 	public static final String XHTML_1_1_MATHML_2_0_SVG_1_1_SYSTEM_ID = "https://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd";
 
 	/**
-	 * The public ID for the XHTML+MathML+SVG DTD.
-	 * @deprecated to be removed in favor of {@link #XHTML_1_1_MATHML_2_0_SVG_1_1_PUBLIC_ID}.
-	 */
-	@Deprecated
-	public static final String XHTML_MATHML_SVG_PUBLIC_ID = XHTML_1_1_MATHML_2_0_SVG_1_1_PUBLIC_ID;
-	/**
-	 * The system ID for the XHTML+MathML+SVG DTD.
-	 * @deprecated to be removed in favor of {@link #XHTML_1_1_MATHML_2_0_SVG_1_1_SYSTEM_ID}.
-	 */
-	@Deprecated
-	public static final String XHTML_MATHML_SVG_SYSTEM_ID = XHTML_1_1_MATHML_2_0_SVG_1_1_SYSTEM_ID;
-
-	/**
 	 * Determines if the given media type is one representing HTML in some form.
 	 * <p>
 	 * HTML media types include:
@@ -178,28 +165,6 @@ public class HTML {
 			}
 		}
 		return false; //this is not a media type we recognize as being HTML
-	}
-
-	/**
-	 * Determines if the given URI represents one of the HTML XML namespaces.
-	 * <p>
-	 * HTML namespaces include:
-	 * </p>
-	 * <ul>
-	 * <li><code>http://www.w3.org/1999/xhtml</code></li>
-	 * </ul>
-	 * @param namespaceURI A URI representing an XML namespace, or <code>null</code> for no namespace.
-	 * @return <code>true</code> if the given URI represents one of the HTML XML namespaces.
-	 * @deprecated It's better just to use the namespace URI directly; provide some pluggable means if OEB support is needed.
-	 */
-	@Deprecated
-	public static boolean isHTMLNamespaceURI(final URI namespaceURI) {
-		if(namespaceURI != null) { //if the namespace URI is valid
-			//if it's part of the XHTML namespace
-			if(XHTML_NAMESPACE_URI.equals(namespaceURI) /*TODO fix for OEB || OEB.OEB1_DOCUMENT_NAMESPACE_URI.equals(namespaceURI)*/)
-				return true; //show that this is an HTML namespace
-		}
-		return false; //show that we didn't recognize the namespace as HTML
 	}
 
 	/**

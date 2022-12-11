@@ -19,7 +19,6 @@ package com.globalmentor.html;
 import static java.util.Collections.*;
 import static java.util.Objects.*;
 
-import java.net.URI;
 import java.util.*;
 import java.util.function.BiFunction;
 import java.util.stream.Stream;
@@ -32,7 +31,6 @@ import org.w3c.dom.*;
 
 import com.globalmentor.io.*;
 
-import com.globalmentor.java.Arrays;
 import com.globalmentor.model.ConfiguredStateException;
 import com.globalmentor.net.MediaType;
 import com.globalmentor.text.ASCII;
@@ -424,42 +422,6 @@ public class HtmlDom {
 				return true; //show that this is a link element
 		}
 		return false; //this does not appear to be a link element
-	}
-
-	/**
-	 * Determines if the specified element represents an empty element—an element that might be declared as <code>EMPTY</code> in a DTD.
-	 * @param namespaceURI The element namespace.
-	 * @param localName The local name of the element.
-	 * @return <code>true</code> if the specified element should be empty.
-	 */
-	public static boolean isEmptyElement(@Nullable final URI namespaceURI, @Nonnull final String localName) {
-		//TODO make this static---placed here because it was causing a compile error due to an Eclipse bug
-		final String[] EMPTY_ELEMENT_LOCAL_NAMES = new String[] {ELEMENT_BASE, ELEMENT_META, ELEMENT_LINK, ELEMENT_HR, ELEMENT_BR, ELEMENT_PARAM, ELEMENT_IMG,
-				ELEMENT_AREA, ELEMENT_INPUT, ELEMENT_COL}; //TODO probably put these in a better place, either in a hash set for faster lookup or put this constant in XHTMLConstants
-		if(localName != null && (namespaceURI == null || isHTMLNamespaceURI(namespaceURI))) { //if this element has an HTML namespace or no namespace
-			return Arrays.indexOf(EMPTY_ELEMENT_LOCAL_NAMES, localName) >= 0; //return whether the local name is one of the empty element local names
-		}
-		return false; //this does not appear to be an empty element
-	}
-
-	/**
-	 * Determines if the specified element represents a link, and if so sets the link element's reference.
-	 * @param element The element which represents a link.
-	 * @param htmlNamespaceURI The XHTML namespace.
-	 * @param href The new reference to add to the link.
-	 * @throws NullPointerException if the given element is <code>null</code>.
-	 * @deprecated This doesn't seem like a good approach in light of modern best practices.
-	 */
-	@Deprecated
-	public static void setLinkElementHRef(@Nonnull final Element element, @Nullable final String htmlNamespaceURI, @Nonnull final String href) { //TODO fix to call XLink and see if this is an XLink link
-		final String namespaceURI = element.getNamespaceURI(); //get the element's namespace URI
-		//if this element is in the correct namespace
-		if(Objects.equals(htmlNamespaceURI, namespaceURI)) {
-			final String elementName = element.getLocalName(); //get the element's name
-			if(elementName.equals(ELEMENT_A)) { //if this is an <a> element
-				element.setAttributeNS(null, ELEMENT_A_ATTRIBUTE_HREF, href); //set the href attribute TODO what if they were using an attribute prefix?
-			}
-		}
 	}
 
 	//#metadata
