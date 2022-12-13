@@ -35,7 +35,6 @@ import com.globalmentor.io.ByteOrderMark;
 import com.globalmentor.java.*;
 import com.globalmentor.mathml.def.MathML;
 import com.globalmentor.model.ConfiguredStateException;
-import com.globalmentor.model.NameValuePair;
 import com.globalmentor.model.ObjectHolder;
 import com.globalmentor.net.MediaType;
 import com.globalmentor.net.URIs;
@@ -1851,7 +1850,7 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * @param deep Whether all children and their descendants are also recursively checked for namespace declarations.
 	 */
 	public static void ensureNamespaceDeclarations(final Element element, final Element declarationElement, final boolean deep) {
-		final NameValuePair<String, String>[] prefixNamespacePairs = getUndefinedNamespaces(element); //get the undeclared namespaces for this element
+		final Set<Map.Entry<String, String>> prefixNamespacePairs = getUndefinedNamespaces(element); //get the undeclared namespaces for this element
 		declareNamespaces(declarationElement != null ? declarationElement : element, prefixNamespacePairs); //declare the undeclared namespaces, using the declaration element if provided
 		if(deep) { //if we should recursively check the children of this element
 			final NodeList childElementList = element.getChildNodes(); //get a list of the child nodes
@@ -1895,12 +1894,11 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 			final Node childNode = childElementList.item(childIndex); //get a reference to this node
 			if(childNode.getNodeType() == Node.ELEMENT_NODE) { //if this is an element
 				final Element childElement = (Element)childNode; //cast the node to an element
-				final NameValuePair<String, String>[] prefixNamespacePairs = getUndefinedNamespaces(childElement); //get the undeclared namespaces for the child element
-				for(int i = 0; i < prefixNamespacePairs.length; ++i) { //look at each name/value pair
-					final NameValuePair<String, String> prefixNamespacePair = prefixNamespacePairs[i]; //get this name/value pair representing a prefix and a namespace
-					final String prefix = prefixNamespacePair.getName(); //get the prefix
+				final Set<Map.Entry<String, String>> prefixNamespacePairs = getUndefinedNamespaces(childElement); //get the undeclared namespaces for the child element
+				for(final Map.Entry<String, String> prefixNamespacePair : prefixNamespacePairs) { //look at each name/value pair
+					final String prefix = prefixNamespacePair.getKey(); //get the prefix
 					final String namespaceURI = prefixNamespacePair.getValue(); //get the namespace
-					if(getDefinedNamespaceURI(rootElement, prefix, true) == null) { //if the rooot element does not have this prefix defined, it's OK to add it to the parent element
+					if(getDefinedNamespaceURI(rootElement, prefix, true) == null) { //if the root element does not have this prefix defined, it's OK to add it to the parent element
 						declareNamespace(rootElement, prefix, namespaceURI); //declare this namespace on the root element
 					} else { //if the parent element has already defined this namespace
 						declareNamespace(childElement, prefix, namespaceURI); //declare the namespace on the child element
@@ -1915,14 +1913,13 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * Gets the namespace declarations this element needs so that all namespaces for the element and its attributes are properly declared using the appropriate
 	 * <code>xmlns=</code> or <code>xmlns:prefix=</code> attribute declaration or are implicitly defined. The children of this element are optionally checked.
 	 * @param element The element for which namespace declarations should be checked.
-	 * @return An array of name/value pairs. The name of each is the the prefix to declare, or <code>null</code> if no prefix is used. The value of each is the
-	 *         URI string of the namespace being defined, or <code>null</code> if no namespace is used.
+	 * @return Name/value pairs. The name of each is the the prefix to declare, or <code>null</code> if no prefix is used. The value of each is the URI string of
+	 *         the namespace being defined, or <code>null</code> if no namespace is used.
 	 */
-	@SuppressWarnings("unchecked") //we create an array from a generic list, creating this warning to suppress
-	public static NameValuePair<String, String>[] getUndefinedNamespaces(final Element element) {
-		final List<NameValuePair<String, String>> prefixNamespacePairList = new ArrayList<NameValuePair<String, String>>(); //create a new list in which to store name/value pairs of prefixes and namespaces
+	public static Set<Map.Entry<String, String>> getUndefinedNamespaces(final Element element) {
+		final Set<Map.Entry<String, String>> prefixNamespacePairs = new HashSet<>(); //create a new set in which to store name/value pairs of prefixes and namespaces
 		if(!isNamespaceDefined(element, element.getPrefix(), element.getNamespaceURI())) { //if the element doesn't have the needed declarations
-			prefixNamespacePairList.add(new NameValuePair<String, String>(element.getPrefix(), element.getNamespaceURI())); //add this prefix and namespace to the list of namespaces needing to be declared
+			prefixNamespacePairs.add(new AbstractMap.SimpleImmutableEntry<>(element.getPrefix(), element.getNamespaceURI())); //add this prefix and namespace to the list of namespaces needing to be declared
 		}
 		final NamedNodeMap attributeNamedNodeMap = element.getAttributes(); //get the map of attributes
 		final int attributeCount = attributeNamedNodeMap.getLength(); //find out how many attributes there are
@@ -1933,10 +1930,10 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 			//  namespace declared
 			if(attribute.getPrefix() != null || attribute.getNamespaceURI() != null) {
 				if(!isNamespaceDefined(element, attribute.getPrefix(), attribute.getNamespaceURI())) //if the attribute doesn't have the needed declarations
-					prefixNamespacePairList.add(new NameValuePair<String, String>(attribute.getPrefix(), attribute.getNamespaceURI())); //add this prefix and namespace to the list of namespaces needing to be declared
+					prefixNamespacePairs.add(new AbstractMap.SimpleImmutableEntry<>(attribute.getPrefix(), attribute.getNamespaceURI())); //add this prefix and namespace to the set of namespaces needing to be declared
 			}
 		}
-		return prefixNamespacePairList.toArray(new NameValuePair[prefixNamespacePairList.size()]); //return an array of the prefixes and namespaces we gathered
+		return prefixNamespacePairs; //return the prefixes and namespaces we gathered
 	}
 
 	/**
@@ -2000,13 +1997,12 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	 * Declares prefixes for the given namespaces using the appropriate <code>xmlns=</code> or <code>xmlns:prefix=</code> attribute declaration for the given
 	 * element.
 	 * @param declarationElement The element on which the namespaces should be declared.
-	 * @param prefixNamespacePairs An array of name/value pairs. The name of each is the the prefix to declare, or <code>null</code> if no prefix is used. The
-	 *          value of each is the URI string of the namespace being defined, or <code>null</code> if no namespace is used.
+	 * @param prefixNamespacePairs Name/value pairs. The name of each is the the prefix to declare, or <code>null</code> if no prefix is used. The value of each
+	 *          is the URI string of the namespace being defined, or <code>null</code> if no namespace is used.
 	 */
-	public static void declareNamespaces(final Element declarationElement, final NameValuePair<String, String>[] prefixNamespacePairs) {
-		for(int i = 0; i < prefixNamespacePairs.length; ++i) { //look at each name/value pair
-			final NameValuePair<String, String> nameValuePair = prefixNamespacePairs[i]; //get this name/value pair representing a prefix and a namespace
-			declareNamespace(declarationElement, nameValuePair.getName(), nameValuePair.getValue()); //declare this namespace
+	public static void declareNamespaces(final Element declarationElement, final Set<Map.Entry<String, String>> prefixNamespacePairs) {
+		for(final Map.Entry<String, String> prefixNamespacePair : prefixNamespacePairs) { //look at each name/value pair
+			declareNamespace(declarationElement, prefixNamespacePair.getKey(), prefixNamespacePair.getValue()); //declare this namespace
 		}
 	}
 
