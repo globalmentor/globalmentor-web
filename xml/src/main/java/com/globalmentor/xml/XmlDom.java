@@ -66,9 +66,10 @@ import static java.util.stream.StreamSupport.*;
  * Various XML manipulation functions, mostly using the DOM.
  * @apiNote Note that the XML DOM considers the <code>xmlns</code> attribute to be in the {@value XML#XMLNS_NAMESPACE_URI_STRING} namespace, even though it has
  *          no prefix.
+ * @implNote Non-DOM-related methods may be moved to another class in the future.
  * @author Garret Wilson
  */
-public class XmlDom { //TODO likely move the non-DOM-related methods to another class
+public class XmlDom {
 
 	/**
 	 * The number of bytes to use when auto-detecting character encoding.
@@ -742,10 +743,12 @@ public class XmlDom { //TODO likely move the non-DOM-related methods to another 
 	protected static final char REPLACEMENT_CHAR = '_';
 
 	/** The special XML symbols that should be replaced with entities. */
-	private static final char[] XML_ENTITY_CHARS = {'&', '"', '\'', '>', '<'}; //TODO use constants
+	private static final char[] XML_ENTITY_CHARS = {ENTITY_AMP_VALUE, ENTITY_QUOT_VALUE, ENTITY_APOS_VALUE, ENTITY_GT_VALUE, ENTITY_LT_VALUE};
 
 	/** The strings to replace XML symbols. */
-	private static final String[] XML_ENTITY_REPLACMENTS = {"&amp;", "&quot;", "&apos;", "&gt;", "&lt;"}; //TODO use constants
+	private static final String[] XML_ENTITY_REPLACMENTS = {ENTITY_REF_START + ENTITY_AMP_NAME + ENTITY_REF_END,
+			ENTITY_REF_START + ENTITY_QUOT_NAME + ENTITY_REF_END, ENTITY_REF_START + ENTITY_APOS_NAME + ENTITY_REF_END,
+			ENTITY_REF_START + ENTITY_GT_NAME + ENTITY_REF_END, ENTITY_REF_START + ENTITY_LT_NAME + ENTITY_REF_END};
 
 	/**
 	 * Replaces special XML symbols with their escaped versions, (e.g. replaces '&lt;' with "&amp;lt;") so that the string is valid XML content.
