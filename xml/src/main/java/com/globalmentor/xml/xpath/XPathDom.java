@@ -127,6 +127,23 @@ public class XPathDom {
 	}
 
 	/**
+	 * Evaluates the compiled XPath expression in the specified context and return the result as a string if found.
+	 * @apiNote The type of the context is usually {@link org.w3c.dom.Node}.
+	 * @param xpathExpression The XPath expression to evaluate.
+	 * @param context The context the XPath expression will be evaluated in.
+	 * @return The string, if any, that is the result of evaluating the expression.
+	 * @throws DOMException with code {@link DOMException#INVALID_ACCESS_ERR} if the expression cannot not be evaluated; {@link DOMException#getCause()} will
+	 *           contain the {@link XPathExpressionException} cause.
+	 */
+	public static Optional<String> findAsString(@Nonnull final XPathExpression xpathExpression, @Nonnull Object context) {
+		try {
+			return Optional.ofNullable((String)xpathExpression.evaluate(context, XPathConstants.STRING));
+		} catch(final XPathExpressionException xpathExpressionException) {
+			throw (DOMException)new DOMException(DOMException.INVALID_ACCESS_ERR, xpathExpressionException.getMessage()).initCause(xpathExpressionException);
+		}
+	}
+
+	/**
 	 * Convenience function to retrieve a node from the root element of the specified document, based on the specified XPath expression. If multiple nodes match
 	 * the expression, the first one will be returned. If none match, <code>null</code> will be returned.
 	 * @param document The document on which the expression should be evaluated.
