@@ -5,7 +5,7 @@
 		<groupId>com.globalmentor</groupId>
 		<artifactId>globalmentor-web-parent</artifactId>
 		<version>0.7.0-SNAPSHOT</version>
-		<relativePath>../parent/pom.xml</relativePath>
+		<relativePath>../parent-pom.xml</relativePath>
 	</parent>
 
 	<artifactId>globalmentor-rdfa-def</artifactId>
