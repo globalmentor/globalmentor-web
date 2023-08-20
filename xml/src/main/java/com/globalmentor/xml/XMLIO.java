@@ -34,7 +34,9 @@ import org.xml.sax.SAXException;
  * Implementation of loading and saving XML information. This class is a {@link DocumentBuilder}, and can be configured to produced appropriate XML parsers.
  * Instances of {@link DocumentBuilder} are initialized with an {@link DefaultEntityResolver} entity resolver. This class is thread-safe.
  * @author Garret Wilson
+ * @deprecated to be removed or recommissioned.
  */
+@Deprecated
 public class XMLIO extends DocumentBuilderFactory implements IO<Document> {
 
 	/** Whether a byte order mark (BOM) is written. */
@@ -105,6 +107,7 @@ public class XMLIO extends DocumentBuilderFactory implements IO<Document> {
 	 * @throws IOException if there is an error reading the data.
 	 * @throws IllegalStateException if there is no available parser to match the configuration.
 	 */
+	@Override
 	public final Document read(final InputStream inputStream, final URI baseURI) throws IOException {
 		final DocumentBuilder documentBuilder;
 		try {
@@ -189,6 +192,7 @@ public class XMLIO extends DocumentBuilderFactory implements IO<Document> {
 	 * @throws NullPointerException if the given output stream and/or document is <code>null</code>.
 	 * @throws IOException Thrown if there is an error writing the data.
 	 */
+	@Override
 	public void write(final OutputStream outputStream, final URI baseURI, final Document document) throws IOException {
 		writeXML(outputStream, baseURI, document, isBOMWritten(), isFormatted()); //write the XML using the specified settings
 	}

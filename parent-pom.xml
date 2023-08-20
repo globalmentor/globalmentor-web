@@ -26,13 +26,13 @@
 			<dependency>
 				<groupId>io.clogr</groupId>
 				<artifactId>clogr</artifactId>
-				<version>0.8.1</version>
+				<version>0.8.4</version>
 			</dependency>
 
 			<dependency>
 				<groupId>io.confound</groupId>
 				<artifactId>config-properties</artifactId>
-				<version>0.7.3</version>
+				<version>0.7.4</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

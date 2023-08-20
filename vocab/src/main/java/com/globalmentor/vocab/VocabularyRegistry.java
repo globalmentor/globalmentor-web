@@ -79,6 +79,7 @@ public interface VocabularyRegistry {
 	 * @throws NullPointerException if a namespace is <code>null</code>.
 	 */
 	@SafeVarargs
+	@SuppressWarnings("varargs")
 	public static VocabularyRegistry of(@Nonnull URI defaultVocabulary, final Map.Entry<String, URI>... vocabulariesByPrefix) {
 		return of(defaultVocabulary, asList(vocabulariesByPrefix));
 	}
@@ -92,6 +93,7 @@ public interface VocabularyRegistry {
 	 * @throws NullPointerException if a namespace is <code>null</code>.
 	 */
 	@SafeVarargs
+	@SuppressWarnings("varargs")
 	public static VocabularyRegistry of(final Map.Entry<String, URI>... vocabulariesByPrefix) {
 		return of(asList(vocabulariesByPrefix));
 	}

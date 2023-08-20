@@ -23,6 +23,7 @@ import java.util.Arrays;
 import com.globalmentor.css.CSSTidier;
 import com.globalmentor.java.*;
 import com.globalmentor.net.MediaType;
+import com.globalmentor.text.ASCII;
 import com.globalmentor.text.Prose;
 import com.globalmentor.text.Unicode;
 import com.globalmentor.css.def.CSS;
@@ -151,7 +152,9 @@ import org.w3c.dom.traversal.NodeFilter;
  * </li>
  * </ul>
  * @author Garret Wilson <!--TODO added stuff not commented: removed html attributes added OEB DOCTYPE-->
+ * @deprecated to be moved or removed.
  */
+@Deprecated
 public class HtmlTidier implements Clogged {
 
 	/**
@@ -622,7 +625,7 @@ public class HtmlTidier implements Clogged {
 									//TODO same the delimiter somewhere
 									//trim the "." or ")" or whatever from the string, giving us just the marker
 									markerString = Strings.trim(markerString, LIST_ITEM_MARKER_DELIMITER_CHARS);
-									if(isLatinDigits(markerString)) { //if this string contains only latin digits (the digits '0'-'9')
+									if(containsOnly(markerString, ASCII.DIGIT_CHARACTERS)) { //if this string contains only Latin digits (the digits '0'-'9')
 										markerListStyleType = CSS_LIST_STYLE_TYPE_DECIMAL; //assume this is a decimal list style type
 									} else if(markerString.length() == 1) { //if the marker is only one character long
 										final char c = markerString.charAt(0); //get the first character
