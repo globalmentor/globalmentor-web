@@ -37,7 +37,7 @@
 	</properties>
 
 	<modules>
-		<module>parent-pom.xml</module>
+		<module>parent</module>
 		<module>css</module>
 		<module>css-def</module>
 		<module>html</module>
