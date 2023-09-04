@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.globalmentor</groupId>
 		<artifactId>globalmentor-root</artifactId>
-		<version>0.8.16</version>
+		<version>1.0.0-SNAPSHOT</version>
 		<relativePath />
 	</parent>
 
@@ -31,10 +31,6 @@
 		<developerConnection>scm:git:https://bitbucket.org/globalmentor/globalmentor-web.git</developerConnection>
 		<url>https://bitbucket.org/globalmentor/globalmentor-web</url>
 	</scm>
-
-	<properties>
-		<maven.compiler.release>11</maven.compiler.release>
-	</properties>
 
 	<modules>
 		<module>parent</module>

@@ -191,8 +191,8 @@ public interface VocabularyRegistry {
 	 * @throws IllegalArgumentException if the given URI is not absolute.
 	 */
 	public default Optional<Map.Entry<VocabularyTerm, String>> findPrefixForTerm(@Nonnull final URI term) {
-		return asVocabularyTerm(term).flatMap(
-				vocabularyTerm -> findPrefixForVocabulary(vocabularyTerm.getNamespace()).map(prefix -> new AbstractMap.SimpleImmutableEntry<>(vocabularyTerm, prefix)));
+		return asVocabularyTerm(term)
+				.flatMap(vocabularyTerm -> findPrefixForVocabulary(vocabularyTerm.getNamespace()).map(prefix -> Map.entry(vocabularyTerm, prefix)));
 	}
 
 	/**
