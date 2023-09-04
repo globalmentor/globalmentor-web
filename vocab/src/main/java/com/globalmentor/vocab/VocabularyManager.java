@@ -154,7 +154,7 @@ public class VocabularyManager extends AbstractVocabularyRegistry implements Voc
 		final boolean hadPrefixRegistration = prefixesByNamespace.containsKey(namespace); //check first to distinguish between no mapping and null value
 		final String previousPrefix = getPrefixesByNamespace().put(namespace, prefix);
 		getNamespacesByPrefix().put(prefix, namespace); //update the prefix-namespace mapping as well 
-		return hadPrefixRegistration ? Optional.of(new AbstractMap.SimpleImmutableEntry<>(namespace, previousPrefix)) : Optional.empty();
+		return hadPrefixRegistration ? Optional.of(Map.entry(namespace, previousPrefix)) : Optional.empty();
 	}
 
 	@Override

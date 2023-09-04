@@ -1922,7 +1922,7 @@ public class XmlDom {
 	public static Set<Map.Entry<String, String>> getUndefinedNamespaces(final Element element) {
 		final Set<Map.Entry<String, String>> prefixNamespacePairs = new HashSet<>(); //create a new set in which to store name/value pairs of prefixes and namespaces
 		if(!isNamespaceDefined(element, element.getPrefix(), element.getNamespaceURI())) { //if the element doesn't have the needed declarations
-			prefixNamespacePairs.add(new AbstractMap.SimpleImmutableEntry<>(element.getPrefix(), element.getNamespaceURI())); //add this prefix and namespace to the list of namespaces needing to be declared
+			prefixNamespacePairs.add(Map.entry(element.getPrefix(), element.getNamespaceURI())); //add this prefix and namespace to the list of namespaces needing to be declared
 		}
 		final NamedNodeMap attributeNamedNodeMap = element.getAttributes(); //get the map of attributes
 		final int attributeCount = attributeNamedNodeMap.getLength(); //find out how many attributes there are
@@ -1933,7 +1933,7 @@ public class XmlDom {
 			//  namespace declared
 			if(attribute.getPrefix() != null || attribute.getNamespaceURI() != null) {
 				if(!isNamespaceDefined(element, attribute.getPrefix(), attribute.getNamespaceURI())) //if the attribute doesn't have the needed declarations
-					prefixNamespacePairs.add(new AbstractMap.SimpleImmutableEntry<>(attribute.getPrefix(), attribute.getNamespaceURI())); //add this prefix and namespace to the set of namespaces needing to be declared
+					prefixNamespacePairs.add(Map.entry(attribute.getPrefix(), attribute.getNamespaceURI())); //add this prefix and namespace to the set of namespaces needing to be declared
 			}
 		}
 		return prefixNamespacePairs; //return the prefixes and namespaces we gathered

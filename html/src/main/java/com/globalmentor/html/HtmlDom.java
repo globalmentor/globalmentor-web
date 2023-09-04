@@ -475,8 +475,7 @@ public class HtmlDom {
 	public static <N, V> Stream<Map.Entry<N, V>> namedMetadata(@Nonnull final Document document, @Nonnull final BiFunction<Element, String, N> nameMapper,
 			@Nonnull final BiFunction<Element, String, V> valueMapper) {
 		return htmlHeadMetaElements(document).filter(metaElement -> metaElement.hasAttributeNS(null, ELEMENT_META_ATTRIBUTE_NAME))
-				.map(metaElement -> new AbstractMap.SimpleImmutableEntry<>(
-						nameMapper.apply(metaElement, ASCII.toLowerCase(metaElement.getAttributeNS(null, ELEMENT_META_ATTRIBUTE_NAME)).toString()), //normalize names
+				.map(metaElement -> Map.entry(nameMapper.apply(metaElement, ASCII.toLowerCaseString(metaElement.getAttributeNS(null, ELEMENT_META_ATTRIBUTE_NAME))), //normalize names
 						valueMapper.apply(metaElement, findAttributeNS(metaElement, null, ELEMENT_META_ATTRIBUTE_CONTENT).orElse(null)))); //values can be null 
 	}
 

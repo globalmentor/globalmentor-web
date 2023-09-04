@@ -250,8 +250,7 @@ public interface VocabularyRegistrar extends VocabularyRegistry {
 	 * @see #registerVocabulary(URI, String)
 	 */
 	public default Optional<Map.Entry<VocabularyTerm, String>> determinePrefixForTerm(@Nonnull final URI term) {
-		return asVocabularyTerm(term)
-				.map(vocabularyTerm -> new AbstractMap.SimpleImmutableEntry<>(vocabularyTerm, determinePrefixForVocabulary(vocabularyTerm.getNamespace())));
+		return asVocabularyTerm(term).map(vocabularyTerm -> Map.entry(vocabularyTerm, determinePrefixForVocabulary(vocabularyTerm.getNamespace())));
 	}
 
 	/**
