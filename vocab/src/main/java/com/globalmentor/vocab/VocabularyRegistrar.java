@@ -220,19 +220,17 @@ public interface VocabularyRegistrar extends VocabularyRegistry {
 	 * @see #registerVocabulary(URI, String)
 	 */
 	public default String determinePrefixForVocabulary(@Nonnull final URI namespace) {
-		Optional<String> optionalPrefix = findPrefixForVocabulary(namespace);
-		if(!optionalPrefix.isPresent()) { //TODO use Java 9 Optional.or() here and below
-			final String prefix = getKnownVocabularies().findPrefixForVocabulary(namespace)
-					.orElseGet(() -> findName(namespace).filter(name -> !name.equals(ROOT_PATH))
-							//make sure the name is a valid prefix that we haven't yet used
-							.filter(name -> getVocabularySpecification().isValidPrefix(name) && !isPrefixRegistered(name))
-							//if we didn't find a label from the URI name, generate a unique vocabulary prefix
-							.orElseGet(this::generatePrefix));
-			optionalPrefix = Optional.of(prefix);
+		final Optional<String> foundRegisteredPrefix = findPrefixForVocabulary(namespace);
+		final String prefix = foundRegisteredPrefix.orElseGet(() -> getKnownVocabularies().findPrefixForVocabulary(namespace)
+				.orElseGet(() -> findName(namespace).filter(name -> !name.equals(ROOT_PATH))
+						//make sure the name is a valid prefix that we haven't yet used
+						.filter(name -> getVocabularySpecification().isValidPrefix(name) && !isPrefixRegistered(name))
+						//if we didn't find a label from the URI name, generate a unique vocabulary prefix
+						.orElseGet(this::generatePrefix)));
+		if(!foundRegisteredPrefix.isPresent()) { //if the prefix wasn't already registered
 			registerVocabulary(namespace, prefix); //associate the prefix and namespace
 		}
-		assert optionalPrefix.isPresent();
-		return optionalPrefix.get(); //return the prefix we found or created
+		return prefix; //return the prefix we found or created
 	}
 
 	/**
