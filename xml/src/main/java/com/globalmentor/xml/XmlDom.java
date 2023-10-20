@@ -35,7 +35,7 @@ import com.globalmentor.io.ByteOrderMark;
 import com.globalmentor.java.*;
 import com.globalmentor.mathml.def.MathML;
 import com.globalmentor.model.ConfiguredStateException;
-import com.globalmentor.model.ObjectHolder;
+import com.globalmentor.model.MutableReference;
 import com.globalmentor.net.MediaType;
 import com.globalmentor.net.URIs;
 import com.globalmentor.svg.def.SVG;
@@ -146,8 +146,8 @@ public class XmlDom {
 	 * @see <a href="http://www.w3.org/TR/2008/REC-xml-20081126/#sec-guessing-no-ext-info">XML 1.0 (Fifth Edition): F.1 Detection Without External Encoding
 	 *      Information)</a>
 	 */
-	public static Charset detectXMLCharset(final InputStream inputStream, final ObjectHolder<ByteOrderMark> bom, final ObjectHolder<String> declaredEncodingName)
-			throws IOException, UnsupportedCharsetException {
+	public static Charset detectXMLCharset(final InputStream inputStream, final MutableReference<ByteOrderMark> bom,
+			final MutableReference<String> declaredEncodingName) throws IOException, UnsupportedCharsetException {
 		checkMarkSupported(inputStream);
 		//mark off enough room to read the largest BOM plus all the characters we need for imputation of a BOM
 		final byte[] bytes = new byte[ByteOrderMark.MAX_BYTE_COUNT + CHARACTER_ENCODING_AUTODETECT_BYTE_COUNT]; //create an array to hold the byte order mark
@@ -213,7 +213,7 @@ public class XmlDom {
 			throw new IOException("Unable to locate XML declaration end " + XML_DECL_END + ".");
 		}
 		if(encodingDeclarationValue != null) { //if a the character encoding value was explicitly given
-			declaredEncodingName.setObject(encodingDeclarationValue); //indicate the exact name of the declared encoding
+			declaredEncodingName.set(encodingDeclarationValue); //indicate the exact name of the declared encoding
 			final boolean isImputedBOMMoreSpecific; //see if the imputed BOM is more specific as to endianness than the declared character encoding
 			switch(imputedBOM) { //see http://stackoverflow.com/q/25477854/421049
 				case UTF_16LE:

@@ -29,7 +29,7 @@ import static com.globalmentor.java.CharSequences.*;
 import static com.globalmentor.java.Conditions.*;
 import static com.globalmentor.java.StringBuilders.*;
 
-import com.globalmentor.model.ObjectHolder;
+import com.globalmentor.model.MutableReference;
 import com.globalmentor.net.MediaType;
 import com.globalmentor.text.ArgumentSyntaxException;
 import com.globalmentor.text.W3CDateFormat;
@@ -484,10 +484,10 @@ public class JSON {
 	 * @throws ArgumentSyntaxException if the given character sequence does not represent a valid JSON object.
 	 */
 	public static Object parseValue(final CharSequence charSequence) throws ArgumentSyntaxException {
-		final ObjectHolder<Object> objectHolder = new ObjectHolder<Object>(); //create a new objecdt holder to hold the value
+		final MutableReference<Object> objectHolder = new MutableReference<Object>(); //create a new object holder to hold the value
 		try {
 			parseValue(charSequence, 0, objectHolder); //parse the value
-			return objectHolder.getObject(); //return the object
+			return objectHolder.get(); //return the object
 		} catch(final IndexOutOfBoundsException indexOutOfBoundsException) { //if we ran out of characters
 			throw new ArgumentSyntaxException(indexOutOfBoundsException, charSequence.toString());
 		} catch(final NumberFormatException numberFormatException) { //if a number wasn't formatted correctly
@@ -506,7 +506,7 @@ public class JSON {
 	 * @throws ArgumentSyntaxException if the given character sequence does not represent a valid JSON object.
 	 * @throws ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
 	 */
-	protected static int parseValue(final CharSequence charSequence, int index, final ObjectHolder<Object> objectHolder) throws ArgumentSyntaxException {
+	protected static int parseValue(final CharSequence charSequence, int index, final MutableReference<Object> objectHolder) throws ArgumentSyntaxException {
 		final Object object; //we'll set the object after parsing it
 		char c = charSequence.charAt(index); //get the current character
 		switch(c) { //check the current character
@@ -526,9 +526,9 @@ public class JSON {
 				break;
 			case QUOTATION_MARK: //string
 				{
-					final ObjectHolder<String> stringHolder = new ObjectHolder<String>(); //create a new string holder to populate
+					final MutableReference<String> stringHolder = new MutableReference<String>(); //create a new string holder to populate
 					index = parseString(charSequence, index, stringHolder); //parse the string
-					object = stringHolder.getObject(); //save the string we parsed
+					object = stringHolder.get(); //save the string we parsed
 				}
 				break;
 			case MINUS: //minus
@@ -543,9 +543,9 @@ public class JSON {
 			case '8':
 			case '9':
 				{
-					final ObjectHolder<Number> numberHolder = new ObjectHolder<Number>(); //create a new object holder to populate
+					final MutableReference<Number> numberHolder = new MutableReference<Number>(); //create a new object holder to populate
 					index = parseNumber(charSequence, index, numberHolder); //parse the number
-					object = numberHolder.getObject(); //save the number we parsed
+					object = numberHolder.get(); //save the number we parsed
 				}
 				break;
 			case 'f':
@@ -563,7 +563,7 @@ public class JSON {
 			default:
 				throw new ArgumentSyntaxException("Illegal value character.", charSequence.toString(), index);
 		}
-		objectHolder.setObject(object); //set the object we parsed
+		objectHolder.set(object); //set the object we parsed
 		return index; //return the new index
 	}
 
@@ -599,9 +599,9 @@ public class JSON {
 			return index; //return the new starting index
 		}
 		while(true) {
-			final ObjectHolder<Object> objectHolder = new ObjectHolder<Object>(); //create a new object holder
+			final MutableReference<Object> objectHolder = new MutableReference<Object>(); //create a new object holder
 			index = parseValue(charSequence, index, objectHolder); //parse this value
-			list.add(objectHolder.getObject()); //add the object to the list
+			list.add(objectHolder.get()); //add the object to the list
 			index = skipWhitespace(charSequence, index); //skip whitespace
 			final char c = charSequence.charAt(index); //get the next character
 			if(c == VALUE_SEPARATOR) { //if there are more values
@@ -646,14 +646,14 @@ public class JSON {
 			return index; //return the new starting index
 		}
 		while(true) {
-			final ObjectHolder<String> nameHolder = new ObjectHolder<String>(); //create a new object holder for the name
+			final MutableReference<String> nameHolder = new MutableReference<String>(); //create a new object holder for the name
 			index = parseString(charSequence, index, nameHolder); //parse the name
 			index = skipWhitespace(charSequence, index); //skip whitespace
 			index = check(charSequence, index, NAME_SEPARATOR); //parse the name separator
 			index = skipWhitespace(charSequence, index); //skip whitespace
-			final ObjectHolder<Object> valueHolder = new ObjectHolder<Object>(); //create a new object holder for the value
+			final MutableReference<Object> valueHolder = new MutableReference<Object>(); //create a new object holder for the value
 			index = parseValue(charSequence, index, valueHolder); //parse this value
-			map.put(nameHolder.getObject(), valueHolder.getObject()); //store the value
+			map.put(nameHolder.get(), valueHolder.get()); //store the value
 			index = skipWhitespace(charSequence, index); //skip whitespace
 			final char c = charSequence.charAt(index); //get the next character
 			if(c == VALUE_SEPARATOR) { //if there are more values
@@ -676,7 +676,7 @@ public class JSON {
 	 * @throws ArgumentSyntaxException if the given character sequence does not represent a valid JSON string.
 	 * @throws ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
 	 */
-	protected static int parseString(final CharSequence charSequence, int index, final ObjectHolder<String> stringHolder) throws ArgumentSyntaxException {
+	protected static int parseString(final CharSequence charSequence, int index, final MutableReference<String> stringHolder) throws ArgumentSyntaxException {
 		index = check(charSequence, index, QUOTATION_MARK); //make sure this is the start of a string
 		index = parseStringContents(charSequence, index, stringHolder); //parse the contents of the string
 		return check(charSequence, index, QUOTATION_MARK); //make sure this is the end of a string
@@ -692,18 +692,18 @@ public class JSON {
 	 * @throws ArgumentSyntaxException if the given character sequence does not represent a valid JSON object.
 	 * @throws ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
 	 */
-	protected static int parseStringContents(final CharSequence charSequence, int index, final ObjectHolder<String> stringHolder) throws ArgumentSyntaxException {
+	protected static int parseStringContents(final CharSequence charSequence, int index, final MutableReference<String> stringHolder) throws ArgumentSyntaxException {
 		final int endQuoteIndex = indexOf(charSequence, QUOTATION_MARK, index); //the most common case is a simple quoted string with no escaped characters; try to handle the common case by getting the ending quotation mark, which will be much faster than appending characters one at a time
 		final String commonCaseString = charSequence.subSequence(index, endQuoteIndex).toString(); //get the contents of the string (if there was no ending quotation mark, this will throw an exception, which we might as well throw now as any time)
 		if(commonCaseString.indexOf(ESCAPE) < 0) { //if the string has no escape characters, this is a simple string that we can simply return now
-			stringHolder.setObject(commonCaseString); //the string will be the string we just parsed
+			stringHolder.set(commonCaseString); //the string will be the string we just parsed
 			return endQuoteIndex; //return the ending quote, which will be our next parse index
 		} else { //if this string has escape characters, abandon the string (even the last quote could be escaped, after all) and construct the string from scratch
 			final StringBuilder stringBuilder = new StringBuilder(); //create a new string builder
 			while(true) {
 				char c = charSequence.charAt(index); //get the current character
 				if(c == QUOTATION_MARK) { //if we're reached the end of the string
-					stringHolder.setObject(stringBuilder.toString()); //set the string to be the contents of our string builder
+					stringHolder.set(stringBuilder.toString()); //set the string to be the contents of our string builder
 					return index; //return the index of the quotation mark
 				} else if(c == ESCAPE) { //if this is the escape character
 					++index; //we'll determine which character is being escaped
@@ -761,7 +761,7 @@ public class JSON {
 	 * @throws NumberFormatException if the given character sequence does not contain a parsable JSON number.
 	 * @throws ArrayIndexOutOfBoundsException if the character sequence has insufficient characters at the given index.
 	 */
-	protected static int parseNumber(final CharSequence charSequence, int index, final ObjectHolder<Number> numberHolder) throws ArgumentSyntaxException {
+	protected static int parseNumber(final CharSequence charSequence, int index, final MutableReference<Number> numberHolder) throws ArgumentSyntaxException {
 		final int length = charSequence.length(); //get the length of the character sequence
 		final int start = index; //make note of where we start
 		if(charSequence.charAt(index) == MINUS) { //if the number starts with a minus sign
@@ -789,11 +789,11 @@ public class JSON {
 				}
 			}
 			if(hasFraction || hasExponent) { //if there was a fraction or exponent
-				numberHolder.setObject(Double.valueOf(Double.parseDouble(charSequence.subSequence(start, index).toString()))); //parse a double and store it
+				numberHolder.set(Double.valueOf(Double.parseDouble(charSequence.subSequence(start, index).toString()))); //parse a double and store it
 				return index; //return the new index
 			}
 		}
-		numberHolder.setObject(Integer.valueOf(Integer.parseInt(charSequence.subSequence(start, index).toString()))); //parse an integer and store it 
+		numberHolder.set(Integer.valueOf(Integer.parseInt(charSequence.subSequence(start, index).toString()))); //parse an integer and store it 
 		return index; //return the new index
 	}
 
