@@ -150,8 +150,9 @@ public interface VocabularyRegistry {
 	 * Determines whether the given prefix is registered with a vocabulary.
 	 * @param prefix A prefix that may be associated with a vocabulary namespace.
 	 * @return <code>true</code> if the given prefix has been associated with a vocabulary.
+	 * @throws NullPointerException if the given prefix is <code>null</code>.
 	 */
-	public boolean isPrefixRegistered(@Nullable final String prefix);
+	public boolean isPrefixRegistered(@Nonnull final String prefix);
 
 	/**
 	 * Determines whether the given vocabulary namespace URI is registered with a prefix, or has been specified as the default.
@@ -403,10 +404,10 @@ public interface VocabularyRegistry {
 		 * @param namespace The URI of the namespace of the vocabulary to register.
 		 * @param prefix The prefix to associate with the vocabulary.
 		 * @return This builder.
-		 * @throws NullPointerException if the given namespace is <code>null</code>.
+		 * @throws NullPointerException if the given namespace and/or prefix is <code>null</code>.
 		 * @throws IllegalArgumentException if the given prefix is not valid.
 		 */
-		public Builder registerVocabulary(@Nonnull final URI namespace, @Nullable final String prefix);
+		public Builder registerVocabulary(@Nonnull final URI namespace, @Nonnull final String prefix);
 
 		/**
 		 * Adds a prefix associates the indicated vocabulary with it, so that any vocabulary lookup by prefix will retrieve the given namespace. If the prefix has
@@ -418,10 +419,10 @@ public interface VocabularyRegistry {
 		 * @param prefix The prefix to register.
 		 * @param namespace The URI of the namespace of the vocabulary to associate with the prefix.
 		 * @return This builder.
-		 * @throws NullPointerException if the given namespace is <code>null</code>.
+		 * @throws NullPointerException if the given prefix and/or namespace is <code>null</code>.
 		 * @throws IllegalArgumentException if the given prefix is not valid.
 		 */
-		public Builder registerPrefix(@Nullable final String prefix, @Nonnull final URI namespace);
+		public Builder registerPrefix(@Nonnull final String prefix, @Nonnull final URI namespace);
 
 		/**
 		 * Registers all registered vocabularies in the given registry by adding the same namespace to prefix and prefix to namespace mappings as the given

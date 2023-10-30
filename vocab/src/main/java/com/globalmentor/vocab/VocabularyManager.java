@@ -150,20 +150,18 @@ public class VocabularyManager extends AbstractVocabularyRegistry implements Voc
 	public Optional<Map.Entry<URI, String>> registerVocabulary(final URI namespace, final String prefix) {
 		requireNonNull(namespace);
 		getVocabularySpecification().checkArgumentValidPrefix(prefix);
-		final Map<URI, String> prefixesByNamespace = getPrefixesByNamespace();
-		final boolean hadPrefixRegistration = prefixesByNamespace.containsKey(namespace); //check first to distinguish between no mapping and null value
-		final String previousPrefix = getPrefixesByNamespace().put(namespace, prefix);
-		getNamespacesByPrefix().put(prefix, namespace); //update the prefix-namespace mapping as well 
-		return hadPrefixRegistration ? Optional.of(Map.entry(namespace, previousPrefix)) : Optional.empty();
+		final Optional<String> foundPreviousPrefix = Optional.ofNullable(getPrefixesByNamespace().put(namespace, prefix));
+		getNamespacesByPrefix().put(prefix, namespace); //update the prefix-namespace mapping as well
+		return foundPreviousPrefix.map(previousPrefix -> Map.entry(namespace, previousPrefix));
 	}
 
 	@Override
 	public Optional<URI> registerPrefix(final String prefix, final URI namespace) {
 		getVocabularySpecification().checkArgumentValidPrefix(prefix);
 		requireNonNull(namespace);
-		final Optional<URI> previousNamespace = Optional.ofNullable(getNamespacesByPrefix().put(prefix, namespace));
+		final Optional<URI> foundPreviousNamespace = Optional.ofNullable(getNamespacesByPrefix().put(prefix, namespace));
 		getPrefixesByNamespace().putIfAbsent(namespace, prefix); //don't override a prefix already associated with the namespace 
-		return previousNamespace;
+		return foundPreviousNamespace;
 	}
 
 	@Override

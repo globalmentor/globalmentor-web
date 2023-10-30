@@ -95,7 +95,7 @@ public abstract class AbstractVocabularyRegistry implements VocabularyRegistry {
 
 	@Override
 	public boolean isPrefixRegistered(final String prefix) {
-		return getNamespacesByPrefix().containsKey(prefix);
+		return getNamespacesByPrefix().containsKey(requireNonNull(prefix));
 	}
 
 	@Override

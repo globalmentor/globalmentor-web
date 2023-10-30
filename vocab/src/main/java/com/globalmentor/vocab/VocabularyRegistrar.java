@@ -79,7 +79,8 @@ public interface VocabularyRegistrar extends VocabularyRegistry {
 	 * @see #isAutoRegister()
 	 * @see #isVocabularyRecognized(URI)
 	 */
-	public Optional<URI> findVocabularyByPrefix(@Nullable final String prefix);
+	@Override
+	public Optional<URI> findVocabularyByPrefix(@Nonnull final String prefix);
 
 	/**
 	 * {@inheritDoc} If auto-register has been turned on, a prefix will be registered and returned if the vocabulary is recognized, even if it was not registered
@@ -146,11 +147,11 @@ public interface VocabularyRegistrar extends VocabularyRegistry {
 	 * @param namespace The URI of the namespace of the vocabulary to register.
 	 * @param prefix The prefix to associate with the vocabulary.
 	 * @return The prefix registration, if any, that was previously made with the given namespace.
-	 * @throws NullPointerException if the given namespace is <code>null</code>.
+	 * @throws NullPointerException if the given namespace and/or prefix is <code>null</code>.
 	 * @throws IllegalArgumentException if the given prefix is not valid.
 	 * @see #getVocabularySpecification()
 	 */
-	public Optional<Map.Entry<URI, String>> registerVocabulary(@Nonnull final URI namespace, @Nullable final String prefix);
+	public Optional<Map.Entry<URI, String>> registerVocabulary(@Nonnull final URI namespace, @Nonnull final String prefix);
 
 	/**
 	 * Adds a prefix associates the indicated vocabulary with it, so that any vocabulary lookup by prefix will retrieve the given namespace. If the prefix has not
