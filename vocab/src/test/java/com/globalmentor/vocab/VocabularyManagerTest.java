@@ -22,6 +22,7 @@ import static java.util.Arrays.*;
 import static java.util.Collections.*;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.net.URI;
 import java.util.*;
@@ -84,6 +85,19 @@ public class VocabularyManagerTest {
 		assertThat(manager.getRegisteredVocabulariesByPrefix(), is(new HashSet<>(asList(Map.entry("dc", DC_NAMESPACE), Map.entry("og", OG_NAMESPACE)))));
 	}
 
+	/**
+	 * @see VocabularyManager#registerPrefix(String, URI)
+	 * @see VocabularyManager#registerVocabulary(URI, String)
+	 * @see VocabularyManager#findVocabularyByPrefix(String)
+	 */
+	@Test
+	public void testNullPrefixNotAllowed() {
+		final VocabularyManager manager = new VocabularyManager();
+		assertThrows(NullPointerException.class, () -> manager.registerPrefix(null, EG_NAMESPACE), "Register `null` prefix.");
+		assertThrows(NullPointerException.class, () -> manager.registerVocabulary(EG_NAMESPACE, null), "Register vocabulary with `null` prefix.");
+		assertThrows(NullPointerException.class, () -> manager.findVocabularyByPrefix(null), "Find vocabulary by `null` prefix.");
+	}
+
 	/** @see VocabularyManager#registerPrefix(String, URI) */
 	@Test
 	public void testMultiplePrefixRegistrationsWithSameVocabulary() {
@@ -101,7 +115,20 @@ public class VocabularyManagerTest {
 		assertThat(manager.findPrefixForVocabulary(EG_NAMESPACE), isPresentAndIs("foo"));
 	}
 
-	/** @see VocabularyManager#registerPrefix(String, URI) */
+	/** @see VocabularyManager#registerVocabulary(URI, String) */
+	@Test
+	public void testRegisterVocabulary() {
+		final VocabularyManager manager = new VocabularyManager();
+		assertThat(manager.findVocabularyByPrefix("foo"), isEmpty());
+		assertThat(manager.findVocabularyByPrefix("bar"), isEmpty());
+		assertThat(manager.findPrefixForVocabulary(EG_NAMESPACE), isEmpty());
+		manager.registerVocabulary(EG_NAMESPACE, "foo");
+		assertThat(manager.findVocabularyByPrefix("foo"), isPresentAndIs(EG_NAMESPACE));
+		assertThat(manager.findVocabularyByPrefix("bar"), isEmpty());
+		assertThat(manager.findPrefixForVocabulary(EG_NAMESPACE), isPresentAndIs("foo"));
+	}
+
+	/** @see VocabularyManager#registerVocabulary(URI, String) */
 	@Test
 	public void testVocabularyRegistrationOverridesPrefix() {
 		final VocabularyManager manager = new VocabularyManager();
