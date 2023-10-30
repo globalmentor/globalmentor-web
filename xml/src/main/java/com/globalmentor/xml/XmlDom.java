@@ -21,6 +21,7 @@ import java.lang.ref.*;
 import java.net.URI;
 import java.nio.charset.*;
 import java.util.*;
+import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.*;
@@ -1922,7 +1923,7 @@ public class XmlDom {
 	public static Set<Map.Entry<String, String>> getUndefinedNamespaces(final Element element) {
 		final Set<Map.Entry<String, String>> prefixNamespacePairs = new HashSet<>(); //create a new set in which to store name/value pairs of prefixes and namespaces
 		if(!isNamespaceDefined(element, element.getPrefix(), element.getNamespaceURI())) { //if the element doesn't have the needed declarations
-			prefixNamespacePairs.add(Map.entry(element.getPrefix(), element.getNamespaceURI())); //add this prefix and namespace to the list of namespaces needing to be declared
+			prefixNamespacePairs.add(new SimpleImmutableEntry<>(element.getPrefix(), element.getNamespaceURI())); //add this prefix and namespace to the list of namespaces needing to be declared; prefix may be `null`
 		}
 		final NamedNodeMap attributeNamedNodeMap = element.getAttributes(); //get the map of attributes
 		final int attributeCount = attributeNamedNodeMap.getLength(); //find out how many attributes there are
@@ -1931,9 +1932,11 @@ public class XmlDom {
 			//as attribute namespaces are not inherited, don't check namespace
 			//  declarations for attributes if they have neither prefix nor
 			//  namespace declared
-			if(attribute.getPrefix() != null || attribute.getNamespaceURI() != null) {
-				if(!isNamespaceDefined(element, attribute.getPrefix(), attribute.getNamespaceURI())) //if the attribute doesn't have the needed declarations
-					prefixNamespacePairs.add(Map.entry(attribute.getPrefix(), attribute.getNamespaceURI())); //add this prefix and namespace to the set of namespaces needing to be declared
+			final String attributePrefix = attribute.getPrefix();
+			final String attributeNamespaceUri = attribute.getNamespaceURI();
+			if(attributePrefix != null || attributeNamespaceUri != null) {
+				if(!isNamespaceDefined(element, attributePrefix, attributeNamespaceUri)) //if the attribute doesn't have the needed declarations
+					prefixNamespacePairs.add(Map.entry(attributePrefix, attributeNamespaceUri)); //add this prefix and namespace to the set of namespaces needing to be declared
 			}
 		}
 		return prefixNamespacePairs; //return the prefixes and namespaces we gathered

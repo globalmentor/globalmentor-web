@@ -20,6 +20,7 @@ import static java.util.Collections.*;
 import static java.util.Objects.*;
 
 import java.util.*;
+import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.function.BiFunction;
 import java.util.stream.Stream;
 
@@ -449,7 +450,8 @@ public class HtmlDom {
 	 * </p>
 	 * @implSpec This implementation delegates to {@link #namedMetadata(Document, BiFunction, BiFunction)}.
 	 * @param document The XHTML document tree.
-	 * @return A stream of name-value pairs representing the {@code <html><head><meta>} elements that contain <code>name</code> attributes.
+	 * @return A stream of name-value pairs, each value of which may be <code>null</code>, representing the {@code <html><head><meta>} elements that contain
+	 *         <code>name</code> attributes.
 	 * @see #htmlHeadMetaElements(Document)
 	 */
 	public static Stream<Map.Entry<String, String>> namedMetadata(@Nonnull final Document document) {
@@ -469,14 +471,16 @@ public class HtmlDom {
 	 *          lowercase. It is possible for a metadata name to be the empty string, will never be <code>null</code>.
 	 * @param valueMapper The function for mapping the string metadata values, in the context of some element, to metadata values. The provided element will
 	 *          indicate on which element the metadata was found. The provided metadata value may be <code>null</code>.
-	 * @return A stream of name-value pairs representing the {@code <html><head><meta>} elements that contain <code>name</code> attributes.
+	 * @return A stream of name-value pairs, each value of which may be <code>null</code>, representing the {@code <html><head><meta>} elements that contain
+	 *         <code>name</code> attributes.
 	 * @see #htmlHeadMetaElements(Document)
 	 */
 	public static <N, V> Stream<Map.Entry<N, V>> namedMetadata(@Nonnull final Document document, @Nonnull final BiFunction<Element, String, N> nameMapper,
 			@Nonnull final BiFunction<Element, String, V> valueMapper) {
 		return htmlHeadMetaElements(document).filter(metaElement -> metaElement.hasAttributeNS(null, ELEMENT_META_ATTRIBUTE_NAME))
-				.map(metaElement -> Map.entry(nameMapper.apply(metaElement, ASCII.toLowerCaseString(metaElement.getAttributeNS(null, ELEMENT_META_ATTRIBUTE_NAME))), //normalize names
-						valueMapper.apply(metaElement, findAttributeNS(metaElement, null, ELEMENT_META_ATTRIBUTE_CONTENT).orElse(null)))); //values can be null 
+				.map(metaElement -> new SimpleImmutableEntry<>( //don't use `Map.Entry(…)`, which doesn't allow `null`.
+						nameMapper.apply(metaElement, ASCII.toLowerCaseString(metaElement.getAttributeNS(null, ELEMENT_META_ATTRIBUTE_NAME))), //normalize names
+						valueMapper.apply(metaElement, findAttributeNS(metaElement, null, ELEMENT_META_ATTRIBUTE_CONTENT).orElse(null)))); //values may be `null` 
 	}
 
 	/**
