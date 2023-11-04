@@ -20,7 +20,6 @@ import static java.util.Collections.*;
 import static java.util.Objects.*;
 
 import java.util.*;
-import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.function.BiFunction;
 import java.util.stream.Stream;
 
@@ -36,6 +35,7 @@ import com.globalmentor.model.ConfiguredStateException;
 import com.globalmentor.net.MediaType;
 import com.globalmentor.text.ASCII;
 import com.globalmentor.vocab.VocabularyRegistry;
+import com.globalmentor.collections.Maps;
 import com.globalmentor.html.def.HTML;
 import com.globalmentor.xml.VocabularyNamespaceContext;
 import com.globalmentor.xml.XmlDom;
@@ -478,7 +478,7 @@ public class HtmlDom {
 	public static <N, V> Stream<Map.Entry<N, V>> namedMetadata(@Nonnull final Document document, @Nonnull final BiFunction<Element, String, N> nameMapper,
 			@Nonnull final BiFunction<Element, String, V> valueMapper) {
 		return htmlHeadMetaElements(document).filter(metaElement -> metaElement.hasAttributeNS(null, ELEMENT_META_ATTRIBUTE_NAME))
-				.map(metaElement -> new SimpleImmutableEntry<>( //don't use `Map.Entry(…)`, which doesn't allow `null`.
+				.map(metaElement -> Maps.entryOfNullables(
 						nameMapper.apply(metaElement, ASCII.toLowerCaseString(metaElement.getAttributeNS(null, ELEMENT_META_ATTRIBUTE_NAME))), //normalize names
 						valueMapper.apply(metaElement, findAttributeNS(metaElement, null, ELEMENT_META_ATTRIBUTE_CONTENT).orElse(null)))); //values may be `null` 
 	}

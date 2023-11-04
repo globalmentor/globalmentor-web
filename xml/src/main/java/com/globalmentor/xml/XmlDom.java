@@ -21,7 +21,6 @@ import java.lang.ref.*;
 import java.net.URI;
 import java.nio.charset.*;
 import java.util.*;
-import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.*;
@@ -32,6 +31,7 @@ import javax.xml.parsers.*;
 import static com.globalmentor.io.Charsets.*;
 import static com.globalmentor.io.InputStreams.*;
 
+import com.globalmentor.collections.Maps;
 import com.globalmentor.io.ByteOrderMark;
 import com.globalmentor.java.*;
 import com.globalmentor.mathml.def.MathML;
@@ -1923,7 +1923,7 @@ public class XmlDom {
 	public static Set<Map.Entry<String, String>> getUndefinedNamespaces(final Element element) {
 		final Set<Map.Entry<String, String>> prefixNamespacePairs = new HashSet<>(); //create a new set in which to store name/value pairs of prefixes and namespaces
 		if(!isNamespaceDefined(element, element.getPrefix(), element.getNamespaceURI())) { //if the element doesn't have the needed declarations
-			prefixNamespacePairs.add(new SimpleImmutableEntry<>(element.getPrefix(), element.getNamespaceURI())); //add this prefix and namespace to the list of namespaces needing to be declared; prefix may be `null`
+			prefixNamespacePairs.add(Maps.entryOfNullables(element.getPrefix(), element.getNamespaceURI())); //add this prefix and namespace to the list of namespaces needing to be declared; prefix may be `null`
 		}
 		final NamedNodeMap attributeNamedNodeMap = element.getAttributes(); //get the map of attributes
 		final int attributeCount = attributeNamedNodeMap.getLength(); //find out how many attributes there are
