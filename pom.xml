@@ -10,7 +10,7 @@
 	</parent>
 
 	<artifactId>globalmentor-web-bom</artifactId>
-	<version>0.17.0-SNAPSHOT</version>
+	<version>0.17.0</version>
 	<packaging>pom</packaging>
 
 	<name>GlobalMentor Web BOM</name>
@@ -56,91 +56,91 @@
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-css</artifactId>
-				<version>0.17.0-SNAPSHOT</version>
+				<version>0.17.0</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-css-def</artifactId>
-				<version>0.17.0-SNAPSHOT</version>
+				<version>0.17.0</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-html</artifactId>
-				<version>0.17.0-SNAPSHOT</version>
+				<version>0.17.0</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-html-def</artifactId>
-				<version>0.17.0-SNAPSHOT</version>
+				<version>0.17.0</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-javascript</artifactId>
-				<version>0.17.0-SNAPSHOT</version>
+				<version>0.17.0</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-mathml-def</artifactId>
-				<version>0.17.0-SNAPSHOT</version>
+				<version>0.17.0</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-rdf-def</artifactId>
-				<version>0.17.0-SNAPSHOT</version>
+				<version>0.17.0</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-rdfa-def</artifactId>
-				<version>0.17.0-SNAPSHOT</version>
+				<version>0.17.0</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-svg-def</artifactId>
-				<version>0.17.0-SNAPSHOT</version>
+				<version>0.17.0</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-vocab</artifactId>
-				<version>0.17.0-SNAPSHOT</version>
+				<version>0.17.0</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-vocab-dcmi</artifactId>
-				<version>0.17.0-SNAPSHOT</version>
+				<version>0.17.0</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-vocab-foaf</artifactId>
-				<version>0.17.0-SNAPSHOT</version>
+				<version>0.17.0</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-vocab-ogp</artifactId>
-				<version>0.17.0-SNAPSHOT</version>
+				<version>0.17.0</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-xml</artifactId>
-				<version>0.17.0-SNAPSHOT</version>
+				<version>0.17.0</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-xml-def</artifactId>
-				<version>0.17.0-SNAPSHOT</version>
+				<version>0.17.0</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
